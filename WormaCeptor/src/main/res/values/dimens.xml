@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright AziKar24 20/2/2023.
+  -->
+
+<resources>
+    <dimen name="search_bar_height">48dp</dimen>
+</resources>

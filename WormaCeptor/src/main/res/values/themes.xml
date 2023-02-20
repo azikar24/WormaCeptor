@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright AziKar24 20/2/2023.
+  -->
+
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.WormaCeptorBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple500</item>
+        <item name="colorPrimaryVariant">@color/purple700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/teal700</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorAccent">@color/purple500</item>
+        <!-- Status bar color. -->
+    </style>
+</resources>

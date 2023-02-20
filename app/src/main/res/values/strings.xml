@@ -1,0 +1,11 @@
+<!--
+  ~ Copyright AziKar24 19/2/2023.
+  -->
+
+<resources>
+    <string name="app_name">WormaCeptor</string>
+    <string name="github_link">https://github.com/azikar24/WormaCeptor</string>
+    <string name="do_http_activity">Do HTTP activity</string>
+    <string name="launch_directly">Launch WormaCeptor Directly</string>
+    <string name="github_page">Github Page</string>
+</resources>

@@ -9,6 +9,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +38,7 @@ class StackTraceListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolBar()
         setupList()
-        loadResults(viewModel.getAllStackTraces(null))
+        loadResults(viewModel.getAllStackTraces())
     }
 
     private fun setupToolBar() {
@@ -51,7 +52,7 @@ class StackTraceListFragment : Fragment() {
         mStackTraceTransactionAdapter = StackTraceTransactionAdapter(requireContext(), mListDiffUtil, object : StackTraceTransactionAdapter.Listener {
             override fun onTransactionClicked(stackTraceTransaction: StackTraceTransaction?) {
                 if (stackTraceTransaction != null) {
-//                    findNavController().navigate(HttpsFragmentDirections.actionHttpsListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
+                    findNavController().navigate(StackTraceListFragmentDirections.actionStackTraceListFragment2ToStackTraceDetailsFragment(stackTraceTransaction.id))
                 }
             }
         })

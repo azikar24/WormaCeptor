@@ -27,7 +27,7 @@ class StackTraceTransactionViewModel : ViewModel() {
 
     private val mTransactions: LiveData<PagedList<StackTraceTransaction>>? = mTransactionDao?.getAllStackTraces()?.let { LivePagedListBuilder(it, config).build() }
 
-    fun getAllStackTraces(key: String?): LiveData<PagedList<StackTraceTransaction>>? {
+    fun getAllStackTraces(): LiveData<PagedList<StackTraceTransaction>>? {
           return  mTransactions
     }
 

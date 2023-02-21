@@ -44,7 +44,25 @@
             android:id="@+id/stackTraceListFragment2"
             android:name="com.azikar24.wormaceptor.internal.ui.stacktrace.list.StackTraceListFragment"
             android:label="stackTraceListFragment"
-            tools:layout="@layout/fragment_stack_trace_list" />
+            tools:layout="@layout/fragment_stack_trace_list">
+            <action
+                android:id="@+id/action_stackTraceListFragment2_to_stackTraceDetailsFragment"
+                app:destination="@id/stackTraceDetailsFragment">
+                <argument
+                    android:name="id"
+                    app:argType="long" />
+            </action>
+        </fragment>
+        <fragment
+            android:id="@+id/stackTraceDetailsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.stacktrace.details.StackTraceDetailsFragment"
+            android:label="fragment_stack_trace_details"
+            tools:layout="@layout/fragment_stack_trace_details">
+            <argument
+                android:name="id"
+                app:argType="long" />
+        </fragment>
+
     </navigation>
 
 </navigation>

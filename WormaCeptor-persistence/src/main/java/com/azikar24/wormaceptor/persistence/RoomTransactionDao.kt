@@ -13,6 +13,12 @@ import java.util.*
 @Dao
 abstract class RoomTransactionDao {
 
+     @Query("DELETE FROM StackTraceTransaction")
+    abstract fun clearAllStackTraces(): Int
+
+    @Delete
+    abstract fun deleteStackTrace(vararg stackTraceTransaction: PersistentStackTraceTransaction?): Int?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertStackTrace(persistentStackTraceTransaction: PersistentStackTraceTransaction?)
 
@@ -40,18 +46,6 @@ abstract class RoomTransactionDao {
     @Query("SELECT * FROM HttpTransaction WHERE id = :id")
     abstract fun getTransactionsWithId(id: Long): LiveData<PersistentHttpTransaction>?
 
-    fun getAllTransactionsWith(key: String, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, PersistentHttpTransaction>? {
-        val endWildCard = "$key%"
-        val doubleSideWildCard = "%$key%"
-        return when (searchType) {
-            TransactionDao.SearchType.DEFAULT -> getAllTransactions(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST -> getAllTransactionsIncludeRequest(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_RESPONSE -> getAllTransactionsIncludeResponse(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> getAllTransactionsIncludeRequestResponse(endWildCard, doubleSideWildCard)
-            else -> getAllTransactions(endWildCard, doubleSideWildCard)
-        }
-    }
-
     @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
     abstract fun getAllTransactionsIncludeRequestResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
 
@@ -63,4 +57,5 @@ abstract class RoomTransactionDao {
 
     @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
     abstract fun getAllTransactions(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
+
 }

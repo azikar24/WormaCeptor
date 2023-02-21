@@ -1,11 +1,10 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.home
+package com.azikar24.wormaceptor.internal.ui.httpslist
 
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
 import android.view.*
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -18,7 +17,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentHomeBinding
+import com.azikar24.wormaceptor.databinding.FragmentHttpsListBinding
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
@@ -26,14 +25,14 @@ import com.azikar24.wormaceptor.internal.support.event.Callback
 import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import com.azikar24.wormaceptor.internal.support.event.Sampler
 
-class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
+class HttpsFragment : Fragment() , SearchView.OnQueryTextListener {
 
-    lateinit var binding: FragmentHomeBinding
+    lateinit var binding: FragmentHttpsListBinding
 
-    private lateinit var mTransactionAdapter: TransactionAdapter
+    private lateinit var mHttpTransactionAdapter: HttpTransactionAdapter
 
     private val mListDiffUtil: ListDiffUtil = ListDiffUtil()
-    private val mViewModel: TransactionListViewModel by viewModels()
+    private val mViewModel: HttpTransactionViewModel by viewModels()
     private var mCurrentSubscription: LiveData<PagedList<HttpTransactionUIHelper>>? = null
     val mColorUtil: ColorUtil by lazy {
         ColorUtil.getInstance(requireContext())
@@ -43,7 +42,7 @@ class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
     private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
         override fun onEmit(event: TransactionListWithSearchKeyModel) {
             mListDiffUtil.setSearchKey(event.mSearchKey)
-            mTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
+            mHttpTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
         }
     })
 
@@ -56,7 +55,7 @@ class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentHomeBinding.inflate(inflater, container, false).also {
+    ) = FragmentHttpsListBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -71,7 +70,7 @@ class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
                 menuInflater.inflate(R.menu.list_menu, menu)
                 menu.findItem(R.id.search)?.let { searchMenuItem ->
                     val searchView = searchMenuItem.actionView as SearchView
-                    searchView.setOnQueryTextListener(this@HomeFragment)
+                    searchView.setOnQueryTextListener(this@HttpsFragment)
                     val searchEditText: EditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
                     searchEditText.setTextColor(mColorUtil.mColorWhite)
                     searchEditText.setHintTextColor(mColorUtil.mColorWhite)
@@ -105,10 +104,10 @@ class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
     }
 
     private fun setupList() {
-        mTransactionAdapter = TransactionAdapter(requireContext(), mListDiffUtil, object : TransactionAdapter.Listener {
+        mHttpTransactionAdapter = HttpTransactionAdapter(requireContext(), mListDiffUtil, object : HttpTransactionAdapter.Listener {
             override fun onTransactionClicked(transactionUIHelper: HttpTransactionUIHelper?) {
                 if (transactionUIHelper != null) {
-                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
+                    findNavController().navigate(HttpsFragmentDirections.actionHttpsListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
                 }
             }
 
@@ -119,7 +118,7 @@ class HomeFragment : Fragment() , SearchView.OnQueryTextListener {
 
         binding.transactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        binding.transactionRecyclerView.adapter = mTransactionAdapter
+        binding.transactionRecyclerView.adapter = mHttpTransactionAdapter
     }
 
 

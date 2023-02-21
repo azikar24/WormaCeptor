@@ -39,4 +39,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 }

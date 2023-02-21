@@ -27,6 +27,10 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
 
     override fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>? = null
 
+    override fun clearAllStackTraces(): Int? = null
+
+    override fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int? = null
+
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
         val newTransactionIndex: Long? = if (httpTransaction?.id == 0L) {
             currentIndex

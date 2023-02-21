@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.home.viewholders
+package com.azikar24.wormaceptor.internal.ui.httpslist.viewholders
 
 import android.view.View
 import android.widget.ImageView

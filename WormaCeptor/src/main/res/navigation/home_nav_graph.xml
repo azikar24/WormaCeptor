@@ -1,32 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright AziKar24 19/2/2023.
+  ~ Copyright AziKar24 21/2/2023.
   -->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/httpsListFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.azikar24.wormaceptor.internal.ui.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment">
+    <navigation
+        android:id="@+id/httpsListFragment"
+        app:startDestination="@id/httpsListFragment2">
+
+        <fragment
+            android:id="@+id/httpsListFragment2"
+            android:name="com.azikar24.wormaceptor.internal.ui.httpslist.HttpsFragment"
+            android:label="httpsListFragment"
+            tools:layout="@layout/fragment_https_list">
+            <action
+                android:id="@+id/action_httpsListFragment_to_detailsFragment"
+                app:destination="@id/detailsFragment">
+                <argument
+                    android:name="id"
+                    app:argType="long" />
+            </action>
+        </fragment>
+        <fragment
+            android:id="@+id/detailsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.httpsdetails.DetailsFragment"
+            android:label="fragment_details"
+            tools:layout="@layout/fragment_details">
             <argument
                 android:name="id"
                 app:argType="long" />
-        </action>
-    </fragment>
-    <fragment
-        android:id="@+id/detailsFragment"
-        android:name="com.azikar24.wormaceptor.internal.ui.details.DetailsFragment"
-        android:label="fragment_details"
-        tools:layout="@layout/fragment_details">
-        <argument
-            android:name="id"
-            app:argType="long" />
-    </fragment>
+        </fragment>
+    </navigation>
+
+    <navigation
+        android:id="@+id/stackTraceListFragment"
+        app:startDestination="@id/stackTraceListFragment2">
+
+        <fragment
+            android:id="@+id/stackTraceListFragment2"
+            android:name="com.azikar24.wormaceptor.internal.ui.stacktracelist.StackTraceListFragment"
+            android:label="stackTraceListFragment"
+            tools:layout="@layout/fragment_stack_trace_list" />
+    </navigation>
+
 </navigation>

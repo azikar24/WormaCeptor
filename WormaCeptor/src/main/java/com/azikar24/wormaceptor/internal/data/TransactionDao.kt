@@ -19,6 +19,10 @@ interface TransactionDao {
 
     fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>?
 
+    fun clearAllStackTraces(): Int?
+
+    fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int?
+
     fun insertTransaction(httpTransaction: HttpTransaction?): Long?
 
     fun updateTransaction(httpTransaction: HttpTransaction?): Int?

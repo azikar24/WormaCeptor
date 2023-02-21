@@ -1,5 +1,5 @@
 /*
- * Copyright AziKar24 20/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
 package com.azikar24.wormaceptor.persistence
@@ -20,4 +20,7 @@ class PersistentStackTraceTransaction {
 
     @ColumnInfo(name = "response_date")
     var stackTraceDate: Date? = null
+
+    @ColumnInfo(name = "throwable")
+    var throwable: String? = null
 }

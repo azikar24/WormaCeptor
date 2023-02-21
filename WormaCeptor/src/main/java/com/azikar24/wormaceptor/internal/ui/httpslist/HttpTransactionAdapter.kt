@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.home
+package com.azikar24.wormaceptor.internal.ui.httpslist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
-import com.azikar24.wormaceptor.internal.ui.home.viewholders.EmptyTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.home.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.httpslist.viewholders.EmptyTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.httpslist.viewholders.TransactionViewHolder
 
-class TransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(listDiffUtil) {
+class HttpTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(listDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
     private var mSearchKey: String? = null
@@ -80,7 +80,7 @@ class TransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val m
         }
     }
 
-    fun setSearchKey(value: String?): TransactionAdapter = apply {
+    fun setSearchKey(value: String?): HttpTransactionAdapter = apply {
         mSearchKey = value
     }
 

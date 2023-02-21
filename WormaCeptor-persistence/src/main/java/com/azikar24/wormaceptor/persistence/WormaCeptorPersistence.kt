@@ -9,11 +9,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Database(entities = [PersistentHttpTransaction::class, PersistentStackTraceTransaction::class], version = 3, exportSchema = false)
+@Database(entities = [PersistentHttpTransaction::class, PersistentStackTraceTransaction::class], version = 4, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)
 abstract class WormaCeptorPersistence : RoomDatabase(), WormaCeptorStorage {
     @Volatile
@@ -35,6 +36,7 @@ abstract class WormaCeptorPersistence : RoomDatabase(), WormaCeptorStorage {
         private lateinit var INSTANCE: WormaCeptorStorage
         private val initialized = AtomicBoolean(true)
         fun getInstance(context: Context): WormaCeptorStorage {
+            WormaCeptor.type = WormaCeptor.WormaCeptorType.PERSISTENCE
             if (initialized.getAndSet(true)) {
                 INSTANCE = Room.databaseBuilder(context, WormaCeptorPersistence::class.java, "WormaCeptorDatabase")
                     .fallbackToDestructiveMigration()

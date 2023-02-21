@@ -11,12 +11,15 @@ import java.util.*
 
 @Parcelize
 class StackTraceTransaction(private val builder: Builder) : Parcelable {
+
     //region START Variables
     var id: Long = builder.id
 
     var stackTrace = builder.stackTrace
 
     var stackTraceDate = builder.stackTraceDate
+
+    var throwable = builder.throwable
 
     //endregion END Variables
 
@@ -53,11 +56,13 @@ class StackTraceTransaction(private val builder: Builder) : Parcelable {
         var id: Long = 0
         var stackTrace: List<StackTraceElement>? = null
         var stackTraceDate: Date? = null
+        var throwable: String? = null
 
         //region START Builder Setters
         fun setId(value: Long) = this.apply { id = value }
         fun setStackTrace(value: List<StackTraceElement>) = this.apply { stackTrace = value }
         fun setStackTraceDate(value: Date) = this.apply { stackTraceDate = value }
+        fun setThrowable(value: String) = this.apply { throwable = value }
         //endregion END Builder Setters
 
         fun build(): StackTraceTransaction {

@@ -25,6 +25,19 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         return roomTransactionDao?.allStackTrace?.map(PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION)
     }
 
+    override fun clearAllStackTraces(): Int? {
+        return roomTransactionDao?.clearAllStackTraces()
+    }
+
+    override fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int? {
+        val persistentStacktraceTransactions = arrayOfNulls<PersistentStackTraceTransaction>(stackTraceTransaction.size)
+        var index = 0
+        for (transaction in stackTraceTransaction) {
+            persistentStacktraceTransactions[index++] = STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
+        }
+        return roomTransactionDao?.deleteStackTrace(*persistentStacktraceTransactions)
+    }
+
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
         val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(httpTransaction)
         return roomTransactionDao?.insertTransaction(dataToPersistence)
@@ -142,6 +155,7 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
             id = input.id
             stackTrace = input.stackTrace
             stackTraceDate = input.stackTraceDate
+            throwable = input.throwable
         }.build()
     }
 
@@ -150,6 +164,7 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
             id = input.id
             stackTrace = input.stackTrace
             stackTraceDate = input.stackTraceDate
+            throwable = input.throwable
         }
     }
 

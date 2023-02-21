@@ -17,7 +17,13 @@ import java.util.*
 
 object WormaCeptor {
 
+    enum class WormaCeptorType {
+        PERSISTENCE,
+        IMDB
+    }
+
     var storage: WormaCeptorStorage? = null
+    var type: WormaCeptorType? = null
 
     fun getLaunchIntent(context: Context): Intent? {
         return Intent(context, WormaCeptorMainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -31,6 +37,7 @@ object WormaCeptor {
             AsyncTask.execute {
                 storage?.transactionDao?.insertStackTrace(
                     StackTraceTransaction.newBuilder().apply {
+                        setThrowable(paramThrowable.toString())
                         setStackTrace(stackTraceList.map { it })
                         setStackTraceDate(Date())
                     }.build()

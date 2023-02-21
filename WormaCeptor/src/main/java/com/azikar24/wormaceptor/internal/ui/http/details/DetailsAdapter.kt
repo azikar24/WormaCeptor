@@ -1,13 +1,13 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.httpsdetails
+package com.azikar24.wormaceptor.internal.ui.http.details
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.azikar24.wormaceptor.internal.ui.httpsdetails.fragments.TransactionFragment
+import com.azikar24.wormaceptor.internal.ui.http.details.fragments.TransactionFragment
 
 
 class DetailsAdapter(act: FragmentActivity) : FragmentStateAdapter(act) {

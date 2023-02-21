@@ -14,7 +14,7 @@
 
         <fragment
             android:id="@+id/httpsListFragment2"
-            android:name="com.azikar24.wormaceptor.internal.ui.httpslist.HttpsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.http.list.HttpsFragment"
             android:label="httpsListFragment"
             tools:layout="@layout/fragment_https_list">
             <action
@@ -27,7 +27,7 @@
         </fragment>
         <fragment
             android:id="@+id/detailsFragment"
-            android:name="com.azikar24.wormaceptor.internal.ui.httpsdetails.DetailsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.http.details.DetailsFragment"
             android:label="fragment_details"
             tools:layout="@layout/fragment_details">
             <argument
@@ -42,7 +42,7 @@
 
         <fragment
             android:id="@+id/stackTraceListFragment2"
-            android:name="com.azikar24.wormaceptor.internal.ui.stacktracelist.StackTraceListFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.stacktrace.list.StackTraceListFragment"
             android:label="stackTraceListFragment"
             tools:layout="@layout/fragment_stack_trace_list" />
     </navigation>

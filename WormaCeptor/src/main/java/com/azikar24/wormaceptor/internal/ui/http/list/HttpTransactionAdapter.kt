@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.httpslist
+package com.azikar24.wormaceptor.internal.ui.http.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,8 +14,8 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
-import com.azikar24.wormaceptor.internal.ui.httpslist.viewholders.EmptyTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.httpslist.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.http.list.viewholders.EmptyTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.http.list.viewholders.TransactionViewHolder
 
 class HttpTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(listDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)

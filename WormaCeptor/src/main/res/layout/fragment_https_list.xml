@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.ui.httpslist.HttpsFragment">
+    tools:context=".internal.ui.http.list.HttpsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"

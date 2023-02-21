@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktracelist
+package com.azikar24.wormaceptor.internal.ui.stacktrace.list
 
 import android.os.Bundle
 import android.view.*

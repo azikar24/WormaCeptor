@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.httpsdetails.fragments
+package com.azikar24.wormaceptor.internal.ui.http.details.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

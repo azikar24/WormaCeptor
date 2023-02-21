@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.httpsdetails
+package com.azikar24.wormaceptor.internal.ui.http.details
 
 import android.os.Bundle
 import android.view.*
@@ -18,8 +18,8 @@ import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.share
-import com.azikar24.wormaceptor.internal.ui.httpsdetails.fragments.TransactionOverviewFragment
-import com.azikar24.wormaceptor.internal.ui.httpsdetails.fragments.TransactionPayloadFragment
+import com.azikar24.wormaceptor.internal.ui.http.details.fragments.TransactionOverviewFragment
+import com.azikar24.wormaceptor.internal.ui.http.details.fragments.TransactionPayloadFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailsFragment : Fragment() {

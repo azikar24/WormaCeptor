@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktracelist
+package com.azikar24.wormaceptor.internal.ui.stacktrace.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
-import com.azikar24.wormaceptor.internal.ui.stacktracelist.viewholders.EmptyStackTraceTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.stacktracelist.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.EmptyStackTraceTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.TransactionViewHolder
 
 class StackTraceTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<StackTraceTransaction, RecyclerView.ViewHolder>(listDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)

@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.httpslist
+package com.azikar24.wormaceptor.internal.ui.http.list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper

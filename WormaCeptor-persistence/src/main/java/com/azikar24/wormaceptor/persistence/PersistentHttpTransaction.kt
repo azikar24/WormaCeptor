@@ -2,7 +2,7 @@
  * Copyright AziKar24 20/2/2023.
  */
 
-package com.azikar24.wormaceptor_persistence
+package com.azikar24.wormaceptor.persistence
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 20/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor_persistence
+package com.azikar24.wormaceptor.persistence
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -11,9 +11,20 @@ import com.azikar24.wormaceptor.internal.data.HttpTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 import androidx.arch.core.util.Function
+import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 
 
 class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {
+
+    override fun insertStackTrace(stackTraceTransaction: StackTraceTransaction?) {
+        val stackTraceData = STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(stackTraceTransaction)
+        roomTransactionDao?.insertStackTrace(stackTraceData)
+    }
+
+    override fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>? {
+        return roomTransactionDao?.allStackTrace?.map(PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION)
+    }
+
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
         val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(httpTransaction)
         return roomTransactionDao?.insertTransaction(dataToPersistence)
@@ -121,6 +132,24 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
             responseHeaders = input.responseHeaders
             responseBody = input.responseBody
             responseBodyIsPlainText = input.responseBodyIsPlainText
+        }
+    }
+
+
+
+    private val PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION: Function<PersistentStackTraceTransaction, StackTraceTransaction> = Function { input ->
+        StackTraceTransaction.newBuilder().apply {
+            id = input.id
+            stackTrace = input.stackTrace
+            stackTraceDate = input.stackTraceDate
+        }.build()
+    }
+
+    private val STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<StackTraceTransaction, PersistentStackTraceTransaction> = Function { input ->
+        PersistentStackTraceTransaction().apply {
+            id = input.id
+            stackTrace = input.stackTrace
+            stackTraceDate = input.stackTraceDate
         }
     }
 

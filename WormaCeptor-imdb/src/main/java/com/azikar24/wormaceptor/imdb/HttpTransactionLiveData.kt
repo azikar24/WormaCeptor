@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 20/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor_imdb
+package com.azikar24.wormaceptor.imdb
 
 import androidx.lifecycle.MutableLiveData
 import com.azikar24.wormaceptor.internal.data.HttpTransaction

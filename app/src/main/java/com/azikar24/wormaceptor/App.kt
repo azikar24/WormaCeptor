@@ -6,7 +6,7 @@ package com.azikar24.wormaceptor
 
 import android.app.Application
 import android.os.StrictMode
-import com.azikar24.wormaceptor_persistence.WormaCeptorPersistence
+import com.azikar24.wormaceptor.persistence.WormaCeptorPersistence
 
 class App : Application() {
 

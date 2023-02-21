@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         setupButton()
         WormaCeptor.addAppShortcut(this)
+        WormaCeptor.logUnexpectedCrashes()
     }
 
     private fun setupButton() {
@@ -39,7 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.launchWormaCeptorDirectlyButton.setOnClickListener {
-            startActivity(WormaCeptor.getLaunchIntent(this))
+            WormaCeptor.getLaunchIntent(this)?.let {
+                startActivity(it)
+            }
+        }
+
+        binding.simulateErrorButton.setOnClickListener {
+            val x = arrayOf("")
+            x[4]
         }
     }
 
@@ -93,7 +101,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.actionMenuGithub) {
+        if (item.itemId == R.id.actionMenuGithub) {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse(getString(R.string.github_link))
             }

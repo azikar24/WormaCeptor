@@ -1,12 +1,13 @@
 /*
- * Copyright AziKar24 20/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor_imdb
+package com.azikar24.wormaceptor.imdb
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
@@ -21,6 +22,10 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
         this.transactionArchComponentProvider = transactionArchComponentProvider
         this.transactionPredicateProvider = transactionPredicateProvider
     }
+
+    override fun insertStackTrace(stackTraceTransaction: StackTraceTransaction?) = Unit
+
+    override fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>? = null
 
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
         val newTransactionIndex: Long? = if (httpTransaction?.id == 0L) {

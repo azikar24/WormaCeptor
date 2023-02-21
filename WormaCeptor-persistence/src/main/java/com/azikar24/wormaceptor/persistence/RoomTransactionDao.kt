@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 20/2/2023.
+ * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor_persistence
+package com.azikar24.wormaceptor.persistence
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -12,6 +12,13 @@ import java.util.*
 
 @Dao
 abstract class RoomTransactionDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertStackTrace(persistentStackTraceTransaction: PersistentStackTraceTransaction?)
+
+    @get:Query("SELECT * FROM StackTraceTransaction ORDER BY id DESC")
+    abstract val allStackTrace: DataSource.Factory<Int, PersistentStackTraceTransaction>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertTransaction(persistentHttpTransaction: PersistentHttpTransaction?): Long?
 

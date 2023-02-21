@@ -2,7 +2,7 @@
  * Copyright AziKar24 20/2/2023.
  */
 
-package com.azikar24.wormaceptor_no_op
+package com.azikar24.wormaceptor
 
 import android.content.Context
 import okhttp3.Interceptor

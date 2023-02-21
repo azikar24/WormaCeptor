@@ -46,7 +46,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation project(":WormaCeptor")
 //    implementation(project(":WormaCeptor-imdb"))
 //    implementation(project(":WormaCeptor-no-op"))
     implementation(project(":WormaCeptor-persistence"))

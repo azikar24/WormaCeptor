@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation project(':WormaCeptor')
+    api project(':WormaCeptor')
     implementation "android.arch.persistence.room:runtime:$roomVersion"
     kapt "android.arch.persistence.room:compiler:$roomVersion"
     implementation "androidx.paging:paging-runtime:$pagingVersion"

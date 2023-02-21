@@ -27,6 +27,6 @@ android {
 }
 
 dependencies {
-    implementation project(':WormaCeptor')
+    api project(':WormaCeptor')
     implementation "androidx.paging:paging-runtime:$pagingVersion"
 }

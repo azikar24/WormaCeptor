@@ -8,16 +8,44 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.os.AsyncTask
 import android.os.Build
+import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
+import java.util.*
 
 object WormaCeptor {
 
     var storage: WormaCeptorStorage? = null
 
-    fun getLaunchIntent(context: Context): Intent {
+    fun getLaunchIntent(context: Context): Intent? {
         return Intent(context, WormaCeptorMainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
+    fun logUnexpectedCrashes() {
+        val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
+
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+            val stackTraceList = paramThrowable.stackTrace.toList()
+            AsyncTask.execute {
+                storage?.transactionDao?.insertStackTrace(
+                    StackTraceTransaction.newBuilder().apply {
+                        setStackTrace(stackTraceList.map { it })
+                        setStackTraceDate(Date())
+                    }.build()
+                )
+            }
+
+            if (oldHandler != null)
+                oldHandler.uncaughtException(
+                    paramThread,
+                    paramThrowable
+                )
+            else
+                Runtime.getRuntime().exit(2)
+        }
+
     }
 
     fun addAppShortcut(context: Context): String? {
@@ -26,8 +54,11 @@ object WormaCeptor {
             val shortcutManager = context.getSystemService(ShortcutManager::class.java)
             val shortcutInfo = ShortcutInfo.Builder(context, id)
                 .setShortLabel(context.getString(R.string.app_name_2))
-                .setLongLabel(context.getString(R.string.app_name_2))
-                .setIntent(getLaunchIntent(context).setAction(Intent.ACTION_VIEW))
+                .setLongLabel(context.getString(R.string.app_name_2)).apply {
+                    getLaunchIntent(context)?.let {
+                        setIntent(it.setAction(Intent.ACTION_VIEW))
+                    }
+                }
                 .build()
             shortcutManager.addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
             id

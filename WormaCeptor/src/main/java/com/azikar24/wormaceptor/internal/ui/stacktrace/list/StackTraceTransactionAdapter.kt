@@ -11,6 +11,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.EmptyStackTraceTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.TransactionViewHolder
 
@@ -35,7 +36,7 @@ class StackTraceTransactionAdapter(val context: Context, listDiffUtil: ListDiffU
 
         mHolder.errorTypeTextView.text = stacktraceTransaction.throwable
         mHolder.filenameTextView.text = stacktraceTransaction.stackTrace?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" }
-        mHolder.dateTextView.text = stacktraceTransaction.stackTraceDate.toString()
+        mHolder.dateTextView.text = stacktraceTransaction.stackTraceDate?.formatted()
 
     }
 

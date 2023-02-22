@@ -7,13 +7,15 @@ package com.azikar24.wormaceptor.internal.ui.stacktrace.details
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentStackTraceDetailsBinding
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.stacktrace.list.StackTraceTransactionViewModel
 
 class StackTraceDetailsFragment : Fragment() {
@@ -25,7 +27,7 @@ class StackTraceDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentStackTraceDetailsBinding.inflate(inflater, container,false).also {
+    ) = FragmentStackTraceDetailsBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -37,9 +39,9 @@ class StackTraceDetailsFragment : Fragment() {
         }
         val stackTrace = viewModel.getAllStackTraces()
         stackTrace?.observe(viewLifecycleOwner) { pagedListStackTrace ->
-            if(pagedListStackTrace.isNullOrEmpty()) return@observe
+            if (pagedListStackTrace.isNullOrEmpty()) return@observe
             val item = pagedListStackTrace.firstOrNull { it.id == args.id }
-            if(item == null) {
+            if (item == null) {
                 findNavController().navigateUp()
                 return@observe
             }
@@ -50,6 +52,23 @@ class StackTraceDetailsFragment : Fragment() {
     }
 
     private fun populateUI() {
-        binding.stackTraceTextView.text =  currentData?.throwable + "\n\n" +currentData.stackTrace?.joinToString { "at ${it.className}.${it.methodName}(${it.fileName}:${it.lineNumber})\n\n" }?.replace(",","")
+        currentData.throwable?.apply {
+            val title = "!" + currentData.throwable?.substring(0, this.indexOf(":"))
+            binding.toolbar.subtitle = title.substring(title.lastIndexOf(".") + 1)
+        }
+        currentData.stackTrace?.getOrNull(0)?.fileName.let {
+            binding.toolbar.title = it
+        }
+
+        binding.stackTraceTitleTextView.text = "[${currentData.stackTraceDate?.formatted()}]\n${currentData.throwable}"
+        binding.stackTraceRecuclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
+        binding.stackTraceRecuclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+        val adapter = currentData.stackTrace?.let { StackTraceAdapter(items = it) }
+        binding.stackTraceRecuclerView.adapter = adapter
+
     }
+
 }

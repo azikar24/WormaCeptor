@@ -25,5 +25,5 @@ fun Context.share(content: String) {
 }
 
 fun Date.formatted(): String? {
-    return SimpleDateFormat("HH:mm:ss - dd/MMM/yyyy", Locale.US).format(this)
+    return SimpleDateFormat("dd/MMM/yyyy - HH:mm:ss", Locale.US).format(this)
 }

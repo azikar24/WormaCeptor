@@ -4,9 +4,11 @@
 
 package com.azikar24.wormaceptor.internal.ui
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.azikar24.wormaceptor.R
@@ -36,6 +38,8 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         navView.setupWithNavController(navController)
+        binding.bottomNavigationView.updatePadding(0, 0, 0, if (UIHelper.isGestureNavigationEnabled(baseContext.contentResolver)) (20 * Resources.getSystem().displayMetrics.density).toInt() else 0)
+
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)
 
         binding.bottomNavigationView.visibility = if (WormaCeptor.type == WormaCeptor.WormaCeptorType.PERSISTENCE) View.VISIBLE else View.GONE

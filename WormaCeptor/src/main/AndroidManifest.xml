@@ -6,6 +6,7 @@
             android:name=".internal.ui.WormaCeptorMainActivity"
             android:exported="false"
             android:label="@string/app_name_2"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WormaCeptorBase" />
 
         <service

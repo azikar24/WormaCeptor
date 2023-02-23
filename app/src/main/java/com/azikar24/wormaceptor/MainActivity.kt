@@ -28,10 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        WormaCeptor.startActivityOnShake(this)
         setupButton()
-        WormaCeptor.addAppShortcut(this)
-        WormaCeptor.logUnexpectedCrashes()
     }
 
     private fun setupButton() {

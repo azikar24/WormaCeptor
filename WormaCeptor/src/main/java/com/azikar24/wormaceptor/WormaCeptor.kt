@@ -8,10 +8,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.AsyncTask
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
+import com.azikar24.wormaceptor.internal.support.ShakeDetector
 import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
 import java.util.*
 
@@ -26,7 +32,7 @@ object WormaCeptor {
     var type: WormaCeptorType? = null
 
     fun getLaunchIntent(context: Context): Intent? {
-        return Intent(context, WormaCeptorMainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        return Intent(context, WormaCeptorMainActivity::class.java)//.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
     fun logUnexpectedCrashes() {
@@ -72,5 +78,26 @@ object WormaCeptor {
         } else {
             null
         }
+    }
+
+    fun startActivityOnShake(appCompatActivity: AppCompatActivity) {
+
+        val mSensorManager = appCompatActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        val mShakeDetector = ShakeDetector {
+            appCompatActivity.startActivity(getLaunchIntent(appCompatActivity))
+        }
+
+        appCompatActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+                mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI)
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                mSensorManager.unregisterListener(mShakeDetector)
+                super.onPause(owner)
+            }
+        })
     }
 }

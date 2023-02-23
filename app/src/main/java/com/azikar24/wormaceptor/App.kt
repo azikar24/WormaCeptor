@@ -28,6 +28,8 @@ class App : Application() {
         )
         WormaCeptor.storage = WormaCeptorPersistence.getInstance(this)
 //        WormaCeptor.storage = WormaCeptorIMDB.getInstance()
+        WormaCeptor.addAppShortcut(this)
+        WormaCeptor.logUnexpectedCrashes()
     }
 
 }

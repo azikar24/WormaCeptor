@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.databinding.FragmentCrashDetailsBinding
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.crashes.list.CrashTransactionViewModel
 
@@ -23,7 +23,7 @@ class CrashDetailsFragment : Fragment() {
     lateinit var binding: FragmentCrashDetailsBinding
     private val args: CrashDetailsFragmentArgs by navArgs()
     private val viewModel: CrashTransactionViewModel by viewModels()
-    lateinit var currentData: StackTraceTransaction
+    lateinit var currentData: CrashTransaction
 
     private val menuProvider
         get() = object : MenuProvider {
@@ -45,10 +45,10 @@ class CrashDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val stackTrace = viewModel.getAllStackTraces()
-        stackTrace?.observe(viewLifecycleOwner) { pagedListStackTrace ->
-            if (pagedListStackTrace.isNullOrEmpty()) return@observe
-            val item = pagedListStackTrace.firstOrNull { it.id == args.id }
+        val crash = viewModel.getAllCrashes()
+        crash?.observe(viewLifecycleOwner) { pagedCrashList ->
+            if (pagedCrashList.isNullOrEmpty()) return@observe
+            val item = pagedCrashList.firstOrNull { it.id == args.id }
             if (item == null) {
                 findNavController().navigateUp()
                 return@observe
@@ -63,14 +63,14 @@ class CrashDetailsFragment : Fragment() {
         setupToolbar()
 
 
-        binding.stackTraceTitleTextView.text = "[${currentData.stackTraceDate?.formatted()}]\n${currentData.throwable}"
-        binding.stackTraceRecuclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
+        binding.crashTitleTextView.text = "[${currentData.crashDate?.formatted()}]\n${currentData.throwable}"
+        binding.crashesRecyclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
-        binding.stackTraceRecuclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.crashesRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-        val adapter = currentData.stackTrace?.let { CrashAdapter(items = it) }
-        binding.stackTraceRecuclerView.adapter = adapter
+        val adapter = currentData.crashList?.let { CrashAdapter(items = it) }
+        binding.crashesRecyclerView.adapter = adapter
 
     }
 
@@ -82,7 +82,7 @@ class CrashDetailsFragment : Fragment() {
                 subtitle = title.substring(title.lastIndexOf(".") + 1)
             }
 
-            currentData.stackTrace?.getOrNull(0)?.fileName.let {
+            currentData.crashList?.getOrNull(0)?.fileName.let {
                 title = it
             }
 

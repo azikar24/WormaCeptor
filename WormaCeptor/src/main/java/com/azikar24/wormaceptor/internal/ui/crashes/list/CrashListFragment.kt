@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentCrashListBinding
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 
@@ -31,7 +31,7 @@ class CrashListFragment : Fragment() {
 
     private val mCrashListDiffUtil: CrashListDiffUtil = CrashListDiffUtil()
 
-    private var mCurrentSubscription: LiveData<PagedList<StackTraceTransaction>>? = null
+    private var mCurrentSubscription: LiveData<PagedList<CrashTransaction>>? = null
 
     private val menuProvider
         get() = object : MenuProvider {
@@ -59,7 +59,7 @@ class CrashListFragment : Fragment() {
         mColorUtil = ColorUtil.getInstance(requireContext())
         setupToolBar()
         setupList()
-        loadResults(viewModel.getAllStackTraces())
+        loadResults(viewModel.getAllCrashes())
     }
 
     private fun setupToolBar() {
@@ -75,19 +75,19 @@ class CrashListFragment : Fragment() {
 
     private fun setupList() {
         mCrashTransactionAdapter = CrashTransactionAdapter(requireContext(), mCrashListDiffUtil, object : CrashTransactionAdapter.Listener {
-            override fun onTransactionClicked(stackTraceTransaction: StackTraceTransaction?) {
-                if (stackTraceTransaction != null) {
-                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(stackTraceTransaction.id))
+            override fun onTransactionClicked(crashTransaction: CrashTransaction?) {
+                if (crashTransaction != null) {
+                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(crashTransaction.id))
                 }
             }
         })
 
-        binding.stackTraceTransactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.stackTraceTransactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        binding.stackTraceTransactionRecyclerView.adapter = mCrashTransactionAdapter
+        binding.crashTransactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.crashTransactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.crashTransactionRecyclerView.adapter = mCrashTransactionAdapter
     }
 
-    private fun loadResults(pagedListLiveData: LiveData<PagedList<StackTraceTransaction>>?) {
+    private fun loadResults(pagedListLiveData: LiveData<PagedList<CrashTransaction>>?) {
         if (mCurrentSubscription?.hasObservers() == true) {
             mCurrentSubscription?.removeObservers(this)
         }

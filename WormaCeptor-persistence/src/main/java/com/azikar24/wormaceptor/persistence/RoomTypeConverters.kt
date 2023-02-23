@@ -64,7 +64,7 @@ internal object RoomTypeConverters {
 
 
     @TypeConverter
-    fun fromStackTraceElementListToString(value: List<StackTraceElement?>?): String? {
+    fun fromCrashElementListToString(value: List<StackTraceElement?>?): String? {
         if (value.isNullOrEmpty()) {
             return null
         }
@@ -88,7 +88,7 @@ internal object RoomTypeConverters {
     }
 
     @TypeConverter
-    fun fromStringToStackTraceElementList(value: String?): List<StackTraceElement> {
+    fun fromStringToCrashList(value: String?): List<StackTraceElement> {
         if (value == null || TextUtil.isNullOrWhiteSpace(value)) {
             return ArrayList()
         }

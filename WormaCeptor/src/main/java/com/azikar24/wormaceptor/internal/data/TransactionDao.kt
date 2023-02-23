@@ -15,13 +15,13 @@ interface TransactionDao {
         DEFAULT, INCLUDE_REQUEST, INCLUDE_RESPONSE, INCLUDE_REQUEST_RESPONSE
     }
 
-    fun insertStackTrace(stackTraceTransaction: StackTraceTransaction?)
+    fun insertCrash(crashTransaction: CrashTransaction?)
 
-    fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>?
+    fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>?
 
-    fun clearAllStackTraces(): Int?
+    fun clearAllCrashes(): Int?
 
-    fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int?
+    fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int?
 
     fun insertTransaction(httpTransaction: HttpTransaction?): Long?
 

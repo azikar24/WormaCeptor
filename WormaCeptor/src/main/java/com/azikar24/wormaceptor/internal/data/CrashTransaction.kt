@@ -9,10 +9,10 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
-data class StackTraceTransaction(
+data class CrashTransaction(
     var id: Long,
-    var stackTrace: List<StackTraceElement>?,
-    var stackTraceDate: Date?,
+    var crashList: List<StackTraceElement>?,
+    var crashDate: Date?,
     var throwable: String?,
 ) : Parcelable {
 
@@ -20,22 +20,22 @@ data class StackTraceTransaction(
     class Builder : Parcelable {
         //region START Variables
         var id: Long = 0
-        var stackTrace: List<StackTraceElement>? = null
-        var stackTraceDate: Date? = null
+        var crashList: List<StackTraceElement>? = null
+        var crashDate: Date? = null
         var throwable: String? = null
 
         //region START Builder Setters
         fun setId(value: Long) = this.apply { id = value }
-        fun setStackTrace(value: List<StackTraceElement>) = this.apply { stackTrace = value }
-        fun setStackTraceDate(value: Date) = this.apply { stackTraceDate = value }
+        fun setCrashList(value: List<StackTraceElement>) = this.apply { crashList = value }
+        fun setCrashDate(value: Date) = this.apply { crashDate = value }
         fun setThrowable(value: String) = this.apply { throwable = value }
         //endregion END Builder Setters
 
-        fun build(): StackTraceTransaction {
-            return StackTraceTransaction(
+        fun build(): CrashTransaction {
+            return CrashTransaction(
                 id,
-                stackTrace,
-                stackTraceDate,
+                crashList,
+                crashDate,
                 throwable
             )
         }

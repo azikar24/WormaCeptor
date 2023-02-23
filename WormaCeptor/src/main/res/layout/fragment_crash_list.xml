@@ -10,7 +10,7 @@
     tools:context=".internal.ui.crashes.list.CrashListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stackTraceTransactionRecyclerView"
+        android:id="@+id/crashTransactionRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"

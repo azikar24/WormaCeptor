@@ -10,6 +10,6 @@
 
     <item
         android:id="@id/crashListFragment"
-        android:icon="@drawable/ic_stacktrace"
+        android:icon="@drawable/ic_crash"
         android:title="@string/crashes" />
 </menu>

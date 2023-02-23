@@ -7,23 +7,22 @@ package com.azikar24.wormaceptor.persistence
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
 @Dao
 abstract class RoomTransactionDao {
 
-     @Query("DELETE FROM StackTraceTransaction")
-    abstract fun clearAllStackTraces(): Int
+     @Query("DELETE FROM CrashTransaction")
+    abstract fun clearAllCrashes(): Int
 
     @Delete
-    abstract fun deleteStackTrace(vararg stackTraceTransaction: PersistentStackTraceTransaction?): Int?
+    abstract fun deleteCrash(vararg persistentCrashTransaction: PersistentCrashTransaction?): Int?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertStackTrace(persistentStackTraceTransaction: PersistentStackTraceTransaction?)
+    abstract fun insertCrash(oersistentCrashTransaction: PersistentCrashTransaction?)
 
-    @get:Query("SELECT * FROM StackTraceTransaction ORDER BY id DESC")
-    abstract val allStackTrace: DataSource.Factory<Int, PersistentStackTraceTransaction>?
+    @get:Query("SELECT * FROM CrashTransaction ORDER BY id DESC")
+    abstract val allCrashes: DataSource.Factory<Int, PersistentCrashTransaction>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertTransaction(persistentHttpTransaction: PersistentHttpTransaction?): Long?

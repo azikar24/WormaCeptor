@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.EmptyCrashTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.CrashTransactionViewHolder
 
-class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, val mListener: Listener?) : PagedListAdapter<StackTraceTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
+class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, val mListener: Listener?) : PagedListAdapter<CrashTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getItemViewType(position: Int): Int {
@@ -27,16 +27,16 @@ class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashList
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val stacktraceTransaction = getItem(position) ?: return
+        val crashTransaction = getItem(position) ?: return
         val mHolder = holder as CrashTransactionViewHolder
 
         mHolder.itemView.setOnClickListener {
-            mListener?.onTransactionClicked(stacktraceTransaction)
+            mListener?.onTransactionClicked(crashTransaction)
         }
 
-        mHolder.errorTypeTextView.text = stacktraceTransaction.throwable
-        mHolder.filenameTextView.text = stacktraceTransaction.stackTrace?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" }
-        mHolder.dateTextView.text = stacktraceTransaction.stackTraceDate?.formatted()
+        mHolder.errorTypeTextView.text = crashTransaction.throwable
+        mHolder.filenameTextView.text = crashTransaction.crashList?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" }
+        mHolder.dateTextView.text = crashTransaction.crashDate?.formatted()
 
     }
 
@@ -49,7 +49,7 @@ class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashList
     }
 
     interface Listener {
-        fun onTransactionClicked(stackTraceTransaction: StackTraceTransaction?)
+        fun onTransactionClicked(crashTransaction: CrashTransaction?)
     }
 
     companion object {

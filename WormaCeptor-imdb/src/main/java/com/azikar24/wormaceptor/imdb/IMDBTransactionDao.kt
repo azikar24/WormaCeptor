@@ -7,7 +7,7 @@ package com.azikar24.wormaceptor.imdb
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.azikar24.wormaceptor.internal.data.HttpTransaction
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
@@ -23,13 +23,13 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
         this.transactionPredicateProvider = transactionPredicateProvider
     }
 
-    override fun insertStackTrace(stackTraceTransaction: StackTraceTransaction?) = Unit
+    override fun insertCrash(crashTransaction: CrashTransaction?) = Unit
 
-    override fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>? = null
+    override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? = null
 
-    override fun clearAllStackTraces(): Int? = null
+    override fun clearAllCrashes(): Int? = null
 
-    override fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int? = null
+    override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? = null
 
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
         val newTransactionIndex: Long? = if (httpTransaction?.id == 0L) {

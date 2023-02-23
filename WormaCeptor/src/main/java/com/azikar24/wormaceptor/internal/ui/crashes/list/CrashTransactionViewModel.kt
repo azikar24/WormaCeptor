@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.azikar24.wormaceptor.WormaCeptor
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 
 class CrashTransactionViewModel : ViewModel() {
@@ -25,9 +25,9 @@ class CrashTransactionViewModel : ViewModel() {
     private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
 
-    private val transactions: LiveData<PagedList<StackTraceTransaction>>? = transactionDao?.getAllStackTraces()?.let { LivePagedListBuilder(it, config).build() }
+    private val transactions: LiveData<PagedList<CrashTransaction>>? = transactionDao?.getAllCrashes()?.let { LivePagedListBuilder(it, config).build() }
 
-    fun getAllStackTraces(): LiveData<PagedList<StackTraceTransaction>>? {
+    fun getAllCrashes(): LiveData<PagedList<CrashTransaction>>? {
           return  transactions
     }
 
@@ -35,15 +35,15 @@ class CrashTransactionViewModel : ViewModel() {
         ClearAsyncTask(transactionDao).execute()
     }
 
-    private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<StackTraceTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: StackTraceTransaction): Int? {
-            return transactionDao?.clearAllStackTraces()
+    private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<CrashTransaction, Void, Int>() {
+        override fun doInBackground(vararg params: CrashTransaction): Int? {
+            return transactionDao?.clearAllCrashes()
         }
     }
 
-    private class DeleteAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<StackTraceTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: StackTraceTransaction): Int? {
-            return transactionDao?.deleteStackTrace(*params)
+    private class DeleteAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<CrashTransaction, Void, Int>() {
+        override fun doInBackground(vararg params: CrashTransaction): Int? {
+            return transactionDao?.deleteCrash(*params)
         }
     }
 

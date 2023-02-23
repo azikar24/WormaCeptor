@@ -10,16 +10,16 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 
-@Entity(tableName = "StackTraceTransaction")
-class PersistentStackTraceTransaction {
+@Entity(tableName = "CrashTransaction")
+class PersistentCrashTransaction {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
-    @ColumnInfo(name = "stack_trace")
-    var stackTrace: List<StackTraceElement>? = null
+    @ColumnInfo(name = "crash_list")
+    var crashList: List<StackTraceElement>? = null
 
     @ColumnInfo(name = "response_date")
-    var stackTraceDate: Date? = null
+    var crashDate: Date? = null
 
     @ColumnInfo(name = "throwable")
     var throwable: String? = null

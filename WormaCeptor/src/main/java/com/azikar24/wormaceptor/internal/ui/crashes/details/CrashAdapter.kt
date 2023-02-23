@@ -20,7 +20,7 @@ class CrashAdapter(val items: List<StackTraceElement>) : RecyclerView.Adapter<Cr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentData = items[position]
-        holder.binding.stacktraceDetails.text = "at ${currentData.className}.${currentData.methodName}(${currentData.fileName}:${currentData.lineNumber})"
+        holder.binding.crashDetails.text = "at ${currentData.className}.${currentData.methodName}(${currentData.fileName}:${currentData.lineNumber})"
     }
 
     override fun getItemCount() = items.size

@@ -15,7 +15,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import com.azikar24.wormaceptor.internal.support.ShakeDetector
 import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
@@ -39,13 +39,13 @@ object WormaCeptor {
         val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            val stackTraceList = paramThrowable.stackTrace.toList()
+            val crashList = paramThrowable.stackTrace.toList()
             AsyncTask.execute {
-                storage?.transactionDao?.insertStackTrace(
-                    StackTraceTransaction.Builder().apply {
+                storage?.transactionDao?.insertCrash(
+                    CrashTransaction.Builder().apply {
                         setThrowable(paramThrowable.toString())
-                        setStackTrace(stackTraceList.map { it })
-                        setStackTraceDate(Date())
+                        setCrashList(crashList.map { it })
+                        setCrashDate(Date())
                     }.build()
                 )
             }

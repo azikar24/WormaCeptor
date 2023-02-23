@@ -11,31 +11,31 @@ import com.azikar24.wormaceptor.internal.data.HttpTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 import androidx.arch.core.util.Function
-import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 
 
 class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {
 
-    override fun insertStackTrace(stackTraceTransaction: StackTraceTransaction?) {
-        val stackTraceData = STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(stackTraceTransaction)
-        roomTransactionDao?.insertStackTrace(stackTraceData)
+    override fun insertCrash(crashTransaction: CrashTransaction?) {
+        val crashData = CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(crashTransaction)
+        roomTransactionDao?.insertCrash(crashData)
     }
 
-    override fun getAllStackTraces(): DataSource.Factory<Int, StackTraceTransaction>? {
-        return roomTransactionDao?.allStackTrace?.map(PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION)
+    override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? {
+        return roomTransactionDao?.allCrashes?.map(PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION)
     }
 
-    override fun clearAllStackTraces(): Int? {
-        return roomTransactionDao?.clearAllStackTraces()
+    override fun clearAllCrashes(): Int? {
+        return roomTransactionDao?.clearAllCrashes()
     }
 
-    override fun deleteStackTrace(vararg stackTraceTransaction: StackTraceTransaction?): Int? {
-        val persistentStacktraceTransactions = arrayOfNulls<PersistentStackTraceTransaction>(stackTraceTransaction.size)
+    override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? {
+        val persistentCrashTransaction = arrayOfNulls<PersistentCrashTransaction>(crashTransaction.size)
         var index = 0
-        for (transaction in stackTraceTransaction) {
-            persistentStacktraceTransactions[index++] = STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
+        for (transaction in crashTransaction) {
+            persistentCrashTransaction[index++] = CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
         }
-        return roomTransactionDao?.deleteStackTrace(*persistentStacktraceTransactions)
+        return roomTransactionDao?.deleteCrash(*persistentCrashTransaction)
     }
 
     override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
@@ -149,21 +149,20 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
     }
 
 
-
-    private val PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION: Function<PersistentStackTraceTransaction, StackTraceTransaction> = Function { input ->
-        StackTraceTransaction.Builder().apply {
+    private val PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION: Function<PersistentCrashTransaction, CrashTransaction> = Function { input ->
+        CrashTransaction.Builder().apply {
             id = input.id
-            stackTrace = input.stackTrace
-            stackTraceDate = input.stackTraceDate
+            crashList = input.crashList
+            crashDate = input.crashDate
             throwable = input.throwable
         }.build()
     }
 
-    private val STACK_TRACEDATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<StackTraceTransaction, PersistentStackTraceTransaction> = Function { input ->
-        PersistentStackTraceTransaction().apply {
+    private val CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<CrashTransaction, PersistentCrashTransaction> = Function { input ->
+        PersistentCrashTransaction().apply {
             id = input.id
-            stackTrace = input.stackTrace
-            stackTraceDate = input.stackTraceDate
+            crashList = input.crashList
+            crashDate = input.crashDate
             throwable = input.throwable
         }
     }

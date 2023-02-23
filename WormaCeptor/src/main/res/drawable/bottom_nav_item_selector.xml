@@ -2,6 +2,6 @@
   ~ Copyright AziKar24 23/2/2023.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?colorPrimary" android:state_checked="true" />
-    <item android:color="?colorAccent" android:state_checked="false" />
+    <item android:color="?colorOnPrimary" android:state_checked="true" />
+    <item android:color="?colorPrimaryVariant" android:state_checked="false" />
 </selector>

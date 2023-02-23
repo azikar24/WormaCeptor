@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    tools:context=".internal.ui.http.details.fragments.TransactionOverviewFragment">
+    tools:context=".internal.ui.network.details.fragments.NetworkNetworkTransactionOverviewFragment">
 
     <TableLayout
         android:layout_width="match_parent"

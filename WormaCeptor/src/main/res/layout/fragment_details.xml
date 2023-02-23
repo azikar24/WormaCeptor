@@ -8,7 +8,7 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.ui.http.details.DetailsFragment">
+    tools:context=".internal.ui.network.details.NetworkDetailsFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabsLayout"

@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.details
+package com.azikar24.wormaceptor.internal.ui.network.details
 
 import androidx.viewpager.widget.ViewPager
 

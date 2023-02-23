@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.list
+package com.azikar24.wormaceptor.internal.ui.network.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
-import com.azikar24.wormaceptor.internal.ui.http.list.viewholders.EmptyTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.http.list.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.TransactionViewHolder
 
-class HttpTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(listDiffUtil) {
+class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
     private var mSearchKey: String? = null
@@ -74,13 +74,13 @@ class HttpTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, v
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TRANSACTION_VIEW) {
-            TransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_transaction, parent, false))
+            TransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_network_transaction, parent, false))
         } else {
             EmptyTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_transaction, parent, false))
         }
     }
 
-    fun setSearchKey(value: String?): HttpTransactionAdapter = apply {
+    fun setSearchKey(value: String?): NetworkTransactionAdapter = apply {
         mSearchKey = value
     }
 

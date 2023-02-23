@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.details.fragments
+package com.azikar24.wormaceptor.internal.ui.network.details.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,19 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentTransactionOverviewBinding
+import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionOverviewBinding
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.formatted
 
-class TransactionOverviewFragment : Fragment(), TransactionFragment {
-    lateinit var binding: FragmentTransactionOverviewBinding
+class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransactionFragment {
+    lateinit var binding: FragmentNetworkTransactionOverviewBinding
     private var mTransactionUIHelper: HttpTransactionUIHelper? = null
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentTransactionOverviewBinding.inflate(inflater, null, false).also {
+    ) = FragmentNetworkTransactionOverviewBinding.inflate(inflater, null, false).also {
         binding = it
     }.root
 

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.ui.http.list.HttpsFragment">
+    tools:context=".internal.ui.network.list.NetworkFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/transactionRecyclerView"
@@ -22,5 +22,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".internal.ui.TransactionListFragment"
-        tools:listitem="@layout/list_item_transaction" />
+        tools:listitem="@layout/list_item_network_transaction" />
 </androidx.constraintlayout.widget.ConstraintLayout>

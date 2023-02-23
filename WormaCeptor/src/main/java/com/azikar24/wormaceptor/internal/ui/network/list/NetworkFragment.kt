@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.list
+package com.azikar24.wormaceptor.internal.ui.network.list
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,7 +19,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentHttpsListBinding
+import com.azikar24.wormaceptor.databinding.FragmentNetworkListBinding
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
@@ -28,14 +28,14 @@ import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import com.azikar24.wormaceptor.internal.support.event.Sampler
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 
-class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
+class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    lateinit var binding: FragmentHttpsListBinding
+    lateinit var binding: FragmentNetworkListBinding
 
-    private lateinit var mHttpTransactionAdapter: HttpTransactionAdapter
+    private lateinit var mNetworkTransactionAdapter: NetworkTransactionAdapter
 
-    private val mListDiffUtil: ListDiffUtil = ListDiffUtil()
-    private val mViewModel: HttpTransactionViewModel by viewModels()
+    private val mNetworkListDiffUtil: NetworkListDiffUtil = NetworkListDiffUtil()
+    private val mViewModel: NetworkTransactionViewModel by viewModels()
     private var mCurrentSubscription: LiveData<PagedList<HttpTransactionUIHelper>>? = null
     val mColorUtil: ColorUtil by lazy {
         ColorUtil.getInstance(requireContext())
@@ -47,7 +47,7 @@ class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
                 menuInflater.inflate(R.menu.list_menu, menu)
                 menu.findItem(R.id.search)?.let { searchMenuItem ->
                     val searchView = searchMenuItem.actionView as SearchView
-                    searchView.setOnQueryTextListener(this@HttpsFragment)
+                    searchView.setOnQueryTextListener(this@NetworkFragment)
                     val searchEditText: EditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
                     searchEditText.setTextColor(mColorUtil.mColorWhite)
                     searchEditText.setHintTextColor(mColorUtil.mColorWhite)
@@ -74,8 +74,8 @@ class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
         override fun onEmit(event: TransactionListWithSearchKeyModel) {
-            mListDiffUtil.setSearchKey(event.mSearchKey)
-            mHttpTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
+            mNetworkListDiffUtil.setSearchKey(event.mSearchKey)
+            mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
         }
     })
 
@@ -88,7 +88,7 @@ class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentHttpsListBinding.inflate(inflater, container, false).also {
+    ) = FragmentNetworkListBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -111,10 +111,10 @@ class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun setupList() {
-        mHttpTransactionAdapter = HttpTransactionAdapter(requireContext(), mListDiffUtil, object : HttpTransactionAdapter.Listener {
+        mNetworkTransactionAdapter = NetworkTransactionAdapter(requireContext(), mNetworkListDiffUtil, object : NetworkTransactionAdapter.Listener {
             override fun onTransactionClicked(transactionUIHelper: HttpTransactionUIHelper?) {
                 if (transactionUIHelper != null) {
-                    findNavController().navigate(HttpsFragmentDirections.actionHttpsListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
+                    findNavController().navigate(NetworkFragmentDirections.actionHttpsListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
                 }
             }
 
@@ -125,7 +125,7 @@ class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         binding.transactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        binding.transactionRecyclerView.adapter = mHttpTransactionAdapter
+        binding.transactionRecyclerView.adapter = mNetworkTransactionAdapter
     }
 
 

@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.details.fragments
+package com.azikar24.wormaceptor.internal.ui.network.details.fragments
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentTransactionPayloadBinding
+import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionPayloadBinding
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
@@ -26,8 +26,8 @@ import com.azikar24.wormaceptor.internal.support.event.Callback
 import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import java.util.concurrent.Executors
 
-class TransactionPayloadFragment : Fragment() , TransactionFragment {
-    lateinit var binding: FragmentTransactionPayloadBinding
+class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransactionFragment {
+    lateinit var binding: FragmentNetworkTransactionPayloadBinding
     private var mSearchKey: String? = null
     lateinit var mColorUtil: ColorUtil
 
@@ -59,7 +59,7 @@ class TransactionPayloadFragment : Fragment() , TransactionFragment {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentTransactionPayloadBinding.inflate(inflater, null, false).also {
+    ) = FragmentNetworkTransactionPayloadBinding.inflate(inflater, null, false).also {
         binding = it
     }.root
 
@@ -260,8 +260,8 @@ class TransactionPayloadFragment : Fragment() , TransactionFragment {
         const val TYPE_REQUEST = 0
         const val TYPE_RESPONSE = 1
 
-        fun newInstance(type: Int): TransactionPayloadFragment {
-            val fragment = TransactionPayloadFragment()
+        fun newInstance(type: Int): NetworkNetworkTransactionPayloadFragment {
+            val fragment = NetworkNetworkTransactionPayloadFragment()
             val b = Bundle()
             b.putInt(ARG_TYPE, type)
             fragment.arguments = b

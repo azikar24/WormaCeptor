@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.details
+package com.azikar24.wormaceptor.internal.ui.network.details
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,18 +20,18 @@ import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.share
-import com.azikar24.wormaceptor.internal.ui.http.details.fragments.TransactionOverviewFragment
-import com.azikar24.wormaceptor.internal.ui.http.details.fragments.TransactionPayloadFragment
+import com.azikar24.wormaceptor.internal.ui.network.details.fragments.NetworkNetworkTransactionOverviewFragment
+import com.azikar24.wormaceptor.internal.ui.network.details.fragments.NetworkNetworkTransactionPayloadFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class DetailsFragment : Fragment() {
+class NetworkDetailsFragment : Fragment() {
     lateinit var binding: FragmentDetailsBinding
-    private val viewModel: TransactionDetailViewModel by viewModels()
+    private val viewModel: NetworkDetailTransactionViewModel by viewModels()
     lateinit var mColorUtil: ColorUtil
-    private var mAdapter: DetailsAdapter? = null
+    private var mAdapter: NetworkDetailsAdapter? = null
     lateinit var currentData: HttpTransactionUIHelper
 
-    private val args: DetailsFragmentArgs by navArgs()
+    private val args: NetworkDetailsFragmentArgs by navArgs()
 
 
     private val menuProvider: MenuProvider
@@ -106,10 +106,10 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        mAdapter = DetailsAdapter(requireActivity())
-        mAdapter?.addFragment(TransactionOverviewFragment(), getString(R.string.overview))
-        mAdapter?.addFragment(TransactionPayloadFragment.newInstance(TransactionPayloadFragment.TYPE_REQUEST), getString(R.string.request))
-        mAdapter?.addFragment(TransactionPayloadFragment.newInstance(TransactionPayloadFragment.TYPE_RESPONSE), getString(R.string.response))
+        mAdapter = NetworkDetailsAdapter(requireActivity())
+        mAdapter?.addFragment(NetworkNetworkTransactionOverviewFragment(), getString(R.string.overview))
+        mAdapter?.addFragment(NetworkNetworkTransactionPayloadFragment.newInstance(NetworkNetworkTransactionPayloadFragment.TYPE_REQUEST), getString(R.string.request))
+        mAdapter?.addFragment(NetworkNetworkTransactionPayloadFragment.newInstance(NetworkNetworkTransactionPayloadFragment.TYPE_RESPONSE), getString(R.string.response))
 
         binding.viewpager2.adapter = mAdapter
         binding.viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

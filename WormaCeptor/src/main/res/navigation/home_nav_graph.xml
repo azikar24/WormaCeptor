@@ -14,9 +14,9 @@
 
         <fragment
             android:id="@+id/httpsListFragment2"
-            android:name="com.azikar24.wormaceptor.internal.ui.http.list.HttpsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.network.list.NetworkFragment"
             android:label="httpsListFragment"
-            tools:layout="@layout/fragment_https_list">
+            tools:layout="@layout/fragment_network_list">
             <action
                 android:id="@+id/action_httpsListFragment_to_detailsFragment"
                 app:destination="@id/detailsFragment">
@@ -27,7 +27,7 @@
         </fragment>
         <fragment
             android:id="@+id/detailsFragment"
-            android:name="com.azikar24.wormaceptor.internal.ui.http.details.DetailsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.network.details.NetworkDetailsFragment"
             android:label="fragment_details"
             tools:layout="@layout/fragment_details">
             <argument

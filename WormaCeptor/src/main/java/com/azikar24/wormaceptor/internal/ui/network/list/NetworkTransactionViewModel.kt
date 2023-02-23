@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.list
+package com.azikar24.wormaceptor.internal.ui.network.list
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
@@ -14,7 +14,7 @@ import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.HttpTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 
-class HttpTransactionViewModel  : ViewModel() {
+class NetworkTransactionViewModel  : ViewModel() {
 
     private val config: PagedList.Config = PagedList.Config.Builder()
         .setPageSize(15)

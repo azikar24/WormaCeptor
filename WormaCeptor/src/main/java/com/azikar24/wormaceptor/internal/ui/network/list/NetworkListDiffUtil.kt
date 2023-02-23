@@ -2,13 +2,13 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.list
+package com.azikar24.wormaceptor.internal.ui.network.list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 
 
-class ListDiffUtil : DiffUtil.ItemCallback<HttpTransactionUIHelper>() {
+class NetworkListDiffUtil : DiffUtil.ItemCallback<HttpTransactionUIHelper>() {
 
     private var mSearchKey: String? = null
 

@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.http.details
+package com.azikar24.wormaceptor.internal.ui.network.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -12,11 +12,11 @@ import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper.Companion.HTTP_TRANSACTION_UI_HELPER_FUNCTION
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 
-class TransactionDetailViewModel : ViewModel() {
-    private val mTransactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
+class NetworkDetailTransactionViewModel : ViewModel() {
+    private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
     fun getTransactionWithId(id: Long): LiveData<HttpTransactionUIHelper>? {
-        return mTransactionDao?.getTransactionsWithId(id)?.let {
+        return transactionDao?.getTransactionsWithId(id)?.let {
             Transformations.map(it, HTTP_TRANSACTION_UI_HELPER_FUNCTION)
         }
     }

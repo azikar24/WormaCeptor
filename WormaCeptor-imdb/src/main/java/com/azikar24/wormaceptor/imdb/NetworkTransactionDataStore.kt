@@ -4,26 +4,26 @@
 
 package com.azikar24.wormaceptor.imdb
 
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
 
-interface TransactionDataStore {
+interface NetworkTransactionDataStore {
 
     interface DataChangeListener {
-        fun onDataChange(event: Event?, httpTransaction: HttpTransaction?)
+        fun onDataChange(event: Event?, networkTransaction: NetworkTransaction?)
     }
 
-    fun addTransaction(httpTransaction: HttpTransaction?)
+    fun addTransaction(networkTransaction: NetworkTransaction?)
 
-    fun updateTransaction(httpTransaction: HttpTransaction?): Boolean
+    fun updateTransaction(networkTransaction: NetworkTransaction?): Boolean
 
     fun removeTransactionWithIndex(index: Long): Boolean
 
     fun clearAllTransactions(): Int
 
-    fun getDataList(): List<HttpTransaction>?
+    fun getDataList(): List<NetworkTransaction>?
 
-    fun getTransactionWithId(id: Long): HttpTransaction?
+    fun getTransactionWithId(id: Long): NetworkTransaction?
 
     fun addDataChangeListener(dataChangeListener: DataChangeListener?)
 

@@ -6,19 +6,19 @@ package com.azikar24.wormaceptor.imdb
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
-internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, transactionArchComponentProvider: TransactionArchComponentProvider, transactionPredicateProvider: TransactionPredicateProvider) : TransactionDao {
+internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactionDataStore, transactionArchComponentProvider: TransactionArchComponentProvider, transactionPredicateProvider: TransactionPredicateProvider) : TransactionDao {
     private var currentIndex: Long = 1
-    private val transactionDataStore: TransactionDataStore
+    private val networkTransactionDataStore: NetworkTransactionDataStore
     private val transactionArchComponentProvider: TransactionArchComponentProvider
     private val transactionPredicateProvider: TransactionPredicateProvider
 
     init {
-        this.transactionDataStore = transactionDataStore
+        this.networkTransactionDataStore = networkTransactionDataStore
         this.transactionArchComponentProvider = transactionArchComponentProvider
         this.transactionPredicateProvider = transactionPredicateProvider
     }
@@ -31,24 +31,24 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
 
     override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? = null
 
-    override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
-        val newTransactionIndex: Long? = if (httpTransaction?.id == 0L) {
+    override fun insertTransaction(networkTransaction: NetworkTransaction?): Long? {
+        val newTransactionIndex: Long? = if (networkTransaction?.id == 0L) {
             currentIndex
         } else {
-            httpTransaction?.id
+            networkTransaction?.id
         }
-        return addTransactionWithIndex(httpTransaction, newTransactionIndex)
+        return addTransactionWithIndex(networkTransaction, newTransactionIndex)
     }
 
-    override fun updateTransaction(httpTransaction: HttpTransaction?): Int {
-        return if ((httpTransaction?.id ?: -1) > 0) if (transactionDataStore.updateTransaction(httpTransaction)) 1 else 0 else 0
+    override fun updateTransaction(networkTransaction: NetworkTransaction?): Int {
+        return if ((networkTransaction?.id ?: -1) > 0) if (networkTransactionDataStore.updateTransaction(networkTransaction)) 1 else 0 else 0
     }
 
 
-    override fun deleteTransactions(vararg httpTransactions: HttpTransaction?): Int {
+    override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int {
         var updates = 0
-        for (httpTransaction in httpTransactions) {
-            if ((httpTransaction?.id ?: -1) > 0 && httpTransaction?.id?.let { transactionDataStore.removeTransactionWithIndex(it) } == true) {
+        for (networkTransaction in networkTransactions) {
+            if ((networkTransaction?.id ?: -1) > 0 && networkTransaction?.id?.let { networkTransactionDataStore.removeTransactionWithIndex(it) } == true) {
                 updates++
             }
         }
@@ -57,10 +57,10 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
 
     override fun deleteTransactionsBefore(beforeDate: Date?): Int {
         var deletedTransactionCount = 0
-        transactionDataStore.getDataList()?.also {
+        networkTransactionDataStore.getDataList()?.also {
             for (transaction in it) {
                 if (transaction.requestDate != null && transaction.requestDate?.before(beforeDate) == true) {
-                    if (transactionDataStore.removeTransactionWithIndex(transaction.id)) {
+                    if (networkTransactionDataStore.removeTransactionWithIndex(transaction.id)) {
                         deletedTransactionCount++
                     }
                 }
@@ -71,32 +71,32 @@ internal class IMDBTransactionDao(transactionDataStore: TransactionDataStore, tr
     }
 
     override fun clearAll(): Int {
-        return transactionDataStore.clearAllTransactions()
+        return networkTransactionDataStore.clearAllTransactions()
     }
 
 
-    override fun getTransactionsWithId(id: Long?): LiveData<HttpTransaction>? {
-        return id?.let { transactionArchComponentProvider.getLiveData(transactionDataStore, it) }
+    override fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>? {
+        return id?.let { transactionArchComponentProvider.getLiveData(networkTransactionDataStore, it) }
     }
 
-    override fun getAllTransactions(): DataSource.Factory<Int, HttpTransaction>? {
-        return transactionArchComponentProvider.getDataSourceFactory(transactionDataStore, Predicate.ALLOW_ALL)
+    override fun getAllTransactions(): DataSource.Factory<Int, NetworkTransaction>? {
+        return transactionArchComponentProvider.getDataSourceFactory(networkTransactionDataStore, Predicate.ALLOW_ALL)
     }
 
-    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, HttpTransaction>? {
+    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, NetworkTransaction>? {
         if (key == null) return null
-        val predicate: Predicate<HttpTransaction> = when (searchType) {
+        val predicate: Predicate<NetworkTransaction> = when (searchType) {
             TransactionDao.SearchType.DEFAULT -> transactionPredicateProvider.getDefaultSearchPredicate(key)
             TransactionDao.SearchType.INCLUDE_REQUEST -> transactionPredicateProvider.getRequestSearchPredicate(key)
             TransactionDao.SearchType.INCLUDE_RESPONSE -> transactionPredicateProvider.getResponseSearchPredicate(key)
             TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> transactionPredicateProvider.getRequestResponseSearchPredicate(key)
             else -> transactionPredicateProvider.getDefaultSearchPredicate(key)
         }
-        return transactionArchComponentProvider.getDataSourceFactory(transactionDataStore, predicate)
+        return transactionArchComponentProvider.getDataSourceFactory(networkTransactionDataStore, predicate)
     }
 
-    private fun addTransactionWithIndex(httpTransaction: HttpTransaction?, newTransactionIndex: Long?): Long? {
-        transactionDataStore.addTransaction(newTransactionIndex?.let { httpTransaction?.toBuilder()?.setId(it)?.build() })
+    private fun addTransactionWithIndex(networkTransaction: NetworkTransaction?, newTransactionIndex: Long?): Long? {
+        networkTransactionDataStore.addTransaction(newTransactionIndex?.let { networkTransaction?.toBuilder()?.setId(it)?.build() })
         if (newTransactionIndex != null) {
             updateCurrentIndex(newTransactionIndex)
         }

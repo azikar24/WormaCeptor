@@ -15,7 +15,7 @@ class WormaCeptorIMDB : WormaCeptorStorage {
 
     companion object {
         private val IMDB_TRANSACTION_DAO: TransactionDao = IMDBTransactionDao(
-            SimpleTransactionDataStore(),
+            SimpleNetworkTransactionDataStore(),
             TransactionArchComponentProvider(),
             TransactionPredicateProvider()
         )

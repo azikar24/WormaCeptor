@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyNetworkTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.NetworkTransactionViewHolder
 
-class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
+class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagedListAdapter<NetworkTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
     private var mSearchKey: String? = null
@@ -47,23 +47,23 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
             mListener?.onTransactionClicked(transactionUIHelper)
         }
 
-        mHolder.codeTextView.text = getHighlightedText(transactionUIHelper.httpTransaction.responseCode?.toString() ?: "")
-        mHolder.pathTextView.text = getHighlightedText("[${transactionUIHelper.httpTransaction.method}] ${transactionUIHelper.httpTransaction.path}")
-        mHolder.hostTextView.text = transactionUIHelper.httpTransaction.host?.let { getHighlightedText(it) }
+        mHolder.codeTextView.text = getHighlightedText(transactionUIHelper.networkTransaction.responseCode?.toString() ?: "")
+        mHolder.pathTextView.text = getHighlightedText("[${transactionUIHelper.networkTransaction.method}] ${transactionUIHelper.networkTransaction.path}")
+        mHolder.hostTextView.text = transactionUIHelper.networkTransaction.host?.let { getHighlightedText(it) }
         mHolder.sslImageView.visibility = if (transactionUIHelper.isSsl()) View.VISIBLE else View.GONE
 
         mHolder.startTextView.text = transactionUIHelper.getRequestStartTimeString()
 
-        if (transactionUIHelper.getStatus() == HttpTransactionUIHelper.Status.Complete) {
-            holder.codeTextView.text = getHighlightedText(java.lang.String.valueOf(transactionUIHelper.httpTransaction.responseCode))
-            holder.durationTextView.text = "${transactionUIHelper.httpTransaction.tookMs} ms"
+        if (transactionUIHelper.getStatus() == NetworkTransactionUIHelper.Status.Complete) {
+            holder.codeTextView.text = getHighlightedText(java.lang.String.valueOf(transactionUIHelper.networkTransaction.responseCode))
+            holder.durationTextView.text = "${transactionUIHelper.networkTransaction.tookMs} ms"
             holder.sizeTextView.text = transactionUIHelper.getTotalSizeString()
         } else {
             holder.codeTextView.text = null
             holder.durationTextView.text = null
             holder.sizeTextView.text = null
         }
-        if (transactionUIHelper.getStatus() == HttpTransactionUIHelper.Status.Failed) {
+        if (transactionUIHelper.getStatus() == NetworkTransactionUIHelper.Status.Failed) {
             holder.codeTextView.text = "!!!"
         }
 
@@ -85,7 +85,7 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
     }
 
     interface Listener {
-        fun onTransactionClicked(transactionUIHelper: HttpTransactionUIHelper?)
+        fun onTransactionClicked(transactionUIHelper: NetworkTransactionUIHelper?)
         fun onItemsInserted(firstInsertedItemPosition: Int)
     }
 

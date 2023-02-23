@@ -11,12 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionOverviewBinding
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.formatted
 
 class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransactionFragment {
     lateinit var binding: FragmentNetworkTransactionOverviewBinding
-    private var mTransactionUIHelper: HttpTransactionUIHelper? = null
+    private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
 
     override fun onCreateView(
@@ -33,21 +33,21 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
     private fun popuplateUI() {
         if (!isAdded) return
         val transactionHelper = mTransactionUIHelper ?: return
-        binding.detailsUrlTextView.text = transactionHelper.httpTransaction.url
-        binding.methodTextView.text = transactionHelper.httpTransaction.method
-        binding.protocolTextView.text = transactionHelper.httpTransaction.protocol
+        binding.detailsUrlTextView.text = transactionHelper.networkTransaction.url
+        binding.methodTextView.text = transactionHelper.networkTransaction.method
+        binding.protocolTextView.text = transactionHelper.networkTransaction.protocol
         binding.statusTextView.text = transactionHelper.getStatus().toString()
         binding.responseTextView.text = transactionHelper.getResponseSummaryText()
         binding.sslTextView.text = getString(if (transactionHelper.isSsl()) R.string.yes else R.string.no)
-        binding.requestTimeTextView.text = transactionHelper.httpTransaction.requestDate?.formatted()
-        binding.responseTimeTextView.text = transactionHelper.httpTransaction.responseDate?.formatted()
-        binding.durationTextView.text = "${transactionHelper.httpTransaction.tookMs} ms"
+        binding.requestTimeTextView.text = transactionHelper.networkTransaction.requestDate?.formatted()
+        binding.responseTimeTextView.text = transactionHelper.networkTransaction.responseDate?.formatted()
+        binding.durationTextView.text = "${transactionHelper.networkTransaction.tookMs} ms"
         binding.requestSizeTextView.text = transactionHelper.getRequestSizeString()
         binding.responseSizeTextView.text = transactionHelper.getResponseSizeString()
         binding.totalSizeTextView.text = transactionHelper.getTotalSizeString()
     }
 
-    override fun transactionUpdated(transactionUIHelper: HttpTransactionUIHelper?) {
+    override fun transactionUpdated(transactionUIHelper: NetworkTransactionUIHelper?) {
         mTransactionUIHelper = transactionUIHelper
         popuplateUI()
     }

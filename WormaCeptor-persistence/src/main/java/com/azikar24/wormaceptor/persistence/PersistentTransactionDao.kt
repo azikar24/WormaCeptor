@@ -7,7 +7,7 @@ package com.azikar24.wormaceptor.persistence
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 import androidx.arch.core.util.Function
@@ -38,62 +38,62 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         return roomTransactionDao?.deleteCrash(*persistentCrashTransaction)
     }
 
-    override fun insertTransaction(httpTransaction: HttpTransaction?): Long? {
-        val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(httpTransaction)
-        return roomTransactionDao?.insertTransaction(dataToPersistence)
+    override fun insertTransaction(networkTransaction: NetworkTransaction?): Long? {
+        val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(networkTransaction)
+        return roomTransactionDao?.insertNetworkTransaction(dataToPersistence)
     }
 
-    override fun updateTransaction(httpTransaction: HttpTransaction?): Int? {
-        return roomTransactionDao?.updateTransaction(DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(httpTransaction))
+    override fun updateTransaction(networkTransaction: NetworkTransaction?): Int? {
+        return roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(networkTransaction))
     }
 
-    override fun deleteTransactions(vararg httpTransactions: HttpTransaction?): Int? {
-        val persistentHttpTransactions = arrayOfNulls<PersistentHttpTransaction>(httpTransactions.size)
+    override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int? {
+        val persistentNetworkTransactions = arrayOfNulls<PersistentNetworkTransaction>(networkTransactions.size)
         var index = 0
-        for (transaction in httpTransactions) {
-            persistentHttpTransactions[index++] = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
+        for (transaction in networkTransactions) {
+            persistentNetworkTransactions[index++] = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
         }
-        return roomTransactionDao?.deleteTransactions(*persistentHttpTransactions)
+        return roomTransactionDao?.deleteNetworkTransactions(*persistentNetworkTransactions)
     }
 
     override fun deleteTransactionsBefore(beforeDate: Date?): Int? {
-        return roomTransactionDao?.deleteTransactionsBefore(beforeDate)
+        return roomTransactionDao?.deleteNetworkTransactionsBefore(beforeDate)
     }
 
 
     override fun clearAll(): Int? {
-        return roomTransactionDao?.clearAll()
+        return roomTransactionDao?.clearAllNetworkTransactions()
     }
 
-    override fun getAllTransactions(): DataSource.Factory<Int, HttpTransaction>? {
-        return roomTransactionDao?.allTransactions?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
+    override fun getAllTransactions(): DataSource.Factory<Int, NetworkTransaction>? {
+        return roomTransactionDao?.allNetworkTransactions?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
     }
 
-    override fun getTransactionsWithId(id: Long?): LiveData<HttpTransaction>? {
+    override fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>? {
         return id?.let {
-            roomTransactionDao?.getTransactionsWithId(id)?.let {
+            roomTransactionDao?.getNetworkTransactionsWithId(id)?.let {
                 Transformations.map(it, PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
             }
         }
     }
 
 
-    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, HttpTransaction>? {
+    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, NetworkTransaction>? {
         val endWildCard = "$key%"
         val doubleSideWildCard = "%$key%"
-        val factory: DataSource.Factory<Int, PersistentHttpTransaction>? = when (searchType) {
-            TransactionDao.SearchType.DEFAULT -> roomTransactionDao?.getAllTransactions(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST -> roomTransactionDao?.getAllTransactionsIncludeRequest(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_RESPONSE -> roomTransactionDao?.getAllTransactionsIncludeResponse(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllTransactionsIncludeRequestResponse(endWildCard, doubleSideWildCard)
-            else -> roomTransactionDao?.getAllTransactions(endWildCard, doubleSideWildCard)
+        val factory: DataSource.Factory<Int, PersistentNetworkTransaction>? = when (searchType) {
+            TransactionDao.SearchType.DEFAULT -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
+            TransactionDao.SearchType.INCLUDE_REQUEST -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequest(endWildCard, doubleSideWildCard)
+            TransactionDao.SearchType.INCLUDE_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeResponse(endWildCard, doubleSideWildCard)
+            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequestResponse(endWildCard, doubleSideWildCard)
+            else -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
         }
         return factory?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
     }
 
 
-    private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentHttpTransaction, HttpTransaction> = Function { input ->
-        HttpTransaction.Builder().apply {
+    private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> = Function { input ->
+        NetworkTransaction.Builder().apply {
             id = input.id
             requestDate = input.requestDate
             responseDate = input.responseDate
@@ -120,8 +120,8 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }.build()
     }
 
-    private val DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<HttpTransaction, PersistentHttpTransaction> = Function { input ->
-        PersistentHttpTransaction().apply {
+    private val DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<NetworkTransaction, PersistentNetworkTransaction> = Function { input ->
+        PersistentNetworkTransaction().apply {
             id = input.id
             requestDate = input.requestDate
             responseDate = input.responseDate

@@ -17,7 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionPayloadBinding
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.HighlightSpan
@@ -38,7 +38,7 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     }
     private var mCurrentSearchIndex = 0
     private val mExecutor = Executors.newSingleThreadExecutor()
-    private var mTransactionUIHelper: HttpTransactionUIHelper? = null
+    private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
     private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
         override fun onEmit(searchKey: String) {
@@ -183,7 +183,7 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     }
 
 
-    override fun transactionUpdated(transactionUIHelper: HttpTransactionUIHelper?) {
+    override fun transactionUpdated(transactionUIHelper: NetworkTransactionUIHelper?) {
         mTransactionUIHelper = transactionUIHelper
         populateUI()
     }
@@ -197,11 +197,11 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
         if (mType == TYPE_REQUEST) {
             binding.searchEditText.setHint(R.string.search_request_hint)
             populateHeaderText(transactionHelper.getRequestHeadersString(true))
-            populateBody(transactionHelper.httpTransaction.requestBodyIsPlainText)
+            populateBody(transactionHelper.networkTransaction.requestBodyIsPlainText)
         } else if (mType == TYPE_RESPONSE) {
             binding.searchEditText.setHint(R.string.search_response_hint)
             populateHeaderText(transactionHelper.getResponseHeadersString(true))
-            populateBody(transactionHelper.httpTransaction.responseBodyIsPlainText)
+            populateBody(transactionHelper.networkTransaction.responseBodyIsPlainText)
 
         }
     }

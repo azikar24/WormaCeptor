@@ -5,10 +5,10 @@
 package com.azikar24.wormaceptor.internal.ui.network.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 
 
-class NetworkListDiffUtil : DiffUtil.ItemCallback<HttpTransactionUIHelper>() {
+class NetworkListDiffUtil : DiffUtil.ItemCallback<NetworkTransactionUIHelper>() {
 
     private var mSearchKey: String? = null
 
@@ -16,21 +16,21 @@ class NetworkListDiffUtil : DiffUtil.ItemCallback<HttpTransactionUIHelper>() {
         mSearchKey = searchKey
     }
 
-    override fun areItemsTheSame(oldItem: HttpTransactionUIHelper, newItem: HttpTransactionUIHelper): Boolean {
+    override fun areItemsTheSame(oldItem: NetworkTransactionUIHelper, newItem: NetworkTransactionUIHelper): Boolean {
         newItem.searchKey = mSearchKey
-        return oldItem.httpTransaction.id == newItem.httpTransaction.id
+        return oldItem.networkTransaction.id == newItem.networkTransaction.id
     }
 
-    override fun areContentsTheSame(oldItem: HttpTransactionUIHelper, newItem: HttpTransactionUIHelper): Boolean {
-        return oldItem.httpTransaction.method == newItem.httpTransaction.method
-                && oldItem.httpTransaction.path == newItem.httpTransaction.path
-                && oldItem.httpTransaction.host == newItem.httpTransaction.host
+    override fun areContentsTheSame(oldItem: NetworkTransactionUIHelper, newItem: NetworkTransactionUIHelper): Boolean {
+        return oldItem.networkTransaction.method == newItem.networkTransaction.method
+                && oldItem.networkTransaction.path == newItem.networkTransaction.path
+                && oldItem.networkTransaction.host == newItem.networkTransaction.host
                 && oldItem.getRequestStartTimeString() == newItem.getRequestStartTimeString()
                 && oldItem.getStatus() == newItem.getStatus()
-                && oldItem.httpTransaction.responseCode == newItem.httpTransaction.responseCode
+                && oldItem.networkTransaction.responseCode == newItem.networkTransaction.responseCode
                 && oldItem.isSsl() == newItem.isSsl()
-                && oldItem.httpTransaction.responseCode == newItem.httpTransaction.responseCode
-                && oldItem.httpTransaction.tookMs == newItem.httpTransaction.tookMs
+                && oldItem.networkTransaction.responseCode == newItem.networkTransaction.responseCode
+                && oldItem.networkTransaction.tookMs == newItem.networkTransaction.tookMs
                 && oldItem.getTotalSizeString() == newItem.getTotalSizeString()
                 && oldItem.searchKey == newItem.searchKey
 

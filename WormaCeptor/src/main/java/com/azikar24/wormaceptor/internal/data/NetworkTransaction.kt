@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
-data class HttpTransaction(
+data class NetworkTransaction(
     var id: Long,
     var requestDate: Date?,
     var responseDate: Date?,
@@ -126,8 +126,8 @@ data class HttpTransaction(
         }
         //endregion END Builder Setters
 
-        fun build(): HttpTransaction {
-            return HttpTransaction(
+        fun build(): NetworkTransaction {
+            return NetworkTransaction(
                 id,
                 requestDate,
                 responseDate,

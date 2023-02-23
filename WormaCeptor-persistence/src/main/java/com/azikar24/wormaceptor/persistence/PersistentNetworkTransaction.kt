@@ -11,8 +11,8 @@ import com.azikar24.wormaceptor.internal.data.HttpHeader
 import java.util.*
 
 
-@Entity(tableName = "HttpTransaction")
-class PersistentHttpTransaction {
+@Entity(tableName = "NetworkTransaction")
+class PersistentNetworkTransaction {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 

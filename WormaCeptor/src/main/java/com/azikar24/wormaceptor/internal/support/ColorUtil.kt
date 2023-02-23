@@ -6,7 +6,7 @@ package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ColorUtil(context: Context) {
@@ -27,13 +27,13 @@ class ColorUtil(context: Context) {
     private val mColor400 = context.getColorFromRes(R.color.status400)
     private val mColor300 = context.getColorFromRes(R.color.status300)
 
-    fun getTransactionColor(transactionUIHelper: HttpTransactionUIHelper, txtColors: Boolean = false): Int {
+    fun getTransactionColor(transactionUIHelper: NetworkTransactionUIHelper, txtColors: Boolean = false): Int {
         val status = transactionUIHelper.getStatus()
-        val responseCode: Int = transactionUIHelper.httpTransaction.responseCode ?: 0
+        val responseCode: Int = transactionUIHelper.networkTransaction.responseCode ?: 0
 
-        return if (status == HttpTransactionUIHelper.Status.Failed) {
+        return if (status == NetworkTransactionUIHelper.Status.Failed) {
             mColorError
-        } else if (status == HttpTransactionUIHelper.Status.Requested) {
+        } else if (status == NetworkTransactionUIHelper.Status.Requested) {
             mColorRequested
         } else if (responseCode >= 500) {
             mColor500

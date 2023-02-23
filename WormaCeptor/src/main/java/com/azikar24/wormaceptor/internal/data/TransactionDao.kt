@@ -23,20 +23,20 @@ interface TransactionDao {
 
     fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int?
 
-    fun insertTransaction(httpTransaction: HttpTransaction?): Long?
+    fun insertTransaction(networkTransaction: NetworkTransaction?): Long?
 
-    fun updateTransaction(httpTransaction: HttpTransaction?): Int?
+    fun updateTransaction(networkTransaction: NetworkTransaction?): Int?
 
-    fun deleteTransactions(vararg httpTransactions: HttpTransaction?): Int?
+    fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int?
 
     fun deleteTransactionsBefore(beforeDate: Date?): Int?
 
     fun clearAll(): Int?
 
-    fun getAllTransactions(): DataSource.Factory<Int, HttpTransaction>?
+    fun getAllTransactions(): DataSource.Factory<Int, NetworkTransaction>?
 
-    fun getTransactionsWithId(id: Long?): LiveData<HttpTransaction>?
+    fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>?
 
-    fun getAllTransactionsWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, HttpTransaction>?
+    fun getAllTransactionsWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, NetworkTransaction>?
 
 }

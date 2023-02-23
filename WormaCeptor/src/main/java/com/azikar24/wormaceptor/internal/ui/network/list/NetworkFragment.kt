@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkListBinding
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.support.event.Callback
@@ -36,7 +36,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val mNetworkListDiffUtil: NetworkListDiffUtil = NetworkListDiffUtil()
     private val mViewModel: NetworkTransactionViewModel by viewModels()
-    private var mCurrentSubscription: LiveData<PagedList<HttpTransactionUIHelper>>? = null
+    private var mCurrentSubscription: LiveData<PagedList<NetworkTransactionUIHelper>>? = null
     val mColorUtil: ColorUtil by lazy {
         ColorUtil.getInstance(requireContext())
     }
@@ -112,9 +112,9 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun setupList() {
         mNetworkTransactionAdapter = NetworkTransactionAdapter(requireContext(), mNetworkListDiffUtil, object : NetworkTransactionAdapter.Listener {
-            override fun onTransactionClicked(transactionUIHelper: HttpTransactionUIHelper?) {
+            override fun onTransactionClicked(transactionUIHelper: NetworkTransactionUIHelper?) {
                 if (transactionUIHelper != null) {
-                    findNavController().navigate(NetworkFragmentDirections.actionNetworkListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
+                    findNavController().navigate(NetworkFragmentDirections.actionNetworkListFragmentToDetailsFragment(transactionUIHelper.networkTransaction.id))
                 }
             }
 
@@ -129,7 +129,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
 
-    private fun loadResults(pagedListLiveData: LiveData<PagedList<HttpTransactionUIHelper>>?, searchKey: String? = null) {
+    private fun loadResults(pagedListLiveData: LiveData<PagedList<NetworkTransactionUIHelper>>?, searchKey: String? = null) {
         if (mCurrentSubscription?.hasObservers() == true) {
             mCurrentSubscription?.removeObservers(this)
         }
@@ -153,5 +153,5 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
         return true
     }
 
-    internal class TransactionListWithSearchKeyModel(val mSearchKey: String?, val pagedList: PagedList<HttpTransactionUIHelper>)
+    internal class TransactionListWithSearchKeyModel(val mSearchKey: String?, val pagedList: PagedList<NetworkTransactionUIHelper>)
 }

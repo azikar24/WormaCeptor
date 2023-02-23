@@ -6,7 +6,7 @@ package com.azikar24.wormaceptor
 
 import android.content.Context
 import com.azikar24.wormaceptor.internal.data.HttpHeader
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.HttpHeaders
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.support.RetentionManager
@@ -37,7 +37,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val transaction: HttpTransaction = createTransactionFromRequest(request)
+        val transaction: NetworkTransaction = createTransactionFromRequest(request)
         val startNs = System.nanoTime()
 
         return try {
@@ -52,7 +52,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     @Throws(IOException::class)
-    private fun updateTransactionFromResponse(transaction: HttpTransaction, response: Response, tookMs: Long) {
+    private fun updateTransactionFromResponse(transaction: NetworkTransaction, response: Response, tookMs: Long) {
         val responseBody = response.body
         val newTransactionBuilder = transaction.toBuilder()
 
@@ -139,12 +139,12 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     @Throws(IOException::class)
-    fun createTransactionFromRequest(request: Request): HttpTransaction {
+    fun createTransactionFromRequest(request: Request): NetworkTransaction {
         val requestBody = request.body
 
         val hasRequestBody = requestBody != null
 
-        val transactionBuilder = HttpTransaction.Builder()
+        val transactionBuilder = NetworkTransaction.Builder()
             .setRequestDate(Date())
             .setMethod(request.method)
             .setRequestHeaders(toHttpHeaderList(request.headers))
@@ -264,7 +264,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
 
-    private fun create(transaction: HttpTransaction): HttpTransaction {
+    private fun create(transaction: NetworkTransaction): NetworkTransaction {
         val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
         val newTransaction = transaction.toBuilder().setId(transactionId).build()
         mNotificationHelper?.show(newTransaction, stickyNotification)
@@ -273,7 +273,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
 
-    private fun update(transaction: HttpTransaction) {
+    private fun update(transaction: NetworkTransaction) {
         val updatedTransactionCount: Int = storage?.transactionDao?.updateTransaction(transaction) ?: -1
         if (updatedTransactionCount <= 0) return
         mNotificationHelper?.show(transaction, stickyNotification)

@@ -4,8 +4,8 @@
 
 package com.azikar24.wormaceptor.internal.ui.network.details.fragments
 
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 
 interface NetworkTransactionFragment {
-    fun transactionUpdated(transactionUIHelper: HttpTransactionUIHelper?)
+    fun transactionUpdated(transactionUIHelper: NetworkTransactionUIHelper?)
 }

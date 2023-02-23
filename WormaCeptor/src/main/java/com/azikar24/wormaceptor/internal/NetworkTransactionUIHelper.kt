@@ -5,7 +5,7 @@
 package com.azikar24.wormaceptor.internal
 
 import android.os.Parcelable
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,7 +14,7 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-class HttpTransactionUIHelper(val httpTransaction: HttpTransaction) : Parcelable {
+class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : Parcelable {
     enum class Status {
         Requested, Complete, Failed
     }
@@ -23,17 +23,17 @@ class HttpTransactionUIHelper(val httpTransaction: HttpTransaction) : Parcelable
 
 
     fun getFormattedRequestBody(): CharSequence? {
-        return formatBody(httpTransaction.requestBody, httpTransaction.requestContentType)
+        return formatBody(networkTransaction.requestBody, networkTransaction.requestContentType)
     }
 
     fun getFormattedResponseBody(): CharSequence? {
-        return formatBody(httpTransaction.responseBody, httpTransaction.responseContentType)
+        return formatBody(networkTransaction.responseBody, networkTransaction.responseContentType)
     }
 
     fun getStatus(): Status {
-        return if (httpTransaction.error != null) {
+        return if (networkTransaction.error != null) {
             Status.Failed
-        } else if (httpTransaction.responseCode == null) {
+        } else if (networkTransaction.responseCode == null) {
             Status.Requested
         } else {
             Status.Complete
@@ -42,43 +42,43 @@ class HttpTransactionUIHelper(val httpTransaction: HttpTransaction) : Parcelable
 
     fun getResponseSummaryText(): String? {
         return when (getStatus()) {
-            Status.Failed -> httpTransaction.error
+            Status.Failed -> networkTransaction.error
             Status.Requested -> null
-            else -> httpTransaction.responseCode.toString() + " " + httpTransaction.responseMessage
+            else -> networkTransaction.responseCode.toString() + " " + networkTransaction.responseMessage
         }
     }
 
     fun getNotificationText(): String {
         return when (getStatus()) {
-            Status.Failed -> " ! ! !  " + httpTransaction.path
-            Status.Requested -> " . . .  " + httpTransaction.path
-            else -> java.lang.String.valueOf(httpTransaction.responseCode) + " " + httpTransaction.path
+            Status.Failed -> " ! ! !  " + networkTransaction.path
+            Status.Requested -> " . . .  " + networkTransaction.path
+            else -> java.lang.String.valueOf(networkTransaction.responseCode) + " " + networkTransaction.path
         }
     }
 
     fun isSsl(): Boolean {
-        return httpTransaction.scheme?.lowercase(Locale.ROOT) == "https"
+        return networkTransaction.scheme?.lowercase(Locale.ROOT) == "https"
     }
 
     fun getRequestStartTimeString(): String? {
         val TIME_ONLY_FMT = SimpleDateFormat("HH:mm:ss", Locale.US)
-        return httpTransaction.requestDate?.let {
+        return networkTransaction.requestDate?.let {
             TIME_ONLY_FMT.format(it)
         }
     }
 
     fun getRequestSizeString(): String {
-        return formatBytes(httpTransaction.requestContentLength ?: 0)
+        return formatBytes(networkTransaction.requestContentLength ?: 0)
     }
 
     fun getResponseSizeString(): String {
-        return formatBytes(httpTransaction.responseContentLength ?: 0)
+        return formatBytes(networkTransaction.responseContentLength ?: 0)
     }
 
 
     fun getTotalSizeString(): String {
-        val reqBytes: Long = httpTransaction.requestContentLength ?: 0L
-        val resBytes: Long = httpTransaction.responseContentLength ?: 0L
+        val reqBytes: Long = networkTransaction.requestContentLength ?: 0L
+        val resBytes: Long = networkTransaction.responseContentLength ?: 0L
         return formatBytes(reqBytes + resBytes)
     }
 
@@ -101,20 +101,21 @@ class HttpTransactionUIHelper(val httpTransaction: HttpTransaction) : Parcelable
     }
 
     fun getResponseHeadersString(withMarkup: Boolean): CharSequence {
-        return FormatUtils.formatHeaders(httpTransaction.responseHeaders, withMarkup)
+        return FormatUtils.formatHeaders(networkTransaction.responseHeaders, withMarkup)
     }
 
     fun getRequestHeadersString(withMarkup: Boolean): CharSequence {
-        return FormatUtils.formatHeaders(httpTransaction.requestHeaders, withMarkup)
+        return FormatUtils.formatHeaders(networkTransaction.requestHeaders, withMarkup)
     }
 
     override fun toString(): String {
-        return "HttpTransactionUIHelper(httpTransaction=$httpTransaction, searchKey=$searchKey)"
+        return "NetworkTransactionUIHelper(networkTransaction=$networkTransaction, searchKey=$searchKey)"
     }
 
+
     companion object {
-        val HTTP_TRANSACTION_UI_HELPER_FUNCTION: Function<HttpTransaction, HttpTransactionUIHelper> = Function { httpTransaction ->
-            HttpTransactionUIHelper(httpTransaction)
+        val NETWORK_TRANSACTION_UI_HELPER_FUNCTION: Function<NetworkTransaction, NetworkTransactionUIHelper> = Function { networkTransaction ->
+            NetworkTransactionUIHelper(networkTransaction)
         }
     }
 }

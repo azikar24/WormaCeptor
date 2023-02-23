@@ -4,7 +4,7 @@
 
 package com.azikar24.wormaceptor.imdb
 
-import com.azikar24.wormaceptor.internal.data.HttpTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import java.util.*
 
 
@@ -25,8 +25,8 @@ internal class TransactionPredicateProvider {
         return RequestResponseSearchPredicate(searchKeyWord)
     }
 
-    open class DefaultSearchPredicate(var searchKeyWord: String) : Predicate<HttpTransaction> {
-        override fun apply(t: HttpTransaction): Boolean {
+    open class DefaultSearchPredicate(var searchKeyWord: String) : Predicate<NetworkTransaction> {
+        override fun apply(t: NetworkTransaction): Boolean {
             return if (t.protocol?.lowercase(Locale.ROOT)?.startsWith(searchKeyWord.lowercase(Locale.getDefault())) == true) {
                 true
             } else if (t.method?.lowercase(Locale.ROOT)?.startsWith(searchKeyWord.lowercase(Locale.getDefault())) == true) {
@@ -38,7 +38,7 @@ internal class TransactionPredicateProvider {
     }
 
     class RequestSearchPredicate(searchKeyWord: String) : DefaultSearchPredicate(searchKeyWord) {
-        override fun apply(t: HttpTransaction): Boolean {
+        override fun apply(t: NetworkTransaction): Boolean {
             return (
                     super.apply(t)
                             || t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
@@ -47,7 +47,7 @@ internal class TransactionPredicateProvider {
     }
 
     class ResponseSearchPredicate(searchKeyWord: String) : DefaultSearchPredicate(searchKeyWord) {
-        override fun apply(t: HttpTransaction): Boolean {
+        override fun apply(t: NetworkTransaction): Boolean {
             return (super.apply(t)
                     || t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
                     || t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true)
@@ -55,7 +55,7 @@ internal class TransactionPredicateProvider {
     }
 
     class RequestResponseSearchPredicate(searchKeyWord: String) : DefaultSearchPredicate(searchKeyWord) {
-        override fun apply(t: HttpTransaction): Boolean {
+        override fun apply(t: NetworkTransaction): Boolean {
 
             return super.apply(t) ||
                     t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true

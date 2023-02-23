@@ -8,16 +8,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.azikar24.wormaceptor.WormaCeptor
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper.Companion.HTTP_TRANSACTION_UI_HELPER_FUNCTION
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper.Companion.NETWORK_TRANSACTION_UI_HELPER_FUNCTION
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 
 class NetworkDetailTransactionViewModel : ViewModel() {
     private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
-    fun getTransactionWithId(id: Long): LiveData<HttpTransactionUIHelper>? {
+    fun getTransactionWithId(id: Long): LiveData<NetworkTransactionUIHelper>? {
         return transactionDao?.getTransactionsWithId(id)?.let {
-            Transformations.map(it, HTTP_TRANSACTION_UI_HELPER_FUNCTION)
+            Transformations.map(it, NETWORK_TRANSACTION_UI_HELPER_FUNCTION)
         }
     }
 

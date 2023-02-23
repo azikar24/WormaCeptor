@@ -16,7 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkDetailsBinding
-import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
+import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.share
@@ -29,7 +29,7 @@ class NetworkDetailsFragment : Fragment() {
     private val viewModel: NetworkDetailTransactionViewModel by viewModels()
     lateinit var mColorUtil: ColorUtil
     private var mAdapter: NetworkDetailsAdapter? = null
-    lateinit var currentData: HttpTransactionUIHelper
+    lateinit var currentData: NetworkTransactionUIHelper
 
     private val args: NetworkDetailsFragmentArgs by navArgs()
 
@@ -40,7 +40,7 @@ class NetworkDetailsFragment : Fragment() {
                 menuInflater.inflate(R.menu.details_menu, menu)
                 (activity as? AppCompatActivity)?.supportActionBar?.apply {
                     setBackgroundDrawable(ColorDrawable(mColorUtil.getTransactionColor(currentData)))
-                    title = "[${currentData.httpTransaction.method}] ${currentData.httpTransaction.path}"
+                    title = "[${currentData.networkTransaction.method}] ${currentData.networkTransaction.path}"
                     subtitle = ""
                 }
                 binding.tabsLayout.setBackgroundColor(mColorUtil.getTransactionColor(currentData))

@@ -25,36 +25,36 @@ abstract class RoomTransactionDao {
     abstract val allCrashes: DataSource.Factory<Int, PersistentCrashTransaction>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertTransaction(persistentHttpTransaction: PersistentHttpTransaction?): Long?
+    abstract fun insertNetworkTransaction(persistentNetworkTransaction: PersistentNetworkTransaction?): Long?
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateTransaction(persistentHttpTransactions: PersistentHttpTransaction?): Int?
+    abstract fun updateNetworkTransaction(persistentNetworkTransactions: PersistentNetworkTransaction?): Int?
 
     @Delete
-    abstract fun deleteTransactions(vararg persistentHttpTransactions: PersistentHttpTransaction?): Int?
+    abstract fun deleteNetworkTransactions(vararg persistentNetworkTransactions: PersistentNetworkTransaction?): Int?
 
-    @Query("DELETE FROM HttpTransaction WHERE request_date < :beforeDate")
-    abstract fun deleteTransactionsBefore(beforeDate: Date?): Int?
+    @Query("DELETE FROM NetworkTransaction WHERE request_date < :beforeDate")
+    abstract fun deleteNetworkTransactionsBefore(beforeDate: Date?): Int?
 
-    @Query("DELETE FROM HttpTransaction")
-    abstract fun clearAll(): Int
+    @Query("DELETE FROM NetworkTransaction")
+    abstract fun clearAllNetworkTransactions(): Int
 
-    @get:Query("SELECT * FROM HttpTransaction ORDER BY id DESC")
-    abstract val allTransactions: DataSource.Factory<Int, PersistentHttpTransaction>?
+    @get:Query("SELECT * FROM NetworkTransaction ORDER BY id DESC")
+    abstract val allNetworkTransactions: DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT * FROM HttpTransaction WHERE id = :id")
-    abstract fun getTransactionsWithId(id: Long): LiveData<PersistentHttpTransaction>?
+    @Query("SELECT * FROM NetworkTransaction WHERE id = :id")
+    abstract fun getNetworkTransactionsWithId(id: Long): LiveData<PersistentNetworkTransaction>?
 
-    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllTransactionsIncludeRequestResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
+    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
+    abstract fun getAllNetworkTransactionsIncludeRequestResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllTransactionsIncludeResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
+    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
+    abstract fun getAllNetworkTransactionsIncludeResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllTransactionsIncludeRequest(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
+    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
+    abstract fun getAllNetworkTransactionsIncludeRequest(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM HttpTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllTransactions(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentHttpTransaction>?
+    @Query("SELECT id, method, url, path, host, scheme, request_date, error, response_code, took_ms, request_content_length, response_content_length, request_body_is_plain_text, response_body_is_plain_text FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
+    abstract fun getAllNetworkTransactions(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
 }

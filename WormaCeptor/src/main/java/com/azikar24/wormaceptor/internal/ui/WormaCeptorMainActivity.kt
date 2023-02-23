@@ -53,7 +53,7 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         mNotificationHelper.dismiss()
 
         findNavController(R.id.navigationView).addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.NetworkListFragment2 || destination.id == R.id.stackTraceListFragment2) {
+            if (destination.id == R.id.NetworkListFragment2 || destination.id == R.id.crashListFragment2) {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             } else {
                 binding.bottomNavigationView.visibility = View.GONE

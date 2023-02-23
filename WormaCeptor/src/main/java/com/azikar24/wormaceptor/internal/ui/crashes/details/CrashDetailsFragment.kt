@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktrace.details
+package com.azikar24.wormaceptor.internal.ui.crashes.details
 
 import android.os.Bundle
 import android.view.*
@@ -14,15 +14,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.azikar24.wormaceptor.databinding.FragmentStackTraceDetailsBinding
+import com.azikar24.wormaceptor.databinding.FragmentCrashDetailsBinding
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.stacktrace.list.StackTraceTransactionViewModel
+import com.azikar24.wormaceptor.internal.ui.crashes.list.CrashTransactionViewModel
 
-class StackTraceDetailsFragment : Fragment() {
-    lateinit var binding: FragmentStackTraceDetailsBinding
-    private val args: StackTraceDetailsFragmentArgs by navArgs()
-    private val viewModel: StackTraceTransactionViewModel by viewModels()
+class CrashDetailsFragment : Fragment() {
+    lateinit var binding: FragmentCrashDetailsBinding
+    private val args: CrashDetailsFragmentArgs by navArgs()
+    private val viewModel: CrashTransactionViewModel by viewModels()
     lateinit var currentData: StackTraceTransaction
 
     private val menuProvider
@@ -39,7 +39,7 @@ class StackTraceDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentStackTraceDetailsBinding.inflate(inflater, container, false).also {
+    ) = FragmentCrashDetailsBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -69,7 +69,7 @@ class StackTraceDetailsFragment : Fragment() {
         }
         binding.stackTraceRecuclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-        val adapter = currentData.stackTrace?.let { StackTraceAdapter(items = it) }
+        val adapter = currentData.stackTrace?.let { CrashAdapter(items = it) }
         binding.stackTraceRecuclerView.adapter = adapter
 
     }

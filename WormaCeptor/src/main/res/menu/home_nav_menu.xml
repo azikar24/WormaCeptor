@@ -9,7 +9,7 @@
         android:title="@string/network" />
 
     <item
-        android:id="@id/stackTraceListFragment"
+        android:id="@id/crashListFragment"
         android:icon="@drawable/ic_stacktrace"
         android:title="@string/crashes" />
 </menu>

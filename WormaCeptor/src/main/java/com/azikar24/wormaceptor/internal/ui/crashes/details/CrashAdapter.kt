@@ -2,19 +2,19 @@
  * Copyright AziKar24 22/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktrace.details
+package com.azikar24.wormaceptor.internal.ui.crashes.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.azikar24.wormaceptor.databinding.RowStackTraceDetailsBinding
+import com.azikar24.wormaceptor.databinding.RowCrashDetailsBinding
 
-class StackTraceAdapter(val items: List<StackTraceElement>) : RecyclerView.Adapter<StackTraceAdapter.ViewHolder>() {
+class CrashAdapter(val items: List<StackTraceElement>) : RecyclerView.Adapter<CrashAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: RowStackTraceDetailsBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: RowCrashDetailsBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RowStackTraceDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = RowCrashDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

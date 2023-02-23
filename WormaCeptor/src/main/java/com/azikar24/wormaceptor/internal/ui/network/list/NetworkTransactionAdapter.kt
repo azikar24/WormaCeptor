@@ -76,7 +76,7 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
         return if (viewType == TRANSACTION_VIEW) {
             NetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_network_transaction, parent, false))
         } else {
-            EmptyNetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_transaction, parent, false))
+            EmptyNetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_network_transaction, parent, false))
         }
     }
 

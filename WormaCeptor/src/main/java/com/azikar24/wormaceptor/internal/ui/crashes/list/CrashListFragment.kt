@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktrace.list
+package com.azikar24.wormaceptor.internal.ui.crashes.list
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -12,25 +12,24 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentStackTraceListBinding
+import com.azikar24.wormaceptor.databinding.FragmentCrashListBinding
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 
-class StackTraceListFragment : Fragment() {
+class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
-    lateinit var binding: FragmentStackTraceListBinding
-    private val viewModel: StackTraceTransactionViewModel by viewModels()
+    lateinit var binding: FragmentCrashListBinding
+    private val viewModel: CrashTransactionViewModel by viewModels()
 
-    private lateinit var mStackTraceTransactionAdapter: StackTraceTransactionAdapter
+    private lateinit var mCrashTransactionAdapter: CrashTransactionAdapter
 
-    private val mListDiffUtil: ListDiffUtil = ListDiffUtil()
+    private val mCrashListDiffUtil: CrashListDiffUtil = CrashListDiffUtil()
 
     private var mCurrentSubscription: LiveData<PagedList<StackTraceTransaction>>? = null
 
@@ -40,7 +39,7 @@ class StackTraceListFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    android.R.id.home -> activity?.let { Navigation.findNavController(it, R.id.navigationView).navigateUp() }
+                    android.R.id.home -> activity?.finish()
                     else -> {}
                 }
                 return true
@@ -51,7 +50,7 @@ class StackTraceListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentStackTraceListBinding.inflate(inflater, container, false).also {
+    ) = FragmentCrashListBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -75,17 +74,17 @@ class StackTraceListFragment : Fragment() {
     }
 
     private fun setupList() {
-        mStackTraceTransactionAdapter = StackTraceTransactionAdapter(requireContext(), mListDiffUtil, object : StackTraceTransactionAdapter.Listener {
+        mCrashTransactionAdapter = CrashTransactionAdapter(requireContext(), mCrashListDiffUtil, object : CrashTransactionAdapter.Listener {
             override fun onTransactionClicked(stackTraceTransaction: StackTraceTransaction?) {
                 if (stackTraceTransaction != null) {
-                    findNavController().navigate(StackTraceListFragmentDirections.actionStackTraceListFragment2ToStackTraceDetailsFragment(stackTraceTransaction.id))
+                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(stackTraceTransaction.id))
                 }
             }
         })
 
         binding.stackTraceTransactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.stackTraceTransactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        binding.stackTraceTransactionRecyclerView.adapter = mStackTraceTransactionAdapter
+        binding.stackTraceTransactionRecyclerView.adapter = mCrashTransactionAdapter
     }
 
     private fun loadResults(pagedListLiveData: LiveData<PagedList<StackTraceTransaction>>?) {
@@ -96,7 +95,7 @@ class StackTraceListFragment : Fragment() {
         pagedListLiveData?.let {
             mCurrentSubscription = it
             it.observe(viewLifecycleOwner) { transactionPagedList ->
-                mStackTraceTransactionAdapter.submitList(transactionPagedList)
+                mCrashTransactionAdapter.submitList(transactionPagedList)
             }
         }
     }

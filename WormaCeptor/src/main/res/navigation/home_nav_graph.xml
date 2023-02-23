@@ -37,27 +37,27 @@
     </navigation>
 
     <navigation
-        android:id="@+id/stackTraceListFragment"
-        app:startDestination="@id/stackTraceListFragment2">
+        android:id="@+id/crashListFragment"
+        app:startDestination="@id/crashListFragment2">
 
         <fragment
-            android:id="@+id/stackTraceListFragment2"
-            android:name="com.azikar24.wormaceptor.internal.ui.stacktrace.list.StackTraceListFragment"
-            android:label="stackTraceListFragment"
-            tools:layout="@layout/fragment_stack_trace_list">
+            android:id="@+id/crashListFragment2"
+            android:name="com.azikar24.wormaceptor.internal.ui.crashes.list.CrashListFragment"
+            android:label="crashListFragment"
+            tools:layout="@layout/fragment_crash_list">
             <action
-                android:id="@+id/action_stackTraceListFragment2_to_stackTraceDetailsFragment"
-                app:destination="@id/stackTraceDetailsFragment">
+                android:id="@+id/action_crashListFragment2_to_crashDetailsFragment"
+                app:destination="@id/crashDetailsFragment">
                 <argument
                     android:name="id"
                     app:argType="long" />
             </action>
         </fragment>
         <fragment
-            android:id="@+id/stackTraceDetailsFragment"
-            android:name="com.azikar24.wormaceptor.internal.ui.stacktrace.details.StackTraceDetailsFragment"
+            android:id="@+id/crashDetailsFragment"
+            android:name="com.azikar24.wormaceptor.internal.ui.crashes.details.CrashDetailsFragment"
             android:label="fragment_stack_trace_details"
-            tools:layout="@layout/fragment_stack_trace_details">
+            tools:layout="@layout/fragment_crash_details">
             <argument
                 android:name="id"
                 app:argType="long" />

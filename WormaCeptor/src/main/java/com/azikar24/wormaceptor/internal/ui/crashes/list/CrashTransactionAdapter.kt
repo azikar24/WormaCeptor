@@ -2,7 +2,7 @@
  * Copyright AziKar24 21/2/2023.
  */
 
-package com.azikar24.wormaceptor.internal.ui.stacktrace.list
+package com.azikar24.wormaceptor.internal.ui.crashes.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.StackTraceTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.EmptyStackTraceTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.stacktrace.list.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.EmptyCrashTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.CrashTransactionViewHolder
 
-class StackTraceTransactionAdapter(val context: Context, listDiffUtil: ListDiffUtil, val mListener: Listener?) : PagedListAdapter<StackTraceTransaction, RecyclerView.ViewHolder>(listDiffUtil) {
+class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, val mListener: Listener?) : PagedListAdapter<StackTraceTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getItemViewType(position: Int): Int {
@@ -28,7 +28,7 @@ class StackTraceTransactionAdapter(val context: Context, listDiffUtil: ListDiffU
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val stacktraceTransaction = getItem(position) ?: return
-        val mHolder = holder as TransactionViewHolder
+        val mHolder = holder as CrashTransactionViewHolder
 
         mHolder.itemView.setOnClickListener {
             mListener?.onTransactionClicked(stacktraceTransaction)
@@ -42,9 +42,9 @@ class StackTraceTransactionAdapter(val context: Context, listDiffUtil: ListDiffU
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TRANSACTION_VIEW) {
-            TransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_stack_trace_transaction, parent, false))
+            CrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_crash_transaction, parent, false))
         } else {
-            EmptyStackTraceTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_stack_trace_transaction, parent, false))
+            EmptyCrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_crash_transaction, parent, false))
         }
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.ui.stacktrace.details.StackTraceDetailsFragment">
+    tools:context=".internal.ui.crashes.details.CrashDetailsFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView

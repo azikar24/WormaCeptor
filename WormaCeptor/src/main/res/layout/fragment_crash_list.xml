@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.ui.stacktrace.list.StackTraceListFragment">
+    tools:context=".internal.ui.crashes.list.CrashListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stackTraceTransactionRecyclerView"
@@ -23,5 +23,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".internal.ui.TransactionListFragment"
-        tools:listitem="@layout/list_item_stack_trace_transaction" />
+        tools:listitem="@layout/list_item_crash_transaction" />
 </androidx.constraintlayout.widget.ConstraintLayout>

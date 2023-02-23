@@ -36,7 +36,7 @@ object WormaCeptor {
             val stackTraceList = paramThrowable.stackTrace.toList()
             AsyncTask.execute {
                 storage?.transactionDao?.insertStackTrace(
-                    StackTraceTransaction.newBuilder().apply {
+                    StackTraceTransaction.Builder().apply {
                         setThrowable(paramThrowable.toString())
                         setStackTrace(stackTraceList.map { it })
                         setStackTraceDate(Date())

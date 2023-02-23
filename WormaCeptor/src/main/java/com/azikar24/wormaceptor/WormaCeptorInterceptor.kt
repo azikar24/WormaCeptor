@@ -144,7 +144,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
         val hasRequestBody = requestBody != null
 
-        val transactionBuilder = HttpTransaction.newBuilder()
+        val transactionBuilder = HttpTransaction.Builder()
             .setRequestDate(Date())
             .setMethod(request.method)
             .setRequestHeaders(toHttpHeaderList(request.headers))

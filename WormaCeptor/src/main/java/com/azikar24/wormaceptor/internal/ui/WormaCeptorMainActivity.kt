@@ -4,14 +4,9 @@
 
 package com.azikar24.wormaceptor.internal.ui
 
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.updatePadding
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.azikar24.wormaceptor.R
@@ -41,8 +36,6 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         navView.setupWithNavController(navController)
-        binding.bottomNavigationView.updatePadding(0, 0, 0, if (UIHelper.isGestureNavigationEnabled(baseContext.contentResolver)) (20 * Resources.getSystem().displayMetrics.density).toInt() else 0)
-
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)
 
         binding.bottomNavigationView.visibility = if (WormaCeptor.type == WormaCeptor.WormaCeptorType.PERSISTENCE) View.VISIBLE else View.GONE
@@ -53,24 +46,13 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         super.onResume()
         IN_FOREGROUND = true
         mNotificationHelper.dismiss()
-
-
-        findNavController(R.id.navigationView).addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener {
-            override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-                if (destination.id == R.id.httpsListFragment2 || destination.id == R.id.stackTraceListFragment2) {
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                } else {
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-            }
-
-        })
     }
 
     override fun onPause() {
         super.onPause()
         IN_FOREGROUND = false
     }
+
     companion object {
         var IN_FOREGROUND = false
 

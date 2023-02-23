@@ -7,10 +7,10 @@ package com.azikar24.wormaceptor.internal
 import android.os.Parcelable
 import com.azikar24.wormaceptor.internal.data.HttpTransaction
 import com.azikar24.wormaceptor.internal.support.FormatUtils
-import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.arch.core.util.Function
+import kotlinx.parcelize.Parcelize
 
 
 @Parcelize

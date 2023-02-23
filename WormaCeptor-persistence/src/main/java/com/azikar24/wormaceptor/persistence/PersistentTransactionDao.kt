@@ -93,7 +93,7 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
 
 
     private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentHttpTransaction, HttpTransaction> = Function { input ->
-        HttpTransaction.newBuilder().apply {
+        HttpTransaction.Builder().apply {
             id = input.id
             requestDate = input.requestDate
             responseDate = input.responseDate
@@ -151,7 +151,7 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
 
 
     private val PERSISTENT_TO_STACK_TRACEDATA_TRANSACTION_FUNCTION: Function<PersistentStackTraceTransaction, StackTraceTransaction> = Function { input ->
-        StackTraceTransaction.newBuilder().apply {
+        StackTraceTransaction.Builder().apply {
             id = input.id
             stackTrace = input.stackTrace
             stackTraceDate = input.stackTraceDate

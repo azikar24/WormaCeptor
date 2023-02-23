@@ -4,4 +4,8 @@
 
 package com.azikar24.wormaceptor.internal.data
 
-data class HttpHeader(val name: String? = null, val value: String? = null)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class HttpHeader(val name: String? = null, val value: String? = null) : Parcelable

@@ -8,47 +8,13 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-
 @Parcelize
-class StackTraceTransaction(private val builder: Builder) : Parcelable {
-
-    //region START Variables
-    var id: Long = builder.id
-
-    var stackTrace = builder.stackTrace
-
-    var stackTraceDate = builder.stackTraceDate
-
-    var throwable = builder.throwable
-
-    //endregion END Variables
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as StackTraceTransaction
-        if (id != that.id) return false
-        if (stackTrace != that.stackTrace) return false
-        if (stackTraceDate != that.stackTraceDate) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = (id xor (id ushr 32)).toInt()
-        result = 31 * result + if (stackTrace != null) stackTrace.hashCode() else 0
-        result = 31 * result + if (stackTraceDate != null) stackTraceDate.hashCode() else 0
-        return result
-    }
-
-    override fun toString(): String {
-        return "StackTraceTransaction(builder=$builder, id=$id, stackTrace=$stackTrace, stackTraceDate=$stackTraceDate)"
-    }
-
-    companion object {
-        fun newBuilder(): Builder {
-            return Builder()
-        }
-    }
+data class StackTraceTransaction(
+    var id: Long,
+    var stackTrace: List<StackTraceElement>?,
+    var stackTraceDate: Date?,
+    var throwable: String?,
+) : Parcelable {
 
     @Parcelize
     class Builder : Parcelable {
@@ -66,7 +32,12 @@ class StackTraceTransaction(private val builder: Builder) : Parcelable {
         //endregion END Builder Setters
 
         fun build(): StackTraceTransaction {
-            return StackTraceTransaction(this)
+            return StackTraceTransaction(
+                id,
+                stackTrace,
+                stackTraceDate,
+                throwable
+            )
         }
     }
 }

@@ -9,35 +9,32 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-
 @Parcelize
-class HttpTransaction(private val builder: Builder) : Parcelable {
-    //region START Variables
-    var id: Long = builder.id
-    var requestDate = builder.requestDate
-    var responseDate = builder.responseDate
-    var tookMs = builder.tookMs
-    var protocol = builder.protocol
-    var method = builder.method
-    var url = builder.url
-    var host = builder.host
-    var path = builder.path
-    var scheme = builder.scheme
-    var requestContentLength = builder.requestContentLength
-    var requestContentType = builder.requestContentType
-    var requestHeaders = builder.requestHeaders
-    var requestBody = builder.requestBody
-    var requestBodyIsPlainText = builder.requestBodyIsPlainText
-    var responseCode = builder.responseCode
-    var responseMessage = builder.responseMessage
-    var error = builder.error
-    var responseContentLength = builder.responseContentLength
-    var responseContentType = builder.responseContentType
-    var responseHeaders = builder.responseHeaders
-    var responseBody = builder.responseBody
-    var responseBodyIsPlainText = builder.responseBodyIsPlainText
-    //endregion END Variables
-
+data class HttpTransaction(
+    var id: Long,
+    var requestDate: Date?,
+    var responseDate: Date?,
+    var tookMs: Long?,
+    var protocol: String?,
+    var method: String?,
+    var url: String?,
+    var host: String?,
+    var path: String?,
+    var scheme: String?,
+    var requestContentLength: Long?,
+    var requestContentType: String?,
+    var requestHeaders: List<HttpHeader>?,
+    var requestBody: String?,
+    var requestBodyIsPlainText: Boolean,
+    var responseCode: Int?,
+    var responseMessage: String?,
+    var error: String?,
+    var responseContentLength: Long?,
+    var responseContentType: String?,
+    var responseHeaders: List<HttpHeader>?,
+    var responseBody: String?,
+    var responseBodyIsPlainText: Boolean,
+) : Parcelable {
     fun toBuilder(): Builder {
         return Builder().also { builder ->
             builder.id = id
@@ -63,72 +60,6 @@ class HttpTransaction(private val builder: Builder) : Parcelable {
             builder.responseHeaders = responseHeaders
             builder.responseBody = responseBody
             builder.responseBodyIsPlainText = responseBodyIsPlainText
-        }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val that = other as HttpTransaction
-        if (id != that.id) return false
-        if (requestBodyIsPlainText != that.requestBodyIsPlainText) return false
-        if (responseBodyIsPlainText != that.responseBodyIsPlainText) return false
-        if (requestDate != that.requestDate) return false
-        if (responseDate != that.responseDate) return false
-        if (tookMs != that.tookMs) return false
-        if (protocol != that.protocol) return false
-        if (method != that.method) return false
-        if (url != that.url) return false
-        if (host != that.host) return false
-        if (path != that.path) return false
-        if (scheme != that.scheme) return false
-        if (requestContentLength != that.requestContentLength) return false
-        if (requestContentType != that.requestContentType) return false
-        if (requestHeaders != that.requestHeaders) return false
-        if (requestBody != that.requestBody) return false
-        if (responseCode != that.responseCode) return false
-        if (responseMessage != that.responseMessage) return false
-        if (error != that.error) return false
-        if (responseContentLength != that.responseContentLength) return false
-        if (responseContentType != that.responseContentType) return false
-        if (responseHeaders != that.responseHeaders) return false
-        return if (responseBody != null) responseBody == that.responseBody else that.responseBody == null
-    }
-
-    override fun hashCode(): Int {
-        var result = (id xor (id ushr 32)).toInt()
-        result = 31 * result + if (requestDate != null) requestDate.hashCode() else 0
-        result = 31 * result + if (responseDate != null) responseDate.hashCode() else 0
-        result = 31 * result + if (tookMs != null) tookMs.hashCode() else 0
-        result = 31 * result + if (protocol != null) protocol.hashCode() else 0
-        result = 31 * result + if (method != null) method.hashCode() else 0
-        result = 31 * result + if (url != null) url.hashCode() else 0
-        result = 31 * result + if (host != null) host.hashCode() else 0
-        result = 31 * result + if (path != null) path.hashCode() else 0
-        result = 31 * result + if (scheme != null) scheme.hashCode() else 0
-        result = 31 * result + if (requestContentLength != null) requestContentLength.hashCode() else 0
-        result = 31 * result + if (requestContentType != null) requestContentType.hashCode() else 0
-        result = 31 * result + if (requestHeaders != null) requestHeaders.hashCode() else 0
-        result = 31 * result + if (requestBody != null) requestBody.hashCode() else 0
-        result = 31 * result + if (requestBodyIsPlainText) 1 else 0
-        result = 31 * result + if (responseCode != null) responseCode.hashCode() else 0
-        result = 31 * result + if (responseMessage != null) responseMessage.hashCode() else 0
-        result = 31 * result + if (error != null) error.hashCode() else 0
-        result = 31 * result + if (responseContentLength != null) responseContentLength.hashCode() else 0
-        result = 31 * result + if (responseContentType != null) responseContentType.hashCode() else 0
-        result = 31 * result + if (responseHeaders != null) responseHeaders.hashCode() else 0
-        result = 31 * result + if (responseBody != null) responseBody.hashCode() else 0
-        result = 31 * result + if (responseBodyIsPlainText) 1 else 0
-        return result
-    }
-
-    override fun toString(): String {
-        return "HttpTransaction(builder=$builder, id=$id, requestDate=$requestDate, responseDate=$responseDate, tookMs=$tookMs, protocol=$protocol, method=$method, url=$url, host=$host, path=$path, scheme=$scheme, requestContentLength=$requestContentLength, requestContentType=$requestContentType, requestHeaders=$requestHeaders, requestBody=$requestBody, requestBodyIsPlainText=$requestBodyIsPlainText, responseCode=$responseCode, responseMessage=$responseMessage, error=$error, responseContentLength=$responseContentLength, responseContentType=$responseContentType, responseHeaders=$responseHeaders, responseBody=$responseBody, responseBodyIsPlainText=$responseBodyIsPlainText)"
-    }
-
-    companion object {
-        fun newBuilder(): Builder {
-            return Builder()
         }
     }
 
@@ -196,7 +127,31 @@ class HttpTransaction(private val builder: Builder) : Parcelable {
         //endregion END Builder Setters
 
         fun build(): HttpTransaction {
-            return HttpTransaction(this)
+            return HttpTransaction(
+                id,
+                requestDate,
+                responseDate,
+                tookMs,
+                protocol,
+                method,
+                url,
+                host,
+                path,
+                scheme,
+                requestContentLength,
+                requestContentType,
+                requestHeaders,
+                requestBody,
+                requestBodyIsPlainText,
+                responseCode,
+                responseMessage,
+                error,
+                responseContentLength,
+                responseContentType,
+                responseHeaders,
+                responseBody,
+                responseBodyIsPlainText,
+            )
         }
     }
 }

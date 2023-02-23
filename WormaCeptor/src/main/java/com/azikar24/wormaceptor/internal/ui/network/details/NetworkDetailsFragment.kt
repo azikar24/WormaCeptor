@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -106,7 +105,7 @@ class NetworkDetailsFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_back)
-            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.CREATED)
+            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
         }
     }
 

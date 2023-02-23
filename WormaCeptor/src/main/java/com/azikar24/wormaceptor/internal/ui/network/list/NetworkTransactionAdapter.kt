@@ -14,8 +14,8 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
-import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyTransactionViewHolder
-import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.TransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyNetworkTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.NetworkTransactionViewHolder
 
 class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagedListAdapter<HttpTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -41,7 +41,7 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val transactionUIHelper = getItem(position) ?: return
-        val mHolder = holder as TransactionViewHolder
+        val mHolder = holder as NetworkTransactionViewHolder
 
         mHolder.itemView.setOnClickListener {
             mListener?.onTransactionClicked(transactionUIHelper)
@@ -74,9 +74,9 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TRANSACTION_VIEW) {
-            TransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_network_transaction, parent, false))
+            NetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_network_transaction, parent, false))
         } else {
-            EmptyTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_transaction, parent, false))
+            EmptyNetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_transaction, parent, false))
         }
     }
 

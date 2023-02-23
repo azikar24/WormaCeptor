@@ -4,7 +4,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@id/httpsListFragment"
+        android:id="@id/networkListFragment"
         android:icon="@drawable/ic_networking"
         android:title="@string/network" />
 

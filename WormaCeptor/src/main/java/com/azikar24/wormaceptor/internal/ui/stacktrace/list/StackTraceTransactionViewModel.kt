@@ -22,17 +22,17 @@ class StackTraceTransactionViewModel : ViewModel() {
         .setEnablePlaceholders(true)
         .build()
 
-    private val mTransactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
+    private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
 
-    private val mTransactions: LiveData<PagedList<StackTraceTransaction>>? = mTransactionDao?.getAllStackTraces()?.let { LivePagedListBuilder(it, config).build() }
+    private val transactions: LiveData<PagedList<StackTraceTransaction>>? = transactionDao?.getAllStackTraces()?.let { LivePagedListBuilder(it, config).build() }
 
     fun getAllStackTraces(): LiveData<PagedList<StackTraceTransaction>>? {
-          return  mTransactions
+          return  transactions
     }
 
     fun clearAll() {
-        ClearAsyncTask(mTransactionDao).execute()
+        ClearAsyncTask(transactionDao).execute()
     }
 
     private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<StackTraceTransaction, Void, Int>() {

@@ -114,7 +114,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
         mNetworkTransactionAdapter = NetworkTransactionAdapter(requireContext(), mNetworkListDiffUtil, object : NetworkTransactionAdapter.Listener {
             override fun onTransactionClicked(transactionUIHelper: HttpTransactionUIHelper?) {
                 if (transactionUIHelper != null) {
-                    findNavController().navigate(NetworkFragmentDirections.actionHttpsListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
+                    findNavController().navigate(NetworkFragmentDirections.actionNetworkListFragmentToDetailsFragment(transactionUIHelper.httpTransaction.id))
                 }
             }
 

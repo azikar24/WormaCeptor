@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.FragmentDetailsBinding
+import com.azikar24.wormaceptor.databinding.FragmentNetworkDetailsBinding
 import com.azikar24.wormaceptor.internal.HttpTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.FormatUtils
@@ -25,7 +25,7 @@ import com.azikar24.wormaceptor.internal.ui.network.details.fragments.NetworkNet
 import com.google.android.material.tabs.TabLayoutMediator
 
 class NetworkDetailsFragment : Fragment() {
-    lateinit var binding: FragmentDetailsBinding
+    lateinit var binding: FragmentNetworkDetailsBinding
     private val viewModel: NetworkDetailTransactionViewModel by viewModels()
     lateinit var mColorUtil: ColorUtil
     private var mAdapter: NetworkDetailsAdapter? = null
@@ -70,7 +70,7 @@ class NetworkDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentDetailsBinding.inflate(inflater, container, false).also {
+    ) = FragmentNetworkDetailsBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 

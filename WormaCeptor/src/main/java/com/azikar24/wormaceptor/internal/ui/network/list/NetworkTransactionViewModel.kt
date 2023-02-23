@@ -23,17 +23,17 @@ class NetworkTransactionViewModel  : ViewModel() {
         .setEnablePlaceholders(true)
         .build()
 
-    private val mTransactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
+    private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
 
-    val factory = mTransactionDao?.getAllTransactions()?.map(HttpTransactionUIHelper.HTTP_TRANSACTION_UI_HELPER_FUNCTION)
-    private val mTransactions: LiveData<PagedList<HttpTransactionUIHelper>>? = factory?.let { LivePagedListBuilder(factory, config).build() }
+    val factory = transactionDao?.getAllTransactions()?.map(HttpTransactionUIHelper.HTTP_TRANSACTION_UI_HELPER_FUNCTION)
+    private val transactions: LiveData<PagedList<HttpTransactionUIHelper>>? = factory?.let { LivePagedListBuilder(factory, config).build() }
 
     fun getTransactions(key: String?): LiveData<PagedList<HttpTransactionUIHelper>>? {
         return if (key?.trim()?.isEmpty() == null) {
-            mTransactions
+            transactions
         } else {
-            val factory = mTransactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.map(HttpTransactionUIHelper.HTTP_TRANSACTION_UI_HELPER_FUNCTION)
+            val factory = transactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.map(HttpTransactionUIHelper.HTTP_TRANSACTION_UI_HELPER_FUNCTION)
             factory?.let {
                 LivePagedListBuilder(it, config).build()
             }
@@ -41,7 +41,7 @@ class NetworkTransactionViewModel  : ViewModel() {
     }
 
     fun clearAll() {
-        ClearAsyncTask(mTransactionDao).execute()
+        ClearAsyncTask(transactionDao).execute()
     }
 
     private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<HttpTransaction, Void, Int>() {

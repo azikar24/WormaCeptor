@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright AziKar24 23/2/2023.
+  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="?colorPrimary" android:state_checked="true" />
+    <item android:color="?colorAccent" android:state_checked="false" />
+</selector>

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -38,12 +39,6 @@ class NetworkDetailsFragment : Fragment() {
         get() = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.details_menu, menu)
-                (activity as? AppCompatActivity)?.supportActionBar?.apply {
-                    setBackgroundDrawable(ColorDrawable(mColorUtil.getTransactionColor(currentData)))
-                    title = "[${currentData.networkTransaction.method}] ${currentData.networkTransaction.path}"
-                    subtitle = ""
-                }
-                binding.tabsLayout.setBackgroundColor(mColorUtil.getTransactionColor(currentData))
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -79,6 +74,8 @@ class NetworkDetailsFragment : Fragment() {
         mColorUtil = ColorUtil.getInstance(requireContext())
 
         val transactionUIHelper = viewModel.getTransactionWithId(args.id)
+        setupToolbar()
+
         transactionUIHelper?.observe(viewLifecycleOwner) {
             currentData = it
             populateUI()
@@ -88,10 +85,19 @@ class NetworkDetailsFragment : Fragment() {
     }
 
     private fun populateUI() {
-        setupToolbar()
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            this.setBackgroundDrawable(ColorDrawable(mColorUtil.colorPrimary))
+            setBackgroundDrawable(ColorDrawable(mColorUtil.getTransactionColor(currentData)))
+            title = "[${currentData.networkTransaction.method}] ${currentData.networkTransaction.path}"
+            subtitle = ""
+        }
+
+        binding.tabsLayout.setBackgroundColor(mColorUtil.getTransactionColor(currentData))
+
         mAdapter?.let {
             for (fragment in it.fragments) {
                 fragment.transactionUpdated(currentData)
+
             }
         }
     }
@@ -100,8 +106,7 @@ class NetworkDetailsFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_back)
-            this.setBackgroundDrawable(ColorDrawable(mColorUtil.colorPrimary))
-            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
+            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.CREATED)
         }
     }
 

@@ -3,9 +3,9 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimary">#4C95B8</color>
     <color name="colorPrimaryDark">#455A64</color>
-    <color name="colorAccent">#616161</color>
+    <color name="colorAccent">#40CDCDCD</color>
     <color name="white">#FFFFFF</color>
 
     <color name="colorLoader">#CECECE</color>

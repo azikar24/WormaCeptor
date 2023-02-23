@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.azikar24.wormaceptor.R
@@ -27,10 +28,10 @@ class WormaCeptorMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mNotificationHelper = NotificationHelper(baseContext)
-
         binding = ActivityWormaceptorMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         UIHelper.fullScreen(window.decorView, window)
 
@@ -50,6 +51,14 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         super.onResume()
         IN_FOREGROUND = true
         mNotificationHelper.dismiss()
+
+        findNavController(R.id.navigationView).addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.httpsListFragment2 || destination.id == R.id.stackTraceListFragment2) {
+                binding.bottomNavigationView.visibility = View.VISIBLE
+            } else {
+                binding.bottomNavigationView.visibility = View.GONE
+            }
+        }
     }
 
     override fun onPause() {

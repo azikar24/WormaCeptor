@@ -4,8 +4,10 @@
 
 package com.azikar24.wormaceptor.internal.ui.http.details
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
@@ -32,23 +34,16 @@ class DetailsFragment : Fragment() {
     private val args: DetailsFragmentArgs by navArgs()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ) = FragmentDetailsBinding.inflate(inflater, container, false).also {
-        binding = it
-    }.root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mColorUtil = ColorUtil.getInstance(requireContext())
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.toolbar.addMenuProvider(object : MenuProvider {
+    private val menuProvider: MenuProvider
+        get() = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.details_menu, menu)
+                (activity as? AppCompatActivity)?.supportActionBar?.apply {
+                    setBackgroundDrawable(ColorDrawable(mColorUtil.getTransactionColor(currentData)))
+                    title = "[${currentData.httpTransaction.method}] ${currentData.httpTransaction.path}"
+                    subtitle = ""
+                }
+                binding.tabsLayout.setBackgroundColor(mColorUtil.getTransactionColor(currentData))
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -61,32 +56,53 @@ class DetailsFragment : Fragment() {
                         requireContext().share(FormatUtils.getShareCurlCommand(currentData))
                         true
                     }
+                    android.R.id.home -> {
+                        findNavController().navigateUp()
+                        true
+                    }
                     else -> {
                         false
                     }
                 }
             }
-        })
+        }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = FragmentDetailsBinding.inflate(inflater, container, false).also {
+        binding = it
+    }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mColorUtil = ColorUtil.getInstance(requireContext())
+
         val transactionUIHelper = viewModel.getTransactionWithId(args.id)
         transactionUIHelper?.observe(viewLifecycleOwner) {
             currentData = it
             populateUI()
         }
 
-
         setupViewPager()
     }
 
     private fun populateUI() {
-        binding.toolbar.title = "[${currentData.httpTransaction.method}] ${currentData.httpTransaction.path}"
+        setupToolbar()
         mAdapter?.let {
             for (fragment in it.fragments) {
                 fragment.transactionUpdated(currentData)
             }
         }
+    }
 
-        binding.appbar.setBackgroundColor(mColorUtil.getTransactionColor(currentData))
-
+    private fun setupToolbar() {
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            setDisplayShowHomeEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back)
+            this.setBackgroundDrawable(ColorDrawable(mColorUtil.colorPrimary))
+            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
+        }
     }
 
     private fun setupViewPager() {

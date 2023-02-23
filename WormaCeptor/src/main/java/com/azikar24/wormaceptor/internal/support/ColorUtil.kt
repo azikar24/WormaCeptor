@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class ColorUtil(context: Context) {
 
+    val colorPrimary = context.getColorFromRes(R.color.colorPrimary)
     val mSearchHighlightBackgroundColor = context.getColorFromRes(R.color.highlightBackground)
     val mSearchHighlightTextColor = context.getColorFromRes(R.color.highlightText)
     val mSearchHighlightUnderline = false

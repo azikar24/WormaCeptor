@@ -4,7 +4,7 @@
 
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.WormaCeptor" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.WormaCeptor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -16,5 +16,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorControlNormal">@color/white</item>
         <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 </resources>

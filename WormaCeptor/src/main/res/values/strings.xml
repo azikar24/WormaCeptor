@@ -38,4 +38,6 @@
     <string name="overview">Overview</string>
     <string name="search_request_hint">Search Request and Headers</string>
     <string name="search_response_hint">Search Response and Headers</string>
+    <string name="crashes">Crashes</string>
+    <string name="network">Network</string>
 </resources>

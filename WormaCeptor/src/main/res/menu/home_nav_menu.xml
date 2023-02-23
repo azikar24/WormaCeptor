@@ -6,10 +6,10 @@
     <item
         android:id="@id/httpsListFragment"
         android:icon="@drawable/ic_networking"
-        android:title="Network" />
+        android:title="@string/network" />
 
     <item
         android:id="@id/stackTraceListFragment"
         android:icon="@drawable/ic_stacktrace"
-        android:title="Crashes" />
+        android:title="@string/crashes" />
 </menu>

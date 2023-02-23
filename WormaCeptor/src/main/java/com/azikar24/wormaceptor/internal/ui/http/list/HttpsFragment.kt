@@ -4,9 +4,11 @@
 
 package com.azikar24.wormaceptor.internal.ui.http.list
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
@@ -24,8 +26,9 @@ import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.support.event.Callback
 import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import com.azikar24.wormaceptor.internal.support.event.Sampler
+import com.azikar24.wormaceptor.internal.support.getApplicationName
 
-class HttpsFragment : Fragment() , SearchView.OnQueryTextListener {
+class HttpsFragment : Fragment(), SearchView.OnQueryTextListener {
 
     lateinit var binding: FragmentHttpsListBinding
 
@@ -38,34 +41,8 @@ class HttpsFragment : Fragment() , SearchView.OnQueryTextListener {
         ColorUtil.getInstance(requireContext())
     }
 
-
-    private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
-        override fun onEmit(event: TransactionListWithSearchKeyModel) {
-            mListDiffUtil.setSearchKey(event.mSearchKey)
-            mHttpTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
-        }
-    })
-
-    private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
-        override fun onEmit(event: String) {
-            loadResults(mViewModel.getTransactions(event), event)
-        }
-    })
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ) = FragmentHttpsListBinding.inflate(inflater, container, false).also {
-        binding = it
-    }.root
-
-    private fun setupToolBar() {
-        binding.toolbar.subtitle = getApplicationName()
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().finish()
-        }
-        binding.toolbar.addMenuProvider(object : MenuProvider {
+    private val menuProvider: MenuProvider
+        get() = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.list_menu, menu)
                 menu.findItem(R.id.search)?.let { searchMenuItem ->
@@ -93,7 +70,37 @@ class HttpsFragment : Fragment() , SearchView.OnQueryTextListener {
                     }
                 }
             }
-        })
+        }
+
+    private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
+        override fun onEmit(event: TransactionListWithSearchKeyModel) {
+            mListDiffUtil.setSearchKey(event.mSearchKey)
+            mHttpTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
+        }
+    })
+
+    private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
+        override fun onEmit(event: String) {
+            loadResults(mViewModel.getTransactions(event), event)
+        }
+    })
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = FragmentHttpsListBinding.inflate(inflater, container, false).also {
+        binding = it
+    }.root
+
+    private fun setupToolBar() {
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back)
+            title = getString(R.string.network)
+            subtitle = activity?.getApplicationName()
+            this.setBackgroundDrawable(ColorDrawable(mColorUtil.colorPrimary))
+            requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,12 +140,6 @@ class HttpsFragment : Fragment() , SearchView.OnQueryTextListener {
             }
 
         }
-    }
-
-    private fun getApplicationName(): String {
-        val applicationInfo = activity?.applicationInfo
-        val stringId = applicationInfo?.labelRes
-        return if (stringId == 0 || stringId == null) applicationInfo?.nonLocalizedLabel.toString() else getString(stringId)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

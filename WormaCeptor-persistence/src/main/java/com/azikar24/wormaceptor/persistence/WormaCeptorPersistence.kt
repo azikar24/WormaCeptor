@@ -14,7 +14,7 @@ import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Database(entities = [PersistentNetworkTransaction::class, PersistentCrashTransaction::class], version = 6, exportSchema = false)
+@Database(entities = [PersistentNetworkTransaction::class, PersistentCrashTransaction::class], version = 1, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)
 abstract class WormaCeptorPersistence : RoomDatabase(), WormaCeptorStorage {
     @Volatile

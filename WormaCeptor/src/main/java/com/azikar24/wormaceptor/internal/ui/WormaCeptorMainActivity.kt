@@ -42,9 +42,6 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         binding.bottomNavigationView.updatePadding(0, 0, 0, if (UIHelper.isGestureNavigationEnabled(baseContext.contentResolver)) (20 * Resources.getSystem().displayMetrics.density).toInt() else 0)
 
         binding.bottomNavigationView.setOnApplyWindowInsetsListener(null)
-
-        binding.bottomNavigationView.visibility = if (WormaCeptor.type == WormaCeptor.WormaCeptorType.PERSISTENCE) View.VISIBLE else View.GONE
-
     }
 
     override fun onResume() {
@@ -53,6 +50,11 @@ class WormaCeptorMainActivity : AppCompatActivity() {
         mNotificationHelper.dismiss()
 
         findNavController(R.id.navigationView).addOnDestinationChangedListener { _, destination, _ ->
+            if (WormaCeptor.type != WormaCeptor.WormaCeptorType.PERSISTENCE) {
+                binding.bottomNavigationView.visibility = View.GONE
+                return@addOnDestinationChangedListener
+            }
+
             if (destination.id == R.id.NetworkListFragment2 || destination.id == R.id.crashListFragment2) {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             } else {

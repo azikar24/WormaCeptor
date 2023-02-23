@@ -24,4 +24,6 @@ object WormaCeptor {
     fun addAppShortcut(context: Context?): String? {
         return null
     }
+
+    fun startActivityOnShake(context: Context?) {}
 }

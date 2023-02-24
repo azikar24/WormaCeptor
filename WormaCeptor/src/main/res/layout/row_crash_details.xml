@@ -4,6 +4,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,8 +12,10 @@
         android:id="@+id/crashDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
+        android:paddingBottom="20dp"
+        android:paddingHorizontal="20dp"
         android:textColor="@color/statusDefaultTxt"
+        tools:text="at androidx.fragment.app.Fragment.getViewLifecycleOwner(Fragment.java.377)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

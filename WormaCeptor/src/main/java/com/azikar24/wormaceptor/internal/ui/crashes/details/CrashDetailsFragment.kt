@@ -75,7 +75,7 @@ class CrashDetailsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.apply {
+        (requireActivity() as? AppCompatActivity)?.supportActionBar?.run {
             currentData.throwable?.let {
                 val colonPosition = it.indexOf(":")
                 val title = if (colonPosition > -1) it.substring(0, colonPosition) else it

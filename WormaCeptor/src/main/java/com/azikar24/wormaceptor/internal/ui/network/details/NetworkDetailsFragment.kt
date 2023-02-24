@@ -84,7 +84,7 @@ class NetworkDetailsFragment : Fragment() {
     }
 
     private fun populateUI() {
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+        (activity as? AppCompatActivity)?.supportActionBar?.run {
             this.setBackgroundDrawable(ColorDrawable(mColorUtil.colorPrimary))
             setBackgroundDrawable(ColorDrawable(mColorUtil.getTransactionColor(currentData)))
             title = "[${currentData.networkTransaction.method}] ${currentData.networkTransaction.path}"
@@ -102,7 +102,7 @@ class NetworkDetailsFragment : Fragment() {
     }
 
     private fun setupToolbar() {
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+        (activity as? AppCompatActivity)?.supportActionBar?.run {
             setDisplayShowHomeEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_back)
             requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)

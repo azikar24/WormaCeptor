@@ -93,7 +93,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     }.root
 
     private fun setupToolBar() {
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+        (activity as? AppCompatActivity)?.supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_back)
             title = getString(R.string.network)

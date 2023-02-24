@@ -74,9 +74,9 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TRANSACTION_VIEW) {
-            NetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_network_transaction, parent, false))
+            NetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.row_item_network_transaction, parent, false))
         } else {
-            EmptyNetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_network_transaction, parent, false))
+            EmptyNetworkTransactionViewHolder(mLayoutInflater.inflate(R.layout.row_item_network_transaction_empty, parent, false))
         }
     }
 

@@ -42,9 +42,9 @@ class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TRANSACTION_VIEW) {
-            CrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_crash_transaction, parent, false))
+            CrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.row_item_crash_transaction, parent, false))
         } else {
-            EmptyCrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.list_item_empty_crash_transaction, parent, false))
+            EmptyCrashTransactionViewHolder(mLayoutInflater.inflate(R.layout.row_item_crash_transaction_empty, parent, false))
         }
     }
 

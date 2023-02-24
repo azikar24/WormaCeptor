@@ -22,5 +22,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".internal.ui.TransactionListFragment"
-        tools:listitem="@layout/list_item_network_transaction" />
+        tools:listitem="@layout/row_item_network_transaction" />
 </androidx.constraintlayout.widget.ConstraintLayout>

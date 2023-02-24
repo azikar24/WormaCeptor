@@ -8,14 +8,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.databinding.RowCrashDetailsBinding
+import com.azikar24.wormaceptor.databinding.RowItemCrashDetailsBinding
 
 class CrashAdapter(val items: List<StackTraceElement>) : RecyclerView.Adapter<CrashAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: RowCrashDetailsBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: RowItemCrashDetailsBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RowCrashDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = RowItemCrashDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

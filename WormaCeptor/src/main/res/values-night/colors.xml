@@ -3,8 +3,8 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#4C95B8</color>
-    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorPrimary">#560BAD</color>
+    <color name="colorPrimaryDark">#B5179E</color>
     <color name="colorAccent">#40CDCDCD</color>
     <color name="white">#FFFFFF</color>
 
@@ -27,5 +27,6 @@
     <color name="teal200">#FF03DAC5</color>
     <color name="teal700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="white40">#65FFFFFF</color>
 
 </resources>

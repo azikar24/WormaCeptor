@@ -35,7 +35,7 @@ class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashList
         }
 
         mHolder.errorTypeTextView.text = crashTransaction.throwable
-        mHolder.filenameTextView.text = crashTransaction.crashList?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" }
+        mHolder.filenameTextView.text = crashTransaction.crashList?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" } ?: context.getString(R.string.unknown)
         mHolder.dateTextView.text = crashTransaction.crashDate?.formatted()
 
     }

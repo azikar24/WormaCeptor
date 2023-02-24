@@ -49,8 +49,6 @@ class CrashDetailsFragment : Fragment() {
 
     private fun populateUI() {
         setupToolbar()
-
-
         binding.crashTitleTextView.text = getString(R.string.bracket_string_newline_string, currentData.crashDate?.formatted(), currentData.throwable)
         binding.crashesRecyclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
             orientation = LinearLayoutManager.VERTICAL
@@ -59,6 +57,10 @@ class CrashDetailsFragment : Fragment() {
 
         val adapter = currentData.crashList?.let { CrashAdapter(items = it) }
         binding.crashesRecyclerView.adapter = adapter
+
+        if(adapter?.items?.isEmpty() == true){
+            binding.crashesRecyclerView.visibility=  View.GONE
+        }
 
     }
 
@@ -70,9 +72,8 @@ class CrashDetailsFragment : Fragment() {
                 subtitle = title.substring(title.lastIndexOf(".") + 1)
             }
 
-            currentData.crashList?.getOrNull(0)?.fileName.let {
-                title = it
-            }
+            title = currentData.crashList?.getOrNull(0)?.fileName ?: getString(R.string.unknown)
+
 
             requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
         }

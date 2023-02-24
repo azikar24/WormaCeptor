@@ -44,8 +44,9 @@
 
 
     <string name="stack_trace_string">at %1$s.%2$s(%3$s:%4$d)</string>
-    <string name="bracket_string_newline_string">[%1$s]\n%2$s</string>
+    <string name="bracket_string_newline_string">[%1$s]\n\n%2$s</string>
     <string name="duration_ms">%1$d ms</string>
     <string name="counter">%1$d/%2$d</string>
     <string name="failed_status">!!!</string>
+    <string name="unknown">Unknown</string>
 </resources>

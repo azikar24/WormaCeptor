@@ -17,13 +17,9 @@ object WormaCeptor {
         return null
     }
 
-    fun logUnexpectedCrashes(){
-
-    }
+    fun logUnexpectedCrashes() = Unit
     @TargetApi(Build.VERSION_CODES.N_MR1)
-    fun addAppShortcut(context: Context?): String? {
-        return null
-    }
+    fun addAppShortcut(context: Context?): String? = null
 
     fun startActivityOnShake(context: Context?) {}
 }

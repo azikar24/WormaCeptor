@@ -26,6 +26,8 @@ import javax.xml.transform.Source
 import javax.xml.transform.sax.SAXSource
 import javax.xml.transform.sax.SAXTransformerFactory
 import javax.xml.transform.stream.StreamResult
+import kotlin.math.ln
+import kotlin.math.pow
 
 object FormatUtils {
 
@@ -89,9 +91,9 @@ object FormatUtils {
     fun formatByteCount(bytes: Long, si: Boolean): String {
         val unit = if (si) 1000 else 1024
         if (bytes < unit) return "$bytes B"
-        val exp = (Math.log(bytes.toDouble()) / Math.log(unit.toDouble())).toInt()
+        val exp = (ln(bytes.toDouble()) / ln(unit.toDouble())).toInt()
         val pre = (if (si) "kMGTPE" else "KMGTPE")[exp - 1].toString() + if (si) "" else "i"
-        return String.format(Locale.US, "%.1f %sB", bytes / Math.pow(unit.toDouble(), exp.toDouble()), pre)
+        return String.format(Locale.US, "%.1f %sB", bytes / unit.toDouble().pow(exp.toDouble()), pre)
     }
 
     fun formatJson(json: String): CharSequence? {

@@ -21,6 +21,7 @@ import java.nio.charset.Charset
 import java.nio.charset.UnsupportedCharsetException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.min
 
 class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
@@ -121,7 +122,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     fun maxContentLength(max: Long): WormaCeptorInterceptor {
-        mMaxContentLength = Math.min(max, 999999L)
+        mMaxContentLength = min(max, 999999L)
         return this
     }
 
@@ -250,7 +251,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
     private fun readFromBuffer(buffer: Buffer, charset: Charset): String {
         val bufferSize = buffer.size
-        val maxBytes = Math.min(bufferSize, mMaxContentLength)
+        val maxBytes = min(bufferSize, mMaxContentLength)
         var body = ""
         try {
             body = buffer.readString(maxBytes, charset)

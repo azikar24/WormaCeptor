@@ -28,7 +28,6 @@ import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import com.azikar24.wormaceptor.internal.support.event.Sampler
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -77,7 +76,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
         override fun onEmit(event: TransactionListWithSearchKeyModel) {
             mNetworkListDiffUtil.setSearchKey(event.mSearchKey)
-            lifecycleScope.launch{
+            lifecycleScope.launchWhenStarted{
                 mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitData(event.pagedList)
             }
         }
@@ -135,7 +134,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun loadResults(searchKey: String? = null) {
         mViewModel.fetchData(searchKey)
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             mViewModel.pageEventFlow.collectLatest {
                 mCurrentSubscription = it
                 mTransactionSampler.consume(TransactionListWithSearchKeyModel(searchKey, it))

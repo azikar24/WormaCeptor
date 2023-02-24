@@ -22,7 +22,6 @@ import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
@@ -91,8 +90,7 @@ class CrashListFragment : Fragment() {
 
     private fun loadResults() {
         viewModel.fetchData()
-
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             viewModel.pageEventFlow.collectLatest {
                 mCurrentSubscription = it
                 mCrashTransactionAdapter.submitData(it)

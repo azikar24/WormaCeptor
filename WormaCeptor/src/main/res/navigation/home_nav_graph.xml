@@ -49,8 +49,8 @@
                 android:id="@+id/action_crashListFragment2_to_crashDetailsFragment"
                 app:destination="@id/crashDetailsFragment">
                 <argument
-                    android:name="id"
-                    app:argType="long" />
+                    android:name="crashTransaction"
+                    app:argType="com.azikar24.wormaceptor.internal.data.CrashTransaction" />
             </action>
         </fragment>
         <fragment
@@ -59,8 +59,8 @@
             android:label="fragment_stack_trace_details"
             tools:layout="@layout/fragment_crash_details">
             <argument
-                android:name="id"
-                app:argType="long" />
+                android:name="crashTransaction"
+                app:argType="com.azikar24.wormaceptor.internal.data.CrashTransaction" />
         </fragment>
 
     </navigation>

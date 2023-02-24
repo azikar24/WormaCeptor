@@ -77,7 +77,7 @@ class CrashListFragment : Fragment() {
         mCrashTransactionAdapter = CrashTransactionAdapter(requireContext(), mCrashListDiffUtil, object : CrashTransactionAdapter.Listener {
             override fun onTransactionClicked(crashTransaction: CrashTransaction?) {
                 if (crashTransaction != null) {
-                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(crashTransaction.id))
+                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(crashTransaction))
                 }
             }
         })

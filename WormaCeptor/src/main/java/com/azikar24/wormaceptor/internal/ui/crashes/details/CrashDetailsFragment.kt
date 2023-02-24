@@ -9,7 +9,6 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,12 +17,10 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentCrashDetailsBinding
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.crashes.list.CrashTransactionViewModel
 
 class CrashDetailsFragment : Fragment() {
     lateinit var binding: FragmentCrashDetailsBinding
     private val args: CrashDetailsFragmentArgs by navArgs()
-    private val viewModel: CrashTransactionViewModel by viewModels()
     lateinit var currentData: CrashTransaction
 
     private val menuProvider
@@ -46,18 +43,8 @@ class CrashDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val crash = viewModel.getAllCrashes()
-        crash?.observe(viewLifecycleOwner) { pagedCrashList ->
-            if (pagedCrashList.isNullOrEmpty()) return@observe
-            val item = pagedCrashList.firstOrNull { it.id == args.id }
-            if (item == null) {
-                findNavController().navigateUp()
-                return@observe
-            }
-            currentData = item
-            populateUI()
-        }
-
+        currentData = args.crashTransaction
+        populateUI()
     }
 
     private fun populateUI() {

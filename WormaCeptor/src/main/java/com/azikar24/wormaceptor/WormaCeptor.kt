@@ -63,22 +63,19 @@ object WormaCeptor {
     }
 
     fun addAppShortcut(context: Context): String? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            val id = "${context.packageName}.wormaceptor_ui"
-            val shortcutInfo = ShortcutInfo.Builder(context, id)
-                .setShortLabel(context.getString(R.string.app_name_2))
-                .setIcon(Icon.createWithResource(context, R.drawable.ic_icon))
-                .setLongLabel(context.getString(R.string.app_name_2)).apply {
-                    getLaunchIntent(context)?.let {
-                        setIntent(it.setAction(Intent.ACTION_VIEW))
-                    }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return null
+        val id = "${context.packageName}.wormaceptor_ui"
+        val shortcutInfo = ShortcutInfo.Builder(context, id)
+            .setShortLabel(context.getString(R.string.app_name_2))
+            .setIcon(Icon.createWithResource(context, R.drawable.ic_icon))
+            .setLongLabel(context.getString(R.string.app_name_2)).apply {
+                getLaunchIntent(context)?.let {
+                    setIntent(it.setAction(Intent.ACTION_VIEW))
                 }
-                .build()
-            context.getSystemService(ShortcutManager::class.java).addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
-            id
-        } else {
-            null
-        }
+            }
+            .build()
+        context.getSystemService(ShortcutManager::class.java).addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
+        return id
     }
 
     fun startActivityOnShake(appCompatActivity: AppCompatActivity) {

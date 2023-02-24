@@ -41,11 +41,11 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
     private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
-        override fun onEmit(searchKey: String) {
-            mSearchKey = searchKey
+        override fun onEmit(event: String) {
+            mSearchKey = event
             mHeaderSearchIndices = highlightSearchKeyword(binding.headersTextView, mSearchKey)
             mBodySearchIndices = highlightSearchKeyword(binding.bodyTextView, mSearchKey)
-            updateSearchCount(1, searchKey)
+            updateSearchCount(1, event)
         }
     })
 
@@ -142,7 +142,7 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
             }
             // else moveToIndex will be unchanged
         }
-        binding.searchCountTextView.text = "$mMoveToIndex/$totalCount"
+        binding.searchCountTextView.text = getString(R.string.counter, mMoveToIndex, totalCount)
         (binding.headersTextView.text as Spannable).removeSpan(searchHighLightSpan)
         (binding.bodyTextView.text as Spannable).removeSpan(searchHighLightSpan)
         if (mMoveToIndex > 0) {

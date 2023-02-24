@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentCrashDetailsBinding
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
@@ -63,7 +64,7 @@ class CrashDetailsFragment : Fragment() {
         setupToolbar()
 
 
-        binding.crashTitleTextView.text = "[${currentData.crashDate?.formatted()}]\n${currentData.throwable}"
+        binding.crashTitleTextView.text = getString(R.string.bracket_string_newline_string, currentData.crashDate?.formatted(), currentData.throwable)
         binding.crashesRecyclerView.layoutManager = LinearLayoutManager(requireContext()).apply {
             orientation = LinearLayoutManager.VERTICAL
         }

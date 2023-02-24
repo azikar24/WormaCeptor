@@ -56,7 +56,7 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
 
         if (transactionUIHelper.getStatus() == NetworkTransactionUIHelper.Status.Complete) {
             holder.codeTextView.text = getHighlightedText(java.lang.String.valueOf(transactionUIHelper.networkTransaction.responseCode))
-            holder.durationTextView.text = "${transactionUIHelper.networkTransaction.tookMs} ms"
+            holder.durationTextView.text = mHolder.codeTextView.context.getString(R.string.duration_ms, transactionUIHelper.networkTransaction.tookMs)
             holder.sizeTextView.text = transactionUIHelper.getTotalSizeString()
         } else {
             holder.codeTextView.text = null
@@ -64,7 +64,7 @@ class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: Netwo
             holder.sizeTextView.text = null
         }
         if (transactionUIHelper.getStatus() == NetworkTransactionUIHelper.Status.Failed) {
-            holder.codeTextView.text = "!!!"
+            holder.codeTextView.text = context.getText(R.string.failed_status)
         }
 
         val color = mColorUtil.getTransactionColor(transactionUIHelper, true)

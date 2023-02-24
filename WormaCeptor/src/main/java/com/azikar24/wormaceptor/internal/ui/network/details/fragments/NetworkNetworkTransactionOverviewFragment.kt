@@ -41,7 +41,7 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
         binding.sslTextView.text = getString(if (transactionHelper.isSsl()) R.string.yes else R.string.no)
         binding.requestTimeTextView.text = transactionHelper.networkTransaction.requestDate?.formatted()
         binding.responseTimeTextView.text = transactionHelper.networkTransaction.responseDate?.formatted()
-        binding.durationTextView.text = "${transactionHelper.networkTransaction.tookMs} ms"
+        binding.durationTextView.text = binding.root.context.getString(R.string.duration_ms, transactionHelper.networkTransaction.tookMs)
         binding.requestSizeTextView.text = transactionHelper.getRequestSizeString()
         binding.responseSizeTextView.text = transactionHelper.getResponseSizeString()
         binding.totalSizeTextView.text = transactionHelper.getTotalSizeString()

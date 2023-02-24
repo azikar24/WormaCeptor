@@ -17,5 +17,7 @@
         <item name="colorControlNormal">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textViewStyle">@style/defaultTextViewStyle</item>
     </style>
+
 </resources>

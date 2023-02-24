@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/url"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -33,6 +34,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="https://example.com/path/to/resource?here=might_be_really_long" />
 
         </TableRow>
@@ -45,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/method"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -54,6 +57,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="GET" />
 
         </TableRow>
@@ -66,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/protocol"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -75,6 +80,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="HTTP/1.1" />
 
         </TableRow>
@@ -87,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/status"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -96,6 +103,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="Complete" />
 
         </TableRow>
@@ -108,6 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/response"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -117,6 +126,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="200 OK" />
 
         </TableRow>
@@ -129,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ssl"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -138,6 +149,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="Yes" />
 
         </TableRow>
@@ -151,6 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/request_time"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -160,6 +173,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="05/02/17 11:52:49" />
 
         </TableRow>
@@ -172,11 +186,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/response_time"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/responseTimeTextView"
-
+                android:textColor="@color/statusDefaultTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -194,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/duration"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -202,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingStart="16dp"
+                android:textColor="@color/statusDefaultTxt"
                 android:paddingEnd="0dp"
                 tools:text="405 ms" />
 
@@ -216,6 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/request_size"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -225,6 +243,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="53 KB" />
 
         </TableRow>
@@ -237,6 +256,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/response_size"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -246,6 +266,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="148 KB" />
 
         </TableRow>
@@ -258,6 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_size"
+                android:textColor="@color/statusDefaultTxt"
                 android:textStyle="bold" />
 
             <TextView
@@ -267,6 +289,7 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp"
+                android:textColor="@color/statusDefaultTxt"
                 tools:text="201 KB" />
 
         </TableRow>

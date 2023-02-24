@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:textStyle="normal"
-        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/statusDefaultTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="200" />
@@ -28,7 +28,7 @@
         android:maxLines="1"
         android:padding="2dp"
         android:textStyle="normal"
-        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/statusDefaultTxt"
         app:layout_constraintBottom_toBottomOf="@id/codeTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/codeTextView"
@@ -40,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:textColor="@color/statusDefaultTxt"
         app:layout_constraintStart_toEndOf="@id/codeTextView"
         app:layout_constraintTop_toBottomOf="@id/pathTextView"
         tools:text="example.com" />
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="2dp"
+            android:textColor="@color/statusDefaultTxt"
             tools:text="18:29:07" />
 
         <TextView
@@ -79,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="2dp"
+            android:textColor="@color/statusDefaultTxt"
             tools:text="8023 ms" />
 
         <TextView
@@ -87,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="2dp"
+            android:textColor="@color/statusDefaultTxt"
             tools:text="16.45 KB" />
 
     </LinearLayout>

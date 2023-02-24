@@ -98,12 +98,14 @@
                 android:id="@+id/headersTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/statusDefaultTxt"
                 android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/bodyTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/statusDefaultTxt"
                 android:textIsSelectable="true" />
 
         </LinearLayout>

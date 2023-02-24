@@ -32,16 +32,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <TextView
+    <ImageView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="@color/statusDefaultTxt"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:src="@drawable/ic_icon_full"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />

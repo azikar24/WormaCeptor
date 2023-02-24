@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
@@ -27,6 +27,8 @@ import com.azikar24.wormaceptor.internal.support.event.Callback
 import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import com.azikar24.wormaceptor.internal.support.event.Sampler
 import com.azikar24.wormaceptor.internal.support.getApplicationName
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -36,7 +38,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val mNetworkListDiffUtil: NetworkListDiffUtil = NetworkListDiffUtil()
     private val mViewModel: NetworkTransactionViewModel by viewModels()
-    private var mCurrentSubscription: LiveData<PagedList<NetworkTransactionUIHelper>>? = null
+    private var mCurrentSubscription: PagingData<NetworkTransactionUIHelper>? = null
     val mColorUtil: ColorUtil by lazy {
         ColorUtil.getInstance(requireContext())
     }
@@ -75,13 +77,15 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
         override fun onEmit(event: TransactionListWithSearchKeyModel) {
             mNetworkListDiffUtil.setSearchKey(event.mSearchKey)
-            mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitList(event.pagedList)
+            lifecycleScope.launch{
+                mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitData(event.pagedList)
+            }
         }
     })
 
     private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
         override fun onEmit(event: String) {
-            loadResults(mViewModel.getTransactions(event), event)
+            loadResults(event)
         }
     })
 
@@ -107,7 +111,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
         setupToolBar()
         setupList()
-        loadResults(mViewModel.getTransactions(null))
+        loadResults()
     }
 
     private fun setupList() {
@@ -129,16 +133,13 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
 
-    private fun loadResults(pagedListLiveData: LiveData<PagedList<NetworkTransactionUIHelper>>?, searchKey: String? = null) {
-        if (mCurrentSubscription?.hasObservers() == true) {
-            mCurrentSubscription?.removeObservers(this)
-        }
-        pagedListLiveData?.let {
-            mCurrentSubscription = it
-            it.observe(viewLifecycleOwner) { transactionPagedList ->
-                mTransactionSampler.consume(TransactionListWithSearchKeyModel(searchKey, transactionPagedList))
+    private fun loadResults(searchKey: String? = null) {
+        mViewModel.fetchData(searchKey)
+        lifecycleScope.launch {
+            mViewModel.pageEventFlow.collectLatest {
+                mCurrentSubscription = it
+                mTransactionSampler.consume(TransactionListWithSearchKeyModel(searchKey, it))
             }
-
         }
     }
 
@@ -153,5 +154,5 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
         return true
     }
 
-    internal class TransactionListWithSearchKeyModel(val mSearchKey: String?, val pagedList: PagedList<NetworkTransactionUIHelper>)
+    internal class TransactionListWithSearchKeyModel(val mSearchKey: String?, val pagedList: PagingData<NetworkTransactionUIHelper>)
 }

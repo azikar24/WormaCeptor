@@ -208,7 +208,7 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
 
     private fun populateBody(isPlainText: Boolean) {
         if (!isPlainText) {
-            binding.bodyTextView.setText(getString(R.string.body_omitted))
+            binding.bodyTextView.text = getString(R.string.body_omitted)
         } else {
             TextUtil.asyncSetText(mExecutor, object : TextUtil.AsyncTextProvider {
                 override val text: CharSequence?

@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azikar24.wormaceptor.R
@@ -21,6 +21,8 @@ import com.azikar24.wormaceptor.databinding.FragmentCrashListBinding
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.getApplicationName
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
@@ -31,7 +33,7 @@ class CrashListFragment : Fragment() {
 
     private val mCrashListDiffUtil: CrashListDiffUtil = CrashListDiffUtil()
 
-    private var mCurrentSubscription: LiveData<PagedList<CrashTransaction>>? = null
+    private var mCurrentSubscription: PagingData<CrashTransaction>? = null
 
     private val menuProvider
         get() = object : MenuProvider {
@@ -59,7 +61,7 @@ class CrashListFragment : Fragment() {
         mColorUtil = ColorUtil.getInstance(requireContext())
         setupToolBar()
         setupList()
-        loadResults(viewModel.getAllCrashes())
+        loadResults()
     }
 
     private fun setupToolBar() {
@@ -87,16 +89,15 @@ class CrashListFragment : Fragment() {
         binding.crashTransactionRecyclerView.adapter = mCrashTransactionAdapter
     }
 
-    private fun loadResults(pagedListLiveData: LiveData<PagedList<CrashTransaction>>?) {
-        if (mCurrentSubscription?.hasObservers() == true) {
-            mCurrentSubscription?.removeObservers(this)
-        }
+    private fun loadResults() {
+        viewModel.fetchData()
 
-        pagedListLiveData?.let {
-            mCurrentSubscription = it
-            it.observe(viewLifecycleOwner) { transactionPagedList ->
-                mCrashTransactionAdapter.submitList(transactionPagedList)
+        lifecycleScope.launch {
+            viewModel.pageEventFlow.collectLatest {
+                mCurrentSubscription = it
+                mCrashTransactionAdapter.submitData(it)
             }
         }
     }
+
 }

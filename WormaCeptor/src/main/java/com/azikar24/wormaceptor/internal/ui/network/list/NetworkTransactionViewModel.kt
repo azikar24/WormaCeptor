@@ -5,37 +5,56 @@
 package com.azikar24.wormaceptor.internal.ui.network.list
 
 import android.os.AsyncTask
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class NetworkTransactionViewModel  : ViewModel() {
+class NetworkTransactionViewModel : ViewModel() {
 
-    private val config: PagedList.Config = PagedList.Config.Builder()
-        .setPageSize(15)
-        .setInitialLoadSizeHint(30)
-        .setPrefetchDistance(10)
-        .setEnablePlaceholders(true)
-        .build()
+    private val config = PagingConfig(
+        pageSize = 15,
+        prefetchDistance = 10,
+        enablePlaceholders = true,
+        initialLoadSize = 30,
+    )
 
     private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
+    val pageEventFlow = MutableStateFlow<PagingData<NetworkTransactionUIHelper>>(PagingData.empty())
 
-    val factory = transactionDao?.getAllTransactions()?.map(NetworkTransactionUIHelper.NETWORK_TRANSACTION_UI_HELPER_FUNCTION)
-    private val transactions: LiveData<PagedList<NetworkTransactionUIHelper>>? = factory?.let { LivePagedListBuilder(factory, config).build() }
+    fun fetchData(key: String?) {
+        if (key?.trim()?.isEmpty() == null) {
+            transactionDao?.getAllTransactions()?.map(NetworkTransactionUIHelper.NETWORK_TRANSACTION_UI_HELPER_FUNCTION)?.asPagingSourceFactory()?.let {
+                val pager = Pager(config = config) {
+                    it.invoke()
+                }.flow.cachedIn(viewModelScope)
 
-    fun getTransactions(key: String?): LiveData<PagedList<NetworkTransactionUIHelper>>? {
-        return if (key?.trim()?.isEmpty() == null) {
-            transactions
+                viewModelScope.launch {
+                    pager.collectLatest {
+                        pageEventFlow.value = it
+                    }
+                }
+            }
+
         } else {
-            val factory = transactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.map(NetworkTransactionUIHelper.NETWORK_TRANSACTION_UI_HELPER_FUNCTION)
-            factory?.let {
-                LivePagedListBuilder(it, config).build()
+            transactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.map(NetworkTransactionUIHelper.NETWORK_TRANSACTION_UI_HELPER_FUNCTION)?.asPagingSourceFactory()?.let {
+
+                val pager = Pager(config = config) {
+                    it.invoke()
+                }.flow.cachedIn(viewModelScope)
+
+                viewModelScope.launch {
+                    pager.collectLatest {
+                        pageEventFlow.value = it
+                    }
+                }
             }
         }
     }

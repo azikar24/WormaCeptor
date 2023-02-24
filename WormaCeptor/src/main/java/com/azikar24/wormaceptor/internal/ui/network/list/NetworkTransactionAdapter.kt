@@ -8,7 +8,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
@@ -17,7 +17,7 @@ import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyNetworkTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.NetworkTransactionViewHolder
 
-class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagedListAdapter<NetworkTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
+class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagingDataAdapter<NetworkTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
     private var mSearchKey: String? = null

@@ -7,7 +7,7 @@ package com.azikar24.wormaceptor.internal.ui.crashes.list
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
@@ -15,7 +15,7 @@ import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.EmptyCrashTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.CrashTransactionViewHolder
 
-class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, val mListener: Listener?) : PagedListAdapter<CrashTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
+class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, val mListener: Listener?) : PagingDataAdapter<CrashTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getItemViewType(position: Int): Int {

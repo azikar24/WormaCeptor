@@ -19,7 +19,7 @@ abstract class RoomTransactionDao {
     abstract fun deleteCrash(vararg persistentCrashTransaction: PersistentCrashTransaction?): Int?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertCrash(oersistentCrashTransaction: PersistentCrashTransaction?)
+    abstract fun insertCrash(persistentCrashTransaction: PersistentCrashTransaction?)
 
     @get:Query("SELECT * FROM CrashTransaction ORDER BY id DESC")
     abstract val allCrashes: DataSource.Factory<Int, PersistentCrashTransaction>?

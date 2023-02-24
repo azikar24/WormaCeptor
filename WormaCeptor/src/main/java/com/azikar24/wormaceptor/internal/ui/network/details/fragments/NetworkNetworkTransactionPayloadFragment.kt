@@ -29,7 +29,7 @@ import java.util.concurrent.Executors
 class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransactionFragment {
     lateinit var binding: FragmentNetworkTransactionPayloadBinding
     private var mSearchKey: String? = null
-    lateinit var mColorUtil: ColorUtil
+    private lateinit var mColorUtil: ColorUtil
 
     private var mHeaderSearchIndices: List<Int> = ArrayList(0)
     private var mBodySearchIndices: List<Int> = ArrayList(0)
@@ -110,8 +110,11 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     }
 
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = activity?.currentFocus
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun hideOrClearSearch() {
@@ -246,14 +249,6 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
         mHeaderSearchIndices = highlightSearchKeyword(binding.headersTextView, mSearchKey)
     }
 
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        if (isAdded && !isVisibleToUser) {
-            hideKeyboard()
-        }
-        super.setUserVisibleHint(isVisibleToUser)
-    }
-
     companion object {
         private const val ARG_TYPE = "type"
 
@@ -269,4 +264,8 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard()
+    }
 }

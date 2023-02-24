@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 
-interface HttpbinApi {
+interface HttpBinApi {
     @GET("/get")
     fun get(): Call<Void?>
 

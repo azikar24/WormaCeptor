@@ -5,7 +5,7 @@
 package com.azikar24.wormaceptor.sampleservice
 
 class VeryLargeData {
-    val data: String
+    private val data: String
 
     init {
         val stringBuilder = StringBuilder(1000000) // 100 * 10_000

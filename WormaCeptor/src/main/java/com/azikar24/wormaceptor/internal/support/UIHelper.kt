@@ -57,7 +57,7 @@ object UIHelper {
         }
     }
 
-    fun calculateHeightDiff(parentView: View): Int {
+    private fun calculateHeightDiff(parentView: View): Int {
         val rect = Rect()
         parentView.getWindowVisibleDisplayFrame(rect)
         val screenHeight = parentView.rootView.height

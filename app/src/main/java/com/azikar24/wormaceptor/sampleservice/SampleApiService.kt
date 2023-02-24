@@ -13,13 +13,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object SampleApiService {
 
-    fun getInstance(context: Context): HttpbinApi {
+    fun getInstance(context: Context): HttpBinApi {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://httpbin.org")
             .addConverterFactory(GsonConverterFactory.create())
             .client(getClient(context))
             .build()
-        return retrofit.create(HttpbinApi::class.java)
+        return retrofit.create(HttpBinApi::class.java)
     }
 
     private fun getClient(context: Context): OkHttpClient {

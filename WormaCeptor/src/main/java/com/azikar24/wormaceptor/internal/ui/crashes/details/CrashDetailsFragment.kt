@@ -19,9 +19,9 @@ import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
 
 class CrashDetailsFragment : Fragment() {
-    lateinit var binding: FragmentCrashDetailsBinding
+    private lateinit var binding: FragmentCrashDetailsBinding
     private val args: CrashDetailsFragmentArgs by navArgs()
-    lateinit var currentData: CrashTransaction
+    private lateinit var currentData: CrashTransaction
 
     private val menuProvider
         get() = object : MenuProvider {

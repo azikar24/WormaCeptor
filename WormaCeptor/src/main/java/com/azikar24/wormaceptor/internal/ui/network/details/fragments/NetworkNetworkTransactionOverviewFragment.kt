@@ -15,7 +15,7 @@ import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.support.formatted
 
 class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransactionFragment {
-    lateinit var binding: FragmentNetworkTransactionOverviewBinding
+    private lateinit var binding: FragmentNetworkTransactionOverviewBinding
     private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
 
@@ -27,10 +27,10 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        popuplateUI()
+        populateUI()
     }
 
-    private fun popuplateUI() {
+    private fun populateUI() {
         if (!isAdded) return
         val transactionHelper = mTransactionUIHelper ?: return
         binding.detailsUrlTextView.text = transactionHelper.networkTransaction.url
@@ -49,7 +49,7 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
 
     override fun transactionUpdated(transactionUIHelper: NetworkTransactionUIHelper?) {
         mTransactionUIHelper = transactionUIHelper
-        popuplateUI()
+        populateUI()
     }
 
 }

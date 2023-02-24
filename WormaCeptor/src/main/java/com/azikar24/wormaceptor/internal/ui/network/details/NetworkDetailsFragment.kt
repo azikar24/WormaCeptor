@@ -25,9 +25,9 @@ import com.azikar24.wormaceptor.internal.ui.network.details.fragments.NetworkNet
 import com.google.android.material.tabs.TabLayoutMediator
 
 class NetworkDetailsFragment : Fragment() {
-    lateinit var binding: FragmentNetworkDetailsBinding
+    private lateinit var binding: FragmentNetworkDetailsBinding
     private val viewModel: NetworkDetailTransactionViewModel by viewModels()
-    lateinit var mColorUtil: ColorUtil
+    private lateinit var mColorUtil: ColorUtil
     private var mAdapter: NetworkDetailsAdapter? = null
     lateinit var currentData: NetworkTransactionUIHelper
 

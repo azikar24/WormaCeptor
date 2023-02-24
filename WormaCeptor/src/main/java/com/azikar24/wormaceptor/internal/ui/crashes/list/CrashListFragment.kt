@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
-    lateinit var binding: FragmentCrashListBinding
+    private lateinit var binding: FragmentCrashListBinding
     private val viewModel: CrashTransactionViewModel by viewModels()
 
     private lateinit var mCrashTransactionAdapter: CrashTransactionAdapter

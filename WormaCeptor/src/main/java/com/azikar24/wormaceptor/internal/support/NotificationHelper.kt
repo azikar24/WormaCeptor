@@ -24,7 +24,7 @@ import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
 
 
 class NotificationHelper(val context: Context) {
-    private val CHANNEL_ID = "wormaceptor_notif"
+    private val CHANNEL_ID = "wormaceptor_notification"
     private val mNotificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val NOTIFICATION_ID = 1139
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)

@@ -19,7 +19,7 @@ class RetentionManager(val context: Context, period: WormaCeptorInterceptor.Peri
     private var mPrefs: SharedPreferences? = null
 
     private val storage: WormaCeptorStorage? = WormaCeptor.storage
-    val mPeriod = toMillis(period)
+    private val mPeriod = toMillis(period)
     private var mCleanupFrequency: Long = 0
 
     init {

@@ -9,7 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
-class ShakeDetector(val listener: OnShakeListener) : SensorEventListener {
+class ShakeDetector(private val listener: OnShakeListener) : SensorEventListener {
     private val gravityThreshold = 3f
     private val timeThreshold = 1000
     private var mShakeTimestamp: Long = 0

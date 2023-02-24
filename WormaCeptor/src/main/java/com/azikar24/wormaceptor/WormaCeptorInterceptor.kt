@@ -25,12 +25,12 @@ import java.util.concurrent.TimeUnit
 class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
 
-    val storage = WormaCeptor.storage
+    private val storage = WormaCeptor.storage
 
-    var stickyNotification = false
-    var mNotificationHelper: NotificationHelper? = null
-    var mMaxContentLength = 250000L
-    var mRetentionManager: RetentionManager = RetentionManager(context, Period.ONE_WEEK)
+    private var stickyNotification = false
+    private var mNotificationHelper: NotificationHelper? = null
+    private var mMaxContentLength = 250000L
+    private var mRetentionManager: RetentionManager = RetentionManager(context, Period.ONE_WEEK)
 
     @Volatile
     private var headersToRedact = emptySet<String>()

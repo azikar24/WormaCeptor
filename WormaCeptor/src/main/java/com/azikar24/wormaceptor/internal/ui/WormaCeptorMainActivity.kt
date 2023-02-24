@@ -22,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class WormaCeptorMainActivity : AppCompatActivity() {
     private lateinit var mNotificationHelper: NotificationHelper
 
-    lateinit var binding: ActivityWormaceptorMainBinding
+    private lateinit var binding: ActivityWormaceptorMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

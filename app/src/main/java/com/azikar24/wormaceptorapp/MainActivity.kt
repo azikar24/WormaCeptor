@@ -27,8 +27,8 @@ import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
-import com.azikar24.wormaceptorapp.ui.components.WormaCeptorToolbar
-import com.azikar24.wormaceptorapp.ui.theme.WormaCeptorMainTheme
+import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

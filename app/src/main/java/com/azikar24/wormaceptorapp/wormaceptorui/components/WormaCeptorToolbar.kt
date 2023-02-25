@@ -2,7 +2,7 @@
  * Copyright AziKar24 25/2/2023.
  */
 
-package com.azikar24.wormaceptorapp.ui.components
+package com.azikar24.wormaceptorapp.wormaceptorui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope

@@ -6,48 +6,146 @@ package com.azikar24.wormaceptor
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import com.azikar24.wormaceptor.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import com.azikar24.wormaceptor.sampleservice.Data
 import com.azikar24.wormaceptor.sampleservice.SampleApiService
 import com.azikar24.wormaceptor.sampleservice.VeryLargeData
+import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
+import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        setContent {
+            MainActivityContent()
+        }
         WormaCeptor.startActivityOnShake(this)
-        setupButton()
     }
 
-    private fun setupButton() {
-        binding.doHttpActivityButton.setOnClickListener {
-            doHttpActivity()
-        }
+    @Preview
+    @Composable
+    private fun MainActivityContent() {
+        val systemUiController = rememberSystemUiController()
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent
+        )
 
-        binding.launchWormaCeptorDirectlyButton.setOnClickListener {
-            WormaCeptor.getLaunchIntent(this)?.let {
-                startActivity(it)
+        WormaCeptorMainTheme() {
+            Surface(Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)) {
+                Column() {
+                    ToolBar()
+                    Header()
+                    Content()
+                }
             }
         }
+    }
 
-        binding.simulateErrorButton.setOnClickListener {
-            val x = arrayOf("")
-            x[4]
+
+    @Composable
+    private fun ToolBar() {
+        WormaCeptorToolbar(stringResource(id = R.string.app_name)) {
+            IconButton(onClick = {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(getString(R.string.github_link))
+                }
+                startActivity(intent)
+            }) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_github),
+                    contentDescription = stringResource(id = R.string.github_page),
+                    tint = MaterialTheme.colors.onPrimary
+                )
+            }
         }
     }
+
+    @Composable
+    private fun Header() {
+        Image(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_icon_full),
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(top = 40.dp)
+        )
+    }
+
+    @Composable
+    private fun Content() {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(
+                15.dp,
+                Alignment.CenterVertically
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .fillMaxHeight(0.9f),
+        ) {
+            Button(
+                onClick = { doHttpActivity() },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(id = R.string.do_http_activity))
+            }
+
+
+            Button(
+                onClick = {
+                    WormaCeptor.getLaunchIntent(baseContext)?.let {
+                        startActivity(it)
+                    }
+                },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(id = R.string.launch_directly))
+            }
+
+
+            Button(
+                onClick = {
+                    val x = arrayOf("")
+                    x[4]
+                },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(id = R.string.simulateError))
+            }
+
+        }
+    }
+
 
     private fun doHttpActivity() {
         val api = SampleApiService.getInstance(baseContext)
@@ -93,19 +191,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.actionMenuGithub) {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(getString(R.string.github_link))
-            }
-            startActivity(intent)
-        }
-        return super.onOptionsItemSelected(item)
-
-    }
 }

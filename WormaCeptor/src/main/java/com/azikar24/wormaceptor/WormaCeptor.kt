@@ -12,7 +12,7 @@ import android.graphics.drawable.Icon
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
@@ -82,15 +82,15 @@ object WormaCeptor {
         return id
     }
 
-    fun startActivityOnShake(appCompatActivity: AppCompatActivity) {
+    fun startActivityOnShake(componentActivity: ComponentActivity) {
 
-        val mSensorManager = appCompatActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val mSensorManager = componentActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val mShakeDetector = ShakeDetector {
-            appCompatActivity.startActivity(getLaunchIntent(appCompatActivity))
+            componentActivity.startActivity(getLaunchIntent(componentActivity))
         }
 
-        appCompatActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+        componentActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onResume(owner: LifecycleOwner) {
                 super.onResume(owner)
                 mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI)

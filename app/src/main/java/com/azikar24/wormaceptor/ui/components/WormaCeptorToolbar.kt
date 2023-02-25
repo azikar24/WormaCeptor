@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 private fun Preview(){
     WormaCeptorToolbar(title = "title") {
         IconButton(onClick = {}) {
-            Text("test")
+            Text("test1")
         }
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.internal.ui.network.list
 
-import android.os.AsyncTask
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
@@ -15,6 +14,9 @@ import com.azikar24.wormaceptor.internal.data.TransactionDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 class NetworkTransactionViewModel : ViewModel() {
 
@@ -60,19 +62,18 @@ class NetworkTransactionViewModel : ViewModel() {
     }
 
     fun clearAll() {
-        ClearAsyncTask(transactionDao).execute()
-    }
-
-    private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<NetworkTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: NetworkTransaction): Int? {
-            return transactionDao?.clearAll()
+        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
+            execute {
+                transactionDao?.clearAll()
+            }
         }
     }
 
-    private class DeleteAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<NetworkTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: NetworkTransaction): Int? {
-            return transactionDao?.deleteTransactions(*params)
+    fun delete(vararg params: NetworkTransaction) {
+        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
+            execute {
+                transactionDao?.deleteTransactions(*params)
+            }
         }
     }
-
 }

@@ -11,7 +11,6 @@ import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.hardware.Sensor
 import android.hardware.SensorManager
-import android.os.AsyncTask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -21,6 +20,9 @@ import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import com.azikar24.wormaceptor.internal.support.ShakeDetector
 import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
 import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 object WormaCeptor {
 
@@ -41,14 +43,16 @@ object WormaCeptor {
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
             val crashList = paramThrowable.stackTrace.toList()
-            AsyncTask.execute {
-                storage?.transactionDao?.insertCrash(
-                    CrashTransaction.Builder().apply {
-                        setThrowable(paramThrowable.toString())
-                        setCrashList(crashList.map { it })
-                        setCrashDate(Date())
-                    }.build()
-                )
+            ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
+                execute {
+                    storage?.transactionDao?.insertCrash(
+                        CrashTransaction.Builder().apply {
+                            setThrowable(paramThrowable.toString())
+                            setCrashList(crashList.map { it })
+                            setCrashDate(Date())
+                        }.build()
+                    )
+                }
             }
 
             if (oldHandler != null)

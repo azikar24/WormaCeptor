@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.internal.ui.crashes.list
 
-import android.os.AsyncTask
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
@@ -14,6 +13,9 @@ import com.azikar24.wormaceptor.internal.data.TransactionDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 class CrashTransactionViewModel : ViewModel() {
     private val config = PagingConfig(
@@ -42,19 +44,18 @@ class CrashTransactionViewModel : ViewModel() {
     }
 
     fun clearAll() {
-        ClearAsyncTask(transactionDao).execute()
-    }
-
-    private class ClearAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<CrashTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: CrashTransaction): Int? {
-            return transactionDao?.clearAllCrashes()
+        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
+            execute {
+                transactionDao?.clearAllCrashes()
+            }
         }
     }
 
-    private class DeleteAsyncTask(private val transactionDao: TransactionDao?) : AsyncTask<CrashTransaction, Void, Int>() {
-        override fun doInBackground(vararg params: CrashTransaction): Int? {
-            return transactionDao?.deleteCrash(*params)
+    fun delete(vararg params: CrashTransaction) {
+        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
+            execute {
+                transactionDao?.deleteCrash(*params)
+            }
         }
     }
-
 }

@@ -1,8 +1,8 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 25/2/2023.
  */
 
-package com.azikar24.wormaceptor
+package com.azikar24.wormaceptorapp
 
 import android.content.Intent
 import android.net.Uri
@@ -23,11 +23,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import com.azikar24.wormaceptor.sampleservice.Data
-import com.azikar24.wormaceptor.sampleservice.SampleApiService
-import com.azikar24.wormaceptor.sampleservice.VeryLargeData
-import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
+import com.azikar24.wormaceptor.WormaCeptor
+import com.azikar24.wormaceptorapp.sampleservice.Data
+import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
+import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
+import com.azikar24.wormaceptorapp.ui.components.WormaCeptorToolbar
+import com.azikar24.wormaceptorapp.ui.theme.WormaCeptorMainTheme
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

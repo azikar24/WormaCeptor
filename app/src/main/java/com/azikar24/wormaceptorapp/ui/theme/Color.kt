@@ -2,7 +2,7 @@
  * Copyright AziKar24 25/2/2023.
  */
 
-package com.azikar24.wormaceptor.ui.theme
+package com.azikar24.wormaceptorapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

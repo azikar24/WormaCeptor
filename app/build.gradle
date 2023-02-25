@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace 'com.azikar24.wormaceptor'
+    namespace 'com.azikar24.wormaceptorapp'
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {

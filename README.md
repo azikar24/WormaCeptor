@@ -79,4 +79,4 @@ If you would like to contribute to WormaCeptor, please feel free to submit a pul
  - [Gander](https://github.com/Ashok-Varma/Gander) - Copyright Ashok-Varma, Inc.
  Thanks to Ashok-Varma for awesome enhancements. This project wouldn't have been done without him. I have added some enhancements to the converted it to Kotlin
  - [Chucker](https://github.com/jgilfelt/chuck) - Copyright Jeff Gilfelt, Inc.
- - [Chucker](https://www.linkedin.com/in/tahafakhruddin) - Thanks to Taha Fakhruddin for the amazing logo
+ - [Taha Fakhruddin](https://www.linkedin.com/in/tahafakhruddin) - Thanks to Taha Fakhruddin for the amazing logo

@@ -1,15 +1,17 @@
-
-	
 <p align="center">
-
 	<img src="https://azikar24.com/wp-content/uploads/2023/03/WormaCeptor.png" />
-</div>
+</p>
 
 
 ## WormaCeptor - Android Library for Monitoring Crashes and Network Request Responses
 
 WormaCeptor is an Android library that provides a simple user interface for monitoring crashes and network request responses in your Android application. This library is designed to help developers identify and debug issues quickly and efficiently by providing real-time data on crashes and network request responses.
 
+<p align="left">
+	<a href="https://play.google.com/store/apps/details?id=com.azikar24.wormaceptordemo&">
+	<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="60"/>
+	<a/>
+</p>
 
 ## Features
 

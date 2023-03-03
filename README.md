@@ -1,16 +1,7 @@
 
 	
-<div align="center">
-	<p align="left">
-		<a href="https://play.google.com/store/apps/details?id=com.azikar24.wormaceptordemo&">
+<p align="center">
 
-		    <img 
-			alt="Get it on Google Play"
-			height="80"
-			src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
-		</a>  
-
-	</p>
 	<img src="https://azikar24.com/wp-content/uploads/2023/03/WormaCeptor.png" />
 </div>
 

@@ -24,6 +24,7 @@ val status300 = Color(0xFF135DCF)
 val status400 = Color(0xFFFF9800)
 val status500 = Color(0xFFF44336)
 
+
 @get:Composable
 val Colors.statusDefaultTxt: Color
     get() = if (isLight) Color(0xFF212121) else Color(0xFFF2F2F2)
@@ -31,4 +32,4 @@ val Colors.statusDefaultTxt: Color
 
 @get:Composable
 val Colors.statusDefault: Color
-    get() = Color(0xFF4caf50)
+    get() = if (isLight) Color(0xFF4caf50) else Color(0xFF4caf50)

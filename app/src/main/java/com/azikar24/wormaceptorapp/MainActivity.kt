@@ -17,18 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.azikar24.wormaceptor.WormaCeptor
+import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcGithub
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcIconFull
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,14 +40,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
             MainActivityContent()
         }
         WormaCeptor.startActivityOnShake(this)
     }
 
-    @Preview
+
     @Composable
     private fun MainActivityContent() {
         val systemUiController = rememberSystemUiController()
@@ -67,7 +67,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     @Composable
     private fun ToolBar() {
         WormaCeptorToolbar(stringResource(id = R.string.app_name)) {
@@ -78,7 +77,7 @@ class MainActivity : ComponentActivity() {
                 startActivity(intent)
             }) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_github),
+                    imageVector = MyIconPack.IcGithub,
                     contentDescription = stringResource(id = R.string.github_page),
                     tint = MaterialTheme.colors.onPrimary
                 )
@@ -89,7 +88,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun Header() {
         Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_icon_full),
+            imageVector = MyIconPack.IcIconFull(),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()
@@ -143,7 +142,6 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = stringResource(id = R.string.simulateError))
             }
-
         }
     }
 
@@ -192,4 +190,16 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    @ScreenPreviews
+    @Composable
+    private fun PreviewMainActivityContent() {
+        WormaCeptorMainTheme() {
+            Surface(Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)) {
+                MainActivityContent()
+            }
+        }
+    }
 }
+

@@ -16,8 +16,13 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
 
 @Composable
 fun MyIconPack.icIconFull(): ImageVector {
-    val icon = Builder(name = "IcIconFull", defaultWidth = 787.0.dp, defaultHeight =
-    442.0.dp, viewportWidth = 787.0f, viewportHeight = 442.0f).apply {
+    return Builder(
+        name = "IcIconFull",
+        defaultWidth = 787.0.dp,
+        defaultHeight = 442.0.dp,
+        viewportWidth = 787.0f,
+        viewportHeight = 442.0f
+    ).apply {
         path(fill = Brush.verticalGradient(
             colors = listOf(Color(0xFF560BAD), Color(0xFFB5179E)
             )
@@ -322,6 +327,5 @@ fun MyIconPack.icIconFull(): ImageVector {
             lineTo(768.62f, 405.82f)
             close()
         }
-    }
-    return icon.build()
+    }.build()
 }

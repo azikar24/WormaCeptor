@@ -32,7 +32,7 @@ fun CrashesListItem(data: CrashTransaction, onClick: (CrashTransaction) -> Unit)
         .clickable {
             onClick(data)
         }) {
-        val fileName = data.crashList?.firstOrNull()?.let { "${it.className} (${it.lineNumber})" }
+        val fileName = data.getClassNameAndLineNumber()
         Text(text = fileName ?: stringResource(R.string.unknown), maxLines = 2)
         Text(text = data.throwable ?: "", maxLines = 2, modifier = Modifier.padding(top = 4.dp))
         Text(text = data.crashDate?.formatted() ?: "", maxLines = 2, modifier = Modifier.padding(top = 4.dp))

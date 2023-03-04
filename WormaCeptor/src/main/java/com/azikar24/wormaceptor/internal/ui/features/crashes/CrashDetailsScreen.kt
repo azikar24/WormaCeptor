@@ -4,19 +4,20 @@
 
 package com.azikar24.wormaceptor.internal.ui.features.crashes
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
+import com.azikar24.wormaceptor.internal.data.stacktraceData
 import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
@@ -40,28 +41,23 @@ fun CrashDetailsScreen(
 
     Column {
         WormaCeptorToolbar.WormaCeptorToolbar(title = title.toString(), subtitle = subtitle.toString(), navController = navigator)
-
-        Column(Modifier.padding(20.dp)) {
-
-
-            Text(stringResource(R.string.bracket_string_newline_string, crashTransaction.crashDate?.formatted() ?: "", crashTransaction.throwable ?: ""))
-            crashTransaction.crashList?.let {
-                LazyColumn(modifier = Modifier.padding(top = 20.dp)) {
-                    items(it) {
-                        Column {
-                            Text(stringResource(id = R.string.stack_trace_string,
-                                it.className,
-                                it.methodName,
-                                it.fileName,
-                                it.lineNumber
-                            ), Modifier.padding(10.dp))
-                            Divider(color = MaterialTheme.colors.onSurface.copy(0.2f), thickness = 1.dp)
-                        }
-
-                    }
+        LazyColumn() {
+            item {
+                Text(
+                    text = stringResource(R.string.bracket_string_newline_string, crashTransaction.crashDate?.formatted() ?: "", crashTransaction.throwable ?: ""),
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                        .padding(vertical = 10.dp)
+                )
+            }
+            items(crashTransaction.crashList ?: emptyList()) {
+                Column {
+                    Text(
+                        text = it.stacktraceData(LocalContext.current),
+                        modifier = Modifier.padding(horizontal = 20.dp) .padding(vertical = 10.dp)
+                    )
+                    Divider(color = MaterialTheme.colors.onSurface.copy(0.2f), thickness = 1.dp)
                 }
             }
-
         }
 
     }

@@ -4,7 +4,9 @@
 
 package com.azikar24.wormaceptor.internal.data
 
+import android.content.Context
 import android.os.Parcelable
+import com.azikar24.wormaceptor.R
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -15,6 +17,9 @@ data class CrashTransaction(
     var crashDate: Date?,
     var throwable: String?,
 ) : Parcelable {
+    fun getClassNameAndLineNumber(): String? {
+        return crashList?.firstOrNull()?.let { "${it.className} (${it.lineNumber})" }
+    }
 
     @Parcelize
     class Builder : Parcelable {
@@ -40,4 +45,14 @@ data class CrashTransaction(
             )
         }
     }
+}
+
+fun StackTraceElement.stacktraceData(context: Context): String {
+    return context.getString(
+        R.string.stack_trace_string,
+        className,
+        methodName,
+        fileName,
+        lineNumber
+    )
 }

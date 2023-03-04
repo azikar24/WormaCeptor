@@ -4,8 +4,6 @@
 
 package com.azikar24.wormaceptorapp
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,18 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
-import com.azikar24.wormaceptorapp.sampleservice.Data
-import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
-import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcGithub
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.icIconFull
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    private fun MainActivityContent() {
+    private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
         val systemUiController = rememberSystemUiController()
         systemUiController.setSystemBarsColor(
             color = Color.Transparent
@@ -59,22 +50,19 @@ class MainActivity : ComponentActivity() {
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)) {
                 Column() {
-                    ToolBar()
+                    ToolBar(viewModel)
                     Header()
-                    Content()
+                    Content(viewModel)
                 }
             }
         }
     }
 
     @Composable
-    private fun ToolBar() {
+    private fun ToolBar(viewModel: MainActivityViewModel) {
         WormaCeptorToolbar(stringResource(id = R.string.app_name)) {
             IconButton(onClick = {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(getString(R.string.github_link))
-                }
-                startActivity(intent)
+                viewModel.goToGithub(baseContext)
             }) {
                 Icon(
                     imageVector = MyIconPack.IcGithub,
@@ -84,6 +72,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     @Composable
     private fun Header() {
@@ -98,7 +87,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Content() {
+    private fun Content(viewModel: MainActivityViewModel) {
         Column(
             verticalArrangement = Arrangement.spacedBy(
                 15.dp,
@@ -111,7 +100,7 @@ class MainActivity : ComponentActivity() {
                 .fillMaxHeight(0.9f),
         ) {
             Button(
-                onClick = { doHttpActivity() },
+                onClick = { viewModel.doHttpActivity(baseContext) },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -121,9 +110,7 @@ class MainActivity : ComponentActivity() {
 
             Button(
                 onClick = {
-                    WormaCeptor.getLaunchIntent(baseContext)?.let {
-                        startActivity(it)
-                    }
+                   viewModel.startWormaCeptor(this@MainActivity)
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
@@ -134,8 +121,7 @@ class MainActivity : ComponentActivity() {
 
             Button(
                 onClick = {
-                    val x = arrayOf("")
-                    x[4]
+                    viewModel.simulateCrash()
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
@@ -143,51 +129,6 @@ class MainActivity : ComponentActivity() {
                 Text(text = stringResource(id = R.string.simulateError))
             }
         }
-    }
-
-
-    private fun doHttpActivity() {
-        val api = SampleApiService.getInstance(baseContext)
-
-        val callBack = object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) = Unit
-            override fun onFailure(call: Call<Void?>, t: Throwable) {
-                t.printStackTrace()
-            }
-        }
-
-        api.get().enqueue(callBack)
-        api.post(Data("posted")).enqueue(callBack)
-
-        api.postForm("I Am String", null, 2.34567891, 1234, false).enqueue(callBack)
-        api.patch(Data("patched")).enqueue(callBack)
-        api.put(Data("put")).enqueue(callBack)
-        api.delete().enqueue(callBack)
-        api.status(201).enqueue(callBack)
-        api.status(401).enqueue(callBack)
-        api.status(500).enqueue(callBack)
-        api.delay(9).enqueue(callBack)
-        api.delay(15).enqueue(callBack)
-        api.bearer(UUID.randomUUID().toString()).enqueue(callBack)
-        api.redirectTo("https://http2.akamai.com").enqueue(callBack)
-        api.redirect(3).enqueue(callBack)
-        api.redirectRelative(2).enqueue(callBack)
-        api.redirectAbsolute(4).enqueue(callBack)
-        api.stream(500).enqueue(callBack)
-        api.streamBytes(2048).enqueue(callBack)
-        api.image("image/png").enqueue(callBack)
-        api.gzip().enqueue(callBack)
-        api.xml().enqueue(callBack)
-        api.utf8().enqueue(callBack)
-        api.deflate().enqueue(callBack)
-        api.cookieSet("v").enqueue(callBack)
-        api.basicAuth("me", "pass").enqueue(callBack)
-        api.drip(512, 5, 1, 200).enqueue(callBack)
-        api.deny().enqueue(callBack)
-        api.cache("Mon").enqueue(callBack)
-        api.cache(30).enqueue(callBack)
-        api.post(VeryLargeData()).enqueue(callBack)
-
     }
 
     @ScreenPreviews

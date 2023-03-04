@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.internal.support
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -14,14 +15,14 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.LongSparseArray
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
-
+import com.azikar24.wormaceptor.ui.theme.brandPrimaryColor
 
 class NotificationHelper(val context: Context) {
     private val CHANNEL_ID = "wormaceptor_notification"
@@ -42,6 +43,7 @@ class NotificationHelper(val context: Context) {
         }
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     fun show(newTransaction: NetworkTransaction, stickyNotification: Boolean) {
         val networkTransactionUIHelper = NetworkTransactionUIHelper(newTransaction)
         addToBuffer(networkTransactionUIHelper)
@@ -59,7 +61,7 @@ class NotificationHelper(val context: Context) {
             }
             .setLocalOnly(true)
             .setSmallIcon(R.drawable.ic_notification_white_24dp)
-            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            .setColor(brandPrimaryColor.toArgb())
             .setOngoing(stickyNotification)
             .setContentTitle(context.getString(R.string.notification_title))
             .setCategory(NotificationCompat.CATEGORY_STATUS)
@@ -112,6 +114,7 @@ class NotificationHelper(val context: Context) {
     }
 
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun getDismissAction(): NotificationCompat.Action {
         val dismissTitle: CharSequence = context.getString(R.string.dismiss)
         val dismissIntent = Intent(context, DismissNotificationService::class.java)
@@ -125,6 +128,7 @@ class NotificationHelper(val context: Context) {
     }
 
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun getClearAction(): NotificationCompat.Action {
         val clearTitle: CharSequence = context.getString(R.string.clear)
         val deleteIntent = Intent(context, ClearTransactionsService::class.java)

@@ -5,19 +5,15 @@
 package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.ui.theme.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ColorUtil(context: Context) {
-
-    val colorPrimary = context.getColorFromRes(R.color.colorPrimary)
-    val mSearchHighlightBackgroundColor = context.getColorFromRes(R.color.highlightBackground)
-    val mSearchHighlightTextColor = context.getColorFromRes(R.color.highlightText)
-    val mSearchHighlightUnderline = false
-
-    val mColorWhite = context.getColorFromRes(R.color.white)
-
 
     private val mColorDefault = context.getColorFromRes(R.color.statusDefault)
     private val mColorDefaultTxt = context.getColorFromRes(R.color.statusDefaultTxt)
@@ -57,6 +53,27 @@ class ColorUtil(context: Context) {
             }
             return INSTANCE
         }
+
+        @Composable
+        fun getTransactionColor(transactionUIHelper: NetworkTransactionUIHelper, isText: Boolean = false): Color {
+            val status = transactionUIHelper.getStatus()
+            val responseCode = transactionUIHelper.networkTransaction.responseCode ?: 0
+
+            return if (status == NetworkTransactionUIHelper.Status.Failed) {
+                statusError
+            } else if (status == NetworkTransactionUIHelper.Status.Requested) {
+                statusRequested
+            } else if (responseCode >= 500) {
+                status500
+            } else if (responseCode >= 400) {
+                status400
+            } else if (responseCode >= 300) {
+                status300
+            } else {
+                if (isText) MaterialTheme.colors.statusDefaultTxt else MaterialTheme.colors.statusDefault
+            }
+        }
+
     }
 
 }

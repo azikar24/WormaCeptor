@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.internal.support
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.ColorRes
@@ -27,10 +26,4 @@ fun Context.share(content: String) {
 
 fun Date.formatted(): String? {
     return SimpleDateFormat("dd/MMM/yyyy - HH:mm:ss", Locale.US).format(this)
-}
-
-fun Activity.getApplicationName(): String {
-    val applicationInfo = applicationInfo
-    val stringId = applicationInfo?.labelRes
-    return if (stringId == 0 || stringId == null) applicationInfo?.nonLocalizedLabel.toString() else getString(stringId)
 }

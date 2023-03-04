@@ -16,7 +16,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorControlNormal">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">#f0f</item>
+        <item name="android:statusBarColor">#00000000</item>
         <item name="android:textViewStyle">@style/defaultTextViewStyle</item>
     </style>
 

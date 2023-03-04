@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.azikar24.wormaceptor">
 
-    <application>
+    <application
+        >
         <activity
-            android:name=".internal.ui.WormaCeptorMainActivity"
+            android:name=".internal.ui.mainactivity.WormaCeptorMainActivity"
             android:exported="false"
             android:label="@string/app_name_2"
             android:launchMode="singleTask"

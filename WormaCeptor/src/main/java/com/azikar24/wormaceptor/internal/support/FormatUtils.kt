@@ -1,19 +1,23 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 2/3/2023.
  */
 
 package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.StyleSpan
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.HttpHeader
+import com.azikar24.wormaceptor.ui.theme.mSearchHighlightBackgroundColor
+import com.azikar24.wormaceptor.ui.theme.mSearchHighlightTextColor
+import com.azikar24.wormaceptor.ui.theme.mSearchHighlightUnderline
 import org.json.JSONArray
 import org.json.JSONObject
 import org.xml.sax.InputSource
@@ -21,6 +25,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Source
 import javax.xml.transform.sax.SAXSource
@@ -31,61 +36,46 @@ import kotlin.math.pow
 
 object FormatUtils {
 
-    fun formatTextHighlight(context: Context, text: String?, searchKey: String?): CharSequence? {
-        return if (TextUtil.isNullOrWhiteSpace(text) || TextUtil.isNullOrWhiteSpace(searchKey)) {
-            text
-        } else {
-            val startIndexes: List<Int>? = text?.let { indexOf(it, searchKey) }
-            val spannableString = SpannableString(text)
-            applyHighlightSpan(context, spannableString, startIndexes, searchKey?.length)
-            spannableString
-        }
-    }
-
-
     fun indexOf(charSequence: CharSequence?, criteria: String?): List<Int> {
+        if(criteria.isNullOrEmpty()) return listOf()
         var mCriteria = criteria
         val text = charSequence.toString().lowercase(Locale.getDefault())
-        mCriteria = mCriteria?.lowercase(Locale.getDefault())
+        mCriteria = mCriteria.lowercase(Locale.getDefault())
         val startPositions: MutableList<Int> = ArrayList()
-        var index = mCriteria?.let { text.indexOf(it) } ?: -1
+        var index = mCriteria.let { text.indexOf(it) }
         while (index >= 0) {
             startPositions.add(index)
-            index = mCriteria?.let { text.indexOf(it, index + 1) } ?: -1
+            index = mCriteria.let { text.indexOf(it, index + 1) }
         }
         return startPositions
     }
 
-    fun applyHighlightSpan(context: Context, spannableString: Spannable, indexes: List<Int>?, length: Int?) {
-        if (indexes == null) return
-        val mColorUtil = ColorUtil.getInstance(context)
-
-        for (position in indexes) {
-            spannableString.setSpan(
-                HighlightSpan(
-                    mColorUtil.mSearchHighlightBackgroundColor,
-                    mColorUtil.mSearchHighlightTextColor,
-                    mColorUtil.mSearchHighlightUnderline
-                ),
-                position, position + (length ?: 0), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-    }
-
-    fun formatHeaders(httpHeaders: List<HttpHeader?>?, withMarkup: Boolean): CharSequence {
-        val truss = Truss()
-        if (httpHeaders != null) {
+    fun formatHeaders(httpHeaders: List<HttpHeader?>?, withMarkup: Boolean): AnnotatedString {
+        if (httpHeaders == null) return buildAnnotatedString { }
+        return buildAnnotatedString {
             for (header in httpHeaders) {
-                if (withMarkup) {
-                    truss.pushSpan(StyleSpan(Typeface.BOLD))
+                if (header?.name != null) {
+                    if (withMarkup) {
+                        withStyle(
+                            style = SpanStyle(
+                                color = mSearchHighlightTextColor,
+                                background = mSearchHighlightBackgroundColor,
+                                textDecoration = TextDecoration.Underline
+                            )
+                        ) {
+                            append("${header.name}: ")
+                        }
+                    } else {
+                        append("${header.name}: ")
+                    }
+
                 }
-                truss.append(header?.name).append(": ")
-                if (withMarkup) {
-                    truss.popSpan()
+                if (header?.value != null) {
+                    append("${header.value}\n")
                 }
-                truss.append(header?.value).append("\n")
+
             }
         }
-        return truss.build()
     }
 
     fun formatByteCount(bytes: Long, si: Boolean): String {
@@ -96,23 +86,30 @@ object FormatUtils {
         return String.format(Locale.US, "%.1f %sB", bytes / unit.toDouble().pow(exp.toDouble()), pre)
     }
 
-    fun formatJson(json: String): CharSequence? {
+    fun formatJson(json: String?): AnnotatedString? {
         return try {
-            val msjon = json.trim()
-            if (msjon.startsWith("[")) {
-                val jsonArray = JSONArray(msjon)
-                jsonArray.toString(4)
-            } else {
-                val jsonObject = JSONObject(msjon)
-                jsonObject.toString(4)
+            val msjon = json?.trim()
+            buildAnnotatedString {
+                append(
+                    if (msjon?.startsWith("[") == true) {
+                        val jsonArray = JSONArray(msjon)
+                        jsonArray.toString(4)
+                    } else {
+                        val jsonObject = JSONObject(msjon)
+                        jsonObject.toString(4)
+                    }
+                )
             }
         } catch (e: Exception) {
-            Logger.e("non json content", e)
-            json
+//            Logger.e("non json content", e)
+            buildAnnotatedString {
+                append(json ?: "")
+            }
         }
     }
 
-    fun formatXml(xml: String): CharSequence? {
+    fun formatXml(xml: String?): AnnotatedString? {
+        if (xml == null) return buildAnnotatedString { }
         return try {
             val serializer = SAXTransformerFactory.newInstance().newTransformer()
             serializer.setOutputProperty(OutputKeys.INDENT, "yes")
@@ -120,39 +117,53 @@ object FormatUtils {
             val xmlSource: Source = SAXSource(InputSource(ByteArrayInputStream(xml.toByteArray())))
             val res = StreamResult(ByteArrayOutputStream())
             serializer.transform(xmlSource, res)
-            String((res.outputStream as ByteArrayOutputStream).toByteArray())
+            buildAnnotatedString {
+                append(String((res.outputStream as ByteArrayOutputStream).toByteArray()))
+            }
         } catch (e: Exception) {
             Logger.e("non xml content", e)
-            xml
+            buildAnnotatedString {
+                append(xml)
+            }
         }
     }
 
-    fun formatFormEncoded(formEncoded: String?): CharSequence? {
-        return try {
-            var mFormEncoded = formEncoded
 
-            val truss = Truss()
-            if (mFormEncoded != null) {
+    fun formatFormEncoded(formEncoded: String?): AnnotatedString? {
+        if (formEncoded == null) {
+            return buildAnnotatedString { }
+        }
+        return try {
+            buildAnnotatedString {
+                var mFormEncoded = formEncoded
                 mFormEncoded = URLDecoder.decode(mFormEncoded, "UTF-8")
                 val pairs = mFormEncoded.split("&").toTypedArray()
                 for (pair in pairs) {
                     if (pair.contains("=")) {
                         val idx = pair.indexOf("=")
-                        truss.pushSpan(StyleSpan(Typeface.BOLD))
-                        truss.append(pair.substring(0, idx)).append("= ")
-                        truss.popSpan()
-                        truss.append(pair.substring(idx + 1)).append("\n")
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold
+                            )
+                        ) {
+                            append(pair.substring(0, idx))
+                            append("= ")
+                        }
+                        append(pair.substring(idx + 1))
+                        append("\n")
                     }
                 }
             }
-            truss.build()
         } catch (e: Exception) {
             Logger.e("non form url content content", e)
-            formEncoded
+            buildAnnotatedString {
+                append("formEncoded")
+            }
         }
     }
 
-    fun getShareText(context: Context, transactionUIHelper: NetworkTransactionUIHelper): CharSequence {
+
+    fun getShareText(context: Context, transactionUIHelper: NetworkTransactionUIHelper): String {
         val text = SpannableStringBuilder()
         text.append(context.getString(R.string.url)).append(": ").append(v(transactionUIHelper.networkTransaction.url)).append("\n")
         text.append(context.getString(R.string.method)).append(": ").append(v(transactionUIHelper.networkTransaction.method)).append("\n")
@@ -182,7 +193,7 @@ object FormatUtils {
             text.append(headers).append("\n")
         }
         text.append(if (transactionUIHelper.networkTransaction.responseBodyIsPlainText) v(transactionUIHelper.getFormattedResponseBody()) else context.getString(R.string.body_omitted))
-        return text
+        return text.toString()
     }
 
 
@@ -215,5 +226,39 @@ object FormatUtils {
     private fun v(charSequence: CharSequence?): CharSequence {
         return charSequence ?: ""
     }
+
+     fun getHighlightedText(text: String?, searchKey: String?): AnnotatedString {
+        val startNs = System.nanoTime()
+        return buildAnnotatedString {
+            if (!text.isNullOrEmpty() && !searchKey.isNullOrEmpty()) {
+                val lowerText = text.lowercase()
+                val lowerKey = searchKey.lowercase()
+                var previousIndex = 0
+                var index = lowerText.indexOf(lowerKey)
+                while (index >= 0) {
+                    // Append the text before the match
+                    append(text.substring(previousIndex, index))
+                    // Append the match with the highlight style
+                    withStyle(
+                        style = SpanStyle(
+                            color = mSearchHighlightTextColor,
+                            background = mSearchHighlightBackgroundColor,
+                            textDecoration = if (mSearchHighlightUnderline) TextDecoration.Underline else TextDecoration.None
+                        )
+                    ) {
+                        append(text.substring(index, index + searchKey.length))
+                    }
+                    previousIndex = index + searchKey.length
+                    index = lowerText.indexOf(lowerKey, previousIndex)
+                }
+                // Append the remaining text after the last match
+                append(text.substring(previousIndex))
+                println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs))
+            } else {
+                append(text ?: "")
+            }
+        }
+    }
+
 
 }

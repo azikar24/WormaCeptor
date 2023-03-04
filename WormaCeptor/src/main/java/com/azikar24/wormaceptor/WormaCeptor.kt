@@ -18,7 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import com.azikar24.wormaceptor.internal.support.ShakeDetector
-import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
+import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor

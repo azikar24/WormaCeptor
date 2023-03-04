@@ -2,7 +2,7 @@
  * Copyright AziKar24 25/2/2023.
  */
 
-package com.azikar24.wormaceptorapp.wormaceptorui.theme
+package com.azikar24.wormaceptor.ui.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -10,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import com.azikar24.wormaceptor.ui.theme.Shapes
 
 
 @SuppressLint("ConflictingOnColor")

@@ -20,7 +20,7 @@ import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
-import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
+import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 
 
 class NotificationHelper(val context: Context) {

@@ -10,6 +10,8 @@ import com.azikar24.wormaceptor.internal.support.FormatUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.arch.core.util.Function
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import kotlinx.parcelize.Parcelize
 
 
@@ -22,11 +24,11 @@ class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : P
     var searchKey: String? = null
 
 
-    fun getFormattedRequestBody(): CharSequence? {
+    fun getFormattedRequestBody(): AnnotatedString? {
         return formatBody(networkTransaction.requestBody, networkTransaction.requestContentType)
     }
 
-    fun getFormattedResponseBody(): CharSequence? {
+    fun getFormattedResponseBody(): AnnotatedString? {
         return formatBody(networkTransaction.responseBody, networkTransaction.responseContentType)
     }
 
@@ -83,29 +85,20 @@ class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : P
     }
 
 
-    private fun formatBody(body: String?, contentType: String?): CharSequence? {
-        if (contentType != null && body != null) {
-            if (contentType.lowercase(Locale.getDefault()).contains("json")) {
-                return FormatUtils.formatJson(body)
-            } else if (contentType.lowercase(Locale.getDefault()).contains("xml")) {
-                return FormatUtils.formatXml(body)
-            } else if (contentType.lowercase(Locale.getDefault()).contains("form-urlencoded")) {
-                return FormatUtils.formatFormEncoded(body)
-            }
+    private fun formatBody(body: String?, contentType: String?): AnnotatedString? {
+        return if (contentType?.lowercase(Locale.getDefault())?.contains("json") == true) {
+            FormatUtils.formatJson(body)
+        } else if (contentType?.lowercase(Locale.getDefault())?.contains("xml") == true) {
+            FormatUtils.formatXml(body)
+        } else if (contentType?.lowercase(Locale.getDefault())?.contains("form-urlencoded") == true) {
+            FormatUtils.formatFormEncoded(body)
+        } else {
+            buildAnnotatedString { }
         }
-        return body
     }
 
     private fun formatBytes(bytes: Long): String {
         return FormatUtils.formatByteCount(bytes, true)
-    }
-
-    fun getResponseHeadersString(withMarkup: Boolean): CharSequence {
-        return FormatUtils.formatHeaders(networkTransaction.responseHeaders, withMarkup)
-    }
-
-    fun getRequestHeadersString(withMarkup: Boolean): CharSequence {
-        return FormatUtils.formatHeaders(networkTransaction.requestHeaders, withMarkup)
     }
 
     override fun toString(): String {

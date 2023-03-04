@@ -64,6 +64,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             newTransactionBuilder.setTookMs(response.receivedResponseAtMillis - response.sentRequestAtMillis)
             newTransactionBuilder.setRequestDate(Date(response.sentRequestAtMillis))
             newTransactionBuilder.setResponseDate(Date(response.receivedResponseAtMillis))
+            println("azikar24242424 " + newTransactionBuilder.path +" " +Date(response.receivedResponseAtMillis))
         }
 
 

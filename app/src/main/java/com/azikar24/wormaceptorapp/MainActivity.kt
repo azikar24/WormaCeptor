@@ -35,7 +35,6 @@ class MainActivity : ComponentActivity() {
         WormaCeptor.startActivityOnShake(this)
     }
 
-
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
         val systemUiController = rememberSystemUiController()

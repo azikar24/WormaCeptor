@@ -29,7 +29,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcGithub
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcIconFull
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.icIconFull
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun Header() {
         Image(
-            imageVector = MyIconPack.IcIconFull(),
+            imageVector = MyIconPack.icIconFull(),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxWidth()

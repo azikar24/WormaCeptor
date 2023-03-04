@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
     private fun ToolBar(viewModel: MainActivityViewModel) {
         WormaCeptorToolbar(stringResource(id = R.string.app_name)) {
             IconButton(onClick = {
-                viewModel.goToGithub(baseContext)
+                viewModel.goToGithub(this@MainActivity)
             }) {
                 Icon(
                     imageVector = MyIconPack.IcGithub,

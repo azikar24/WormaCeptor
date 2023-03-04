@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
 
-@Preview(  showBackground = true, device = Devices.PIXEL)
+@Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
-private fun Preview(){
-    WormaCeptorToolbar(title = "title") {
+private fun Preview() {
+    WormaCeptorToolbar(title = "WormaCeptor") {
         IconButton(onClick = {}) {
-            Text("test1")
+            Icon(imageVector = MyIconPack.IcGithub, contentDescription = "", tint = MaterialTheme.colors.onPrimary)
         }
     }
 }

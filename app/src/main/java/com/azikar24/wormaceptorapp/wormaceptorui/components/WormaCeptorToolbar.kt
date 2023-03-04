@@ -25,7 +25,6 @@ private fun Preview() {
     }
 }
 
-
 @Composable
 fun WormaCeptorToolbar(title: String, menuActions: @Composable() RowScope.() -> Unit) {
     TopAppBar(

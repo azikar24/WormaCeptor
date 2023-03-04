@@ -23,8 +23,6 @@ import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.IcGithub
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack.icIconFull
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {

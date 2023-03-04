@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.ui.theme.mSearchHighlightBackgroundColor
 import com.azikar24.wormaceptor.ui.theme.mSearchHighlightTextColor
@@ -95,8 +95,8 @@ object FormatUtils {
                         val jsonArray = JSONArray(msjon)
                         jsonArray.toString(4)
                     } else {
-                        val jsonObject = JSONObject(msjon)
-                        jsonObject.toString(4)
+                        val jsonObject = msjon?.let { JSONObject(it) }
+                        jsonObject?.toString(4) ?: "error"
                     }
                 )
             }
@@ -163,45 +163,45 @@ object FormatUtils {
     }
 
 
-    fun getShareText(context: Context, transactionUIHelper: NetworkTransactionUIHelper): String {
+    fun getShareText(context: Context, networkTransaction: NetworkTransaction): String {
         val text = SpannableStringBuilder()
-        text.append(context.getString(R.string.url)).append(": ").append(v(transactionUIHelper.networkTransaction.url)).append("\n")
-        text.append(context.getString(R.string.method)).append(": ").append(v(transactionUIHelper.networkTransaction.method)).append("\n")
-        text.append(context.getString(R.string.protocol)).append(": ").append(v(transactionUIHelper.networkTransaction.protocol)).append("\n")
-        text.append(context.getString(R.string.status)).append(": ").append(v(transactionUIHelper.getStatus().toString())).append("\n")
-        text.append(context.getString(R.string.response)).append(": ").append(v(transactionUIHelper.getResponseSummaryText())).append("\n")
-        text.append(context.getString(R.string.ssl)).append(": ").append(v(context.getString(if (transactionUIHelper.isSsl()) R.string.yes else R.string.no))).append("\n")
+        text.append(context.getString(R.string.url)).append(": ").append(v(networkTransaction.url)).append("\n")
+        text.append(context.getString(R.string.method)).append(": ").append(v(networkTransaction.method)).append("\n")
+        text.append(context.getString(R.string.protocol)).append(": ").append(v(networkTransaction.protocol)).append("\n")
+        text.append(context.getString(R.string.status)).append(": ").append(v(networkTransaction.getStatus().toString())).append("\n")
+        text.append(context.getString(R.string.response)).append(": ").append(v(networkTransaction.getResponseSummaryText())).append("\n")
+        text.append(context.getString(R.string.ssl)).append(": ").append(v(context.getString(if (networkTransaction.isSsl()) R.string.yes else R.string.no))).append("\n")
         text.append("\n")
-        text.append(context.getString(R.string.request_time)).append(": ").append(v(transactionUIHelper.networkTransaction.requestDate.toString())).append("\n")
-        text.append(context.getString(R.string.response_time)).append(": ").append(v(transactionUIHelper.networkTransaction.responseDate.toString())).append("\n")
-        text.append(context.getString(R.string.duration)).append(": ").append(v("${transactionUIHelper.networkTransaction.tookMs.toString()} ms")).append("\n")
+        text.append(context.getString(R.string.request_time)).append(": ").append(v(networkTransaction.requestDate.toString())).append("\n")
+        text.append(context.getString(R.string.response_time)).append(": ").append(v(networkTransaction.responseDate.toString())).append("\n")
+        text.append(context.getString(R.string.duration)).append(": ").append(v("${networkTransaction.tookMs.toString()} ms")).append("\n")
         text.append("\n")
-        text.append(context.getString(R.string.request_size)).append(": ").append(v(transactionUIHelper.getRequestSizeString())).append("\n")
-        text.append(context.getString(R.string.response_size)).append(": ").append(v(transactionUIHelper.getResponseSizeString())).append("\n")
-        text.append(context.getString(R.string.total_size)).append(": ").append(v(transactionUIHelper.getTotalSizeString())).append("\n")
+        text.append(context.getString(R.string.request_size)).append(": ").append(v(networkTransaction.getRequestSizeString())).append("\n")
+        text.append(context.getString(R.string.response_size)).append(": ").append(v(networkTransaction.getResponseSizeString())).append("\n")
+        text.append(context.getString(R.string.total_size)).append(": ").append(v(networkTransaction.getTotalSizeString())).append("\n")
         text.append("\n")
         text.append("---------- ").append(context.getString(R.string.request)).append(" ----------\n\n")
-        var headers = formatHeaders(transactionUIHelper.networkTransaction.requestHeaders, false)
+        var headers = formatHeaders(networkTransaction.requestHeaders, false)
         if (!TextUtil.isNullOrWhiteSpace(headers)) {
             text.append(headers).append("\n")
         }
-        text.append(if (transactionUIHelper.networkTransaction.requestBodyIsPlainText) v(transactionUIHelper.getFormattedRequestBody()) else context.getString(R.string.body_omitted))
+        text.append(if (networkTransaction.requestBodyIsPlainText) v(networkTransaction.getFormattedRequestBody()) else context.getString(R.string.body_omitted))
         text.append("\n\n")
         text.append("---------- ").append(context.getString(R.string.response)).append(" ----------\n\n")
-        headers = formatHeaders(transactionUIHelper.networkTransaction.responseHeaders, false)
+        headers = formatHeaders(networkTransaction.responseHeaders, false)
         if (!TextUtil.isNullOrWhiteSpace(headers)) {
             text.append(headers).append("\n")
         }
-        text.append(if (transactionUIHelper.networkTransaction.responseBodyIsPlainText) v(transactionUIHelper.getFormattedResponseBody()) else context.getString(R.string.body_omitted))
+        text.append(if (networkTransaction.responseBodyIsPlainText) v(networkTransaction.getFormattedResponseBody()) else context.getString(R.string.body_omitted))
         return text.toString()
     }
 
 
-    fun getShareCurlCommand(transactionUIHelper: NetworkTransactionUIHelper): String {
+    fun getShareCurlCommand(networkTransaction: NetworkTransaction): String {
         var compressed = false
         val curlCmd = StringBuilder("curl")
-        curlCmd.append(" -X ").append(transactionUIHelper.networkTransaction.method)
-        val headers: List<HttpHeader>? = transactionUIHelper.networkTransaction.requestHeaders
+        curlCmd.append(" -X ").append(networkTransaction.method)
+        val headers: List<HttpHeader>? = networkTransaction.requestHeaders
         var i = 0
         headers?.size?.apply {
             while (i < this) {
@@ -215,11 +215,11 @@ object FormatUtils {
             }
         }
 
-        val requestBody = transactionUIHelper.networkTransaction.requestBody
+        val requestBody = networkTransaction.requestBody
         if (!requestBody.isNullOrEmpty()) {
             curlCmd.append(" --data $'").append(requestBody.replace("\n", "\\n")).append("'")
         }
-        curlCmd.append(if (compressed) " --compressed " else " ").append(transactionUIHelper.networkTransaction.url)
+        curlCmd.append(if (compressed) " --compressed " else " ").append(networkTransaction.url)
         return curlCmd.toString()
     }
 

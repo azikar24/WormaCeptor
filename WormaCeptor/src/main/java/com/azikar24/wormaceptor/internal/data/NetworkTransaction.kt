@@ -1,13 +1,18 @@
 /*
- * Copyright AziKar24 19/2/2023.
+ * Copyright AziKar24 4/3/2023.
  */
 
 package com.azikar24.wormaceptor.internal.data
 
 import android.net.Uri
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.azikar24.wormaceptor.internal.support.FormatUtils
+import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 data class NetworkTransaction(
@@ -35,6 +40,87 @@ data class NetworkTransaction(
     var responseBody: String?,
     var responseBodyIsPlainText: Boolean,
 ) : Parcelable {
+    enum class Status {
+        Requested, Complete, Failed
+    }
+
+    fun getFormattedRequestBody(): AnnotatedString? {
+        return formatBody(requestBody, requestContentType)
+    }
+
+    fun getFormattedResponseBody(): AnnotatedString? {
+        return formatBody(responseBody, responseContentType)
+    }
+
+    fun getStatus(): Status {
+        return if (error != null) {
+            Status.Failed
+        } else if (responseCode == null) {
+            Status.Requested
+        } else {
+            Status.Complete
+        }
+    }
+
+    fun getResponseSummaryText(): String? {
+        return when (getStatus()) {
+            Status.Failed -> error
+            Status.Requested -> null
+            else -> responseCode.toString() + " " + responseMessage
+        }
+    }
+
+    fun getNotificationText(): String {
+        return when (getStatus()) {
+            Status.Failed -> " ! ! !  " + path
+            Status.Requested -> " . . .  " + path
+            else -> java.lang.String.valueOf(responseCode) + " " + path
+        }
+    }
+
+    fun isSsl(): Boolean {
+        return scheme?.lowercase(Locale.ROOT) == "https"
+    }
+
+    fun getRequestStartTimeString(): String? {
+        val TIME_ONLY_FMT = SimpleDateFormat("HH:mm:ss", Locale.US)
+        return requestDate?.let {
+            TIME_ONLY_FMT.format(it)
+        }
+    }
+
+    fun getRequestSizeString(): String {
+        return formatBytes(requestContentLength ?: 0)
+    }
+
+    fun getResponseSizeString(): String {
+        return formatBytes(responseContentLength ?: 0)
+    }
+
+
+    fun getTotalSizeString(): String {
+        val reqBytes: Long = requestContentLength ?: 0L
+        val resBytes: Long = responseContentLength ?: 0L
+        return formatBytes(reqBytes + resBytes)
+    }
+
+
+    private fun formatBody(body: String?, contentType: String?): AnnotatedString? {
+        return if (contentType?.lowercase(Locale.getDefault())?.contains("json") == true) {
+            FormatUtils.formatJson(body)
+        } else if (contentType?.lowercase(Locale.getDefault())?.contains("xml") == true) {
+            FormatUtils.formatXml(body)
+        } else if (contentType?.lowercase(Locale.getDefault())?.contains("form-urlencoded") == true) {
+            FormatUtils.formatFormEncoded(body)
+        } else {
+            buildAnnotatedString { }
+        }
+    }
+
+    private fun formatBytes(bytes: Long): String {
+        return FormatUtils.formatByteCount(bytes, true)
+    }
+
     fun toBuilder(): Builder {
         return Builder().also { builder ->
             builder.id = id

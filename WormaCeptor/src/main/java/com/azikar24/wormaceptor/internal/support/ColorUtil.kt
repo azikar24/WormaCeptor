@@ -9,7 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction.Status.*
 import com.azikar24.wormaceptor.ui.theme.*
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,13 +24,13 @@ class ColorUtil(context: Context) {
     private val mColor400 = context.getColorFromRes(R.color.status400)
     private val mColor300 = context.getColorFromRes(R.color.status300)
 
-    fun getTransactionColor(transactionUIHelper: NetworkTransactionUIHelper, txtColors: Boolean = false): Int {
-        val status = transactionUIHelper.getStatus()
-        val responseCode: Int = transactionUIHelper.networkTransaction.responseCode ?: 0
+    fun getTransactionColor(networkTransaction: NetworkTransaction, txtColors: Boolean = false): Int {
+        val status = networkTransaction.getStatus()
+        val responseCode: Int = networkTransaction.responseCode ?: 0
 
-        return if (status == NetworkTransactionUIHelper.Status.Failed) {
+        return if (status == Failed) {
             mColorError
-        } else if (status == NetworkTransactionUIHelper.Status.Requested) {
+        } else if (status == Requested) {
             mColorRequested
         } else if (responseCode >= 500) {
             mColor500
@@ -55,13 +56,13 @@ class ColorUtil(context: Context) {
         }
 
         @Composable
-        fun getTransactionColor(transactionUIHelper: NetworkTransactionUIHelper, isText: Boolean = false): Color {
-            val status = transactionUIHelper.getStatus()
-            val responseCode = transactionUIHelper.networkTransaction.responseCode ?: 0
+        fun getTransactionColor(networkTransaction: NetworkTransaction, isText: Boolean = false): Color {
+            val status = networkTransaction.getStatus()
+            val responseCode = networkTransaction.responseCode ?: 0
 
-            return if (status == NetworkTransactionUIHelper.Status.Failed) {
+            return if (status == Failed) {
                 statusError
-            } else if (status == NetworkTransactionUIHelper.Status.Requested) {
+            } else if (status == Requested) {
                 statusRequested
             } else if (responseCode >= 500) {
                 status500

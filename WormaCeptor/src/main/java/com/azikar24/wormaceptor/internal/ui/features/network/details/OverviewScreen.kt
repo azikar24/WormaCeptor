@@ -14,31 +14,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
 
 @Composable
-fun OverviewScreen(networkTransactionUIHelper: NetworkTransactionUIHelper?) {
+fun OverviewScreen(networkTransaction: NetworkTransaction?) {
 
     val firstSection: List<Pair<String, String?>> = listOf(
-        Pair(stringResource(id = R.string.url), networkTransactionUIHelper?.networkTransaction?.url.toString()),
-        Pair(stringResource(id = R.string.method), networkTransactionUIHelper?.networkTransaction?.method.toString()),
-        Pair(stringResource(id = R.string.protocol), networkTransactionUIHelper?.networkTransaction?.protocol.toString()),
-        Pair(stringResource(id = R.string.status), networkTransactionUIHelper?.getStatus().toString()),
-        Pair(stringResource(id = R.string.response), networkTransactionUIHelper?.networkTransaction?.responseCode.toString()),
-        Pair(stringResource(id = R.string.ssl), networkTransactionUIHelper?.isSsl().toString())
+        Pair(stringResource(id = R.string.url), networkTransaction?.url.toString()),
+        Pair(stringResource(id = R.string.method), networkTransaction?.method.toString()),
+        Pair(stringResource(id = R.string.protocol), networkTransaction?.protocol.toString()),
+        Pair(stringResource(id = R.string.status), networkTransaction?.getStatus().toString()),
+        Pair(stringResource(id = R.string.response), networkTransaction?.responseCode.toString()),
+        Pair(stringResource(id = R.string.ssl), networkTransaction?.isSsl().toString())
     )
 
     val secondSection: List<Pair<String, String?>> = listOf(
-        Pair(stringResource(id = R.string.request_time), networkTransactionUIHelper?.networkTransaction?.requestDate?.formatted()),
-        Pair(stringResource(id = R.string.response_time), networkTransactionUIHelper?.networkTransaction?.responseDate?.formatted()),
-        Pair(stringResource(id = R.string.duration), stringResource(id = R.string.duration_ms, networkTransactionUIHelper?.networkTransaction?.tookMs ?:0)),
+        Pair(stringResource(id = R.string.request_time), networkTransaction?.requestDate?.formatted()),
+        Pair(stringResource(id = R.string.response_time), networkTransaction?.responseDate?.formatted()),
+        Pair(stringResource(id = R.string.duration), stringResource(id = R.string.duration_ms, networkTransaction?.tookMs ?:0)),
     )
 
     val thirdSection: List<Pair<String, String?>> = listOf(
-        Pair(stringResource(id = R.string.response_size), networkTransactionUIHelper?.getRequestSizeString().toString()),
-        Pair(stringResource(id = R.string.response_size), networkTransactionUIHelper?.getResponseSizeString().toString()),
-        Pair(stringResource(id = R.string.total_size), networkTransactionUIHelper?.getTotalSizeString().toString()),
+        Pair(stringResource(id = R.string.response_size), networkTransaction?.getRequestSizeString().toString()),
+        Pair(stringResource(id = R.string.response_size), networkTransaction?.getResponseSizeString().toString()),
+        Pair(stringResource(id = R.string.total_size), networkTransaction?.getTotalSizeString().toString()),
     )
     LazyColumn(modifier = Modifier.padding(20.dp)) {
         items(firstSection) {

@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.WormaCeptor
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 import com.azikar24.wormaceptor.ui.theme.brandPrimaryColor
@@ -44,9 +43,8 @@ class NotificationHelper(val context: Context) {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    fun show(newTransaction: NetworkTransaction, stickyNotification: Boolean) {
-        val networkTransactionUIHelper = NetworkTransactionUIHelper(newTransaction)
-        addToBuffer(networkTransactionUIHelper)
+    fun show(newTransaction:  NetworkTransaction, stickyNotification: Boolean) {
+        addToBuffer(newTransaction)
 
         if (WormaCeptorMainActivity.IN_FOREGROUND) return
 
@@ -95,17 +93,17 @@ class NotificationHelper(val context: Context) {
     }
 
     @Synchronized
-    private fun addToBuffer(transaction: NetworkTransactionUIHelper) {
-        if (transaction.getStatus() == NetworkTransactionUIHelper.Status.Requested) {
+    private fun addToBuffer(transaction: NetworkTransaction) {
+        if (transaction.getStatus() == NetworkTransaction.Status.Requested) {
             TRANSACTION_COUNT++
         }
-        TRANSACTION_BUFFER.put(transaction.networkTransaction.id, transaction)
+        TRANSACTION_BUFFER.put(transaction.id, transaction)
         if (TRANSACTION_BUFFER.size() > BUFFER_SIZE) {
             TRANSACTION_BUFFER.removeAt(0)
         }
     }
 
-    private fun getNotificationText(transaction: NetworkTransactionUIHelper): CharSequence {
+    private fun getNotificationText(transaction: NetworkTransaction): CharSequence {
         val color = mColorUtil.getTransactionColor(transaction)
         val text = transaction.getNotificationText()
         val spannableString = SpannableString(text)
@@ -142,7 +140,7 @@ class NotificationHelper(val context: Context) {
 
     companion object {
         private var TRANSACTION_COUNT = 0
-        private val TRANSACTION_BUFFER = LongSparseArray<NetworkTransactionUIHelper>()
+        private val TRANSACTION_BUFFER = LongSparseArray<NetworkTransaction>()
 
         @Synchronized
         fun clearBuffer() {

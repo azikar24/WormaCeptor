@@ -17,7 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
 import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
@@ -38,24 +38,24 @@ import kotlinx.coroutines.flow.collectLatest
 fun NetworkDetailsScreen(
     navigator: DestinationsNavigator,
     viewModel: NetworkTransactionViewModel = viewModel(),
-    mNetworkTransactionUIHelper: NetworkTransactionUIHelper,
+    mNetworkTransaction: NetworkTransaction,
 ) {
-    var networkTransactionUIHelper: NetworkTransactionUIHelper? by remember {
+    var networkTransaction: NetworkTransaction? by remember {
         mutableStateOf(null)
     }
-    LaunchedEffect(key1 = mNetworkTransactionUIHelper.networkTransaction.id.toString()) {
+    LaunchedEffect(key1 = mNetworkTransaction.id.toString()) {
         viewModel
-            .getTransactionWithId(mNetworkTransactionUIHelper.networkTransaction.id)
+            .getTransactionWithId(mNetworkTransaction.id)
             ?.collectLatest {
-                networkTransactionUIHelper = it
+                networkTransaction = it
             }
     }
 
 
     Column() {
-        val color = networkTransactionUIHelper?.let { ColorUtil.getInstance(LocalContext.current).getTransactionColor(it) }?.let { Color(it) } ?: MaterialTheme.colors.primary
+        val color = networkTransaction?.let { ColorUtil.getInstance(LocalContext.current).getTransactionColor(it) }?.let { Color(it) } ?: MaterialTheme.colors.primary
         var expanded by remember { mutableStateOf(false) }
-        val title = "[${networkTransactionUIHelper?.networkTransaction?.method}] ${networkTransactionUIHelper?.networkTransaction?.path}"
+        val title = "[${networkTransaction?.method}] ${networkTransaction?.path}"
         WormaCeptorToolbar.WormaCeptorToolbar(title = title, color = color, navController = navigator) {
             IconButton(onClick = { expanded = true }) {
                 Icon(tint = MaterialTheme.colors.onPrimary, imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp), contentDescription = "")
@@ -68,9 +68,9 @@ fun NetworkDetailsScreen(
                     options.forEach() { option ->
                         DropdownMenuItem(onClick = {
                             if(option ==context.getString(R.string.share_as_text)){
-                                networkTransactionUIHelper?.let { context.share(FormatUtils.getShareText(context, it)) }
+                                networkTransaction?.let { context.share(FormatUtils.getShareText(context, it)) }
                             } else {
-                                networkTransactionUIHelper?.let { context.share(FormatUtils.getShareCurlCommand(it)) }
+                                networkTransaction?.let { context.share(FormatUtils.getShareCurlCommand(it)) }
                             }
                             expanded = false
                         }) {
@@ -91,7 +91,7 @@ fun NetworkDetailsScreen(
         val pagerState = rememberPagerState(pageCount = tabData.size)
         Column(modifier = Modifier.fillMaxSize()) {
             TabLayout(tabData, pagerState, color)
-            TabContent(pagerState, networkTransactionUIHelper)
+            TabContent(pagerState, networkTransaction)
         }
 
     }
@@ -100,12 +100,12 @@ fun NetworkDetailsScreen(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabContent(pagerState: PagerState, networkTransactionUIHelper: NetworkTransactionUIHelper?) {
+fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) {
     HorizontalPager(state = pagerState) { index ->
         when (index) {
             0 -> {
                 Column(Modifier.fillMaxSize()) {
-                    OverviewScreen(networkTransactionUIHelper)
+                    OverviewScreen(networkTransaction)
                 }
 
             }
@@ -113,12 +113,12 @@ fun TabContent(pagerState: PagerState, networkTransactionUIHelper: NetworkTransa
             1 -> {
                 Column(Modifier.fillMaxSize()) {
                     PayloadScreen(
-                        headers = networkTransactionUIHelper?.networkTransaction?.requestHeaders,//.getRequestHeadersString(true),
-                        body = if (networkTransactionUIHelper?.networkTransaction?.requestBodyIsPlainText == true)
-                            networkTransactionUIHelper.getFormattedRequestBody()
+                        headers = networkTransaction?.requestHeaders,//.getRequestHeadersString(true),
+                        body = if (networkTransaction?.requestBodyIsPlainText == true)
+                            networkTransaction.getFormattedRequestBody()
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransactionUIHelper?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
+                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
                     )
                 }
             }
@@ -126,12 +126,12 @@ fun TabContent(pagerState: PagerState, networkTransactionUIHelper: NetworkTransa
             2 -> {
                 Column(Modifier.fillMaxSize()) {
                     PayloadScreen(
-                        headers = networkTransactionUIHelper?.networkTransaction?.responseHeaders,//.getResponseHeadersString(true),
-                        body = if (networkTransactionUIHelper?.networkTransaction?.responseBodyIsPlainText == true)
-                            networkTransactionUIHelper.getFormattedResponseBody()
+                        headers = networkTransaction?.responseHeaders,//.getResponseHeadersString(true),
+                        body = if (networkTransaction?.responseBodyIsPlainText == true)
+                            networkTransaction.getFormattedResponseBody()
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransactionUIHelper?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
+                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
                     )
                 }
             }

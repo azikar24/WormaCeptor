@@ -7,11 +7,11 @@ package com.azikar24.wormaceptor.persistence
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
-import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 import androidx.arch.core.util.Function
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
 
 class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {

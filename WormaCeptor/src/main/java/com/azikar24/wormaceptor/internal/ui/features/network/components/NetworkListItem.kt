@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.annotations.ComponentPreviews
-import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
@@ -31,7 +30,7 @@ import java.util.*
 
 
 @Composable
-fun NetworkListItem(data: NetworkTransactionUIHelper, searchKey: String? = null, onClick: (NetworkTransactionUIHelper) -> Unit) {
+fun NetworkListItem(data: NetworkTransaction, searchKey: String? = null, onClick: (NetworkTransaction) -> Unit) {
     Row(
         modifier = Modifier
             .background(MaterialTheme.colors.surface)
@@ -47,17 +46,17 @@ fun NetworkListItem(data: NetworkTransactionUIHelper, searchKey: String? = null,
 }
 
 @Composable
-private fun StatusCode(data: NetworkTransactionUIHelper, searchKey: String?) {
-    val responseCode = data.networkTransaction.responseCode
+private fun StatusCode(data: NetworkTransaction, searchKey: String?) {
+    val responseCode = data.responseCode
     val status = data.getStatus()
     val transactionColor = ColorUtil.getTransactionColor(data, true)
     Text(
         text = when (status) {
-            NetworkTransactionUIHelper.Status.Complete -> {
+            NetworkTransaction.Status.Complete -> {
                 FormatUtils.getHighlightedText(text = responseCode.toString(), searchKey = searchKey)
             }
 
-            NetworkTransactionUIHelper.Status.Failed -> {
+            NetworkTransaction.Status.Failed -> {
                 AnnotatedString("!!!")
             }
 
@@ -71,17 +70,16 @@ private fun StatusCode(data: NetworkTransactionUIHelper, searchKey: String?) {
 }
 
 @Composable
-private fun ItemBody(data: NetworkTransactionUIHelper, searchKey: String?) {
-    val networkTransaction = data.networkTransaction
-    val status = data.getStatus()
-    val transactionColor = ColorUtil.getTransactionColor(data, true)
+private fun ItemBody(networkTransaction: NetworkTransaction, searchKey: String?) {
+    val status = networkTransaction.getStatus()
+    val transactionColor = ColorUtil.getTransactionColor(networkTransaction, true)
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(start = 8.dp)
     ) {
         MethodAndPath(networkTransaction.method, networkTransaction.path, transactionColor, searchKey)
-        Host(networkTransaction.host, data.isSsl(), searchKey)
-        Stats(data.getRequestStartTimeString(), networkTransaction.tookMs, data.getTotalSizeString(), status)
+        Host(networkTransaction.host, networkTransaction.isSsl(), searchKey)
+        Stats(networkTransaction.getRequestStartTimeString(), networkTransaction.tookMs, networkTransaction.getTotalSizeString(), status)
     }
 }
 
@@ -119,7 +117,7 @@ fun Host(host: String?, ssl: Boolean, searchKey: String?) {
 
 
 @Composable
-fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: String, status: NetworkTransactionUIHelper.Status) {
+fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: String, status: NetworkTransaction.Status) {
     Row() {
         Text(
             text = requestStartTimeString.toString(),
@@ -127,12 +125,12 @@ fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: Strin
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = if (status == NetworkTransactionUIHelper.Status.Complete) stringResource(id = R.string.duration_ms, tookMs ?: 0L) else "",
+            text = if (status == NetworkTransaction.Status.Complete) stringResource(id = R.string.duration_ms, tookMs ?: 0L) else "",
             color = MaterialTheme.colors.onSurface,
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = if (status == NetworkTransactionUIHelper.Status.Complete) totalSizeString else "",
+            text = if (status == NetworkTransaction.Status.Complete) totalSizeString else "",
             color = MaterialTheme.colors.onSurface,
             modifier = Modifier.weight(1f)
         )
@@ -145,11 +143,8 @@ fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: Strin
 @Composable
 fun PreviewNetworkListItem() {
     WormaCeptorMainTheme() {
-        val data = NetworkTransactionUIHelper(
-            networkTransaction = NetworkTransaction(
-                id = 1, requestDate = Date(), responseDate = Date(), tookMs = 100L, protocol = "protocol", method = "method", url = "url", host = "host", path = "path", scheme = "https", requestContentLength = 100L, requestContentType = "", requestHeaders = listOf(HttpHeader("name", "value")), requestBody = "requestBody", requestBodyIsPlainText = true, responseCode = 200, responseMessage = "", error = "", responseContentLength = 100L, responseContentType = "", responseHeaders = listOf(HttpHeader("name", "value")), responseBody = "", responseBodyIsPlainText = true
-            )
-
+        val data = NetworkTransaction(
+            id = 1, requestDate = Date(), responseDate = Date(), tookMs = 100L, protocol = "protocol", method = "method", url = "url", host = "host", path = "path", scheme = "https", requestContentLength = 100L, requestContentType = "", requestHeaders = listOf(HttpHeader("name", "value")), requestBody = "requestBody", requestBodyIsPlainText = true, responseCode = 200, responseMessage = "", error = "", responseContentLength = 100L, responseContentType = "", responseHeaders = listOf(HttpHeader("name", "value")), responseBody = "", responseBodyIsPlainText = true
         )
         NetworkListItem(data = data, onClick = { })
     }

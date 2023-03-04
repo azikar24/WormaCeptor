@@ -5,8 +5,8 @@
 package com.azikar24.wormaceptor
 
 import android.content.Context
-import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
+import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.internal.support.HttpHeaders
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.support.RetentionManager

@@ -15,6 +15,8 @@ class App : Application() {
 //        WormaCeptor.storage = WormaCeptorIMDB.getInstance()
         WormaCeptor.addAppShortcut(this)
         WormaCeptor.logUnexpectedCrashes()
+        WormaCeptor.reportCrashesToEmails = listOf("azikar24@gmail.com", "kroosh4@hotmail.com")
+        WormaCeptor.reportCrashesExtras = "version name: ${BuildConfig.VERSION_NAME}"
     }
 
 }

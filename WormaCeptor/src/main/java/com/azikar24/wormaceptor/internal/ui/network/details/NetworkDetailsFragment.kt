@@ -37,7 +37,7 @@ class NetworkDetailsFragment : Fragment() {
     private val menuProvider: MenuProvider
         get() = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.details_menu, menu)
+                menuInflater.inflate(R.menu.network_details_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

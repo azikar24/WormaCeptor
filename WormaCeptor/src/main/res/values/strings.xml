@@ -49,4 +49,5 @@
     <string name="counter">%1$d/%2$d</string>
     <string name="failed_status">!!!</string>
     <string name="unknown">Unknown</string>
+    <string name="email_crash_title">Crashes Reported From WormaCeptor</string>
 </resources>

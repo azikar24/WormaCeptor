@@ -33,9 +33,11 @@ object WormaCeptor {
 
     var storage: WormaCeptorStorage? = null
     var type: WormaCeptorType? = null
+    var reportCrashesToEmails: List<String>? = null
+    var reportCrashesExtras: String? = null
 
     fun getLaunchIntent(context: Context): Intent? {
-        return Intent(context, WormaCeptorMainActivity::class.java)//.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        return Intent(context, WormaCeptorMainActivity::class.java)
     }
 
     fun logUnexpectedCrashes() {

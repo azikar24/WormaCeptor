@@ -45,7 +45,7 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     private val menuProvider: MenuProvider
         get() = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.list_menu, menu)
+                menuInflater.inflate(R.menu.network_list_menu, menu)
                 menu.findItem(R.id.search)?.let { searchMenuItem ->
                     val searchView = searchMenuItem.actionView as SearchView
                     searchView.setOnQueryTextListener(this@NetworkFragment)

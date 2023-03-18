@@ -54,6 +54,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="?colorPrimary"
-        app:menu="@menu/home_nav_menu" />
+        app:menu="@menu/bottom_nav_menu_home" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

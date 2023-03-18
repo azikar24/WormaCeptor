@@ -4,10 +4,13 @@
 
 package com.azikar24.wormaceptor.internal.ui.crashes.list
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,12 +19,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.azikar24.wormaceptor.BuildConfig
 import com.azikar24.wormaceptor.R
+import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.databinding.FragmentCrashListBinding
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
+import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.support.getApplicationName
+import com.azikar24.wormaceptor.internal.support.getSystemDetail
 import kotlinx.coroutines.flow.collectLatest
+import java.io.File
+import java.util.UUID
 
 class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
@@ -36,17 +45,48 @@ class CrashListFragment : Fragment() {
 
     private val menuProvider
         get() = object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) = Unit
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                if (!WormaCeptor.reportCrashesToEmails.isNullOrEmpty()) {
+                    menuInflater.inflate(R.menu.crashes_list_menu, menu)
+                }
+            }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     android.R.id.home -> activity?.finish()
-                    else -> {}
+                    R.id.share -> shareAllCrashes()
+                    else -> {
+                        return false
+                    }
                 }
                 return true
             }
 
         }
+
+    private fun shareAllCrashes() {
+        val stringBuilder = StringBuilder()
+        mCrashTransactionAdapter.snapshot().items.forEach {
+            stringBuilder.append("${it.crashDate?.formatted()} - ${it.throwable}")
+            it.crashList?.forEach { stackTraceElement ->
+                stringBuilder.append("at $stackTraceElement\n")
+            }
+            stringBuilder.append("\n\n\n-----------------------------------------\n\n\n")
+        }
+
+        val file = File(binding.root.context.cacheDir, "crashReport-${UUID.randomUUID()}.txt")
+        file.writeText(stringBuilder.toString())
+        val uri = FileProvider.getUriForFile(binding.root.context, "${BuildConfig.LIBRARY_PACKAGE_NAME}.provider", file)
+        val shareIntent = Intent().apply {
+            data = (Uri.parse("mailto:${WormaCeptor.reportCrashesToEmails?.joinToString { it }}"))
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_SUBJECT, binding.root.context.getString(R.string.email_crash_title))
+            putExtra(Intent.EXTRA_TEXT, binding.root.context.getSystemDetail())
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(shareIntent, "Share file"))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

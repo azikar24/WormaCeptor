@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import java.util.*
 
-
 interface TransactionDao {
 
     enum class SearchType {
@@ -38,5 +37,4 @@ interface TransactionDao {
     fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>?
 
     fun getAllTransactionsWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, NetworkTransaction>?
-
 }

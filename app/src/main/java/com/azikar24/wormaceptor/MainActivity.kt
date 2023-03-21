@@ -6,18 +6,18 @@ package com.azikar24.wormaceptor
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.azikar24.wormaceptor.databinding.ActivityMainBinding
 import com.azikar24.wormaceptor.sampleservice.Data
 import com.azikar24.wormaceptor.sampleservice.SampleApiService
 import com.azikar24.wormaceptor.sampleservice.VeryLargeData
+import java.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         api.cache("Mon").enqueue(callBack)
         api.cache(30).enqueue(callBack)
         api.post(VeryLargeData()).enqueue(callBack)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -106,6 +105,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
-
     }
 }

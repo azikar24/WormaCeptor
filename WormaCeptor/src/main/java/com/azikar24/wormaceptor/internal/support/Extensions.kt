@@ -56,5 +56,5 @@ fun Context.getSystemDetail(): String {
             
             
             Extras Info: ${WormaCeptor.reportCrashesExtras}
-        """.trimIndent()
+    """.trimIndent()
 }

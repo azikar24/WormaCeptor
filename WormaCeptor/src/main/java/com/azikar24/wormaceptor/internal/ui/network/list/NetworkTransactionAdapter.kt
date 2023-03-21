@@ -17,7 +17,11 @@ import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.EmptyNetworkTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.network.list.viewholders.NetworkTransactionViewHolder
 
-class NetworkTransactionAdapter(val context: Context, networkListDiffUtil: NetworkListDiffUtil, val mListener: Listener?) : PagingDataAdapter<NetworkTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
+class NetworkTransactionAdapter(
+    val context: Context,
+    networkListDiffUtil: NetworkListDiffUtil,
+    val mListener: Listener?
+) : PagingDataAdapter<NetworkTransactionUIHelper, RecyclerView.ViewHolder>(networkListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
     private var mSearchKey: String? = null

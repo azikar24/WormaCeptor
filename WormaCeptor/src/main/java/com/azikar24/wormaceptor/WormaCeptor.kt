@@ -65,7 +65,6 @@ object WormaCeptor {
             else
                 Runtime.getRuntime().exit(2)
         }
-
     }
 
     fun addAppShortcut(context: Context): String? {

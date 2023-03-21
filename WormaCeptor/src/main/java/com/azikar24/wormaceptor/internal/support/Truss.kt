@@ -9,7 +9,6 @@ import android.text.Spanned
 import java.util.*
 import java.util.ArrayDeque
 
-
 class Truss {
     private val builder: SpannableStringBuilder = SpannableStringBuilder()
     private val stack: Deque<Span> = ArrayDeque()

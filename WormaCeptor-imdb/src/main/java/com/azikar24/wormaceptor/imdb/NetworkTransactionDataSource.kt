@@ -8,7 +8,6 @@ import androidx.paging.PositionalDataSource
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import java.util.ArrayList
 
-
 internal class NetworkTransactionDataSource(
     networkTransactionDataStore: NetworkTransactionDataStore,
     filter: Predicate<NetworkTransaction>,
@@ -24,7 +23,10 @@ internal class NetworkTransactionDataSource(
         this.networkTransactionDataStore.addDataChangeListener(this)
     }
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<NetworkTransaction>) {
+    override fun loadInitial(
+        params: LoadInitialParams,
+        callback: LoadInitialCallback<NetworkTransaction>
+    ) {
         val totalCount = countItems()
         if (totalCount == 0) {
             callback.onResult(emptyList(), 0, 0)
@@ -45,7 +47,10 @@ internal class NetworkTransactionDataSource(
         list?.let { callback.onResult(it) }
     }
 
-    override fun onDataChange(event: NetworkTransactionDataStore.Companion.Event?, networkTransaction: NetworkTransaction?) {
+    override fun onDataChange(
+        event: NetworkTransactionDataStore.Companion.Event?,
+        networkTransaction: NetworkTransaction?
+    ) {
         if (networkTransaction?.let { isInTheList(it) } == true || networkTransaction?.let { event?.let { it1 -> checkIfEventCanEffectTheList(it1, it) } } == true) {
             updateNetworkTransactions()
             invalidate()
@@ -70,10 +75,12 @@ internal class NetworkTransactionDataSource(
             }
             return false
         } ?: false
-
     }
 
-    private fun checkIfEventCanEffectTheList(event: NetworkTransactionDataStore.Companion.Event, networkTransaction: NetworkTransaction): Boolean {
+    private fun checkIfEventCanEffectTheList(
+        event: NetworkTransactionDataStore.Companion.Event,
+        networkTransaction: NetworkTransaction
+    ): Boolean {
         return (event == NetworkTransactionDataStore.Companion.Event.ADDED || event == NetworkTransactionDataStore.Companion.Event.UPDATED) && filter.apply(networkTransaction)
     }
 

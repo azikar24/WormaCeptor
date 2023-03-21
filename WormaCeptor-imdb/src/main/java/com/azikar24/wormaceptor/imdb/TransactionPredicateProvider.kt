@@ -7,7 +7,6 @@ package com.azikar24.wormaceptor.imdb
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import java.util.*
 
-
 internal class TransactionPredicateProvider {
     fun getDefaultSearchPredicate(searchKeyWord: String): DefaultSearchPredicate {
         return DefaultSearchPredicate(searchKeyWord)
@@ -40,17 +39,19 @@ internal class TransactionPredicateProvider {
     class RequestSearchPredicate(searchKeyWord: String) : DefaultSearchPredicate(searchKeyWord) {
         override fun apply(t: NetworkTransaction): Boolean {
             return (
-                    super.apply(t)
-                            || t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
-                    )
+                super.apply(t) ||
+                    t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
+                )
         }
     }
 
     class ResponseSearchPredicate(searchKeyWord: String) : DefaultSearchPredicate(searchKeyWord) {
         override fun apply(t: NetworkTransaction): Boolean {
-            return (super.apply(t)
-                    || t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
-                    || t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true)
+            return (
+                super.apply(t) ||
+                    t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true ||
+                    t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
+                )
         }
     }
 
@@ -58,10 +59,9 @@ internal class TransactionPredicateProvider {
         override fun apply(t: NetworkTransaction): Boolean {
 
             return super.apply(t) ||
-                    t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
-                    || t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
-                    || t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
-
+                t.responseBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true ||
+                t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true ||
+                t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
         }
     }
 }

@@ -14,9 +14,6 @@ import android.text.style.StyleSpan
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.HttpHeader
-import org.json.JSONArray
-import org.json.JSONObject
-import org.xml.sax.InputSource
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
@@ -28,6 +25,9 @@ import javax.xml.transform.sax.SAXTransformerFactory
 import javax.xml.transform.stream.StreamResult
 import kotlin.math.ln
 import kotlin.math.pow
+import org.json.JSONArray
+import org.json.JSONObject
+import org.xml.sax.InputSource
 
 object FormatUtils {
 
@@ -42,7 +42,6 @@ object FormatUtils {
         }
     }
 
-
     fun indexOf(charSequence: CharSequence?, criteria: String?): List<Int> {
         var mCriteria = criteria
         val text = charSequence.toString().lowercase(Locale.getDefault())
@@ -56,7 +55,12 @@ object FormatUtils {
         return startPositions
     }
 
-    fun applyHighlightSpan(context: Context, spannableString: Spannable, indexes: List<Int>?, length: Int?) {
+    fun applyHighlightSpan(
+        context: Context,
+        spannableString: Spannable,
+        indexes: List<Int>?,
+        length: Int?
+    ) {
         if (indexes == null) return
         val mColorUtil = ColorUtil.getInstance(context)
 
@@ -67,7 +71,8 @@ object FormatUtils {
                     mColorUtil.mSearchHighlightTextColor,
                     mColorUtil.mSearchHighlightUnderline
                 ),
-                position, position + (length ?: 0), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                position, position + (length ?: 0), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
     }
 
@@ -163,7 +168,7 @@ object FormatUtils {
         text.append("\n")
         text.append(context.getString(R.string.request_time)).append(": ").append(v(transactionUIHelper.networkTransaction.requestDate.toString())).append("\n")
         text.append(context.getString(R.string.response_time)).append(": ").append(v(transactionUIHelper.networkTransaction.responseDate.toString())).append("\n")
-        text.append(context.getString(R.string.duration)).append(": ").append(v("${transactionUIHelper.networkTransaction.tookMs.toString()} ms")).append("\n")
+        text.append(context.getString(R.string.duration)).append(": ").append(v("${transactionUIHelper.networkTransaction.tookMs} ms")).append("\n")
         text.append("\n")
         text.append(context.getString(R.string.request_size)).append(": ").append(v(transactionUIHelper.getRequestSizeString())).append("\n")
         text.append(context.getString(R.string.response_size)).append(": ").append(v(transactionUIHelper.getResponseSizeString())).append("\n")
@@ -184,7 +189,6 @@ object FormatUtils {
         text.append(if (transactionUIHelper.networkTransaction.responseBodyIsPlainText) v(transactionUIHelper.getFormattedResponseBody()) else context.getString(R.string.body_omitted))
         return text
     }
-
 
     fun getShareCurlCommand(transactionUIHelper: NetworkTransactionUIHelper): String {
         var compressed = false
@@ -215,5 +219,4 @@ object FormatUtils {
     private fun v(charSequence: CharSequence?): CharSequence {
         return charSequence ?: ""
     }
-
 }

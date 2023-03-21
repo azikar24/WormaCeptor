@@ -10,7 +10,6 @@ import androidx.room.PrimaryKey
 import com.azikar24.wormaceptor.internal.data.HttpHeader
 import java.util.*
 
-
 @Entity(tableName = "NetworkTransaction")
 class PersistentNetworkTransaction {
     @PrimaryKey(autoGenerate = true)

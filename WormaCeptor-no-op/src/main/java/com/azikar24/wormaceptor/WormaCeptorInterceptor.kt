@@ -5,9 +5,9 @@
 package com.azikar24.wormaceptor
 
 import android.content.Context
+import java.io.IOException
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
 
 class WormaCeptorInterceptor(context: Context?) : Interceptor {
     enum class Period {

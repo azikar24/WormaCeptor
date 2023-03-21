@@ -5,8 +5,8 @@
 package com.azikar24.wormaceptor.internal.data
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.util.*
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CrashTransaction(

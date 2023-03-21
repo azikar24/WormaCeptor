@@ -8,8 +8,8 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -32,7 +32,6 @@ class NetworkDetailsFragment : Fragment() {
     lateinit var currentData: NetworkTransactionUIHelper
 
     private val args: NetworkDetailsFragmentArgs by navArgs()
-
 
     private val menuProvider: MenuProvider
         get() = object : MenuProvider {
@@ -62,7 +61,8 @@ class NetworkDetailsFragment : Fragment() {
         }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentNetworkDetailsBinding.inflate(inflater, container, false).also {
         binding = it
@@ -96,7 +96,6 @@ class NetworkDetailsFragment : Fragment() {
         mAdapter?.let {
             for (fragment in it.fragments) {
                 fragment.transactionUpdated(currentData)
-
             }
         }
     }
@@ -120,7 +119,6 @@ class NetworkDetailsFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 SELECTED_TAB_POSITION = position
             }
-
         })
 
         binding.viewpager2.currentItem = SELECTED_TAB_POSITION
@@ -132,5 +130,4 @@ class NetworkDetailsFragment : Fragment() {
     companion object {
         private var SELECTED_TAB_POSITION = 0
     }
-
 }

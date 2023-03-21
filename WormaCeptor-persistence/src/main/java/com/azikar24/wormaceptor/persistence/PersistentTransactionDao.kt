@@ -4,15 +4,14 @@
 
 package com.azikar24.wormaceptor.persistence
 
+import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
-import androidx.arch.core.util.Function
-import com.azikar24.wormaceptor.internal.data.CrashTransaction
-
 
 class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {
 
@@ -60,7 +59,6 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         return roomTransactionDao?.deleteNetworkTransactionsBefore(beforeDate)
     }
 
-
     override fun clearAll(): Int? {
         return roomTransactionDao?.clearAllNetworkTransactions()
     }
@@ -77,7 +75,6 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
     }
 
-
     override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, NetworkTransaction>? {
         val endWildCard = "$key%"
         val doubleSideWildCard = "%$key%"
@@ -90,7 +87,6 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
         return factory?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
     }
-
 
     private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> = Function { input ->
         NetworkTransaction.Builder().apply {
@@ -148,7 +144,6 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
     }
 
-
     private val PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION: Function<PersistentCrashTransaction, CrashTransaction> = Function { input ->
         CrashTransaction.Builder().apply {
             id = input.id
@@ -166,5 +161,4 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
             throwable = input.throwable
         }
     }
-
 }

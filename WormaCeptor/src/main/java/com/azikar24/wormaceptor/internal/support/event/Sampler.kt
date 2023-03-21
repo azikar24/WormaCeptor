@@ -24,7 +24,6 @@ class Sampler<V>(private val mInterval: Int, private val mCallback: Callback<V>)
                 currentRunnable = Counter(event, mCallback).apply {
                     mHandler.postDelayed(this, mInterval.toLong())
                 }
-
             }
         }
     }

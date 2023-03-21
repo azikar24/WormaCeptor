@@ -30,6 +30,5 @@ class WormaCeptorIMDB : WormaCeptorStorage {
             }
             return INSTANCE
         }
-
     }
 }

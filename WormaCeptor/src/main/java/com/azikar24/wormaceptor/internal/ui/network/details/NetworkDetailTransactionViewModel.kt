@@ -20,5 +20,4 @@ class NetworkDetailTransactionViewModel : ViewModel() {
             Transformations.map(it, NETWORK_TRANSACTION_UI_HELPER_FUNCTION)
         }
     }
-
 }

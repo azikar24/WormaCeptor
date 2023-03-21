@@ -4,9 +4,9 @@
 
 package com.azikar24.wormaceptor.internal.support
 
+import java.net.HttpURLConnection
 import okhttp3.Headers
 import okhttp3.Response
-import java.net.HttpURLConnection
 
 object HttpHeaders {
     private const val HTTP_CONTINUE = 100
@@ -27,12 +27,10 @@ object HttpHeaders {
             return false
         }
         val responseCode = response.code
-        return if ((responseCode < HTTP_CONTINUE || responseCode >= 200)
-            && responseCode != HttpURLConnection.HTTP_NO_CONTENT && responseCode != HttpURLConnection.HTTP_NOT_MODIFIED
+        return if ((responseCode < HTTP_CONTINUE || responseCode >= 200) &&
+            responseCode != HttpURLConnection.HTTP_NO_CONTENT && responseCode != HttpURLConnection.HTTP_NOT_MODIFIED
         ) {
             true
         } else (contentLength(response.headers) != -1L || "chunked".equals(response.header("Transfer-Encoding"), ignoreCase = true))
-
     }
-
 }

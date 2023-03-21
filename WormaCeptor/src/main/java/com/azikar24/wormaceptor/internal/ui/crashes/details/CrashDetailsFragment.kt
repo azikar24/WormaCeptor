@@ -31,11 +31,11 @@ class CrashDetailsFragment : Fragment() {
                 if (menuItem.itemId == android.R.id.home) findNavController().navigateUp()
                 return true
             }
-
         }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentCrashDetailsBinding.inflate(inflater, container, false).also {
         binding = it
@@ -58,10 +58,9 @@ class CrashDetailsFragment : Fragment() {
         val adapter = currentData.crashList?.let { CrashAdapter(items = it) }
         binding.crashesRecyclerView.adapter = adapter
 
-        if(adapter?.items?.isEmpty() == true){
-            binding.crashesRecyclerView.visibility=  View.GONE
+        if (adapter?.items?.isEmpty() == true) {
+            binding.crashesRecyclerView.visibility = View.GONE
         }
-
     }
 
     private fun setupToolbar() {
@@ -74,9 +73,7 @@ class CrashDetailsFragment : Fragment() {
 
             title = currentData.crashList?.getOrNull(0)?.fileName ?: getString(R.string.unknown)
 
-
             requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
         }
     }
-
 }

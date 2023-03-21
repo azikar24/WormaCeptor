@@ -18,7 +18,6 @@ class ColorUtil(context: Context) {
 
     val mColorWhite = context.getColorFromRes(R.color.white)
 
-
     private val mColorDefault = context.getColorFromRes(R.color.statusDefault)
     private val mColorDefaultTxt = context.getColorFromRes(R.color.statusDefaultTxt)
     private val mColorRequested = context.getColorFromRes(R.color.statusRequested)
@@ -27,7 +26,10 @@ class ColorUtil(context: Context) {
     private val mColor400 = context.getColorFromRes(R.color.status400)
     private val mColor300 = context.getColorFromRes(R.color.status300)
 
-    fun getTransactionColor(transactionUIHelper: NetworkTransactionUIHelper, txtColors: Boolean = false): Int {
+    fun getTransactionColor(
+        transactionUIHelper: NetworkTransactionUIHelper,
+        txtColors: Boolean = false
+    ): Int {
         val status = transactionUIHelper.getStatus()
         val responseCode: Int = transactionUIHelper.networkTransaction.responseCode ?: 0
 
@@ -50,7 +52,6 @@ class ColorUtil(context: Context) {
         private lateinit var INSTANCE: ColorUtil
         private val initialized = AtomicBoolean(true)
 
-
         fun getInstance(context: Context): ColorUtil {
             if (initialized.getAndSet(true)) {
                 INSTANCE = ColorUtil(context)
@@ -58,5 +59,4 @@ class ColorUtil(context: Context) {
             return INSTANCE
         }
     }
-
 }

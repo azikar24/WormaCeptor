@@ -9,7 +9,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-
 @Entity(tableName = "CrashTransaction")
 class PersistentCrashTransaction {
     @PrimaryKey(autoGenerate = true)

@@ -5,13 +5,12 @@
 package com.azikar24.wormaceptor.internal
 
 import android.os.Parcelable
+import androidx.arch.core.util.Function
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.arch.core.util.Function
 import kotlinx.parcelize.Parcelize
-
 
 @Parcelize
 class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : Parcelable {
@@ -20,7 +19,6 @@ class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : P
     }
 
     var searchKey: String? = null
-
 
     fun getFormattedRequestBody(): CharSequence? {
         return formatBody(networkTransaction.requestBody, networkTransaction.requestContentType)
@@ -75,13 +73,11 @@ class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : P
         return formatBytes(networkTransaction.responseContentLength ?: 0)
     }
 
-
     fun getTotalSizeString(): String {
         val reqBytes: Long = networkTransaction.requestContentLength ?: 0L
         val resBytes: Long = networkTransaction.responseContentLength ?: 0L
         return formatBytes(reqBytes + resBytes)
     }
-
 
     private fun formatBody(body: String?, contentType: String?): CharSequence? {
         if (contentType != null && body != null) {
@@ -111,7 +107,6 @@ class NetworkTransactionUIHelper(val networkTransaction: NetworkTransaction) : P
     override fun toString(): String {
         return "NetworkTransactionUIHelper(networkTransaction=$networkTransaction, searchKey=$searchKey)"
     }
-
 
     companion object {
         val NETWORK_TRANSACTION_UI_HELPER_FUNCTION: Function<NetworkTransaction, NetworkTransactionUIHelper> = Function { networkTransaction ->

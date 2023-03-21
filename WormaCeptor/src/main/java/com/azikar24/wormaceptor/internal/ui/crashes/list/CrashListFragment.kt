@@ -28,9 +28,9 @@ import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.support.formatted
 import com.azikar24.wormaceptor.internal.support.getApplicationName
 import com.azikar24.wormaceptor.internal.support.getSystemDetail
-import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 import java.util.UUID
+import kotlinx.coroutines.flow.collectLatest
 
 class CrashListFragment : Fragment() {
     private lateinit var mColorUtil: ColorUtil
@@ -61,7 +61,6 @@ class CrashListFragment : Fragment() {
                 }
                 return true
             }
-
         }
 
     private fun shareAllCrashes() {
@@ -89,7 +88,8 @@ class CrashListFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentCrashListBinding.inflate(inflater, container, false).also {
         binding = it
@@ -115,13 +115,16 @@ class CrashListFragment : Fragment() {
     }
 
     private fun setupList() {
-        mCrashTransactionAdapter = CrashTransactionAdapter(requireContext(), mCrashListDiffUtil, object : CrashTransactionAdapter.Listener {
-            override fun onTransactionClicked(crashTransaction: CrashTransaction?) {
-                if (crashTransaction != null) {
-                    findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(crashTransaction))
+        mCrashTransactionAdapter = CrashTransactionAdapter(
+            requireContext(), mCrashListDiffUtil,
+            object : CrashTransactionAdapter.Listener {
+                override fun onTransactionClicked(crashTransaction: CrashTransaction?) {
+                    if (crashTransaction != null) {
+                        findNavController().navigate(CrashListFragmentDirections.actionCrashListFragment2ToCrashDetailsFragment(crashTransaction))
+                    }
                 }
             }
-        })
+        )
 
         binding.crashTransactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.crashTransactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
@@ -137,5 +140,4 @@ class CrashListFragment : Fragment() {
             }
         }
     }
-
 }

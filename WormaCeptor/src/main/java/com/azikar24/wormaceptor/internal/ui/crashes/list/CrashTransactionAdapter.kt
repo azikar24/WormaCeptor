@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.EmptyCrashTransactionViewHolder
 import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.CrashTransactionViewHolder
+import com.azikar24.wormaceptor.internal.ui.crashes.list.viewholders.EmptyCrashTransactionViewHolder
 
-class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashListDiffUtil, private val mListener: Listener?) : PagingDataAdapter<CrashTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
+class CrashTransactionAdapter(
+    val context: Context,
+    crashListDiffUtil: CrashListDiffUtil,
+    private val mListener: Listener?
+) : PagingDataAdapter<CrashTransaction, RecyclerView.ViewHolder>(crashListDiffUtil) {
     private val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun getItemViewType(position: Int): Int {
@@ -37,7 +41,6 @@ class CrashTransactionAdapter(val context: Context, crashListDiffUtil: CrashList
         mHolder.errorTypeTextView.text = crashTransaction.throwable
         mHolder.filenameTextView.text = crashTransaction.crashList?.getOrNull(0)?.let { "${it.className} (${it.lineNumber})" } ?: context.getString(R.string.unknown)
         mHolder.dateTextView.text = crashTransaction.crashDate?.formatted()
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

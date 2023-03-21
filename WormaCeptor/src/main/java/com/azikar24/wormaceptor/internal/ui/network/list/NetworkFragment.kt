@@ -9,9 +9,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -73,23 +73,30 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
 
-    private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(100, object : Callback<TransactionListWithSearchKeyModel> {
-        override fun onEmit(event: TransactionListWithSearchKeyModel) {
-            mNetworkListDiffUtil.setSearchKey(event.mSearchKey)
-            lifecycleScope.launchWhenStarted{
-                mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitData(event.pagedList)
+    private val mTransactionSampler: Sampler<TransactionListWithSearchKeyModel> = Sampler(
+        100,
+        object : Callback<TransactionListWithSearchKeyModel> {
+            override fun onEmit(event: TransactionListWithSearchKeyModel) {
+                mNetworkListDiffUtil.setSearchKey(event.mSearchKey)
+                lifecycleScope.launchWhenStarted {
+                    mNetworkTransactionAdapter.setSearchKey(event.mSearchKey).submitData(event.pagedList)
+                }
             }
         }
-    })
+    )
 
-    private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
-        override fun onEmit(event: String) {
-            loadResults(event)
+    private val mSearchDebouncer: Debouncer<String> = Debouncer(
+        500,
+        object : Callback<String> {
+            override fun onEmit(event: String) {
+                loadResults(event)
+            }
         }
-    })
+    )
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentNetworkListBinding.inflate(inflater, container, false).also {
         binding = it
@@ -114,23 +121,25 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun setupList() {
-        mNetworkTransactionAdapter = NetworkTransactionAdapter(requireContext(), mNetworkListDiffUtil, object : NetworkTransactionAdapter.Listener {
-            override fun onTransactionClicked(transactionUIHelper: NetworkTransactionUIHelper?) {
-                if (transactionUIHelper != null) {
-                    findNavController().navigate(NetworkFragmentDirections.actionNetworkListFragmentToDetailsFragment(transactionUIHelper.networkTransaction.id))
+        mNetworkTransactionAdapter = NetworkTransactionAdapter(
+            requireContext(), mNetworkListDiffUtil,
+            object : NetworkTransactionAdapter.Listener {
+                override fun onTransactionClicked(transactionUIHelper: NetworkTransactionUIHelper?) {
+                    if (transactionUIHelper != null) {
+                        findNavController().navigate(NetworkFragmentDirections.actionNetworkListFragmentToDetailsFragment(transactionUIHelper.networkTransaction.id))
+                    }
+                }
+
+                override fun onItemsInserted(firstInsertedItemPosition: Int) {
+                    binding.transactionRecyclerView.smoothScrollToPosition(firstInsertedItemPosition)
                 }
             }
-
-            override fun onItemsInserted(firstInsertedItemPosition: Int) {
-                binding.transactionRecyclerView.smoothScrollToPosition(firstInsertedItemPosition)
-            }
-        })
+        )
 
         binding.transactionRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         binding.transactionRecyclerView.adapter = mNetworkTransactionAdapter
     }
-
 
     private fun loadResults(searchKey: String? = null) {
         mViewModel.fetchData(searchKey)
@@ -153,5 +162,8 @@ class NetworkFragment : Fragment(), SearchView.OnQueryTextListener {
         return true
     }
 
-    internal class TransactionListWithSearchKeyModel(val mSearchKey: String?, val pagedList: PagingData<NetworkTransactionUIHelper>)
+    internal class TransactionListWithSearchKeyModel(
+        val mSearchKey: String?,
+        val pagedList: PagingData<NetworkTransactionUIHelper>
+    )
 }

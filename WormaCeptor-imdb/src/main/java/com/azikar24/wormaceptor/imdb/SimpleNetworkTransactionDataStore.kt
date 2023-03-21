@@ -8,7 +8,6 @@ import androidx.collection.ArraySet
 import androidx.collection.LongSparseArray
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
-
 internal class SimpleNetworkTransactionDataStore : NetworkTransactionDataStore {
     private val data: LongSparseArray<NetworkTransaction> = LongSparseArray<NetworkTransaction>(200)
     private val dataChangeListeners: MutableSet<NetworkTransactionDataStore.DataChangeListener?> = ArraySet()
@@ -65,11 +64,15 @@ internal class SimpleNetworkTransactionDataStore : NetworkTransactionDataStore {
         throw NetworkTransactionDataStore.IndexDoesNotExistException()
     }
 
-    override fun addDataChangeListener(dataChangeListener: NetworkTransactionDataStore.DataChangeListener?) {
+    override fun addDataChangeListener(
+        dataChangeListener: NetworkTransactionDataStore.DataChangeListener?
+    ) {
         dataChangeListeners.add(dataChangeListener)
     }
 
-    override fun removeDataChangeListener(dataChangeListener: NetworkTransactionDataStore.DataChangeListener?) {
+    override fun removeDataChangeListener(
+        dataChangeListener: NetworkTransactionDataStore.DataChangeListener?
+    ) {
         dataChangeListeners.remove(dataChangeListener)
     }
 
@@ -77,7 +80,10 @@ internal class SimpleNetworkTransactionDataStore : NetworkTransactionDataStore {
         networkTransaction?.id?.let { data.append(it, networkTransaction) }
     }
 
-    private fun sendDataChangeEvent(event: NetworkTransactionDataStore.Companion.Event, networkTransaction: NetworkTransaction?) {
+    private fun sendDataChangeEvent(
+        event: NetworkTransactionDataStore.Companion.Event,
+        networkTransaction: NetworkTransaction?
+    ) {
         for (dataChangeListener in dataChangeListeners) {
             dataChangeListener?.onDataChange(event, networkTransaction)
         }

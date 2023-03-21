@@ -62,7 +62,6 @@ internal object RoomTypeConverters {
         return stringBuilder.toString()
     }
 
-
     @TypeConverter
     fun fromCrashElementListToString(value: List<StackTraceElement?>?): String? {
         if (value.isNullOrEmpty()) {
@@ -96,12 +95,13 @@ internal object RoomTypeConverters {
         val list: MutableList<StackTraceElement> = ArrayList(nameValuePairArray.size)
         for (nameValuePair in nameValuePairArray) {
             val nameValue = nameValuePair.split(NAME_VALUE_SEPARATOR).toTypedArray()
-            list.add(StackTraceElement(
-                nameValue.getOrNull(0) ?: "",
-                nameValue.getOrNull(1) ?: "",
-                nameValue.getOrNull(2) ?: "",
-                (nameValue.getOrNull(3) ?: "-1").toInt(),
-            )
+            list.add(
+                StackTraceElement(
+                    nameValue.getOrNull(0) ?: "",
+                    nameValue.getOrNull(1) ?: "",
+                    nameValue.getOrNull(2) ?: "",
+                    (nameValue.getOrNull(3) ?: "-1").toInt(),
+                )
             )
         }
         return list

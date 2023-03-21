@@ -16,5 +16,4 @@ class ClearTransactionsService : IntentService("WormaCeptor-ClearTransactionServ
         val notificationHelper = NotificationHelper(this)
         notificationHelper.dismiss()
     }
-
 }

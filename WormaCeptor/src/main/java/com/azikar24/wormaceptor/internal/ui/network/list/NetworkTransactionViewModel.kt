@@ -11,12 +11,12 @@ import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class NetworkTransactionViewModel : ViewModel() {
 
@@ -44,7 +44,6 @@ class NetworkTransactionViewModel : ViewModel() {
                     }
                 }
             }
-
         } else {
             transactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.map(NetworkTransactionUIHelper.NETWORK_TRANSACTION_UI_HELPER_FUNCTION)?.asPagingSourceFactory()?.let {
 

@@ -6,12 +6,16 @@ package com.azikar24.wormaceptor.imdb
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
+import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
-internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactionDataStore, transactionArchComponentProvider: TransactionArchComponentProvider, transactionPredicateProvider: TransactionPredicateProvider) : TransactionDao {
+internal class IMDBTransactionDao(
+    networkTransactionDataStore: NetworkTransactionDataStore,
+    transactionArchComponentProvider: TransactionArchComponentProvider,
+    transactionPredicateProvider: TransactionPredicateProvider
+) : TransactionDao {
     private var currentIndex: Long = 1
     private val networkTransactionDataStore: NetworkTransactionDataStore
     private val transactionArchComponentProvider: TransactionArchComponentProvider
@@ -44,7 +48,6 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
         return if ((networkTransaction?.id ?: -1) > 0) if (networkTransactionDataStore.updateTransaction(networkTransaction)) 1 else 0 else 0
     }
 
-
     override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int {
         var updates = 0
         for (networkTransaction in networkTransactions) {
@@ -74,7 +77,6 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
         return networkTransactionDataStore.clearAllTransactions()
     }
 
-
     override fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>? {
         return id?.let { transactionArchComponentProvider.getLiveData(networkTransactionDataStore, it) }
     }
@@ -95,7 +97,10 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
         return transactionArchComponentProvider.getDataSourceFactory(networkTransactionDataStore, predicate)
     }
 
-    private fun addTransactionWithIndex(networkTransaction: NetworkTransaction?, newTransactionIndex: Long?): Long? {
+    private fun addTransactionWithIndex(
+        networkTransaction: NetworkTransaction?,
+        newTransactionIndex: Long?
+    ): Long? {
         networkTransactionDataStore.addTransaction(newTransactionIndex?.let { networkTransaction?.toBuilder()?.setId(it)?.build() })
         if (newTransactionIndex != null) {
             updateCurrentIndex(newTransactionIndex)

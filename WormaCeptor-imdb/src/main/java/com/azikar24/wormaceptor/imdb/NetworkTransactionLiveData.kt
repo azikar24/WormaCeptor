@@ -7,8 +7,10 @@ package com.azikar24.wormaceptor.imdb
 import androidx.lifecycle.MutableLiveData
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
-
-class NetworkTransactionLiveData(private val networkTransactionDataStore: NetworkTransactionDataStore, private val networkTransactionId: Long) : MutableLiveData<NetworkTransaction>(), NetworkTransactionDataStore.DataChangeListener {
+class NetworkTransactionLiveData(
+    private val networkTransactionDataStore: NetworkTransactionDataStore,
+    private val networkTransactionId: Long
+) : MutableLiveData<NetworkTransaction>(), NetworkTransactionDataStore.DataChangeListener {
     init {
         networkTransactionDataStore.addDataChangeListener(this)
         updateData()
@@ -29,7 +31,10 @@ class NetworkTransactionLiveData(private val networkTransactionDataStore: Networ
         networkTransactionDataStore.addDataChangeListener(this)
     }
 
-    override fun onDataChange(event: NetworkTransactionDataStore.Companion.Event?, networkTransaction: NetworkTransaction?) {
+    override fun onDataChange(
+        event: NetworkTransactionDataStore.Companion.Event?,
+        networkTransaction: NetworkTransaction?
+    ) {
         if (networkTransaction?.id == networkTransactionId) {
             updateData()
         }

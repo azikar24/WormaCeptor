@@ -9,7 +9,11 @@ import android.text.style.CharacterStyle
 import android.text.style.UpdateAppearance
 import androidx.annotation.ColorInt
 
-class HighlightSpan(private val backgroundColor: Int, @ColorInt val textColor: Int, private val underLineText: Boolean) : CharacterStyle(), UpdateAppearance {
+class HighlightSpan(
+    private val backgroundColor: Int,
+    @ColorInt val textColor: Int,
+    private val underLineText: Boolean
+) : CharacterStyle(), UpdateAppearance {
 
     override fun updateDrawState(tp: TextPaint?) {
         if (textColor != 0) tp?.color = textColor

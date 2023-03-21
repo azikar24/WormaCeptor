@@ -9,12 +9,12 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.*
 import android.text.style.BackgroundColorSpan
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionPayloadBinding
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
@@ -26,7 +26,7 @@ import com.azikar24.wormaceptor.internal.support.event.Callback
 import com.azikar24.wormaceptor.internal.support.event.Debouncer
 import java.util.concurrent.Executors
 
-class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransactionFragment {
+class NetworkNetworkTransactionPayloadFragment : Fragment(), NetworkTransactionFragment {
     lateinit var binding: FragmentNetworkTransactionPayloadBinding
     private var mSearchKey: String? = null
     private lateinit var mColorUtil: ColorUtil
@@ -40,14 +40,17 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     private val mExecutor = Executors.newSingleThreadExecutor()
     private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
-    private val mSearchDebouncer: Debouncer<String> = Debouncer(500, object : Callback<String> {
-        override fun onEmit(event: String) {
-            mSearchKey = event
-            mHeaderSearchIndices = highlightSearchKeyword(binding.headersTextView, mSearchKey)
-            mBodySearchIndices = highlightSearchKeyword(binding.bodyTextView, mSearchKey)
-            updateSearchCount(1, event)
+    private val mSearchDebouncer: Debouncer<String> = Debouncer(
+        500,
+        object : Callback<String> {
+            override fun onEmit(event: String) {
+                mSearchKey = event
+                mHeaderSearchIndices = highlightSearchKeyword(binding.headersTextView, mSearchKey)
+                mBodySearchIndices = highlightSearchKeyword(binding.bodyTextView, mSearchKey)
+                updateSearchCount(1, event)
+            }
         }
-    })
+    )
 
     private var mType: Int? = 0
 
@@ -57,7 +60,8 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentNetworkTransactionPayloadBinding.inflate(inflater, null, false).also {
         binding = it
@@ -92,8 +96,6 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
-
-
         })
     }
 
@@ -185,7 +187,6 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
         return ArrayList(0)
     }
 
-
     override fun transactionUpdated(transactionUIHelper: NetworkTransactionUIHelper?) {
         mTransactionUIHelper = transactionUIHelper
         populateUI()
@@ -205,7 +206,6 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
             binding.searchEditText.setHint(R.string.search_response_hint)
             populateHeaderText(transactionHelper.getResponseHeadersString(true))
             populateBody(transactionHelper.networkTransaction.responseBodyIsPlainText)
-
         }
     }
 
@@ -213,29 +213,32 @@ class NetworkNetworkTransactionPayloadFragment : Fragment() , NetworkTransaction
         if (!isPlainText) {
             binding.bodyTextView.text = getString(R.string.body_omitted)
         } else {
-            TextUtil.asyncSetText(mExecutor, object : TextUtil.AsyncTextProvider {
-                override val text: CharSequence?
-                    get() {
-                        var body: CharSequence? = null
-                        val searchKey = mSearchKey
-                        if (mType == TYPE_REQUEST) {
-                            body = mTransactionUIHelper?.getFormattedRequestBody()
-                        } else if (mType == TYPE_RESPONSE) {
-                            body = mTransactionUIHelper?.getFormattedResponseBody()
+            TextUtil.asyncSetText(
+                mExecutor,
+                object : TextUtil.AsyncTextProvider {
+                    override val text: CharSequence?
+                        get() {
+                            var body: CharSequence? = null
+                            val searchKey = mSearchKey
+                            if (mType == TYPE_REQUEST) {
+                                body = mTransactionUIHelper?.getFormattedRequestBody()
+                            } else if (mType == TYPE_RESPONSE) {
+                                body = mTransactionUIHelper?.getFormattedResponseBody()
+                            }
+                            return if (TextUtil.isNullOrWhiteSpace(body) || TextUtil.isNullOrWhiteSpace(searchKey)) {
+                                body
+                            } else {
+                                val startIndexes = FormatUtils.indexOf(body, searchKey)
+                                val spannableBody = SpannableString(body)
+                                FormatUtils.applyHighlightSpan(requireContext(), spannableBody, startIndexes, searchKey?.length)
+                                mBodySearchIndices = startIndexes
+                                spannableBody
+                            }
                         }
-                        return if (TextUtil.isNullOrWhiteSpace(body) || TextUtil.isNullOrWhiteSpace(searchKey)) {
-                            body
-                        } else {
-                            val startIndexes = FormatUtils.indexOf(body, searchKey)
-                            val spannableBody = SpannableString(body)
-                            FormatUtils.applyHighlightSpan(requireContext(), spannableBody, startIndexes, searchKey?.length)
-                            mBodySearchIndices = startIndexes
-                            spannableBody
-                        }
-                    }
-                override val textView: TextView
-                    get() = binding.bodyTextView
-            })
+                    override val textView: TextView
+                        get() = binding.bodyTextView
+                }
+            )
         }
     }
 

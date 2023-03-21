@@ -6,7 +6,6 @@ package com.azikar24.wormaceptor.imdb
 
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
-
 interface NetworkTransactionDataStore {
 
     interface DataChangeListener {
@@ -28,7 +27,6 @@ interface NetworkTransactionDataStore {
     fun addDataChangeListener(dataChangeListener: DataChangeListener?)
 
     fun removeDataChangeListener(dataChangeListener: DataChangeListener?)
-
 
     class IndexDoesNotExistException : RuntimeException()
 

@@ -12,7 +12,6 @@ import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
 class RetentionManager(val context: Context, period: WormaCeptorInterceptor.Period) {
     private val PREFS_NAME = "wormaceptor_preferences"
     private val KEY_LAST_CLEANUP = "last_cleanup"
@@ -45,7 +44,6 @@ class RetentionManager(val context: Context, period: WormaCeptorInterceptor.Peri
         mPrefs?.edit()?.putLong(KEY_LAST_CLEANUP, time)?.apply()
     }
 
-
     private fun deleteSince(threshold: Long) {
         val rows: Long = storage?.transactionDao?.deleteTransactionsBefore(Date(threshold))?.toLong() ?: -1L
         Logger.i("$rows transactions deleted")
@@ -54,7 +52,6 @@ class RetentionManager(val context: Context, period: WormaCeptorInterceptor.Peri
     private fun isCleanupDue(now: Long): Boolean {
         return now - getLastCleanup(now) > mCleanupFrequency
     }
-
 
     @Synchronized
     fun doMaintenance() {

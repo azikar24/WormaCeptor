@@ -10,11 +10,6 @@ import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.HttpHeaders
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.support.RetentionManager
-import okhttp3.*
-import okio.Buffer
-import okio.BufferedSource
-import okio.GzipSource
-import okio.buffer
 import java.io.EOFException
 import java.io.IOException
 import java.nio.charset.Charset
@@ -22,6 +17,11 @@ import java.nio.charset.UnsupportedCharsetException
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
+import okhttp3.*
+import okio.Buffer
+import okio.BufferedSource
+import okio.GzipSource
+import okio.buffer
 
 class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
@@ -53,7 +53,11 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     @Throws(IOException::class)
-    private fun updateTransactionFromResponse(transaction: NetworkTransaction, response: Response, tookMs: Long) {
+    private fun updateTransactionFromResponse(
+        transaction: NetworkTransaction,
+        response: Response,
+        tookMs: Long
+    ) {
         val responseBody = response.body
         val newTransactionBuilder = transaction.toBuilder()
 
@@ -65,7 +69,6 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             newTransactionBuilder.setRequestDate(Date(response.sentRequestAtMillis))
             newTransactionBuilder.setResponseDate(Date(response.receivedResponseAtMillis))
         }
-
 
         newTransactionBuilder.setRequestHeaders(toHttpHeaderList(response.request.headers))
         newTransactionBuilder.setProtocol(response.protocol.toString())
@@ -109,11 +112,9 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
                 }
                 newTransactionBuilder.setResponseContentLength(buffer.size)
             }
-
         }
         update(newTransactionBuilder.build())
     }
-
 
     fun showNotification(sticky: Boolean): WormaCeptorInterceptor {
         stickyNotification = sticky
@@ -174,7 +175,6 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
                         }
                     }
                 }
-
             }
             .setRequestBodyIsPlainText(bodyHasSupportedEncoding(request.headers))
 
@@ -199,10 +199,9 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private fun bodyHasSupportedEncoding(headers: Headers): Boolean {
         val contentEncoding = headers["Content-Encoding"]
         return contentEncoding == null ||
-                contentEncoding.equals("identity", ignoreCase = true) ||
-                contentEncoding.equals("gzip", ignoreCase = true)
+            contentEncoding.equals("identity", ignoreCase = true) ||
+            contentEncoding.equals("gzip", ignoreCase = true)
     }
-
 
     @Throws(IOException::class)
     private fun getNativeSource(response: Response): BufferedSource? {
@@ -264,7 +263,6 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         return body
     }
 
-
     private fun create(transaction: NetworkTransaction): NetworkTransaction {
         val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
         val newTransaction = transaction.toBuilder().setId(transactionId).build()
@@ -272,7 +270,6 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         mRetentionManager.doMaintenance()
         return newTransaction
     }
-
 
     private fun update(transaction: NetworkTransaction) {
         val updatedTransactionCount: Int = storage?.transactionDao?.updateTransaction(transaction) ?: -1

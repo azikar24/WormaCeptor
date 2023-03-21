@@ -18,5 +18,4 @@ class App : Application() {
         WormaCeptor.reportCrashesToEmails = listOf("azikar24@gmail.com", "kroosh4@hotmail.com")
         WormaCeptor.reportCrashesExtras = "version name: ${BuildConfig.VERSION_NAME}"
     }
-
 }

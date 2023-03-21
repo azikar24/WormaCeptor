@@ -5,9 +5,9 @@
 package com.azikar24.wormaceptor.internal.ui
 
 import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updatePadding
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,7 +23,6 @@ class WormaCeptorMainActivity : AppCompatActivity() {
     private lateinit var mNotificationHelper: NotificationHelper
 
     private lateinit var binding: ActivityWormaceptorMainBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +69,5 @@ class WormaCeptorMainActivity : AppCompatActivity() {
 
     companion object {
         var IN_FOREGROUND = false
-
     }
 }

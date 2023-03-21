@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.azikar24.wormaceptor.internal.ui.network.details.fragments.NetworkTransactionFragment
 
-
 class NetworkDetailsAdapter(act: FragmentActivity) : FragmentStateAdapter(act) {
     val fragments: MutableList<NetworkTransactionFragment> = ArrayList()
     val fragmentTitles: MutableList<String> = ArrayList()

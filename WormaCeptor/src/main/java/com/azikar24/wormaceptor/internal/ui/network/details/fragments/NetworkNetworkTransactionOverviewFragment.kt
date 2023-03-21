@@ -5,10 +5,10 @@
 package com.azikar24.wormaceptor.internal.ui.network.details.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.databinding.FragmentNetworkTransactionOverviewBinding
 import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
@@ -18,9 +18,9 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
     private lateinit var binding: FragmentNetworkTransactionOverviewBinding
     private var mTransactionUIHelper: NetworkTransactionUIHelper? = null
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) = FragmentNetworkTransactionOverviewBinding.inflate(inflater, null, false).also {
         binding = it
@@ -51,5 +51,4 @@ class NetworkNetworkTransactionOverviewFragment : Fragment(), NetworkTransaction
         mTransactionUIHelper = transactionUIHelper
         populateUI()
     }
-
 }

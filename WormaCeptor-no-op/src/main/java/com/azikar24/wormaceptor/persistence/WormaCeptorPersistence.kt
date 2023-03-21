@@ -11,5 +11,4 @@ object WormaCeptorPersistence {
     fun getInstance(context: Context?): WormaCeptorStorage {
         return WormaCeptorStorage.STORAGE
     }
-
 }

@@ -22,7 +22,6 @@ import com.azikar24.wormaceptor.internal.NetworkTransactionUIHelper
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.ui.WormaCeptorMainActivity
 
-
 class NotificationHelper(val context: Context) {
     private val CHANNEL_ID = "wormaceptor_notification"
     private val mNotificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -47,7 +46,6 @@ class NotificationHelper(val context: Context) {
         addToBuffer(networkTransactionUIHelper)
 
         if (WormaCeptorMainActivity.IN_FOREGROUND) return
-
 
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .apply {
@@ -115,7 +113,6 @@ class NotificationHelper(val context: Context) {
         return spannableString
     }
 
-
     private fun getDismissAction(): NotificationCompat.Action {
         val dismissTitle: CharSequence = context.getString(R.string.dismiss)
         val dismissIntent = Intent(context, DismissNotificationService::class.java)
@@ -127,7 +124,6 @@ class NotificationHelper(val context: Context) {
 
         return NotificationCompat.Action(0, dismissTitle, intent)
     }
-
 
     private fun getClearAction(): NotificationCompat.Action {
         val clearTitle: CharSequence = context.getString(R.string.clear)
@@ -149,6 +145,5 @@ class NotificationHelper(val context: Context) {
             TRANSACTION_BUFFER.clear()
             TRANSACTION_COUNT = 0
         }
-
     }
 }

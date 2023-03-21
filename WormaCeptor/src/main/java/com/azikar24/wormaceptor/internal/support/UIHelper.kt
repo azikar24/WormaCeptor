@@ -66,6 +66,5 @@ object UIHelper {
         return if (heightDiff > screenHeight * 0.15) {
             heightDiff
         } else 0
-
     }
 }

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'org.jlleitschuh.gradle.ktlint' version "11.0.0"
 }
 
 android {
@@ -18,6 +19,17 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+}
+
+ktlint {
+    android = true
+    ignoreFailures = false
+    disabledRules = ["no-wildcard-imports", "final-newline"]
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
     }
 }
 

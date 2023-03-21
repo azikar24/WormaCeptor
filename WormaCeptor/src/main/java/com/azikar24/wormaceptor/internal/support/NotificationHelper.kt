@@ -71,10 +71,14 @@ class NotificationHelper(val context: Context) {
                 val inboxStyle = NotificationCompat.InboxStyle()
                 for ((count, i) in (TRANSACTION_BUFFER.size() - 1 downTo 0).withIndex()) {
                     if (count < BUFFER_SIZE) {
-                        if (count == 0) {
-                            setContentText(getNotificationText(TRANSACTION_BUFFER.valueAt(i)))
+                        try {
+                            if (count == 0) {
+                                setContentText(getNotificationText(TRANSACTION_BUFFER.valueAt(i)))
+                            }
+                            inboxStyle.addLine(getNotificationText(TRANSACTION_BUFFER.valueAt(i)))
+                        } catch (e: Exception) {
+                            Logger.e("Unexpected", e)
                         }
-                        inboxStyle.addLine(getNotificationText(TRANSACTION_BUFFER.valueAt(i)))
                     }
                 }
                 setStyle(inboxStyle)

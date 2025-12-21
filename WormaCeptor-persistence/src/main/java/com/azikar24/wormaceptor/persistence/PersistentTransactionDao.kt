@@ -5,7 +5,7 @@
 package com.azikar24.wormaceptor.persistence
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.paging.DataSource
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
@@ -17,12 +17,16 @@ import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {
 
     override fun insertCrash(crashTransaction: CrashTransaction?) {
-        val crashData = CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(crashTransaction)
-        roomTransactionDao?.insertCrash(crashData)
+        crashTransaction?.let {
+            val crashData = CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it)
+            roomTransactionDao?.insertCrash(crashData)
+        }
     }
 
     override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? {
-        return roomTransactionDao?.allCrashes?.map(PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION)
+        return roomTransactionDao?.allCrashes?.map { input ->
+            PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION.apply(input)
+        }
     }
 
     override fun clearAllCrashes(): Int? {
@@ -30,30 +34,40 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
     }
 
     override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? {
-        val persistentCrashTransaction = arrayOfNulls<PersistentCrashTransaction>(crashTransaction.size)
-        var index = 0
-        for (transaction in crashTransaction) {
-            persistentCrashTransaction[index++] = CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
+        val persistentCrashTransactions = crashTransaction.mapNotNull {
+            it?.let { CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it) }
+        }.toTypedArray()
+
+        return if (persistentCrashTransactions.isNotEmpty()) {
+            roomTransactionDao?.deleteCrash(*persistentCrashTransactions)
+        } else {
+            0
         }
-        return roomTransactionDao?.deleteCrash(*persistentCrashTransaction)
     }
 
     override fun insertTransaction(networkTransaction: NetworkTransaction?): Long? {
-        val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(networkTransaction)
-        return roomTransactionDao?.insertNetworkTransaction(dataToPersistence)
+        return networkTransaction?.let {
+            val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it)
+            roomTransactionDao?.insertNetworkTransaction(dataToPersistence)
+        }
     }
 
     override fun updateTransaction(networkTransaction: NetworkTransaction?): Int? {
-        return roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(networkTransaction))
+        return networkTransaction?.let {
+            roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it))
+        }
     }
 
     override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int? {
-        val persistentNetworkTransactions = arrayOfNulls<PersistentNetworkTransaction>(networkTransactions.size)
-        var index = 0
-        for (transaction in networkTransactions) {
-            persistentNetworkTransactions[index++] = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(transaction)
+        val persistentNetworkTransactions = networkTransactions.mapNotNull {
+            it?.let { DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it) }
+        }.toTypedArray()
+
+        return if (persistentNetworkTransactions.isNotEmpty()) {
+            roomTransactionDao?.deleteNetworkTransactions(*persistentNetworkTransactions)
+        } else {
+            0
         }
-        return roomTransactionDao?.deleteNetworkTransactions(*persistentNetworkTransactions)
     }
 
     override fun deleteTransactionsBefore(beforeDate: Date?): Int? {
@@ -66,13 +80,15 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
     }
 
     override fun getAllTransactions(): DataSource.Factory<Int, NetworkTransaction>? {
-        return roomTransactionDao?.allNetworkTransactions?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
+        return roomTransactionDao?.allNetworkTransactions?.map { input ->
+            PERSISTENT_TO_DATA_TRANSACTION_FUNCTION.apply(input)
+        }
     }
 
     override fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>? {
         return id?.let {
-            roomTransactionDao?.getNetworkTransactionsWithId(id)?.let {
-                Transformations.map(it, PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
+            roomTransactionDao?.getNetworkTransactionsWithId(it)?.map { input ->
+                PERSISTENT_TO_DATA_TRANSACTION_FUNCTION.apply(input)
             }
         }
     }
@@ -88,7 +104,9 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
             TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequestResponse(endWildCard, doubleSideWildCard)
             else -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
         }
-        return factory?.map(PERSISTENT_TO_DATA_TRANSACTION_FUNCTION)
+        return factory?.map { input ->
+            PERSISTENT_TO_DATA_TRANSACTION_FUNCTION.apply(input)
+        }
     }
 
 

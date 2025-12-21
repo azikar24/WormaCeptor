@@ -4,8 +4,12 @@
 
 package com.azikar24.wormaceptor.internal.ui.features.network.details
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -33,7 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @Destination(navGraph = NavGraphTypes.HOME_NAV_GRAPH)
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NetworkDetailsScreen(
     navigator: DestinationsNavigator,
@@ -53,12 +57,22 @@ fun NetworkDetailsScreen(
 
 
     Column() {
-        val color = networkTransaction?.let { ColorUtil.getInstance(LocalContext.current).getTransactionColor(it) }?.let { Color(it) } ?: MaterialTheme.colors.primary
+        val color = networkTransaction?.let {
+            ColorUtil.getInstance(LocalContext.current).getTransactionColor(it)
+        }?.let { Color(it) } ?: MaterialTheme.colors.primary
         var expanded by remember { mutableStateOf(false) }
         val title = "[${networkTransaction?.method}] ${networkTransaction?.path}"
-        WormaCeptorToolbar.WormaCeptorToolbar(title = title, color = color, navController = navigator) {
+        WormaCeptorToolbar.WormaCeptorToolbar(
+            title = title,
+            color = color,
+            navController = navigator
+        ) {
             IconButton(onClick = { expanded = true }) {
-                Icon(tint = MaterialTheme.colors.onPrimary, imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp), contentDescription = "")
+                Icon(
+                    tint = MaterialTheme.colors.onPrimary,
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
+                    contentDescription = ""
+                )
                 val options = listOf(
                     stringResource(id = R.string.share_as_text),
                     stringResource(id = R.string.share_as_curl)
@@ -67,10 +81,23 @@ fun NetworkDetailsScreen(
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     options.forEach() { option ->
                         DropdownMenuItem(onClick = {
-                            if(option ==context.getString(R.string.share_as_text)){
-                                networkTransaction?.let { context.share(FormatUtils.getShareText(context, it)) }
+                            if (option == context.getString(R.string.share_as_text)) {
+                                networkTransaction?.let {
+                                    context.share(
+                                        FormatUtils.getShareText(
+                                            context,
+                                            it
+                                        )
+                                    )
+                                }
                             } else {
-                                networkTransaction?.let { context.share(FormatUtils.getShareCurlCommand(it)) }
+                                networkTransaction?.let {
+                                    context.share(
+                                        FormatUtils.getShareCurlCommand(
+                                            it
+                                        )
+                                    )
+                                }
                             }
                             expanded = false
                         }) {
@@ -88,7 +115,7 @@ fun NetworkDetailsScreen(
             "Response",
         )
 
-        val pagerState = rememberPagerState(pageCount = tabData.size)
+        val pagerState = rememberPagerState(0) { tabData.size }
         Column(modifier = Modifier.fillMaxSize()) {
             TabLayout(tabData, pagerState, color)
             TabContent(pagerState, networkTransaction)
@@ -98,10 +125,12 @@ fun NetworkDetailsScreen(
 }
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) {
-    HorizontalPager(state = pagerState) { index ->
+    HorizontalPager(
+        state = pagerState,
+    ) { index ->
         when (index) {
             0 -> {
                 Column(Modifier.fillMaxSize()) {
@@ -118,7 +147,8 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                             networkTransaction.getFormattedRequestBody()
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
+                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
+                            ?: MaterialTheme.colors.primary
                     )
                 }
             }
@@ -131,7 +161,8 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                             networkTransaction.getFormattedResponseBody()
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) } ?: MaterialTheme.colors.primary
+                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
+                            ?: MaterialTheme.colors.primary
                     )
                 }
             }
@@ -141,23 +172,34 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
 
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabLayout(tabData: List<String>, pagerState: PagerState, color: Color) {
+fun TabLayout(
+    tabData: List<String>,
+    pagerState: PagerState,
+    color: Color
+) {
 
     val scope = rememberCoroutineScope()
-    TabRow(selectedTabIndex = pagerState.currentPage, divider = {
-        Spacer(modifier = Modifier.height(5.dp))
-    }, indicator = { tabPositions ->
-        TabRowDefaults.Indicator(
-            modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-            height = 3.dp,
-            color = MaterialTheme.colors.onPrimary,
-        )
-    }, contentColor = MaterialTheme.colors.onPrimary, backgroundColor = color, modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .background(color)) {
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        divider = {
+            Spacer(modifier = Modifier.height(5.dp))
+        },
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                height = 3.dp,
+                color = MaterialTheme.colors.onPrimary,
+            )
+        },
+        contentColor = MaterialTheme.colors.onPrimary,
+        backgroundColor = color,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(color)
+    ) {
         tabData.forEachIndexed { index, s ->
             Tab(selected = pagerState.currentPage == index, onClick = {
                 scope.launch {

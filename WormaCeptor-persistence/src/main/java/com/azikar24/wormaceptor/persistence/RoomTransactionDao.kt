@@ -16,22 +16,22 @@ abstract class RoomTransactionDao {
     abstract fun clearAllCrashes(): Int
 
     @Delete
-    abstract fun deleteCrash(vararg persistentCrashTransaction: PersistentCrashTransaction?): Int?
+    abstract fun deleteCrash(vararg persistentCrashTransaction: PersistentCrashTransaction): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertCrash(persistentCrashTransaction: PersistentCrashTransaction?)
+    abstract fun insertCrash(persistentCrashTransaction: PersistentCrashTransaction)
 
     @get:Query("SELECT * FROM CrashTransaction ORDER BY id DESC")
     abstract val allCrashes: DataSource.Factory<Int, PersistentCrashTransaction>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertNetworkTransaction(persistentNetworkTransaction: PersistentNetworkTransaction?): Long?
+    abstract fun insertNetworkTransaction(persistentNetworkTransaction: PersistentNetworkTransaction): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updateNetworkTransaction(persistentNetworkTransactions: PersistentNetworkTransaction?): Int?
+    abstract fun updateNetworkTransaction(persistentNetworkTransactions: PersistentNetworkTransaction): Int
 
     @Delete
-    abstract fun deleteNetworkTransactions(vararg persistentNetworkTransactions: PersistentNetworkTransaction?): Int?
+    abstract fun deleteNetworkTransactions(vararg persistentNetworkTransactions: PersistentNetworkTransaction): Int
 
     @Query("DELETE FROM NetworkTransaction WHERE request_date < :beforeDate")
     abstract fun deleteNetworkTransactionsBefore(beforeDate: Date?): Int?

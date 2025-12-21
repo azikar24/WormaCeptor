@@ -8,24 +8,26 @@ plugins {
 
 android {
     namespace 'com.azikar24.wormaceptor_persistence'
-    compileSdk 32
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
 dependencies {
     api project(':WormaCeptor')
-    implementation "android.arch.persistence.room:runtime:$roomVersion"
-    kapt "android.arch.persistence.room:compiler:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
     implementation "androidx.paging:paging-runtime:$pagingVersion"
-
-    implementation "androidx.room:room-runtime:2.5.0"
-    kapt "androidx.room:room-compiler:2.5.0"
-    implementation "androidx.room:room-ktx:2.5.0"
 }

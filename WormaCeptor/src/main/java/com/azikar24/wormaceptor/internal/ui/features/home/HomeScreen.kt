@@ -42,7 +42,7 @@ fun HomeScreen(
         mutableStateOf(true)
     }
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        showBottomNavBar = BottomBarDestination.values().find {
+        showBottomNavBar = BottomBarDestination.entries.find {
             it.direction.route == destination.route
         } != null
     }
@@ -55,7 +55,7 @@ fun HomeScreen(
             engine = engine,
             navController = navController,
             navGraph = NavGraphs.HOMENAVGRAPH,
-            startDestination = BottomBarDestination.Network.direction,
+            startRoute = BottomBarDestination.Network.direction,
         )
     }
 }

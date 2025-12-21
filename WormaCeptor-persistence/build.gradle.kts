@@ -1,21 +1,17 @@
-/*
- * Copyright AziKar24 21/12/2025.
- */
-
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
-    id("kotlin-kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "com.azikar24.wormaceptor_persistence"
-    compileSdk = rootProject.extra["compileSdkVersion"] as Int
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = rootProject.extra["minSdkVersion"] as Int
-        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     compileOptions {
@@ -28,12 +24,9 @@ android {
 }
 
 dependencies {
-    val roomVersion: String by rootProject.extra
-    val pagingVersion: String by rootProject.extra
-
     api(project(":WormaCeptor"))
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.paging:paging-runtime:$pagingVersion")
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.paging.runtime)
 }

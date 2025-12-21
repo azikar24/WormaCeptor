@@ -1,20 +1,16 @@
-/*
- * Copyright AziKar24 21/12/2025.
- */
-
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "com.azikar24.wormaceptor_imdb"
-    compileSdk = rootProject.extra["compileSdkVersion"] as Int
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = rootProject.extra["minSdkVersion"] as Int
-        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     compileOptions {
@@ -27,8 +23,6 @@ android {
 }
 
 dependencies {
-    val pagingVersion: String by rootProject.extra
-    
     api(project(":WormaCeptor"))
-    implementation("androidx.paging:paging-runtime:$pagingVersion")
+    implementation(libs.androidx.paging.runtime)
 }

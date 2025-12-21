@@ -3,18 +3,18 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "com.azikar24.wormaceptor_no_op"
-    compileSdk = rootProject.extra["compileSdkVersion"] as Int
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = rootProject.extra["minSdkVersion"] as Int
-        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     compileOptions {
@@ -27,6 +27,5 @@ android {
 }
 
 dependencies {
-    val okhttp3Version: String by rootProject.extra
-    api("com.squareup.okhttp3:okhttp:$okhttp3Version")
+    api(libs.okhttp)
 }

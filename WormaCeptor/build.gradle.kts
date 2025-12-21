@@ -1,23 +1,19 @@
-/*
- * Copyright AziKar24 21/12/2025.
- */
-
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-parcelize")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp") version "1.9.24-1.0.20"
-    id("kotlin-kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "com.azikar24.wormaceptor"
-    compileSdk = rootProject.extra["compileSdkVersion"] as Int
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = rootProject.extra["minSdkVersion"] as Int
-        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildFeatures {
@@ -26,7 +22,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
     compileOptions {
@@ -39,37 +35,31 @@ android {
 }
 
 dependencies {
-    val okhttp3Version: String by rootProject.extra
-    val appCompatVersion: String by rootProject.extra
-    val pagingVersion: String by rootProject.extra
-    val materialComponentsVersion: String by rootProject.extra
-    val retrofitVersion: String by rootProject.extra
+    api(libs.okhttp)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
-    api("com.squareup.okhttp3:okhttp:$okhttp3Version")
-    implementation("androidx.appcompat:appcompat:$appCompatVersion")
-    implementation("androidx.paging:paging-runtime:$pagingVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("com.google.android.material:material:$materialComponentsVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
-    implementation("androidx.navigation:navigation-fragment:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.ui:ui:1.6.7")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
-    implementation("androidx.compose.material:material:1.6.7")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.retrofit.converter.gson)
 
-    implementation("androidx.paging:paging-runtime:$pagingVersion")
-    implementation("androidx.paging:paging-compose:3.3.0")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
 
-    implementation("com.google.accompanist:accompanist-pager:0.34.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
-
-    implementation("io.github.raamcosta.compose-destinations:animations-core:1.10.2")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.2")
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.ksp)
 }

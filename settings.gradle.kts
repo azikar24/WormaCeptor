@@ -1,3 +1,7 @@
+/*
+ * Copyright AziKar24 21/12/2025.
+ */
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -13,8 +17,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "WormaCeptor"
-include ':app'
-include ':WormaCeptor'
-include ':WormaCeptor-imdb'
-include ':WormaCeptor-no-op'
-include ':WormaCeptor-persistence'
+include(":app")
+include(":WormaCeptor")
+include(":WormaCeptor-imdb")
+include(":WormaCeptor-no-op")
+include(":WormaCeptor-persistence")

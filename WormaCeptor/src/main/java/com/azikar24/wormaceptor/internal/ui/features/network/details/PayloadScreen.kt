@@ -10,7 +10,12 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,7 +79,10 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
 
             content = AnnotatedString.Builder(content).apply {
                 addStyle(
-                    style = SpanStyle(background = mSearchHighlightTextColor, color = mSearchHighlightBackgroundColor),
+                    style = SpanStyle(
+                        background = mSearchHighlightTextColor,
+                        color = mSearchHighlightBackgroundColor
+                    ),
                     start = x.value[currentIndex],
                     end = x.value[currentIndex] + (searchKey?.length ?: x.value[currentIndex])
                 )
@@ -97,7 +105,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                     FloatingActionButton(
                         onClick = {},
                         shape = RoundedCornerShape(360.dp),
-                        backgroundColor = color
+                        containerColor = color
                     ) {
                         IconButton(
                             onClick = {
@@ -108,7 +116,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                             Icon(
                                 imageVector = MyIconPack.IcSearch,
                                 contentDescription = "",
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                             )
                         }
                     }
@@ -124,21 +132,32 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                     Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                         FloatingActionButton(
                             onClick = {
-                                if (scrollToIndex(coroutineScope, indexes, currentIndex - 1, textLayoutResult1, scrollState)) {
+                                if (scrollToIndex(
+                                        coroutineScope,
+                                        indexes,
+                                        currentIndex - 1,
+                                        textLayoutResult1,
+                                        scrollState
+                                    )
+                                ) {
                                     currentIndex--
                                 } else {
-                                    Toast.makeText(WormaCeptorToolbar.activity, "$currentIndex", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        WormaCeptorToolbar.activity,
+                                        "$currentIndex",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             },
                             shape = RoundedCornerShape(360.dp),
-                            backgroundColor = color,
+                            containerColor = color,
                             modifier = Modifier
                                 .size(if (currentIndex == 0) 0.dp else 50.dp)
                         ) {
                             Icon(
                                 imageVector = MyIconPack.IcArrowUp,
                                 contentDescription = "",
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.padding(10.dp)
 
                             )
@@ -146,15 +165,26 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
 
                         FloatingActionButton(
                             onClick = {
-                                if (scrollToIndex(coroutineScope, indexes, currentIndex + 1, textLayoutResult1, scrollState)) {
+                                if (scrollToIndex(
+                                        coroutineScope,
+                                        indexes,
+                                        currentIndex + 1,
+                                        textLayoutResult1,
+                                        scrollState
+                                    )
+                                ) {
                                     currentIndex++
                                 } else {
-                                    Toast.makeText(WormaCeptorToolbar.activity, "$currentIndex", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        WormaCeptorToolbar.activity,
+                                        "$currentIndex",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             },
                             shape = RoundedCornerShape(360.dp),
 
-                            backgroundColor = color,
+                            containerColor = color,
                             modifier = Modifier
                                 .padding(start = 10.dp)
                                 .size(if (currentIndex == indexes.lastIndex) 0.dp else 50.dp)
@@ -163,7 +193,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                             Icon(
                                 imageVector = MyIconPack.IcArrowDown,
                                 contentDescription = "",
-                                tint = MaterialTheme.colors.onPrimary,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                             )
                         }
 
@@ -261,7 +291,13 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
     }
 }
 
-fun scrollToIndex(coroutineScope: CoroutineScope, indexes: List<Int>, index: Int, textLayoutResult: TextLayoutResult?, scrollState: ScrollState): Boolean {
+fun scrollToIndex(
+    coroutineScope: CoroutineScope,
+    indexes: List<Int>,
+    index: Int,
+    textLayoutResult: TextLayoutResult?,
+    scrollState: ScrollState
+): Boolean {
     return try {
         val lineNumber = textLayoutResult?.getLineForOffset(indexes[index]) ?: 0
         val lineTopPx = textLayoutResult?.getLineTop(lineNumber)
@@ -271,7 +307,7 @@ fun scrollToIndex(coroutineScope: CoroutineScope, indexes: List<Int>, index: Int
             }
         }
         lineTopPx != null
-    } catch (e: java.lang.Exception) {
+    } catch (_: java.lang.Exception) {
         false
     }
 }
@@ -284,7 +320,7 @@ private fun PreviewPayloadScreen() {
         PayloadScreen(
             headers = listOf(HttpHeader("header", "value")),
             body = buildAnnotatedString { append("body") },
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

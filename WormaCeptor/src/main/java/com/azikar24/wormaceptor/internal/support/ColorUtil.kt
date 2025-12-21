@@ -5,7 +5,6 @@
 package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.R
@@ -71,7 +70,7 @@ class ColorUtil(context: Context) {
             } else if (responseCode >= 300) {
                 status300
             } else {
-                if (isText) MaterialTheme.colors.statusDefaultTxt else MaterialTheme.colors.statusDefault
+                if (isText) statusDefaultTxt else statusDefault
             }
         }
 

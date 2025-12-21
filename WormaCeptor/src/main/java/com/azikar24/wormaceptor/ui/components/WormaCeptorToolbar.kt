@@ -8,8 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.ExposedDropdownMenuDefaults.textFieldColors
+import androidx.compose.material3.*
+import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,8 +46,9 @@ object WormaCeptorToolbar {
 
     var activity: ComponentActivity? = null
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun WormaCeptorToolbar(title: String, navController: DestinationsNavigator, subtitle: String? = null, showSearch: Boolean = false, searchListener: SearchListener? = null, color: Color = MaterialTheme.colors.primary, menuActions: @Composable() RowScope.() -> Unit = {}) {
+    fun WormaCeptorToolbar(title: String, navController: DestinationsNavigator, subtitle: String? = null, showSearch: Boolean = false, searchListener: SearchListener? = null, color: Color = MaterialTheme.colorScheme.primary, menuActions: @Composable() RowScope.() -> Unit = {}) {
         Column {
             TopAppBar(
                 title = {
@@ -74,9 +75,12 @@ object WormaCeptorToolbar {
                         Icon(imageVector = MyIconPack.IcBack, contentDescription = "")
                     }
                 },
-                backgroundColor = color,
-                contentColor = MaterialTheme.colors.onPrimary,
-                elevation = 0.dp,
+                colors = TopAppBarDefaults.topAppBarColors().copy(
+                    containerColor = color,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
                 modifier = Modifier
                     .background(color)
                     .padding(top = 30.dp, bottom = 10.dp)
@@ -96,11 +100,11 @@ object WormaCeptorToolbar {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun SearchUI(
-    searchListener: WormaCeptorToolbar.SearchListener? = null, color: Color = MaterialTheme.colors.primary,
+    searchListener: WormaCeptorToolbar.SearchListener? = null, color: Color = MaterialTheme.colorScheme.primary,
     counter: Int? = null,
     maxCounter: Int? = null,
 ) {
@@ -116,7 +120,7 @@ fun SearchUI(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search),
-                    color = MaterialTheme.colors.onPrimary.copy(0.5f)
+                    color = MaterialTheme.colorScheme.onPrimary.copy(0.5f)
                 )
             }, onValueChange = {
                 value = it
@@ -124,8 +128,8 @@ fun SearchUI(
             },
             shape = MaterialTheme.shapes.large,
             colors = textFieldColors(
-                cursorColor = MaterialTheme.colors.onPrimary,
-                textColor = MaterialTheme.colors.onPrimary,
+                cursorColor = MaterialTheme.colorScheme.onPrimary,
+//                textColor = MaterialTheme.colorScheme.onPrimary,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
@@ -133,7 +137,7 @@ fun SearchUI(
                 Icon(
                     imageVector = MyIconPack.IcSearch,
                     contentDescription = "",
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             },
             trailingIcon = {
@@ -146,7 +150,7 @@ fun SearchUI(
                             Icon(
                                 imageVector = MyIconPack.IcClose,
                                 contentDescription = "",
-                                tint = MaterialTheme.colors.onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }

@@ -1,6 +1,6 @@
 package com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -78,7 +78,7 @@ fun icIconFullBuilder() = Builder(
         curveTo(201.93f, 217.78f, 171.17f, 264.39f, 134.88f, 264.39f)
         close()
     }
-    path(fill = SolidColor(MaterialTheme.colors.onSurface), stroke = null, strokeLineWidth = 0.0f,
+    path(fill = SolidColor(MaterialTheme.colorScheme.onSurface), stroke = null, strokeLineWidth = 0.0f,
         strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
         pathFillType = NonZero) {
         moveTo(18.52f, 427.0f)

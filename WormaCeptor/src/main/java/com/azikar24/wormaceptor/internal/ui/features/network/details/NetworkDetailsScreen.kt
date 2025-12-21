@@ -10,7 +10,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +35,6 @@ import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
 import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-import com.google.accompanist.pager.*
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -59,7 +67,7 @@ fun NetworkDetailsScreen(
     Column() {
         val color = networkTransaction?.let {
             ColorUtil.getInstance(LocalContext.current).getTransactionColor(it)
-        }?.let { Color(it) } ?: MaterialTheme.colors.primary
+        }?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
         var expanded by remember { mutableStateOf(false) }
         val title = "[${networkTransaction?.method}] ${networkTransaction?.path}"
         WormaCeptorToolbar.WormaCeptorToolbar(
@@ -69,7 +77,7 @@ fun NetworkDetailsScreen(
         ) {
             IconButton(onClick = { expanded = true }) {
                 Icon(
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
                     contentDescription = ""
                 )
@@ -80,7 +88,9 @@ fun NetworkDetailsScreen(
                 val context = LocalContext.current
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     options.forEach() { option ->
-                        DropdownMenuItem(onClick = {
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
                             if (option == context.getString(R.string.share_as_text)) {
                                 networkTransaction?.let {
                                     context.share(
@@ -100,9 +110,7 @@ fun NetworkDetailsScreen(
                                 }
                             }
                             expanded = false
-                        }) {
-                            Text(text = option)
-                        }
+                        })
                     }
                 }
             }
@@ -148,7 +156,7 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
                         color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colors.primary
+                            ?: MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -162,7 +170,7 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
                         color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colors.primary
+                            ?: MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -187,14 +195,16 @@ fun TabLayout(
             Spacer(modifier = Modifier.height(5.dp))
         },
         indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                height = 3.dp,
-                color = MaterialTheme.colors.onPrimary,
-            )
+            if (pagerState.currentPage < tabPositions.size) {
+                TabRowDefaults.SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                    height = 3.dp,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
         },
-        contentColor = MaterialTheme.colors.onPrimary,
-        backgroundColor = color,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = color,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()

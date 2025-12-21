@@ -7,14 +7,16 @@ package com.azikar24.wormaceptorapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -23,7 +25,6 @@ import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,15 +38,14 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
-        val systemUiController = rememberSystemUiController()
-        systemUiController.setSystemBarsColor(
-            color = Color.Transparent
-        )
+        enableEdgeToEdge()
 
         WormaCeptorMainTheme() {
-            Surface(Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)) {
+            Surface(
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
                 Column() {
                     ToolBar(viewModel)
                     Header()
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                 Icon(
                     imageVector = MyIconPack.IcGithub,
                     contentDescription = stringResource(id = R.string.github_page),
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
 
             Button(
                 onClick = {
-                   viewModel.startWormaCeptor(this@MainActivity)
+                    viewModel.startWormaCeptor(this@MainActivity)
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
@@ -132,9 +132,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun PreviewMainActivityContent() {
         WormaCeptorMainTheme() {
-            Surface(Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)) {
+            Surface(
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
                 MainActivityContent()
             }
         }

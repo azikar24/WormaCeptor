@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,7 +33,10 @@ fun CrashesList(data: LazyPagingItems<CrashTransaction>, onClick: (CrashTransact
         items(data.itemSnapshotList.items) { item ->
             Column {
                 CrashesListItem(data = item, onClick = onClick)
-                Divider(color = MaterialTheme.colors.onSurface.copy(0.2f), thickness = 1.dp)
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.2f),
+                    thickness = 1.dp
+                )
             }
 
         }

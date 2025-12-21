@@ -4,11 +4,10 @@
 
 package com.azikar24.wormaceptor.ui.theme
 
-import androidx.compose.material.Colors
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val whiteColor = Color(0xFFFFFFFF)
 val brandPrimaryColor = Color(0xFF560BAD)
 val brandVariantColor = Color(0xFFB5179E)
 
@@ -25,11 +24,11 @@ val status400 = Color(0xFFFF9800)
 val status500 = Color(0xFFF44336)
 
 
-@get:Composable
-val Colors.statusDefaultTxt: Color
-    get() = if (isLight) Color(0xFF212121) else Color(0xFFF2F2F2)
+val statusDefaultTxt: Color
+    @Composable
+    get() = if (!isSystemInDarkTheme()) Color(0xFF212121) else Color(0xFFF2F2F2)
 
 
-@get:Composable
-val Colors.statusDefault: Color
-    get() = if (isLight) Color(0xFF4caf50) else Color(0xFF4caf50)
+val statusDefault: Color
+    @Composable
+    get() = if (!isSystemInDarkTheme()) Color(0xFF4caf50) else Color(0xFF4caf50)

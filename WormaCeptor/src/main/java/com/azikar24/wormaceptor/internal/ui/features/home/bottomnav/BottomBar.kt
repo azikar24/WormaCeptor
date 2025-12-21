@@ -6,9 +6,8 @@ package com.azikar24.wormaceptor.internal.ui.features.home.bottomnav
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,23 +25,21 @@ fun BottomBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary,
-        modifier = Modifier
-            .height(75.dp)
-
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.height(80.dp)
     ) {
-        BottomBarDestination.values().forEach { destination ->
+        BottomBarDestination.entries.forEach { destination ->
 
             val isCurrentDestOnBackStack =
                 navBackStackEntry?.destination?.route == destination.direction.route
 
-            BottomNavigationItem(
+            NavigationBarItem(
                 selected = isCurrentDestOnBackStack,
                 onClick = {
                     if (isCurrentDestOnBackStack) {
                         navController.popBackStack(destination.direction.route, false)
-                        return@BottomNavigationItem
+                        return@NavigationBarItem
                     }
 
                     navController.navigate(destination.direction.route) {
@@ -57,17 +54,23 @@ fun BottomBar(
                     Icon(
                         imageVector = destination.icon,
                         contentDescription = stringResource(destination.label),
-                        tint = MaterialTheme.colors.onPrimary.copy(if (isCurrentDestOnBackStack) 1f else 0.5f),
+                        tint = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 label = {
                     Text(
                         text = stringResource(destination.label),
-                        color = MaterialTheme.colors.onPrimary.copy(if (isCurrentDestOnBackStack) 1f else 0.5f),
+                        color = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
                     )
                 },
-                modifier = Modifier.padding(bottom = 15.dp),
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                    indicatorColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
             )
         }
     }

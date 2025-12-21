@@ -7,9 +7,9 @@ package com.azikar24.wormaceptor.internal.ui.features.network.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +33,7 @@ import java.util.*
 fun NetworkListItem(data: NetworkTransaction, searchKey: String? = null, onClick: (NetworkTransaction) -> Unit) {
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colors.surface)
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxWidth()
             .padding(20.dp)
             .clickable {
@@ -96,7 +96,7 @@ fun Host(host: String?, ssl: Boolean, searchKey: String?) {
     Row() {
         Text(
             text = FormatUtils.getHighlightedText(text = "$host", searchKey = searchKey),
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -108,7 +108,7 @@ fun Host(host: String?, ssl: Boolean, searchKey: String?) {
                 modifier = Modifier
                     .padding(4.dp)
                     .size(14.dp),
-                tint = MaterialTheme.colors.onSurface.copy(0.5f)
+                tint = MaterialTheme.colorScheme.onSurface.copy(0.5f)
             )
         }
 
@@ -121,17 +121,17 @@ fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: Strin
     Row() {
         Text(
             text = requestStartTimeString.toString(),
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = if (status == NetworkTransaction.Status.Complete) stringResource(id = R.string.duration_ms, tookMs ?: 0L) else "",
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = if (status == NetworkTransaction.Status.Complete) totalSizeString else "",
-            color = MaterialTheme.colors.onSurface,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
 

@@ -22,27 +22,33 @@ abstract class WormaCeptorPersistence : RoomDatabase(), WormaCeptorStorage {
 
     override val transactionDao: TransactionDao?
         get() = _transactionDao ?: synchronized(this) {
-            synchronized(this) {
-                if (_transactionDao == null) {
-                    _transactionDao = PersistentTransactionDao(roomTransactionDao())
-                }
-                return _transactionDao
+            if (_transactionDao == null) {
+                _transactionDao = PersistentTransactionDao(roomTransactionDao()!!)
             }
+            _transactionDao
         }
 
     protected abstract fun roomTransactionDao(): RoomTransactionDao?
 
     companion object {
-        private lateinit var INSTANCE: WormaCeptorStorage
-        private val initialized = AtomicBoolean(true)
+        @Volatile
+        private var INSTANCE: WormaCeptorPersistence? = null
+        private val initialized = AtomicBoolean(false)
+
         fun getInstance(context: Context): WormaCeptorStorage {
-            WormaCeptor.type = WormaCeptor.WormaCeptorType.PERSISTENCE
-            if (initialized.getAndSet(true)) {
-                INSTANCE = Room.databaseBuilder(context, WormaCeptorPersistence::class.java, "WormaCeptorDatabase")
-                    .fallbackToDestructiveMigration()
-                    .build()
+            if (!initialized.getAndSet(true)) {
+                INSTANCE = Room.databaseBuilder(
+                    context.applicationContext,
+                    WormaCeptorPersistence::class.java,
+                    "WormaCeptorDatabase"
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+                
+                WormaCeptor.storage = INSTANCE
+                WormaCeptor.type = WormaCeptor.WormaCeptorType.PERSISTENCE
             }
-            return INSTANCE
+            return INSTANCE!!
         }
     }
 }

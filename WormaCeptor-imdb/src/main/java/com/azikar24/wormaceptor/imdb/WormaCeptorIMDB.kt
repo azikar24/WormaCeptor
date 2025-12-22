@@ -20,16 +20,16 @@ class WormaCeptorIMDB : WormaCeptorStorage {
             TransactionPredicateProvider()
         )
 
-        private lateinit var INSTANCE: WormaCeptorIMDB
-        private val initialized = AtomicBoolean(true)
+        private var INSTANCE: WormaCeptorIMDB? = null
+        private val initialized = AtomicBoolean(false)
+
         fun getInstance(): WormaCeptorIMDB {
-            WormaCeptor.type = WormaCeptor.WormaCeptorType.IMDB
-
-            if (initialized.getAndSet(true)) {
+            if (!initialized.getAndSet(true)) {
                 INSTANCE = WormaCeptorIMDB()
+                WormaCeptor.storage = INSTANCE
+                WormaCeptor.type = WormaCeptor.WormaCeptorType.IMDB
             }
-            return INSTANCE
+            return INSTANCE!!
         }
-
     }
 }

@@ -31,13 +31,12 @@ fun CrashDetailsScreen(
     navigator: DestinationsNavigator,
     crashTransaction: CrashTransaction,
 ) {
-    var title: String? = null
-    var subtitle: String? = null
-    crashTransaction.throwable?.let {
+    val (title, subtitle) = crashTransaction.throwable?.let {
         val colonPosition = it.indexOf(":")
-        title = if (colonPosition > -1) it.substring(0, colonPosition) else it
-        subtitle = title.substring(title.lastIndexOf(".").plus(1))
-    }
+        val t = if (colonPosition > -1) it.substring(0, colonPosition) else it
+        val s = t.substring(t.lastIndexOf(".") + 1)
+        t to s
+    } ?: (null to null)
 
     Column {
         WormaCeptorToolbar.WormaCeptorToolbar(
@@ -45,7 +44,7 @@ fun CrashDetailsScreen(
             subtitle = subtitle.toString(),
             navController = navigator
         )
-        LazyColumn() {
+        LazyColumn {
             item {
                 Text(
                     text = stringResource(

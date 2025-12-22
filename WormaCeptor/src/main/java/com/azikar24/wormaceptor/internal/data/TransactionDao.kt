@@ -19,6 +19,8 @@ interface TransactionDao {
 
     fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>?
 
+    fun getCrashWithId(id: Long?): LiveData<CrashTransaction>?
+
     fun clearAllCrashes(): Int?
 
     fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int?

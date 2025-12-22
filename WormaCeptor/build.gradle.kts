@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -15,10 +17,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
     compileOptions {
@@ -49,9 +47,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.runtime.livedata)
     
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.kotlin.serialization)
 
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
+    // implementation(libs.compose.destinations.core)
+    // ksp(libs.compose.destinations.ksp)
 }

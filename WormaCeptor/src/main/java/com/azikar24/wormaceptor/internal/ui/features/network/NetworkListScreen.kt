@@ -14,24 +14,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
-import com.azikar24.wormaceptor.internal.ui.features.destinations.NetworkDetailsScreenDestination
 import com.azikar24.wormaceptor.internal.ui.features.network.components.NetworkList
-import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
+import com.azikar24.wormaceptor.internal.ui.navigation.Route
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcDelete
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcSearch
 import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
 import com.example.wormaceptor.ui.drawables.MyIconPack
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
-@Destination(navGraph = NavGraphTypes.HOME_NAV_GRAPH)
 @Composable
 fun NetworkListScreen(
-    navigator: DestinationsNavigator,
+    navController: NavController,
     viewModel: NetworkTransactionViewModel = viewModel(),
 ) {
     var showSearch by remember {
@@ -52,7 +49,7 @@ fun NetworkListScreen(
             title = "Network Calls",
             subtitle = "",
             showSearch = showSearch,
-            navController = navigator,
+            navController = navController,
             searchListener = {
                 if (it != null) {
                     searchKey = it
@@ -74,7 +71,7 @@ fun NetworkListScreen(
         Column() {
             Box(Modifier.weight(0.5f)) {
                 NetworkList(data, searchKey) {
-                    navigator.navigate(NetworkDetailsScreenDestination(it))
+                    navController.navigate(Route.NetworkDetails(it.id))
                 }
             }
         }
@@ -87,7 +84,7 @@ fun NetworkListScreen(
 private fun PreviewNetworkListScreen() {
     WormaCeptorMainTheme() {
         Surface(modifier = Modifier.fillMaxSize()) {
-            NetworkListScreen(EmptyDestinationsNavigator)
+            NetworkListScreen(rememberNavController())
         }
     }
 }

@@ -24,6 +24,9 @@ abstract class RoomTransactionDao {
     @get:Query("SELECT * FROM CrashTransaction ORDER BY id DESC")
     abstract val allCrashes: DataSource.Factory<Int, PersistentCrashTransaction>?
 
+    @Query("SELECT * FROM CrashTransaction WHERE id = :id")
+    abstract fun getCrashWithId(id: Long): LiveData<PersistentCrashTransaction>?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertNetworkTransaction(persistentNetworkTransaction: PersistentNetworkTransaction): Long
 

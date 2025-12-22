@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -32,17 +33,16 @@ fun BottomBar(
         BottomBarDestination.entries.forEach { destination ->
 
             val isCurrentDestOnBackStack =
-                navBackStackEntry?.destination?.route == destination.direction.route
+                navBackStackEntry?.destination?.hasRoute(destination.route::class) == true
 
             NavigationBarItem(
                 selected = isCurrentDestOnBackStack,
                 onClick = {
                     if (isCurrentDestOnBackStack) {
-                        navController.popBackStack(destination.direction.route, false)
                         return@NavigationBarItem
                     }
 
-                    navController.navigate(destination.direction.route) {
+                    navController.navigate(destination.route) {
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }

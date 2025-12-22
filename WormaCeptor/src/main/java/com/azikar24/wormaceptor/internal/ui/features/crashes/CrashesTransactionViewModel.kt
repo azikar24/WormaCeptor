@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.internal.ui.features.crashes
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -44,6 +45,10 @@ class CrashTransactionViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun getCrashWithId(id: Long): LiveData<CrashTransaction>? {
+        return transactionDao?.getCrashWithId(id)
     }
 
     fun clearAll() {

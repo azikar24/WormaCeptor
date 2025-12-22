@@ -7,17 +7,15 @@ package com.azikar24.wormaceptor.internal.ui.mainactivity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
-import com.azikar24.wormaceptor.internal.support.UIHelper
-import com.azikar24.wormaceptor.internal.ui.features.NavGraphs
+import com.azikar24.wormaceptor.internal.ui.features.home.HomeScreen
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
-import com.ramcosta.composedestinations.DestinationsNavHost
 
 class WormaCeptorMainActivity : ComponentActivity() {
     private lateinit var mNotificationHelper: NotificationHelper
@@ -26,8 +24,7 @@ class WormaCeptorMainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         mNotificationHelper = NotificationHelper(baseContext)
         WormaCeptorToolbar.activity = this
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        UIHelper.fullScreen(window.decorView, window)
+        enableEdgeToEdge()
 
         setContent {
             WormaCeptorMainTheme {
@@ -35,7 +32,7 @@ class WormaCeptorMainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DestinationsNavHost(navGraph = NavGraphs.root)
+                    HomeScreen()
                 }
             }
         }

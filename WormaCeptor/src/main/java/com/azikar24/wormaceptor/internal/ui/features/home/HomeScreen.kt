@@ -5,66 +5,71 @@
 package com.azikar24.wormaceptor.internal.ui.features.home
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
-import com.azikar24.wormaceptor.internal.ui.features.NavGraphs
+import com.azikar24.wormaceptor.internal.ui.features.crashes.CrashDetailsScreen
+import com.azikar24.wormaceptor.internal.ui.features.crashes.CrashesListScreen
 import com.azikar24.wormaceptor.internal.ui.features.home.bottomnav.BottomBar
 import com.azikar24.wormaceptor.internal.ui.features.home.bottomnav.BottomBarDestination
-import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
+import com.azikar24.wormaceptor.internal.ui.features.network.NetworkListScreen
+import com.azikar24.wormaceptor.internal.ui.features.network.details.NetworkDetailsScreen
+import com.azikar24.wormaceptor.internal.ui.navigation.Route
 import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
-@Destination(start = true, navGraph = NavGraphTypes.HOME_NAV_GRAPH)
 @Composable
-fun HomeScreen(
-    navigator: DestinationsNavigator,
-) {
-    val engine = rememberAnimatedNavHostEngine(
-        navHostContentAlignment = Alignment.TopStart,
-    )
-    val navController = engine.rememberNavController()
-    var showBottomNavBar by remember {
-        mutableStateOf(true)
+fun HomeScreen() {
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    
+    val showBottomNavBar = remember(navBackStackEntry) {
+        BottomBarDestination.entries.any { 
+            navBackStackEntry?.destination?.hasRoute(it.route::class) == true 
+        }
     }
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        showBottomNavBar = BottomBarDestination.entries.find {
-            it.direction.route == destination.route
-        } != null
-    }
+
     Scaffold(
         bottomBar = {
             if (showBottomNavBar) BottomBar(navController = navController)
         }
-    ) {
-        DestinationsNavHost(
-            engine = engine,
+    ) { _ ->
+        NavHost(
             navController = navController,
-            navGraph = NavGraphs.HOMENAVGRAPH,
-            startRoute = BottomBarDestination.Network.direction,
-        )
+            startDestination = Route.NetworkList,
+            modifier = Modifier
+                .fillMaxSize()
+//                .padding(paddingValues)
+        ) {
+            composable<Route.NetworkList> {
+                NetworkListScreen(navController = navController)
+            }
+            composable<Route.CrashesList> {
+                CrashesListScreen(navController = navController)
+            }
+            composable<Route.NetworkDetails> { backStackEntry ->
+                val details: Route.NetworkDetails = backStackEntry.toRoute()
+                NetworkDetailsScreen(navController = navController, transactionId = details.id)
+            }
+            composable<Route.CrashDetails> { backStackEntry ->
+                val details: Route.CrashDetails = backStackEntry.toRoute()
+                CrashDetailsScreen(navController = navController, crashId = details.id)
+            }
+        }
     }
 }
 
-@Destination(start = true)
-@Composable
-fun StartPoint(navigator: DestinationsNavigator) {
-    DestinationsNavHost(navGraph = NavGraphs.HOMENAVGRAPH)
-}
 
 @ScreenPreviews
 @Composable
@@ -74,7 +79,7 @@ private fun DefaultPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            HomeScreen(navigator = EmptyDestinationsNavigator)
+            HomeScreen()
         }
     }
 }

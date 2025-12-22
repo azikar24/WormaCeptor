@@ -29,14 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
 import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
-import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.internal.support.FormatUtils
@@ -44,20 +42,19 @@ import com.azikar24.wormaceptor.internal.support.share
 import kotlinx.coroutines.flow.collectLatest
 
 
-@Destination(navGraph = NavGraphTypes.HOME_NAV_GRAPH)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NetworkDetailsScreen(
-    navigator: DestinationsNavigator,
+    navController: NavController,
+    transactionId: Long,
     viewModel: NetworkTransactionViewModel = viewModel(),
-    mNetworkTransaction: NetworkTransaction,
 ) {
     var networkTransaction: NetworkTransaction? by remember {
         mutableStateOf(null)
     }
-    LaunchedEffect(key1 = mNetworkTransaction.id.toString()) {
+    LaunchedEffect(key1 = transactionId) {
         viewModel
-            .getTransactionWithId(mNetworkTransaction.id)
+            .getTransactionWithId(transactionId)
             ?.collectLatest {
                 networkTransaction = it
             }
@@ -73,7 +70,7 @@ fun NetworkDetailsScreen(
         WormaCeptorToolbar.WormaCeptorToolbar(
             title = title,
             color = color,
-            navController = navigator
+            navController = navController
         ) {
             IconButton(onClick = { expanded = true }) {
                 Icon(

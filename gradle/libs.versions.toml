@@ -1,14 +1,14 @@
 [versions]
 agp = "8.5.0"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 appcompat = "1.6.1"
 material = "1.11.0"
 constraintlayout = "2.1.4"
 lifecycle = "2.7.0"
-navigation = "2.7.7"
-paging = "3.3.0"
+navigation = "2.8.0"
+paging = "3.2.1"
 pagingRuntime = "3.2.1"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
@@ -20,6 +20,7 @@ multidex = "2.0.1"
 composeDestinations = "1.10.2"
 ksp = "1.9.24-1.0.20"
 fragmentKtx = "1.6.2"
+serialization = "1.9.24"
 
 minSdk = "21"
 targetSdk = "34"
@@ -58,15 +59,16 @@ androidx-material = { group = "androidx.compose.material", name = "material" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
 
-compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "animations-core", version.ref = "composeDestinations" }
-compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "composeDestinations" }
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -74,3 +76,4 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

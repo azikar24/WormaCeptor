@@ -29,6 +29,14 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
     }
 
+    override fun getCrashWithId(id: Long?): LiveData<CrashTransaction>? {
+        return id?.let {
+            roomTransactionDao?.getCrashWithId(it)?.map { input ->
+                PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION.apply(input)
+            }
+        }
+    }
+
     override fun clearAllCrashes(): Int? {
         return roomTransactionDao?.clearAllCrashes()
     }
@@ -47,20 +55,20 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
 
     override fun insertTransaction(networkTransaction: NetworkTransaction?): Long? {
         return networkTransaction?.let {
-            val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it)
+            val dataToPersistence = DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION.apply(it)
             roomTransactionDao?.insertNetworkTransaction(dataToPersistence)
         }
     }
 
     override fun updateTransaction(networkTransaction: NetworkTransaction?): Int? {
         return networkTransaction?.let {
-            roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it))
+            roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION.apply(it))
         }
     }
 
     override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int? {
         val persistentNetworkTransactions = networkTransactions.mapNotNull {
-            it?.let { DATA_TO_PERSISTENT_TRANSACTION_FUNCTION.apply(it) }
+            it?.let { DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION.apply(it) }
         }.toTypedArray()
 
         return if (persistentNetworkTransactions.isNotEmpty()) {
@@ -138,7 +146,7 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }.build()
     }
 
-    private val DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<NetworkTransaction, PersistentNetworkTransaction> = Function { input ->
+    private val DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION: Function<NetworkTransaction, PersistentNetworkTransaction> = Function { input ->
         PersistentNetworkTransaction().apply {
             id = input.id
             requestDate = input.requestDate

@@ -13,22 +13,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptor.internal.ui.features.crashes.components.CrashesList
-import com.azikar24.wormaceptor.internal.ui.features.destinations.CrashDetailsScreenDestination
-import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
+import com.azikar24.wormaceptor.internal.ui.navigation.Route
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
-@Destination(navGraph = NavGraphTypes.HOME_NAV_GRAPH)
 @Composable
 fun CrashesListScreen(
-    navigator: DestinationsNavigator,
+    navController: NavController,
     viewModel: CrashTransactionViewModel = viewModel(),
 ) {
     LaunchedEffect(key1 = "searchKey", block = {
@@ -38,11 +35,11 @@ fun CrashesListScreen(
     val data = viewModel.pageEventFlow.collectAsLazyPagingItems()
 
     Column {
-        WormaCeptorToolbar.WormaCeptorToolbar(title = stringResource(id = R.string.crashes), subtitle =  "", navController = navigator)
+        WormaCeptorToolbar.WormaCeptorToolbar(title = stringResource(id = R.string.crashes), subtitle =  "", navController = navController)
         Column() {
             Box(Modifier.weight(0.5f)) {
                 CrashesList(data) {
-                    navigator.navigate(CrashDetailsScreenDestination(it))
+                    navController.navigate(Route.CrashDetails(it.id))
                 }
             }
         }
@@ -54,7 +51,7 @@ fun CrashesListScreen(
 private fun PreviewCrasheslistScreen() {
     WormaCeptorMainTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            CrashesListScreen(navigator = EmptyDestinationsNavigator)
+            CrashesListScreen(navController = rememberNavController())
         }
     }
 }

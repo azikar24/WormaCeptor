@@ -11,26 +11,33 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.azikar24.wormaceptor.R
-import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.stacktraceData
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.navigation.NavGraphTypes
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
-@Destination(navGraph = NavGraphTypes.HOME_NAV_GRAPH)
 @Composable
 fun CrashDetailsScreen(
-    navigator: DestinationsNavigator,
-    crashTransaction: CrashTransaction,
+    navController: NavController,
+    crashId: Long,
+    viewModel: CrashTransactionViewModel = viewModel(),
 ) {
+    val crashTransactionState = viewModel.getCrashWithId(crashId)?.observeAsState()
+    val crashTransaction = crashTransactionState?.value
+
+    if (crashTransaction == null) {
+        // Handle loading or error state if needed
+        return
+    }
+
     val (title, subtitle) = crashTransaction.throwable?.let {
         val colonPosition = it.indexOf(":")
         val t = if (colonPosition > -1) it.substring(0, colonPosition) else it
@@ -42,7 +49,7 @@ fun CrashDetailsScreen(
         WormaCeptorToolbar.WormaCeptorToolbar(
             title = title.toString(),
             subtitle = subtitle.toString(),
-            navController = navigator
+            navController = navController
         )
         LazyColumn {
             item {

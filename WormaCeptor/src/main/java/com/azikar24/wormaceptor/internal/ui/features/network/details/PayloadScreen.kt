@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.internal.ui.features.network.details
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.foundation.ScrollState
@@ -40,6 +41,7 @@ import com.example.wormaceptor.ui.drawables.MyIconPack
 import kotlinx.coroutines.*
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Color) {
     var showFloatingActionBar by remember {
@@ -250,7 +252,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
         }
 
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        Column() {
             AnimatedVisibility(
                 visible = showSearchBar,
                 enter = fadeIn() + expandVertically(),

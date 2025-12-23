@@ -8,7 +8,7 @@
             android:exported="false"
             android:label="@string/app_name_2"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.WormaCeptor" />
 
         <service
             android:name=".internal.support.ClearTransactionsService"

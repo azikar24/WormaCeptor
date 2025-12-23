@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright AziKar24 23/12/2025.
+  -->
+
+<resources>
+    <style name="Theme.WormaCeptor" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -38,13 +39,15 @@ fun NetworkListScreen(
         mutableStateOf(null)
     }
 
-    LaunchedEffect(key1 = searchKey, block = {
+    LaunchedEffect(searchKey) {
         viewModel.fetchData(searchKey)
-    })
+    }
 
 
     val data = viewModel.pageEventFlow.collectAsLazyPagingItems()
-    Column {
+    Column(
+        modifier = Modifier.imePadding()
+    ) {
         WormaCeptorToolbar.WormaCeptorToolbar(
             title = "Network Calls",
             subtitle = "",

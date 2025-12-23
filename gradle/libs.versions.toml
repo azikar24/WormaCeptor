@@ -1,10 +1,9 @@
 [versions]
-agp = "8.5.0"
-kotlin = "2.0.0"
-coreKtx = "1.12.0"
+agp = "8.5.2"
+kotlin = "2.0.21"
+coreKtx = "1.13.1"
 appcompat = "1.6.1"
-material = "1.11.0"
-constraintlayout = "2.1.4"
+constraintlayout = "2.2.1"
 lifecycle = "2.7.0"
 navigation = "2.8.3"
 paging = "3.2.1"
@@ -15,12 +14,12 @@ room = "2.6.1"
 composeBom = "2024.10.01"
 accompanist = "0.34.0"
 multidex = "2.0.1"
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.21-1.0.27"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "21"
 #noinspection UnusedVersionCatalogEntry
-targetSdk = "34"
+targetSdk = "35"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "34"
 #noinspection UnusedVersionCatalogEntry
@@ -31,7 +30,6 @@ versionName = "1.0.2"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }

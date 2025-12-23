@@ -61,7 +61,9 @@ fun NetworkDetailsScreen(
     }
 
 
-    Column() {
+    Column(
+        modifier = Modifier.imePadding()
+    ) {
         val color = networkTransaction?.let {
             ColorUtil.getInstance(LocalContext.current).getTransactionColor(it)
         }?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
@@ -84,7 +86,7 @@ fun NetworkDetailsScreen(
                 )
                 val context = LocalContext.current
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    options.forEach() { option ->
+                    options.forEach { option ->
                         DropdownMenuItem(
                             text = { Text(text = option) },
                             onClick = {

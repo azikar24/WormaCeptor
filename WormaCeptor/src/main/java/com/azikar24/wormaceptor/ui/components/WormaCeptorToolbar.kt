@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -152,6 +154,9 @@ fun SearchUI(
                 searchListener?.onQueryTextChange(it)
             },
             maxLines = 1,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done // Set the IME action to 'Done'
+            ),
             shape = MaterialTheme.shapes.large,
             colors = OutlinedTextFieldDefaults.colors().copy(
                 cursorColor = MaterialTheme.colorScheme.onPrimary,
@@ -168,7 +173,17 @@ fun SearchUI(
                 )
             },
             trailingIcon = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.padding(start = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (counter != null && maxCounter != null && maxCounter != 0) {
+                        Text(
+                            text = "${counter + 1}/$maxCounter",
+                            modifier = Modifier.padding(end = 5.dp),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                     if (value.isNotEmpty()) {
                         IconButton(onClick = {
                             value = ""
@@ -180,13 +195,6 @@ fun SearchUI(
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
-                    }
-
-                    if (counter != null && maxCounter != null && maxCounter != 0) {
-                        Text(
-                            text = "${counter + 1}/$maxCounter",
-                            modifier = Modifier.padding(end = 5.dp)
-                        )
                     }
                 }
 

@@ -252,7 +252,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
         }
 
     ) {
-        Column() {
+        Column {
             AnimatedVisibility(
                 visible = showSearchBar,
                 enter = fadeIn() + expandVertically(),
@@ -287,6 +287,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .padding(20.dp)
             )
 
         }
@@ -318,7 +319,7 @@ fun scrollToIndex(
 @ScreenPreviews
 @Composable
 private fun PreviewPayloadScreen() {
-    WormaCeptorMainTheme() {
+    WormaCeptorMainTheme {
         PayloadScreen(
             headers = listOf(HttpHeader("header", "value")),
             body = buildAnnotatedString { append("body") },

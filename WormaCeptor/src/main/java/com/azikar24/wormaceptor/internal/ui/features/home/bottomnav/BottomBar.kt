@@ -70,10 +70,10 @@ fun BottomBar(
                 },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f),
                     selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
-                    indicatorColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f),
+                    indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f)
                 )
             )
         }

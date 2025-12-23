@@ -6,20 +6,20 @@ appcompat = "1.6.1"
 constraintlayout = "2.2.1"
 lifecycle = "2.7.0"
 navigation = "2.8.3"
-paging = "3.2.1"
-pagingRuntime = "3.2.1"
+paging = "3.3.6"
+pagingRuntime = "3.3.6"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
 room = "2.6.1"
 composeBom = "2024.10.01"
-accompanist = "0.34.0"
+accompanist = "0.36.0"
 multidex = "2.0.1"
 ksp = "2.0.21-1.0.27"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "21"
 #noinspection UnusedVersionCatalogEntry
-targetSdk = "35"
+targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "34"
 #noinspection UnusedVersionCatalogEntry

@@ -11,17 +11,12 @@ import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import java.util.*
 
-internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactionDataStore, transactionArchComponentProvider: TransactionArchComponentProvider, transactionPredicateProvider: TransactionPredicateProvider) : TransactionDao {
-    private var currentIndex: Long = 1
-    private val networkTransactionDataStore: NetworkTransactionDataStore
-    private val transactionArchComponentProvider: TransactionArchComponentProvider
+internal class IMDBTransactionDao(
+    private val networkTransactionDataStore: NetworkTransactionDataStore,
+    private val transactionArchComponentProvider: TransactionArchComponentProvider,
     private val transactionPredicateProvider: TransactionPredicateProvider
-
-    init {
-        this.networkTransactionDataStore = networkTransactionDataStore
-        this.transactionArchComponentProvider = transactionArchComponentProvider
-        this.transactionPredicateProvider = transactionPredicateProvider
-    }
+) : TransactionDao {
+    private var currentIndex: Long = 1
 
     override fun insertCrash(crashTransaction: CrashTransaction?) = Unit
 
@@ -43,14 +38,23 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
     }
 
     override fun updateTransaction(networkTransaction: NetworkTransaction?): Int {
-        return if ((networkTransaction?.id ?: -1) > 0) if (networkTransactionDataStore.updateTransaction(networkTransaction)) 1 else 0 else 0
+        if ((networkTransaction?.id ?: -1) <= 0) return 0
+
+        if (networkTransactionDataStore.updateTransaction(networkTransaction)) {
+            return 1
+        }
+        return 0
     }
 
 
     override fun deleteTransactions(vararg networkTransactions: NetworkTransaction?): Int {
         var updates = 0
         for (networkTransaction in networkTransactions) {
-            if ((networkTransaction?.id ?: -1) > 0 && networkTransaction?.id?.let { networkTransactionDataStore.removeTransactionWithIndex(it) } == true) {
+            if ((networkTransaction?.id ?: -1) > 0 && networkTransaction?.id?.let {
+                    networkTransactionDataStore.removeTransactionWithIndex(
+                        it
+                    )
+                } == true) {
                 updates++
             }
         }
@@ -78,27 +82,58 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
 
 
     override fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>? {
-        return id?.let { transactionArchComponentProvider.getLiveData(networkTransactionDataStore, it) }
+        return id?.let {
+            transactionArchComponentProvider.getLiveData(
+                networkTransactionDataStore,
+                it
+            )
+        }
     }
 
     override fun getAllTransactions(): DataSource.Factory<Int, NetworkTransaction>? {
-        return transactionArchComponentProvider.getDataSourceFactory(networkTransactionDataStore, Predicate.ALLOW_ALL)
+        return transactionArchComponentProvider.getDataSourceFactory(
+            networkTransactionDataStore,
+            Predicate.ALLOW_ALL
+        )
     }
 
-    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, NetworkTransaction>? {
+    override fun getAllTransactionsWith(
+        key: String?,
+        searchType: TransactionDao.SearchType?
+    ): DataSource.Factory<Int, NetworkTransaction>? {
         if (key == null) return null
         val predicate: Predicate<NetworkTransaction> = when (searchType) {
-            TransactionDao.SearchType.DEFAULT -> transactionPredicateProvider.getDefaultSearchPredicate(key)
-            TransactionDao.SearchType.INCLUDE_REQUEST -> transactionPredicateProvider.getRequestSearchPredicate(key)
-            TransactionDao.SearchType.INCLUDE_RESPONSE -> transactionPredicateProvider.getResponseSearchPredicate(key)
-            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> transactionPredicateProvider.getRequestResponseSearchPredicate(key)
+            TransactionDao.SearchType.DEFAULT -> transactionPredicateProvider.getDefaultSearchPredicate(
+                key
+            )
+
+            TransactionDao.SearchType.INCLUDE_REQUEST -> transactionPredicateProvider.getRequestSearchPredicate(
+                key
+            )
+
+            TransactionDao.SearchType.INCLUDE_RESPONSE -> transactionPredicateProvider.getResponseSearchPredicate(
+                key
+            )
+
+            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> transactionPredicateProvider.getRequestResponseSearchPredicate(
+                key
+            )
+
             else -> transactionPredicateProvider.getDefaultSearchPredicate(key)
         }
-        return transactionArchComponentProvider.getDataSourceFactory(networkTransactionDataStore, predicate)
+        return transactionArchComponentProvider.getDataSourceFactory(
+            networkTransactionDataStore,
+            predicate
+        )
     }
 
-    private fun addTransactionWithIndex(networkTransaction: NetworkTransaction?, newTransactionIndex: Long?): Long? {
-        networkTransactionDataStore.addTransaction(newTransactionIndex?.let { networkTransaction?.toBuilder()?.setId(it)?.build() })
+    private fun addTransactionWithIndex(
+        networkTransaction: NetworkTransaction?,
+        newTransactionIndex: Long?
+    ): Long? {
+        networkTransactionDataStore.addTransaction(newTransactionIndex?.let {
+            networkTransaction?.toBuilder()?.setId(it)?.build()
+        })
         if (newTransactionIndex != null) {
             updateCurrentIndex(newTransactionIndex)
         }

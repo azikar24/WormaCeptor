@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
@@ -29,7 +28,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         setContent {
             MainActivityContent()
         }
@@ -38,15 +37,13 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
-        enableEdgeToEdge()
-
-        WormaCeptorMainTheme() {
+        WormaCeptorMainTheme {
             Surface(
                 Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                Column() {
+                Column {
                     ToolBar(viewModel)
                     Header()
                     Content(viewModel)
@@ -131,7 +128,7 @@ class MainActivity : ComponentActivity() {
     @ScreenPreviews
     @Composable
     private fun PreviewMainActivityContent() {
-        WormaCeptorMainTheme() {
+        WormaCeptorMainTheme {
             Surface(
                 Modifier
                     .fillMaxSize()

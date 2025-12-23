@@ -38,10 +38,14 @@ import com.example.wormaceptor.ui.drawables.MyIconPack
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun Preview() {
-    WormaCeptorToolbar.WormaCeptorToolbar(title = "title", rememberNavController(), searchListener = {}, menuActions = {
-        Text("test1")
+    WormaCeptorToolbar.WormaCeptorToolbar(
+        title = "title",
+        rememberNavController(),
+        searchListener = {},
+        menuActions = {
+            Text("test1")
 
-    })
+        })
 }
 
 object WormaCeptorToolbar {
@@ -50,7 +54,15 @@ object WormaCeptorToolbar {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun WormaCeptorToolbar(title: String, navController: NavController, subtitle: String? = null, showSearch: Boolean = false, searchListener: SearchListener? = null, color: Color = MaterialTheme.colorScheme.primary, menuActions: @Composable() RowScope.() -> Unit = {}) {
+    fun WormaCeptorToolbar(
+        title: String,
+        navController: NavController,
+        subtitle: String? = null,
+        showSearch: Boolean = false,
+        searchListener: SearchListener? = null,
+        color: Color = MaterialTheme.colorScheme.primary,
+        menuActions: @Composable() RowScope.() -> Unit = {}
+    ) {
         Column {
             TopAppBar(
                 title = {
@@ -85,11 +97,15 @@ object WormaCeptorToolbar {
                 ),
                 modifier = Modifier
                     .background(color)
-                    .padding(top = 30.dp, bottom = 10.dp)
+                    .padding(bottom = 10.dp)
 
             )
-            if (!showSearch) searchListener?.OnQueryTextChange("")
-            AnimatedVisibility(visible = showSearch, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
+            if (!showSearch) searchListener?.onQueryTextChange("")
+            AnimatedVisibility(
+                visible = showSearch,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
                 SearchUI(searchListener)
             }
 
@@ -98,7 +114,7 @@ object WormaCeptorToolbar {
 
 
     fun interface SearchListener {
-        fun OnQueryTextChange(value: String?)
+        fun onQueryTextChange(value: String?)
     }
 }
 
@@ -106,7 +122,8 @@ object WormaCeptorToolbar {
 @Preview
 @Composable
 fun SearchUI(
-    searchListener: WormaCeptorToolbar.SearchListener? = null, color: Color = MaterialTheme.colorScheme.primary,
+    searchListener: WormaCeptorToolbar.SearchListener? = null,
+    color: Color = MaterialTheme.colorScheme.primary,
     counter: Int? = null,
     maxCounter: Int? = null,
 ) {
@@ -115,7 +132,9 @@ fun SearchUI(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color),
+            .background(color)
+            .padding(horizontal = 10.dp)
+            .padding(bottom = 20.dp),
     ) {
         TextField(
             value = value,
@@ -126,7 +145,7 @@ fun SearchUI(
                 )
             }, onValueChange = {
                 value = it
-                searchListener?.OnQueryTextChange(it)
+                searchListener?.onQueryTextChange(it)
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done // Set the IME action to 'Done'
@@ -151,7 +170,7 @@ fun SearchUI(
                     if (value.isNotEmpty()) {
                         IconButton(onClick = {
                             value = ""
-                            searchListener?.OnQueryTextChange(value)
+                            searchListener?.onQueryTextChange(value)
                         }) {
                             Icon(
                                 imageVector = MyIconPack.IcClose,
@@ -162,7 +181,10 @@ fun SearchUI(
                     }
 
                     if (counter != null && maxCounter != null && maxCounter != 0) {
-                        Text(text = "${counter + 1}/$maxCounter", modifier = Modifier.padding(end = 5.dp))
+                        Text(
+                            text = "${counter + 1}/$maxCounter",
+                            modifier = Modifier.padding(end = 5.dp)
+                        )
                     }
                 }
 

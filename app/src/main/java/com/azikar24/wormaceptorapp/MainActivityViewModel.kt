@@ -6,7 +6,6 @@ package com.azikar24.wormaceptorapp
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptorapp.sampleservice.Data
@@ -16,12 +15,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import androidx.core.net.toUri
 
 class MainActivityViewModel : ViewModel() {
 
     fun goToGithub(context: Context) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(context.getString(R.string.github_link))
+            data = context.getString(R.string.github_link).toUri()
         }
         context.startActivity(intent)
     }
@@ -72,9 +72,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun startWormaCeptor(context: Context) {
-        WormaCeptor.getLaunchIntent(context)?.let {
-            context.startActivity(it)
-        }
+        context.startActivity(WormaCeptor.getLaunchIntent(context))
     }
 
     fun simulateCrash() {

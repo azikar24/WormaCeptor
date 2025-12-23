@@ -34,7 +34,7 @@ object WormaCeptor {
     var storage: WormaCeptorStorage? = null
     var type: WormaCeptorType? = null
 
-    fun getLaunchIntent(context: Context): Intent? {
+    fun getLaunchIntent(context: Context): Intent {
         return Intent(context, WormaCeptorMainActivity::class.java)//.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
@@ -73,9 +73,7 @@ object WormaCeptor {
             .setShortLabel(context.getString(R.string.app_name_2))
             .setIcon(Icon.createWithResource(context, R.drawable.ic_icon))
             .setLongLabel(context.getString(R.string.app_name_2)).apply {
-                getLaunchIntent(context)?.let {
-                    setIntent(it.setAction(Intent.ACTION_VIEW))
-                }
+                setIntent(getLaunchIntent(context).setAction(Intent.ACTION_VIEW))
             }
             .build()
         context.getSystemService(ShortcutManager::class.java).addDynamicShortcuts(listOf(shortcutInfo).toMutableList())

@@ -22,9 +22,10 @@ class WormaCeptorMainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         mNotificationHelper = NotificationHelper(baseContext)
         WormaCeptorToolbar.activity = this
-        enableEdgeToEdge()
+
 
         setContent {
             WormaCeptorMainTheme {

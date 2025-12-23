@@ -27,6 +27,8 @@ internal class IMDBTransactionDao(networkTransactionDataStore: NetworkTransactio
 
     override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? = null
 
+    override fun getCrashWithId(id: Long?): LiveData<CrashTransaction>? = null
+
     override fun clearAllCrashes(): Int? = null
 
     override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? = null

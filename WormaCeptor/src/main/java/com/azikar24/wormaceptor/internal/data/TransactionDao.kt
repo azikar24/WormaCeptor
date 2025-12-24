@@ -41,4 +41,6 @@ interface TransactionDao {
 
     fun getAllTransactionsWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, NetworkTransaction>?
 
+    fun getAllCrashesWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, CrashTransaction>?
+
 }

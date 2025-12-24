@@ -31,10 +31,14 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private var stickyNotification = false
     private var mNotificationHelper: NotificationHelper? = null
     private var mMaxContentLength = 250000L
-    private var mRetentionManager: RetentionManager = RetentionManager(context, Period.ONE_WEEK)
+    private var mRetentionManager: RetentionManager? = null
 
     @Volatile
     private var headersToRedact = emptySet<String>()
+
+    init {
+        mRetentionManager = RetentionManager(context, Period.ONE_WEEK)
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -53,7 +57,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     @Throws(IOException::class)
-    private fun updateTransactionFromResponse(transaction: NetworkTransaction, response: Response, tookMs: Long) {
+    fun updateTransactionFromResponse(transaction: NetworkTransaction, response: Response, tookMs: Long) {
         val responseBody = response.body
         val newTransactionBuilder = transaction.toBuilder()
 
@@ -182,13 +186,13 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         return create(transactionBuilder.build())
     }
 
-    private fun toHttpHeaderList(headers: Headers): List<HttpHeader> {
+    fun toHttpHeaderList(headers: Headers): List<HttpHeader> {
         val httpHeaders: MutableList<HttpHeader> = ArrayList<HttpHeader>()
         var i = 0
         val count = headers.size
         while (i < count) {
             if (headersToRedact.contains(headers.name(i))) {
-                httpHeaders.add(HttpHeader(headers.name(i), "\u2588\u2588\u2588\u2588"))
+                httpHeaders.add(HttpHeader(headers.name(i), "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588"))
             } else {
                 httpHeaders.add(HttpHeader(headers.name(i), headers.value(i)))
             }
@@ -197,7 +201,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         return httpHeaders
     }
 
-    private fun bodyHasSupportedEncoding(headers: Headers): Boolean {
+    fun bodyHasSupportedEncoding(headers: Headers): Boolean {
         val contentEncoding = headers["Content-Encoding"]
         return contentEncoding == null ||
                 contentEncoding.equals("identity", ignoreCase = true) ||
@@ -266,16 +270,20 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
 
-    private fun create(transaction: NetworkTransaction): NetworkTransaction {
+    fun create(transaction: NetworkTransaction): NetworkTransaction {
         val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
         val newTransaction = transaction.toBuilder().setId(transactionId).build()
         mNotificationHelper?.show(newTransaction, stickyNotification)
-        mRetentionManager.doMaintenance()
+        try {
+            mRetentionManager?.doMaintenance()
+        } catch (e: Exception) {
+            // ignore
+        }
         return newTransaction
     }
 
 
-    private fun update(transaction: NetworkTransaction) {
+    fun update(transaction: NetworkTransaction) {
         val updatedTransactionCount: Int = storage?.transactionDao?.updateTransaction(transaction) ?: -1
         if (updatedTransactionCount <= 0) return
         mNotificationHelper?.show(transaction, stickyNotification)

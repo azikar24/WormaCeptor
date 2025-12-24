@@ -13,20 +13,60 @@ import java.util.*
 
 internal class IMDBTransactionDao(
     private val networkTransactionDataStore: NetworkTransactionDataStore,
+    private val crashTransactionDataStore: CrashTransactionDataStore,
     private val transactionArchComponentProvider: TransactionArchComponentProvider,
     private val transactionPredicateProvider: TransactionPredicateProvider
 ) : TransactionDao {
     private var currentIndex: Long = 1
+    private var currentCrashIndex: Long = 1
 
-    override fun insertCrash(crashTransaction: CrashTransaction?) = Unit
+    override fun insertCrash(crashTransaction: CrashTransaction?) {
+        val newTransactionIndex: Long? = if (crashTransaction?.id == 0L) {
+            currentCrashIndex
+        } else {
+            crashTransaction?.id
+        }
+        crashTransactionDataStore.addTransaction(newTransactionIndex?.let {
+            crashTransaction?.copy(id = it)
+        })
+        if (newTransactionIndex != null) {
+            updateCurrentCrashIndex(newTransactionIndex)
+        }
+    }
 
-    override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? = null
+    override fun getAllCrashes(): DataSource.Factory<Int, CrashTransaction>? {
+        return transactionArchComponentProvider.getCrashDataSourceFactory(
+            crashTransactionDataStore,
+            Predicate.ALLOW_ALL_CRASHES
+        )
+    }
 
-    override fun getCrashWithId(id: Long?): LiveData<CrashTransaction>? = null
+    override fun getCrashWithId(id: Long?): LiveData<CrashTransaction>? {
+        return id?.let {
+            transactionArchComponentProvider.getCrashLiveData(
+                crashTransactionDataStore,
+                it
+            )
+        }
+    }
 
-    override fun clearAllCrashes(): Int? = null
+    override fun clearAllCrashes(): Int {
+        return crashTransactionDataStore.clearAllTransactions()
+    }
 
-    override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int? = null
+    override fun deleteCrash(vararg crashTransaction: CrashTransaction?): Int {
+        var updates = 0
+        for (crash in crashTransaction) {
+            if ((crash?.id ?: -1) > 0 && crash?.id?.let {
+                    crashTransactionDataStore.removeTransactionWithIndex(
+                        it
+                    )
+                } == true) {
+                updates++
+            }
+        }
+        return updates
+    }
 
     override fun insertTransaction(networkTransaction: NetworkTransaction?): Long? {
         val newTransactionIndex: Long? = if (networkTransaction?.id == 0L) {
@@ -127,6 +167,18 @@ internal class IMDBTransactionDao(
         )
     }
 
+    override fun getAllCrashesWith(
+        key: String?,
+        searchType: TransactionDao.SearchType?
+    ): DataSource.Factory<Int, CrashTransaction>? {
+        if (key == null) return null
+        val predicate = transactionPredicateProvider.getCrashSearchPredicate(key)
+        return transactionArchComponentProvider.getCrashDataSourceFactory(
+            crashTransactionDataStore,
+            predicate
+        )
+    }
+
     private fun addTransactionWithIndex(
         networkTransaction: NetworkTransaction?,
         newTransactionIndex: Long?
@@ -138,6 +190,12 @@ internal class IMDBTransactionDao(
             updateCurrentIndex(newTransactionIndex)
         }
         return newTransactionIndex
+    }
+
+    private fun updateCurrentCrashIndex(newTransactionIndex: Long) {
+        if (currentCrashIndex <= newTransactionIndex) {
+            currentCrashIndex = newTransactionIndex + 1
+        }
     }
 
     private fun updateCurrentIndex(newTransactionIndex: Long) {

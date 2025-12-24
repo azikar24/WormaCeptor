@@ -99,10 +99,7 @@ object WormaCeptorToolbar {
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                modifier = Modifier
-                    .background(color)
-                    .padding(bottom = 10.dp)
+                )
 
             )
             if (!showSearch) searchListener?.onQueryTextChange("")

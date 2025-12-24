@@ -5,6 +5,7 @@
 package com.azikar24.wormaceptor.imdb
 
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
+import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import java.util.*
 
 
@@ -62,6 +63,17 @@ internal class TransactionPredicateProvider {
                     || t.responseMessage?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
                     || t.requestBody?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
 
+        }
+    }
+
+    fun getCrashSearchPredicate(searchKeyWord: String): CrashSearchPredicate {
+        return CrashSearchPredicate(searchKeyWord)
+    }
+
+    class CrashSearchPredicate(var searchKeyWord: String) : Predicate<CrashTransaction> {
+        override fun apply(t: CrashTransaction): Boolean {
+            return t.throwable?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
+                    || t.getClassNameAndLineNumber()?.lowercase(Locale.ROOT)?.contains(searchKeyWord.lowercase(Locale.getDefault())) == true
         }
     }
 }

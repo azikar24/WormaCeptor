@@ -117,6 +117,13 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
     }
 
+    override fun getAllCrashesWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, CrashTransaction>? {
+        val doubleSideWildCard = "%$key%"
+        return roomTransactionDao?.getAllCrashes(doubleSideWildCard)?.map { input ->
+            PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION.apply(input)
+        }
+    }
+
 
     private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> = Function { input ->
         NetworkTransaction.Builder().apply {

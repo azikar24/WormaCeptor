@@ -19,12 +19,14 @@ import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import com.azikar24.wormaceptor.internal.support.ShakeDetector
 import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 
 object WormaCeptor {
+
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     enum class WormaCeptorType {
         PERSISTENCE,
@@ -43,16 +45,14 @@ object WormaCeptor {
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
             val crashList = paramThrowable.stackTrace.toList()
-            ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
-                execute {
-                    storage?.transactionDao?.insertCrash(
-                        CrashTransaction.Builder().apply {
-                            setThrowable(paramThrowable.toString())
-                            setCrashList(crashList.map { it })
-                            setCrashDate(Date())
-                        }.build()
-                    )
-                }
+            scope.launch {
+                storage?.transactionDao?.insertCrash(
+                    CrashTransaction.Builder().apply {
+                        setThrowable(paramThrowable.toString())
+                        setCrashList(crashList.map { it })
+                        setCrashDate(Date())
+                    }.build()
+                )
             }
 
             if (oldHandler != null)

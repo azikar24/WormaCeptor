@@ -17,18 +17,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.stacktraceData
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-
+import com.azikar24.wormaceptor.internal.ui.WormaCeptorViewModelFactory
+import com.azikar24.wormaceptor.internal.ui.ToolbarViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CrashDetailsScreen(
     navController: NavController,
     crashId: Long,
-    viewModel: CrashTransactionViewModel = viewModel(),
+    viewModel: CrashTransactionViewModel = koinViewModel(),
+    toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
     val crashTransactionState = viewModel.getCrashWithId(crashId)?.observeAsState()
     val crashTransaction = crashTransactionState?.value
@@ -45,12 +50,24 @@ fun CrashDetailsScreen(
         t to s
     } ?: (null to null)
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner, title, subtitle) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                toolbarViewModel.title = title.toString()
+                toolbarViewModel.subtitle = subtitle.toString()
+                toolbarViewModel.color = null
+                toolbarViewModel.showSearch = false
+                toolbarViewModel.menuActions = null
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     Column {
-        WormaCeptorToolbar.WormaCeptorToolbar(
-            title = title.toString(),
-            subtitle = subtitle.toString(),
-            navController = navController
-        )
         LazyColumn {
             item {
                 Text(

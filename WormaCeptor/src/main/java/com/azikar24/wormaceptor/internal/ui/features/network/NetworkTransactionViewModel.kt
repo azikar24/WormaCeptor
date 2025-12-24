@@ -13,15 +13,13 @@ import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.ThreadPoolExecutor
-import java.util.concurrent.TimeUnit
 
-class NetworkTransactionViewModel : ViewModel() {
+class NetworkTransactionViewModel(private val transactionDao: TransactionDao?) : ViewModel() {
 
     private val config = PagingConfig(
         pageSize = 100,
@@ -29,8 +27,6 @@ class NetworkTransactionViewModel : ViewModel() {
         enablePlaceholders = true,
         initialLoadSize = 500,
     )
-
-    private val transactionDao: TransactionDao? = WormaCeptor.storage?.transactionDao
 
     val pageEventFlow = MutableStateFlow<PagingData<NetworkTransaction>>(PagingData.empty())
 
@@ -69,20 +65,15 @@ class NetworkTransactionViewModel : ViewModel() {
     }
 
     fun clearAll() {
-
-        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
-            execute {
-                transactionDao?.clearAll()
-                NotificationHelper.clearBuffer()
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionDao?.clearAll()
+            NotificationHelper.clearBuffer()
         }
     }
 
     fun delete(vararg params: NetworkTransaction) {
-        ThreadPoolExecutor(4, 8, 60L, TimeUnit.SECONDS, LinkedBlockingQueue()).apply {
-            execute {
-                transactionDao?.deleteTransactions(*params)
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionDao?.deleteTransactions(*params)
         }
     }
 }

@@ -29,25 +29,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
+import com.azikar24.wormaceptor.internal.ui.WormaCeptorViewModelFactory
 import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.share
+import com.azikar24.wormaceptor.internal.ui.ToolbarViewModel
 import kotlinx.coroutines.flow.collectLatest
-
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NetworkDetailsScreen(
     navController: NavController,
     transactionId: Long,
-    viewModel: NetworkTransactionViewModel = viewModel(),
+    viewModel: NetworkTransactionViewModel = koinViewModel(),
+    toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
     var networkTransaction: NetworkTransaction? by remember {
         mutableStateOf(null)
@@ -60,62 +66,61 @@ fun NetworkDetailsScreen(
             }
     }
 
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.imePadding()
-    ) {
-        val color = networkTransaction?.let {
-            ColorUtil.getInstance(LocalContext.current).getTransactionColor(it)
-        }?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
-        var expanded by remember { mutableStateOf(false) }
-        val title = "[${networkTransaction?.method}] ${networkTransaction?.path}"
-        WormaCeptorToolbar.WormaCeptorToolbar(
-            title = title,
-            color = color,
-            navController = navController
-        ) {
-            IconButton(onClick = { expanded = true }) {
-                Icon(
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
-                    contentDescription = ""
-                )
-                val options = listOf(
-                    stringResource(id = R.string.share_as_text),
-                    stringResource(id = R.string.share_as_curl)
-                )
-                val context = LocalContext.current
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    options.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(text = option) },
-                            onClick = {
-                            if (option == context.getString(R.string.share_as_text)) {
-                                networkTransaction?.let {
-                                    context.share(
-                                        FormatUtils.getShareText(
-                                            context,
-                                            it
-                                        )
-                                    )
-                                }
-                            } else {
-                                networkTransaction?.let {
-                                    context.share(
-                                        FormatUtils.getShareCurlCommand(
-                                            it
-                                        )
-                                    )
+    val color = networkTransaction?.let {
+        ColorUtil.getInstance(context).getTransactionColor(it)
+    }?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner, networkTransaction, color, expanded) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                networkTransaction?.let { transaction ->
+                    toolbarViewModel.title = "[${transaction.method}] ${transaction.path}"
+                    toolbarViewModel.color = color
+                    toolbarViewModel.showSearch = false
+                    toolbarViewModel.menuActions = {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
+                                contentDescription = ""
+                            )
+                            val options = listOf(
+                                context.getString(R.string.share_as_text),
+                                context.getString(R.string.share_as_curl)
+                            )
+                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                                options.forEach { option ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = option) },
+                                        onClick = {
+                                            if (option == context.getString(R.string.share_as_text)) {
+                                                context.share(FormatUtils.getShareText(context, transaction))
+                                            } else {
+                                                context.share(FormatUtils.getShareCurlCommand(transaction))
+                                            }
+                                            expanded = false
+                                        })
                                 }
                             }
-                            expanded = false
-                        })
+                        }
                     }
                 }
             }
         }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
 
+    Column(
+        modifier = Modifier.imePadding()
+    ) {
         val tabData = listOf(
             "Overview",
             "Request",

@@ -29,14 +29,20 @@ fun NetworkList(
     searchKey: String? = null,
     onClick: (NetworkTransaction) -> Unit
 ) {
-    LazyColumn() {
-        items(data.itemSnapshotList.items) { item ->
-            Column {
-                NetworkListItem(data = item, searchKey = searchKey, onClick = onClick)
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.2f),
-                    thickness = 1.dp
-                )
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(
+            count = data.itemCount,
+            key = { index -> data[index]?.id ?: index }
+        ) { index ->
+            val item = data[index]
+            if (item != null) {
+                Column {
+                    NetworkListItem(data = item, searchKey = searchKey, onClick = onClick)
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.2f),
+                        thickness = 1.dp
+                    )
+                }
             }
         }
         item { Box(Modifier.height(120.dp)) }

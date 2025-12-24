@@ -14,14 +14,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
 import com.azikar24.wormaceptor.internal.ui.features.home.HomeScreen
+import com.azikar24.wormaceptor.internal.di.wormaCeptorModule
 import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptor.ui.theme.WormaCeptorMainTheme
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 class WormaCeptorMainActivity : ComponentActivity() {
     private lateinit var mNotificationHelper: NotificationHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startKoin {
+            androidContext(this@WormaCeptorMainActivity)
+            modules(wormaCeptorModule)
+        }
         enableEdgeToEdge()
         mNotificationHelper = NotificationHelper(baseContext)
         WormaCeptorToolbar.activity = this
@@ -56,4 +64,8 @@ class WormaCeptorMainActivity : ComponentActivity() {
 
     }
 
+    override fun onDestroy() {
+        stopKoin()
+        super.onDestroy()
+    }
 }

@@ -52,6 +52,13 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.kotlin.serialization)
 
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
     // implementation(libs.compose.destinations.core)
     // ksp(libs.compose.destinations.ksp)
 }

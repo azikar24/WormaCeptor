@@ -12,33 +12,34 @@ import java.util.*
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import kotlinx.parcelize.Parcelize
+import androidx.core.net.toUri
 
 
 @Parcelize
 data class NetworkTransaction(
-    var id: Long,
-    var requestDate: Date?,
-    var responseDate: Date?,
-    var tookMs: Long?,
-    var protocol: String?,
-    var method: String?,
-    var url: String?,
-    var host: String?,
-    var path: String?,
-    var scheme: String?,
-    var requestContentLength: Long?,
-    var requestContentType: String?,
-    var requestHeaders: List<HttpHeader>?,
-    var requestBody: String?,
-    var requestBodyIsPlainText: Boolean,
-    var responseCode: Int?,
-    var responseMessage: String?,
-    var error: String?,
-    var responseContentLength: Long?,
-    var responseContentType: String?,
-    var responseHeaders: List<HttpHeader>?,
-    var responseBody: String?,
-    var responseBodyIsPlainText: Boolean,
+    var id: Long = 0,
+    var requestDate: Date? = null,
+    var responseDate: Date? = null,
+    var tookMs: Long? = null,
+    var protocol: String? = null,
+    var method: String? = null,
+    var url: String? = null,
+    var host: String? = null,
+    var path: String? = null,
+    var scheme: String? = null,
+    var requestContentLength: Long? = null,
+    var requestContentType: String? = null,
+    var requestHeaders: List<HttpHeader>? = null,
+    var requestBody: String? = null,
+    var requestBodyIsPlainText: Boolean = true,
+    var responseCode: Int? = null,
+    var responseMessage: String? = null,
+    var error: String? = null,
+    var responseContentLength: Long? = null,
+    var responseContentType: String? = null,
+    var responseHeaders: List<HttpHeader>? = null,
+    var responseBody: String? = null,
+    var responseBodyIsPlainText: Boolean = true,
 ) : Parcelable {
     enum class Status {
         Requested, Complete, Failed
@@ -204,7 +205,7 @@ data class NetworkTransaction(
 
         fun setUrlHostPathSchemeFromUrl(url: String) {
             setUrl(url)
-            val uri = Uri.parse(url)
+            val uri = url.toUri()
             uri.host?.let { setHost(it) }
             uri.path?.let { setPath(it + if (uri.query != null) "?${uri.query}" else "") }
             uri.scheme?.let { setScheme(it) }

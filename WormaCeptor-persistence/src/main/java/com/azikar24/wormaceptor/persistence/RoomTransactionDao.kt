@@ -60,4 +60,7 @@ abstract class RoomTransactionDao {
     @Query("SELECT * FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
     abstract fun getAllNetworkTransactions(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
+    @Query("SELECT * FROM CrashTransaction WHERE throwable LIKE :doubleWildCard OR crash_list LIKE :doubleWildCard ORDER BY id DESC")
+    abstract fun getAllCrashes(doubleWildCard: String?): DataSource.Factory<Int, PersistentCrashTransaction>?
+
 }

@@ -227,6 +227,12 @@ object FormatUtils {
         return charSequence ?: ""
     }
 
+     fun getAnnotatedString(text: String?): AnnotatedString {
+         return buildAnnotatedString {
+             append(text ?: "")
+         }
+     }
+
      fun getHighlightedText(text: String?, searchKey: String?): AnnotatedString {
         val startNs = System.nanoTime()
         return buildAnnotatedString {

@@ -60,37 +60,38 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
     var currentIndex by remember { mutableStateOf(0) }
     var textLayoutResult1: TextLayoutResult? by remember { mutableStateOf(null) }
 
-    var content by remember(body, searchKey, currentIndex) {
+    val headersText = remember(headers) { FormatUtils.formatHeaders(headers, true).toString() }
+    val bodyText = remember(body) { body.toString() }
+    val fullText = remember(headersText, bodyText) { headersText + bodyText }
+
+    var content by remember(fullText, searchKey, currentIndex) {
         mutableStateOf(
-            FormatUtils.getHighlightedText(
-                text = FormatUtils.formatHeaders(headers, true).toString(),
-                searchKey = searchKey
-            ).plus(
-                FormatUtils.getHighlightedText(
-                    text = body.toString(),
-                    searchKey = searchKey
-                )
-            )
+            if (searchKey.isNullOrEmpty()) {
+                AnnotatedString(fullText)
+            } else {
+                val highlighted = FormatUtils.getHighlightedText(fullText, searchKey)
+                val indexes = FormatUtils.indexOf(fullText, searchKey)
+                if (indexes.isNotEmpty() && currentIndex in indexes.indices) {
+                    AnnotatedString.Builder(highlighted).apply {
+                        addStyle(
+                            style = SpanStyle(
+                                background = mSearchHighlightTextColor,
+                                color = mSearchHighlightBackgroundColor
+                            ),
+                            start = indexes[currentIndex],
+                            end = indexes[currentIndex] + (searchKey?.length ?: 0)
+                        )
+                    }.toAnnotatedString()
+                } else {
+                    highlighted
+                }
+            }
         )
     }
 
     val coroutineScope = rememberCoroutineScope()
-    val indexes: List<Int> by remember(searchKey, currentIndex) {
-        val x = mutableStateOf(FormatUtils.indexOf(content.toString(), searchKey))
-        if (x.value.isNotEmpty())
-
-            content = AnnotatedString.Builder(content).apply {
-                addStyle(
-                    style = SpanStyle(
-                        background = mSearchHighlightTextColor,
-                        color = mSearchHighlightBackgroundColor
-                    ),
-                    start = x.value[currentIndex],
-                    end = x.value[currentIndex] + (searchKey?.length ?: x.value[currentIndex])
-                )
-
-            }.toAnnotatedString()
-        x
+    val indexes: List<Int> by remember(fullText, searchKey) {
+        mutableStateOf(FormatUtils.indexOf(fullText, searchKey))
     }
 
 

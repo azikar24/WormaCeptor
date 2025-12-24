@@ -14,6 +14,10 @@ composeBom = "2024.10.01"
 accompanist = "0.36.0"
 multidex = "2.0.1"
 ksp = "2.0.21-1.0.27"
+junit = "4.13.2"
+mockk = "1.13.12"
+kotlinx-coroutines-test = "1.8.1"
+koin = "4.0.0"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "21"
@@ -53,6 +57,11 @@ androidx-material-icons-extended = { group = "androidx.compose.material", name =
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -26,11 +26,14 @@ internal class CrashTransactionLiveData(
         super.onInactive()
     }
 
-    override fun onDataChange(event: NetworkTransactionDataStore.Companion.Event?, crashTransaction: CrashTransaction?) {
+    override fun onDataChange(
+        event: NetworkTransactionDataStore.Companion.Event?,
+        crashTransaction: CrashTransaction?
+    ) {
         crashTransaction?.let {
             if (it.id == crashTransactionId) {
                 postValue(it)
             }
         }
-        }
+    }
 }

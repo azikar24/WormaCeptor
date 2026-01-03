@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 19/2/2023.
- */
-
 package com.azikar24.wormaceptor
 
 import android.content.Context
@@ -43,47 +39,6 @@ object WormaCeptor {
         )
     }
 
-    fun logUnexpectedCrashes() {
-        val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
-
-        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            val crashList = paramThrowable.stackTrace.toList()
-            scope.launch {
-                storage?.transactionDao?.insertCrash(
-                    CrashTransaction(
-                        throwable = paramThrowable.toString(),
-                        crashList = crashList.map { it },
-                        crashDate = Date(),
-                    )
-                )
-            }
-
-            if (oldHandler != null)
-                oldHandler.uncaughtException(
-                    paramThread,
-                    paramThrowable
-                )
-            else
-                Runtime.getRuntime().exit(2)
-        }
-
-    }
-
-    fun addAppShortcut(context: Context): String? {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return null
-        val id = "${context.packageName}.wormaceptor_ui"
-        val shortcutInfo = ShortcutInfo.Builder(context, id)
-            .setShortLabel(context.getString(R.string.app_name_2))
-            .setIcon(Icon.createWithResource(context, R.drawable.ic_icon))
-            .setLongLabel(context.getString(R.string.app_name_2)).apply {
-                setIntent(getLaunchIntent(context).setAction(Intent.ACTION_VIEW))
-            }
-            .build()
-        context.getSystemService(ShortcutManager::class.java)
-            .addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
-        return id
-    }
-
     fun startActivityOnShake(componentActivity: ComponentActivity) {
 
         val mSensorManager =
@@ -109,4 +64,64 @@ object WormaCeptor {
             }
         })
     }
+
+    fun init(
+        context: Context,
+        storage: WormaCeptorStorage,
+        appShortcut: Boolean,
+        logCrashes: Boolean,
+    ) {
+        this.storage = storage
+
+        if (appShortcut) {
+            addAppShortcut(context)
+        }
+
+        if (logCrashes) {
+            logUnexpectedCrashes()
+        }
+    }
+
+    private fun logUnexpectedCrashes() {
+        val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
+
+        Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
+            val crashList = paramThrowable.stackTrace.toList()
+            scope.launch {
+                storage?.transactionDao?.insertCrash(
+                    CrashTransaction(
+                        throwable = paramThrowable.toString(),
+                        crashList = crashList.map { it },
+                        crashDate = Date(),
+                    )
+                )
+            }
+
+            if (oldHandler != null)
+                oldHandler.uncaughtException(
+                    paramThread,
+                    paramThrowable
+                )
+            else
+                Runtime.getRuntime().exit(2)
+        }
+
+    }
+
+    private fun addAppShortcut(context: Context): String? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return null
+        val id = "${context.packageName}.wormaceptor_ui"
+        val shortcutInfo = ShortcutInfo.Builder(context, id)
+            .setShortLabel(context.getString(R.string.app_name_2))
+            .setIcon(Icon.createWithResource(context, R.drawable.ic_icon))
+            .setLongLabel(context.getString(R.string.app_name_2)).apply {
+                setIntent(getLaunchIntent(context).setAction(Intent.ACTION_VIEW))
+            }
+            .build()
+        context.getSystemService(ShortcutManager::class.java)
+            .addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
+        return id
+    }
+
+
 }

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 25/2/2023.
- */
-
 package com.azikar24.wormaceptorapp
 
 import android.app.Application
@@ -12,10 +8,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        WormaCeptor.storage = WormaCeptorPersistence.getInstance(this)
-//        WormaCeptor.storage = WormaCeptorIMDB.getInstance()
-        WormaCeptor.addAppShortcut(this)
-        WormaCeptor.logUnexpectedCrashes()
+        WormaCeptor.init(
+            context = this,
+            storage = WormaCeptorPersistence.getInstance(this),
+//            storage = WormaCeptorIMDB.getInstance(),
+            appShortcut = true,
+            logCrashes = true,
+        )
     }
 
 }

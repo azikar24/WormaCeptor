@@ -5,14 +5,10 @@
 package com.azikar24.wormaceptor.internal.ui.features.network.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -41,7 +37,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -73,7 +71,7 @@ fun NetworkDetailsScreen(
     var expanded by remember { mutableStateOf(false) }
 
     val transactionColors = networkTransaction?.let { ColorUtil.getTransactionColors(it) }
-    val color = transactionColors?.container ?: MaterialTheme.colorScheme.primary
+    val color = transactionColors?.container ?: MaterialTheme.colorScheme.primaryContainer
     val onColor = transactionColors?.onContainer ?: MaterialTheme.colorScheme.onPrimaryContainer
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -81,7 +79,8 @@ fun NetworkDetailsScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 networkTransaction?.let { transaction ->
-                    toolbarViewModel.title = "[${transaction.method}] ${transaction.path}"
+                    toolbarViewModel.title = transaction.path ?: ""
+                    toolbarViewModel.subtitle = "${transaction.method} • ${transaction.responseCode ?: "..."}"
                     toolbarViewModel.color = color
                     toolbarViewModel.onColor = onColor
                     toolbarViewModel.showSearch = false
@@ -91,7 +90,7 @@ fun NetworkDetailsScreen(
                         }) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
-                                contentDescription = "",
+                                contentDescription = "Share",
                             )
                             val options = listOf(
                                 context.getString(R.string.share_as_text),
@@ -129,84 +128,48 @@ fun NetworkDetailsScreen(
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
-            lifecycleOwner.lifecycle.removeObserver(
-                observer
-            )
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    Column(modifier = Modifier.imePadding()) {
-        val tabData = listOf("Overview", "Request", "Response")
+    
+    Column(modifier = Modifier.imePadding().fillMaxSize()) {
+        val tabData = listOf("OVERVIEW", "REQUEST", "RESPONSE")
         val pagerState = rememberPagerState(0) { tabData.size }
-        Column(modifier = Modifier.fillMaxSize()) {
-            TabLayout(
-                tabData,
-                pagerState,
-                color,
-                onColor
-            )
-            TabContent(pagerState, networkTransaction)
-        }
-    }
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) {
-    HorizontalPager(
-        state = pagerState,
-    ) { index ->
-        when (index) {
-            0 -> {
-                Column(Modifier.fillMaxSize()) {
-                    OverviewScreen(networkTransaction)
-                }
-
-            }
-
-            1 -> {
-                Column(Modifier.fillMaxSize()) {
-                    PayloadScreen(
-                        headers = networkTransaction?.requestHeaders,//.getRequestHeadersString(true),
-                        body = if (networkTransaction?.requestBodyIsPlainText == true)
-                            networkTransaction.getFormattedRequestBody()
-                        else
-                            buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colorScheme.primary,
-                        onColor = networkTransaction?.let {
-                            ColorUtil.getTransactionContainerColor(
-                                it
-                            )
-                        }
-                            ?: MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-
-            2 -> {
-                Column(Modifier.fillMaxSize()) {
-                    PayloadScreen(
-                        headers = networkTransaction?.responseHeaders,//.getResponseHeadersString(true),
-                        body = if (networkTransaction?.responseBodyIsPlainText == true)
-                            networkTransaction.getFormattedResponseBody()
-                        else
-                            buildAnnotatedString { stringResource(id = R.string.body_omitted) },
-                        color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colorScheme.primary,
-                        onColor = networkTransaction?.let {
-                            ColorUtil.getTransactionContainerColor(
-                                it
-                            )
-                        }
-                            ?: MaterialTheme.colorScheme.onPrimary
-                    )
-                }
+        
+        TabLayout(
+            tabData,
+            pagerState,
+            color,
+            onColor
+        )
+        
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { index ->
+            when (index) {
+                0 -> OverviewScreen(networkTransaction)
+                1 -> PayloadScreen(
+                    headers = networkTransaction?.requestHeaders,
+                    body = if (networkTransaction?.requestBodyIsPlainText == true)
+                        networkTransaction?.getFormattedRequestBody()
+                    else
+                        buildAnnotatedString { append(stringResource(id = R.string.body_omitted)) },
+                    color = color,
+                    onColor = onColor
+                )
+                2 -> PayloadScreen(
+                    headers = networkTransaction?.responseHeaders,
+                    body = if (networkTransaction?.responseBodyIsPlainText == true)
+                        networkTransaction?.getFormattedResponseBody()
+                    else
+                        buildAnnotatedString { append(stringResource(id = R.string.body_omitted)) },
+                    color = color,
+                    onColor = onColor
+                )
             }
         }
-
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -217,13 +180,10 @@ fun TabLayout(
     color: Color,
     onColor: Color
 ) {
-
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        divider = {
-            Spacer(modifier = Modifier.height(5.dp))
-        },
+        divider = {},
         indicator = { tabPositions ->
             if (pagerState.currentPage < tabPositions.size) {
                 TabRowDefaults.SecondaryIndicator(
@@ -235,10 +195,7 @@ fun TabLayout(
         },
         contentColor = onColor,
         containerColor = color,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(color)
+        modifier = Modifier.fillMaxWidth()
     ) {
         tabData.fastForEachIndexed { index, s ->
             Tab(
@@ -249,7 +206,13 @@ fun TabLayout(
                     }
                 },
                 text = {
-                    Text(text = s)
+                    Text(
+                        text = s,
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal,
+                            letterSpacing = 1.sp
+                        )
+                    )
                 }
             )
         }

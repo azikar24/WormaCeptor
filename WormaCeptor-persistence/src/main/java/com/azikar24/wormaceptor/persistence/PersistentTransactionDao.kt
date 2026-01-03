@@ -14,7 +14,9 @@ import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 
 
-class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDao?) : TransactionDao {
+class PersistentTransactionDao(
+    private val roomTransactionDao: RoomTransactionDao?
+) : TransactionDao {
 
     override fun insertCrash(crashTransaction: CrashTransaction?) {
         crashTransaction?.let {
@@ -62,7 +64,11 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
 
     override fun updateTransaction(networkTransaction: NetworkTransaction?): Int? {
         return networkTransaction?.let {
-            roomTransactionDao?.updateNetworkTransaction(DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION.apply(it))
+            roomTransactionDao?.updateNetworkTransaction(
+                DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION.apply(
+                    it
+                )
+            )
         }
     }
 
@@ -102,14 +108,33 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
     }
 
 
-    override fun getAllTransactionsWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, NetworkTransaction>? {
+    override fun getAllTransactionsWith(
+        key: String?,
+        searchType: TransactionDao.SearchType?
+    ): DataSource.Factory<Int, NetworkTransaction>? {
         val endWildCard = "$key%"
         val doubleSideWildCard = "%$key%"
         val factory: DataSource.Factory<Int, PersistentNetworkTransaction>? = when (searchType) {
-            TransactionDao.SearchType.DEFAULT -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequest(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeResponse(endWildCard, doubleSideWildCard)
-            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequestResponse(endWildCard, doubleSideWildCard)
+            TransactionDao.SearchType.DEFAULT -> roomTransactionDao?.getAllNetworkTransactions(
+                endWildCard,
+                doubleSideWildCard
+            )
+
+            TransactionDao.SearchType.INCLUDE_REQUEST -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequest(
+                endWildCard,
+                doubleSideWildCard
+            )
+
+            TransactionDao.SearchType.INCLUDE_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeResponse(
+                endWildCard,
+                doubleSideWildCard
+            )
+
+            TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequestResponse(
+                endWildCard,
+                doubleSideWildCard
+            )
+
             else -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
         }
         return factory?.map { input ->
@@ -117,7 +142,10 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
         }
     }
 
-    override fun getAllCrashesWith(key: String?, searchType: TransactionDao.SearchType?): DataSource.Factory<Int, CrashTransaction>? {
+    override fun getAllCrashesWith(
+        key: String?,
+        searchType: TransactionDao.SearchType?
+    ): DataSource.Factory<Int, CrashTransaction>? {
         val doubleSideWildCard = "%$key%"
         return roomTransactionDao?.getAllCrashes(doubleSideWildCard)?.map { input ->
             PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION.apply(input)
@@ -125,79 +153,83 @@ class PersistentTransactionDao(private val roomTransactionDao: RoomTransactionDa
     }
 
 
-    private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> = Function { input ->
-        NetworkTransaction.Builder().apply {
-            id = input.id
-            requestDate = input.requestDate
-            responseDate = input.responseDate
-            tookMs = input.tookMs
-            protocol = input.protocol
-            method = input.method
-            url = input.url
-            host = input.host
-            path = input.path
-            scheme = input.scheme
-            requestContentLength = input.requestContentLength
-            requestContentType = input.requestContentType
-            requestHeaders = input.requestHeaders
-            requestBody = input.requestBody
-            requestBodyIsPlainText = input.requestBodyIsPlainText
-            responseCode = input.responseCode
-            responseMessage = input.responseMessage
-            error = input.error
-            responseContentLength = input.responseContentLength
-            responseContentType = input.responseContentType
-            responseHeaders = input.responseHeaders
-            responseBody = input.responseBody
-            responseBodyIsPlainText = input.responseBodyIsPlainText
-        }.build()
-    }
-
-    private val DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION: Function<NetworkTransaction, PersistentNetworkTransaction> = Function { input ->
-        PersistentNetworkTransaction().apply {
-            id = input.id
-            requestDate = input.requestDate
-            responseDate = input.responseDate
-            tookMs = input.tookMs
-            protocol = input.protocol
-            method = input.method
-            url = input.url
-            host = input.host
-            path = input.path
-            scheme = input.scheme
-            requestContentLength = input.requestContentLength
-            requestContentType = input.requestContentType
-            requestHeaders = input.requestHeaders
-            requestBody = input.requestBody
-            requestBodyIsPlainText = input.requestBodyIsPlainText
-            responseCode = input.responseCode
-            responseMessage = input.responseMessage
-            error = input.error
-            responseContentLength = input.responseContentLength
-            responseContentType = input.responseContentType
-            responseHeaders = input.responseHeaders
-            responseBody = input.responseBody
-            responseBodyIsPlainText = input.responseBodyIsPlainText
+    private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> =
+        Function { input ->
+            NetworkTransaction.Builder().apply {
+                id = input.id
+                requestDate = input.requestDate
+                responseDate = input.responseDate
+                tookMs = input.tookMs
+                protocol = input.protocol
+                method = input.method
+                url = input.url
+                host = input.host
+                path = input.path
+                scheme = input.scheme
+                requestContentLength = input.requestContentLength
+                requestContentType = input.requestContentType
+                requestHeaders = input.requestHeaders
+                requestBody = input.requestBody
+                requestBodyIsPlainText = input.requestBodyIsPlainText
+                responseCode = input.responseCode
+                responseMessage = input.responseMessage
+                error = input.error
+                responseContentLength = input.responseContentLength
+                responseContentType = input.responseContentType
+                responseHeaders = input.responseHeaders
+                responseBody = input.responseBody
+                responseBodyIsPlainText = input.responseBodyIsPlainText
+            }.build()
         }
-    }
 
-
-    private val PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION: Function<PersistentCrashTransaction, CrashTransaction> = Function { input ->
-        CrashTransaction.Builder().apply {
-            id = input.id
-            crashList = input.crashList
-            crashDate = input.crashDate
-            throwable = input.throwable
-        }.build()
-    }
-
-    private val CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<CrashTransaction, PersistentCrashTransaction> = Function { input ->
-        PersistentCrashTransaction().apply {
-            id = input.id
-            crashList = input.crashList
-            crashDate = input.crashDate
-            throwable = input.throwable
+    private val DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION: Function<NetworkTransaction, PersistentNetworkTransaction> =
+        Function { input ->
+            PersistentNetworkTransaction().apply {
+                id = input.id
+                requestDate = input.requestDate
+                responseDate = input.responseDate
+                tookMs = input.tookMs
+                protocol = input.protocol
+                method = input.method
+                url = input.url
+                host = input.host
+                path = input.path
+                scheme = input.scheme
+                requestContentLength = input.requestContentLength
+                requestContentType = input.requestContentType
+                requestHeaders = input.requestHeaders
+                requestBody = input.requestBody
+                requestBodyIsPlainText = input.requestBodyIsPlainText
+                responseCode = input.responseCode
+                responseMessage = input.responseMessage
+                error = input.error
+                responseContentLength = input.responseContentLength
+                responseContentType = input.responseContentType
+                responseHeaders = input.responseHeaders
+                responseBody = input.responseBody
+                responseBodyIsPlainText = input.responseBodyIsPlainText
+            }
         }
-    }
+
+
+    private val PERSISTENT_TO_CRASH_DATA_TRANSACTION_FUNCTION: Function<PersistentCrashTransaction, CrashTransaction> =
+        Function { input ->
+            CrashTransaction(
+                id = input.id,
+                crashList = input.crashList,
+                crashDate = input.crashDate,
+                throwable = input.throwable,
+            )
+        }
+
+    private val CRASH_DATA_TO_PERSISTENT_TRANSACTION_FUNCTION: Function<CrashTransaction, PersistentCrashTransaction> =
+        Function { input ->
+            PersistentCrashTransaction().apply {
+                id = input.id
+                crashList = input.crashList
+                crashDate = input.crashDate
+                throwable = input.throwable
+            }
+        }
 
 }

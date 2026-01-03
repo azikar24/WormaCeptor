@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -20,13 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.annotations.ScreenPreviews
 import com.azikar24.wormaceptor.internal.ui.ToolbarViewModel
 import com.azikar24.wormaceptor.internal.ui.features.network.components.NetworkList
@@ -40,7 +38,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NetworkListScreen(
     navController: NavController,
-    searchKey: String? = null,
     viewModel: NetworkTransactionViewModel = koinViewModel(),
     toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
@@ -53,19 +50,30 @@ fun NetworkListScreen(
                 toolbarViewModel.title = "Network Calls"
                 toolbarViewModel.subtitle = ""
                 toolbarViewModel.color = null
+                toolbarViewModel.onColor = null
                 toolbarViewModel.showSearch = showLocalSearch
                 toolbarViewModel.menuActions = {
                     Row {
-                        IconButton(onClick = {
-                            showLocalSearch = !showLocalSearch
-                            if (!showLocalSearch) toolbarViewModel.searchKey = ""
-                        }) {
-                            Icon(imageVector = MyIconPack.IcSearch, contentDescription = "")
+                        IconButton(
+                            onClick = {
+                                showLocalSearch = !showLocalSearch
+                                if (!showLocalSearch) toolbarViewModel.searchKey = ""
+                            }
+                        ) {
+                            Icon(
+                                imageVector = MyIconPack.IcSearch,
+                                contentDescription = "",
+                            )
                         }
-                        IconButton(onClick = {
-                            viewModel.clearAll()
-                        }) {
-                            Icon(imageVector = MyIconPack.IcDelete, contentDescription = "")
+                        IconButton(
+                            onClick = {
+                                viewModel.clearAll()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = MyIconPack.IcDelete,
+                                contentDescription = "",
+                            )
                         }
                     }
                 }
@@ -79,9 +87,9 @@ fun NetworkListScreen(
 
     LaunchedEffect(toolbarViewModel.searchKey) {
         if (!toolbarViewModel.showSearch) {
-             viewModel.fetchData("")
+            viewModel.fetchData("")
         } else {
-             viewModel.fetchData(toolbarViewModel.searchKey)
+            viewModel.fetchData(toolbarViewModel.searchKey)
         }
     }
 

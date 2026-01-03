@@ -6,7 +6,13 @@ package com.azikar24.wormaceptor.internal.ui.features.network.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -20,7 +26,14 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,49 +42,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.navigation.NavController
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.support.ColorUtil
-import com.azikar24.wormaceptor.internal.ui.WormaCeptorViewModelFactory
-import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
-import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.share
 import com.azikar24.wormaceptor.internal.ui.ToolbarViewModel
+import com.azikar24.wormaceptor.internal.ui.features.network.NetworkTransactionViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NetworkDetailsScreen(
-    navController: NavController,
     transactionId: Long,
     viewModel: NetworkTransactionViewModel = koinViewModel(),
     toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
-    var networkTransaction: NetworkTransaction? by remember {
-        mutableStateOf(null)
-    }
-    LaunchedEffect(key1 = transactionId) {
-        viewModel
-            .getTransactionWithId(transactionId)
-            ?.collectLatest {
-                networkTransaction = it
-            }
-    }
+    var networkTransaction: NetworkTransaction? by remember { mutableStateOf(null) }
 
+    LaunchedEffect(key1 = transactionId) {
+        viewModel.getTransactionWithId(transactionId)?.collectLatest { networkTransaction = it }
+    }
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
-    val color = networkTransaction?.let {
-        ColorUtil.getInstance(context).getTransactionColor(it)
-    }?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
+    val transactionColors = networkTransaction?.let { ColorUtil.getTransactionColors(it) }
+    val color = transactionColors?.container ?: MaterialTheme.colorScheme.primary
+    val onColor = transactionColors?.onContainer ?: MaterialTheme.colorScheme.onPrimaryContainer
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner, networkTransaction, color, expanded) {
@@ -80,27 +83,40 @@ fun NetworkDetailsScreen(
                 networkTransaction?.let { transaction ->
                     toolbarViewModel.title = "[${transaction.method}] ${transaction.path}"
                     toolbarViewModel.color = color
+                    toolbarViewModel.onColor = onColor
                     toolbarViewModel.showSearch = false
                     toolbarViewModel.menuActions = {
-                        IconButton(onClick = { expanded = true }) {
+                        IconButton(onClick = {
+                            expanded = true
+                        }) {
                             Icon(
-                                tint = MaterialTheme.colorScheme.onPrimary,
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_share_white_24dp),
-                                contentDescription = ""
+                                contentDescription = "",
                             )
                             val options = listOf(
                                 context.getString(R.string.share_as_text),
                                 context.getString(R.string.share_as_curl)
                             )
-                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                            DropdownMenu(expanded = expanded, onDismissRequest = {
+                                expanded = false
+                            }) {
                                 options.forEach { option ->
                                     DropdownMenuItem(
                                         text = { Text(text = option) },
                                         onClick = {
                                             if (option == context.getString(R.string.share_as_text)) {
-                                                context.share(FormatUtils.getShareText(context, transaction))
+                                                context.share(
+                                                    FormatUtils.getShareText(
+                                                        context,
+                                                        transaction
+                                                    )
+                                                )
                                             } else {
-                                                context.share(FormatUtils.getShareCurlCommand(transaction))
+                                                context.share(
+                                                    FormatUtils.getShareCurlCommand(
+                                                        transaction
+                                                    )
+                                                )
                                             }
                                             expanded = false
                                         })
@@ -113,26 +129,23 @@ fun NetworkDetailsScreen(
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
+            lifecycleOwner.lifecycle.removeObserver(
+                observer
+            )
         }
     }
-
-
-    Column(
-        modifier = Modifier.imePadding()
-    ) {
-        val tabData = listOf(
-            "Overview",
-            "Request",
-            "Response",
-        )
-
+    Column(modifier = Modifier.imePadding()) {
+        val tabData = listOf("Overview", "Request", "Response")
         val pagerState = rememberPagerState(0) { tabData.size }
         Column(modifier = Modifier.fillMaxSize()) {
-            TabLayout(tabData, pagerState, color)
+            TabLayout(
+                tabData,
+                pagerState,
+                color,
+                onColor
+            )
             TabContent(pagerState, networkTransaction)
         }
-
     }
 }
 
@@ -160,7 +173,13 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
                         color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colorScheme.primary
+                            ?: MaterialTheme.colorScheme.primary,
+                        onColor = networkTransaction?.let {
+                            ColorUtil.getTransactionContainerColor(
+                                it
+                            )
+                        }
+                            ?: MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -174,7 +193,13 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
                         else
                             buildAnnotatedString { stringResource(id = R.string.body_omitted) },
                         color = networkTransaction?.let { ColorUtil.getTransactionColor(it) }
-                            ?: MaterialTheme.colorScheme.primary
+                            ?: MaterialTheme.colorScheme.primary,
+                        onColor = networkTransaction?.let {
+                            ColorUtil.getTransactionContainerColor(
+                                it
+                            )
+                        }
+                            ?: MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -189,7 +214,8 @@ fun TabContent(pagerState: PagerState, networkTransaction: NetworkTransaction?) 
 fun TabLayout(
     tabData: List<String>,
     pagerState: PagerState,
-    color: Color
+    color: Color,
+    onColor: Color
 ) {
 
     val scope = rememberCoroutineScope()
@@ -203,25 +229,29 @@ fun TabLayout(
                 TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                     height = 3.dp,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = onColor,
                 )
             }
         },
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        contentColor = onColor,
         containerColor = color,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(color)
     ) {
-        tabData.forEachIndexed { index, s ->
-            Tab(selected = pagerState.currentPage == index, onClick = {
-                scope.launch {
-                    pagerState.animateScrollToPage(index)
+        tabData.fastForEachIndexed { index, s ->
+            Tab(
+                selected = pagerState.currentPage == index,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
+                },
+                text = {
+                    Text(text = s)
                 }
-            }, text = {
-                Text(text = s)
-            })
+            )
         }
     }
 }

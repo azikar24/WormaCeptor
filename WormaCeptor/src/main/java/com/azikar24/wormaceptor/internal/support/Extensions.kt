@@ -6,6 +6,7 @@ package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
@@ -16,12 +17,16 @@ fun Context.getColorFromRes(@ColorRes id: Int): Int {
 }
 
 fun Context.share(content: String) {
-    val sendIntent = Intent()
-    sendIntent.action = Intent.ACTION_SEND
-    sendIntent.putExtra(Intent.EXTRA_SUBJECT, content)
-    sendIntent.putExtra(Intent.EXTRA_TEXT, content)
-    sendIntent.type = "text/plain"
-    startActivity(Intent.createChooser(sendIntent, null))
+    try {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, content)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, content)
+        sendIntent.type = "text/plain"
+        startActivity(Intent.createChooser(sendIntent, null))
+    } catch (_: Exception) {
+        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+    }
 }
 
 fun Date.formatted(): String? {

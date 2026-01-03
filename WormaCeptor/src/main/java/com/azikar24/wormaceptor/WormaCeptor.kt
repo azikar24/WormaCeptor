@@ -37,7 +37,10 @@ object WormaCeptor {
     var type: WormaCeptorType? = null
 
     fun getLaunchIntent(context: Context): Intent {
-        return Intent(context, WormaCeptorMainActivity::class.java)//.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        return Intent(
+            context,
+            WormaCeptorMainActivity::class.java
+        )
     }
 
     fun logUnexpectedCrashes() {
@@ -47,11 +50,11 @@ object WormaCeptor {
             val crashList = paramThrowable.stackTrace.toList()
             scope.launch {
                 storage?.transactionDao?.insertCrash(
-                    CrashTransaction.Builder().apply {
-                        setThrowable(paramThrowable.toString())
-                        setCrashList(crashList.map { it })
-                        setCrashDate(Date())
-                    }.build()
+                    CrashTransaction(
+                        throwable = paramThrowable.toString(),
+                        crashList = crashList.map { it },
+                        crashDate = Date(),
+                    )
                 )
             }
 
@@ -76,13 +79,15 @@ object WormaCeptor {
                 setIntent(getLaunchIntent(context).setAction(Intent.ACTION_VIEW))
             }
             .build()
-        context.getSystemService(ShortcutManager::class.java).addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
+        context.getSystemService(ShortcutManager::class.java)
+            .addDynamicShortcuts(listOf(shortcutInfo).toMutableList())
         return id
     }
 
     fun startActivityOnShake(componentActivity: ComponentActivity) {
 
-        val mSensorManager = componentActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val mSensorManager =
+            componentActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val mShakeDetector = ShakeDetector {
             componentActivity.startActivity(getLaunchIntent(componentActivity))
@@ -91,7 +96,11 @@ object WormaCeptor {
         componentActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onResume(owner: LifecycleOwner) {
                 super.onResume(owner)
-                mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI)
+                mSensorManager.registerListener(
+                    mShakeDetector,
+                    mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI
+                )
             }
 
             override fun onPause(owner: LifecycleOwner) {

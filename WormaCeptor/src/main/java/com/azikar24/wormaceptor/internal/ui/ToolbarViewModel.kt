@@ -17,14 +17,16 @@ class ToolbarViewModel : ViewModel() {
     var showSearch by mutableStateOf(false)
     var searchKey by mutableStateOf("")
     var color by mutableStateOf<Color?>(null)
+    var onColor by mutableStateOf<Color?>(null)
     var menuActions by mutableStateOf<(@Composable () -> Unit)?>(null)
-    
+
     fun reset() {
         title = ""
         subtitle = null
         showSearch = false
         searchKey = ""
         color = null
+        onColor = null
         menuActions = null
     }
 }

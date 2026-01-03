@@ -16,32 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.navigation.NavController
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.stacktraceData
 import com.azikar24.wormaceptor.internal.support.formatted
-import com.azikar24.wormaceptor.internal.ui.WormaCeptorViewModelFactory
 import com.azikar24.wormaceptor.internal.ui.ToolbarViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CrashDetailsScreen(
-    navController: NavController,
     crashId: Long,
     viewModel: CrashTransactionViewModel = koinViewModel(),
     toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
     val crashTransactionState = viewModel.getCrashWithId(crashId)?.observeAsState()
-    val crashTransaction = crashTransactionState?.value
-
-    if (crashTransaction == null) {
-        // Handle loading or error state if needed
-        return
-    }
+    val crashTransaction = crashTransactionState?.value ?: return
 
     val (title, subtitle) = crashTransaction.throwable?.let {
         val colonPosition = it.indexOf(":")
@@ -57,6 +48,7 @@ fun CrashDetailsScreen(
                 toolbarViewModel.title = title.toString()
                 toolbarViewModel.subtitle = subtitle.toString()
                 toolbarViewModel.color = null
+                toolbarViewModel.onColor = null
                 toolbarViewModel.showSearch = false
                 toolbarViewModel.menuActions = null
             }

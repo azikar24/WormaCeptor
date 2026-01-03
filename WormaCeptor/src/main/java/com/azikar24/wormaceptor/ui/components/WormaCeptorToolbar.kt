@@ -66,12 +66,13 @@ object WormaCeptorToolbar {
         showSearch: Boolean = false,
         searchListener: SearchListener? = null,
         color: Color = MaterialTheme.colorScheme.primary,
+        onColor: Color = MaterialTheme.colorScheme.onPrimary,
         menuActions: @Composable() RowScope.() -> Unit = {}
     ) {
         Column {
             TopAppBar(
                 title = {
-                    Column() {
+                    Column {
                         Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         subtitle?.let {
                             Text(
@@ -85,20 +86,24 @@ object WormaCeptorToolbar {
                         }
                     }
                 },
-                actions = menuActions, navigationIcon = {
+                actions = menuActions,
+                navigationIcon = {
                     IconButton(onClick = {
                         if (!navController.navigateUp()) {
                             activity?.finish()
                         }
                     }) {
-                        Icon(imageVector = MyIconPack.IcBack, contentDescription = "")
+                        Icon(
+                            imageVector = MyIconPack.IcBack,
+                            contentDescription = "",
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors().copy(
                     containerColor = color,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = onColor,
+                    titleContentColor = onColor,
+                    actionIconContentColor = onColor,
                 )
 
             )
@@ -108,7 +113,7 @@ object WormaCeptorToolbar {
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically()
             ) {
-                SearchUI(searchListener)
+                SearchUI(searchListener, color = color, onColor = onColor)
             }
 
         }
@@ -128,6 +133,7 @@ fun SearchUI(
     color: Color = MaterialTheme.colorScheme.primary,
     counter: Int? = null,
     maxCounter: Int? = null,
+    onColor: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
     var value by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
@@ -143,7 +149,7 @@ fun SearchUI(
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search),
-                    color = MaterialTheme.colorScheme.onPrimary.copy(0.5f)
+                    color = onColor.copy(0.5f)
                 )
             },
             onValueChange = {
@@ -156,17 +162,17 @@ fun SearchUI(
             ),
             shape = MaterialTheme.shapes.large,
             colors = OutlinedTextFieldDefaults.colors().copy(
-                cursorColor = MaterialTheme.colorScheme.onPrimary,
-                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                focusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+                cursorColor = onColor,
+                focusedTextColor = onColor,
+                unfocusedTextColor = onColor,
+                focusedIndicatorColor = onColor,
+                unfocusedIndicatorColor = onColor,
             ),
             leadingIcon = {
                 Icon(
                     imageVector = MyIconPack.IcSearch,
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = onColor
                 )
             },
             trailingIcon = {
@@ -178,7 +184,7 @@ fun SearchUI(
                         Text(
                             text = "${counter + 1}/$maxCounter",
                             modifier = Modifier.padding(end = 5.dp),
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = onColor
                         )
                     }
                     if (value.isNotEmpty()) {
@@ -189,7 +195,7 @@ fun SearchUI(
                             Icon(
                                 imageVector = MyIconPack.IcClose,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onPrimary
+                                tint = onColor
                             )
                         }
                     }

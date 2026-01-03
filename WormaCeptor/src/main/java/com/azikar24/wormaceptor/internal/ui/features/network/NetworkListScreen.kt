@@ -47,10 +47,8 @@ fun NetworkListScreen(
     DisposableEffect(lifecycleOwner, showLocalSearch) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
+                toolbarViewModel.reset()
                 toolbarViewModel.title = "Network Calls"
-                toolbarViewModel.subtitle = ""
-                toolbarViewModel.color = null
-                toolbarViewModel.onColor = null
                 toolbarViewModel.showSearch = showLocalSearch
                 toolbarViewModel.menuActions = {
                     Row {

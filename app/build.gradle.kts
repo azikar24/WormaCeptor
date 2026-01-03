@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.androidx.multidex)
 
     implementation(project(":WormaCeptor-persistence"))
+//    implementation(project(":WormaCeptor-no-op"))
+//    implementation(project(":WormaCeptor-imdb"))
 
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

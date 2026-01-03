@@ -9,7 +9,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import java.util.concurrent.atomic.AtomicBoolean
@@ -44,9 +43,6 @@ abstract class WormaCeptorPersistence : RoomDatabase(), WormaCeptorStorage {
                 )
                 .fallbackToDestructiveMigration()
                 .build()
-                
-                WormaCeptor.storage = INSTANCE
-                WormaCeptor.type = WormaCeptor.WormaCeptorType.PERSISTENCE
             }
             return INSTANCE!!
         }

@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.imdb
 
-import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.data.WormaCeptorStorage
 import java.util.concurrent.atomic.AtomicBoolean
@@ -27,8 +26,6 @@ class WormaCeptorIMDB : WormaCeptorStorage {
         fun getInstance(): WormaCeptorIMDB {
             if (!initialized.getAndSet(true)) {
                 INSTANCE = WormaCeptorIMDB()
-                WormaCeptor.storage = INSTANCE
-                WormaCeptor.type = WormaCeptor.WormaCeptorType.IMDB
             }
             return INSTANCE!!
         }

@@ -184,7 +184,7 @@ internal class IMDBTransactionDao(
         newTransactionIndex: Long?
     ): Long? {
         networkTransactionDataStore.addTransaction(newTransactionIndex?.let {
-            networkTransaction?.toBuilder()?.setId(it)?.build()
+            networkTransaction?.copy(id = it)
         })
         if (newTransactionIndex != null) {
             updateCurrentIndex(newTransactionIndex)

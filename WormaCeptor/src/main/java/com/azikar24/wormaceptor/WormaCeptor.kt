@@ -17,17 +17,17 @@ import com.azikar24.wormaceptor.internal.support.ShakeDetector
 import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import java.util.*
 
 object WormaCeptor {
-
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /**
-     * Storage instance used by the library. 
+     * Storage instance used by the library.
      * Initialized via [init] and provided to internal components via DI.
      */
     internal var storage: WormaCeptorStorage? = null
@@ -50,7 +50,7 @@ object WormaCeptor {
         logCrashes: Boolean = false,
     ) {
         this.storage = storage
-        
+
         // Register storage in Koin dynamically
         loadKoinModules(module {
             single { storage.transactionDao }
@@ -69,12 +69,20 @@ object WormaCeptor {
         val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
 
         Thread.setDefaultUncaughtExceptionHandler { paramThread, paramThrowable ->
-            val crashList = paramThrowable.stackTrace.toList()
+            val crashList = mutableListOf<StackTraceElement>()
+            var currentThrowable: Throwable? = paramThrowable
+
+            // Collect stack trace including causes
+            while (currentThrowable != null) {
+                crashList.addAll(currentThrowable.stackTrace)
+                currentThrowable = currentThrowable.cause
+            }
+
             scope.launch {
                 storage?.transactionDao?.insertCrash(
                     CrashTransaction(
                         throwable = paramThrowable.toString(),
-                        crashList = crashList.map { it },
+                        crashList = crashList.toList(),
                         crashDate = Date(),
                     )
                 )

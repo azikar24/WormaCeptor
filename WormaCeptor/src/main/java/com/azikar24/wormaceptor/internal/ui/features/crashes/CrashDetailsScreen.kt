@@ -45,12 +45,9 @@ fun CrashDetailsScreen(
     DisposableEffect(lifecycleOwner, title, subtitle) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
+                toolbarViewModel.reset()
                 toolbarViewModel.title = title.toString()
                 toolbarViewModel.subtitle = subtitle.toString()
-                toolbarViewModel.color = null
-                toolbarViewModel.onColor = null
-                toolbarViewModel.showSearch = false
-                toolbarViewModel.menuActions = null
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)

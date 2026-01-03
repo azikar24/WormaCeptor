@@ -51,7 +51,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             updateTransactionFromResponse(transaction, response, tookMs)
             response
         } catch (e: Exception) {
-            update(transaction.toBuilder().setError(e.toString()).build())
+            update(transaction.copy(error = e.toString()))
             throw e
         }
     }
@@ -72,7 +72,6 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             newTransactionBuilder.setTookMs(response.receivedResponseAtMillis - response.sentRequestAtMillis)
             newTransactionBuilder.setRequestDate(Date(response.sentRequestAtMillis))
             newTransactionBuilder.setResponseDate(Date(response.receivedResponseAtMillis))
-            println("azikar24242424 " + newTransactionBuilder.path + " " + Date(response.receivedResponseAtMillis))
         }
 
 
@@ -249,9 +248,9 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             val prefix = Buffer()
             val byteCount = if (buffer.size < 64) buffer.size else 64
             buffer.copyTo(prefix, 0, byteCount)
-            for (i: Int in 0..15) {
+            repeat(15) {
                 if (prefix.exhausted()) {
-                    break
+                    return@repeat
                 }
                 val codePoint = prefix.readUtf8CodePoint()
                 if (Character.isISOControl(codePoint) && !Character.isWhitespace(codePoint)) {
@@ -282,7 +281,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
     fun create(transaction: NetworkTransaction): NetworkTransaction {
         val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
-        val newTransaction = transaction.toBuilder().setId(transactionId).build()
+        val newTransaction = transaction.copy(id = transactionId)
         mNotificationHelper?.show(newTransaction, stickyNotification)
         try {
             mRetentionManager?.doMaintenance()

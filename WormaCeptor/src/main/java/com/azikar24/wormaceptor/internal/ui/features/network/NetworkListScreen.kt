@@ -49,6 +49,7 @@ fun NetworkListScreen(
             if (event == Lifecycle.Event.ON_RESUME) {
                 toolbarViewModel.reset()
                 toolbarViewModel.title = "Network Calls"
+                toolbarViewModel.subtitle = ""
                 toolbarViewModel.showSearch = showLocalSearch
                 toolbarViewModel.menuActions = {
                     Row {

@@ -155,31 +155,31 @@ class PersistentTransactionDao(
 
     private val PERSISTENT_TO_DATA_TRANSACTION_FUNCTION: Function<PersistentNetworkTransaction, NetworkTransaction> =
         Function { input ->
-            NetworkTransaction.Builder().apply {
-                id = input.id
-                requestDate = input.requestDate
-                responseDate = input.responseDate
-                tookMs = input.tookMs
-                protocol = input.protocol
-                method = input.method
-                url = input.url
-                host = input.host
-                path = input.path
-                scheme = input.scheme
-                requestContentLength = input.requestContentLength
-                requestContentType = input.requestContentType
-                requestHeaders = input.requestHeaders
-                requestBody = input.requestBody
-                requestBodyIsPlainText = input.requestBodyIsPlainText
-                responseCode = input.responseCode
-                responseMessage = input.responseMessage
-                error = input.error
-                responseContentLength = input.responseContentLength
-                responseContentType = input.responseContentType
-                responseHeaders = input.responseHeaders
-                responseBody = input.responseBody
+            NetworkTransaction(
+                id = input.id,
+                requestDate = input.requestDate,
+                responseDate = input.responseDate,
+                tookMs = input.tookMs,
+                protocol = input.protocol,
+                method = input.method,
+                url = input.url,
+                host = input.host,
+                path = input.path,
+                scheme = input.scheme,
+                requestContentLength = input.requestContentLength,
+                requestContentType = input.requestContentType,
+                requestHeaders = input.requestHeaders,
+                requestBody = input.requestBody,
+                requestBodyIsPlainText = input.requestBodyIsPlainText,
+                responseCode = input.responseCode,
+                responseMessage = input.responseMessage,
+                error = input.error,
+                responseContentLength = input.responseContentLength,
+                responseContentType = input.responseContentType,
+                responseHeaders = input.responseHeaders,
+                responseBody = input.responseBody,
                 responseBodyIsPlainText = input.responseBodyIsPlainText
-            }.build()
+            )
         }
 
     private val DATA_TO_PERSISTENT_TRANSACTION_FOUNDATION: Function<NetworkTransaction, PersistentNetworkTransaction> =

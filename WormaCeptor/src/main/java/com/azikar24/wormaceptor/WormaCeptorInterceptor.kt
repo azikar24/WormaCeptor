@@ -63,35 +63,35 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         tookMs: Long
     ) {
         val responseBody = response.body
-        val newTransactionBuilder = transaction.toBuilder()
+        val newTransaction = transaction.copy()
 
         if (response.cacheResponse != null) {
-            newTransactionBuilder.setResponseDate(Date())
-            newTransactionBuilder.setTookMs(tookMs)
+            newTransaction.responseDate = Date()
+            newTransaction.tookMs = tookMs
         } else {
-            newTransactionBuilder.setTookMs(response.receivedResponseAtMillis - response.sentRequestAtMillis)
-            newTransactionBuilder.setRequestDate(Date(response.sentRequestAtMillis))
-            newTransactionBuilder.setResponseDate(Date(response.receivedResponseAtMillis))
+            newTransaction.tookMs = response.receivedResponseAtMillis - response.sentRequestAtMillis
+            newTransaction.requestDate = Date(response.sentRequestAtMillis)
+            newTransaction.responseDate = Date(response.receivedResponseAtMillis)
         }
 
 
-        newTransactionBuilder.setRequestHeaders(toHttpHeaderList(response.request.headers))
-        newTransactionBuilder.setProtocol(response.protocol.toString())
-        newTransactionBuilder.setResponseCode(response.code)
-        newTransactionBuilder.setResponseMessage(response.message)
+        newTransaction.requestHeaders = toHttpHeaderList(response.request.headers)
+        newTransaction.protocol = response.protocol.toString()
+        newTransaction.responseCode = response.code
+        newTransaction.responseMessage = response.message
 
         if (responseBody != null) {
-            newTransactionBuilder.setResponseContentLength(responseBody.contentLength())
+            newTransaction.responseContentLength = responseBody.contentLength()
             val contentType = responseBody.contentType()
             if (contentType != null) {
-                newTransactionBuilder.setResponseContentType(contentType.toString())
+                newTransaction.responseContentType = contentType.toString()
             }
         }
 
-        newTransactionBuilder.setResponseHeaders(toHttpHeaderList(response.headers))
+        newTransaction.responseHeaders = toHttpHeaderList(response.headers)
 
         val responseBodyIsPlainText = bodyHasSupportedEncoding(response.headers)
-        newTransactionBuilder.setResponseBodyIsPlainText(responseBodyIsPlainText)
+        newTransaction.responseBodyIsPlainText = responseBodyIsPlainText
         if (HttpHeaders.hasBody(response) && responseBodyIsPlainText) {
             val source = getNativeSource(response)
             source?.request(Long.MAX_VALUE)
@@ -105,21 +105,21 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
                 try {
                     charset = contentType.charset(UTF8)
                 } catch (_: UnsupportedCharsetException) {
-                    update(newTransactionBuilder.build())
+                    update(newTransaction)
                     return
                 }
             }
             if (buffer != null) {
                 if (isPlaintext(buffer)) {
-                    newTransactionBuilder.setResponseBody(readFromBuffer(buffer.clone(), charset))
+                    newTransaction.responseBody = readFromBuffer(buffer.clone(), charset)
                 } else {
-                    newTransactionBuilder.setResponseBodyIsPlainText(false)
+                    newTransaction.responseBodyIsPlainText = false
                 }
-                newTransactionBuilder.setResponseContentLength(buffer.size)
+                newTransaction.responseContentLength = buffer.size
             }
 
         }
-        update(newTransactionBuilder.build())
+        update(newTransaction)
     }
 
 
@@ -150,44 +150,41 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
     @Throws(IOException::class)
     fun createTransactionFromRequest(request: Request): NetworkTransaction {
-        val requestBody = request.body
+        val hasRequestBody = request.body != null
 
-        val hasRequestBody = requestBody != null
-
-        val transactionBuilder = NetworkTransaction.Builder()
-            .apply {
-                setRequestDate(Date())
-                setMethod(request.method)
-                setRequestHeaders(toHttpHeaderList(request.headers))
-                setUrlHostPathSchemeFromUrl(request.url.toString())
-                if (hasRequestBody) {
-                    val contentType = requestBody.contentType()
+        val transaction = NetworkTransaction().apply {
+            requestDate = Date()
+            method = request.method
+            requestHeaders = toHttpHeaderList(request.headers)
+            setUrlHostPathSchemeFromUrl(request.url.toString())
+            if (hasRequestBody) {
+                val contentType = request.body?.contentType()
+                if (contentType != null) {
+                    requestContentType = contentType.toString()
+                }
+                if (request.body?.contentLength() != -1L) {
+                    requestContentLength = request.body?.contentLength()
+                }
+                if (requestBodyIsPlainText) {
+                    val source: BufferedSource =
+                        getNativeSource(Buffer(), bodyGzipped(request.headers))
+                    val buffer = source.buffer
+                    request.body?.writeTo(buffer)
+                    var charset = UTF8
                     if (contentType != null) {
-                        setRequestContentType(contentType.toString())
+                        charset = contentType.charset(UTF8)
                     }
-                    if (requestBody.contentLength() != -1L) {
-                        setRequestContentLength(requestBody.contentLength())
-                    }
-                    if (requestBodyIsPlainText) {
-                        val source: BufferedSource =
-                            getNativeSource(Buffer(), bodyGzipped(request.headers))
-                        val buffer = source.buffer
-                        requestBody.writeTo(buffer)
-                        var charset = UTF8
-                        if (contentType != null) {
-                            charset = contentType.charset(UTF8)
-                        }
-                        if (isPlaintext(buffer)) {
-                            setRequestBody(readFromBuffer(buffer, charset))
-                        } else {
-                            setResponseBodyIsPlainText(false)
-                        }
+                    if (isPlaintext(buffer)) {
+                        this.requestBody = readFromBuffer(buffer, charset)
+                    } else {
+                        responseBodyIsPlainText = false
                     }
                 }
-                setRequestBodyIsPlainText(bodyHasSupportedEncoding(request.headers))
             }
+            requestBodyIsPlainText = bodyHasSupportedEncoding(request.headers)
+        }
 
-        return create(transactionBuilder.build())
+        return create(transaction)
     }
 
     fun toHttpHeaderList(headers: Headers): List<HttpHeader> {

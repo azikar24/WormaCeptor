@@ -49,6 +49,7 @@ fun CrashesListScreen(
             if (event == Lifecycle.Event.ON_RESUME) {
                 toolbarViewModel.reset()
                 toolbarViewModel.title = "Crashes"
+                toolbarViewModel.subtitle = ""
                 toolbarViewModel.showSearch = showLocalSearch
                 toolbarViewModel.menuActions = {
                     Row {

@@ -5,11 +5,14 @@
 package com.azikar24.wormaceptor
 
 import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.internal.support.HttpHeaders
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
-import com.azikar24.wormaceptor.internal.support.RetentionManager
+import com.azikar24.wormaceptor.internal.support.RetentionWorker
 import okhttp3.*
 import okio.Buffer
 import okio.BufferedSource
@@ -20,6 +23,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.nio.charset.UnsupportedCharsetException
 import java.util.*
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
@@ -27,17 +31,17 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     private val UTF8 = Charset.forName("UTF-8")
 
     private val storage = WormaCeptor.storage
+    private val executor = Executors.newSingleThreadExecutor()
 
     private var stickyNotification = false
     private var mNotificationHelper: NotificationHelper? = null
     private var mMaxContentLength = 250000L
-    private var mRetentionManager: RetentionManager? = null
 
     @Volatile
     private var headersToRedact = emptySet<String>()
 
     init {
-        mRetentionManager = RetentionManager(context, Period.ONE_WEEK)
+        scheduleRetentionWorker(Period.ONE_WEEK)
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -135,8 +139,27 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     fun retainDataFor(period: Period): WormaCeptorInterceptor {
-        mRetentionManager = RetentionManager(context, period)
+        scheduleRetentionWorker(period)
         return this
+    }
+
+    private fun scheduleRetentionWorker(period: Period) {
+        val prefs = context.getSharedPreferences("wormaceptor_preferences", Context.MODE_PRIVATE)
+        prefs.edit().putString("retention_period", period.name).apply()
+
+        if (period == Period.FOREVER) {
+            WorkManager.getInstance(context).cancelUniqueWork("wormaceptor_retention")
+            return
+        }
+
+        val workRequest = PeriodicWorkRequestBuilder<RetentionWorker>(12, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "wormaceptor_retention",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 
     fun redactHeader(name: String): WormaCeptorInterceptor {
@@ -277,23 +300,22 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
 
     fun create(transaction: NetworkTransaction): NetworkTransaction {
-        val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
-        val newTransaction = transaction.copy(id = transactionId)
-        mNotificationHelper?.show(newTransaction, stickyNotification)
-        try {
-            mRetentionManager?.doMaintenance()
-        } catch (_: Exception) {
-            // ignore
+        executor.execute {
+            val transactionId: Long = storage?.transactionDao?.insertTransaction(transaction) ?: -1
+            transaction.id = transactionId
+            mNotificationHelper?.show(transaction, stickyNotification)
         }
-        return newTransaction
+        return transaction
     }
 
 
     fun update(transaction: NetworkTransaction) {
-        val updatedTransactionCount: Int =
-            storage?.transactionDao?.updateTransaction(transaction) ?: -1
-        if (updatedTransactionCount <= 0) return
-        mNotificationHelper?.show(transaction, stickyNotification)
+        executor.execute {
+            val updatedTransactionCount: Int =
+                storage?.transactionDao?.updateTransaction(transaction) ?: -1
+            if (updatedTransactionCount <= 0) return@execute
+            mNotificationHelper?.show(transaction, stickyNotification)
+        }
     }
 
     enum class Period {

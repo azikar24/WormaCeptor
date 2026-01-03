@@ -4,7 +4,7 @@
 
 package com.azikar24.wormaceptor.ui.components
 
-import androidx.activity.ComponentActivity
+import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -53,83 +53,80 @@ import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcClose
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcSearch
 import com.example.wormaceptor.ui.drawables.MyIconPack
 
-object WormaCeptorToolbar {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WormaCeptorToolbar(
+    title: String,
+    navController: NavController,
+    subtitle: String? = null,
+    showSearch: Boolean = false,
+    searchListener: SearchListener? = null,
+    color: Color = MaterialTheme.colorScheme.primary,
+    onColor: Color = MaterialTheme.colorScheme.onPrimary,
+    menuActions: @Composable RowScope.() -> Unit = {}
+) {
+    val activity = LocalContext.current as Activity
 
-    var activity: ComponentActivity? = null
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun WormaCeptorToolbar(
-        title: String,
-        navController: NavController,
-        subtitle: String? = null,
-        showSearch: Boolean = false,
-        searchListener: SearchListener? = null,
-        color: Color = MaterialTheme.colorScheme.primary,
-        onColor: Color = MaterialTheme.colorScheme.onPrimary,
-        menuActions: @Composable() RowScope.() -> Unit = {}
-    ) {
-        Column {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                        subtitle?.let {
-                            Text(
-                                text = it.ifEmpty {
-                                    stringResource(LocalContext.current.applicationInfo.labelRes)
-                                },
-                                fontSize = 14.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    }
-                },
-                actions = menuActions,
-                navigationIcon = {
-                    IconButton(onClick = {
-                        if (!navController.navigateUp()) {
-                            activity?.finish()
-                        }
-                    }) {
-                        Icon(
-                            imageVector = MyIconPack.IcBack,
-                            contentDescription = "",
+    Column {
+        TopAppBar(
+            title = {
+                Column {
+                    Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    subtitle?.let {
+                        Text(
+                            text = it.ifEmpty {
+                                stringResource(LocalContext.current.applicationInfo.labelRes)
+                            },
+                            fontSize = 14.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors().copy(
-                    containerColor = color,
-                    navigationIconContentColor = onColor,
-                    titleContentColor = onColor,
-                    actionIconContentColor = onColor,
-                )
-
+                }
+            },
+            actions = menuActions,
+            navigationIcon = {
+                IconButton(onClick = {
+                    if (!navController.navigateUp()) {
+                        activity.finish()
+                    }
+                }) {
+                    Icon(
+                        imageVector = MyIconPack.IcBack,
+                        contentDescription = "",
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors().copy(
+                containerColor = color,
+                navigationIconContentColor = onColor,
+                titleContentColor = onColor,
+                actionIconContentColor = onColor,
             )
-            if (!showSearch) searchListener?.onQueryTextChange("")
-            AnimatedVisibility(
-                visible = showSearch,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
-                SearchUI(searchListener, color = color, onColor = onColor)
-            }
 
+        )
+        if (!showSearch) searchListener?.onQueryTextChange("")
+        AnimatedVisibility(
+            visible = showSearch,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            SearchUI(searchListener, color = color, onColor = onColor)
         }
+
     }
+}
 
 
-    fun interface SearchListener {
-        fun onQueryTextChange(value: String?)
-    }
+fun interface SearchListener {
+    fun onQueryTextChange(value: String?)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun SearchUI(
-    searchListener: WormaCeptorToolbar.SearchListener? = null,
+    searchListener: SearchListener? = null,
     color: Color = MaterialTheme.colorScheme.primary,
     counter: Int? = null,
     maxCounter: Int? = null,
@@ -218,7 +215,7 @@ fun SearchUI(
 @Preview(showBackground = true, device = Devices.PIXEL)
 @Composable
 private fun Preview() {
-    WormaCeptorToolbar.WormaCeptorToolbar(
+    WormaCeptorToolbar(
         title = "title",
         rememberNavController(),
         searchListener = {},

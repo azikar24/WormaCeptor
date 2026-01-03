@@ -100,7 +100,6 @@ fun PayloadScreen(
 
 
 
-    println(indexes)
     Scaffold(
         floatingActionButton = {
             Column {

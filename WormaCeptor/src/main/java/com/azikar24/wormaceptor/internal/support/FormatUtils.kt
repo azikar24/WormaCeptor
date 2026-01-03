@@ -25,7 +25,6 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.Source
 import javax.xml.transform.sax.SAXSource
@@ -100,7 +99,7 @@ object FormatUtils {
                     }
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
 //            Logger.e("non json content", e)
             buildAnnotatedString {
                 append(json ?: "")
@@ -234,7 +233,6 @@ object FormatUtils {
      }
 
      fun getHighlightedText(text: String?, searchKey: String?): AnnotatedString {
-        val startNs = System.nanoTime()
         return buildAnnotatedString {
             if (!text.isNullOrEmpty() && !searchKey.isNullOrEmpty()) {
                 val lowerText = text.lowercase()
@@ -259,7 +257,6 @@ object FormatUtils {
                 }
                 // Append the remaining text after the last match
                 append(text.substring(previousIndex))
-                println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs))
             } else {
                 append(text ?: "")
             }

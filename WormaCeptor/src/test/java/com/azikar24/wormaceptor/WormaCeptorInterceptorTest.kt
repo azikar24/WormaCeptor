@@ -23,7 +23,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 
 class WormaCeptorInterceptorTest {
 
@@ -127,7 +126,6 @@ class WormaCeptorInterceptorTest {
         
         interceptor.updateTransactionFromResponse(transaction, response, 100)
         
-        println("[DEBUG_LOG] responseCode: ${transaction.responseCode}")
         // responseCode is set from response.code which is 200 in the builder
         assertEquals(200, transaction.responseCode)
         assertEquals("OK", transaction.responseMessage)

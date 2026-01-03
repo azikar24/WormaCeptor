@@ -62,7 +62,6 @@ fun OverviewScreen(networkTransaction: NetworkTransaction?) {
 @Preview
 @Composable
 fun TextRow(title: String = "title", description: String? = "description") {
-    println(title)
     Row() {
         Text(text = title, modifier = Modifier.weight(0.8f))
         Text(text = description ?: "null", modifier = Modifier.weight(1f))

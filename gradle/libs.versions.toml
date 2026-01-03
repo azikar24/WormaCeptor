@@ -18,6 +18,7 @@ junit = "4.13.2"
 mockk = "1.13.12"
 kotlinx-coroutines-test = "1.8.1"
 koin = "4.0.0"
+startup = "1.2.0"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "21"
@@ -62,6 +63,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

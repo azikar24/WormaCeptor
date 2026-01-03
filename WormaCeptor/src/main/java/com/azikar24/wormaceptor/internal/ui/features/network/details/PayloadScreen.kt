@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
@@ -30,7 +31,6 @@ import com.azikar24.wormaceptor.internal.data.HttpHeader
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import com.azikar24.wormaceptor.internal.support.event.multipleEventsCutter
 import com.azikar24.wormaceptor.ui.components.SearchUI
-import com.azikar24.wormaceptor.ui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcArrowDown
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcArrowUp
 import com.azikar24.wormaceptor.ui.drawables.myiconpack.IcSearch
@@ -48,6 +48,7 @@ fun PayloadScreen(
     color: Color,
     onColor: Color
 ) {
+    val context = LocalContext.current
     var showFloatingActionBar by remember {
         mutableStateOf(true)
     }
@@ -133,8 +134,6 @@ fun PayloadScreen(
                     enter = fadeIn() + expandVertically(),
                     exit = fadeOut() + shrinkVertically()
                 ) {
-
-
                     Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                         FloatingActionButton(
                             onClick = {
@@ -149,7 +148,7 @@ fun PayloadScreen(
                                     currentIndex--
                                 } else {
                                     Toast.makeText(
-                                        WormaCeptorToolbar.activity,
+                                        context,
                                         "$currentIndex",
                                         Toast.LENGTH_SHORT
                                     ).show()
@@ -182,7 +181,7 @@ fun PayloadScreen(
                                     currentIndex++
                                 } else {
                                     Toast.makeText(
-                                        WormaCeptorToolbar.activity,
+                                        context,
                                         "$currentIndex",
                                         Toast.LENGTH_SHORT
                                     ).show()

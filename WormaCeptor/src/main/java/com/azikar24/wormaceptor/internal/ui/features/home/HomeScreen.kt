@@ -56,7 +56,7 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            WormaCeptorToolbar.WormaCeptorToolbar(
+            WormaCeptorToolbar(
                 title = toolbarViewModel.title,
                 subtitle = toolbarViewModel.subtitle,
                 navController = navController,

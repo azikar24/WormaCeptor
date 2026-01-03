@@ -1,20 +1,16 @@
-/*
- * Copyright AziKar24 3/3/2023.
- */
-
 package com.azikar24.wormaceptor.internal.ui.features.crashes
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.CrashTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -57,8 +53,8 @@ class CrashTransactionViewModel(private val transactionDao: TransactionDao?) : V
         }
     }
 
-    fun getCrashWithId(id: Long): LiveData<CrashTransaction>? {
-        return transactionDao?.getCrashWithId(id)
+    fun getCrashWithId(id: Long): Flow<CrashTransaction>? {
+        return transactionDao?.getCrashWithId(id)?.asFlow()
     }
 
     fun clearAll() {

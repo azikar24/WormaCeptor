@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 3/3/2023.
- */
-
 package com.azikar24.wormaceptor.internal.ui.features.crashes
 
 import androidx.compose.foundation.layout.*
@@ -11,7 +7,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -19,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.stacktraceData
 import com.azikar24.wormaceptor.internal.support.formatted
@@ -31,7 +27,7 @@ fun CrashDetailsScreen(
     viewModel: CrashTransactionViewModel = koinViewModel(),
     toolbarViewModel: ToolbarViewModel = koinViewModel(),
 ) {
-    val crashTransactionState = viewModel.getCrashWithId(crashId)?.observeAsState()
+    val crashTransactionState = viewModel.getCrashWithId(crashId)?.collectAsStateWithLifecycle(null)
     val crashTransaction = crashTransactionState?.value ?: return
 
     val (title, subtitle) = crashTransaction.throwable?.let {

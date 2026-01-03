@@ -57,7 +57,11 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     @Throws(IOException::class)
-    fun updateTransactionFromResponse(transaction: NetworkTransaction, response: Response, tookMs: Long) {
+    fun updateTransactionFromResponse(
+        transaction: NetworkTransaction,
+        response: Response,
+        tookMs: Long
+    ) {
         val responseBody = response.body
         val newTransactionBuilder = transaction.toBuilder()
 
@@ -68,7 +72,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             newTransactionBuilder.setTookMs(response.receivedResponseAtMillis - response.sentRequestAtMillis)
             newTransactionBuilder.setRequestDate(Date(response.sentRequestAtMillis))
             newTransactionBuilder.setResponseDate(Date(response.receivedResponseAtMillis))
-            println("azikar24242424 " + newTransactionBuilder.path +" " +Date(response.receivedResponseAtMillis))
+            println("azikar24242424 " + newTransactionBuilder.path + " " + Date(response.receivedResponseAtMillis))
         }
 
 
@@ -101,7 +105,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             if (contentType != null) {
                 try {
                     charset = contentType.charset(UTF8)
-                } catch (e: UnsupportedCharsetException) {
+                } catch (_: UnsupportedCharsetException) {
                     update(newTransactionBuilder.build())
                     return
                 }
@@ -137,7 +141,8 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
     }
 
     fun redactHeader(name: String): WormaCeptorInterceptor {
-        val newHeadersToRedact: MutableSet<String> = TreeSet(java.lang.String.CASE_INSENSITIVE_ORDER)
+        val newHeadersToRedact: MutableSet<String> =
+            TreeSet(java.lang.String.CASE_INSENSITIVE_ORDER)
         newHeadersToRedact.addAll(headersToRedact)
         newHeadersToRedact.add(name)
         headersToRedact = newHeadersToRedact
@@ -151,23 +156,24 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         val hasRequestBody = requestBody != null
 
         val transactionBuilder = NetworkTransaction.Builder()
-            .setRequestDate(Date())
-            .setMethod(request.method)
-            .setRequestHeaders(toHttpHeaderList(request.headers))
             .apply {
+                setRequestDate(Date())
+                setMethod(request.method)
+                setRequestHeaders(toHttpHeaderList(request.headers))
                 setUrlHostPathSchemeFromUrl(request.url.toString())
                 if (hasRequestBody) {
-                    val contentType = requestBody?.contentType()
+                    val contentType = requestBody.contentType()
                     if (contentType != null) {
                         setRequestContentType(contentType.toString())
                     }
-                    if (requestBody?.contentLength() != -1L) {
-                        requestBody?.contentLength()?.let { setRequestContentLength(it) }
+                    if (requestBody.contentLength() != -1L) {
+                        setRequestContentLength(requestBody.contentLength())
                     }
                     if (requestBodyIsPlainText) {
-                        val source: BufferedSource = getNativeSource(Buffer(), bodyGzipped(request.headers))
+                        val source: BufferedSource =
+                            getNativeSource(Buffer(), bodyGzipped(request.headers))
                         val buffer = source.buffer
-                        requestBody?.writeTo(buffer)
+                        requestBody.writeTo(buffer)
                         var charset = UTF8
                         if (contentType != null) {
                             charset = contentType.charset(UTF8)
@@ -179,9 +185,8 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
                         }
                     }
                 }
-
+                setRequestBodyIsPlainText(bodyHasSupportedEncoding(request.headers))
             }
-            .setRequestBodyIsPlainText(bodyHasSupportedEncoding(request.headers))
 
         return create(transactionBuilder.build())
     }
@@ -192,7 +197,12 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         val count = headers.size
         while (i < count) {
             if (headersToRedact.contains(headers.name(i))) {
-                httpHeaders.add(HttpHeader(headers.name(i), "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588"))
+                httpHeaders.add(
+                    HttpHeader(
+                        headers.name(i),
+                        "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588"
+                    )
+                )
             } else {
                 httpHeaders.add(HttpHeader(headers.name(i), headers.value(i)))
             }
@@ -239,7 +249,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
             val prefix = Buffer()
             val byteCount = if (buffer.size < 64) buffer.size else 64
             buffer.copyTo(prefix, 0, byteCount)
-            for (i in 0..15) {
+            for (i: Int in 0..15) {
                 if (prefix.exhausted()) {
                     break
                 }
@@ -249,7 +259,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
                 }
             }
             true
-        } catch (e: EOFException) {
+        } catch (_: EOFException) {
             false // Truncated UTF-8 sequence.
         }
     }
@@ -260,7 +270,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         var body = ""
         try {
             body = buffer.readString(maxBytes, charset)
-        } catch (e: EOFException) {
+        } catch (_: EOFException) {
             body += context.getString(R.string.body_unexpected_eof)
         }
         if (bufferSize > mMaxContentLength) {
@@ -276,7 +286,7 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
         mNotificationHelper?.show(newTransaction, stickyNotification)
         try {
             mRetentionManager?.doMaintenance()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // ignore
         }
         return newTransaction
@@ -284,7 +294,8 @@ class WormaCeptorInterceptor(private val context: Context) : Interceptor {
 
 
     fun update(transaction: NetworkTransaction) {
-        val updatedTransactionCount: Int = storage?.transactionDao?.updateTransaction(transaction) ?: -1
+        val updatedTransactionCount: Int =
+            storage?.transactionDao?.updateTransaction(transaction) ?: -1
         if (updatedTransactionCount <= 0) return
         mNotificationHelper?.show(transaction, stickyNotification)
     }

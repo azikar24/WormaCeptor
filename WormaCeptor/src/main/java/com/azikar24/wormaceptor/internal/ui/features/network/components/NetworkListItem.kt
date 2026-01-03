@@ -30,7 +30,11 @@ import java.util.*
 
 
 @Composable
-fun NetworkListItem(data: NetworkTransaction, searchKey: String? = null, onClick: (NetworkTransaction) -> Unit) {
+fun NetworkListItem(
+    data: NetworkTransaction,
+    searchKey: String? = null,
+    onClick: (NetworkTransaction) -> Unit
+) {
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -53,7 +57,10 @@ private fun StatusCode(data: NetworkTransaction, searchKey: String?) {
     Text(
         text = when (status) {
             NetworkTransaction.Status.Complete -> {
-                FormatUtils.getHighlightedText(text = responseCode.toString(), searchKey = searchKey)
+                FormatUtils.getHighlightedText(
+                    text = responseCode.toString(),
+                    searchKey = searchKey
+                )
             }
 
             NetworkTransaction.Status.Failed -> {
@@ -77,9 +84,23 @@ private fun ItemBody(networkTransaction: NetworkTransaction, searchKey: String?)
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(start = 8.dp)
     ) {
-        MethodAndPath(networkTransaction.method, networkTransaction.path, transactionColor, searchKey)
-        Host(networkTransaction.host, networkTransaction.isSsl(), searchKey)
-        Stats(networkTransaction.getRequestStartTimeString(), networkTransaction.tookMs, networkTransaction.getTotalSizeString(), status)
+        MethodAndPath(
+            method = networkTransaction.method,
+            path = networkTransaction.path,
+            transactionColor = transactionColor,
+            searchKey = searchKey
+        )
+        Host(
+            host = networkTransaction.host,
+            ssl = networkTransaction.isSsl(),
+            searchKey = searchKey
+        )
+        Stats(
+            requestStartTimeString = networkTransaction.getRequestStartTimeString(),
+            tookMs = networkTransaction.tookMs,
+            totalSizeString = networkTransaction.getTotalSizeString(),
+            status = status
+        )
     }
 }
 
@@ -93,7 +114,7 @@ fun MethodAndPath(method: String?, path: String?, transactionColor: Color, searc
 
 @Composable
 fun Host(host: String?, ssl: Boolean, searchKey: String?) {
-    Row() {
+    Row {
         Text(
             text = FormatUtils.getHighlightedText(text = "$host", searchKey = searchKey),
             color = MaterialTheme.colorScheme.onSurface,
@@ -117,15 +138,23 @@ fun Host(host: String?, ssl: Boolean, searchKey: String?) {
 
 
 @Composable
-fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: String, status: NetworkTransaction.Status) {
-    Row() {
+fun Stats(
+    requestStartTimeString: String?,
+    tookMs: Long?,
+    totalSizeString: String,
+    status: NetworkTransaction.Status
+) {
+    Row {
         Text(
             text = requestStartTimeString.toString(),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = if (status == NetworkTransaction.Status.Complete) stringResource(id = R.string.duration_ms, tookMs ?: 0L) else "",
+            text = if (status == NetworkTransaction.Status.Complete) stringResource(
+                id = R.string.duration_ms,
+                tookMs ?: 0L
+            ) else "",
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
@@ -144,7 +173,29 @@ fun Stats(requestStartTimeString: String?, tookMs: Long?, totalSizeString: Strin
 fun PreviewNetworkListItem() {
     WormaCeptorMainTheme() {
         val data = NetworkTransaction(
-            id = 1, requestDate = Date(), responseDate = Date(), tookMs = 100L, protocol = "protocol", method = "method", url = "url", host = "host", path = "path", scheme = "https", requestContentLength = 100L, requestContentType = "", requestHeaders = listOf(HttpHeader("name", "value")), requestBody = "requestBody", requestBodyIsPlainText = true, responseCode = 200, responseMessage = "", error = "", responseContentLength = 100L, responseContentType = "", responseHeaders = listOf(HttpHeader("name", "value")), responseBody = "", responseBodyIsPlainText = true
+            id = 1,
+            requestDate = Date(),
+            responseDate = Date(),
+            tookMs = 100L,
+            protocol = "protocol",
+            method = "method",
+            url = "url",
+            host = "host",
+            path = "path",
+            scheme = "https",
+            requestContentLength = 100L,
+            requestContentType = "",
+            requestHeaders = listOf(HttpHeader("name", "value")),
+            requestBody = "requestBody",
+            requestBodyIsPlainText = true,
+            responseCode = 200,
+            responseMessage = "",
+            error = "",
+            responseContentLength = 100L,
+            responseContentType = "",
+            responseHeaders = listOf(HttpHeader("name", "value")),
+            responseBody = "",
+            responseBodyIsPlainText = true
         )
         NetworkListItem(data = data, onClick = { })
     }

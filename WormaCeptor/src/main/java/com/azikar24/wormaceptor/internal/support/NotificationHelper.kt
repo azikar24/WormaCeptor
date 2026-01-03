@@ -22,12 +22,13 @@ import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 import com.azikar24.wormaceptor.ui.theme.brandPrimaryColor
+import androidx.core.util.size
 
 class NotificationHelper(val context: Context) {
     private val CHANNEL_ID = "wormaceptor_notification"
     private val mNotificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val NOTIFICATION_ID = 1139
-    private val mColorUtil: ColorUtil = ColorUtil.getInstance(context)
+    private val mColorUtil: ColorUtil = ColorUtil(context)
     private val BUFFER_SIZE = 10
 
     init {
@@ -69,7 +70,7 @@ class NotificationHelper(val context: Context) {
             .addAction(getClearAction())
             .apply {
                 val inboxStyle = NotificationCompat.InboxStyle()
-                for ((count, i) in (TRANSACTION_BUFFER.size() - 1 downTo 0).withIndex()) {
+                for ((count, i) in (TRANSACTION_BUFFER.size - 1 downTo 0).withIndex()) {
                     if (count < BUFFER_SIZE) {
                         if (count == 0) {
                             setContentText(getNotificationText(TRANSACTION_BUFFER.valueAt(i)))
@@ -98,7 +99,7 @@ class NotificationHelper(val context: Context) {
             TRANSACTION_COUNT++
         }
         TRANSACTION_BUFFER.put(transaction.id, transaction)
-        if (TRANSACTION_BUFFER.size() > BUFFER_SIZE) {
+        if (TRANSACTION_BUFFER.size > BUFFER_SIZE) {
             TRANSACTION_BUFFER.removeAt(0)
         }
     }

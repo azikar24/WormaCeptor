@@ -31,8 +31,7 @@ fun BottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.primary,
-//        modifier = Modifier.height(80.dp)
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
     ) {
         BottomBarDestination.entries.forEach { destination ->
 
@@ -58,21 +57,25 @@ fun BottomBar(
                     Icon(
                         imageVector = destination.icon,
                         contentDescription = stringResource(destination.label),
-                        tint = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                        tint = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                            alpha = 0.6f
+                        ),
                         modifier = Modifier.size(24.dp)
                     )
                 },
                 label = {
                     Text(
                         text = stringResource(destination.label),
-                        color = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                        color = if (isCurrentDestOnBackStack) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                            alpha = 0.6f
+                        ),
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f),
-                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f),
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f),
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f),
                     indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.4f)
                 )
             )

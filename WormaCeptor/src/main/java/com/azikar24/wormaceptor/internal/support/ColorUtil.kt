@@ -5,75 +5,117 @@
 package com.azikar24.wormaceptor.internal.support
 
 import android.content.Context
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.R
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction.Status.*
-import com.azikar24.wormaceptor.ui.theme.*
-import java.util.concurrent.atomic.AtomicBoolean
 
-class ColorUtil(context: Context) {
+data class TransactionColors(
+    val text: Color,
+    val container: Color,
+    val onContainer: Color
+)
 
-    private val mColorDefault = context.getColorFromRes(R.color.statusDefault)
-    private val mColorDefaultTxt = context.getColorFromRes(R.color.statusDefaultTxt)
-    private val mColorRequested = context.getColorFromRes(R.color.statusRequested)
-    private val mColorError = context.getColorFromRes(R.color.statusError)
-    private val mColor500 = context.getColorFromRes(R.color.status500)
-    private val mColor400 = context.getColorFromRes(R.color.status400)
-    private val mColor300 = context.getColorFromRes(R.color.status300)
+class ColorUtil(private val context: Context) {
 
-    fun getTransactionColor(networkTransaction: NetworkTransaction, txtColors: Boolean = false): Int {
+    fun getTransactionColor(
+        networkTransaction: NetworkTransaction,
+        txtColors: Boolean = false
+    ): Int {
         val status = networkTransaction.getStatus()
         val responseCode: Int = networkTransaction.responseCode ?: 0
 
-        return if (status == Failed) {
-            mColorError
-        } else if (status == Requested) {
-            mColorRequested
-        } else if (responseCode >= 500) {
-            mColor500
-        } else if (responseCode >= 400) {
-            mColor400
-        } else if (responseCode >= 300) {
-            mColor300
-        } else {
-            if (txtColors) mColorDefaultTxt else mColorDefault
+        return when {
+            status == Failed -> context.getColorFromRes(R.color.statusError)
+            status == Requested -> context.getColorFromRes(R.color.statusRequested)
+            responseCode >= 500 -> context.getColorFromRes(R.color.status500)
+            responseCode >= 400 -> context.getColorFromRes(R.color.status400)
+            responseCode >= 300 -> context.getColorFromRes(R.color.status300)
+            else -> {
+                if (txtColors) context.getColorFromRes(R.color.statusDefaultTxt)
+                else context.getColorFromRes(R.color.statusDefault)
+            }
         }
     }
 
     companion object {
-        private lateinit var INSTANCE: ColorUtil
-        private val initialized = AtomicBoolean(true)
+        @Composable
+        fun getTransactionColors(networkTransaction: NetworkTransaction): TransactionColors {
+            val status = networkTransaction.getStatus()
+            val responseCode = networkTransaction.responseCode ?: 0
+            val colorScheme = MaterialTheme.colorScheme
 
+            return when {
+                status == Failed -> {
+                    TransactionColors(
+                        text = Color(0xFF991B1B),
+                        container = Color(0xFFFEE2E2),
+                        onContainer = Color(0xFF7F1D1D),
+                    )
+                }
 
-        fun getInstance(context: Context): ColorUtil {
-            if (initialized.getAndSet(true)) {
-                INSTANCE = ColorUtil(context)
+                responseCode >= 500 -> {
+                    TransactionColors(
+                        text = colorScheme.error,
+                        container = colorScheme.errorContainer,
+                        onContainer = colorScheme.onErrorContainer
+                    )
+                }
+
+                status == Requested -> {
+                    TransactionColors(
+                        text = Color(0xFFB45309),
+                        container = Color(0xFFFEF3C7),
+                        onContainer = Color(0xFF92400E)
+                    )
+                }
+
+                responseCode >= 400 -> {
+                    TransactionColors(
+                        text = Color(0xFFC2410C),
+                        container = Color(0xFFFFEDD5),
+                        onContainer = Color(0xFF9A3412),
+                    )
+                }
+
+                responseCode >= 300 -> {
+                    TransactionColors(
+                        text = Color(0xFF1D4ED8),
+                        container = Color(0xFFDBEAFE),
+                        onContainer = Color(0xFF1E40AF)
+                    )
+                }
+
+                else -> {
+                    TransactionColors(
+                        text = Color(0xFF047857),
+                        container = Color(0xFFD1FAE5),
+                        onContainer = Color(0xFF065F46)
+                    )
+                }
             }
-            return INSTANCE
+        }
+
+        /**
+         * Kept for backward compatibility. Use [getTransactionColors] for more options.
+         */
+        @Composable
+        fun getTransactionColor(
+            networkTransaction: NetworkTransaction,
+            isText: Boolean = false
+        ): Color {
+            val colors = getTransactionColors(networkTransaction)
+            return if (isText) colors.text else colors.container
         }
 
         @Composable
-        fun getTransactionColor(networkTransaction: NetworkTransaction, isText: Boolean = false): Color {
-            val status = networkTransaction.getStatus()
-            val responseCode = networkTransaction.responseCode ?: 0
-
-            return if (status == Failed) {
-                statusError
-            } else if (status == Requested) {
-                statusRequested
-            } else if (responseCode >= 500) {
-                status500
-            } else if (responseCode >= 400) {
-                status400
-            } else if (responseCode >= 300) {
-                status300
-            } else {
-                if (isText) statusDefaultTxt else statusDefault
-            }
+        fun getTransactionContainerColor(
+            networkTransaction: NetworkTransaction,
+        ): Color {
+            val colors = getTransactionColors(networkTransaction)
+            return colors.onContainer
         }
-
     }
-
 }

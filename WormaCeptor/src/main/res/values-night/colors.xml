@@ -14,8 +14,8 @@
     <color name="statusDefault">#4caf50</color>
     <color name="statusRequested">#595959</color>
     <color name="status300">#135DCF</color>
-    <color name="status400">#FF9800</color>
-    <color name="status500">#F44336</color>
+    <color name="status400">#F44336</color>
+    <color name="status500">#FF9800</color>
     <color name="statusError">#B71C1C</color>
     <color name="highlightBackground">#FFFD38</color>
     <color name="highlightText">#f2f2f2</color>

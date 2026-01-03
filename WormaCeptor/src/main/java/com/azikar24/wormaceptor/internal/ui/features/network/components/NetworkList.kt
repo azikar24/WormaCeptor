@@ -7,7 +7,6 @@ package com.azikar24.wormaceptor.internal.ui.features.network.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -45,7 +44,6 @@ fun NetworkList(
                 }
             }
         }
-        item { Box(Modifier.height(120.dp)) }
     }
 }
 

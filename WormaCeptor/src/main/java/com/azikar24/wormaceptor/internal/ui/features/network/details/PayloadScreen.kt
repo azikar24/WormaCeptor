@@ -43,7 +43,11 @@ import kotlinx.coroutines.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Color) {
+fun PayloadScreen(
+    headers: List<HttpHeader>?, body: AnnotatedString?,
+    color: Color,
+    onColor: Color
+) {
     var showFloatingActionBar by remember {
         mutableStateOf(true)
     }
@@ -119,7 +123,7 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                             Icon(
                                 imageVector = MyIconPack.IcSearch,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onPrimary,
+                                tint = onColor,
                             )
                         }
                     }
@@ -201,57 +205,9 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                         }
 
                     }
-//                    FloatingActionButton(
-//                        onClick = {},
-//                        shape = RoundedCornerShape(360.dp),
-//                        backgroundColor = color
-//                    ) {
-//                        Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-//                            IconButton(
-//                                onClick = {
-//                                    if (scrollToIndex(coroutineScope, indexes, currentIndex + 1, textLayoutResult1, scrollState)) {
-//                                        currentIndex++
-//                                    } else {
-//                                        Toast.makeText(WormaCeptorToolbar.activity, "$currentIndex", Toast.LENGTH_SHORT).show()
-//                                    }
-//                                },
-//                                modifier = Modifier.padding(10.dp)
-//                            ) {
-//                                Icon(
-//                                    imageVector = MyIconPack.IcArrowDown,
-//                                    contentDescription = "",
-//                                    tint = MaterialTheme.colors.onPrimary,
-//                                )
-//                            }
-//                            Box(Modifier
-//                                .fillMaxHeight()
-//                                .width(1.dp)
-//                                .background(MaterialTheme.colors.onPrimary.copy(0.5f))
-//                            )
-//                            IconButton(
-//                                onClick = {
-//                                    if (scrollToIndex(coroutineScope, indexes, currentIndex - 1, textLayoutResult1, scrollState)) {
-//                                        currentIndex--
-//                                    } else {
-//                                        Toast.makeText(WormaCeptorToolbar.activity, "$currentIndex", Toast.LENGTH_SHORT).show()
-//                                    }
-//                                },
-//                                modifier = Modifier.padding(10.dp)
-//                            ) {
-//                                Icon(
-//                                    imageVector = MyIconPack.IcArrowUp,
-//                                    contentDescription = "",
-//                                    tint = MaterialTheme.colors.onPrimary,
-//                                )
-//                            }
-//                        }
-//                    }
                 }
-
-
             }
         }
-
     ) {
         Column {
             AnimatedVisibility(
@@ -260,9 +216,6 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                 exit = fadeOut() + shrinkVertically()
             ) {
                 SearchUI(
-                    color = color,
-                    counter = currentIndex,
-                    maxCounter = indexes.size,
                     searchListener = multipleEventsCutter { manager ->
                         { searchStr ->
                             if (searchStr != null) {
@@ -275,7 +228,12 @@ fun PayloadScreen(headers: List<HttpHeader>?, body: AnnotatedString?, color: Col
                                 showSearchBar = false
                             }
                         }
-                    })
+                    },
+                    color = color,
+                    onColor = onColor,
+                    counter = currentIndex,
+                    maxCounter = indexes.size,
+                )
             }
             Text(
                 text = content,
@@ -324,7 +282,8 @@ private fun PreviewPayloadScreen() {
         PayloadScreen(
             headers = listOf(HttpHeader("header", "value")),
             body = buildAnnotatedString { append("body") },
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            onColor = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

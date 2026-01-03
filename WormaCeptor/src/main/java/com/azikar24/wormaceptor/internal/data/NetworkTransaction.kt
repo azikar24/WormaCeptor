@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.internal.data
 
-import android.net.Uri
 import android.os.Parcelable
 import com.azikar24.wormaceptor.internal.support.FormatUtils
 import java.text.SimpleDateFormat
@@ -67,15 +66,15 @@ data class NetworkTransaction(
         return when (getStatus()) {
             Status.Failed -> error
             Status.Requested -> null
-            else -> responseCode.toString() + " " + responseMessage
+            else -> "$responseCode $responseMessage"
         }
     }
 
     fun getNotificationText(): String {
         return when (getStatus()) {
-            Status.Failed -> " ! ! !  " + path
-            Status.Requested -> " . . .  " + path
-            else -> java.lang.String.valueOf(responseCode) + " " + path
+            Status.Failed -> " ! ! !  $path"
+            Status.Requested -> " . . .  $path"
+            else -> "$responseCode $path"
         }
     }
 
@@ -111,7 +110,9 @@ data class NetworkTransaction(
             FormatUtils.formatJson(body)
         } else if (contentType?.lowercase(Locale.getDefault())?.contains("xml") == true) {
             FormatUtils.formatXml(body)
-        } else if (contentType?.lowercase(Locale.getDefault())?.contains("form-urlencoded") == true) {
+        } else if (contentType?.lowercase(Locale.getDefault())
+                ?.contains("form-urlencoded") == true
+        ) {
             FormatUtils.formatFormEncoded(body)
         } else {
             buildAnnotatedString { }
@@ -193,7 +194,9 @@ data class NetworkTransaction(
         fun setRequestContentType(value: String) = this.apply { requestContentType = value }
         fun setRequestHeaders(value: List<HttpHeader>) = this.apply { requestHeaders = value }
         fun setRequestBody(value: String) = this.apply { requestBody = value }
-        fun setRequestBodyIsPlainText(value: Boolean) = this.apply { requestBodyIsPlainText = value }
+        fun setRequestBodyIsPlainText(value: Boolean) =
+            this.apply { requestBodyIsPlainText = value }
+
         fun setResponseCode(value: Int) = this.apply { responseCode = value }
         fun setResponseMessage(value: String) = this.apply { responseMessage = value }
         fun setError(value: String) = this.apply { error = value }
@@ -201,7 +204,8 @@ data class NetworkTransaction(
         fun setResponseContentType(value: String) = this.apply { responseContentType = value }
         fun setResponseHeaders(value: List<HttpHeader>) = this.apply { responseHeaders = value }
         fun setResponseBody(value: String) = this.apply { responseBody = value }
-        fun setResponseBodyIsPlainText(value: Boolean) = this.apply { responseBodyIsPlainText = value }
+        fun setResponseBodyIsPlainText(value: Boolean) =
+            this.apply { responseBodyIsPlainText = value }
 
         fun setUrlHostPathSchemeFromUrl(url: String) {
             setUrl(url)

@@ -18,19 +18,19 @@ import com.azikar24.wormaceptor.internal.ui.mainactivity.WormaCeptorMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import java.util.*
 
 object WormaCeptor {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    enum class WormaCeptorType {
-        PERSISTENCE,
-        IMDB
-    }
-
-    var storage: WormaCeptorStorage? = null
-    var type: WormaCeptorType? = null
+    /**
+     * Storage instance used by the library. 
+     * Initialized via [init] and provided to internal components via DI.
+     */
+    internal var storage: WormaCeptorStorage? = null
 
     fun getLaunchIntent(context: Context): Intent {
         return Intent(
@@ -39,39 +39,22 @@ object WormaCeptor {
         )
     }
 
-    fun startActivityOnShake(componentActivity: ComponentActivity) {
-
-        val mSensorManager =
-            componentActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        val mShakeDetector = ShakeDetector {
-            componentActivity.startActivity(getLaunchIntent(componentActivity))
-        }
-
-        componentActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onResume(owner: LifecycleOwner) {
-                super.onResume(owner)
-                mSensorManager.registerListener(
-                    mShakeDetector,
-                    mAccelerometer,
-                    SensorManager.SENSOR_DELAY_UI
-                )
-            }
-
-            override fun onPause(owner: LifecycleOwner) {
-                mSensorManager.unregisterListener(mShakeDetector)
-                super.onPause(owner)
-            }
-        })
-    }
-
+    /**
+     * Initializes WormaCeptor with the provided [storage].
+     * This must be called in your [android.app.Application.onCreate].
+     */
     fun init(
         context: Context,
         storage: WormaCeptorStorage,
-        appShortcut: Boolean,
-        logCrashes: Boolean,
+        appShortcut: Boolean = false,
+        logCrashes: Boolean = false,
     ) {
         this.storage = storage
+        
+        // Register storage in Koin dynamically
+        loadKoinModules(module {
+            single { storage.transactionDao }
+        })
 
         if (appShortcut) {
             addAppShortcut(context)
@@ -123,5 +106,29 @@ object WormaCeptor {
         return id
     }
 
+    fun startActivityOnShake(componentActivity: ComponentActivity) {
 
+        val mSensorManager =
+            componentActivity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        val mShakeDetector = ShakeDetector {
+            componentActivity.startActivity(getLaunchIntent(componentActivity))
+        }
+
+        componentActivity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+                mSensorManager.registerListener(
+                    mShakeDetector,
+                    mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI
+                )
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                mSensorManager.unregisterListener(mShakeDetector)
+                super.onPause(owner)
+            }
+        })
+    }
 }

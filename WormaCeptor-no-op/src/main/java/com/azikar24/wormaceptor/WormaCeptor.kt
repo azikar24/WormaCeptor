@@ -13,9 +13,16 @@ object WormaCeptor {
 
     fun getLaunchIntent(context: Context?): Intent? = null
 
-    fun logUnexpectedCrashes() = Unit
+    fun init(
+        context: Context,
+        storage: WormaCeptorStorage,
+        appShortcut: Boolean = false,
+        logCrashes: Boolean = false,
+    ) = Unit
 
-    fun addAppShortcut(context: Context?): String? = null
+    private fun logUnexpectedCrashes() = Unit
+
+    private fun addAppShortcut(context: Context?): String? = null
 
     fun startActivityOnShake(context: Context?) = Unit
 }

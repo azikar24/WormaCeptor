@@ -39,7 +39,12 @@ interface TransactionDao {
 
     fun getTransactionsWithId(id: Long?): LiveData<NetworkTransaction>?
 
-    fun getAllTransactionsWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, NetworkTransaction>?
+    fun getAllTransactionsWith(
+        key: String,
+        searchType: SearchType? = SearchType.DEFAULT,
+        method: String? = null,
+        statusRange: String? = null
+    ): DataSource.Factory<Int, NetworkTransaction>?
 
     fun getAllCrashesWith(key: String?, searchType: SearchType?): DataSource.Factory<Int, CrashTransaction>?
 

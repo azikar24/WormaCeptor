@@ -48,17 +48,65 @@ abstract class RoomTransactionDao {
     @Query("SELECT * FROM NetworkTransaction WHERE id = :id")
     abstract fun getNetworkTransactionsWithId(id: Long): LiveData<PersistentNetworkTransaction>?
 
-    @Query("SELECT * FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllNetworkTransactionsIncludeRequestResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
+    @Query("""
+        SELECT * FROM NetworkTransaction 
+        WHERE (:method IS NULL OR method = :method)
+        AND (:minStatus IS NULL OR (response_code >= :minStatus AND response_code <= :maxStatus))
+        AND (protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard)
+        ORDER BY id DESC
+    """)
+    abstract fun getAllNetworkTransactionsIncludeRequestResponse(
+        endWildCard: String?, 
+        doubleWildCard: String?,
+        method: String?,
+        minStatus: Int?,
+        maxStatus: Int?
+    ): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT * FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllNetworkTransactionsIncludeResponse(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
+    @Query("""
+        SELECT * FROM NetworkTransaction 
+        WHERE (:method IS NULL OR method = :method)
+        AND (:minStatus IS NULL OR (response_code >= :minStatus AND response_code <= :maxStatus))
+        AND (protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_body LIKE :doubleWildCard OR response_message LIKE :doubleWildCard OR response_code LIKE :endWildCard)
+        ORDER BY id DESC
+    """)
+    abstract fun getAllNetworkTransactionsIncludeResponse(
+        endWildCard: String?, 
+        doubleWildCard: String?,
+        method: String?,
+        minStatus: Int?,
+        maxStatus: Int?
+    ): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT * FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllNetworkTransactionsIncludeRequest(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
+    @Query("""
+        SELECT * FROM NetworkTransaction 
+        WHERE (:method IS NULL OR method = :method)
+        AND (:minStatus IS NULL OR (response_code >= :minStatus AND response_code <= :maxStatus))
+        AND (protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR request_body LIKE :doubleWildCard OR response_code LIKE :endWildCard)
+        ORDER BY id DESC
+    """)
+    abstract fun getAllNetworkTransactionsIncludeRequest(
+        endWildCard: String?, 
+        doubleWildCard: String?,
+        method: String?,
+        minStatus: Int?,
+        maxStatus: Int?
+    ): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
-    @Query("SELECT * FROM NetworkTransaction WHERE protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard ORDER BY id DESC")
-    abstract fun getAllNetworkTransactions(endWildCard: String?, doubleWildCard: String?): DataSource.Factory<Int, PersistentNetworkTransaction>?
+    @Query("""
+        SELECT * FROM NetworkTransaction 
+        WHERE (:method IS NULL OR method = :method)
+        AND (:minStatus IS NULL OR (response_code >= :minStatus AND response_code <= :maxStatus))
+        AND (protocol LIKE :endWildCard OR method LIKE :endWildCard OR url LIKE :doubleWildCard OR response_code LIKE :endWildCard)
+        ORDER BY id DESC
+    """)
+    abstract fun getAllNetworkTransactions(
+        endWildCard: String?, 
+        doubleWildCard: String?,
+        method: String?,
+        minStatus: Int?,
+        maxStatus: Int?
+    ): DataSource.Factory<Int, PersistentNetworkTransaction>?
 
     @Query("SELECT * FROM CrashTransaction WHERE throwable LIKE :doubleWildCard OR crash_list LIKE :doubleWildCard ORDER BY id DESC")
     abstract fun getAllCrashes(doubleWildCard: String?): DataSource.Factory<Int, PersistentCrashTransaction>?

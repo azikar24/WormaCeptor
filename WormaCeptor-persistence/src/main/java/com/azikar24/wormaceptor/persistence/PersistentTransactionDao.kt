@@ -109,33 +109,62 @@ class PersistentTransactionDao(
 
 
     override fun getAllTransactionsWith(
-        key: String?,
-        searchType: TransactionDao.SearchType?
+        key: String,
+        searchType: TransactionDao.SearchType?,
+        method: String?,
+        statusRange: String?
     ): DataSource.Factory<Int, NetworkTransaction>? {
         val endWildCard = "$key%"
         val doubleSideWildCard = "%$key%"
+        
+        val (minStatus, maxStatus) = when (statusRange) {
+            "2xx" -> 200 to 299
+            "3xx" -> 300 to 399
+            "4xx" -> 400 to 499
+            "5xx" -> 500 to 599
+            else -> null to null
+        }
+
         val factory: DataSource.Factory<Int, PersistentNetworkTransaction>? = when (searchType) {
             TransactionDao.SearchType.DEFAULT -> roomTransactionDao?.getAllNetworkTransactions(
                 endWildCard,
-                doubleSideWildCard
+                doubleSideWildCard,
+                method,
+                minStatus,
+                maxStatus
             )
 
             TransactionDao.SearchType.INCLUDE_REQUEST -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequest(
                 endWildCard,
-                doubleSideWildCard
+                doubleSideWildCard,
+                method,
+                minStatus,
+                maxStatus
             )
 
             TransactionDao.SearchType.INCLUDE_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeResponse(
                 endWildCard,
-                doubleSideWildCard
+                doubleSideWildCard,
+                method,
+                minStatus,
+                maxStatus
             )
 
             TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> roomTransactionDao?.getAllNetworkTransactionsIncludeRequestResponse(
                 endWildCard,
-                doubleSideWildCard
+                doubleSideWildCard,
+                method,
+                minStatus,
+                maxStatus
             )
 
-            else -> roomTransactionDao?.getAllNetworkTransactions(endWildCard, doubleSideWildCard)
+            else -> roomTransactionDao?.getAllNetworkTransactions(
+                endWildCard, 
+                doubleSideWildCard,
+                method,
+                minStatus,
+                maxStatus
+            )
         }
         return factory?.map { input ->
             PERSISTENT_TO_DATA_TRANSACTION_FUNCTION.apply(input)

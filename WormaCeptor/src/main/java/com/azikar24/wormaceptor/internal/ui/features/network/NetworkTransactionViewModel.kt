@@ -1,5 +1,5 @@
 /*
- * Copyright AziKar24 25/2/2023.
+ * Copyright AziKar24 2024.
  */
 
 package com.azikar24.wormaceptor.internal.ui.features.network
@@ -9,7 +9,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.azikar24.wormaceptor.WormaCeptor
 import com.azikar24.wormaceptor.internal.data.NetworkTransaction
 import com.azikar24.wormaceptor.internal.data.TransactionDao
 import com.azikar24.wormaceptor.internal.support.NotificationHelper
@@ -30,8 +29,10 @@ class NetworkTransactionViewModel(private val transactionDao: TransactionDao?) :
 
     val pageEventFlow = MutableStateFlow<PagingData<NetworkTransaction>>(PagingData.empty())
 
-    fun fetchData(key: String?) {
-        if (key?.trim()?.isEmpty() == true) {
+    fun fetchData(key: String?, method: String? = null, statusRange: String? = null) {
+        val queryKey = if (key?.trim()?.isEmpty() == true) null else key
+        
+        if (queryKey == null && method == null && statusRange == null) {
             transactionDao?.getAllTransactions()?.asPagingSourceFactory()?.let {
                 val pager = Pager(config = config) {
                     it.invoke()
@@ -43,17 +44,20 @@ class NetworkTransactionViewModel(private val transactionDao: TransactionDao?) :
                     }
                 }
             }
-
         } else {
-            transactionDao?.getAllTransactionsWith(key, TransactionDao.SearchType.DEFAULT)?.asPagingSourceFactory()?.let {
-
+            transactionDao?.getAllTransactionsWith(
+                key = queryKey.orEmpty(),
+                searchType = TransactionDao.SearchType.DEFAULT,
+                method = method,
+                statusRange = statusRange
+            )?.asPagingSourceFactory()?.let {
                 val pager = Pager(config = config) {
                     it.invoke()
                 }.flow.cachedIn(viewModelScope)
 
                 viewModelScope.launch {
-                    pager.collectLatest {
-                        pageEventFlow.value = it
+                    pager.collectLatest { transaction ->
+                        pageEventFlow.value = transaction
                     }
                 }
             }

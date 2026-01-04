@@ -138,28 +138,29 @@ internal class IMDBTransactionDao(
     }
 
     override fun getAllTransactionsWith(
-        key: String?,
-        searchType: TransactionDao.SearchType?
+        key: String,
+        searchType: TransactionDao.SearchType?,
+        method: String?,
+        statusRange: String?
     ): DataSource.Factory<Int, NetworkTransaction>? {
-        if (key == null) return null
         val predicate: Predicate<NetworkTransaction> = when (searchType) {
             TransactionDao.SearchType.DEFAULT -> transactionPredicateProvider.getDefaultSearchPredicate(
-                key
+                key, method, statusRange
             )
 
             TransactionDao.SearchType.INCLUDE_REQUEST -> transactionPredicateProvider.getRequestSearchPredicate(
-                key
+                key, method, statusRange
             )
 
             TransactionDao.SearchType.INCLUDE_RESPONSE -> transactionPredicateProvider.getResponseSearchPredicate(
-                key
+                key, method, statusRange
             )
 
             TransactionDao.SearchType.INCLUDE_REQUEST_RESPONSE -> transactionPredicateProvider.getRequestResponseSearchPredicate(
-                key
+                key, method, statusRange
             )
 
-            else -> transactionPredicateProvider.getDefaultSearchPredicate(key)
+            else -> transactionPredicateProvider.getDefaultSearchPredicate(key, method, statusRange)
         }
         return transactionArchComponentProvider.getDataSourceFactory(
             networkTransactionDataStore,

@@ -30,16 +30,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionListScreen
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
-// Wait, `WormaCeptorTheme` might not be available in `:features:viewer` directly as it's in `:app`.
-// Phase 4 summary says `ViewerActivity` was created. Let's check imports in original file.
-// Original file had no theme import? 
-// Original file had `WormaCeptorTheme` in the `setContent` block in my memory? 
-// Retrying viewing original `ViewerActivity.kt`...
-// It does NOT have `WormaCeptorTheme` import. It likely uses MaterialTheme or default.
-// Wait, `ViewerActivity.kt` line 37: `setContent {`. No theme wrapper visible in lines 37-70.
-// I should wrap in MaterialTheme or just leave as is. User mentioned "Design Aesthetics".
-// I will not add `WormaCeptorTheme` if I cannot verify it exists here. I will use `MaterialTheme` from material3.
-import androidx.compose.material3.MaterialTheme
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
 import androidx.compose.ui.Modifier
 
 class ViewerActivity : ComponentActivity() {
@@ -64,7 +55,7 @@ class ViewerActivity : ComponentActivity() {
             val filterStatusRange by viewModel.filterStatusRange.collectAsState()
             val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
 
-            MaterialTheme {
+            WormaCeptorTheme {
                 val navController = rememberNavController()
                 
                 NavHost(navController = navController, startDestination = "home") {

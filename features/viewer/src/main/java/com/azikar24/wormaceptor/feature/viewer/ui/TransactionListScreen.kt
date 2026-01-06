@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,9 +41,12 @@ fun TransactionListScreen(
                     header()
                 }
             }
-            items(transactions) { transaction ->
+            items(transactions, key = { it.id }) { transaction ->
                 TransactionItem(transaction, onClick = { onItemClick(transaction) })
-                Divider()
+                Divider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                )
             }
         }
     }
@@ -80,15 +84,15 @@ private fun TransactionItem(
 ) {
     val statusColor = when (transaction.status) {
         TransactionStatus.COMPLETED -> when {
-            transaction.code == null -> Color(0xFFFF9800) // Orange for unknown
-            transaction.code in 200..299 -> Color(0xFF4CAF50) // Green for success
-            transaction.code in 300..399 -> Color(0xFF2196F3) // Blue for redirect
-            transaction.code in 400..499 -> Color(0xFFFF9800) // Orange for client error
-            transaction.code in 500..599 -> Color(0xFFF44336) // Red for server error
-            else -> Color(0xFF9E9E9E) // Gray for other
+            transaction.code == null -> WormaCeptorColors.StatusAmber
+            transaction.code in 200..299 -> WormaCeptorColors.StatusGreen
+            transaction.code in 300..399 -> WormaCeptorColors.StatusBlue
+            transaction.code in 400..499 -> WormaCeptorColors.StatusAmber
+            transaction.code in 500..599 -> WormaCeptorColors.StatusRed
+            else -> WormaCeptorColors.StatusGrey
         }
-        TransactionStatus.FAILED -> Color(0xFFF44336) // Red for failed
-        TransactionStatus.ACTIVE -> Color(0xFF9E9E9E) // Gray for pending
+        TransactionStatus.FAILED -> WormaCeptorColors.StatusRed
+        TransactionStatus.ACTIVE -> WormaCeptorColors.StatusGrey
     }
 
     Row(
@@ -103,7 +107,7 @@ private fun TransactionItem(
             modifier = Modifier
                 .width(4.dp)
                 .height(48.dp)
-                .background(statusColor)
+                .background(statusColor, shape = androidx.compose.foundation.shape.RoundedCornerShape(2.dp))
         )
         
         Spacer(modifier = Modifier.width(12.dp))
@@ -116,7 +120,8 @@ private fun TransactionItem(
                     text = transaction.path,
                     fontSize = 14.sp,
                     maxLines = 1,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             
@@ -152,7 +157,7 @@ private fun TransactionItem(
 @Composable
 private fun MethodBadge(method: String) {
     Surface(
-        color = methodColor(method).copy(alpha = 0.1f),
+        color = methodColor(method).copy(alpha = 0.2f),
         contentColor = methodColor(method),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp)
     ) {
@@ -166,10 +171,10 @@ private fun MethodBadge(method: String) {
 }
 
 private fun methodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> Color(0xFF4CAF50)    // Green
-    "POST" -> Color(0xFF2196F3)   // Blue
-    "PUT" -> Color(0xFFFF9800)    // Orange
-    "DELETE" -> Color(0xFFF44336) // Red
-    "PATCH" -> Color(0xFF9C27B0)  // Purple
-    else -> Color(0xFF9E9E9E)     // Gray
+    "GET" -> WormaCeptorColors.StatusGreen
+    "POST" -> WormaCeptorColors.StatusBlue
+    "PUT" -> WormaCeptorColors.StatusAmber
+    "DELETE" -> WormaCeptorColors.StatusRed
+    "PATCH" -> Color(0xFF9C27B0)
+    else -> WormaCeptorColors.StatusGrey
 }

@@ -3,6 +3,9 @@ package com.azikar24.wormaceptor.feature.viewer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,8 +60,35 @@ class ViewerActivity : ComponentActivity() {
 
             WormaCeptorTheme {
                 val navController = rememberNavController()
-                
-                NavHost(navController = navController, startDestination = "home") {
+
+                NavHost(
+                    navController = navController,
+                    startDestination = "home",
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing),
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing),
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(400, easing = FastOutSlowInEasing),
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                        )
+                    }
+                ) {
                     composable("home") {
                         HomeScreen(
                             transactions = transactions,
@@ -72,8 +102,8 @@ class ViewerActivity : ComponentActivity() {
                             onMethodFilterChanged = viewModel::setMethodFilter,
                             onStatusFilterChanged = viewModel::setStatusFilter,
                             onClearFilters = viewModel::clearFilters,
-                            onClearTransactions = { kotlinx.coroutines.runBlocking { viewModel.clearAllTransactions() } },
-                            onClearCrashes = { kotlinx.coroutines.runBlocking { viewModel.clearAllCrashes() } },
+                            onClearTransactions = { viewModel.clearAllTransactions() },
+                            onClearCrashes = { viewModel.clearAllCrashes() },
                             onExportTransactions = {
                                 val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(this@ViewerActivity)
                                 val allTransactions = CoreHolder.queryEngine!!.getAllTransactionsForExport()
@@ -87,7 +117,7 @@ class ViewerActivity : ComponentActivity() {
                             onTabSelected = viewModel::updateSelectedTab
                         )
                     }
-                    
+
                     composable("detail/{id}") { backStackEntry ->
                         val id = backStackEntry.arguments?.getString("id")
                         if (id != null) {
@@ -95,20 +125,20 @@ class ViewerActivity : ComponentActivity() {
                             var transaction by remember {
                                 mutableStateOf<NetworkTransaction?>(null)
                             }
-                            
+
                             androidx.compose.runtime.LaunchedEffect(uuid) {
                                 transaction = CoreHolder.queryEngine!!.getDetails(uuid)
                             }
-                            
-                            transaction?.let { 
+
+                            transaction?.let {
                                 TransactionDetailScreen(
                                     transaction = it,
-                                    onBack = { if (!navController.popBackStack()) finish() }
-                                ) 
+                                    onBack = { navController.popBackStack() }
+                                )
                             }
                         }
                     }
-                    
+
                     composable("crash/{timestamp}") { backStackEntry ->
                         val timestamp = backStackEntry.arguments?.getString("timestamp")?.toLongOrNull()
                         if (timestamp != null) {
@@ -116,12 +146,13 @@ class ViewerActivity : ComponentActivity() {
                             crash?.let {
                                 CrashDetailScreen(
                                     crash = it,
-                                    onBack = { if (!navController.popBackStack()) finish() }
+                                    onBack = { navController.popBackStack() }
                                 )
                             }
                         }
                     }
                 }
+
             }
         }
     }

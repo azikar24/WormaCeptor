@@ -1,22 +1,21 @@
 package com.azikar24.wormaceptor.api
 
-import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 import java.util.UUID
 
-class WormaCeptorInterceptor(context: Context) : Interceptor {
+class WormaCeptorInterceptor() : Interceptor {
     
     enum class Period { ONE_HOUR, ONE_DAY, ONE_WEEK, ONE_MONTH, FOREVER }
 
     private var showNotification = true
     private var maxContentLength = 250_000L
-    private var headersToRedact = mutableSetOf<String>()
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val provider = WormaCeptorApi.provider ?: return chain.proceed(chain.request())
+        val redaction = WormaCeptorApi.redactionConfig
         
         val request = chain.request()
         var transactionId: UUID? = null
@@ -27,13 +26,27 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
             request.body?.writeTo(buffer)
             val bodySize = buffer.size
             
-            val cleanHeaders = request.headers.toMultimap().filterKeys { !headersToRedact.contains(it) }
+            val cleanHeaders = request.headers.toMultimap().mapValues { (key, values) ->
+                if (redaction.headersToRedact.contains(key.lowercase())) {
+                    listOf(redaction.replacementText)
+                } else {
+                    values
+                }
+            }
+
+            val bodyStream = if (bodySize > 0) {
+                var bodyText = buffer.clone().readUtf8()
+                redaction.bodyPatternsToRedact.forEach { regex ->
+                    bodyText = bodyText.replace(regex, redaction.replacementText)
+                }
+                bodyText.byteInputStream()
+            } else null
 
             transactionId = provider.startTransaction(
                 url = request.url.toString(),
                 method = request.method,
                 headers = cleanHeaders,
-                bodyStream = if (bodySize > 0) buffer.clone().inputStream() else null,
+                bodyStream = bodyStream,
                 bodySize = bodySize
             )
         } catch (e: Exception) {
@@ -47,7 +60,7 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
         } catch (e: Exception) {
              if (transactionId != null) {
                  provider.completeTransaction(
-                     id = transactionId!!,
+                     id = transactionId,
                      code = 0,
                      message = "FAILED",
                      headers = emptyMap(),
@@ -65,17 +78,29 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
         if (transactionId != null) {
             try {
                 val responseBody = response.peekBody(maxContentLength)
-                val cleanHeaders = response.headers.toMultimap().filterKeys { !headersToRedact.contains(it) }
+                val cleanHeaders = response.headers.toMultimap().mapValues { (key, values) ->
+                    if (redaction.headersToRedact.contains(key.lowercase())) {
+                        listOf(redaction.replacementText)
+                    } else {
+                        values
+                    }
+                }
+                
+                var bodyText = responseBody.string()
+                redaction.bodyPatternsToRedact.forEach { regex ->
+                    bodyText = bodyText.replace(regex, redaction.replacementText)
+                }
+                
                 val protocol = response.protocol.toString()
                 val tlsVersion = response.handshake?.tlsVersion?.javaName
 
                 provider.completeTransaction(
-                    id = transactionId!!,
+                    id = transactionId,
                     code = response.code,
                     message = response.message,
                     headers = cleanHeaders,
-                    bodyStream = responseBody.byteStream(),
-                    bodySize = responseBody.contentLength(),
+                    bodyStream = bodyText.byteInputStream(),
+                    bodySize = bodyText.length.toLong(),
                     protocol = protocol,
                     tlsVersion = tlsVersion,
                     error = null
@@ -115,7 +140,12 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
     }
 
     fun redactHeader(name: String): WormaCeptorInterceptor {
-        headersToRedact.add(name)
+        WormaCeptorApi.redactionConfig.redactHeader(name)
+        return this
+    }
+    fun redactBody(name: String): WormaCeptorInterceptor {
+        WormaCeptorApi.redactionConfig.redactBody(name)
         return this
     }
 }
+

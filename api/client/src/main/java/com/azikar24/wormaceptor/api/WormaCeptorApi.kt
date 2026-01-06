@@ -11,6 +11,9 @@ object WormaCeptorApi {
     internal var provider: ServiceProvider? = null
         private set
 
+    val redactionConfig = RedactionConfig()
+
+
     /**
      * Initializes WormaCeptor.
      * If an implementation module (persistence, imdb) is present in the classpath,

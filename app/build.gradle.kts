@@ -36,7 +36,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-//    implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.okhttp.logging.interceptor)
@@ -44,11 +43,9 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.multidex)
 
-    // WormaCeptor Multi-Module Integration
     implementation(project(":api:client"))
     debugImplementation(project(":api:impl:persistence"))
 //    debugImplementation(project(":api:impl:imdb"))
-    releaseImplementation(project(":api:impl:no-op"))
 
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

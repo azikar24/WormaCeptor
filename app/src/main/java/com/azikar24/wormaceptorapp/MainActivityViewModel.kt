@@ -7,7 +7,7 @@ package com.azikar24.wormaceptorapp
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.azikar24.wormaceptor.WormaCeptor
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
@@ -72,7 +72,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun startWormaCeptor(context: Context) {
-        context.startActivity(WormaCeptor.getLaunchIntent(context))
+        context.startActivity(WormaCeptorApi.getLaunchIntent(context))
     }
 
     fun simulateCrash() {

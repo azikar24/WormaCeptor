@@ -44,9 +44,10 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.multidex)
 
-    implementation(project(":WormaCeptor-persistence"))
-//    implementation(project(":WormaCeptor-no-op"))
-//    implementation(project(":WormaCeptor-imdb"))
+    // implementation(project(":WormaCeptor-persistence")) // Removed in V2
+    implementation(project(":api:client"))
+    // implementation(project(":WormaCeptor-no-op")) // Removed in V2
+    // implementation(project(":WormaCeptor-imdb")) // Removed in V2
 
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

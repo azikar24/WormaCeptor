@@ -19,8 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.WormaCeptor
-import com.azikar24.wormaceptor.annotations.ScreenPreviews
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
@@ -32,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainActivityContent()
         }
-        WormaCeptor.startActivityOnShake(this)
+        WormaCeptorApi.startActivityOnShake(this)
     }
 
     @Composable
@@ -125,18 +124,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @ScreenPreviews
-    @Composable
-    private fun PreviewMainActivityContent() {
-        WormaCeptorMainTheme {
-            Surface(
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
-                MainActivityContent()
-            }
-        }
-    }
 }
 

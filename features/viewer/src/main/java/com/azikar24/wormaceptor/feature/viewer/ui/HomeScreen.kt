@@ -16,6 +16,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.activity.compose.BackHandler
+import android.app.Activity
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.launch
@@ -42,6 +44,11 @@ fun HomeScreen(
     onTabSelected: (Int) -> Unit
 ) {
     val context = LocalContext.current
+    
+    // Hardware/System Back Button should exit the viewer when at Home
+    BackHandler {
+        (context as? Activity)?.finish()
+    }
     val titles = listOf("Transactions", "Crashes")
     var showFilterSheet by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }

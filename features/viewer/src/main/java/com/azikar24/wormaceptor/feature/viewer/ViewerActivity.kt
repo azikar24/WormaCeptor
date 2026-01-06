@@ -57,7 +57,6 @@ class ViewerActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this, factory)[ViewerViewModel::class.java]
 
         setContent {
-            val navController = rememberNavController()
             val transactions by viewModel.transactions.collectAsState()
             val crashes by viewModel.crashes.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
@@ -113,7 +112,7 @@ class ViewerActivity : ComponentActivity() {
                             transaction?.let { 
                                 TransactionDetailScreen(
                                     transaction = it,
-                                    onBack = { navController.popBackStack() }
+                                    onBack = { if (!navController.popBackStack()) finish() }
                                 ) 
                             }
                         }
@@ -126,7 +125,7 @@ class ViewerActivity : ComponentActivity() {
                             crash?.let {
                                 CrashDetailScreen(
                                     crash = it,
-                                    onBack = { navController.popBackStack() }
+                                    onBack = { if (!navController.popBackStack()) finish() }
                                 )
                             }
                         }

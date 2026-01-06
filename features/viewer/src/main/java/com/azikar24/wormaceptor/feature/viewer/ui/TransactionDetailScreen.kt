@@ -476,7 +476,9 @@ private fun generateCurlCommand(transaction: NetworkTransaction): String = build
     append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
     transaction.request.headers.forEach { (key, values) ->
         values.forEach { value ->
-            append(" -H \"$key: $value\"")
+            val escapedKey = key.replace("'", "'\\''")
+            val escapedValue = value.replace("'", "'\\''")
+            append(" -H '$escapedKey: $escapedValue'")
         }
     }
     // Note: We don't include the body in the cURL command here as it might be binary or huge,

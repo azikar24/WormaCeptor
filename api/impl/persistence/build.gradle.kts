@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.azikar24.wormaceptor.api.client"
+    namespace = "com.azikar24.wormaceptor.api.impl.persistence"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -21,8 +21,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    api(project(":domain:entities"))
-    implementation(libs.okhttp)
-    implementation(libs.androidx.activity.ktx)
+    implementation(project(":api:client"))
+    implementation(project(":core:engine"))
+    implementation(project(":infra:persistence:sqlite"))
+    implementation(project(":domain:contracts"))
     implementation(project(":platform:android"))
+    implementation(project(":features:viewer"))
+    implementation(libs.androidx.room.runtime)
 }

@@ -1,3 +1,5 @@
+package com.azikar24.wormaceptor.infra.persistence.sqlite
+
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.infra.persistence.sqlite.CrashDao

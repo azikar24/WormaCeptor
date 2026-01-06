@@ -10,17 +10,33 @@ Built with **Jetpack Compose**, **Kotlin Coroutines**, and a modular **State-Dri
 
 ### 1. Integration
 
-Add WormaCeptor to your project's dependencies and initialize it in your `Application` class.
+Add the core WormaCeptor dependency to all variants, and then choose your implementation module for different build types (e.g., Debug vs. Release).
 
 ```kotlin
+dependencies {
+    // 1. Common API (always needed)
+    implementation("com.github.azikar24:WormaCeptor-client:2.x")
+
+    // 2. Choose Implementation based on build variant
+    
+    // For Debug: Full persistence with SQLite/Room and Viewer UI
+    debugImplementation("com.github.azikar24:WormaCeptor-persistence:2.x")
+    
+    // OR In-Memory for testing (volatile)
+    // debugImplementation("com.github.azikar24:WormaCeptor-imdb:2.x")
+
+    // For Release: Absolutely no code/engine logic sent to production
+    releaseImplementation("com.github.azikar24:WormaCeptor-no-op:2.x")
+}
+
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
         
-        // Initialize the interceptor
+        // Initialize (automatically discovers the implementation in classpath)
         WormaCeptorApi.init(this)
         
-        // Optional: Enable "Shake to Open" the viewer
+        // Optional: Enable "Shake to Open" (Safe to call in Release - will be no-op)
         WormaCeptorApi.startActivityOnShake(this)
     }
 }

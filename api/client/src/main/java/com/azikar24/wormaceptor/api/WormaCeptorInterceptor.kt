@@ -4,29 +4,22 @@ import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
-import com.azikar24.wormaceptor.api.ServiceLocator
-import kotlinx.coroutines.launch
+import java.util.UUID
 
 class WormaCeptorInterceptor(context: Context) : Interceptor {
     
     enum class Period { ONE_HOUR, ONE_DAY, ONE_WEEK, ONE_MONTH, FOREVER }
 
-    private val notificationHelper = WormaCeptorNotificationHelper(context)
     private var showNotification = true
     private var maxContentLength = 250_000L
     private var headersToRedact = mutableSetOf<String>()
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val engine = ServiceLocator.captureEngine
+        val provider = WormaCeptorApi.provider ?: return chain.proceed(chain.request())
         
-        // If engine is missing, fail safe to just proceed (No-Op mode)
-        if (engine == null) {
-            return chain.proceed(chain.request())
-        }
-
         val request = chain.request()
-        var transactionId: java.util.UUID? = null
+        var transactionId: UUID? = null
         
         // 1. Capture Request
         try {
@@ -34,18 +27,15 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
             request.body?.writeTo(buffer)
             val bodySize = buffer.size
             
-            // Basic Redaction (Header removal)
             val cleanHeaders = request.headers.toMultimap().filterKeys { !headersToRedact.contains(it) }
 
-            kotlinx.coroutines.runBlocking {
-                transactionId = engine.startTransaction(
-                    url = request.url.toString(),
-                    method = request.method,
-                    headers = cleanHeaders,
-                    bodyStream = if (bodySize > 0) buffer.clone().inputStream() else null,
-                    bodySize = bodySize
-                )
-            }
+            transactionId = provider.startTransaction(
+                url = request.url.toString(),
+                method = request.method,
+                headers = cleanHeaders,
+                bodyStream = if (bodySize > 0) buffer.clone().inputStream() else null,
+                bodySize = bodySize
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -55,18 +45,18 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
         try {
             response = chain.proceed(request)
         } catch (e: Exception) {
-            // Capture Failure?
              if (transactionId != null) {
-                 kotlinx.coroutines.runBlocking {
-                     engine.completeTransaction(
-                         id = transactionId!!,
-                         code = 0,
-                         message = "FAILED",
-                         headers = emptyMap(),
-                         bodyStream = null,
-                         error = e.toString()
-                     )
-                 }
+                 provider.completeTransaction(
+                     id = transactionId!!,
+                     code = 0,
+                     message = "FAILED",
+                     headers = emptyMap(),
+                     bodyStream = null,
+                     bodySize = 0,
+                     protocol = null,
+                     tlsVersion = null,
+                     error = e.toString()
+                 )
              }
             throw e
         }
@@ -79,27 +69,17 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
                 val protocol = response.protocol.toString()
                 val tlsVersion = response.handshake?.tlsVersion?.javaName
 
-                kotlinx.coroutines.runBlocking {
-                    engine.completeTransaction(
-                        id = transactionId!!,
-                        code = response.code,
-                        message = response.message,
-                        headers = cleanHeaders,
-                        bodyStream = responseBody.byteStream(),
-                        bodySize = responseBody.contentLength(),
-                        protocol = protocol,
-                        tlsVersion = tlsVersion,
-                        error = null
-                    )
-                    
-                    // 4. Notify
-                    if (showNotification) {
-                        val transaction = ServiceLocator.queryEngine?.getDetails(transactionId!!)
-                        if (transaction != null) {
-                            notificationHelper.show(transaction)
-                        }
-                    }
-                }
+                provider.completeTransaction(
+                    id = transactionId!!,
+                    code = response.code,
+                    message = response.message,
+                    headers = cleanHeaders,
+                    bodyStream = responseBody.byteStream(),
+                    bodySize = responseBody.contentLength(),
+                    protocol = protocol,
+                    tlsVersion = tlsVersion,
+                    error = null
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -129,13 +109,7 @@ class WormaCeptorInterceptor(context: Context) : Interceptor {
         
         if (millis > 0) {
             val threshold = System.currentTimeMillis() - millis
-            val engine = ServiceLocator.captureEngine
-            if (engine != null) {
-                // Fire and forget cleanup
-                kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
-                    engine.cleanup(threshold)
-                }
-            }
+            WormaCeptorApi.provider?.cleanup(threshold)
         }
         return this
     }

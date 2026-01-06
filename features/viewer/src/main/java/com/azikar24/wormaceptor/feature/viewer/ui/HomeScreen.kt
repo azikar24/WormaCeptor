@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,6 +15,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.BackHandler
 import android.app.Activity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.ui.Alignment
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.launch
@@ -36,8 +42,8 @@ fun HomeScreen(
     onMethodFilterChanged: (String?) -> Unit,
     onStatusFilterChanged: (IntRange?) -> Unit,
     onClearFilters: () -> Unit,
-    onClearTransactions: () -> Unit,
-    onClearCrashes: () -> Unit,
+    onClearTransactions: suspend () -> Unit,
+    onClearCrashes: suspend () -> Unit,
     onExportTransactions: suspend () -> Unit,
     onExportCrashes: suspend () -> Unit,
     selectedTabIndex: Int,
@@ -71,16 +77,29 @@ fun HomeScreen(
                     },
                     actions = {
                         if (selectedTabIndex == 0) {
+                            val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                             IconButton(onClick = { showFilterSheet = true }) {
-                                Icon(
-                                    imageVector = Icons.Default.FilterList,
-                                    contentDescription = "Filter",
-                                    tint = if (filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                Box {
+                                    Icon(
+                                        imageVector = Icons.Default.FilterList,
+                                        contentDescription = "Filter",
+                                        tint = if (isFiltering) {
+                                            MaterialTheme.colorScheme.primary
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface
+                                        }
+                                    )
+                                    if (isFiltering) {
+                                        androidx.compose.foundation.Canvas(
+                                            modifier = Modifier
+                                                .size(8.dp)
+                                                .align(Alignment.TopEnd)
+                                                .padding(1.dp)
+                                        ) {
+                                            drawCircle(color = androidx.compose.ui.graphics.Color.Red)
+                                        }
                                     }
-                                )
+                                }
                             }
                         }
 
@@ -94,39 +113,38 @@ fun HomeScreen(
 
                         DropdownMenu(
                             expanded = showOverflowMenu,
-                            onDismissRequest = { showOverflowMenu = false }
+                            onDismissRequest = { showOverflowMenu = false },
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                         ) {
                             if (selectedTabIndex == 0) {
-                                // Transactions tab menu
                                 DropdownMenuItem(
                                     text = { Text("Export Transactions") },
+                                    leadingIcon = { Icon(Icons.Default.Share, null) },
                                     onClick = {
                                         showOverflowMenu = false
-                                        scope.launch {
-                                            onExportTransactions()
-                                        }
+                                        scope.launch { onExportTransactions() }
                                     }
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Clear All Transactions") },
+                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                     onClick = {
                                         showOverflowMenu = false
                                         showClearTransactionsDialog = true
                                     }
                                 )
                             } else {
-                                // Crashes tab menu
                                 DropdownMenuItem(
                                     text = { Text("Export Crashes") },
+                                    leadingIcon = { Icon(Icons.Default.Share, null) },
                                     onClick = {
                                         showOverflowMenu = false
-                                        scope.launch {
-                                            onExportCrashes()
-                                        }
+                                        scope.launch { onExportCrashes() }
                                     }
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Clear All Crashes") },
+                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                     onClick = {
                                         showOverflowMenu = false
                                         showClearCrashesDialog = true
@@ -170,13 +188,17 @@ fun HomeScreen(
         }
 
         if (showFilterSheet) {
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
             ModalBottomSheet(
-                onDismissRequest = { showFilterSheet = false }
+                modifier = Modifier.imePadding(),
+                onDismissRequest = { showFilterSheet = false },
+                sheetState = sheetState,
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(bottom = 32.dp, start = 16.dp, end = 16.dp, top = 8.dp)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     Text(
                         text = "Search & Filter",
@@ -190,7 +212,20 @@ fun HomeScreen(
                         onValueChange = onSearchChanged,
                         label = { Text("Search transactions") },
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        singleLine = true,
+                        trailingIcon = {
+                            if (searchQuery.isNotEmpty()) {
+                                IconButton(onClick = { onSearchChanged("") }) {
+                                    Icon(Icons.Default.Clear, contentDescription = "Clear")
+                                }
+                            }
+                        },
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Search
+                        ),
+                        keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+                            onSearch = { showFilterSheet = false }
+                        )
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -248,19 +283,18 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     // Clear Filters Button
-                    if (filterMethod != null || filterStatusRange != null) {
-                        OutlinedButton(
-                            onClick = {
-                                onClearFilters()
-                                showFilterSheet = false
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Clear All Filters")
-                        }
+                    val filtersActive = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+                    OutlinedButton(
+                        onClick = {
+                            onClearFilters()
+                            onSearchChanged("")
+                            showFilterSheet = false
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = filtersActive
+                    ) {
+                        Text("Clear All Filters")
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }

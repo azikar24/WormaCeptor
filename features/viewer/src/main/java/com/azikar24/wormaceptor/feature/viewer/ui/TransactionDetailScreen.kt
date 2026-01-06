@@ -19,6 +19,11 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,6 +50,19 @@ fun TransactionDetailScreen(
     var searchQuery by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
     val tabs = listOf("Overview", "Request", "Response")
+    
+    val focusRequester = remember { FocusRequester() }
+    
+    // Search navigation state - now using matchCount instead of positions list
+    var currentMatchIndex by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
+    var matchCount by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
+
+    LaunchedEffect(showSearch) {
+        if (showSearch) {
+            focusRequester.requestFocus()
+        }
+    }
+
 
     val title = remember(transaction.request.url) {
         try {
@@ -65,12 +83,22 @@ fun TransactionDetailScreen(
                                 value = searchQuery,
                                 onValueChange = { searchQuery = it },
                                 placeholder = { Text("Search in body...") },
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .focusRequester(focusRequester),
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
                                     unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
                                     disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                )
+                                ),
+                                singleLine = true,
+                                trailingIcon = {
+                                    if (searchQuery.isNotEmpty()) {
+                                        IconButton(onClick = { searchQuery = "" }) {
+                                            Icon(Icons.Default.Close, contentDescription = "Clear")
+                                        }
+                                    }
+                                }
                             )
                         } else {
                             Text(title, maxLines = 1)
@@ -83,19 +111,23 @@ fun TransactionDetailScreen(
                     },
                     actions = {
                         if (selectedTabIndex > 0) { // Show search for Request/Response tabs
-                            IconButton(onClick = { 
-                                showSearch = !showSearch 
+                            IconButton(onClick = {
+                                showSearch = !showSearch
                                 if (!showSearch) searchQuery = ""
                             }) {
-                                Icon(
-                                    imageVector = if (showSearch) Icons.Default.Close else Icons.Default.Search,
-                                    contentDescription = "Search"
-                                )
+                                AnimatedVisibility(!showSearch) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = "Search"
+                                    )
+                                }
                             }
                         }
 
-                        IconButton(onClick = { showMenu = true }) {
-                            Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
+                        if (!showSearch) {
+                            IconButton(onClick = { showMenu = true }) {
+                                Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
+                            }
                         }
 
                         DropdownMenu(
@@ -142,15 +174,69 @@ fun TransactionDetailScreen(
             }
         }
     ) { padding ->
-        Crossfade(
-            targetState = selectedTabIndex,
-            modifier = Modifier.padding(padding),
-            label = "tab_fade"
-        ) { targetIndex ->
-            when (targetIndex) {
-                0 -> OverviewTab(transaction, Modifier.fillMaxSize())
-                1 -> RequestTab(transaction, searchQuery, Modifier.fillMaxSize())
-                2 -> ResponseTab(transaction, searchQuery, Modifier.fillMaxSize())
+        Box(modifier = Modifier.fillMaxSize()) {
+            Crossfade(
+                targetState = selectedTabIndex,
+                modifier = Modifier
+                    .padding(padding)
+                    .consumeWindowInsets(padding)
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .windowInsetsPadding(WindowInsets.ime),
+                label = "tab_fade"
+            ) { targetIndex ->
+                when (targetIndex) {
+                    0 -> OverviewTab(transaction, Modifier.fillMaxSize())
+                    1 -> RequestTab(
+                        transaction = transaction,
+                        searchQuery = searchQuery,
+                        currentMatchIndex = currentMatchIndex,
+                        onMatchCountChanged = { matchCount = it },
+                        onScrollToMatch = { /* Scroll handled internally */ },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    2 -> ResponseTab(
+                        transaction = transaction,
+                        searchQuery = searchQuery,
+                        currentMatchIndex = currentMatchIndex,
+                        onMatchCountChanged = { matchCount = it },
+                        onScrollToMatch = { /* Scroll handled internally */ },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            // Search Navigation Controllers in Bottom Right
+            if (showSearch && matchCount > 0) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .imePadding() // Key fix for keyboard overlap
+                        .padding(bottom = 32.dp, end = 16.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
+                    color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+                    shadowElevation = 6.dp
+                ) {
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${currentMatchIndex + 1}/$matchCount",
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                        IconButton(onClick = { 
+                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount 
+                        }) {
+                            Icon(Icons.Default.KeyboardArrowUp, "Prev")
+                        }
+                        IconButton(onClick = { 
+                            currentMatchIndex = (currentMatchIndex + 1) % matchCount 
+                        }) {
+                            Icon(Icons.Default.KeyboardArrowDown, "Next")
+                        }
+                    }
+                }
             }
         }
     }
@@ -257,128 +343,252 @@ private fun formatBytes(bytes: Long): String {
     return String.format("%.2f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
 }
 
+/**
+ * Data class holding information about a single search match
+ */
+private data class MatchInfo(
+    val globalPosition: Int,
+    val lineIndex: Int
+)
+
 @Composable
-private fun RequestTab(transaction: NetworkTransaction, searchQuery: String, modifier: Modifier = Modifier) {
+private fun RequestTab(
+    transaction: NetworkTransaction,
+    searchQuery: String,
+    currentMatchIndex: Int,
+    onMatchCountChanged: (Int) -> Unit,
+    onScrollToMatch: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     val blobId = transaction.request.bodyRef
     var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
+    var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
+    
+    // Pixel-based scrolling
+    val scrollState = rememberScrollState()
+    var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
 
+    // 1. Body Loading
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
+            val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
             val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
                 if (raw != null) formatJson(raw) else null
             }
             requestBody = formatted
             isLoading = false
+        } else {
+            requestBody = null
         }
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        item {
-            SectionHeader("Headers", onCopy = { copyToClipboard(context, "Request Headers", formatHeaders(transaction.request.headers)) })
-            Headers(transaction.request.headers)
+    // 2. Search: Find matches
+    LaunchedEffect(requestBody, searchQuery) {
+        val body = requestBody
+        if (body == null || searchQuery.isEmpty()) {
+            matches = emptyList()
+            onMatchCountChanged(0)
+            return@LaunchedEffect
         }
 
+        kotlinx.coroutines.delay(250) // Debounce
+
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+            val foundMatches = mutableListOf<MatchInfo>()
+            var index = body.indexOf(searchQuery, ignoreCase = true)
+            while (index >= 0) {
+                foundMatches.add(MatchInfo(globalPosition = index, lineIndex = 0)) // lineIndex not used for pixel scroll
+                index = body.indexOf(searchQuery, index + 1, ignoreCase = true)
+            }
+            matches = foundMatches
+            onMatchCountChanged(foundMatches.size)
+        }
+    }
+
+    // 3. Scroll to current match using TextLayoutResult
+    LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
+        if (matches.isEmpty()) return@LaunchedEffect
+        val layout = textLayoutResult ?: return@LaunchedEffect
+        
+        val match = matches.getOrNull(currentMatchIndex) ?: return@LaunchedEffect
+        
+        try {
+            val lineNumber = layout.getLineForOffset(match.globalPosition)
+            val pixelOffset = layout.getLineTop(lineNumber).toInt()
+            scrollState.animateScrollTo(pixelOffset)
+        } catch (e: Exception) {
+            // Offset out of bounds, ignore
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp)
+    ) {
+        SectionHeader("Headers", onCopy = { copyToClipboard(context, "Request Headers", formatHeaders(transaction.request.headers)) })
+        Headers(transaction.request.headers)
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         if (blobId != null) {
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
-                } else if (requestBody != null) {
-                    SectionHeader("Body", onCopy = { copyToClipboard(context, "Request Body", requestBody!!) })
-                    SelectionContainer {
-                        Text(
-                            text = if (searchQuery.isNotEmpty()) highlightMatches(requestBody!!, searchQuery) else androidx.compose.ui.text.AnnotatedString(requestBody!!),
-                            fontFamily = FontFamily.Monospace,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                } else {
-                    Text("Failed to load body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
+            } else if (requestBody != null) {
+                SectionHeader("Body", onCopy = { copyToClipboard(context, "Request Body", requestBody!!) })
+                
+                val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                val annotatedBody = remember(requestBody, searchQuery, currentMatchGlobalPos) {
+                    highlightMatchesInText(requestBody!!, searchQuery, currentMatchGlobalPos)
+                }
+
+                SelectionContainer {
+                    Text(
+                        text = annotatedBody,
+                        fontFamily = FontFamily.Monospace,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.fillMaxWidth(),
+                        onTextLayout = { textLayoutResult = it }
+                    )
                 }
             }
         } else {
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                Text("No request body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+            Text("No request body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
 @Composable
-private fun ResponseTab(transaction: NetworkTransaction, searchQuery: String, modifier: Modifier = Modifier) {
+private fun ResponseTab(
+    transaction: NetworkTransaction,
+    searchQuery: String,
+    currentMatchIndex: Int,
+    onMatchCountChanged: (Int) -> Unit,
+    onScrollToMatch: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     val blobId = transaction.response?.bodyRef
     var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
+    var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
+    
+    // Pixel-based scrolling
+    val scrollState = rememberScrollState()
+    var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
 
+    // 1. Body Loading
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
+            val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
             val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
                 if (raw != null) formatJson(raw) else null
             }
             responseBody = formatted
             isLoading = false
+        } else {
+            responseBody = null
         }
     }
 
-    LazyColumn(
+    // 2. Search: Find matches
+    LaunchedEffect(responseBody, searchQuery) {
+        val body = responseBody
+        if (body == null || searchQuery.isEmpty()) {
+            matches = emptyList()
+            onMatchCountChanged(0)
+            return@LaunchedEffect
+        }
+
+        kotlinx.coroutines.delay(250) // Debounce
+
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+            val foundMatches = mutableListOf<MatchInfo>()
+            var index = body.indexOf(searchQuery, ignoreCase = true)
+            while (index >= 0) {
+                foundMatches.add(MatchInfo(globalPosition = index, lineIndex = 0))
+                index = body.indexOf(searchQuery, index + 1, ignoreCase = true)
+            }
+            matches = foundMatches
+            onMatchCountChanged(foundMatches.size)
+        }
+    }
+
+    // 3. Scroll to current match using TextLayoutResult
+    LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
+        if (matches.isEmpty()) return@LaunchedEffect
+        val layout = textLayoutResult ?: return@LaunchedEffect
+        
+        val match = matches.getOrNull(currentMatchIndex) ?: return@LaunchedEffect
+        
+        try {
+            val lineNumber = layout.getLineForOffset(match.globalPosition)
+            val pixelOffset = layout.getLineTop(lineNumber).toInt()
+            scrollState.animateScrollTo(pixelOffset)
+        } catch (e: Exception) {
+            // Offset out of bounds, ignore
+        }
+    }
+
+    Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
         if (transaction.response != null) {
-            item {
-                SectionHeader("Headers", onCopy = { transaction.response?.headers?.let { copyToClipboard(context, "Response Headers", formatHeaders(it)) } })
-                transaction.response?.headers?.let { Headers(it) }
-            }
+            SectionHeader("Headers", onCopy = { transaction.response?.headers?.let { copyToClipboard(context, "Response Headers", formatHeaders(it)) } })
+            transaction.response?.headers?.let { Headers(it) }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             if (blobId != null) {
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    if (isLoading) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
-                    } else if (responseBody != null) {
-                        SectionHeader("Body", onCopy = { copyToClipboard(context, "Response Body", responseBody!!) })
-                        SelectionContainer {
-                            Text(
-                                text = if (searchQuery.isNotEmpty()) highlightMatches(responseBody!!, searchQuery) else androidx.compose.ui.text.AnnotatedString(responseBody!!),
-                                fontFamily = FontFamily.Monospace,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    } else {
-                        Text("Failed to load body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
+                } else if (responseBody != null) {
+                    SectionHeader("Body", onCopy = { copyToClipboard(context, "Response Body", responseBody!!) })
+                    
+                    val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                    val annotatedBody = remember(responseBody, searchQuery, currentMatchGlobalPos) {
+                        highlightMatchesInText(responseBody!!, searchQuery, currentMatchGlobalPos)
+                    }
+
+                    SelectionContainer {
+                        Text(
+                            text = annotatedBody,
+                            fontFamily = FontFamily.Monospace,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.fillMaxWidth(),
+                            onTextLayout = { textLayoutResult = it }
+                        )
                     }
                 }
             } else {
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text("No response body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+                Text("No response body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         } else {
-            item {
-                Text("No response received", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
-            }
+            Text("No response received", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
         }
     }
 }
 
-@Composable
-private fun highlightMatches(text: String, query: String): androidx.compose.ui.text.AnnotatedString {
+/**
+ * Highlights all matches in the full text, using global position for current match detection
+ */
+private fun highlightMatchesInText(
+    text: String,
+    query: String,
+    currentMatchGlobalPos: Int?
+): androidx.compose.ui.text.AnnotatedString {
+    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
+    
     return androidx.compose.ui.text.buildAnnotatedString {
         var start = 0
         while (start < text.length) {
@@ -388,8 +598,11 @@ private fun highlightMatches(text: String, query: String): androidx.compose.ui.t
                 break
             }
             append(text.substring(start, index))
+            
+            val isCurrent = index == currentMatchGlobalPos
+
             withStyle(style = androidx.compose.ui.text.SpanStyle(
-                background = androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
+                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
             )) {
                 append(text.substring(index, index + query.length))
@@ -398,6 +611,65 @@ private fun highlightMatches(text: String, query: String): androidx.compose.ui.t
         }
     }
 }
+
+
+private fun highlightMatches(text: String, query: String, currentIndex: Int = -1): androidx.compose.ui.text.AnnotatedString {
+    return androidx.compose.ui.text.buildAnnotatedString {
+        var start = 0
+        var count = 0
+        while (start < text.length) {
+            val index = text.indexOf(query, start, ignoreCase = true)
+            if (index == -1) {
+                append(text.substring(start))
+                break
+            }
+            append(text.substring(start, index))
+            val isCurrent = count == currentIndex
+            withStyle(style = androidx.compose.ui.text.SpanStyle(
+                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            )) {
+                append(text.substring(index, index + query.length))
+            }
+            start = index + query.length
+            count++
+        }
+    }
+}
+
+private fun highlightMatchesInLine(
+    line: String,
+    lineStart: Int,
+    query: String,
+    currentIndex: Int,
+    matchPositions: List<Int>
+): androidx.compose.ui.text.AnnotatedString {
+    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(line)
+    
+    return androidx.compose.ui.text.buildAnnotatedString {
+        var start = 0
+        while (start < line.length) {
+            val indexInLine = line.indexOf(query, start, ignoreCase = true)
+            if (indexInLine == -1) {
+                append(line.substring(start))
+                break
+            }
+            append(line.substring(start, indexInLine))
+            
+            val globalIndex = lineStart + indexInLine
+            val isCurrent = matchPositions.getOrNull(currentIndex) == globalIndex
+
+            withStyle(style = androidx.compose.ui.text.SpanStyle(
+                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            )) {
+                append(line.substring(indexInLine, indexInLine + query.length))
+            }
+            start = indexInLine + query.length
+        }
+    }
+}
+
 
 @Composable
 private fun SectionHeader(title: String, onCopy: (() -> Unit)? = null) {

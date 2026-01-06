@@ -28,7 +28,7 @@ class MainActivityViewModel : ViewModel() {
 
 
     fun doHttpActivity(context: Context) {
-        val api = SampleApiService.getInstance(context)
+        val api = SampleApiService.getInstance()
 
         val callBack = object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) = Unit

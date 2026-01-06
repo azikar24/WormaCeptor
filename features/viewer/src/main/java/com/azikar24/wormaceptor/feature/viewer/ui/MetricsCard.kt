@@ -45,7 +45,10 @@ fun MetricsCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { isExpanded = !isExpanded }
+                .clickable(
+                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                    indication = null
+                ) { isExpanded = !isExpanded }
                 .padding(16.dp)
         ) {
             Row(

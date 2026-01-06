@@ -7,7 +7,7 @@ package com.azikar24.wormaceptorapp
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.azikar24.wormaceptor.WormaCeptor
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
@@ -28,7 +28,7 @@ class MainActivityViewModel : ViewModel() {
 
 
     fun doHttpActivity(context: Context) {
-        val api = SampleApiService.getInstance(context)
+        val api = SampleApiService.getInstance()
 
         val callBack = object : Callback<Void?> {
             override fun onResponse(call: Call<Void?>, response: Response<Void?>) = Unit
@@ -72,7 +72,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun startWormaCeptor(context: Context) {
-        context.startActivity(WormaCeptor.getLaunchIntent(context))
+        context.startActivity(WormaCeptorApi.getLaunchIntent(context))
     }
 
     fun simulateCrash() {

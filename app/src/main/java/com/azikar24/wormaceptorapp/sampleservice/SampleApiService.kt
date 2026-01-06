@@ -5,7 +5,7 @@
 package com.azikar24.wormaceptorapp.sampleservice
 
 import android.content.Context
-import com.azikar24.wormaceptor.WormaCeptorInterceptor
+import com.azikar24.wormaceptor.api.WormaCeptorInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

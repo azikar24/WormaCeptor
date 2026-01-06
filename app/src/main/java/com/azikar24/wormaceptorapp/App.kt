@@ -9,8 +9,6 @@ class App : Application() {
         super.onCreate()
         WormaCeptorApi.init(
             context = this,
-            storage = null, // V2 uses internal ServiceLocator
-            appShortcut = true,
             logCrashes = true,
         )
     }

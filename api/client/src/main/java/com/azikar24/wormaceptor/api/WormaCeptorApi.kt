@@ -3,22 +3,76 @@ package com.azikar24.wormaceptor.api
 import android.content.Context
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import com.azikar24.wormaceptor.platform.android.ShakeDetector
+
 object WormaCeptorApi {
-    
-    fun init(context: Context, storage: Any? = null, appShortcut: Boolean = true, logCrashes: Boolean = true) {
-        // Legacy storage/init arguments are ignored in V2
-        // Phase 3: Initialize V2 Core
-        ServiceLocator.init(context, logCrashes)
+
+    @Volatile
+    internal var provider: ServiceProvider? = null
+        private set
+
+    /**
+     * Initializes WormaCeptor.
+     * If an implementation module (persistence, imdb) is present in the classpath,
+     * it will be automatically discovered and initialized.
+     */
+    fun init(context: Context, logCrashes: Boolean = true) {
+        if (provider != null) return
+
+        // Discovery via reflection to avoid compile-time dependency on implementation modules
+        val implClass = try {
+            Class.forName("com.azikar24.wormaceptor.api.internal.ServiceProviderImpl")
+        } catch (e: Exception) {
+            null
+        }
+
+        val instance = implClass?.getDeclaredConstructor()?.newInstance() as? ServiceProvider
+        provider = instance ?: NoOpProvider()
+
+        provider?.init(context, logCrashes)
     }
 
     fun startActivityOnShake(activity: ComponentActivity) {
-        // Use Platform ShakeDetector (migrated from Legacy)
-        com.azikar24.wormaceptor.platform.android.ShakeDetector.start(activity) {
-             activity.startActivity(getLaunchIntent(activity))
+        // Platform classes are safe to refer if they are in a common layout or handled similarly
+        // For simplicity, we'll delegate shake start to provider if needed, 
+        // or keep it in platform if platform is a shared dependency.
+        try {
+            ShakeDetector.start(activity) {
+                activity.startActivity(getLaunchIntent(activity))
+            }
+        } catch (e: Exception) {
+            // Shake detector might not be present in No-Op
         }
     }
 
     fun getLaunchIntent(context: Context): Intent {
-        return Intent(context, com.azikar24.wormaceptor.feature.viewer.ViewerActivity::class.java)
+        return provider?.getLaunchIntent(context) ?: Intent()
+    }
+
+    private class NoOpProvider : ServiceProvider {
+        override fun init(context: Context, logCrashes: Boolean) {}
+        override fun startTransaction(
+            url: String,
+            method: String,
+            headers: Map<String, List<String>>,
+            bodyStream: java.io.InputStream?,
+            bodySize: Long
+        ) = null
+
+        override fun completeTransaction(
+            id: java.util.UUID,
+            code: Int,
+            message: String,
+            headers: Map<String, List<String>>,
+            bodyStream: java.io.InputStream?,
+            bodySize: Long,
+            protocol: String?,
+            tlsVersion: String?,
+            error: String?
+        ) {
+        }
+
+        override fun cleanup(threshold: Long) {}
+        override fun getLaunchIntent(context: Context): Intent = Intent()
     }
 }

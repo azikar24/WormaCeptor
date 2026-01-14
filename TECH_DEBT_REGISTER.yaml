@@ -1,0 +1,100 @@
+issues:
+  - id: ARCH-001
+    category: Architecture
+    name: Global Singleton State
+    location: com.azikar24.wormaceptor.WormaCeptor
+    severity: High
+    root_cause: Use of 'object' implementation with mutable 'storage' property acting as a Service Locator.
+    refactor_difficulty: Medium
+    description: The `WormaCeptor` object holds a mutable static reference to `WormaCeptorStorage`. This makes testing difficult, hides dependencies, and introduces global state derived from `init()`.
+    recommendation: Effective Dependency Injection (Koin is already present) should be used to inject the storage where needed, rather than accessing a static singleton.
+
+  - id: ARCH-002
+    category: Architecture
+    name: Threading Violation in Interceptor
+    location: com.azikar24.wormaceptor.WormaCeptorInterceptor
+    severity: Critical
+    root_cause: Creation of 'Executors.newSingleThreadExecutor()' per interceptor instance.
+    refactor_difficulty: Medium
+    description: Each instance of `WormaCeptorInterceptor` creates its own single-thread executor. If multiple interceptors or clients are used, this leads to thread proliferation. Additionally, database operations are seemingly blocking or scheduled on this single thread without proper lifecycle management.
+    recommendation: Use a shared Dispatcher (CoroutineScope) or a singleton executor for background tasks.
+
+  - id: ARCH-003
+    category: Architecture
+    name: Deprecated Paging 2 Usage
+    location: com.azikar24.wormaceptor.persistence.RoomTransactionDao
+    severity: Medium
+    root_cause: Use of 'DataSource.Factory' which is part of Paging 2.
+    refactor_difficulty: Hard
+    description: The codebase uses `DataSource.Factory` from Paging 2. This library is deprecated and replaced by Paging 3 (PagingSource / Flow).
+    recommendation: Migrate to Paging 3 `PagingSource` and expose `Flow<PagingData<T>>`.
+
+  - id: PERF-001
+    category: Performance
+    name: Full Body Read into Memory
+    location: com.azikar24.wormaceptor.WormaCeptorInterceptor.readFromBuffer
+    severity: Critical
+    root_cause: Converting entire ResponseBody buffer to String for storage.
+    refactor_difficulty: Hard
+    description: The interceptor reads the entire response body (up to mMaxContentLength) into a String. This duplicates the data in memory. For large responses or frequent requests, this causes significant memory pressure and GC churn.
+    recommendation: Stream the body to a file or database directly if possible, or reduce the default max content length.
+
+  - id: PERF-002
+    category: Performance
+    name: Repeated Stream Cloning
+    location: com.azikar24.wormaceptor.WormaCeptorInterceptor.getNativeSource
+    severity: High
+    root_cause: Using 'peekBody()' to read the source.
+    refactor_difficulty: Medium
+    description: `response.peekBody()` creates a memory copy of the potentially large body. This is done to read it without consuming the original stream, but it doubles memory usage for that request.
+    recommendation: Consider if peeking is strictly necessary or if the original response can be wrapped/intercepted in a way that minimizes copying.
+
+  - id: CODE-001
+    category: Code Quality
+    name: Manual Data Mapping Boilerplate
+    location: com.azikar24.wormaceptor.persistence.PersistentTransactionDao
+    severity: Low
+    root_cause: Explicit mapping functions between Domain and Entity objects.
+    refactor_difficulty: Easy
+    description: Verbose `Function` objects are used to map `NetworkTransaction` to `PersistentNetworkTransaction`. This is error-prone and maintenance heavy.
+    recommendation: Use mapping extension functions or a mapper library (e.g., MapStruct) to reduce boilerplate.
+
+  - id: CODE-002
+    category: Code Quality
+    name: Hardcoded Strings
+    location: com.azikar24.wormaceptor.internal.ui.features.network.NetworkListScreen
+    severity: Low
+    root_cause: Hardcoded UI strings ("Network Calls", "Search", filters).
+    refactor_difficulty: Easy
+    description: User-facing strings are hardcoded in Kotlin files instead of strings.xml.
+    recommendation: Extract all strings to `res/values/strings.xml`.
+
+  - id: SEC-001
+    category: Security
+    name: Plaintext Storage of Sensitive Data
+    location: com.azikar24.wormaceptor.persistence.RoomTransactionDao
+    severity: Critical
+    root_cause: No encryption at rest for captured headers/bodies.
+    refactor_difficulty: Hard
+    description: Request/Response bodies and headers are stored in plain text in the SQLite database. If the device is rooted or backup is extracted, sensitive data (tokens, PII) is visible.
+    recommendation: Implement SQLCipher or encrypt sensitive columns before insertion.
+
+  - id: SEC-002
+    category: Security
+    name: Flaky Crash Reporting
+    location: com.azikar24.wormaceptor.WormaCeptor.logUnexpectedCrashes
+    severity: High
+    root_cause: Calling 'Runtime.getRuntime().exit(2)' immediately after launching a coroutine.
+    refactor_difficulty: Medium
+    description: The global exception handler launches a coroutine to save the crash and then effectively kills the process. The process might die before the DB insert completes.
+    recommendation: Use a blocking database write for crash handling, or ensure the thread waits for the write to complete before exiting.
+
+  - id: UX-001
+    category: Design / UX
+    name: Brittle Toolbar State Management
+    location: com.azikar24.wormaceptor.internal.ui.features.network.NetworkListScreen
+    severity: Medium
+    root_cause: Syncing local state with shared ViewModel via DisposableEffect.
+    refactor_difficulty: Medium
+    description: `NetworkListScreen` updates `toolbarViewModel` properties in a side-effect. This makes the data flow non-unidirectional and harder to debug.
+    recommendation: Lift state up meaningfully or use a shared state holder that drives the UI, rather than the UI pushing state to the ViewModel.

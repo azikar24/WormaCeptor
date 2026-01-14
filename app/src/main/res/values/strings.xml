@@ -9,4 +9,15 @@
     <string name="launch_directly">Launch WormaCeptor Directly</string>
     <string name="github_page">Github Page</string>
     <string name="simulateError">Simulate Error</string>
+
+    <!-- MainActivity Enhanced Strings -->
+    <string name="app_subtitle">Network Traffic Inspector for Android</string>
+    <string name="action_http_title">HTTP Activity</string>
+    <string name="action_http_description">Make sample network requests to test interception</string>
+    <string name="action_launch_title">Launch Inspector</string>
+    <string name="action_launch_description">Open WormaCeptor to view captured network traffic</string>
+    <string name="action_crash_title">Simulate Error</string>
+    <string name="action_crash_description">Test crash reporting and error handling</string>
+    <string name="info_shake_title">Shake to Launch</string>
+    <string name="info_shake_description">You can shake your device at any time to open WormaCeptor</string>
 </resources>

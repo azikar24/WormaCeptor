@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,8 +25,6 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun TransactionListScreen(
@@ -38,9 +35,6 @@ fun TransactionListScreen(
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null
 ) {
-    // Track which items have already animated to avoid re-animating on scroll back
-    val animatedItems = remember { mutableStateOf(setOf<UUID>()) }
-
     if (transactions.isEmpty()) {
         EmptyState(
             hasActiveFilters = hasActiveFilters,
@@ -58,14 +52,9 @@ fun TransactionListScreen(
                 }
             }
             items(transactions, key = { it.id }) { transaction ->
-                val shouldAnimate = transaction.id !in animatedItems.value
                 TransactionItem(
                     transaction = transaction,
                     onClick = { onItemClick(transaction) },
-                    shouldAnimate = shouldAnimate,
-                    onAnimationComplete = {
-                        animatedItems.value = animatedItems.value + transaction.id
-                    },
                     modifier = Modifier.animateItem()
                 )
             }
@@ -121,8 +110,6 @@ private fun EmptyState(
 private fun TransactionItem(
     transaction: TransactionSummary,
     onClick: () -> Unit,
-    shouldAnimate: Boolean,
-    onAnimationComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val statusColor = when (transaction.status) {
@@ -150,28 +137,6 @@ private fun TransactionItem(
         label = "itemScale"
     )
 
-    // Entrance animation - only animate if item hasn't been animated before
-    var isVisible by remember { mutableStateOf(!shouldAnimate) }
-    LaunchedEffect(shouldAnimate) {
-        if (shouldAnimate && !isVisible) {
-            isVisible = true
-            kotlinx.coroutines.delay(250) // Wait for animation to complete
-            onAnimationComplete()
-        }
-    }
-
-    val alpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
-        label = "itemAlpha"
-    )
-
-    val offsetY by animateDpAsState(
-        targetValue = if (isVisible) 0.dp else 16.dp,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
-        label = "itemOffset"
-    )
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -179,8 +144,6 @@ private fun TransactionItem(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs
             )
-            .offset(y = offsetY)
-            .graphicsLayer { this.alpha = alpha }
             .scale(scale)
             .clip(WormaCeptorDesignSystem.Shapes.card)
             .border(

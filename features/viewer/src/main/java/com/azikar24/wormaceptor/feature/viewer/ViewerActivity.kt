@@ -52,6 +52,7 @@ class ViewerActivity : ComponentActivity() {
 
         setContent {
             val transactions by viewModel.transactions.collectAsState()
+            val allTransactions by viewModel.allTransactions.collectAsState()
             val crashes by viewModel.crashes.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
             val filterMethod by viewModel.filterMethod.collectAsState()
@@ -106,15 +107,16 @@ class ViewerActivity : ComponentActivity() {
                             onClearCrashes = { viewModel.clearAllCrashes() },
                             onExportTransactions = {
                                 val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(this@ViewerActivity)
-                                val allTransactions = CoreHolder.queryEngine!!.getAllTransactionsForExport()
-                                exportManager.exportTransactions(allTransactions)
+                                val allTransactionsForExport = CoreHolder.queryEngine!!.getAllTransactionsForExport()
+                                exportManager.exportTransactions(allTransactionsForExport)
                             },
                             onExportCrashes = {
                                 val allCrashes = crashes
                                 com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(this@ViewerActivity, allCrashes)
                             },
                             selectedTabIndex = selectedTabIndex,
-                            onTabSelected = viewModel::updateSelectedTab
+                            onTabSelected = viewModel::updateSelectedTab,
+                            allTransactions = allTransactions
                         )
                     }
 

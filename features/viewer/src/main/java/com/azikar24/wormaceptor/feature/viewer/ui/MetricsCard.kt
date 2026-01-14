@@ -122,22 +122,30 @@ fun MetricsCard(
             // Always visible summary with enhanced visuals
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 MetricItem(
                     label = "Total",
                     value = totalRequests.toString(),
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
                 )
                 MetricItem(
                     label = "Avg Time",
                     value = "${avgDuration.toInt()}ms",
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.weight(1f)
                 )
-                CircularSuccessMetric(
-                    label = "Success",
-                    percentage = successRate.toFloat()
-                )
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularSuccessMetric(
+                        label = "Success",
+                        percentage = successRate.toFloat()
+                    )
+                }
             }
 
             // Expandable details
@@ -295,9 +303,11 @@ fun MetricsCard(
 private fun MetricItem(
     label: String,
     value: String,
-    color: Color = MaterialTheme.colorScheme.primary
+    color: Color = MaterialTheme.colorScheme.primary,
+    modifier: Modifier = Modifier
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {

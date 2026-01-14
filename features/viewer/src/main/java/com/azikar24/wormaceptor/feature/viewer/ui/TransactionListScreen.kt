@@ -8,7 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -54,10 +54,9 @@ fun TransactionListScreen(
                     header()
                 }
             }
-            itemsIndexed(transactions, key = { _, transaction -> transaction.id }) { index, transaction ->
+            items(transactions, key = { it.id }) { transaction ->
                 TransactionItem(
                     transaction = transaction,
-                    index = index,
                     onClick = { onItemClick(transaction) },
                     modifier = Modifier.animateItem()
                 )
@@ -113,7 +112,6 @@ private fun EmptyState(
 @Composable
 private fun TransactionItem(
     transaction: TransactionSummary,
-    index: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -142,23 +140,16 @@ private fun TransactionItem(
         label = "itemScale"
     )
 
-    // Entrance animation with stagger
+    // Simple fade-in animation (no stagger delay to avoid lag during fast scroll)
     var isVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        kotlinx.coroutines.delay(index * 30L) // Stagger delay
         isVisible = true
     }
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing),
+        animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
         label = "itemAlpha"
-    )
-
-    val offsetY by animateDpAsState(
-        targetValue = if (isVisible) 0.dp else 20.dp,
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing),
-        label = "itemOffset"
     )
 
     Row(
@@ -168,7 +159,6 @@ private fun TransactionItem(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs
             )
-            .offset(y = offsetY)
             .graphicsLayer { this.alpha = alpha }
             .scale(scale)
             .clip(WormaCeptorDesignSystem.Shapes.card)

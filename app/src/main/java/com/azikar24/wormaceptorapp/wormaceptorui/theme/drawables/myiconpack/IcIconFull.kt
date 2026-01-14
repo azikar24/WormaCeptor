@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
@@ -20,13 +21,17 @@ fun icIconFullBuilder() = Builder(
     viewportWidth = 787.0f,
     viewportHeight = 442.0f
 ).apply {
-    path(fill = Brush.verticalGradient(
-        colors = listOf(Color(0xFF560BAD), Color(0xFFB5179E)
-        )
 
-    ), stroke = null, strokeLineWidth = 0.0f,
+    path(
+        fill = Brush.verticalGradient(
+            colors = if (isSystemInDarkTheme()) {
+                listOf(Color(0xFFFFFFFF), Color(0xFFFFFFFF))
+            } else listOf(Color(0xFF000000), Color(0xFF000000))
+
+        ), stroke = null, strokeLineWidth = 0.0f,
         strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-        pathFillType = NonZero) {
+        pathFillType = NonZero
+    ) {
         moveTo(769.9f, 27.47f)
         curveTo(756.72f, 9.5f, 736.37f, 0.0f, 711.05f, 0.0f)
         curveTo(641.65f, 0.0f, 588.51f, 70.66f, 537.5f, 141.26f)
@@ -78,9 +83,11 @@ fun icIconFullBuilder() = Builder(
         curveTo(201.93f, 217.78f, 171.17f, 264.39f, 134.88f, 264.39f)
         close()
     }
-    path(fill = SolidColor(MaterialTheme.colorScheme.onSurface), stroke = null, strokeLineWidth = 0.0f,
+    path(
+        fill = SolidColor(MaterialTheme.colorScheme.onSurface), stroke = null, strokeLineWidth = 0.0f,
         strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-        pathFillType = NonZero) {
+        pathFillType = NonZero
+    ) {
         moveTo(18.52f, 427.0f)
         lineTo(5.2f, 380.45f)
         lineTo(15.95f, 380.45f)

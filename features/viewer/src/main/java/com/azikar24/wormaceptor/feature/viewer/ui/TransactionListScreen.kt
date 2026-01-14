@@ -140,7 +140,7 @@ private fun TransactionItem(
         label = "itemScale"
     )
 
-    // Simple fade-in animation (no stagger delay to avoid lag during fast scroll)
+    // Entrance animation - fade + slide up (no index-based stagger to avoid lag)
     var isVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         isVisible = true
@@ -148,8 +148,14 @@ private fun TransactionItem(
 
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
         label = "itemAlpha"
+    )
+
+    val offsetY by animateDpAsState(
+        targetValue = if (isVisible) 0.dp else 16.dp,
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
+        label = "itemOffset"
     )
 
     Row(
@@ -159,6 +165,7 @@ private fun TransactionItem(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs
             )
+            .offset(y = offsetY)
             .graphicsLayer { this.alpha = alpha }
             .scale(scale)
             .clip(WormaCeptorDesignSystem.Shapes.card)

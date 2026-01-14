@@ -1,0 +1,616 @@
+package com.azikar24.wormaceptor.feature.viewer.ui
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.DataUsage
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import kotlin.math.roundToInt
+
+/**
+ * Modern filter bottom sheet content with distribution bars
+ * Inspired by MetricsCard visual style
+ */
+@Composable
+fun FilterBottomSheetContent(
+    searchQuery: String,
+    onSearchChanged: (String) -> Unit,
+    filterMethod: String?,
+    filterStatusRange: IntRange?,
+    onMethodFilterChanged: (String?) -> Unit,
+    onStatusFilterChanged: (IntRange?) -> Unit,
+    onClearFilters: () -> Unit,
+    onApply: () -> Unit,
+    filteredCount: Int,
+    totalCount: Int,
+    methodCounts: Map<String, Int>,
+    statusCounts: Map<IntRange, Int>,
+    modifier: Modifier = Modifier
+) {
+    val focusManager = LocalFocusManager.current
+    val filtersActive = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        // Compact Header
+        FilterHeader(
+            filteredCount = filteredCount,
+            totalCount = totalCount,
+            filtersActive = filtersActive
+        )
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+        )
+
+        // Scrollable Content
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f, fill = false)
+                .verticalScroll(rememberScrollState())
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        ) {
+            // Search Field
+            MinimalSearchField(
+                value = searchQuery,
+                onValueChange = onSearchChanged,
+                onSearch = { focusManager.clearFocus() }
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+
+            // HTTP Methods Section
+            FilterSectionHeader(
+                icon = Icons.Outlined.Code,
+                title = "HTTP Method"
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            MethodFilterBars(
+                methodCounts = methodCounts,
+                totalCount = totalCount,
+                selectedMethod = filterMethod,
+                onMethodSelected = onMethodFilterChanged
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+
+            // Status Codes Section
+            FilterSectionHeader(
+                icon = Icons.Outlined.DataUsage,
+                title = "Status Code"
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            StatusFilterBars(
+                statusCounts = statusCounts,
+                totalCount = totalCount,
+                selectedRange = filterStatusRange,
+                onStatusSelected = onStatusFilterChanged
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+        }
+
+        // Action Buttons - Fixed at bottom
+        FilterActionButtons(
+            filtersActive = filtersActive,
+            onClearAll = {
+                onClearFilters()
+                onSearchChanged("")
+            },
+            onApply = {
+                focusManager.clearFocus()
+                onApply()
+            }
+        )
+    }
+}
+
+@Composable
+private fun FilterHeader(
+    filteredCount: Int,
+    totalCount: Int,
+    filtersActive: Boolean
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                vertical = WormaCeptorDesignSystem.Spacing.md
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = "Filters",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            if (filtersActive) {
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Text(
+                    text = "$filteredCount of $totalCount requests",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        // Result count badge
+        Surface(
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+            color = if (filtersActive) {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            }
+        ) {
+            Text(
+                text = filteredCount.toString(),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = if (filtersActive) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = Modifier.padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm
+                )
+            )
+        }
+    }
+}
+
+@Composable
+private fun MinimalSearchField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    onSearch: () -> Unit
+) {
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)),
+        placeholder = {
+            Text(
+                text = "Search path, host, or method...",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            )
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                modifier = Modifier.size(20.dp)
+            )
+        },
+        trailingIcon = {
+            if (value.isNotEmpty()) {
+                IconButton(
+                    onClick = { onValueChange("") },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Clear",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+        },
+        singleLine = true,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            cursorColor = MaterialTheme.colorScheme.primary
+        ),
+        textStyle = MaterialTheme.typography.bodyMedium,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = { onSearch() })
+    )
+}
+
+@Composable
+private fun FilterSectionHeader(
+    icon: ImageVector,
+    title: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(18.dp),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+        )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
+@Composable
+private fun MethodFilterBars(
+    methodCounts: Map<String, Int>,
+    totalCount: Int,
+    selectedMethod: String?,
+    onMethodSelected: (String?) -> Unit
+) {
+    val methods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+    ) {
+        methods.forEach { method ->
+            val count = methodCounts[method] ?: 0
+            val color = methodColor(method)
+            val isSelected = selectedMethod == method
+
+            SelectableFilterBar(
+                label = method,
+                count = count,
+                total = totalCount,
+                color = color,
+                isSelected = isSelected,
+                onClick = {
+                    onMethodSelected(if (isSelected) null else method)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatusFilterBars(
+    statusCounts: Map<IntRange, Int>,
+    totalCount: Int,
+    selectedRange: IntRange?,
+    onStatusSelected: (IntRange?) -> Unit
+) {
+    val statusFilters = listOf(
+        Triple("2xx", 200..299, WormaCeptorColors.StatusGreen),
+        Triple("3xx", 300..399, WormaCeptorColors.StatusBlue),
+        Triple("4xx", 400..499, WormaCeptorColors.StatusAmber),
+        Triple("5xx", 500..599, WormaCeptorColors.StatusRed)
+    )
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+    ) {
+        statusFilters.forEach { (label, range, color) ->
+            val count = statusCounts[range] ?: 0
+            val isSelected = selectedRange == range
+
+            SelectableFilterBar(
+                label = label,
+                sublabel = when (label) {
+                    "2xx" -> "Success"
+                    "3xx" -> "Redirect"
+                    "4xx" -> "Client Error"
+                    "5xx" -> "Server Error"
+                    else -> null
+                },
+                count = count,
+                total = totalCount,
+                color = color,
+                isSelected = isSelected,
+                onClick = {
+                    onStatusSelected(if (isSelected) null else range)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SelectableFilterBar(
+    label: String,
+    count: Int,
+    total: Int,
+    color: Color,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    sublabel: String? = null
+) {
+    val percentage = if (total > 0) (count.toFloat() / total.toFloat()) * 100f else 0f
+    val animatedPercentage by animateFloatAsState(
+        targetValue = percentage,
+        animationSpec = tween(durationMillis = 400),
+        label = "bar_animation"
+    )
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.98f else 1f,
+        animationSpec = tween(durationMillis = 100),
+        label = "scale_animation"
+    )
+
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) {
+            color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+        } else {
+            Color.Transparent
+        },
+        animationSpec = tween(durationMillis = 200),
+        label = "bg_animation"
+    )
+
+    val borderColor by animateColorAsState(
+        targetValue = if (isSelected) {
+            color.copy(alpha = 0.4f)
+        } else {
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+        },
+        animationSpec = tween(durationMillis = 200),
+        label = "border_animation"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(scale)
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+            .background(backgroundColor)
+            .border(
+                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin,
+                color = borderColor,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick,
+                enabled = count > 0
+            )
+            .padding(WormaCeptorDesignSystem.Spacing.md)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                ) {
+                    // Color indicator dot
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .clip(CircleShape)
+                            .background(if (count > 0) color else color.copy(alpha = 0.3f))
+                    )
+
+                    Column {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                            color = if (count > 0) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            }
+                        )
+                        if (sublabel != null) {
+                            Text(
+                                text = sublabel,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = if (count > 0) 0.7f else 0.3f
+                                )
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                ) {
+                    // Count and percentage
+                    Text(
+                        text = "$count",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (count > 0) color else color.copy(alpha = 0.3f)
+                    )
+
+                    if (count > 0 && total > 0) {
+                        Text(
+                            text = "${animatedPercentage.roundToInt()}%",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        )
+                    }
+
+                    // Selection indicator
+                    if (isSelected) {
+                        Box(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clip(CircleShape)
+                                .background(color),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Selected",
+                                tint = Color.White,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Progress bar
+            if (count > 0) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                                alpha = if (isSelected) 0.4f else 0.2f
+                            )
+                        )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(animatedPercentage / 100f)
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(2.dp))
+                            .background(
+                                Brush.horizontalGradient(
+                                    colors = listOf(
+                                        color.copy(alpha = if (isSelected) 0.9f else 0.6f),
+                                        color.copy(alpha = if (isSelected) 1f else 0.8f)
+                                    )
+                                )
+                            )
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilterActionButtons(
+    filtersActive: Boolean,
+    onClearAll: () -> Unit,
+    onApply: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = WormaCeptorDesignSystem.Elevation.sm
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+        ) {
+            OutlinedButton(
+                onClick = onClearAll,
+                modifier = Modifier.weight(1f),
+                enabled = filtersActive,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                )
+            ) {
+                Text(
+                    text = "Clear All",
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Button(
+                onClick = onApply,
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm)
+            ) {
+                Text(
+                    text = "Done",
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
+private fun methodColor(method: String): Color = when (method.uppercase()) {
+    "GET" -> WormaCeptorColors.StatusGreen
+    "POST" -> WormaCeptorColors.StatusBlue
+    "PUT" -> WormaCeptorColors.StatusAmber
+    "DELETE" -> WormaCeptorColors.StatusRed
+    "PATCH" -> Color(0xFF9C27B0)
+    else -> WormaCeptorColors.StatusGrey
+}

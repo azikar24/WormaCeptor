@@ -1,16 +1,14 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,35 +17,54 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.activity.compose.BackHandler
-import android.app.Activity
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.ui.Alignment
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asLightBackground
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -381,279 +398,23 @@ fun HomeScreen(
                 sheetState = sheetState,
                 shape = WormaCeptorDesignSystem.Shapes.sheet
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    // Sticky Header with Result Count
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.surface,
-                        tonalElevation = WormaCeptorDesignSystem.Elevation.sm
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                                    vertical = WormaCeptorDesignSystem.Spacing.md
-                                )
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "Search & Filter",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold
-                                )
-
-                                Surface(
-                                    shape = WormaCeptorDesignSystem.Shapes.chip,
-                                    color = MaterialTheme.colorScheme.primaryContainer
-                                ) {
-                                    Text(
-                                        text = "Showing ${transactions.size} of ${allTransactions.size}",
-                                        style = MaterialTheme.typography.labelMedium,
-                                        fontWeight = FontWeight.Medium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        modifier = Modifier.padding(
-                                            horizontal = WormaCeptorDesignSystem.Spacing.md,
-                                            vertical = WormaCeptorDesignSystem.Spacing.xs
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    // Scrollable Content
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                bottom = WormaCeptorDesignSystem.Spacing.xxl,
-                                start = WormaCeptorDesignSystem.Spacing.lg,
-                                end = WormaCeptorDesignSystem.Spacing.lg,
-                                top = WormaCeptorDesignSystem.Spacing.lg
-                            )
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        // Search Field
-                        OutlinedTextField(
-                            value = searchQuery,
-                            onValueChange = onSearchChanged,
-                            label = { Text("Search path, method, or status") },
-                            placeholder = { Text("Type to search...") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            },
-                            trailingIcon = {
-                                if (searchQuery.isNotEmpty()) {
-                                    IconButton(onClick = { onSearchChanged("") }) {
-                                        Icon(Icons.Default.Close, contentDescription = "Clear")
-                                    }
-                                }
-                            },
-                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                                imeAction = androidx.compose.ui.text.input.ImeAction.Search
-                            ),
-                            keyboardActions = androidx.compose.foundation.text.KeyboardActions(
-                                onSearch = {
-                                    focusManager.clearFocus()
-                                }
-                            ),
-                            shape = WormaCeptorDesignSystem.Shapes.button
-                        )
-
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-                        // HTTP Method Section
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.Code,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                                Text(
-                                    text = "HTTP Method",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-                        FlowRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
-                        ) {
-                            val methods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
-                            methods.forEach { method ->
-                                val count = methodCounts[method] ?: 0
-                                FilterChip(
-                                    selected = filterMethod == method,
-                                    onClick = {
-                                        onMethodFilterChanged(if (filterMethod == method) null else method)
-                                    },
-                                    label = {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(method)
-                                            Surface(
-                                                shape = CircleShape,
-                                                color = if (filterMethod == method)
-                                                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f)
-                                                else
-                                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
-                                            ) {
-                                                Text(
-                                                    text = count.toString(),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    fontWeight = FontWeight.Bold,
-                                                    modifier = Modifier.padding(
-                                                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    },
-                                    shape = WormaCeptorDesignSystem.Shapes.chip
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-                        // Status Code Section
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                                Text(
-                                    text = "Status Code",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-                        FlowRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
-                        ) {
-                            val statusFilters = listOf(
-                                "2xx Success" to (200..299),
-                                "3xx Redirect" to (300..399),
-                                "4xx Client Error" to (400..499),
-                                "5xx Server Error" to (500..599)
-                            )
-                            statusFilters.forEach { (label, range) ->
-                                val count = statusCounts[range] ?: 0
-                                FilterChip(
-                                    selected = filterStatusRange == range,
-                                    onClick = {
-                                        onStatusFilterChanged(if (filterStatusRange == range) null else range)
-                                    },
-                                    label = {
-                                        Row(
-                                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(label)
-                                            Surface(
-                                                shape = CircleShape,
-                                                color = if (filterStatusRange == range)
-                                                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f)
-                                                else
-                                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
-                                            ) {
-                                                Text(
-                                                    text = count.toString(),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    fontWeight = FontWeight.Bold,
-                                                    modifier = Modifier.padding(
-                                                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    },
-                                    shape = WormaCeptorDesignSystem.Shapes.chip
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-                        // Action Buttons
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
-                        ) {
-                            val filtersActive = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
-
-                            OutlinedButton(
-                                onClick = {
-                                    onClearFilters()
-                                    onSearchChanged("")
-                                },
-                                modifier = Modifier.weight(1f),
-                                enabled = filtersActive,
-                                shape = WormaCeptorDesignSystem.Shapes.button
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                                Text("Clear All")
-                            }
-
-                            Button(
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    showFilterSheet = false
-                                },
-                                modifier = Modifier.weight(1f),
-                                shape = WormaCeptorDesignSystem.Shapes.button
-                            ) {
-                                Text("Apply Filters")
-                            }
-                        }
-                    }
-                }
+                FilterBottomSheetContent(
+                    searchQuery = searchQuery,
+                    onSearchChanged = onSearchChanged,
+                    filterMethod = filterMethod,
+                    filterStatusRange = filterStatusRange,
+                    onMethodFilterChanged = onMethodFilterChanged,
+                    onStatusFilterChanged = onStatusFilterChanged,
+                    onClearFilters = onClearFilters,
+                    onApply = {
+                        focusManager.clearFocus()
+                        showFilterSheet = false
+                    },
+                    filteredCount = transactions.size,
+                    totalCount = allTransactions.size,
+                    methodCounts = methodCounts,
+                    statusCounts = statusCounts
+                )
             }
         }
 

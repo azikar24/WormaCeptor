@@ -38,6 +38,9 @@ fun TransactionListScreen(
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null
 ) {
+    // Track which items have already animated to avoid re-animating on scroll back
+    val animatedItems = remember { mutableStateOf(setOf<Long>()) }
+
     if (transactions.isEmpty()) {
         EmptyState(
             hasActiveFilters = hasActiveFilters,
@@ -55,9 +58,14 @@ fun TransactionListScreen(
                 }
             }
             items(transactions, key = { it.id }) { transaction ->
+                val shouldAnimate = transaction.id !in animatedItems.value
                 TransactionItem(
                     transaction = transaction,
                     onClick = { onItemClick(transaction) },
+                    shouldAnimate = shouldAnimate,
+                    onAnimationComplete = {
+                        animatedItems.value = animatedItems.value + transaction.id
+                    },
                     modifier = Modifier.animateItem()
                 )
             }
@@ -113,6 +121,8 @@ private fun EmptyState(
 private fun TransactionItem(
     transaction: TransactionSummary,
     onClick: () -> Unit,
+    shouldAnimate: Boolean,
+    onAnimationComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val statusColor = when (transaction.status) {
@@ -140,10 +150,14 @@ private fun TransactionItem(
         label = "itemScale"
     )
 
-    // Entrance animation - fade + slide up (no index-based stagger to avoid lag)
-    var isVisible by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        isVisible = true
+    // Entrance animation - only animate if item hasn't been animated before
+    var isVisible by remember { mutableStateOf(!shouldAnimate) }
+    LaunchedEffect(shouldAnimate) {
+        if (shouldAnimate && !isVisible) {
+            isVisible = true
+            kotlinx.coroutines.delay(250) // Wait for animation to complete
+            onAnimationComplete()
+        }
     }
 
     val alpha by animateFloatAsState(

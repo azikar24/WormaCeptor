@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    `maven-publish`
 }
 
 android {
@@ -25,4 +26,17 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.androidx.activity.ktx)
     implementation(project(":platform:android"))
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.azikar24.WormaCeptor"
+                artifactId = "client"
+                version = "2.0.0"
+            }
+        }
+    }
 }

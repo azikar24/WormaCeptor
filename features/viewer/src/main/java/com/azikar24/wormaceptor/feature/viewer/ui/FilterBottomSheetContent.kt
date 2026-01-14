@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import kotlin.math.roundToInt
 
 /**
  * Modern filter bottom sheet content with distribution bars
@@ -127,7 +126,6 @@ fun FilterBottomSheetContent(
 
             MethodFilterBars(
                 methodCounts = methodCounts,
-                totalCount = totalCount,
                 selectedMethod = filterMethod,
                 onMethodSelected = onMethodFilterChanged
             )
@@ -144,7 +142,6 @@ fun FilterBottomSheetContent(
 
             StatusFilterBars(
                 statusCounts = statusCounts,
-                totalCount = totalCount,
                 selectedRange = filterStatusRange,
                 onStatusSelected = onStatusFilterChanged
             )
@@ -311,7 +308,6 @@ private fun FilterSectionHeader(
 @Composable
 private fun MethodFilterBars(
     methodCounts: Map<String, Int>,
-    totalCount: Int,
     selectedMethod: String?,
     onMethodSelected: (String?) -> Unit
 ) {
@@ -333,7 +329,6 @@ private fun MethodFilterBars(
                     GridFilterCard(
                         label = method,
                         count = count,
-                        total = totalCount,
                         color = color,
                         isSelected = isSelected,
                         onClick = {
@@ -354,7 +349,6 @@ private fun MethodFilterBars(
 @Composable
 private fun StatusFilterBars(
     statusCounts: Map<IntRange, Int>,
-    totalCount: Int,
     selectedRange: IntRange?,
     onStatusSelected: (IntRange?) -> Unit
 ) {
@@ -387,7 +381,6 @@ private fun StatusFilterBars(
                             else -> null
                         },
                         count = count,
-                        total = totalCount,
                         color = color,
                         isSelected = isSelected,
                         onClick = {
@@ -405,20 +398,12 @@ private fun StatusFilterBars(
 private fun GridFilterCard(
     label: String,
     count: Int,
-    total: Int,
     color: Color,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     sublabel: String? = null
 ) {
-    val percentage = if (total > 0) (count.toFloat() / total.toFloat()) * 100f else 0f
-    val animatedPercentage by animateFloatAsState(
-        targetValue = percentage,
-        animationSpec = tween(durationMillis = 400),
-        label = "bar_animation"
-    )
-
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -509,10 +494,10 @@ private fun GridFilterCard(
                 }
             }
 
-            // Right side: count, percentage, checkmark
+            // Right side: count and checkmark
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
             ) {
                 Text(
                     text = "$count",
@@ -521,17 +506,8 @@ private fun GridFilterCard(
                     color = if (count > 0) color else color.copy(alpha = 0.3f)
                 )
 
-                if (count > 0 && total > 0) {
-                    Text(
-                        text = "${animatedPercentage.roundToInt()}%",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                    )
-                }
-
                 // Selection indicator
                 if (isSelected) {
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xxs))
                     Box(
                         modifier = Modifier
                             .size(16.dp)

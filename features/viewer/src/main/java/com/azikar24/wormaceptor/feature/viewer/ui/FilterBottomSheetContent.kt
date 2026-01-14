@@ -320,21 +320,33 @@ private fun MethodFilterBars(
     Column(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
     ) {
-        methods.forEach { method ->
-            val count = methodCounts[method] ?: 0
-            val color = methodColor(method)
-            val isSelected = selectedMethod == method
+        methods.chunked(2).forEach { rowMethods ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            ) {
+                rowMethods.forEach { method ->
+                    val count = methodCounts[method] ?: 0
+                    val color = methodColor(method)
+                    val isSelected = selectedMethod == method
 
-            SelectableFilterBar(
-                label = method,
-                count = count,
-                total = totalCount,
-                color = color,
-                isSelected = isSelected,
-                onClick = {
-                    onMethodSelected(if (isSelected) null else method)
+                    GridFilterCard(
+                        label = method,
+                        count = count,
+                        total = totalCount,
+                        color = color,
+                        isSelected = isSelected,
+                        onClick = {
+                            onMethodSelected(if (isSelected) null else method)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
                 }
-            )
+                // Fill empty space if odd number of items
+                if (rowMethods.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
         }
     }
 }
@@ -356,39 +368,48 @@ private fun StatusFilterBars(
     Column(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
     ) {
-        statusFilters.forEach { (label, range, color) ->
-            val count = statusCounts[range] ?: 0
-            val isSelected = selectedRange == range
+        statusFilters.chunked(2).forEach { rowFilters ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            ) {
+                rowFilters.forEach { (label, range, color) ->
+                    val count = statusCounts[range] ?: 0
+                    val isSelected = selectedRange == range
 
-            SelectableFilterBar(
-                label = label,
-                sublabel = when (label) {
-                    "2xx" -> "Success"
-                    "3xx" -> "Redirect"
-                    "4xx" -> "Client Error"
-                    "5xx" -> "Server Error"
-                    else -> null
-                },
-                count = count,
-                total = totalCount,
-                color = color,
-                isSelected = isSelected,
-                onClick = {
-                    onStatusSelected(if (isSelected) null else range)
+                    GridFilterCard(
+                        label = label,
+                        sublabel = when (label) {
+                            "2xx" -> "Success"
+                            "3xx" -> "Redirect"
+                            "4xx" -> "Client Error"
+                            "5xx" -> "Server Error"
+                            else -> null
+                        },
+                        count = count,
+                        total = totalCount,
+                        color = color,
+                        isSelected = isSelected,
+                        onClick = {
+                            onStatusSelected(if (isSelected) null else range)
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
                 }
-            )
+            }
         }
     }
 }
 
 @Composable
-private fun SelectableFilterBar(
+private fun GridFilterCard(
     label: String,
     count: Int,
     total: Int,
     color: Color,
     isSelected: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     sublabel: String? = null
 ) {
     val percentage = if (total > 0) (count.toFloat() / total.toFloat()) * 100f else 0f
@@ -402,7 +423,7 @@ private fun SelectableFilterBar(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
+        targetValue = if (isPressed) 0.96f else 1f,
         animationSpec = tween(durationMillis = 100),
         label = "scale_animation"
     )
@@ -411,7 +432,7 @@ private fun SelectableFilterBar(
         targetValue = if (isSelected) {
             color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
         } else {
-            Color.Transparent
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f)
         },
         animationSpec = tween(durationMillis = 200),
         label = "bg_animation"
@@ -419,17 +440,16 @@ private fun SelectableFilterBar(
 
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) {
-            color.copy(alpha = 0.4f)
+            color.copy(alpha = 0.5f)
         } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f)
         },
         animationSpec = tween(durationMillis = 200),
         label = "border_animation"
     )
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .scale(scale)
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .background(backgroundColor)
@@ -446,7 +466,10 @@ private fun SelectableFilterBar(
             )
             .padding(WormaCeptorDesignSystem.Spacing.md)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        ) {
+            // Top row: Label and checkmark
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -459,87 +482,87 @@ private fun SelectableFilterBar(
                     // Color indicator dot
                     Box(
                         modifier = Modifier
-                            .size(8.dp)
+                            .size(10.dp)
                             .clip(CircleShape)
                             .background(if (count > 0) color else color.copy(alpha = 0.3f))
                     )
 
-                    Column {
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                            color = if (count > 0) {
-                                MaterialTheme.colorScheme.onSurface
-                            } else {
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-                            }
-                        )
-                        if (sublabel != null) {
-                            Text(
-                                text = sublabel,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = if (count > 0) 0.7f else 0.3f
-                                )
-                            )
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                        color = if (count > 0) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         }
-                    }
+                    )
                 }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
-                ) {
-                    // Count and percentage
-                    Text(
-                        text = "$count",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = if (count > 0) color else color.copy(alpha = 0.3f)
-                    )
-
-                    if (count > 0 && total > 0) {
-                        Text(
-                            text = "${animatedPercentage.roundToInt()}%",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                // Selection indicator
+                if (isSelected) {
+                    Box(
+                        modifier = Modifier
+                            .size(18.dp)
+                            .clip(CircleShape)
+                            .background(color),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Selected",
+                            tint = Color.White,
+                            modifier = Modifier.size(12.dp)
                         )
-                    }
-
-                    // Selection indicator
-                    if (isSelected) {
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clip(CircleShape)
-                                .background(color),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = "Selected",
-                                tint = Color.White,
-                                modifier = Modifier.size(14.dp)
-                            )
-                        }
                     }
                 }
             }
 
+            // Sublabel if present
+            if (sublabel != null) {
+                Text(
+                    text = sublabel,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = if (count > 0) 0.7f else 0.3f
+                    )
+                )
+            }
+
+            // Count and percentage row
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            ) {
+                Text(
+                    text = "$count",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = if (count > 0) color else color.copy(alpha = 0.3f)
+                )
+
+                if (count > 0 && total > 0) {
+                    Text(
+                        text = "(${animatedPercentage.roundToInt()}%)",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    )
+                }
+            }
+
             // Progress bar
-            if (count > 0) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = if (isSelected) 0.4f else 0.2f
-                            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant.copy(
+                            alpha = if (isSelected) 0.5f else 0.3f
                         )
-                ) {
+                    )
+            ) {
+                if (count > 0) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(animatedPercentage / 100f)
@@ -548,8 +571,8 @@ private fun SelectableFilterBar(
                             .background(
                                 Brush.horizontalGradient(
                                     colors = listOf(
-                                        color.copy(alpha = if (isSelected) 0.9f else 0.6f),
-                                        color.copy(alpha = if (isSelected) 1f else 0.8f)
+                                        color.copy(alpha = if (isSelected) 0.9f else 0.7f),
+                                        color.copy(alpha = if (isSelected) 1f else 0.9f)
                                     )
                                 )
                             )

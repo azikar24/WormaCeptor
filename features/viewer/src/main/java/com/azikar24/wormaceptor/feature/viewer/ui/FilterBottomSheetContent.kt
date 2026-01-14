@@ -466,44 +466,75 @@ private fun GridFilterCard(
             )
             .padding(WormaCeptorDesignSystem.Spacing.md)
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Top row: Label and checkmark
+            // Left side: dot, label, sublabel
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.weight(1f)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
-                ) {
-                    // Color indicator dot
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(CircleShape)
-                            .background(if (count > 0) color else color.copy(alpha = 0.3f))
-                    )
+                // Color indicator dot
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .clip(CircleShape)
+                        .background(if (count > 0) color else color.copy(alpha = 0.3f))
+                )
 
+                Column {
                     Text(
                         text = label,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (count > 0) {
                             MaterialTheme.colorScheme.onSurface
                         } else {
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         }
                     )
+                    if (sublabel != null) {
+                        Text(
+                            text = sublabel,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                alpha = if (count > 0) 0.6f else 0.3f
+                            )
+                        )
+                    }
+                }
+            }
+
+            // Right side: count, percentage, checkmark
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            ) {
+                Text(
+                    text = "$count",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (count > 0) color else color.copy(alpha = 0.3f)
+                )
+
+                if (count > 0 && total > 0) {
+                    Text(
+                        text = "${animatedPercentage.roundToInt()}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    )
                 }
 
                 // Selection indicator
                 if (isSelected) {
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xxs))
                     Box(
                         modifier = Modifier
-                            .size(18.dp)
+                            .size(16.dp)
                             .clip(CircleShape)
                             .background(color),
                         contentAlignment = Alignment.Center
@@ -512,71 +543,9 @@ private fun GridFilterCard(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Selected",
                             tint = Color.White,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(10.dp)
                         )
                     }
-                }
-            }
-
-            // Sublabel if present
-            if (sublabel != null) {
-                Text(
-                    text = sublabel,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = if (count > 0) 0.7f else 0.3f
-                    )
-                )
-            }
-
-            // Count and percentage row
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
-            ) {
-                Text(
-                    text = "$count",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = if (count > 0) color else color.copy(alpha = 0.3f)
-                )
-
-                if (count > 0 && total > 0) {
-                    Text(
-                        text = "(${animatedPercentage.roundToInt()}%)",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    )
-                }
-            }
-
-            // Progress bar
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(
-                            alpha = if (isSelected) 0.5f else 0.3f
-                        )
-                    )
-            ) {
-                if (count > 0) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(animatedPercentage / 100f)
-                            .fillMaxHeight()
-                            .clip(RoundedCornerShape(2.dp))
-                            .background(
-                                Brush.horizontalGradient(
-                                    colors = listOf(
-                                        color.copy(alpha = if (isSelected) 0.9f else 0.7f),
-                                        color.copy(alpha = if (isSelected) 1f else 0.9f)
-                                    )
-                                )
-                            )
-                    )
                 }
             }
         }

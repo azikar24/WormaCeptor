@@ -16,10 +16,20 @@ plugins {
 subprojects {
     // Apply maven-publish to all library modules (exclude app and test modules)
     if (project.path != ":app" && !project.path.startsWith(":test")) {
-        afterEvaluate {
-            if (plugins.hasPlugin("com.android.library")) {
-                apply(plugin = "maven-publish")
+        plugins.withId("com.android.library") {
+            // Configure Android library to expose release component for publishing
+            extensions.configure<com.android.build.gradle.LibraryExtension> {
+                publishing {
+                    singleVariant("release") {
+                        withSourcesJar()
+                        withJavadocJar()
+                    }
+                }
+            }
 
+            apply(plugin = "maven-publish")
+
+            afterEvaluate {
                 extensions.configure<PublishingExtension> {
                     publications {
                         create<MavenPublication>("release") {

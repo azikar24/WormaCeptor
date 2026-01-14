@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    `maven-publish`
 }
 
 android {
@@ -28,17 +27,4 @@ dependencies {
     implementation(project(":domain:contracts"))
     implementation(project(":platform:android"))
     implementation(project(":features:viewer"))
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("release") {
-                from(components["release"])
-                groupId = "com.github.azikar24.WormaCeptor"
-                artifactId = "imdb"
-                version = "2.0.0"
-            }
-        }
-    }
 }

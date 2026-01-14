@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -22,4 +23,9 @@ android {
 dependencies {
     implementation(project(":domain:entities")) // Contracts likely use Entities
     implementation(libs.androidx.core.ktx)
+
+    // Compose UI for AnnotatedString and Color in SyntaxHighlighter
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
 }

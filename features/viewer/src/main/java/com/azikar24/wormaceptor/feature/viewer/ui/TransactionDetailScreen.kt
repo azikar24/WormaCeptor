@@ -36,6 +36,28 @@ import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.feature.viewer.ui.components.HighlightedText
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.FormDataView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.BodyParsingUtils
+import com.azikar24.wormaceptor.domain.contracts.ContentType
+import androidx.compose.foundation.shape.CircleShape
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
+import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
+import com.azikar24.wormaceptor.feature.viewer.ui.components.extractImageMetadata
+import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
+import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
+import com.azikar24.wormaceptor.feature.viewer.ui.components.detectImageFormat
+import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
+import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -662,32 +684,98 @@ private fun RequestTab(
                         Text("Processing body...", style = MaterialTheme.typography.bodySmall)
                     }
                 } else if (requestBody != null || rawBody != null) {
+                    // Get request content type
+                    val requestContentType = transaction.request.headers.entries
+                        .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+                        ?.value?.firstOrNull()
+
+                    val detectedContentType = remember(rawBody, requestContentType) {
+                        BodyParsingUtils.detectContentType(requestContentType, rawBody)
+                    }
+                    val colors = syntaxColors()
+
                     CollapsibleSection(
                         title = "Body",
                         isExpanded = bodyExpanded,
                         onToggle = { bodyExpanded = !bodyExpanded },
                         onCopy = { copyToClipboard(context, "Request Body", if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)) },
                         trailingContent = {
-                            PrettyRawToggle(
-                                isPretty = isPrettyMode,
-                                onToggle = { isPrettyMode = !isPrettyMode }
-                            )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                ContentTypeChip(
+                                    contentType = detectedContentType,
+                                    isAutoDetected = true
+                                )
+                                PrettyRawToggle(
+                                    isPretty = isPrettyMode,
+                                    onToggle = { isPrettyMode = !isPrettyMode }
+                                )
+                            }
                         }
                     ) {
                         val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-                        val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                            enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                        }
 
-                        SelectionContainer {
-                            Text(
-                                text = annotatedBody,
-                                fontFamily = FontFamily.Monospace,
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.fillMaxWidth(),
-                                onTextLayout = { textLayoutResult = it }
-                            )
+                        // Format-specific rendering in pretty mode
+                        if (isPrettyMode) {
+                            when (detectedContentType) {
+                                ContentType.JSON -> {
+                                    JsonTreeView(
+                                        jsonString = displayBody,
+                                        initiallyExpanded = true,
+                                        colors = colors
+                                    )
+                                }
+                                ContentType.XML, ContentType.HTML -> {
+                                    XmlTreeView(
+                                        xmlString = displayBody,
+                                        initiallyExpanded = true,
+                                        colors = colors
+                                    )
+                                }
+                                ContentType.FORM_DATA -> {
+                                    FormDataView(
+                                        formData = displayBody
+                                    )
+                                }
+                                ContentType.MULTIPART -> {
+                                    val boundary = requestContentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
+                                    MultipartView(
+                                        multipartData = displayBody,
+                                        boundary = boundary
+                                    )
+                                }
+                                else -> {
+                                    val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                                        enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                                    }
+                                    SelectionContainer {
+                                        Text(
+                                            text = annotatedBody,
+                                            fontFamily = FontFamily.Monospace,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            onTextLayout = { textLayoutResult = it }
+                                        )
+                                    }
+                                }
+                            }
+                        } else {
+                            // Raw mode
+                            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                            }
+                            SelectionContainer {
+                                Text(
+                                    text = annotatedBody,
+                                    fontFamily = FontFamily.Monospace,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onTextLayout = { textLayoutResult = it }
+                                )
+                            }
                         }
                     }
                 }
@@ -751,32 +839,71 @@ private fun ResponseTab(
     val blobId = transaction.response?.bodyRef
     var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
+    var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
     var bodyExpanded by remember { mutableStateOf(true) }
+    var showImageViewer by remember { mutableStateOf(false) }
+    var showPdfViewer by remember { mutableStateOf(false) }
+    var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
     val scope = rememberCoroutineScope()
+
+    // Syntax highlighting colors
+    val colors = syntaxColors()
+
+    // Extract content type from headers
+    val contentType = remember(transaction.response?.headers) {
+        transaction.response?.headers?.entries
+            ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+            ?.value?.firstOrNull()
+    }
+
+    // Determine if content is an image
+    val isImageContent = remember(contentType, rawBodyBytes) {
+        isImageContentType(contentType) || (rawBodyBytes != null && isImageData(rawBodyBytes!!))
+    }
+
+    // Determine if content is a PDF
+    val isPdfContentDetected = remember(contentType, rawBodyBytes) {
+        isPdfContent(contentType, rawBodyBytes)
+    }
 
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
     val isScrolling = scrollState.value > 100
 
-    // 1. Body Loading
+    // 1. Body Loading - get raw bytes first to detect binary content
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
-            val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
-            rawBody = raw
-            val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                if (raw != null) formatJson(raw) else null
+            // Get raw bytes first to detect binary content like images or PDFs
+            val bytes = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBodyBytes(blobId)
+            rawBodyBytes = bytes
+
+            // Check for image content and extract metadata
+            if (bytes != null && (isImageContentType(contentType) || isImageData(bytes))) {
+                imageMetadata = extractImageMetadata(bytes)
+            } else if (bytes != null && isPdfContent(contentType, bytes)) {
+                // PDF content - raw bytes are stored, no text decoding needed
+                // Just keep rawBodyBytes for the PDF viewer
+            } else if (bytes != null) {
+                // Decode as text if not image or PDF
+                val raw = String(bytes, Charsets.UTF_8)
+                rawBody = raw
+                val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                    formatJson(raw)
+                }
+                responseBody = formatted
             }
-            responseBody = formatted
             isLoading = false
         } else {
             responseBody = null
             rawBody = null
+            rawBodyBytes = null
+            imageMetadata = null
         }
     }
 
@@ -856,33 +983,134 @@ private fun ResponseTab(
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                             Text("Processing body...", style = MaterialTheme.typography.bodySmall)
                         }
+                    } else if (isImageContent && rawBodyBytes != null) {
+                        // Image content - show Image preview card
+                        CollapsibleSection(
+                            title = "Body (Image)",
+                            isExpanded = bodyExpanded,
+                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onCopy = null
+                        ) {
+                            ImagePreviewCard(
+                                imageData = rawBodyBytes!!,
+                                contentType = contentType,
+                                onFullscreen = { showImageViewer = true },
+                                onDownload = {
+                                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
+                                    saveImageToGallery(context, rawBodyBytes!!, format)
+                                },
+                                onShare = {
+                                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
+                                    shareImage(context, rawBodyBytes!!, format)
+                                }
+                            )
+                        }
+                    } else if (isPdfContentDetected && rawBodyBytes != null) {
+                        // PDF content - show PDF preview card
+                        CollapsibleSection(
+                            title = "Body (PDF)",
+                            isExpanded = bodyExpanded,
+                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onCopy = null
+                        ) {
+                            PdfPreviewCard(
+                                pdfData = rawBodyBytes!!,
+                                contentType = contentType,
+                                onFullscreen = { showPdfViewer = true },
+                                onDownload = {
+                                    // Save PDF to downloads
+                                    savePdfToDownloads(context, rawBodyBytes!!)
+                                }
+                            )
+                        }
                     } else if (responseBody != null || rawBody != null) {
+                        // Detect content type
+                        val detectedContentType = remember(rawBody, contentType) {
+                            BodyParsingUtils.detectContentType(contentType, rawBody)
+                        }
+
                         CollapsibleSection(
                             title = "Body",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = { copyToClipboard(context, "Response Body", if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)) },
                             trailingContent = {
-                                PrettyRawToggle(
-                                    isPretty = isPrettyMode,
-                                    onToggle = { isPrettyMode = !isPrettyMode }
-                                )
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    ContentTypeChip(
+                                        contentType = detectedContentType,
+                                        isAutoDetected = true
+                                    )
+                                    PrettyRawToggle(
+                                        isPretty = isPrettyMode,
+                                        onToggle = { isPrettyMode = !isPrettyMode }
+                                    )
+                                }
                             }
                         ) {
                             val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-                            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                            }
 
-                            SelectionContainer {
-                                Text(
-                                    text = annotatedBody,
-                                    fontFamily = FontFamily.Monospace,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onTextLayout = { textLayoutResult = it }
-                                )
+                            // Format-specific rendering in pretty mode
+                            if (isPrettyMode) {
+                                when (detectedContentType) {
+                                    ContentType.JSON -> {
+                                        JsonTreeView(
+                                            jsonString = displayBody,
+                                            initiallyExpanded = true,
+                                            colors = colors
+                                        )
+                                    }
+                                    ContentType.XML, ContentType.HTML -> {
+                                        XmlTreeView(
+                                            xmlString = displayBody,
+                                            initiallyExpanded = true,
+                                            colors = colors
+                                        )
+                                    }
+                                    ContentType.FORM_DATA -> {
+                                        FormDataView(
+                                            formData = displayBody
+                                        )
+                                    }
+                                    ContentType.MULTIPART -> {
+                                        val boundary = contentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
+                                        MultipartView(
+                                            multipartData = displayBody,
+                                            boundary = boundary
+                                        )
+                                    }
+                                    else -> {
+                                        val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                                            enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                                        }
+                                        SelectionContainer {
+                                            Text(
+                                                text = annotatedBody,
+                                                fontFamily = FontFamily.Monospace,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                modifier = Modifier.fillMaxWidth(),
+                                                onTextLayout = { textLayoutResult = it }
+                                            )
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Raw mode
+                                val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                                    enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                                }
+                                SelectionContainer {
+                                    Text(
+                                        text = annotatedBody,
+                                        fontFamily = FontFamily.Monospace,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onTextLayout = { textLayoutResult = it }
+                                    )
+                                }
                             }
                         }
                     }
@@ -943,6 +1171,34 @@ private fun ResponseTab(
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
             }
+        }
+
+        // Fullscreen Image Viewer dialog
+        if (showImageViewer && rawBodyBytes != null) {
+            FullscreenImageViewer(
+                imageData = rawBodyBytes!!,
+                metadata = imageMetadata,
+                onDismiss = { showImageViewer = false },
+                onDownload = {
+                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
+                    saveImageToGallery(context, rawBodyBytes!!, format)
+                },
+                onShare = {
+                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
+                    shareImage(context, rawBodyBytes!!, format)
+                }
+            )
+        }
+
+        // Fullscreen PDF Viewer dialog
+        if (showPdfViewer && rawBodyBytes != null) {
+            PdfViewerScreen(
+                pdfData = rawBodyBytes!!,
+                onDismiss = { showPdfViewer = false },
+                onDownload = {
+                    savePdfToDownloads(context, rawBodyBytes!!)
+                }
+            )
         }
     }
 }
@@ -1083,6 +1339,82 @@ private fun PrettyRawToggle(
                     MaterialTheme.colorScheme.secondary
                 else
                     MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+/**
+ * Toggle for enabling/disabling syntax highlighting.
+ * Styled consistently with PrettyRawToggle.
+ */
+@Composable
+private fun SyntaxHighlightToggle(
+    enabled: Boolean,
+    onToggle: () -> Unit
+) {
+    val colors = syntaxColors()
+    Surface(
+        onClick = onToggle,
+        shape = WormaCeptorDesignSystem.Shapes.chip,
+        color = if (enabled) {
+            colors.property.copy(alpha = 0.1f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        },
+        border = androidx.compose.foundation.BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.thin,
+            if (enabled) {
+                colors.property.copy(alpha = 0.4f)
+            } else {
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+            }
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                vertical = WormaCeptorDesignSystem.Spacing.xs
+            ),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Color indicator dots when enabled
+            if (enabled) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(4.dp)
+                            .background(colors.keyword, shape = CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(4.dp)
+                            .background(colors.string, shape = CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(4.dp)
+                            .background(colors.number, shape = CircleShape)
+                    )
+                }
+            }
+            Text(
+                text = if (enabled) "Syntax" else "Plain",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = if (enabled) {
+                        androidx.compose.ui.text.font.FontWeight.SemiBold
+                    } else {
+                        androidx.compose.ui.text.font.FontWeight.Normal
+                    }
+                ),
+                color = if (enabled) {
+                    colors.property
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
             )
         }
     }
@@ -1317,7 +1649,7 @@ private fun formatJson(json: String): String {
     if (json.length > 500_000) {
         return json.take(100_000) + "\n\n... (Rest of content truncated for performance) ..."
     }
-    
+
     return try {
         val trimmed = json.trim()
         if (trimmed.startsWith("{")) JSONObject(trimmed).toString(4)
@@ -1325,5 +1657,53 @@ private fun formatJson(json: String): String {
         else json
     } catch (e: Exception) {
         json
+    }
+}
+
+/**
+ * Saves PDF data to the device's Downloads directory.
+ */
+private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
+    try {
+        val fileName = "wormaceptor_${System.currentTimeMillis()}.pdf"
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            // Android 10+ use MediaStore
+            val contentValues = android.content.ContentValues().apply {
+                put(android.provider.MediaStore.Downloads.DISPLAY_NAME, fileName)
+                put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/pdf")
+                put(android.provider.MediaStore.Downloads.IS_PENDING, 1)
+            }
+
+            val uri = context.contentResolver.insert(
+                android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
+
+            uri?.let { downloadUri ->
+                context.contentResolver.openOutputStream(downloadUri)?.use { outputStream ->
+                    outputStream.write(pdfData)
+                }
+
+                contentValues.clear()
+                contentValues.put(android.provider.MediaStore.Downloads.IS_PENDING, 0)
+                context.contentResolver.update(downloadUri, contentValues, null, null)
+
+                Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_SHORT).show()
+            } ?: run {
+                Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            // Legacy approach for older Android versions
+            @Suppress("DEPRECATION")
+            val downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(
+                android.os.Environment.DIRECTORY_DOWNLOADS
+            )
+            val file = java.io.File(downloadsDir, fileName)
+            java.io.FileOutputStream(file).use { it.write(pdfData) }
+            Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_SHORT).show()
+        }
+    } catch (e: Exception) {
+        Toast.makeText(context, "Failed to save PDF: ${e.message}", Toast.LENGTH_SHORT).show()
     }
 }

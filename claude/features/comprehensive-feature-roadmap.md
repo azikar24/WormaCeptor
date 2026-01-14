@@ -106,12 +106,6 @@
 
 ### Content Handling
 
-**Smart Body Parsing**
-- Auto-detect and parse: JSON, XML, Protobuf, Form Data, Multipart, HTML
-- Image preview for image responses
-- PDF viewer for PDF responses
-- Syntax highlighting for code responses
-
 **Advanced Redaction**
 - Field-level redaction (redact specific JSON keys)
 - Redaction profiles (PII, Auth, Payments)

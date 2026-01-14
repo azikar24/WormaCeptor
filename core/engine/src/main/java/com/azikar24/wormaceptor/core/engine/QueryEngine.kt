@@ -38,6 +38,15 @@ class QueryEngine(
             String(input.readBytes(), Charsets.UTF_8)
         }
     }
+
+    /**
+     * Gets raw bytes from blob storage - useful for binary content like PDFs
+     */
+    suspend fun getBodyBytes(blobId: BlobID): ByteArray? = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        blobStorage.readBlob(blobId)?.use { input ->
+            input.readBytes()
+        }
+    }
     
     
     suspend fun clear() = repository.clearAll()

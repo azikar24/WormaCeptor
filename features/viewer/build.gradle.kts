@@ -25,8 +25,9 @@ android {
 
 dependencies {
     implementation(project(":core:engine"))
+    implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
-    
+
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -35,5 +36,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
     debugImplementation(libs.androidx.ui.tooling)
 }

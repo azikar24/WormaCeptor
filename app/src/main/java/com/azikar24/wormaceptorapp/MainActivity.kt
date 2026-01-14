@@ -28,7 +28,6 @@ import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.wormaceptorui.components.AnimatedIconButton
-import com.azikar24.wormaceptorapp.wormaceptorui.components.DemoStatsCard
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WormaCeptorToolbar
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
@@ -73,13 +71,10 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
-                            .padding(WindowInsets.systemBars.asPaddingValues())
                     ) {
                         Header()
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                         InfoBanner()
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                        StatsSection(viewModel)
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                         Content(viewModel)
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
@@ -117,10 +112,7 @@ class MainActivity : ComponentActivity() {
                         )
                     )
                 )
-                .padding(
-                    top = WormaCeptorDesignSystem.Spacing.xxxl,
-                    bottom = WormaCeptorDesignSystem.Spacing.xl
-                )
+                .padding(top = WormaCeptorDesignSystem.Spacing.xxl)
         ) {
             Image(
                 imageVector = MyIconPack.icIconFull(),
@@ -191,16 +183,6 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun StatsSection(viewModel: MainActivityViewModel) {
-        val stats by viewModel.stats.collectAsState()
-
-        DemoStatsCard(
-            stats = stats,
-            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-        )
-    }
-
-    @Composable
     private fun Content(viewModel: MainActivityViewModel) {
         Column(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
@@ -208,26 +190,97 @@ class MainActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
         ) {
-            ActionCard(
-                icon = Icons.Default.PlayArrow,
-                title = stringResource(id = R.string.action_http_title),
-                description = stringResource(id = R.string.action_http_description),
-                onClick = { viewModel.doHttpActivity(baseContext) }
-            )
+            // Action buttons in a row (non-navigating)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CompactActionCard(
+                    icon = Icons.Default.PlayArrow,
+                    title = stringResource(id = R.string.action_http_title),
+                    onClick = { viewModel.doHttpActivity(baseContext) },
+                    modifier = Modifier.weight(1f)
+                )
 
+                CompactActionCard(
+                    icon = Icons.Default.BugReport,
+                    title = stringResource(id = R.string.action_crash_title),
+                    onClick = { viewModel.simulateCrash() },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // Navigation card (full width with chevron)
             ActionCard(
                 icon = Icons.Default.Launch,
                 title = stringResource(id = R.string.action_launch_title),
                 description = stringResource(id = R.string.action_launch_description),
-                onClick = { viewModel.startWormaCeptor(this@MainActivity) }
+                onClick = { viewModel.startWormaCeptor(this@MainActivity) },
+                showChevron = true
             )
+        }
+    }
 
-            ActionCard(
-                icon = Icons.Default.BugReport,
-                title = stringResource(id = R.string.action_crash_title),
-                description = stringResource(id = R.string.action_crash_description),
-                onClick = { viewModel.simulateCrash() }
-            )
+    @Composable
+    private fun CompactActionCard(
+        icon: ImageVector,
+        title: String,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        val isPressed by interactionSource.collectIsPressedAsState()
+        val scale by animateFloatAsState(
+            targetValue = if (isPressed) 0.96f else 1f,
+            label = "compact_scale"
+        )
+
+        Surface(
+            shape = WormaCeptorDesignSystem.Shapes.card,
+            color = MaterialTheme.colorScheme.surface,
+            modifier = modifier
+                .scale(scale)
+                .border(
+                    width = WormaCeptorDesignSystem.BorderWidth.regular,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = WormaCeptorDesignSystem.Shapes.card
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClick
+                )
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(WormaCeptorDesignSystem.Spacing.lg)
+            ) {
+                Surface(
+                    shape = WormaCeptorDesignSystem.Shapes.button,
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     }
 
@@ -236,7 +289,8 @@ class MainActivity : ComponentActivity() {
         icon: ImageVector,
         title: String,
         description: String,
-        onClick: () -> Unit
+        onClick: () -> Unit,
+        showChevron: Boolean = false
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         val isPressed by interactionSource.collectIsPressedAsState()
@@ -300,14 +354,16 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+                if (showChevron) {
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
-                Icon(
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                    modifier = Modifier.size(20.dp)
-                )
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }

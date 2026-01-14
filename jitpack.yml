@@ -2,4 +2,4 @@ jdk:
   - openjdk17
 
 install:
-  - ./gradlew :api:client:publishToMavenLocal :api:impl:persistence:publishToMavenLocal :api:impl:imdb:publishToMavenLocal :api:impl:no-op:publishToMavenLocal
+  - ./gradlew publishToMavenLocal

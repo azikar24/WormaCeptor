@@ -12,3 +12,28 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
+
+subprojects {
+    // Apply maven-publish to all library modules (exclude app and test modules)
+    if (project.path != ":app" && !project.path.startsWith(":test")) {
+        afterEvaluate {
+            if (plugins.hasPlugin("com.android.library")) {
+                apply(plugin = "maven-publish")
+
+                extensions.configure<PublishingExtension> {
+                    publications {
+                        create<MavenPublication>("release") {
+                            from(components.findByName("release"))
+
+                            groupId = "com.github.azikar24.WormaCeptor"
+                            artifactId = project.path
+                                .removePrefix(":")
+                                .replace(":", "-")
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.0.0"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -19,4 +19,90 @@ object CrashUtils {
             "$fileName:$lineNumber"
         }
     }
+
+    /**
+     * Represents a single frame in a stack trace.
+     */
+    data class StackFrame(
+        val fullLine: String,
+        val packageName: String?,
+        val className: String?,
+        val methodName: String?,
+        val fileName: String?,
+        val lineNumber: Int?,
+        val isAppCode: Boolean
+    )
+
+    /**
+     * Parses a stack trace string into individual frames.
+     */
+    fun parseStackTrace(stackTrace: String, appPackage: String = "com.azikar24.wormaceptor"): List<StackFrame> {
+        return stackTrace.lines()
+            .filter { it.isNotBlank() }
+            .mapNotNull { line ->
+                parseStackFrame(line, appPackage)
+            }
+    }
+
+    /**
+     * Parses a single stack frame line.
+     * Example formats:
+     * - at com.example.MyClass.method(MyClass.kt:123)
+     * - at com.example.MyClass$inner.method(MyClass.kt:123)
+     * - at java.lang.Thread.run(Thread.java:764)
+     */
+    private fun parseStackFrame(line: String, appPackage: String): StackFrame? {
+        val trimmed = line.trim()
+
+        // Match pattern: at package.Class.method(File.kt:line)
+        val atRegex = """^\s*at\s+([^\(]+)\(([^:]+):(\d+)\)""".toRegex()
+        val match = atRegex.find(trimmed)
+
+        if (match != null) {
+            val fullQualifiedMethod = match.groupValues[1]
+            val fileName = match.groupValues[2]
+            val lineNumber = match.groupValues[3].toIntOrNull()
+
+            // Parse package, class, and method
+            val parts = fullQualifiedMethod.split(".")
+            val methodName = parts.lastOrNull()
+            val className = parts.dropLast(1).lastOrNull()
+            val packageName = parts.dropLast(2).joinToString(".")
+
+            val isAppCode = fullQualifiedMethod.startsWith(appPackage)
+
+            return StackFrame(
+                fullLine = trimmed,
+                packageName = packageName,
+                className = className,
+                methodName = methodName,
+                fileName = fileName,
+                lineNumber = lineNumber,
+                isAppCode = isAppCode
+            )
+        }
+
+        // If no match, still include the line for completeness
+        return StackFrame(
+            fullLine = trimmed,
+            packageName = null,
+            className = null,
+            methodName = null,
+            fileName = null,
+            lineNumber = null,
+            isAppCode = false
+        )
+    }
+
+    /**
+     * Generates a Stack Overflow search query from crash information.
+     */
+    fun generateStackOverflowQuery(exceptionType: String, message: String?): String {
+        val baseQuery = exceptionType.substringAfterLast(".")
+        return if (!message.isNullOrBlank()) {
+            "$baseQuery ${message.take(50)}"
+        } else {
+            baseQuery
+        }
+    }
 }

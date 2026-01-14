@@ -5,12 +5,14 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
@@ -21,8 +23,19 @@ import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -182,6 +195,7 @@ fun TransactionDetailScreen(
                     .consumeWindowInsets(padding)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .windowInsetsPadding(WindowInsets.ime),
+                animationSpec = tween(durationMillis = 200),
                 label = "tab_fade"
             ) { targetIndex ->
                 when (targetIndex) {
@@ -248,62 +262,55 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
     ) {
-        // Status & Timing Card
-        OverviewCard(title = "Transaction Info") {
+        // Status & Timing Card with Timeline
+        EnhancedOverviewCard(
+            title = "Timing",
+            icon = Icons.Default.Schedule,
+            iconTint = MaterialTheme.colorScheme.tertiary
+        ) {
             DetailRow("URL", transaction.request.url)
             DetailRow("Method", transaction.request.method)
             DetailRow("Status", transaction.status.name)
             DetailRow("Response Code", transaction.response?.code?.toString() ?: "-")
             DetailRow("Duration", "${transaction.durationMs ?: "?"}ms")
             DetailRow("Timestamp", java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(transaction.timestamp)))
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            // Visual Timeline
+            TransactionTimeline(
+                durationMs = transaction.durationMs ?: 0,
+                hasResponse = transaction.response != null
+            )
         }
 
-        // Connection Card
-        OverviewCard(title = "Network Telemetry") {
+        // Security Card with Badge
+        EnhancedOverviewCard(
+            title = "Security",
+            icon = Icons.Default.Security,
+            iconTint = MaterialTheme.colorScheme.secondary
+        ) {
             DetailRow("Protocol", transaction.response?.protocol ?: "Unknown")
-            
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+            // Enhanced SSL/TLS Badge
             val isSsl = transaction.response?.tlsVersion != null
-            Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "SSL/TLS: ",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-                if (isSsl) {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "Secure",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = transaction.response?.tlsVersion ?: "Secure",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.LockOpen,
-                        contentDescription = "Insecure",
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "Insecure",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
+            SslBadge(
+                isSsl = isSsl,
+                tlsVersion = transaction.response?.tlsVersion
+            )
         }
 
-        // Size Card
-        OverviewCard(title = "Data Transfer") {
+        // Data Transfer Card
+        EnhancedOverviewCard(
+            title = "Data Transfer",
+            icon = Icons.Default.Storage,
+            iconTint = MaterialTheme.colorScheme.primary
+        ) {
             val reqSize = transaction.request.bodySize
             val resSize = transaction.response?.bodySize ?: 0
             val totalSize = reqSize + resSize
@@ -311,6 +318,197 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             DetailRow("Request Size", formatBytes(reqSize))
             DetailRow("Response Size", formatBytes(resSize))
             DetailRow("Total Transfer", formatBytes(totalSize))
+        }
+    }
+}
+
+@Composable
+private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                shape = WormaCeptorDesignSystem.Shapes.chip
+            )
+            .padding(WormaCeptorDesignSystem.Spacing.md)
+    ) {
+        Text(
+            text = "Request/Response Timeline",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs)
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Request Phase
+            Box(
+                modifier = Modifier
+                    .weight(0.3f)
+                    .height(WormaCeptorDesignSystem.Spacing.sm)
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                            topStart = WormaCeptorDesignSystem.CornerRadius.xs,
+                            bottomStart = WormaCeptorDesignSystem.CornerRadius.xs
+                        )
+                    )
+            )
+
+            // Processing/Network Phase
+            Box(
+                modifier = Modifier
+                    .weight(0.4f)
+                    .height(WormaCeptorDesignSystem.Spacing.sm)
+                    .background(
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
+                    )
+            )
+
+            // Response Phase
+            Box(
+                modifier = Modifier
+                    .weight(0.3f)
+                    .height(WormaCeptorDesignSystem.Spacing.sm)
+                    .background(
+                        if (hasResponse)
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f)
+                        else
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.4f),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                            topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
+                            bottomEnd = WormaCeptorDesignSystem.CornerRadius.xs
+                        )
+                    )
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = WormaCeptorDesignSystem.Spacing.xs),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Request",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = "${durationMs}ms",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                ),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = if (hasResponse) "Response" else "Failed",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
+    Surface(
+        shape = WormaCeptorDesignSystem.Shapes.chip,
+        color = if (isSsl)
+            MaterialTheme.colorScheme.primary.asSubtleBackground()
+        else
+            MaterialTheme.colorScheme.error.asSubtleBackground(),
+        border = androidx.compose.foundation.BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.regular,
+            if (isSsl)
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+            else
+                MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+        ),
+        modifier = Modifier.wrapContentSize()
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.md,
+                vertical = WormaCeptorDesignSystem.Spacing.sm
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+        ) {
+            Icon(
+                imageVector = if (isSsl) Icons.Default.Lock else Icons.Default.LockOpen,
+                contentDescription = if (isSsl) "Secure" else "Insecure",
+                tint = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = if (isSsl) (tlsVersion ?: "Secure Connection") else "Insecure Connection",
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                ),
+                color = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+            )
+        }
+    }
+}
+
+@Composable
+private fun EnhancedOverviewCard(
+    title: String,
+    icon: ImageVector,
+    iconTint: androidx.compose.ui.graphics.Color,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val gradientColors = listOf(
+        iconTint.copy(alpha = 0.03f),
+        iconTint.copy(alpha = 0.01f),
+        androidx.compose.ui.graphics.Color.Transparent
+    )
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
+        ),
+        border = androidx.compose.foundation.BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.regular,
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+        ),
+        shape = WormaCeptorDesignSystem.Shapes.card
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(gradientColors)
+                )
+        ) {
+            Column(modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)) {
+                // Header with icon
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = iconTint,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                content()
+            }
         }
     }
 }
@@ -363,18 +561,25 @@ private fun RequestTab(
     val context = LocalContext.current
     val blobId = transaction.request.bodyRef
     var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
+    var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
-    
+    var isPrettyMode by remember { mutableStateOf(true) }
+    var headersExpanded by remember { mutableStateOf(true) }
+    var bodyExpanded by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
+
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
+    val isScrolling = scrollState.value > 100
 
     // 1. Body Loading
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
             val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
+            rawBody = raw
             val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
                 if (raw != null) formatJson(raw) else null
             }
@@ -382,12 +587,13 @@ private fun RequestTab(
             isLoading = false
         } else {
             requestBody = null
+            rawBody = null
         }
     }
 
     // 2. Search: Find matches
-    LaunchedEffect(requestBody, searchQuery) {
-        val body = requestBody
+    LaunchedEffect(requestBody, rawBody, searchQuery, isPrettyMode) {
+        val body = if (isPrettyMode) requestBody else rawBody
         if (body == null || searchQuery.isEmpty()) {
             matches = emptyList()
             onMatchCountChanged(0)
@@ -412,9 +618,9 @@ private fun RequestTab(
     LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
         if (matches.isEmpty()) return@LaunchedEffect
         val layout = textLayoutResult ?: return@LaunchedEffect
-        
+
         val match = matches.getOrNull(currentMatchIndex) ?: return@LaunchedEffect
-        
+
         try {
             val lineNumber = layout.getLineForOffset(match.globalPosition)
             val pixelOffset = layout.getLineTop(lineNumber).toInt()
@@ -424,41 +630,110 @@ private fun RequestTab(
         }
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp)
-    ) {
-        SectionHeader("Headers", onCopy = { copyToClipboard(context, "Request Headers", formatHeaders(transaction.request.headers)) })
-        Headers(transaction.request.headers)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (blobId != null) {
-            if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
-            } else if (requestBody != null) {
-                SectionHeader("Body", onCopy = { copyToClipboard(context, "Request Body", requestBody!!) })
-                
-                val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-                val annotatedBody = remember(requestBody, searchQuery, currentMatchGlobalPos) {
-                    highlightMatchesInText(requestBody!!, searchQuery, currentMatchGlobalPos)
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        ) {
+            // Only show Headers section if headers exist
+            if (transaction.request.headers.isNotEmpty()) {
+                CollapsibleSection(
+                    title = "Headers",
+                    isExpanded = headersExpanded,
+                    onToggle = { headersExpanded = !headersExpanded },
+                    onCopy = { copyToClipboard(context, "Request Headers", formatHeaders(transaction.request.headers)) }
+                ) {
+                    Headers(transaction.request.headers)
                 }
 
-                SelectionContainer {
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            }
+
+            // Only show Body section if body exists
+            if (blobId != null) {
+                if (isLoading) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        Text("Processing body...", style = MaterialTheme.typography.bodySmall)
+                    }
+                } else if (requestBody != null || rawBody != null) {
+                    CollapsibleSection(
+                        title = "Body",
+                        isExpanded = bodyExpanded,
+                        onToggle = { bodyExpanded = !bodyExpanded },
+                        onCopy = { copyToClipboard(context, "Request Body", if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)) },
+                        trailingContent = {
+                            PrettyRawToggle(
+                                isPretty = isPrettyMode,
+                                onToggle = { isPrettyMode = !isPrettyMode }
+                            )
+                        }
+                    ) {
+                        val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+                        val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                        val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                            enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                        }
+
+                        SelectionContainer {
+                            Text(
+                                text = annotatedBody,
+                                fontFamily = FontFamily.Monospace,
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.fillMaxWidth(),
+                                onTextLayout = { textLayoutResult = it }
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Show empty state if no headers and no body
+            if (transaction.request.headers.isEmpty() && blobId == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(
-                        text = annotatedBody,
-                        fontFamily = FontFamily.Monospace,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.fillMaxWidth(),
-                        onTextLayout = { textLayoutResult = it }
+                        "No request data",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
-        } else {
-            Text("No request body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+
+        // Floating Action Button for Copy All
+        AnimatedVisibility(
+            visible = isScrolling && requestBody != null,
+            enter = fadeIn() + scaleIn(),
+            exit = fadeOut() + scaleOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        ) {
+            FloatingActionButton(
+                onClick = {
+                    val fullContent = buildString {
+                        appendLine("=== REQUEST HEADERS ===")
+                        appendLine(formatHeaders(transaction.request.headers))
+                        if (requestBody != null) {
+                            appendLine("\n=== REQUEST BODY ===")
+                            appendLine(if (isPrettyMode) requestBody!! else rawBody!!)
+                        }
+                    }
+                    copyToClipboard(context, "Request Content", fullContent)
+                },
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ) {
+                Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
+            }
         }
     }
 }
@@ -475,18 +750,25 @@ private fun ResponseTab(
     val context = LocalContext.current
     val blobId = transaction.response?.bodyRef
     var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
+    var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
-    
+    var isPrettyMode by remember { mutableStateOf(true) }
+    var headersExpanded by remember { mutableStateOf(true) }
+    var bodyExpanded by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
+
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
+    val isScrolling = scrollState.value > 100
 
     // 1. Body Loading
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
             val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
+            rawBody = raw
             val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
                 if (raw != null) formatJson(raw) else null
             }
@@ -494,12 +776,13 @@ private fun ResponseTab(
             isLoading = false
         } else {
             responseBody = null
+            rawBody = null
         }
     }
 
     // 2. Search: Find matches
-    LaunchedEffect(responseBody, searchQuery) {
-        val body = responseBody
+    LaunchedEffect(responseBody, rawBody, searchQuery, isPrettyMode) {
+        val body = if (isPrettyMode) responseBody else rawBody
         if (body == null || searchQuery.isEmpty()) {
             matches = emptyList()
             onMatchCountChanged(0)
@@ -524,9 +807,9 @@ private fun ResponseTab(
     LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
         if (matches.isEmpty()) return@LaunchedEffect
         val layout = textLayoutResult ?: return@LaunchedEffect
-        
+
         val match = matches.getOrNull(currentMatchIndex) ?: return@LaunchedEffect
-        
+
         try {
             val lineNumber = layout.getLineForOffset(match.globalPosition)
             val pixelOffset = layout.getLineTop(lineNumber).toInt()
@@ -536,45 +819,316 @@ private fun ResponseTab(
         }
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp)
-    ) {
-        if (transaction.response != null) {
-            SectionHeader("Headers", onCopy = { transaction.response?.headers?.let { copyToClipboard(context, "Response Headers", formatHeaders(it)) } })
-            transaction.response?.headers?.let { Headers(it) }
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        ) {
+            if (transaction.response != null) {
+                val hasHeaders = transaction.response?.headers?.isNotEmpty() == true
+                val hasBody = blobId != null
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            if (blobId != null) {
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    Text(" Processing body...", style = MaterialTheme.typography.bodySmall)
-                } else if (responseBody != null) {
-                    SectionHeader("Body", onCopy = { copyToClipboard(context, "Response Body", responseBody!!) })
-                    
-                    val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-                    val annotatedBody = remember(responseBody, searchQuery, currentMatchGlobalPos) {
-                        highlightMatchesInText(responseBody!!, searchQuery, currentMatchGlobalPos)
+                // Only show Headers section if headers exist
+                if (hasHeaders) {
+                    CollapsibleSection(
+                        title = "Headers",
+                        isExpanded = headersExpanded,
+                        onToggle = { headersExpanded = !headersExpanded },
+                        onCopy = { transaction.response?.headers?.let { copyToClipboard(context, "Response Headers", formatHeaders(it)) } }
+                    ) {
+                        transaction.response?.headers?.let { Headers(it) }
                     }
 
-                    SelectionContainer {
+                    if (hasBody) {
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                    }
+                }
+
+                // Only show Body section if body exists
+                if (hasBody) {
+                    if (isLoading) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            Text("Processing body...", style = MaterialTheme.typography.bodySmall)
+                        }
+                    } else if (responseBody != null || rawBody != null) {
+                        CollapsibleSection(
+                            title = "Body",
+                            isExpanded = bodyExpanded,
+                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onCopy = { copyToClipboard(context, "Response Body", if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)) },
+                            trailingContent = {
+                                PrettyRawToggle(
+                                    isPretty = isPrettyMode,
+                                    onToggle = { isPrettyMode = !isPrettyMode }
+                                )
+                            }
+                        ) {
+                            val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+                            val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+                            }
+
+                            SelectionContainer {
+                                Text(
+                                    text = annotatedBody,
+                                    fontFamily = FontFamily.Monospace,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onTextLayout = { textLayoutResult = it }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                // Show empty state if no headers and no body
+                if (!hasHeaders && !hasBody) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Text(
-                            text = annotatedBody,
-                            fontFamily = FontFamily.Monospace,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.fillMaxWidth(),
-                            onTextLayout = { textLayoutResult = it }
+                            "No response data",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
             } else {
-                Text("No response body", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "No response received",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
             }
-        } else {
-            Text("No response received", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+        }
+
+        // Floating Action Button for Copy All
+        AnimatedVisibility(
+            visible = isScrolling && responseBody != null,
+            enter = fadeIn() + scaleIn(),
+            exit = fadeOut() + scaleOut(),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        ) {
+            FloatingActionButton(
+                onClick = {
+                    val fullContent = buildString {
+                        transaction.response?.headers?.let {
+                            appendLine("=== RESPONSE HEADERS ===")
+                            appendLine(formatHeaders(it))
+                        }
+                        if (responseBody != null) {
+                            appendLine("\n=== RESPONSE BODY ===")
+                            appendLine(if (isPrettyMode) responseBody!! else rawBody!!)
+                        }
+                    }
+                    copyToClipboard(context, "Response Content", fullContent)
+                },
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ) {
+                Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
+            }
+        }
+    }
+}
+
+@Composable
+private fun CollapsibleSection(
+    title: String,
+    isExpanded: Boolean,
+    onToggle: () -> Unit,
+    onCopy: (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        // Header
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onToggle)
+                .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            ) {
+                Icon(
+                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                    ),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                trailingContent?.invoke()
+
+                if (onCopy != null) {
+                    IconButton(
+                        onClick = onCopy,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ContentCopy,
+                            contentDescription = "Copy",
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically(
+                animationSpec = tween(durationMillis = 200)
+            ) + fadeIn(),
+            exit = shrinkVertically(
+                animationSpec = tween(durationMillis = 200)
+            ) + fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = WormaCeptorDesignSystem.Spacing.sm,
+                        bottom = WormaCeptorDesignSystem.Spacing.md
+                    )
+            ) {
+                content()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PrettyRawToggle(
+    isPretty: Boolean,
+    onToggle: () -> Unit
+) {
+    Surface(
+        onClick = onToggle,
+        shape = WormaCeptorDesignSystem.Shapes.chip,
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+        border = androidx.compose.foundation.BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.thin,
+            MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                vertical = WormaCeptorDesignSystem.Spacing.xs
+            ),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs)
+        ) {
+            Text(
+                text = "Pretty",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = if (isPretty)
+                        androidx.compose.ui.text.font.FontWeight.Bold
+                    else
+                        androidx.compose.ui.text.font.FontWeight.Normal
+                ),
+                color = if (isPretty)
+                    MaterialTheme.colorScheme.secondary
+                else
+                    MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = "|",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = "Raw",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = if (!isPretty)
+                        androidx.compose.ui.text.font.FontWeight.Bold
+                    else
+                        androidx.compose.ui.text.font.FontWeight.Normal
+                ),
+                color = if (!isPretty)
+                    MaterialTheme.colorScheme.secondary
+                else
+                    MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+/**
+ * Enhanced highlight with better visual distinction for current match
+ */
+private fun enhancedHighlightMatches(
+    text: String,
+    query: String,
+    currentMatchGlobalPos: Int?
+): androidx.compose.ui.text.AnnotatedString {
+    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
+
+    return androidx.compose.ui.text.buildAnnotatedString {
+        var start = 0
+        while (start < text.length) {
+            val index = text.indexOf(query, start, ignoreCase = true)
+            if (index == -1) {
+                append(text.substring(start))
+                break
+            }
+            append(text.substring(start, index))
+
+            val isCurrent = index == currentMatchGlobalPos
+
+            withStyle(
+                style = androidx.compose.ui.text.SpanStyle(
+                    background = if (isCurrent)
+                        androidx.compose.ui.graphics.Color.Cyan.copy(alpha = 0.6f)
+                    else
+                        androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.4f),
+                    fontWeight = if (isCurrent)
+                        androidx.compose.ui.text.font.FontWeight.Bold
+                    else
+                        androidx.compose.ui.text.font.FontWeight.Normal,
+                    color = if (isCurrent)
+                        androidx.compose.ui.graphics.Color.Black
+                    else
+                        androidx.compose.ui.graphics.Color.Unspecified
+                )
+            ) {
+                append(text.substring(index, index + query.length))
+            }
+            start = index + query.length
         }
     }
 }

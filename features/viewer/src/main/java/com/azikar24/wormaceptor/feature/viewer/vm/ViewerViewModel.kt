@@ -26,23 +26,26 @@ class ViewerViewModel(
     private val _selectedTabIndex = MutableStateFlow(0)
     val selectedTabIndex: StateFlow<Int> = _selectedTabIndex
 
+    val allTransactions: StateFlow<List<TransactionSummary>> = queryEngine.observeTransactions()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val transactions: StateFlow<List<TransactionSummary>> = combine(
         _searchQuery,
         _filterMethod,
         _filterStatusRange,
-        queryEngine.observeTransactions()
+        allTransactions
     ) { query, method, statusRange, list ->
         list.filter { transaction ->
             val matchesSearch = if (query.isBlank()) true else {
-                transaction.path.contains(query, ignoreCase = true) || 
+                transaction.path.contains(query, ignoreCase = true) ||
                 transaction.method.contains(query, ignoreCase = true) ||
                 transaction.status.name.contains(query, ignoreCase = true)
             }
-            
+
             val matchesMethod = method == null || transaction.method.equals(method, ignoreCase = true)
-            
+
             val matchesStatus = statusRange == null || (transaction.code?.let { it in statusRange } ?: false)
-            
+
             matchesSearch && matchesMethod && matchesStatus
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())

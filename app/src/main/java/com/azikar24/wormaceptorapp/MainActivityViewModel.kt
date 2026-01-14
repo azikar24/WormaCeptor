@@ -7,10 +7,19 @@ package com.azikar24.wormaceptorapp
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
+import com.azikar24.wormaceptorapp.wormaceptorui.components.DemoStats
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +27,51 @@ import java.util.*
 import androidx.core.net.toUri
 
 class MainActivityViewModel : ViewModel() {
+
+    private val _stats = MutableStateFlow(DemoStats())
+    val stats: StateFlow<DemoStats> = _stats.asStateFlow()
+
+    private var sessionStartTime: Long = System.currentTimeMillis()
+    private var sessionTimerJob: Job? = null
+    private var requestCount = 0
+    private var crashCount = 0
+
+    init {
+        startSessionTimer()
+    }
+
+    private fun startSessionTimer() {
+        sessionTimerJob?.cancel()
+        sessionTimerJob = viewModelScope.launch {
+            while (isActive) {
+                val elapsedSeconds = (System.currentTimeMillis() - sessionStartTime) / 1000
+                _stats.value = _stats.value.copy(sessionTimeSeconds = elapsedSeconds)
+                delay(1000)
+            }
+        }
+    }
+
+    private fun incrementRequestCount() {
+        requestCount++
+        _stats.value = _stats.value.copy(requestsIntercepted = requestCount)
+    }
+
+    private fun incrementCrashCount() {
+        crashCount++
+        _stats.value = _stats.value.copy(crashesCaptured = crashCount)
+    }
+
+    fun resetStats() {
+        requestCount = 0
+        crashCount = 0
+        sessionStartTime = System.currentTimeMillis()
+        _stats.value = DemoStats()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        sessionTimerJob?.cancel()
+    }
 
     fun goToGithub(context: Context) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -31,8 +85,11 @@ class MainActivityViewModel : ViewModel() {
         val api = SampleApiService.getInstance()
 
         val callBack = object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) = Unit
+            override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                incrementRequestCount()
+            }
             override fun onFailure(call: Call<Void?>, t: Throwable) {
+                incrementRequestCount()
                 t.printStackTrace()
             }
         }
@@ -76,6 +133,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun simulateCrash() {
+        incrementCrashCount()
         val x = arrayOf("")
         x[4]
     }

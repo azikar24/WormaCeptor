@@ -39,7 +39,7 @@ fun TransactionListScreen(
     header: (@Composable () -> Unit)? = null
 ) {
     // Track which items have already animated to avoid re-animating on scroll back
-    val animatedItems = remember { mutableStateOf(setOf<Long>()) }
+    val animatedItems = remember { mutableStateOf(setOf<UUID>()) }
 
     if (transactions.isEmpty()) {
         EmptyState(

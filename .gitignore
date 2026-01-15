@@ -16,3 +16,5 @@
 local.properties
 **/build/
 /.vscode/settings.json
+/.kotlin/*
+/plugins/android-studio/.intellijPlatform/*

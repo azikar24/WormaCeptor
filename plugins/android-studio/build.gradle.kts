@@ -3,45 +3,44 @@
  */
 
 plugins {
-    id("org.jetbrains.intellij") version "1.17.0"
-    kotlin("jvm") version "1.9.22"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
+    kotlin("jvm") version "2.2.0-RC"
 }
 
 group = "com.azikar24.wormaceptor"
-version = "1.0.0"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
     google()
-}
-
-intellij {
-    version.set("2024.1")
-    type.set("AI") // Android Studio
-    plugins.set(listOf("android", "org.jetbrains.kotlin"))
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 kotlin {
-    jvmToolchain(17)
-}
-
-tasks {
-    patchPluginXml {
-        version.set(project.version.toString())
-        sinceBuild.set("241")
-        untilBuild.set("251.*")
-    }
-
-    buildSearchableOptions {
-        enabled = false
-    }
-
-    runIde {
-        // Configure to run with Android Studio
-        ideDir.set(file("C:/Program Files/Android/Android Studio"))
-    }
+    jvmToolchain(21)
 }
 
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
+
+    intellijPlatform {
+        local("/Applications/Android Studio Preview.app/Contents")
+        bundledPlugin("com.android.tools.idea.smali")
+    }
 }
+
+intellijPlatform {
+    pluginConfiguration {
+        version.set(project.version.toString())
+        ideaVersion {
+            sinceBuild.set("253")
+            untilBuild.set("253.*")
+        }
+    }
+
+    buildSearchableOptions.set(false)
+}
+
+// runIde will use the local IDE configured in dependencies

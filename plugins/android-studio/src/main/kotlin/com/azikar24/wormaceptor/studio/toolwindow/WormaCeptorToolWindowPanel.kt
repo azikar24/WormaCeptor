@@ -31,6 +31,7 @@ import java.awt.CardLayout
 import java.awt.Font
 import javax.swing.JPanel
 import javax.swing.ListSelectionModel
+import javax.swing.Timer
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 
@@ -55,6 +56,11 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
 
     private var allTransactions = listOf<TransactionSummary>()
     private var filterText = ""
+    private var isRefreshing = false
+    private var selectedTransactionId: String? = null
+
+    // Auto-refresh timer - 2 second interval
+    private val refreshTimer = Timer(2000) { autoRefresh() }
 
     companion object {
         private const val CARD_LOADING = "loading"
@@ -68,6 +74,31 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         setupToolbar()
         setupListeners()
         refreshTransactions()
+
+        // Start auto-refresh
+        refreshTimer.isRepeats = true
+        refreshTimer.start()
+    }
+
+    fun dispose() {
+        refreshTimer.stop()
+    }
+
+    private fun autoRefresh() {
+        if (isRefreshing) return
+        if (!service.isDeviceConnected()) return
+
+        // Silent refresh without showing loading state
+        service.getTransactions { transactions ->
+            ApplicationManager.getApplication().invokeLater {
+                if (transactions.isNotEmpty() || allTransactions.isNotEmpty()) {
+                    updateTransactionList(transactions)
+                    if (transactions.isNotEmpty()) {
+                        showCard(CARD_MAIN)
+                    }
+                }
+            }
+        }
     }
 
     private fun setupUI() {
@@ -216,15 +247,6 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
             }
         })
 
-        actionGroup.addSeparator()
-
-        // Settings action
-        actionGroup.add(object : AnAction("Settings", "WormaCeptor settings", AllIcons.General.Settings) {
-            override fun actionPerformed(e: AnActionEvent) {
-                // Open settings
-            }
-        })
-
         val toolbar = ActionManager.getInstance().createActionToolbar(
             ActionPlaces.TOOLWINDOW_TITLE,
             actionGroup,
@@ -240,10 +262,9 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         transactionList.addListSelectionListener { e ->
             if (!e.valueIsAdjusting) {
                 val selected = transactionList.selectedValue
-                if (selected != null) {
+                if (selected != null && selected.id != selectedTransactionId) {
+                    selectedTransactionId = selected.id
                     loadTransactionDetail(selected)
-                } else {
-                    detailPanel.clearDetail()
                 }
             }
         }
@@ -274,10 +295,13 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
     }
 
     private fun refreshTransactions() {
+        if (isRefreshing) return
+        isRefreshing = true
         showCard(CARD_LOADING)
 
         service.getTransactions { transactions ->
             ApplicationManager.getApplication().invokeLater {
+                isRefreshing = false
                 if (transactions.isEmpty()) {
                     if (!service.isDeviceConnected()) {
                         showCard(CARD_ERROR)
@@ -323,6 +347,14 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         }
 
         listModel.replaceAll(filtered)
+
+        // Restore selection if the previously selected transaction is still in the list
+        selectedTransactionId?.let { id ->
+            val index = filtered.indexOfFirst { it.id == id }
+            if (index >= 0) {
+                transactionList.selectedIndex = index
+            }
+        }
 
         if (filtered.isEmpty() && allTransactions.isNotEmpty()) {
             transactionList.emptyText.text = "No matching transactions"

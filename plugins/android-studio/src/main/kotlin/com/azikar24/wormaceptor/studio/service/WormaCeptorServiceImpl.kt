@@ -30,6 +30,10 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     private var captureActive = false
     private var transactionCount = 0
 
+    // Cached target package for WormaCeptor content provider
+    private var targetPackage: String? = null
+    private var lastPackageDetectionDevice: String? = null
+
     override fun isDeviceConnected(): Boolean {
         return getConnectedDevices().isNotEmpty()
     }
@@ -87,10 +91,15 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         val device = getSelectedDevice() ?: return
         ApplicationManager.getApplication().executeOnPooledThread {
             try {
+                val pkg = detectWormaCeptorPackage(device)
+                if (pkg == null) {
+                    log.warn("Could not detect WormaCeptor package on device")
+                    return@executeOnPooledThread
+                }
                 executeAdbCommand(
                     "-s", device,
                     "shell", "am", "start",
-                    "-n", "com.azikar24.wormaceptor/.feature.viewer.ViewerActivity"
+                    "-n", "$pkg/com.azikar24.wormaceptor.feature.viewer.ViewerActivity"
                 )
             } catch (e: Exception) {
                 log.warn("Failed to open viewer on device", e)
@@ -107,12 +116,18 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
 
         ApplicationManager.getApplication().executeOnPooledThread {
             val success = try {
-                executeAdbCommand(
-                    "-s", device,
-                    "shell", "content", "delete",
-                    "--uri", "content://com.azikar24.wormaceptor.provider/transactions"
-                )
-                true
+                val authority = getContentAuthority(device)
+                if (authority == null) {
+                    log.warn("Could not detect WormaCeptor content provider")
+                    false
+                } else {
+                    executeAdbCommand(
+                        "-s", device,
+                        "shell", "content", "delete",
+                        "--uri", "content://$authority/transactions"
+                    )
+                    true
+                }
             } catch (e: Exception) {
                 log.warn("Failed to clear transactions", e)
                 false
@@ -137,10 +152,18 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
 
         ApplicationManager.getApplication().executeOnPooledThread {
             try {
+                val authority = getContentAuthority(device)
+                if (authority == null) {
+                    ApplicationManager.getApplication().invokeLater {
+                        callback(false, 0)
+                    }
+                    return@executeOnPooledThread
+                }
+
                 val result = executeAdbCommand(
                     "-s", device,
                     "shell", "content", "query",
-                    "--uri", "content://com.azikar24.wormaceptor.provider/status"
+                    "--uri", "content://$authority/status"
                 )
                 val active = result.contains("capturing=true")
                 val count = Regex("count=(\\d+)").find(result)?.groupValues?.get(1)?.toIntOrNull() ?: 0
@@ -173,10 +196,11 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         val device = getSelectedDevice() ?: return emptyList()
 
         return try {
+            val authority = getContentAuthority(device) ?: return emptyList()
             val result = executeAdbCommand(
                 "-s", device,
                 "shell", "content", "query",
-                "--uri", "content://com.azikar24.wormaceptor.provider/transactions"
+                "--uri", "content://$authority/transactions"
             )
             parseTransactionsOutput(result)
         } catch (e: Exception) {
@@ -189,10 +213,12 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         val device = getSelectedDevice() ?: return null
 
         return try {
+            val authority = getContentAuthority(device) ?: return null
+            // Use the new /detail endpoint that returns JSON via openFile()
             val result = executeAdbCommand(
                 "-s", device,
                 "shell", "content", "read",
-                "--uri", "content://com.azikar24.wormaceptor.provider/transaction/$id"
+                "--uri", "content://$authority/transaction/$id/detail"
             )
             parseTransactionDetail(result)
         } catch (e: Exception) {
@@ -228,8 +254,14 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                 )
                 transactions.add(transaction)
             } catch (e: Exception) {
-                log.debug("Failed to parse transaction row: $line", e)
+                log.warn("Failed to parse transaction row: $line", e)
             }
+        }
+
+        // Log warning if rows were present but none were parsed successfully
+        val rowCount = output.lines().count { it.startsWith("Row:") }
+        if (transactions.isEmpty() && rowCount > 0) {
+            log.warn("Failed to parse any transactions from $rowCount rows - possible parsing bug")
         }
 
         return transactions.sortedByDescending { it.timestamp }
@@ -238,7 +270,8 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     private fun parseContentProviderRow(line: String): Map<String, String> {
         val result = mutableMapOf<String, String>()
         // Format: Row: 0 key=value, key2=value2, ...
-        val content = line.substringAfter("Row:").substringAfter(" ").trim()
+        // Need to remove "Row: N " prefix where N is the row number
+        val content = line.substringAfter("Row:").trim().dropWhile { it.isDigit() }.trim()
         for (pair in content.split(", ")) {
             val (key, value) = pair.split("=", limit = 2).let {
                 if (it.size == 2) it[0] to it[1] else continue
@@ -323,13 +356,19 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
 
     private fun findAdbPath(): String {
         // Try to find ADB from Android SDK
+        val userHome = System.getProperty("user.home")
         val androidHome = System.getenv("ANDROID_HOME")
             ?: System.getenv("ANDROID_SDK_ROOT")
-            ?: System.getProperty("user.home") + "/Android/Sdk"
 
-        val adbPaths = listOf(
-            "$androidHome/platform-tools/adb",
-            "$androidHome/platform-tools/adb.exe",
+        val adbPaths = listOfNotNull(
+            androidHome?.let { "$it/platform-tools/adb" },
+            androidHome?.let { "$it/platform-tools/adb.exe" },
+            // macOS default location
+            "$userHome/Library/Android/sdk/platform-tools/adb",
+            // Linux default location
+            "$userHome/Android/Sdk/platform-tools/adb",
+            // Windows default location
+            "$userHome/AppData/Local/Android/Sdk/platform-tools/adb.exe",
             "adb" // Fall back to PATH
         )
 
@@ -340,6 +379,76 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         }
 
         return "adb"
+    }
+
+    /**
+     * Detects the package that has WormaCeptor content provider installed.
+     * Only checks packages containing "worma" in their name for efficiency.
+     */
+    private fun detectWormaCeptorPackage(device: String): String? {
+        // Reset cache if device changed
+        if (lastPackageDetectionDevice != device) {
+            targetPackage = null
+            lastPackageDetectionDevice = device
+        }
+
+        // Return cached value if available
+        targetPackage?.let { return it }
+
+        try {
+            // Get list of installed packages
+            val packagesOutput = executeAdbCommand("-s", device, "shell", "pm", "list", "packages")
+            val packages = packagesOutput.lines()
+                .filter { it.startsWith("package:") }
+                .map { it.removePrefix("package:").trim() }
+
+            // Only check packages containing "worma" - don't iterate all packages
+            val wormaCeptorPackages = packages.filter { it.contains("worma", ignoreCase = true) }
+
+            if (wormaCeptorPackages.isEmpty()) {
+                log.warn("No packages containing 'worma' found on device")
+                return null
+            }
+
+            for (pkg in wormaCeptorPackages) {
+                if (tryContentProvider(device, pkg)) {
+                    log.info("Detected WormaCeptor package: $pkg")
+                    targetPackage = pkg
+                    return pkg
+                }
+            }
+
+            log.warn("No WormaCeptor content provider found. Checked: ${wormaCeptorPackages.joinToString()}")
+        } catch (e: Exception) {
+            log.warn("Failed to detect WormaCeptor package", e)
+        }
+
+        return null
+    }
+
+    /**
+     * Tests if a package has a WormaCeptor content provider by querying its status endpoint.
+     */
+    private fun tryContentProvider(device: String, packageName: String): Boolean {
+        return try {
+            val result = executeAdbCommand(
+                "-s", device,
+                "shell", "content", "query",
+                "--uri", "content://$packageName.wormaceptor.provider/status"
+            )
+            // If the query succeeds (no error), this package has the provider
+            !result.contains("Unknown URI") && !result.contains("Could not find provider")
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Gets the content provider authority for the detected package.
+     */
+    private fun getContentAuthority(device: String): String? {
+        val pkg = detectWormaCeptorPackage(device) ?: return null
+        return "$pkg.wormaceptor.provider"
     }
 
     private fun notifyDeviceChanged(serial: String?) {

@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.infra.persistence.sqlite
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.Request
@@ -8,7 +9,24 @@ import com.azikar24.wormaceptor.domain.entities.Response
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import java.util.UUID
 
-@Entity(tableName = "transactions")
+/**
+ * Database entity for storing network transactions.
+ *
+ * Indexes are optimized for pagination queries:
+ * - timestamp DESC: Main sorting for the transaction list
+ * - resCode: Filtering by status code range
+ * - reqMethod: Filtering by HTTP method
+ * - timestamp + resCode: Compound index for sorted, filtered queries
+ */
+@Entity(
+    tableName = "transactions",
+    indices = [
+        Index(value = ["timestamp"]),
+        Index(value = ["resCode"]),
+        Index(value = ["reqMethod"]),
+        Index(value = ["timestamp", "resCode"])
+    ]
+)
 data class TransactionEntity(
     @PrimaryKey val id: UUID,
     val timestamp: Long,

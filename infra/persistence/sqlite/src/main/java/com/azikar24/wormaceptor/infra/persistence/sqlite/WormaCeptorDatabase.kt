@@ -4,7 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [TransactionEntity::class, CrashEntity::class], version = 2, exportSchema = false)
+/**
+ * WormaCeptor Room database for storing network transactions and crash reports.
+ *
+ * Version history:
+ * - v1: Initial schema
+ * - v2: Added crash reports
+ * - v3: Added indexes for pagination performance (timestamp, resCode, reqMethod)
+ */
+@Database(entities = [TransactionEntity::class, CrashEntity::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class WormaCeptorDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao

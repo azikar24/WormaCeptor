@@ -31,7 +31,9 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // =============================================================================
 // HAPTIC FEEDBACK HELPERS
@@ -194,11 +196,11 @@ class AnimatedDragState(
             stiffness = Spring.StiffnessMedium
         )
     ) {
-        kotlinx.coroutines.coroutineScope {
-            kotlinx.coroutines.launch {
+        coroutineScope {
+            launch {
                 animatedX.animateTo(offset.x, animationSpec)
             }
-            kotlinx.coroutines.launch {
+            launch {
                 animatedY.animateTo(offset.y, animationSpec)
             }
         }

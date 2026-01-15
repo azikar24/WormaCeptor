@@ -124,7 +124,7 @@ class WormaCeptorContentProvider : ContentProvider() {
                 getProperty(item, "host")?.toString() ?: "",
                 getProperty(item, "path")?.toString() ?: "/",
                 (getProperty(item, "code") as? Number)?.toInt(),
-                (getProperty(item, "tookMs") ?: getProperty(item, "durationMs") as? Number)?.toLong(),
+                (getProperty(item, "tookMs") ?: getProperty(item, "durationMs") as? Number).toString().toLongOrNull(),
                 getProperty(item, "status")?.toString() ?: TransactionStatus.COMPLETED.name,
                 (getProperty(item, "timestamp") as? Number)?.toLong() ?: System.currentTimeMillis(),
                 getProperty(item, "hasRequestBody") as? Boolean ?: false,

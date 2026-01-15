@@ -69,12 +69,12 @@ class PaginatedBodyState(
         error = null
     }
 
-    fun setLoading(loading: Boolean) {
+    fun updateLoading(loading: Boolean) {
         isLoading = loading
         if (loading) error = null
     }
 
-    fun setError(message: String) {
+    fun updateError(message: String) {
         isLoading = false
         error = message
     }
@@ -127,17 +127,17 @@ fun PaginatedBodyView(
     val colors = syntaxColors()
 
     fun loadMoreContent() {
-        state.setLoading(true)
+        state.updateLoading(true)
         scope.launch {
             try {
                 val newContent = onLoadMore()
                 if (newContent != null) {
                     state.appendContent(newContent)
                 } else {
-                    state.setError("Failed to load content")
+                    state.updateError("Failed to load content")
                 }
             } catch (e: Exception) {
-                state.setError(e.message ?: "Unknown error")
+                state.updateError(e.message ?: "Unknown error")
             }
         }
     }

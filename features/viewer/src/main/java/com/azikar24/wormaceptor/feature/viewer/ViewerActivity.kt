@@ -31,6 +31,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashListScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
+import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionListScreen
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
@@ -58,6 +59,8 @@ class ViewerActivity : ComponentActivity() {
             val filterMethod by viewModel.filterMethod.collectAsState()
             val filterStatusRange by viewModel.filterStatusRange.collectAsState()
             val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
+            val isRefreshingTransactions by viewModel.isRefreshingTransactions.collectAsState()
+            val isRefreshingCrashes by viewModel.isRefreshingCrashes.collectAsState()
 
             WormaCeptorTheme {
                 val navController = rememberNavController()
@@ -116,7 +119,11 @@ class ViewerActivity : ComponentActivity() {
                             },
                             selectedTabIndex = selectedTabIndex,
                             onTabSelected = viewModel::updateSelectedTab,
-                            allTransactions = allTransactions
+                            allTransactions = allTransactions,
+                            isRefreshingTransactions = isRefreshingTransactions,
+                            isRefreshingCrashes = isRefreshingCrashes,
+                            onRefreshTransactions = viewModel::refreshTransactions,
+                            onRefreshCrashes = viewModel::refreshCrashes
                         )
                     }
 
@@ -124,19 +131,35 @@ class ViewerActivity : ComponentActivity() {
                         val id = backStackEntry.arguments?.getString("id")
                         if (id != null) {
                             val uuid = java.util.UUID.fromString(id)
-                            var transaction by remember {
-                                mutableStateOf<NetworkTransaction?>(null)
-                            }
+                            // Use the filtered transaction list for pager navigation
+                            val transactionIds = transactions.map { it.id }
+                            val initialIndex = transactionIds.indexOf(uuid).coerceAtLeast(0)
 
-                            androidx.compose.runtime.LaunchedEffect(uuid) {
-                                transaction = CoreHolder.queryEngine!!.getDetails(uuid)
-                            }
-
-                            transaction?.let {
-                                TransactionDetailScreen(
-                                    transaction = it,
+                            if (transactionIds.isNotEmpty()) {
+                                TransactionDetailPagerScreen(
+                                    transactionIds = transactionIds,
+                                    initialTransactionIndex = initialIndex,
+                                    getTransaction = { transactionId ->
+                                        CoreHolder.queryEngine!!.getDetails(transactionId)
+                                    },
                                     onBack = { navController.popBackStack() }
                                 )
+                            } else {
+                                // Fallback for single transaction view
+                                var transaction by remember {
+                                    mutableStateOf<NetworkTransaction?>(null)
+                                }
+
+                                androidx.compose.runtime.LaunchedEffect(uuid) {
+                                    transaction = CoreHolder.queryEngine!!.getDetails(uuid)
+                                }
+
+                                transaction?.let {
+                                    TransactionDetailScreen(
+                                        transaction = it,
+                                        onBack = { navController.popBackStack() }
+                                    )
+                                }
                             }
                         }
                     }

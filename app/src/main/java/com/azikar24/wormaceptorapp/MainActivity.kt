@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Launch
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
@@ -190,7 +191,7 @@ class MainActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
         ) {
-            // Action buttons in a row (non-navigating)
+            // Action buttons in rows (non-navigating)
             Row(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 modifier = Modifier.fillMaxWidth()
@@ -203,12 +204,20 @@ class MainActivity : ComponentActivity() {
                 )
 
                 CompactActionCard(
-                    icon = Icons.Default.BugReport,
-                    title = stringResource(id = R.string.action_crash_title),
-                    onClick = { viewModel.simulateCrash() },
+                    icon = Icons.Default.Image,
+                    title = "Test Content Types",
+                    onClick = { viewModel.doContentTypeTests() },
                     modifier = Modifier.weight(1f)
                 )
             }
+
+            // Simulate crash button
+            CompactActionCard(
+                icon = Icons.Default.BugReport,
+                title = stringResource(id = R.string.action_crash_title),
+                onClick = { viewModel.simulateCrash() },
+                modifier = Modifier.fillMaxWidth()
+            )
 
             // Navigation card (full width with chevron)
             ActionCard(

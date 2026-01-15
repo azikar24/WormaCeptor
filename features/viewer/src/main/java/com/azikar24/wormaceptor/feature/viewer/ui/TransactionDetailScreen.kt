@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
@@ -23,6 +27,8 @@ import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Storage
@@ -34,6 +40,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalView
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
@@ -58,6 +65,10 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.detectImageFormat
 import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
 import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
+import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
+import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.ZoomableBox
+import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.FullscreenZoomableBodyViewer
+import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.ZoomBodyButton
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -65,16 +76,214 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.UUID
 
+/**
+ * Transaction detail screen with HorizontalPager for swipe navigation between transactions.
+ *
+ * @param transactionIds List of all transaction IDs for pager navigation
+ * @param initialTransactionIndex Initial index to display
+ * @param getTransaction Function to get transaction details by UUID
+ * @param onBack Callback to navigate back
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TransactionDetailPagerScreen(
+    transactionIds: List<UUID>,
+    initialTransactionIndex: Int,
+    getTransaction: suspend (UUID) -> NetworkTransaction?,
+    onBack: () -> Unit
+) {
+    val view = LocalView.current
+    val scope = rememberCoroutineScope()
+
+    // Remember the pager state
+    val pagerState = rememberPagerState(
+        initialPage = initialTransactionIndex.coerceIn(0, (transactionIds.size - 1).coerceAtLeast(0)),
+        pageCount = { transactionIds.size }
+    )
+
+    // Track current page for haptic feedback
+    var lastPage by remember { mutableIntStateOf(pagerState.currentPage) }
+
+    LaunchedEffect(pagerState.currentPage) {
+        if (pagerState.currentPage != lastPage) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            lastPage = pagerState.currentPage
+        }
+    }
+
+    SwipeBackContainer(
+        onBack = onBack,
+        enabled = pagerState.currentPage == 0 // Only enable swipe-back on first page
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Position indicator
+            if (transactionIds.size > 1) {
+                TransactionPositionIndicator(
+                    currentPosition = pagerState.currentPage + 1,
+                    totalCount = transactionIds.size,
+                    onPrevious = {
+                        scope.launch {
+                            if (pagerState.currentPage > 0) {
+                                pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                            }
+                        }
+                    },
+                    onNext = {
+                        scope.launch {
+                            if (pagerState.currentPage < transactionIds.size - 1) {
+                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            }
+                        }
+                    },
+                    hasPrevious = pagerState.currentPage > 0,
+                    hasNext = pagerState.currentPage < transactionIds.size - 1
+                )
+            }
+
+            // Pager content
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize(),
+                beyondViewportPageCount = 1, // Preload adjacent pages
+                key = { transactionIds[it] }
+            ) { page ->
+                val transactionId = transactionIds[page]
+                var transaction by remember(transactionId) { mutableStateOf<NetworkTransaction?>(null) }
+                var isLoading by remember(transactionId) { mutableStateOf(true) }
+
+                LaunchedEffect(transactionId) {
+                    isLoading = true
+                    transaction = getTransaction(transactionId)
+                    isLoading = false
+                }
+
+                if (isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    transaction?.let {
+                        TransactionDetailContent(
+                            transaction = it,
+                            onBack = onBack
+                        )
+                    } ?: Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "Transaction not found",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Transaction position indicator with navigation buttons
+ */
+@Composable
+private fun TransactionPositionIndicator(
+    currentPosition: Int,
+    totalCount: Int,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    hasPrevious: Boolean,
+    hasNext: Boolean
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
+        tonalElevation = WormaCeptorDesignSystem.Elevation.xs
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.md,
+                    vertical = WormaCeptorDesignSystem.Spacing.xs
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            IconButton(
+                onClick = onPrevious,
+                enabled = hasPrevious,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Previous",
+                    tint = if (hasPrevious)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                )
+            }
+
+            Text(
+                text = "$currentPosition of $totalCount",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
+            )
+
+            IconButton(
+                onClick = onNext,
+                enabled = hasNext,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Next",
+                    tint = if (hasNext)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Original TransactionDetailScreen - kept for backward compatibility
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionDetailScreen(
+    transaction: NetworkTransaction,
+    onBack: () -> Unit
+) {
+    SwipeBackContainer(onBack = onBack) {
+        TransactionDetailContent(
+            transaction = transaction,
+            onBack = onBack
+        )
+    }
+}
+
+/**
+ * Transaction detail content - the actual content without swipe-back wrapper
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TransactionDetailContent(
     transaction: NetworkTransaction,
     onBack: () -> Unit
 ) {
@@ -589,6 +798,7 @@ private fun RequestTab(
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
     var bodyExpanded by remember { mutableStateOf(true) }
+    var showZoomableBodyViewer by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     // Pixel-based scrolling
@@ -708,6 +918,9 @@ private fun RequestTab(
                                     contentType = detectedContentType,
                                     isAutoDetected = true
                                 )
+                                ZoomBodyButton(
+                                    onClick = { showZoomableBodyViewer = true }
+                                )
                                 PrettyRawToggle(
                                     isPretty = isPrettyMode,
                                     onToggle = { isPrettyMode = !isPrettyMode }
@@ -823,6 +1036,22 @@ private fun RequestTab(
                 Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
             }
         }
+
+        // Fullscreen Zoomable Body Viewer dialog for Request
+        if (showZoomableBodyViewer && (requestBody != null || rawBody != null)) {
+            val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+            val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+            }
+
+            FullscreenZoomableBodyViewer(
+                text = displayBody,
+                annotatedText = annotatedBody,
+                onDismiss = { showZoomableBodyViewer = false },
+                onTextLayout = { textLayoutResult = it }
+            )
+        }
     }
 }
 
@@ -847,6 +1076,7 @@ private fun ResponseTab(
     var bodyExpanded by remember { mutableStateOf(true) }
     var showImageViewer by remember { mutableStateOf(false) }
     var showPdfViewer by remember { mutableStateOf(false) }
+    var showZoomableBodyViewer by remember { mutableStateOf(false) }
     var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
     val scope = rememberCoroutineScope()
 
@@ -1043,6 +1273,9 @@ private fun ResponseTab(
                                         contentType = detectedContentType,
                                         isAutoDetected = true
                                     )
+                                    ZoomBodyButton(
+                                        onClick = { showZoomableBodyViewer = true }
+                                    )
                                     PrettyRawToggle(
                                         isPretty = isPrettyMode,
                                         onToggle = { isPrettyMode = !isPrettyMode }
@@ -1198,6 +1431,22 @@ private fun ResponseTab(
                 onDownload = {
                     savePdfToDownloads(context, rawBodyBytes!!)
                 }
+            )
+        }
+
+        // Fullscreen Zoomable Body Viewer dialog
+        if (showZoomableBodyViewer && (responseBody != null || rawBody != null)) {
+            val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+            val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
+                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
+            }
+
+            FullscreenZoomableBodyViewer(
+                text = displayBody,
+                annotatedText = annotatedBody,
+                onDismiss = { showZoomableBodyViewer = false },
+                onTextLayout = { textLayoutResult = it }
             )
         }
     }

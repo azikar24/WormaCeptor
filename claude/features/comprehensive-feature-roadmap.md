@@ -124,18 +124,6 @@
 
 ### Modern Interaction Patterns
 
-**Gesture-Based Navigation**
-- Swipe to refresh transaction list
-- Swipe left/right to navigate between transactions
-- Long-press for quick actions menu
-- Pinch-to-zoom on large response bodies
-
-**Quick Actions**
-- Context menu on long-press (copy, share, replay, modify)
-- Floating action button for common tasks
-- Keyboard shortcuts for power users (external keyboard support)
-- Quick filter chips at the top of list
-
 **Smart Empty States**
 - Helpful tips when no transactions yet
 - Onboarding flow for first-time users
@@ -225,12 +213,6 @@
 ## 3. ⚡ Performance & Reliability Features
 
 ### Efficiency & Speed
-
-**Lazy Loading**
-- Load transaction details on-demand
-- Virtualized lists for massive transaction sets
-- Progressive image loading
-- Paginated body content for large responses
 
 **Smart Caching**
 - Cache parsed JSON/XML for instant re-display
@@ -363,12 +345,6 @@ WormaCeptor.configure {
 - Generate API client code (Retrofit interfaces)
 - Generate mock responses for unit tests
 - Generate documentation from traffic
-
-**IDE Integration**
-- Android Studio plugin for quick access
-- Open transaction from IDE
-- Navigate from transaction to code
-- Automated test generation in IDE
 
 **CLI Tools**
 - Headless mode for CI/CD

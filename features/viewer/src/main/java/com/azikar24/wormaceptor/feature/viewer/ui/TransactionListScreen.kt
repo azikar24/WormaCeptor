@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,54 +10,173 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
+import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
+import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilterBar
+import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
+import java.util.UUID
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
+import com.azikar24.wormaceptor.feature.viewer.ui.components.InlineErrorRetry
+import com.azikar24.wormaceptor.feature.viewer.ui.components.LoadingMoreIndicator
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ScrollToTopFab
+import com.azikar24.wormaceptor.feature.viewer.ui.components.TransactionListSkeleton
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import kotlinx.coroutines.launch
 
+/**
+ * TransactionListScreen with pull-to-refresh support.
+ *
+ * @param transactions List of transactions to display
+ * @param onItemClick Callback when a transaction is clicked
+ * @param hasActiveFilters Whether filters are currently active
+ * @param onClearFilters Callback to clear filters
+ * @param isRefreshing Whether the list is currently refreshing
+ * @param onRefresh Callback triggered on pull-to-refresh
+ * @param modifier Modifier for the screen
+ * @param header Optional header composable
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionListScreen(
     transactions: List<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
+    isRefreshing: Boolean = false,
+    onRefresh: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null
 ) {
+    val view = LocalView.current
+    val pullToRefreshState = rememberPullToRefreshState()
+    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+
+    // Trigger haptic feedback when pull threshold is reached
+    LaunchedEffect(pullToRefreshState.distanceFraction) {
+        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            hasTriggeredHaptic = true
+        } else if (pullToRefreshState.distanceFraction < 1f) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Reset haptic state when refreshing ends
+    LaunchedEffect(isRefreshing) {
+        if (!isRefreshing) {
+            hasTriggeredHaptic = false
+        }
+    }
+
     if (transactions.isEmpty()) {
-        EmptyState(
-            hasActiveFilters = hasActiveFilters,
-            onClearFilters = onClearFilters,
-            modifier = modifier
-        )
+        // Empty state with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            ) {
+                EmptyState(
+                    hasActiveFilters = hasActiveFilters,
+                    onClearFilters = onClearFilters,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        } else {
+            EmptyState(
+                hasActiveFilters = hasActiveFilters,
+                onClearFilters = onClearFilters,
+                modifier = modifier
+            )
+        }
     } else {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
-        ) {
-            if (header != null) {
-                item {
-                    header()
+        // List with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                ) {
+                    if (header != null) {
+                        item {
+                            header()
+                        }
+                    }
+                    items(transactions, key = { it.id }) { transaction ->
+                        TransactionItem(
+                            transaction = transaction,
+                            onClick = { onItemClick(transaction) },
+                            modifier = Modifier.animateItem()
+                        )
+                    }
                 }
             }
-            items(transactions, key = { it.id }) { transaction ->
-                TransactionItem(
-                    transaction = transaction,
-                    onClick = { onItemClick(transaction) },
-                    modifier = Modifier.animateItem()
-                )
+        } else {
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+            ) {
+                if (header != null) {
+                    item {
+                        header()
+                    }
+                }
+                items(transactions, key = { it.id }) { transaction ->
+                    TransactionItem(
+                        transaction = transaction,
+                        onClick = { onItemClick(transaction) },
+                        modifier = Modifier.animateItem()
+                    )
+                }
             }
         }
     }
@@ -269,4 +389,511 @@ private fun methodColor(method: String): Color = when (method.uppercase()) {
     "DELETE" -> WormaCeptorColors.StatusRed
     "PATCH" -> Color(0xFF9C27B0)
     else -> WormaCeptorColors.StatusGrey
+}
+
+// ============================================================================
+// PAGED VERSION WITH LAZY LOADING
+// ============================================================================
+
+/**
+ * Paged version of TransactionListScreen that uses Paging 3 for efficient
+ * database-level pagination. Use this for large datasets (1000+ transactions)
+ * to achieve smooth 60fps scrolling performance.
+ *
+ * @param lazyPagingItems The paged items from collectAsLazyPagingItems()
+ * @param onItemClick Callback when a transaction is clicked
+ * @param hasActiveFilters Whether filters are currently active
+ * @param onClearFilters Callback to clear filters
+ * @param modifier Modifier for the screen
+ * @param header Optional header composable
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PagedTransactionListScreen(
+    lazyPagingItems: LazyPagingItems<TransactionSummary>,
+    onItemClick: (TransactionSummary) -> Unit,
+    hasActiveFilters: Boolean = false,
+    onClearFilters: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null
+) {
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+
+    // Show scroll-to-top FAB when scrolled down
+    val showScrollToTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 5 }
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        when (val refreshState = lazyPagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                // Initial loading state - show skeleton
+                TransactionListSkeleton(itemCount = 5)
+            }
+
+            is LoadState.Error -> {
+                // Error state with retry
+                ErrorState(
+                    message = refreshState.error.localizedMessage ?: "Failed to load transactions",
+                    onRetry = { lazyPagingItems.refresh() },
+                    errorType = ErrorType.GENERIC
+                )
+            }
+
+            is LoadState.NotLoading -> {
+                if (lazyPagingItems.itemCount == 0) {
+                    // Empty state
+                    EmptyState(
+                        hasActiveFilters = hasActiveFilters,
+                        onClearFilters = onClearFilters,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    // Content loaded - show list
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                    ) {
+                        // Optional header
+                        if (header != null) {
+                            item(key = "header") {
+                                header()
+                            }
+                        }
+
+                        // Paged items
+                        items(
+                            count = lazyPagingItems.itemCount,
+                            key = lazyPagingItems.itemKey { it.id }
+                        ) { index ->
+                            lazyPagingItems[index]?.let { transaction ->
+                                TransactionItem(
+                                    transaction = transaction,
+                                    onClick = { onItemClick(transaction) },
+                                    modifier = Modifier.animateItem()
+                                )
+                            }
+                        }
+
+                        // Append loading state
+                        when (val appendState = lazyPagingItems.loadState.append) {
+                            is LoadState.Loading -> {
+                                item(key = "loading_more") {
+                                    LoadingMoreIndicator()
+                                }
+                            }
+
+                            is LoadState.Error -> {
+                                item(key = "append_error") {
+                                    InlineErrorRetry(
+                                        message = appendState.error.localizedMessage ?: "Failed to load more",
+                                        onRetry = { lazyPagingItems.retry() }
+                                    )
+                                }
+                            }
+
+                            is LoadState.NotLoading -> {
+                                // No indicator needed when not loading
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Scroll to top FAB
+        ScrollToTopFab(
+            visible = showScrollToTop,
+            onClick = {
+                scope.launch {
+                    listState.animateScrollToItem(0)
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        )
+    }
+}
+
+/**
+ * Paged TransactionListScreen with pull-to-refresh support.
+ *
+ * @param lazyPagingItems The paged items from collectAsLazyPagingItems()
+ * @param onItemClick Callback when a transaction is clicked
+ * @param hasActiveFilters Whether filters are currently active
+ * @param onClearFilters Callback to clear filters
+ * @param isRefreshing Whether the list is currently refreshing
+ * @param onRefresh Callback triggered on pull-to-refresh
+ * @param modifier Modifier for the screen
+ * @param header Optional header composable
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PagedTransactionListScreenWithRefresh(
+    lazyPagingItems: LazyPagingItems<TransactionSummary>,
+    onItemClick: (TransactionSummary) -> Unit,
+    hasActiveFilters: Boolean = false,
+    onClearFilters: () -> Unit = {},
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null
+) {
+    val view = LocalView.current
+    val pullToRefreshState = rememberPullToRefreshState()
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+
+    // Show scroll-to-top FAB when scrolled down
+    val showScrollToTop by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 5 }
+    }
+
+    // Trigger haptic feedback when pull threshold is reached
+    LaunchedEffect(pullToRefreshState.distanceFraction) {
+        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            hasTriggeredHaptic = true
+        } else if (pullToRefreshState.distanceFraction < 1f) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Reset haptic state when refreshing ends
+    LaunchedEffect(isRefreshing) {
+        if (!isRefreshing) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Determine if we're actually loading
+    val isActuallyRefreshing = isRefreshing || lazyPagingItems.loadState.refresh is LoadState.Loading
+
+    Box(modifier = modifier.fillMaxSize()) {
+        PullToRefreshBox(
+            isRefreshing = isActuallyRefreshing,
+            onRefresh = {
+                onRefresh()
+                lazyPagingItems.refresh()
+            },
+            state = pullToRefreshState,
+            modifier = Modifier.fillMaxSize(),
+            indicator = {
+                Indicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    isRefreshing = isActuallyRefreshing,
+                    state = pullToRefreshState,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        ) {
+            when (val refreshState = lazyPagingItems.loadState.refresh) {
+                is LoadState.Loading -> {
+                    // Initial loading state - show skeleton
+                    TransactionListSkeleton(itemCount = 5)
+                }
+
+                is LoadState.Error -> {
+                    // Error state with retry
+                    ErrorState(
+                        message = refreshState.error.localizedMessage ?: "Failed to load transactions",
+                        onRetry = { lazyPagingItems.refresh() },
+                        errorType = ErrorType.GENERIC
+                    )
+                }
+
+                is LoadState.NotLoading -> {
+                    if (lazyPagingItems.itemCount == 0) {
+                        // Empty state
+                        EmptyState(
+                            hasActiveFilters = hasActiveFilters,
+                            onClearFilters = onClearFilters,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        // Content loaded - show list
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                        ) {
+                            // Optional header
+                            if (header != null) {
+                                item(key = "header") {
+                                    header()
+                                }
+                            }
+
+                            // Paged items
+                            items(
+                                count = lazyPagingItems.itemCount,
+                                key = lazyPagingItems.itemKey { it.id }
+                            ) { index ->
+                                lazyPagingItems[index]?.let { transaction ->
+                                    TransactionItem(
+                                        transaction = transaction,
+                                        onClick = { onItemClick(transaction) },
+                                        modifier = Modifier.animateItem()
+                                    )
+                                }
+                            }
+
+                            // Append loading state
+                            when (val appendState = lazyPagingItems.loadState.append) {
+                                is LoadState.Loading -> {
+                                    item(key = "loading_more") {
+                                        LoadingMoreIndicator()
+                                    }
+                                }
+
+                                is LoadState.Error -> {
+                                    item(key = "append_error") {
+                                        InlineErrorRetry(
+                                            message = appendState.error.localizedMessage ?: "Failed to load more",
+                                            onRetry = { lazyPagingItems.retry() }
+                                        )
+                                    }
+                                }
+
+                                is LoadState.NotLoading -> {
+                                    // No indicator needed when not loading
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Scroll to top FAB
+        ScrollToTopFab(
+            visible = showScrollToTop,
+            onClick = {
+                scope.launch {
+                    listState.animateScrollToItem(0)
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WormaCeptorDesignSystem.Spacing.lg)
+        )
+    }
+}
+
+// ============================================================================
+// SELECTABLE VERSION WITH MULTI-SELECT AND QUICK FILTERS
+// ============================================================================
+
+/**
+ * TransactionListScreen with multi-select, quick filters, and context menu support.
+ *
+ * @param transactions List of transactions to display
+ * @param onItemClick Callback when a transaction is clicked
+ * @param hasActiveFilters Whether filters are currently active
+ * @param onClearFilters Callback to clear filters
+ * @param isRefreshing Whether the list is currently refreshing
+ * @param onRefresh Callback triggered on pull-to-refresh
+ * @param selectedIds Set of currently selected transaction IDs
+ * @param isSelectionMode Whether multi-select mode is active
+ * @param onSelectionToggle Callback when a selection is toggled
+ * @param onLongClick Callback when an item is long-clicked (enters selection mode)
+ * @param quickFilters Set of active quick filters
+ * @param onQuickFilterToggle Callback when a quick filter is toggled
+ * @param onCopyUrl Callback to copy transaction URL
+ * @param onShare Callback to share transaction
+ * @param onDelete Callback to delete transaction
+ * @param onReplay Callback to replay transaction
+ * @param onCopyAsCurl Callback to copy transaction as cURL
+ * @param modifier Modifier for the screen
+ * @param header Optional header composable
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectableTransactionListScreen(
+    transactions: List<TransactionSummary>,
+    onItemClick: (TransactionSummary) -> Unit,
+    hasActiveFilters: Boolean = false,
+    onClearFilters: () -> Unit = {},
+    isRefreshing: Boolean = false,
+    onRefresh: (() -> Unit)? = null,
+    selectedIds: Set<UUID> = emptySet(),
+    isSelectionMode: Boolean = false,
+    onSelectionToggle: (UUID) -> Unit = {},
+    onLongClick: (UUID) -> Unit = {},
+    quickFilters: Set<QuickFilter> = emptySet(),
+    onQuickFilterToggle: (QuickFilter) -> Unit = {},
+    onCopyUrl: (TransactionSummary) -> Unit = {},
+    onShare: (TransactionSummary) -> Unit = {},
+    onDelete: (TransactionSummary) -> Unit = {},
+    onReplay: (TransactionSummary) -> Unit = {},
+    onCopyAsCurl: (TransactionSummary) -> Unit = {},
+    modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null
+) {
+    val view = LocalView.current
+    val pullToRefreshState = rememberPullToRefreshState()
+    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+
+    // Trigger haptic feedback when pull threshold is reached
+    LaunchedEffect(pullToRefreshState.distanceFraction) {
+        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            hasTriggeredHaptic = true
+        } else if (pullToRefreshState.distanceFraction < 1f) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Reset haptic state when refreshing ends
+    LaunchedEffect(isRefreshing) {
+        if (!isRefreshing) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    val hasQuickFilters = quickFilters.isNotEmpty()
+
+    val listContent: @Composable () -> Unit = {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+        ) {
+            // Quick filter bar
+            item(key = "quick_filters") {
+                QuickFilterBar(
+                    activeFilters = quickFilters,
+                    onFilterToggle = onQuickFilterToggle,
+                    modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
+                )
+            }
+
+            // Optional header (e.g., MetricsCard)
+            if (header != null) {
+                item(key = "header") {
+                    header()
+                }
+            }
+
+            // Transaction items
+            items(transactions, key = { it.id }) { transaction ->
+                SelectableTransactionItem(
+                    transaction = transaction,
+                    isSelected = transaction.id in selectedIds,
+                    isSelectionMode = isSelectionMode,
+                    onClick = {
+                        if (isSelectionMode) {
+                            onSelectionToggle(transaction.id)
+                        } else {
+                            onItemClick(transaction)
+                        }
+                    },
+                    onLongClick = {
+                        onLongClick(transaction.id)
+                    },
+                    onCopyUrl = { onCopyUrl(transaction) },
+                    onShare = { onShare(transaction) },
+                    onDelete = { onDelete(transaction) },
+                    onReplay = { onReplay(transaction) },
+                    onCopyAsCurl = { onCopyAsCurl(transaction) },
+                    modifier = Modifier.animateItem()
+                )
+            }
+        }
+    }
+
+    if (transactions.isEmpty() && !hasQuickFilters) {
+        // Empty state with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            ) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Always show quick filter bar
+                    QuickFilterBar(
+                        activeFilters = quickFilters,
+                        onFilterToggle = onQuickFilterToggle,
+                        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
+                    )
+                    EmptyState(
+                        hasActiveFilters = hasActiveFilters,
+                        onClearFilters = onClearFilters,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+        } else {
+            Column(modifier = modifier.fillMaxSize()) {
+                QuickFilterBar(
+                    activeFilters = quickFilters,
+                    onFilterToggle = onQuickFilterToggle,
+                    modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
+                )
+                EmptyState(
+                    hasActiveFilters = hasActiveFilters,
+                    onClearFilters = onClearFilters,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    } else if (transactions.isEmpty() && hasQuickFilters) {
+        // Show quick filter bar even when empty due to filters
+        Column(modifier = modifier.fillMaxSize()) {
+            QuickFilterBar(
+                activeFilters = quickFilters,
+                onFilterToggle = onQuickFilterToggle,
+                modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
+            )
+            EmptyState(
+                hasActiveFilters = true,
+                onClearFilters = {
+                    onClearFilters()
+                    // Also clear quick filters
+                    quickFilters.forEach { onQuickFilterToggle(it) }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    } else {
+        // List with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            ) {
+                listContent()
+            }
+        } else {
+            Box(modifier = modifier.fillMaxSize()) {
+                listContent()
+            }
+        }
+    }
 }

@@ -48,3 +48,6 @@ include(":infra:syntax:json")
 include(":infra:syntax:xml")
 include(":platform:android")
 include(":test:architecture")
+
+// IDE Integration (Android Studio Plugin - built separately with IntelliJ Gradle Plugin)
+// include(":plugins:android-studio")

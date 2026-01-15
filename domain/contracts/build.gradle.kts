@@ -23,6 +23,7 @@ android {
 dependencies {
     implementation(project(":domain:entities")) // Contracts likely use Entities
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.paging.runtime)
 
     // Compose UI for AnnotatedString and Color in SyntaxHighlighter
     implementation(platform(libs.androidx.compose.bom))

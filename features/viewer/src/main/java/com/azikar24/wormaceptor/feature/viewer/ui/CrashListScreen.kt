@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
+import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
@@ -14,12 +15,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,27 +42,115 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+/**
+ * CrashListScreen with pull-to-refresh support.
+ *
+ * @param crashes List of crashes to display
+ * @param onCrashClick Callback when a crash is clicked
+ * @param isRefreshing Whether the list is currently refreshing
+ * @param onRefresh Callback triggered on pull-to-refresh
+ * @param modifier Modifier for the screen
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashListScreen(
     crashes: List<Crash>,
     onCrashClick: (Crash) -> Unit,
+    isRefreshing: Boolean = false,
+    onRefresh: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
+    val view = LocalView.current
+    val pullToRefreshState = rememberPullToRefreshState()
+    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+
+    // Trigger haptic feedback when pull threshold is reached
+    LaunchedEffect(pullToRefreshState.distanceFraction) {
+        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            hasTriggeredHaptic = true
+        } else if (pullToRefreshState.distanceFraction < 1f) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Reset haptic state when refreshing ends
+    LaunchedEffect(isRefreshing) {
+        if (!isRefreshing) {
+            hasTriggeredHaptic = false
+        }
+    }
+
     if (crashes.isEmpty()) {
-        EnhancedEmptyState(
-            modifier = modifier
-        )
-    } else {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(Spacing.md)
-        ) {
-            items(crashes, key = { it.id }) { crash ->
-                EnhancedCrashItem(
-                    crash = crash,
-                    onClick = { onCrashClick(crash) }
+        // Empty state with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            ) {
+                EnhancedEmptyState(
+                    modifier = Modifier.fillMaxSize()
                 )
-                Spacer(modifier = Modifier.height(Spacing.sm))
+            }
+        } else {
+            EnhancedEmptyState(
+                modifier = modifier
+            )
+        }
+    } else {
+        // List with pull-to-refresh
+        if (onRefresh != null) {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                state = pullToRefreshState,
+                modifier = modifier.fillMaxSize(),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(Spacing.md)
+                ) {
+                    items(crashes, key = { it.id }) { crash ->
+                        EnhancedCrashItem(
+                            crash = crash,
+                            onClick = { onCrashClick(crash) }
+                        )
+                        Spacer(modifier = Modifier.height(Spacing.sm))
+                    }
+                }
+            }
+        } else {
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(Spacing.md)
+            ) {
+                items(crashes, key = { it.id }) { crash ->
+                    EnhancedCrashItem(
+                        crash = crash,
+                        onClick = { onCrashClick(crash) }
+                    )
+                    Spacer(modifier = Modifier.height(Spacing.sm))
+                }
             }
         }
     }

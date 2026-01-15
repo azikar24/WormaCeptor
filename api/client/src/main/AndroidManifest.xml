@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <!-- Content provider for IDE communication via ADB -->
+        <provider
+            android:name="com.azikar24.wormaceptor.api.contentprovider.WormaCeptorContentProvider"
+            android:authorities="${applicationId}.wormaceptor.provider"
+            android:exported="true"
+            android:enabled="true"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+
+</manifest>

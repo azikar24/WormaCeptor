@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModel
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
+import com.azikar24.wormaceptorapp.sampleservice.SampleContentService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,6 +73,33 @@ class MainActivityViewModel : ViewModel() {
 
     fun startWormaCeptor(context: Context) {
         context.startActivity(WormaCeptorApi.getLaunchIntent(context))
+    }
+
+    fun doContentTypeTests() {
+        val api = SampleContentService.getInstance()
+
+        val callBack = object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) = Unit
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) = Unit
+        }
+
+        // PDF
+        api.pdf().enqueue(callBack)
+
+        // Images
+        api.image().enqueue(callBack)
+        api.imagePng().enqueue(callBack)
+        api.imageWebp().enqueue(callBack)
+        api.imageGif().enqueue(callBack)
+
+        // JSON
+        api.json().enqueue(callBack)
+
+        // XML
+        api.xml().enqueue(callBack)
+
+        // HTML
+        api.html().enqueue(callBack)
     }
 
     fun simulateCrash() {

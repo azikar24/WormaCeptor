@@ -2,15 +2,89 @@ package com.azikar24.wormaceptor.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.util.UUID
 
 class WormaCeptorInterceptor() : Interceptor {
-    
+
     enum class Period { ONE_HOUR, ONE_DAY, ONE_WEEK, ONE_MONTH, FOREVER }
 
     private var showNotification = true
     private var maxContentLength = 250_000L
+
+    /**
+     * Content types that should be treated as binary and stored without text conversion.
+     * Converting binary data to UTF-8 string corrupts the data.
+     */
+    private val binaryContentTypes = setOf(
+        "image/",
+        "audio/",
+        "video/",
+        "application/octet-stream",
+        "application/pdf",
+        "application/zip",
+        "application/gzip",
+        "application/x-tar",
+        "application/x-rar",
+        "application/x-7z-compressed",
+        "application/vnd.",
+        "font/",
+        "model/"
+    )
+
+    /**
+     * Checks if the content type indicates binary data that should not be converted to string.
+     */
+    private fun isBinaryContentType(contentType: String?): Boolean {
+        if (contentType == null) return false
+        val normalized = contentType.lowercase().trim()
+        return binaryContentTypes.any { normalized.startsWith(it) }
+    }
+
+    /**
+     * Detects if raw bytes are binary content (like images) by checking magic bytes.
+     * This is a fallback for when Content-Type header is missing or incorrect.
+     */
+    private fun isBinaryByMagicBytes(data: ByteArray): Boolean {
+        if (data.size < 8) return false
+
+        return when {
+            // PNG: 89 50 4E 47 0D 0A 1A 0A
+            data[0] == 0x89.toByte() && data[1] == 0x50.toByte() &&
+                    data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> true
+
+            // JPEG: FF D8 FF
+            data[0] == 0xFF.toByte() && data[1] == 0xD8.toByte() &&
+                    data[2] == 0xFF.toByte() -> true
+
+            // GIF: 47 49 46 38
+            data[0] == 0x47.toByte() && data[1] == 0x49.toByte() &&
+                    data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> true
+
+            // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
+            data.size >= 12 && data[0] == 0x52.toByte() && data[1] == 0x49.toByte() &&
+                    data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
+                    data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
+                    data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> true
+
+            // PDF: 25 50 44 46 (%PDF)
+            data[0] == 0x25.toByte() && data[1] == 0x50.toByte() &&
+                    data[2] == 0x44.toByte() && data[3] == 0x46.toByte() -> true
+
+            // ZIP: 50 4B 03 04
+            data[0] == 0x50.toByte() && data[1] == 0x4B.toByte() &&
+                    data[2] == 0x03.toByte() && data[3] == 0x04.toByte() -> true
+
+            // GZIP: 1F 8B
+            data[0] == 0x1F.toByte() && data[1] == 0x8B.toByte() -> true
+
+            // BMP: 42 4D
+            data[0] == 0x42.toByte() && data[1] == 0x4D.toByte() -> true
+
+            else -> false
+        }
+    }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -85,22 +159,44 @@ class WormaCeptorInterceptor() : Interceptor {
                         values
                     }
                 }
-                
-                var bodyText = responseBody.string()
-                redaction.bodyPatternsToRedact.forEach { regex ->
-                    bodyText = bodyText.replace(regex, redaction.replacementText)
-                }
-                
+
                 val protocol = response.protocol.toString()
                 val tlsVersion = response.handshake?.tlsVersion?.javaName
+
+                // Check if the response is binary content (images, PDFs, etc.)
+                // First check Content-Type header, then fall back to magic byte detection
+                val contentType = response.header("Content-Type")
+                val isBinaryByHeader = isBinaryContentType(contentType)
+
+                // Always read as bytes first to enable magic byte detection as fallback
+                val rawBytes = responseBody.bytes()
+                val isBinary = isBinaryByHeader || isBinaryByMagicBytes(rawBytes)
+
+                val bodyStream: java.io.InputStream?
+                val bodySize: Long
+
+                if (isBinary) {
+                    // For binary content, store raw bytes without converting to string
+                    // Converting binary data to UTF-8 string corrupts the data
+                    bodyStream = ByteArrayInputStream(rawBytes)
+                    bodySize = rawBytes.size.toLong()
+                } else {
+                    // For text content, apply redaction patterns
+                    var bodyText = String(rawBytes, Charsets.UTF_8)
+                    redaction.bodyPatternsToRedact.forEach { regex ->
+                        bodyText = bodyText.replace(regex, redaction.replacementText)
+                    }
+                    bodyStream = bodyText.byteInputStream()
+                    bodySize = bodyText.length.toLong()
+                }
 
                 provider.completeTransaction(
                     id = transactionId,
                     code = response.code,
                     message = response.message,
                     headers = cleanHeaders,
-                    bodyStream = bodyText.byteInputStream(),
-                    bodySize = bodyText.length.toLong(),
+                    bodyStream = bodyStream,
+                    bodySize = bodySize,
                     protocol = protocol,
                     tlsVersion = tlsVersion,
                     error = null

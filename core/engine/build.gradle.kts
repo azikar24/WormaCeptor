@@ -24,4 +24,5 @@ dependencies {
     implementation(project(":domain:entities"))
     implementation(project(":domain:contracts"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.paging.runtime)
 }

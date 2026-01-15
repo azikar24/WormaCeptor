@@ -77,5 +77,10 @@ object WormaCeptorApi {
 
         override fun cleanup(threshold: Long) {}
         override fun getLaunchIntent(context: Context): Intent = Intent()
+        override fun getAllTransactions(): List<Any> = emptyList()
+        override fun getTransaction(id: String): Any? = null
+        override fun getTransactionCount(): Int = 0
+        override fun clearTransactions() {}
+        override fun getTransactionDetail(id: String): TransactionDetailDto? = null
     }
 }

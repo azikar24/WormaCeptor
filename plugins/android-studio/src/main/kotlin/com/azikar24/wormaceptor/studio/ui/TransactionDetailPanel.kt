@@ -340,6 +340,9 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
 
             innerTabs.addTab("Body", bodyPanel)
 
+            // Pre-select Body tab by default
+            innerTabs.selectedIndex = 1
+
             add(innerTabs, BorderLayout.CENTER)
         }
 

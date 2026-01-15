@@ -4,7 +4,7 @@
     <application>
         <activity
             android:name=".ViewerActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@android:style/Theme.Material.Light.NoActionBar" />
             
         <provider

@@ -2,8 +2,10 @@ package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.room.Room
 import com.azikar24.wormaceptor.api.ServiceProvider
+import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.core.engine.CaptureEngine
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.CrashReporter
@@ -95,5 +97,74 @@ internal class ServiceProviderImpl : ServiceProvider {
 
     override fun getLaunchIntent(context: Context): Intent {
         return Intent(context, com.azikar24.wormaceptor.feature.viewer.ViewerActivity::class.java)
+    }
+
+    override fun getAllTransactions(): List<Any> = runBlocking {
+        queryEngine?.getAllTransactionsForExport() ?: emptyList()
+    }
+
+    override fun getTransaction(id: String): Any? = runBlocking {
+        try {
+            queryEngine?.getDetails(UUID.fromString(id))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override fun getTransactionCount(): Int = runBlocking {
+        queryEngine?.getTransactionCount() ?: 0
+    }
+
+    override fun clearTransactions() {
+        runBlocking {
+            queryEngine?.clear()
+        }
+    }
+
+    override fun getTransactionDetail(id: String): TransactionDetailDto? = runBlocking {
+        try {
+            val transaction = queryEngine?.getDetails(UUID.fromString(id)) ?: return@runBlocking null
+            val request = transaction.request
+            val response = transaction.response
+
+            // Parse URL to extract host and path
+            val uri = Uri.parse(request.url)
+            val host = uri.host ?: ""
+            val path = uri.path ?: "/"
+
+            // Get body content from blob storage
+            val requestBody = request.bodyRef?.let { queryEngine?.getBody(it) }
+            val responseBody = response?.bodyRef?.let { queryEngine?.getBody(it) }
+
+            // Extract content type from response headers
+            val contentType = response?.headers?.entries
+                ?.find { it.key.equals("content-type", ignoreCase = true) }
+                ?.value?.firstOrNull()
+
+            TransactionDetailDto(
+                id = transaction.id.toString(),
+                method = request.method,
+                url = request.url,
+                host = host,
+                path = path,
+                code = response?.code,
+                duration = transaction.durationMs,
+                status = transaction.status.name,
+                timestamp = transaction.timestamp,
+                requestHeaders = request.headers,
+                requestBody = requestBody,
+                requestSize = request.bodySize,
+                responseHeaders = response?.headers ?: emptyMap(),
+                responseBody = responseBody,
+                responseSize = response?.bodySize ?: 0,
+                responseMessage = response?.message,
+                protocol = response?.protocol,
+                tlsVersion = response?.tlsVersion,
+                error = response?.error,
+                contentType = contentType
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 }

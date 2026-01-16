@@ -11,7 +11,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -40,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -49,8 +47,8 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.asLightBackground
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.MyIconPack
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 import kotlinx.coroutines.launch
 
 // Warning color for crash-related UI elements
@@ -181,7 +179,7 @@ class MainActivity : ComponentActivity() {
                 .padding(top = WormaCeptorDesignSystem.Spacing.xxl)
         ) {
             Image(
-                imageVector = MyIconPack.icIconFull(),
+                imageVector = WormaceptorLogo(),//MyIconPack.icIconFull(),
                 contentDescription = stringResource(id = R.string.app_name),
                 modifier = Modifier
                     .width(100.dp)
@@ -311,7 +309,7 @@ class MainActivity : ComponentActivity() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = MyIconPack.IcGithub,
+                imageVector = IcGithubBuilder.build(),
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)

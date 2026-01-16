@@ -10,7 +10,10 @@ import androidx.activity.ComponentActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,7 +34,9 @@ import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
+import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
@@ -66,36 +72,63 @@ class MainActivity : ComponentActivity() {
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         var showCrashDialog by remember { mutableStateOf(false) }
+        var isGlitchEffectActive by remember { mutableStateOf(false) }
+        var glitchProgress by remember { mutableFloatStateOf(0f) }
+
+        LaunchedEffect(isGlitchEffectActive) {
+            if (isGlitchEffectActive) {
+                glitchProgress = 0f
+                var hasCrashed = false
+                animate(
+                    initialValue = 0f,
+                    targetValue = 1f,
+                    animationSpec = tween(1500, easing = FastOutSlowInEasing)
+                ) { value, _ ->
+                    glitchProgress = value
+                    if (value >= 0.96f && !hasCrashed) {
+                        hasCrashed = true
+                        viewModel.simulateCrash()
+                    }
+                }
+            }
+        }
+
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         WormaCeptorMainTheme {
-            Scaffold(
-                snackbarHost = { SnackbarHost(snackbarHostState) },
-                containerColor = MaterialTheme.colorScheme.background
-            ) { _ ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Header()
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                    InfoBanner()
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                    Content(
-                        viewModel = viewModel,
-                        onRunApiTestsClick = {
-                            viewModel.doHttpActivity(baseContext)
-                            viewModel.doContentTypeTests()
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Running API tests...")
-                            }
-                        },
-                        onCrashClick = { showCrashDialog = true }
-                    )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-                    Footer(onGitHubClick = { viewModel.goToGithub(this@MainActivity) })
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            GlitchMeltdownEffect(
+                isActive = isGlitchEffectActive,
+                progress = glitchProgress,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Scaffold(
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                    containerColor = MaterialTheme.colorScheme.background
+                ) { _ ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Header()
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                        InfoBanner()
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                        Content(
+                            viewModel = viewModel,
+                            onRunApiTestsClick = {
+                                viewModel.doHttpActivity(baseContext)
+                                viewModel.doContentTypeTests()
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Running API tests...")
+                                }
+                            },
+                            onCrashClick = { showCrashDialog = true }
+                        )
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                        Footer(onGitHubClick = { viewModel.goToGithub(this@MainActivity) })
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                    }
                 }
             }
 
@@ -103,7 +136,7 @@ class MainActivity : ComponentActivity() {
                 CrashConfirmationDialog(
                     onConfirm = {
                         showCrashDialog = false
-                        viewModel.simulateCrash()
+                        isGlitchEffectActive = true
                     },
                     onDismiss = { showCrashDialog = false }
                 )

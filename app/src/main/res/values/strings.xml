@@ -12,12 +12,22 @@
 
     <!-- MainActivity Enhanced Strings -->
     <string name="app_subtitle">Network Traffic Inspector for Android</string>
-    <string name="action_http_title">HTTP Activity</string>
+    <string name="action_http_title">Run API Tests</string>
     <string name="action_http_description">Make sample network requests to test interception</string>
     <string name="action_launch_title">Launch Inspector</string>
     <string name="action_launch_description">Open WormaCeptor to view captured network traffic</string>
-    <string name="action_crash_title">Simulate Error</string>
+    <string name="action_crash_title">Trigger Test Crash</string>
     <string name="action_crash_description">Test crash reporting and error handling</string>
+    <string name="action_content_type_title">Test Response Types</string>
     <string name="info_shake_title">Shake to Launch</string>
     <string name="info_shake_description">You can shake your device at any time to open WormaCeptor</string>
+
+    <!-- Footer -->
+    <string name="view_on_github">View on GitHub</string>
+
+    <!-- Crash Confirmation Dialog -->
+    <string name="crash_dialog_title">Trigger Test Crash?</string>
+    <string name="crash_dialog_message">This will intentionally crash the app to test WormaCeptor\'s crash reporting. The app will close immediately.</string>
+    <string name="crash_dialog_confirm">Crash App</string>
+    <string name="crash_dialog_cancel">Cancel</string>
 </resources>

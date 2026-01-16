@@ -7,6 +7,7 @@ package com.azikar24.wormaceptorapp
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.animateFloatAsState
@@ -20,11 +21,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Launch
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -39,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,11 +50,9 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 import kotlinx.coroutines.launch
 
-// Warning color for crash-related UI elements
-private val StatusAmber = Color(0x66FC0026)
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -87,16 +84,11 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                     Content(
                         viewModel = viewModel,
-                        onHttpActivityClick = {
+                        onRunApiTestsClick = {
                             viewModel.doHttpActivity(baseContext)
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Sending test requests...")
-                            }
-                        },
-                        onContentTypeTestClick = {
                             viewModel.doContentTypeTests()
                             scope.launch {
-                                snackbarHostState.showSnackbar("Testing response types...")
+                                snackbarHostState.showSnackbar("Running API tests...")
                             }
                         },
                         onCrashClick = { showCrashDialog = true }
@@ -130,7 +122,7 @@ class MainActivity : ComponentActivity() {
                 Icon(
                     imageVector = Icons.Default.Warning,
                     contentDescription = null,
-                    tint = StatusAmber,
+                    tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(32.dp)
                 )
             },
@@ -152,7 +144,7 @@ class MainActivity : ComponentActivity() {
                 TextButton(
                     onClick = onConfirm,
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = StatusAmber
+                        contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
                     Text(
@@ -249,8 +241,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun Content(
         viewModel: MainActivityViewModel,
-        onHttpActivityClick: () -> Unit,
-        onContentTypeTestClick: () -> Unit,
+        onRunApiTestsClick: () -> Unit,
         onCrashClick: () -> Unit
     ) {
         Column(
@@ -261,14 +252,14 @@ class MainActivity : ComponentActivity() {
         ) {
             // Navigation card (full width with chevron) - Launch Inspector first
             ActionCard(
-                icon = Icons.Default.Launch,
+                icon = Icons.AutoMirrored.Filled.Launch,
                 title = stringResource(id = R.string.action_launch_title),
                 description = stringResource(id = R.string.action_launch_description),
                 onClick = { viewModel.startWormaCeptor(this@MainActivity) },
                 showChevron = true
             )
 
-            // Action buttons in rows (non-navigating)
+            // Action buttons in a row: Run API Tests + Trigger Crash
             Row(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 modifier = Modifier.fillMaxWidth()
@@ -276,25 +267,17 @@ class MainActivity : ComponentActivity() {
                 CompactActionCard(
                     icon = Icons.Default.PlayArrow,
                     title = stringResource(id = R.string.action_http_title),
-                    onClick = onHttpActivityClick,
+                    onClick = onRunApiTestsClick,
                     modifier = Modifier.weight(1f)
                 )
 
-                CompactActionCard(
-                    icon = Icons.Default.Image,
-                    title = stringResource(id = R.string.action_content_type_title),
-                    onClick = onContentTypeTestClick,
+                WarningActionCard(
+                    icon = Icons.Default.BugReport,
+                    title = stringResource(id = R.string.action_crash_title),
+                    onClick = onCrashClick,
                     modifier = Modifier.weight(1f)
                 )
             }
-
-            // Crash button with warning style at the bottom
-            WarningActionCard(
-                icon = Icons.Default.BugReport,
-                title = stringResource(id = R.string.action_crash_title),
-                onClick = onCrashClick,
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
 
@@ -402,12 +385,12 @@ class MainActivity : ComponentActivity() {
 
         Surface(
             shape = WormaCeptorDesignSystem.Shapes.card,
-            color = StatusAmber.copy(alpha = 0.15f),
+            color = MaterialTheme.colorScheme.errorContainer,
             modifier = modifier
                 .scale(scale)
                 .border(
                     width = WormaCeptorDesignSystem.BorderWidth.regular,
-                    color = StatusAmber.copy(alpha = 0.3f),
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
                     shape = WormaCeptorDesignSystem.Shapes.card
                 )
                 .clickable(
@@ -424,14 +407,14 @@ class MainActivity : ComponentActivity() {
             ) {
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = StatusAmber.copy(alpha = 0.25f),
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
                     modifier = Modifier.size(48.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            tint = StatusAmber,
+                            tint = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -443,7 +426,7 @@ class MainActivity : ComponentActivity() {
                     text = title,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }

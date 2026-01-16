@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.myiconpack
+package com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType.Companion.NonZero

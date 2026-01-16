@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -27,8 +28,6 @@ import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Storage
@@ -74,7 +73,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -125,30 +127,6 @@ fun TransactionDetailPagerScreen(
         enabled = pagerState.currentPage == 0 // Only enable swipe-back on first page
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            // Position indicator
-            if (transactionIds.size > 1) {
-                TransactionPositionIndicator(
-                    currentPosition = pagerState.currentPage + 1,
-                    totalCount = transactionIds.size,
-                    onPrevious = {
-                        scope.launch {
-                            if (pagerState.currentPage > 0) {
-                                pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                            }
-                        }
-                    },
-                    onNext = {
-                        scope.launch {
-                            if (pagerState.currentPage < transactionIds.size - 1) {
-                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                            }
-                        }
-                    },
-                    hasPrevious = pagerState.currentPage > 0,
-                    hasNext = pagerState.currentPage < transactionIds.size - 1
-                )
-            }
-
             // Pager content
             HorizontalPager(
                 state = pagerState,
@@ -189,73 +167,6 @@ fun TransactionDetailPagerScreen(
                         )
                     }
                 }
-            }
-        }
-    }
-}
-
-/**
- * Transaction position indicator with navigation buttons
- */
-@Composable
-private fun TransactionPositionIndicator(
-    currentPosition: Int,
-    totalCount: Int,
-    onPrevious: () -> Unit,
-    onNext: () -> Unit,
-    hasPrevious: Boolean,
-    hasNext: Boolean
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
-        tonalElevation = WormaCeptorDesignSystem.Elevation.xs
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            IconButton(
-                onClick = onPrevious,
-                enabled = hasPrevious,
-                modifier = Modifier.size(32.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = "Previous",
-                    tint = if (hasPrevious)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                )
-            }
-
-            Text(
-                text = "$currentPosition of $totalCount",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
-            )
-
-            IconButton(
-                onClick = onNext,
-                enabled = hasNext,
-                modifier = Modifier.size(32.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = "Next",
-                    tint = if (hasNext)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                )
             }
         }
     }
@@ -307,6 +218,13 @@ private fun TransactionDetailContent(
         }
     }
 
+    // Close search when tabs change to fix search state persisting across tabs
+    LaunchedEffect(selectedTabIndex) {
+        if (showSearch) {
+            showSearch = false
+            searchQuery = ""
+        }
+    }
 
     val title = remember(transaction.request.url) {
         try {
@@ -406,15 +324,11 @@ private fun TransactionDetailContent(
                         }
                     }
                 )
-                TabRow(selectedTabIndex = selectedTabIndex) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = { selectedTabIndex = index },
-                            text = { Text(title) }
-                        )
-                    }
-                }
+                SwipeableTabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    onTabSelected = { selectedTabIndex = it },
+                    tabs = tabs
+                )
             }
         }
     ) { padding ->
@@ -484,6 +398,72 @@ private fun TransactionDetailContent(
                 }
             }
         }
+    }
+}
+
+/**
+ * Swipeable tab row that allows users to swipe horizontally on the toolbar area
+ * to navigate between tabs, in addition to tapping.
+ */
+@Composable
+private fun SwipeableTabRow(
+    selectedTabIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    tabs: List<String>,
+    modifier: Modifier = Modifier
+) {
+    val haptics = LocalHapticFeedback.current
+    var dragOffset by remember { mutableFloatStateOf(0f) }
+    val tabCount = tabs.size
+
+    Column(
+        modifier = modifier
+            .pointerInput(selectedTabIndex) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        val threshold = size.width * 0.15f
+                        when {
+                            dragOffset < -threshold && selectedTabIndex < tabCount - 1 -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onTabSelected(selectedTabIndex + 1)
+                            }
+                            dragOffset > threshold && selectedTabIndex > 0 -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onTabSelected(selectedTabIndex - 1)
+                            }
+                        }
+                        dragOffset = 0f
+                    },
+                    onDragCancel = { dragOffset = 0f },
+                    onHorizontalDrag = { _, dragAmount ->
+                        dragOffset += dragAmount
+                    }
+                )
+            }
+    ) {
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.primary,
+            divider = {}
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = { onTabSelected(index) },
+                    text = {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = if (selectedTabIndex == index) FontWeight.SemiBold else FontWeight.Normal
+                        )
+                    }
+                )
+            }
+        }
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        )
     }
 }
 

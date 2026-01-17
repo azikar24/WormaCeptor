@@ -16,9 +16,12 @@ import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -213,6 +216,7 @@ fun ZoomableTextContainer(
             Surface(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(WormaCeptorDesignSystem.Spacing.md),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f),
@@ -290,6 +294,7 @@ fun ZoomableTextContainer(
                     onClick = { resetZoom() },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
+                        .windowInsetsPadding(WindowInsets.navigationBars)
                         .padding(WormaCeptorDesignSystem.Spacing.md),
                     shape = WormaCeptorDesignSystem.Shapes.chip,
                     color = MaterialTheme.colorScheme.primaryContainer,

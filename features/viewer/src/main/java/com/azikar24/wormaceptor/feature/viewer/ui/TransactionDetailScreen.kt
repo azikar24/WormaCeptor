@@ -15,6 +15,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -110,10 +112,11 @@ fun TransactionDetailPagerScreen(
     val view = LocalView.current
     val scope = rememberCoroutineScope()
 
-    // Current transaction index state
+    // Current transaction index state with direction tracking
     var currentTransactionIndex by remember {
         mutableIntStateOf(initialTransactionIndex.coerceIn(0, (transactionIds.size - 1).coerceAtLeast(0)))
     }
+    var navigationDirection by remember { mutableIntStateOf(0) } // -1 = prev, 1 = next, 0 = none
 
     // Current transaction data
     val currentTransactionId = transactionIds.getOrNull(currentTransactionIndex)
@@ -136,6 +139,7 @@ fun TransactionDetailPagerScreen(
     fun navigateToPrevTransaction() {
         if (canNavigatePrev) {
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            navigationDirection = -1
             currentTransactionIndex--
         }
     }
@@ -143,18 +147,34 @@ fun TransactionDetailPagerScreen(
     fun navigateToNextTransaction() {
         if (canNavigateNext) {
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            navigationDirection = 1
             currentTransactionIndex++
         }
     }
+
+    // Smooth animation config
+    val animDuration = 250
+    val slideOffset = 100
 
     SwipeBackContainer(
         onBack = onBack,
         enabled = currentTransactionIndex == 0 // Only enable swipe-back on first transaction
     ) {
-        // Simple crossfade transition when switching transactions
-        Crossfade(
+        // Smooth directional slide transition
+        AnimatedContent(
             targetState = currentTransactionIndex to transaction,
-            animationSpec = tween(durationMillis = 150),
+            transitionSpec = {
+                val slideSpec = tween<IntOffset>(animDuration, easing = FastOutSlowInEasing)
+                if (navigationDirection >= 0) {
+                    // Going forward (next) - content slides in from right
+                    slideInHorizontally(slideSpec) { slideOffset } togetherWith
+                            slideOutHorizontally(slideSpec) { -slideOffset }
+                } else {
+                    // Going backward (prev) - content slides in from left
+                    slideInHorizontally(slideSpec) { -slideOffset } togetherWith
+                            slideOutHorizontally(slideSpec) { slideOffset }
+                }
+            },
             label = "transaction_transition"
         ) { (_, currentTransaction) ->
             if (isLoading) {

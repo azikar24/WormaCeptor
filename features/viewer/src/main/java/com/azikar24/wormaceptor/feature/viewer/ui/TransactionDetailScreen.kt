@@ -15,9 +15,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
@@ -88,7 +92,11 @@ import org.json.JSONObject
 import java.util.UUID
 
 /**
- * Transaction detail screen with HorizontalPager for swipe navigation between transactions.
+ * Transaction detail screen with swipe navigation.
+ *
+ * UX Behavior:
+ * - Swipe on toolbar/topBar area: Switch between transactions
+ * - Swipe on content area: Switch between Overview/Request/Response tabs
  *
  * @param transactionIds List of all transaction IDs for pager navigation
  * @param initialTransactionIndex Initial index to display
@@ -106,66 +114,91 @@ fun TransactionDetailPagerScreen(
     val view = LocalView.current
     val scope = rememberCoroutineScope()
 
-    // Remember the pager state
-    val pagerState = rememberPagerState(
-        initialPage = initialTransactionIndex.coerceIn(0, (transactionIds.size - 1).coerceAtLeast(0)),
-        pageCount = { transactionIds.size }
-    )
+    // Current transaction index state
+    var currentTransactionIndex by remember {
+        mutableIntStateOf(initialTransactionIndex.coerceIn(0, (transactionIds.size - 1).coerceAtLeast(0)))
+    }
 
-    // Track current page for haptic feedback
-    var lastPage by remember { mutableIntStateOf(pagerState.currentPage) }
+    // Current transaction data
+    val currentTransactionId = transactionIds.getOrNull(currentTransactionIndex)
+    var transaction by remember(currentTransactionId) { mutableStateOf<NetworkTransaction?>(null) }
+    var isLoading by remember(currentTransactionId) { mutableStateOf(true) }
 
-    LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage != lastPage) {
+    // Load transaction data when index changes
+    LaunchedEffect(currentTransactionId) {
+        if (currentTransactionId != null) {
+            isLoading = true
+            transaction = getTransaction(currentTransactionId)
+            isLoading = false
+        }
+    }
+
+    // Navigation functions for transactions
+    val canNavigatePrev = currentTransactionIndex > 0
+    val canNavigateNext = currentTransactionIndex < transactionIds.size - 1
+
+    fun navigateToPrevTransaction() {
+        if (canNavigatePrev) {
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            lastPage = pagerState.currentPage
+            currentTransactionIndex--
+        }
+    }
+
+    fun navigateToNextTransaction() {
+        if (canNavigateNext) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            currentTransactionIndex++
         }
     }
 
     SwipeBackContainer(
         onBack = onBack,
-        enabled = pagerState.currentPage == 0 // Only enable swipe-back on first page
+        enabled = currentTransactionIndex == 0 // Only enable swipe-back on first transaction
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Pager content
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.fillMaxSize(),
-                beyondViewportPageCount = 1, // Preload adjacent pages
-                key = { transactionIds[it] }
-            ) { page ->
-                val transactionId = transactionIds[page]
-                var transaction by remember(transactionId) { mutableStateOf<NetworkTransaction?>(null) }
-                var isLoading by remember(transactionId) { mutableStateOf(true) }
-
-                LaunchedEffect(transactionId) {
-                    isLoading = true
-                    transaction = getTransaction(transactionId)
-                    isLoading = false
-                }
-
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+        // Animated content transition when switching transactions
+        AnimatedContent(
+            targetState = currentTransactionIndex to transaction,
+            transitionSpec = {
+                val direction = if (targetState.first > initialState.first) {
+                    // Moving forward - slide left
+                    slideInHorizontally { width -> width } + fadeIn() togetherWith
+                            slideOutHorizontally { width -> -width } + fadeOut()
                 } else {
-                    transaction?.let {
-                        TransactionDetailContent(
-                            transaction = it,
-                            onBack = onBack
-                        )
-                    } ?: Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            "Transaction not found",
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
+                    // Moving backward - slide right
+                    slideInHorizontally { width -> -width } + fadeIn() togetherWith
+                            slideOutHorizontally { width -> width } + fadeOut()
+                }
+                direction.using(SizeTransform(clip = false))
+            },
+            label = "transaction_transition"
+        ) { (_, currentTransaction) ->
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (currentTransaction != null) {
+                TransactionDetailContent(
+                    transaction = currentTransaction,
+                    onBack = onBack,
+                    currentTransactionIndex = currentTransactionIndex,
+                    totalTransactions = transactionIds.size,
+                    onNavigatePrevTransaction = ::navigateToPrevTransaction,
+                    onNavigateNextTransaction = ::navigateToNextTransaction,
+                    canNavigatePrev = canNavigatePrev,
+                    canNavigateNext = canNavigateNext
+                )
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Transaction not found",
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }
@@ -191,26 +224,43 @@ fun TransactionDetailScreen(
 
 /**
  * Transaction detail content - the actual content without swipe-back wrapper
+ *
+ * UX Behavior:
+ * - Swipe on toolbar/topBar area: Switch between transactions
+ * - Swipe on content area (HorizontalPager): Switch between Overview/Request/Response tabs
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionDetailContent(
     transaction: NetworkTransaction,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    currentTransactionIndex: Int = 0,
+    totalTransactions: Int = 1,
+    onNavigatePrevTransaction: () -> Unit = {},
+    onNavigateNextTransaction: () -> Unit = {},
+    canNavigatePrev: Boolean = false,
+    canNavigateNext: Boolean = false
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val haptics = LocalHapticFeedback.current
+    val tabs = listOf("Overview", "Request", "Response")
+
+    // Tab pager state for content swipe
+    val tabPagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { tabs.size }
+    )
+
     var showSearch by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
-    val tabs = listOf("Overview", "Request", "Response")
-    
+
     val focusRequester = remember { FocusRequester() }
-    
-    // Search navigation state - now using matchCount instead of positions list
-    var currentMatchIndex by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
-    var matchCount by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
+
+    // Search navigation state
+    var currentMatchIndex by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
+    var matchCount by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
 
     LaunchedEffect(showSearch) {
         if (showSearch) {
@@ -218,8 +268,8 @@ private fun TransactionDetailContent(
         }
     }
 
-    // Close search when tabs change to fix search state persisting across tabs
-    LaunchedEffect(selectedTabIndex) {
+    // Close search when tabs change
+    LaunchedEffect(tabPagerState.currentPage) {
         if (showSearch) {
             showSearch = false
             searchQuery = ""
@@ -238,112 +288,144 @@ private fun TransactionDetailContent(
     Scaffold(
         topBar = {
             Column {
-                TopAppBar(
-                    title = { 
-                        if (showSearch) {
-                            TextField(
-                                value = searchQuery,
-                                onValueChange = { searchQuery = it },
-                                placeholder = { Text("Search in body...") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .focusRequester(focusRequester),
-                                colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                ),
-                                singleLine = true,
-                                trailingIcon = {
-                                    if (searchQuery.isNotEmpty()) {
-                                        IconButton(onClick = { searchQuery = "" }) {
-                                            Icon(Icons.Default.Close, contentDescription = "Clear")
+                // Swipeable TopAppBar for transaction navigation
+                SwipeableTopBar(
+                    onSwipeLeft = onNavigateNextTransaction,
+                    onSwipeRight = onNavigatePrevTransaction,
+                    canSwipeLeft = canNavigateNext,
+                    canSwipeRight = canNavigatePrev
+                ) {
+                    TopAppBar(
+                        title = {
+                            if (showSearch) {
+                                TextField(
+                                    value = searchQuery,
+                                    onValueChange = { searchQuery = it },
+                                    placeholder = { Text("Search in body...") },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .focusRequester(focusRequester),
+                                    colors = TextFieldDefaults.colors(
+                                        focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                                        unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                                        disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                                    ),
+                                    singleLine = true,
+                                    trailingIcon = {
+                                        if (searchQuery.isNotEmpty()) {
+                                            IconButton(onClick = { searchQuery = "" }) {
+                                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                                            }
                                         }
                                     }
-                                }
-                            )
-                        } else {
-                            Text(title, maxLines = 1)
-                        }
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onBack) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        if (selectedTabIndex > 0) { // Show search for Request/Response tabs
-                            IconButton(onClick = {
-                                showSearch = !showSearch
-                                if (!showSearch) searchQuery = ""
-                            }) {
-                                AnimatedVisibility(!showSearch) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = "Search"
-                                    )
-                                }
+                                )
+                            } else {
+                                Text(title, maxLines = 1)
                             }
-                        }
-
-                        if (!showSearch) {
-                            IconButton(onClick = { showMenu = true }) {
-                                Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = onBack) {
+                                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                             }
-                        }
-
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Copy as Text") },
-                                onClick = {
-                                    showMenu = false
-                                    copyToClipboard(context, "Transaction", generateTextSummary(transaction))
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("Copy as cURL") },
-                                onClick = {
-                                    showMenu = false
-                                    copyToClipboard(context, "cURL", generateCurlCommand(transaction))
-                                }
-                            )
-                            Divider()
-                            DropdownMenuItem(
-                                text = { Text("Share as JSON") },
-                                onClick = {
-                                    showMenu = false
-                                    val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(context)
-                                    scope.launch {
-                                        exportManager.exportTransactions(listOf(transaction))
+                        },
+                        actions = {
+                            if (tabPagerState.currentPage > 0) { // Show search for Request/Response tabs
+                                IconButton(onClick = {
+                                    showSearch = !showSearch
+                                    if (!showSearch) searchQuery = ""
+                                }) {
+                                    AnimatedVisibility(!showSearch) {
+                                        Icon(
+                                            imageVector = Icons.Default.Search,
+                                            contentDescription = "Search"
+                                        )
                                     }
                                 }
-                            )
+                            }
+
+                            if (!showSearch) {
+                                IconButton(onClick = { showMenu = true }) {
+                                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
+                                }
+                            }
+
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = { showMenu = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Copy as Text") },
+                                    onClick = {
+                                        showMenu = false
+                                        copyToClipboard(context, "Transaction", generateTextSummary(transaction))
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Copy as cURL") },
+                                    onClick = {
+                                        showMenu = false
+                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction))
+                                    }
+                                )
+                                Divider()
+                                DropdownMenuItem(
+                                    text = { Text("Share as JSON") },
+                                    onClick = {
+                                        showMenu = false
+                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(context)
+                                        scope.launch {
+                                            exportManager.exportTransactions(listOf(transaction))
+                                        }
+                                    }
+                                )
+                            }
                         }
+                    )
+                }
+                // Tab row with click support (swipe is handled by the content pager)
+                TabRow(
+                    selectedTabIndex = tabPagerState.currentPage,
+                    containerColor = androidx.compose.ui.graphics.Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    divider = {}
+                ) {
+                    tabs.forEachIndexed { index, tabTitle ->
+                        Tab(
+                            selected = tabPagerState.currentPage == index,
+                            onClick = {
+                                scope.launch {
+                                    tabPagerState.animateScrollToPage(index)
+                                }
+                            },
+                            text = {
+                                Text(
+                                    text = tabTitle,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal
+                                )
+                            }
+                        )
                     }
-                )
-                SwipeableTabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it },
-                    tabs = tabs
+                }
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                 )
             }
         }
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
-            Crossfade(
-                targetState = selectedTabIndex,
+            // HorizontalPager for tab content - swipe here switches between Overview/Request/Response
+            HorizontalPager(
+                state = tabPagerState,
                 modifier = Modifier
+                    .fillMaxSize()
                     .padding(padding)
                     .consumeWindowInsets(padding)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .windowInsetsPadding(WindowInsets.ime),
-                animationSpec = tween(durationMillis = 200),
-                label = "tab_fade"
-            ) { targetIndex ->
-                when (targetIndex) {
+                beyondViewportPageCount = 1
+            ) { page ->
+                when (page) {
                     0 -> OverviewTab(transaction, Modifier.fillMaxSize())
                     1 -> RequestTab(
                         transaction = transaction,
@@ -369,7 +451,7 @@ private fun TransactionDetailContent(
                 Surface(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .imePadding() // Key fix for keyboard overlap
+                        .imePadding()
                         .padding(bottom = 32.dp, end = 16.dp),
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
                     color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
@@ -384,13 +466,13 @@ private fun TransactionDetailContent(
                             style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
-                        IconButton(onClick = { 
-                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount 
+                        IconButton(onClick = {
+                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount
                         }) {
                             Icon(Icons.Default.KeyboardArrowUp, "Prev")
                         }
-                        IconButton(onClick = { 
-                            currentMatchIndex = (currentMatchIndex + 1) % matchCount 
+                        IconButton(onClick = {
+                            currentMatchIndex = (currentMatchIndex + 1) % matchCount
                         }) {
                             Icon(Icons.Default.KeyboardArrowDown, "Next")
                         }
@@ -398,6 +480,51 @@ private fun TransactionDetailContent(
                 }
             }
         }
+    }
+}
+
+/**
+ * Swipeable container for the TopAppBar that handles horizontal swipes
+ * to navigate between transactions.
+ */
+@Composable
+private fun SwipeableTopBar(
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit,
+    canSwipeLeft: Boolean,
+    canSwipeRight: Boolean,
+    content: @Composable () -> Unit
+) {
+    val haptics = LocalHapticFeedback.current
+    var dragOffset by remember { mutableFloatStateOf(0f) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(canSwipeLeft, canSwipeRight) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        val threshold = size.width * 0.15f
+                        when {
+                            dragOffset < -threshold && canSwipeLeft -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onSwipeLeft()
+                            }
+                            dragOffset > threshold && canSwipeRight -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onSwipeRight()
+                            }
+                        }
+                        dragOffset = 0f
+                    },
+                    onDragCancel = { dragOffset = 0f },
+                    onHorizontalDrag = { _, dragAmount ->
+                        dragOffset += dragAmount
+                    }
+                )
+            }
+    ) {
+        content()
     }
 }
 

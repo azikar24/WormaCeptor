@@ -197,11 +197,15 @@ fun PdfViewerScreen(
             decorFitsSystemWindows = false
         )
     ) {
+        // Get navigation bar padding explicitly for Dialog context
+        val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFF121212)) // Deep dark background
-                .windowInsetsPadding(WindowInsets.systemBars)
+                .padding(top = statusBarPadding, bottom = navigationBarPadding)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { showControls = !showControls }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -85,7 +86,9 @@ fun FullscreenZoomableBodyViewer(
         )
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize().background(Color.Red),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars),
             color = MaterialTheme.colorScheme.surface
         ) {
             ZoomableBodyContent(
@@ -226,7 +229,6 @@ private fun ZoomableBodyContent(
         Surface(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.navigationBars)
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
             shape = WormaCeptorDesignSystem.Shapes.chip,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
@@ -333,7 +335,6 @@ private fun ZoomableBodyContent(
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .windowInsetsPadding(WindowInsets.navigationBars)
                 .padding(WormaCeptorDesignSystem.Spacing.lg)
                 .padding(bottom = 80.dp)
         ) {

@@ -15,13 +15,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
@@ -155,21 +151,10 @@ fun TransactionDetailPagerScreen(
         onBack = onBack,
         enabled = currentTransactionIndex == 0 // Only enable swipe-back on first transaction
     ) {
-        // Animated content transition when switching transactions
-        AnimatedContent(
+        // Simple crossfade transition when switching transactions
+        Crossfade(
             targetState = currentTransactionIndex to transaction,
-            transitionSpec = {
-                val direction = if (targetState.first > initialState.first) {
-                    // Moving forward - slide left
-                    slideInHorizontally { width -> width } + fadeIn() togetherWith
-                            slideOutHorizontally { width -> -width } + fadeOut()
-                } else {
-                    // Moving backward - slide right
-                    slideInHorizontally { width -> -width } + fadeIn() togetherWith
-                            slideOutHorizontally { width -> width } + fadeOut()
-                }
-                direction.using(SizeTransform(clip = false))
-            },
+            animationSpec = tween(durationMillis = 150),
             label = "transaction_transition"
         ) { (_, currentTransaction) ->
             if (isLoading) {

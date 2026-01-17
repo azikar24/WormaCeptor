@@ -10,17 +10,21 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -50,11 +54,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -101,7 +108,7 @@ fun HomeScreen(
     onRefreshCrashes: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    
+
     // Hardware/System Back Button should exit the viewer when at Home
     BackHandler {
         (context as? Activity)?.finish()
@@ -112,6 +119,30 @@ fun HomeScreen(
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
+    // Pager state for swipe between tabs - defined here so TabRow can access it
+    val pagerState = rememberPagerState(
+        initialPage = selectedTabIndex,
+        pageCount = { titles.size }
+    )
+
+    // Sync pagerState with selectedTabIndex when tab is clicked
+    LaunchedEffect(selectedTabIndex) {
+        if (pagerState.currentPage != selectedTabIndex) {
+            pagerState.animateScrollToPage(selectedTabIndex)
+        }
+    }
+
+    // Sync selectedTabIndex with pagerState when user swipes
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .collect { page ->
+                if (page != selectedTabIndex) {
+                    onTabSelected(page)
+                }
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -127,7 +158,7 @@ fun HomeScreen(
                         }
                     },
                     actions = {
-                        if (selectedTabIndex == 0) {
+                        if (pagerState.currentPage == 0) {
                             val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                             val filterCount = listOfNotNull(
                                 filterMethod,
@@ -185,7 +216,7 @@ fun HomeScreen(
                             onDismissRequest = { showOverflowMenu = false },
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                         ) {
-                            if (selectedTabIndex == 0) {
+                            if (pagerState.currentPage == 0) {
                                 DropdownMenuItem(
                                     text = { Text("Export Transactions") },
                                     leadingIcon = { Icon(Icons.Default.Share, null) },
@@ -223,11 +254,13 @@ fun HomeScreen(
                         }
                     }
                 )
-                TabRow(selectedTabIndex = selectedTabIndex) {
+                TabRow(selectedTabIndex = pagerState.currentPage) {
                     titles.forEachIndexed { index, title ->
                         Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = { onTabSelected(index) },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch { pagerState.animateScrollToPage(index) }
+                            },
                             text = { Text(title) }
                         )
                     }
@@ -237,7 +270,7 @@ fun HomeScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
-            if (selectedTabIndex == 0) {
+            if (pagerState.currentPage == 0) {
                 val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                 AnimatedVisibility(
                     visible = hasActiveFilters,
@@ -363,27 +396,35 @@ fun HomeScreen(
                 }
             }
 
-            if (selectedTabIndex == 0) {
-                TransactionListScreen(
-                    transactions = transactions,
-                    onItemClick = onTransactionClick,
-                    hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
-                    onClearFilters = {
-                        onClearFilters()
-                        onSearchChanged("")
-                    },
-                    isRefreshing = isRefreshingTransactions,
-                    onRefresh = onRefreshTransactions,
-                    modifier = Modifier.weight(1f),
-                    header = { MetricsCard(transactions = transactions) }
-                )
-            } else {
-                CrashListScreen(
-                    crashes = crashes,
-                    onCrashClick = onCrashClick,
-                    isRefreshing = isRefreshingCrashes,
-                    onRefresh = onRefreshCrashes
-                )
+            // HorizontalPager for swipe between Transactions and Crashes
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                beyondViewportPageCount = 1
+            ) { page ->
+                when (page) {
+                    0 -> TransactionListScreen(
+                        transactions = transactions,
+                        onItemClick = onTransactionClick,
+                        hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
+                        onClearFilters = {
+                            onClearFilters()
+                            onSearchChanged("")
+                        },
+                        isRefreshing = isRefreshingTransactions,
+                        onRefresh = onRefreshTransactions,
+                        modifier = Modifier.fillMaxSize(),
+                        header = { MetricsCard(transactions = transactions) }
+                    )
+                    1 -> CrashListScreen(
+                        crashes = crashes,
+                        onCrashClick = onCrashClick,
+                        isRefreshing = isRefreshingCrashes,
+                        onRefresh = onRefreshCrashes
+                    )
+                }
             }
         }
 
@@ -536,6 +577,30 @@ fun PagedHomeScreen(
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
+    // Pager state for swipe between tabs - defined here so TabRow can access it
+    val pagerState = rememberPagerState(
+        initialPage = selectedTabIndex,
+        pageCount = { titles.size }
+    )
+
+    // Sync pagerState with selectedTabIndex when tab is clicked
+    LaunchedEffect(selectedTabIndex) {
+        if (pagerState.currentPage != selectedTabIndex) {
+            pagerState.animateScrollToPage(selectedTabIndex)
+        }
+    }
+
+    // Sync selectedTabIndex with pagerState when user swipes
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .collect { page ->
+                if (page != selectedTabIndex) {
+                    onTabSelected(page)
+                }
+            }
+    }
+
     Scaffold(
         topBar = {
             Column {
@@ -550,7 +615,7 @@ fun PagedHomeScreen(
                         }
                     },
                     actions = {
-                        if (selectedTabIndex == 0) {
+                        if (pagerState.currentPage == 0) {
                             val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                             val filterCount = listOfNotNull(
                                 filterMethod,
@@ -608,7 +673,7 @@ fun PagedHomeScreen(
                             onDismissRequest = { showOverflowMenu = false },
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                         ) {
-                            if (selectedTabIndex == 0) {
+                            if (pagerState.currentPage == 0) {
                                 DropdownMenuItem(
                                     text = { Text("Export Transactions") },
                                     leadingIcon = { Icon(Icons.Default.Share, null) },
@@ -646,11 +711,13 @@ fun PagedHomeScreen(
                         }
                     }
                 )
-                TabRow(selectedTabIndex = selectedTabIndex) {
+                TabRow(selectedTabIndex = pagerState.currentPage) {
                     titles.forEachIndexed { index, title ->
                         Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = { onTabSelected(index) },
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch { pagerState.animateScrollToPage(index) }
+                            },
                             text = { Text(title) }
                         )
                     }
@@ -660,7 +727,7 @@ fun PagedHomeScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
-            if (selectedTabIndex == 0) {
+            if (pagerState.currentPage == 0) {
                 val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                 AnimatedVisibility(
                     visible = hasActiveFilters,
@@ -786,35 +853,41 @@ fun PagedHomeScreen(
                 }
             }
 
-            if (selectedTabIndex == 0) {
-                // Use paged transaction list
-                PagedTransactionListScreenWithRefresh(
-                    lazyPagingItems = pagedTransactions,
-                    onItemClick = onTransactionClick,
-                    hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
-                    onClearFilters = {
-                        onClearFilters()
-                        onSearchChanged("")
-                    },
-                    isRefreshing = isRefreshingTransactions,
-                    onRefresh = {
-                        onRefreshTransactions()
-                        pagedTransactions.refresh()
-                    },
-                    modifier = Modifier.weight(1f),
-                    header = {
-                        // Use item count from paging for the metrics card
-                        MetricsCard(transactions = allTransactions.takeIf { it.isNotEmpty() }
-                            ?: (0 until pagedTransactions.itemCount).mapNotNull { pagedTransactions[it] })
-                    }
-                )
-            } else {
-                CrashListScreen(
-                    crashes = crashes,
-                    onCrashClick = onCrashClick,
-                    isRefreshing = isRefreshingCrashes,
-                    onRefresh = onRefreshCrashes
-                )
+            // HorizontalPager for swipe between Transactions and Crashes
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                beyondViewportPageCount = 1
+            ) { page ->
+                when (page) {
+                    0 -> PagedTransactionListScreenWithRefresh(
+                        lazyPagingItems = pagedTransactions,
+                        onItemClick = onTransactionClick,
+                        hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
+                        onClearFilters = {
+                            onClearFilters()
+                            onSearchChanged("")
+                        },
+                        isRefreshing = isRefreshingTransactions,
+                        onRefresh = {
+                            onRefreshTransactions()
+                            pagedTransactions.refresh()
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                        header = {
+                            MetricsCard(transactions = allTransactions.takeIf { it.isNotEmpty() }
+                                ?: (0 until pagedTransactions.itemCount).mapNotNull { pagedTransactions[it] })
+                        }
+                    )
+                    1 -> CrashListScreen(
+                        crashes = crashes,
+                        onCrashClick = onCrashClick,
+                        isRefreshing = isRefreshingCrashes,
+                        onRefresh = onRefreshCrashes
+                    )
+                }
             }
         }
 
@@ -991,6 +1064,31 @@ fun SelectableHomeScreen(
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     var showDeleteSelectedDialog by remember { mutableStateOf(false) }
 
+    // Pager state for swipe between tabs - defined here so TabRow can access it
+    val pagerState = rememberPagerState(
+        initialPage = selectedTabIndex,
+        pageCount = { titles.size }
+    )
+
+    // Sync pagerState with selectedTabIndex when tab is clicked
+    LaunchedEffect(selectedTabIndex) {
+        if (pagerState.currentPage != selectedTabIndex) {
+            pagerState.animateScrollToPage(selectedTabIndex)
+        }
+    }
+
+    // Sync selectedTabIndex with pagerState when user swipes
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .collect { page ->
+                if (page != selectedTabIndex) {
+                    if (isSelectionMode) onClearSelection()
+                    onTabSelected(page)
+                }
+            }
+    }
+
     // Keyboard shortcuts callbacks
     val keyboardCallbacks = remember(isSelectionMode, selectedIds) {
         KeyboardShortcutCallbacks(
@@ -1051,7 +1149,7 @@ fun SelectableHomeScreen(
                                 }
                             },
                             actions = {
-                                if (selectedTabIndex == 0) {
+                                if (pagerState.currentPage == 0) {
                                     val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank() || quickFilters.isNotEmpty()
                                     val filterCount = listOfNotNull(
                                         filterMethod,
@@ -1108,7 +1206,7 @@ fun SelectableHomeScreen(
                                     onDismissRequest = { showOverflowMenu = false },
                                     shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                                 ) {
-                                    if (selectedTabIndex == 0) {
+                                    if (pagerState.currentPage == 0) {
                                         DropdownMenuItem(
                                             text = { Text("Export Transactions") },
                                             leadingIcon = { Icon(Icons.Default.Share, null) },
@@ -1148,13 +1246,13 @@ fun SelectableHomeScreen(
                         )
                     }
 
-                    TabRow(selectedTabIndex = selectedTabIndex) {
+                    TabRow(selectedTabIndex = pagerState.currentPage) {
                         titles.forEachIndexed { index, title ->
                             Tab(
-                                selected = selectedTabIndex == index,
+                                selected = pagerState.currentPage == index,
                                 onClick = {
                                     if (isSelectionMode) onClearSelection()
-                                    onTabSelected(index)
+                                    scope.launch { pagerState.animateScrollToPage(index) }
                                 },
                                 text = { Text(title) }
                             )
@@ -1165,7 +1263,7 @@ fun SelectableHomeScreen(
         ) { padding ->
             Column(modifier = Modifier.padding(padding)) {
                 // Active Filters Banner
-                if (selectedTabIndex == 0 && !isSelectionMode) {
+                if (pagerState.currentPage == 0 && !isSelectionMode) {
                     val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
                     AnimatedVisibility(
                         visible = hasActiveFilters,
@@ -1291,43 +1389,51 @@ fun SelectableHomeScreen(
                     }
                 }
 
-                if (selectedTabIndex == 0) {
-                    SelectableTransactionListScreen(
-                        transactions = transactions,
-                        onItemClick = onTransactionClick,
-                        hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank() || quickFilters.isNotEmpty(),
-                        onClearFilters = {
-                            onClearFilters()
-                            onSearchChanged("")
-                            quickFilters.forEach { onQuickFilterToggle(it) }
-                        },
-                        isRefreshing = isRefreshingTransactions,
-                        onRefresh = onRefreshTransactions,
-                        selectedIds = selectedIds,
-                        isSelectionMode = isSelectionMode,
-                        onSelectionToggle = onSelectionToggle,
-                        onLongClick = { id ->
-                            if (!isSelectionMode) {
-                                onSelectionToggle(id)
-                            }
-                        },
-                        quickFilters = quickFilters,
-                        onQuickFilterToggle = onQuickFilterToggle,
-                        onCopyUrl = onCopyUrl,
-                        onShare = onShare,
-                        onDelete = onDelete,
-                        onReplay = onReplay,
-                        onCopyAsCurl = onCopyAsCurl,
-                        modifier = Modifier.weight(1f),
-                        header = { MetricsCard(transactions = transactions) }
-                    )
-                } else {
-                    CrashListScreen(
-                        crashes = crashes,
-                        onCrashClick = onCrashClick,
-                        isRefreshing = isRefreshingCrashes,
-                        onRefresh = onRefreshCrashes
-                    )
+                // HorizontalPager for swipe between Transactions and Crashes
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    beyondViewportPageCount = 1
+                ) { page ->
+                    when (page) {
+                        0 -> SelectableTransactionListScreen(
+                            transactions = transactions,
+                            onItemClick = onTransactionClick,
+                            hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank() || quickFilters.isNotEmpty(),
+                            onClearFilters = {
+                                onClearFilters()
+                                onSearchChanged("")
+                                quickFilters.forEach { onQuickFilterToggle(it) }
+                            },
+                            isRefreshing = isRefreshingTransactions,
+                            onRefresh = onRefreshTransactions,
+                            selectedIds = selectedIds,
+                            isSelectionMode = isSelectionMode,
+                            onSelectionToggle = onSelectionToggle,
+                            onLongClick = { id ->
+                                if (!isSelectionMode) {
+                                    onSelectionToggle(id)
+                                }
+                            },
+                            quickFilters = quickFilters,
+                            onQuickFilterToggle = onQuickFilterToggle,
+                            onCopyUrl = onCopyUrl,
+                            onShare = onShare,
+                            onDelete = onDelete,
+                            onReplay = onReplay,
+                            onCopyAsCurl = onCopyAsCurl,
+                            modifier = Modifier.fillMaxSize(),
+                            header = { MetricsCard(transactions = transactions) }
+                        )
+                        1 -> CrashListScreen(
+                            crashes = crashes,
+                            onCrashClick = onCrashClick,
+                            isRefreshing = isRefreshingCrashes,
+                            onRefresh = onRefreshCrashes
+                        )
+                    }
                 }
             }
 

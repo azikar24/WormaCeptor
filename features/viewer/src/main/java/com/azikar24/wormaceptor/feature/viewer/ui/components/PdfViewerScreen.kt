@@ -193,19 +193,13 @@ fun PdfViewerScreen(
     Dialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
+            usePlatformDefaultWidth = false
         )
     ) {
-        // Get navigation bar padding explicitly for Dialog context
-        val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-        val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFF121212)) // Deep dark background
-                .padding(top = statusBarPadding, bottom = navigationBarPadding)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { showControls = !showControls }
@@ -496,6 +490,7 @@ private fun BottomNavigationBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.md,
                     vertical = WormaCeptorDesignSystem.Spacing.md

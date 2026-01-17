@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.asPaddingValues
@@ -83,18 +84,11 @@ fun FullscreenZoomableBodyViewer(
         properties = DialogProperties(
             usePlatformDefaultWidth = false,
             dismissOnBackPress = true,
-            dismissOnClickOutside = false,
-            decorFitsSystemWindows = false
+            dismissOnClickOutside = false
         )
     ) {
-        // Get system bar padding explicitly for Dialog context
-        val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-        val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = statusBarPadding, bottom = navigationBarPadding),
+            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.surface
         ) {
             ZoomableBodyContent(
@@ -235,6 +229,7 @@ private fun ZoomableBodyContent(
         Surface(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
             shape = WormaCeptorDesignSystem.Shapes.chip,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
@@ -341,6 +336,7 @@ private fun ZoomableBodyContent(
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.BottomStart)
+                .navigationBarsPadding()
                 .padding(WormaCeptorDesignSystem.Spacing.lg)
                 .padding(bottom = 80.dp)
         ) {

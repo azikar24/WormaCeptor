@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -115,8 +116,7 @@ fun FullscreenImageViewer(
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
+            usePlatformDefaultWidth = false
         )
     ) {
         FullscreenImageContent(
@@ -175,15 +175,10 @@ private fun FullscreenImageContent(
         label = "background_alpha"
     )
 
-    // Get navigation bar padding explicitly for Dialog context
-    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black.copy(alpha = backgroundAlpha * 0.95f))
-            .padding(top = statusBarPadding, bottom = navigationBarPadding)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -484,6 +479,7 @@ private fun BottomControlBar(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .padding(WormaCeptorDesignSystem.Spacing.lg)
         ) {
             // Metadata row

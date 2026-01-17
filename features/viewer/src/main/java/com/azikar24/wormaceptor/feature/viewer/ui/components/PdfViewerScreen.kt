@@ -201,6 +201,7 @@ fun PdfViewerScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFF121212)) // Deep dark background
+                .windowInsetsPadding(WindowInsets.systemBars)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { showControls = !showControls }
@@ -491,7 +492,6 @@ private fun BottomNavigationBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .navigationBarsPadding()
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.md,
                     vertical = WormaCeptorDesignSystem.Spacing.md

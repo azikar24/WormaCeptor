@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -177,7 +178,7 @@ private fun FullscreenImageContent(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black.copy(alpha = backgroundAlpha * 0.95f))
-            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.systemBars)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -478,7 +479,6 @@ private fun BottomControlBar(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.navigationBars)
                 .padding(WormaCeptorDesignSystem.Spacing.lg)
         ) {
             // Metadata row

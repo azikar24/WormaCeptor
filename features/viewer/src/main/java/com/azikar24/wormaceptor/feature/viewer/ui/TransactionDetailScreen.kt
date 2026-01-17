@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -890,22 +892,12 @@ private fun RequestTab(
                         onToggle = { bodyExpanded = !bodyExpanded },
                         onCopy = { copyToClipboard(context, "Request Body", if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)) },
                         trailingContent = {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                ContentTypeChip(
-                                    contentType = detectedContentType,
-                                    isAutoDetected = true
-                                )
-                                ZoomBodyButton(
-                                    onClick = { showZoomableBodyViewer = true }
-                                )
-                                PrettyRawToggle(
-                                    isPretty = isPrettyMode,
-                                    onToggle = { isPrettyMode = !isPrettyMode }
-                                )
-                            }
+                            BodyControlsRow(
+                                contentType = detectedContentType,
+                                isPrettyMode = isPrettyMode,
+                                onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
+                                onZoomClick = { showZoomableBodyViewer = true }
+                            )
                         }
                     ) {
                         val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
@@ -1245,22 +1237,12 @@ private fun ResponseTab(
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = { copyToClipboard(context, "Response Body", if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)) },
                             trailingContent = {
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    ContentTypeChip(
-                                        contentType = detectedContentType,
-                                        isAutoDetected = true
-                                    )
-                                    ZoomBodyButton(
-                                        onClick = { showZoomableBodyViewer = true }
-                                    )
-                                    PrettyRawToggle(
-                                        isPretty = isPrettyMode,
-                                        onToggle = { isPrettyMode = !isPrettyMode }
-                                    )
-                                }
+                                BodyControlsRow(
+                                    contentType = detectedContentType,
+                                    isPrettyMode = isPrettyMode,
+                                    onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
+                                    onZoomClick = { showZoomableBodyViewer = true }
+                                )
                             }
                         ) {
                             val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
@@ -1570,6 +1552,46 @@ private fun PrettyRawToggle(
                     MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+    }
+}
+
+/**
+ * Responsive row of body controls that wraps on small screens.
+ * Uses FlowRow to allow badges to flow to multiple lines when space is constrained.
+ *
+ * Layout priority (from most to least important):
+ * 1. Pretty/Raw toggle - primary interaction for viewing mode
+ * 2. Zoom button - quick access to fullscreen view
+ * 3. Content type chip - informational, can wrap to next row
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun BodyControlsRow(
+    contentType: ContentType,
+    isPrettyMode: Boolean,
+    onPrettyModeToggle: () -> Unit,
+    onZoomClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+    ) {
+        // Content type chip - informational, can wrap first
+        ContentTypeChip(
+            contentType = contentType,
+            isAutoDetected = true
+        )
+        // Zoom button - secondary action
+        ZoomBodyButton(
+            onClick = onZoomClick
+        )
+        // Pretty/Raw toggle - most important, always visible
+        PrettyRawToggle(
+            isPretty = isPrettyMode,
+            onToggle = onPrettyModeToggle
+        )
     }
 }
 

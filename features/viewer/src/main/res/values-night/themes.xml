@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme for ViewerActivity -->
+    <style name="Theme.WormaCeptor.Viewer" parent="android:Theme.Material.NoActionBar">
+        <!-- Match the Compose dark theme surface/background color -->
+        <item name="android:windowBackground">@color/viewer_window_background</item>
+        <item name="android:colorBackground">@color/viewer_window_background</item>
+        <item name="android:navigationBarColor">@color/viewer_window_background</item>
+    </style>
+
+    <!-- Window background color for dark theme - matches md_theme_dark_surface -->
+    <color name="viewer_window_background">#001B39</color>
+</resources>

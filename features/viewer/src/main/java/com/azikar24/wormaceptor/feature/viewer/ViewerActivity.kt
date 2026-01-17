@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.collectAsState
@@ -35,6 +36,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionListScreen
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 
 class ViewerActivity : ComponentActivity() {
@@ -65,7 +67,10 @@ class ViewerActivity : ComponentActivity() {
             WormaCeptorTheme {
                 val navController = rememberNavController()
 
-                NavHost(
+                // Wrap NavHost in Surface to ensure proper background during navigation transitions
+                // This prevents white flash in dark mode when navigating back
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    NavHost(
                     navController = navController,
                     startDestination = "home",
                     enterTransition = {
@@ -181,6 +186,7 @@ class ViewerActivity : ComponentActivity() {
                             }
                         }
                     }
+                }
                 }
 
             }

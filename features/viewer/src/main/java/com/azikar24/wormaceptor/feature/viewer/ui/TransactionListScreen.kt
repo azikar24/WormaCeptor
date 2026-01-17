@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
@@ -193,13 +195,38 @@ private fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Icon
+        Surface(
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            modifier = Modifier.size(64.dp)
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Wifi,
+                    contentDescription = null,
+                    modifier = Modifier.size(32.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+
+        // Title
         Text(
             text = if (hasActiveFilters) "No matches found" else "No transactions yet",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+
+        // Description
         Text(
             text = if (hasActiveFilters)
                 "Try adjusting your filters to see more results"
@@ -208,6 +235,7 @@ private fun EmptyState(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
         )
+
         if (hasActiveFilters) {
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
             Button(

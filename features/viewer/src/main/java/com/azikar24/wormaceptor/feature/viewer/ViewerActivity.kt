@@ -136,9 +136,14 @@ class ViewerActivity : ComponentActivity() {
                         val id = backStackEntry.arguments?.getString("id")
                         if (id != null) {
                             val uuid = java.util.UUID.fromString(id)
-                            // Use the filtered transaction list for pager navigation
-                            val transactionIds = transactions.map { it.id }
-                            val initialIndex = transactionIds.indexOf(uuid).coerceAtLeast(0)
+                            // Snapshot the transaction list when entering the detail screen
+                            // This prevents the pager from jumping when new requests come in
+                            val snapshotKey = backStackEntry.id
+                            val (transactionIds, initialIndex) = remember(snapshotKey) {
+                                val ids = transactions.map { it.id }
+                                val index = ids.indexOf(uuid).coerceAtLeast(0)
+                                ids to index
+                            }
 
                             if (transactionIds.isNotEmpty()) {
                                 TransactionDetailPagerScreen(

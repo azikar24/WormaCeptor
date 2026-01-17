@@ -22,7 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.FilterList
@@ -121,7 +121,7 @@ fun HomeScreen(
                     navigationIcon = {
                         IconButton(onClick = { (context as? android.app.Activity)?.finish() }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back"
                             )
                         }
@@ -544,7 +544,7 @@ fun PagedHomeScreen(
                     navigationIcon = {
                         IconButton(onClick = { (context as? android.app.Activity)?.finish() }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back"
                             )
                         }
@@ -1045,7 +1045,7 @@ fun SelectableHomeScreen(
                             navigationIcon = {
                                 IconButton(onClick = { (context as? android.app.Activity)?.finish() }) {
                                     Icon(
-                                        imageVector = Icons.Default.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = "Back"
                                     )
                                 }

@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -14,14 +13,10 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.lazy.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Close
@@ -38,14 +33,12 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
-import com.azikar24.wormaceptor.feature.viewer.ui.components.HighlightedText
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
@@ -53,7 +46,8 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.body.FormDataView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.BodyParsingUtils
 import com.azikar24.wormaceptor.domain.contracts.ContentType
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
@@ -67,14 +61,12 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
 import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
-import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.ZoomableBox
-import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.FullscreenZoomableBodyViewer
-import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.ZoomBodyButton
-
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -88,6 +80,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
+import kotlin.math.log10
 
 /**
  * Transaction detail screen with HorizontalPager for swipe navigation between transactions.
@@ -106,7 +99,6 @@ fun TransactionDetailPagerScreen(
     onBack: () -> Unit
 ) {
     val view = LocalView.current
-    val scope = rememberCoroutineScope()
 
     // Remember the pager state
     val pagerState = rememberPagerState(
@@ -207,9 +199,9 @@ private fun TransactionDetailContent(
     var searchQuery by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
     val tabs = listOf("Overview", "Request", "Response")
-    
+
     val focusRequester = remember { FocusRequester() }
-    
+
     // Search navigation state - now using matchCount instead of positions list
     var currentMatchIndex by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
     var matchCount by remember(searchQuery, selectedTabIndex) { mutableIntStateOf(0) }
@@ -241,7 +233,7 @@ private fun TransactionDetailContent(
         topBar = {
             Column {
                 TopAppBar(
-                    title = { 
+                    title = {
                         if (showSearch) {
                             TextField(
                                 value = searchQuery,
@@ -251,9 +243,9 @@ private fun TransactionDetailContent(
                                     .fillMaxWidth()
                                     .focusRequester(focusRequester),
                                 colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                    disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    disabledContainerColor = Color.Transparent,
                                 ),
                                 singleLine = true,
                                 trailingIcon = {
@@ -270,7 +262,7 @@ private fun TransactionDetailContent(
                     },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     },
                     actions = {
@@ -352,15 +344,14 @@ private fun TransactionDetailContent(
                         searchQuery = searchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
-                        onScrollToMatch = { /* Scroll handled internally */ },
                         modifier = Modifier.fillMaxSize()
                     )
+
                     2 -> ResponseTab(
                         transaction = transaction,
                         searchQuery = searchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
-                        onScrollToMatch = { /* Scroll handled internally */ },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -386,13 +377,13 @@ private fun TransactionDetailContent(
                             style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
-                        IconButton(onClick = { 
-                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount 
+                        IconButton(onClick = {
+                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount
                         }) {
                             Icon(Icons.Default.KeyboardArrowUp, "Prev")
                         }
-                        IconButton(onClick = { 
-                            currentMatchIndex = (currentMatchIndex + 1) % matchCount 
+                        IconButton(onClick = {
+                            currentMatchIndex = (currentMatchIndex + 1) % matchCount
                         }) {
                             Icon(Icons.Default.KeyboardArrowDown, "Next")
                         }
@@ -429,6 +420,7 @@ private fun SwipeableTabRow(
                                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 onTabSelected(selectedTabIndex + 1)
                             }
+
                             dragOffset > threshold && selectedTabIndex > 0 -> {
                                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 onTabSelected(selectedTabIndex - 1)
@@ -445,7 +437,7 @@ private fun SwipeableTabRow(
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
             divider = {}
         ) {
@@ -489,7 +481,10 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             DetailRow("Status", transaction.status.name)
             DetailRow("Response Code", transaction.response?.code?.toString() ?: "-")
             DetailRow("Duration", "${transaction.durationMs ?: "?"}ms")
-            DetailRow("Timestamp", java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(transaction.timestamp)))
+            DetailRow(
+                "Timestamp",
+                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(transaction.timestamp))
+            )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
@@ -613,7 +608,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
             Text(
                 text = "${durationMs}ms",
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -660,7 +655,7 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
             Text(
                 text = if (isSsl) (tlsVersion ?: "Secure Connection") else "Insecure Connection",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold
                 ),
                 color = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
             )
@@ -672,13 +667,13 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
 private fun EnhancedOverviewCard(
     title: String,
     icon: ImageVector,
-    iconTint: androidx.compose.ui.graphics.Color,
+    iconTint: Color,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val gradientColors = listOf(
         iconTint.copy(alpha = 0.03f),
         iconTint.copy(alpha = 0.01f),
-        androidx.compose.ui.graphics.Color.Transparent
+        Color.Transparent
     )
 
     Card(
@@ -715,7 +710,7 @@ private fun EnhancedOverviewCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold
                         ),
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -726,31 +721,10 @@ private fun EnhancedOverviewCard(
     }
 }
 
-@Composable
-private fun OverviewCard(title: String, content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp)
-        ),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f))
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            content()
-        }
-    }
-}
-
 private fun formatBytes(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     val units = listOf("B", "KB", "MB", "GB", "TB")
-    val digitGroup = (Math.log10(bytes.toDouble()) / Math.log10(1024.0)).toInt()
+    val digitGroup = (log10(bytes.toDouble()) / log10(1024.0)).toInt()
     return String.format("%.2f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
 }
 
@@ -768,7 +742,6 @@ private fun RequestTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
-    onScrollToMatch: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -780,8 +753,6 @@ private fun RequestTab(
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
     var bodyExpanded by remember { mutableStateOf(true) }
-    var showZoomableBodyViewer by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
 
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
@@ -890,13 +861,18 @@ private fun RequestTab(
                         title = "Body",
                         isExpanded = bodyExpanded,
                         onToggle = { bodyExpanded = !bodyExpanded },
-                        onCopy = { copyToClipboard(context, "Request Body", if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)) },
+                        onCopy = {
+                            copyToClipboard(
+                                context,
+                                "Request Body",
+                                if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+                            )
+                        },
                         trailingContent = {
                             BodyControlsRow(
                                 contentType = detectedContentType,
                                 isPrettyMode = isPrettyMode,
                                 onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
-                                onZoomClick = { showZoomableBodyViewer = true }
                             )
                         }
                     ) {
@@ -913,6 +889,7 @@ private fun RequestTab(
                                         colors = colors
                                     )
                                 }
+
                                 ContentType.XML, ContentType.HTML -> {
                                     XmlTreeView(
                                         xmlString = displayBody,
@@ -920,11 +897,13 @@ private fun RequestTab(
                                         colors = colors
                                     )
                                 }
+
                                 ContentType.FORM_DATA -> {
                                     FormDataView(
                                         formData = displayBody
                                     )
                                 }
+
                                 ContentType.MULTIPART -> {
                                     val boundary = requestContentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
                                     MultipartView(
@@ -932,6 +911,7 @@ private fun RequestTab(
                                         boundary = boundary
                                     )
                                 }
+
                                 else -> {
                                     val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
                                         enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
@@ -1008,22 +988,6 @@ private fun RequestTab(
                 Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
             }
         }
-
-        // Fullscreen Zoomable Body Viewer dialog for Request
-        if (showZoomableBodyViewer && (requestBody != null || rawBody != null)) {
-            val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
-            val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-            }
-
-            FullscreenZoomableBodyViewer(
-                text = displayBody,
-                annotatedText = annotatedBody,
-                onDismiss = { showZoomableBodyViewer = false },
-                onTextLayout = { textLayoutResult = it }
-            )
-        }
     }
 }
 
@@ -1033,7 +997,6 @@ private fun ResponseTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
-    onScrollToMatch: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -1048,9 +1011,8 @@ private fun ResponseTab(
     var bodyExpanded by remember { mutableStateOf(true) }
     var showImageViewer by remember { mutableStateOf(false) }
     var showPdfViewer by remember { mutableStateOf(false) }
-    var showZoomableBodyViewer by remember { mutableStateOf(false) }
     var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
-    val scope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
     // Syntax highlighting colors
     val colors = syntaxColors()
@@ -1235,13 +1197,18 @@ private fun ResponseTab(
                             title = "Body",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
-                            onCopy = { copyToClipboard(context, "Response Body", if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)) },
+                            onCopy = {
+                                copyToClipboard(
+                                    context,
+                                    "Response Body",
+                                    if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+                                )
+                            },
                             trailingContent = {
                                 BodyControlsRow(
                                     contentType = detectedContentType,
                                     isPrettyMode = isPrettyMode,
                                     onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
-                                    onZoomClick = { showZoomableBodyViewer = true }
                                 )
                             }
                         ) {
@@ -1258,6 +1225,7 @@ private fun ResponseTab(
                                             colors = colors
                                         )
                                     }
+
                                     ContentType.XML, ContentType.HTML -> {
                                         XmlTreeView(
                                             xmlString = displayBody,
@@ -1265,11 +1233,13 @@ private fun ResponseTab(
                                             colors = colors
                                         )
                                     }
+
                                     ContentType.FORM_DATA -> {
                                         FormDataView(
                                             formData = displayBody
                                         )
                                     }
+
                                     ContentType.MULTIPART -> {
                                         val boundary = contentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
                                         MultipartView(
@@ -1277,6 +1247,7 @@ private fun ResponseTab(
                                             boundary = boundary
                                         )
                                     }
+
                                     else -> {
                                         val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
                                             enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
@@ -1395,22 +1366,6 @@ private fun ResponseTab(
                 }
             )
         }
-
-        // Fullscreen Zoomable Body Viewer dialog
-        if (showZoomableBodyViewer && (responseBody != null || rawBody != null)) {
-            val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
-            val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
-            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-            }
-
-            FullscreenZoomableBodyViewer(
-                text = displayBody,
-                annotatedText = annotatedBody,
-                onDismiss = { showZoomableBodyViewer = false },
-                onTextLayout = { textLayoutResult = it }
-            )
-        }
     }
 }
 
@@ -1448,7 +1403,7 @@ private fun CollapsibleSection(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold
                     ),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -1524,9 +1479,9 @@ private fun PrettyRawToggle(
                 text = "Pretty",
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = if (isPretty)
-                        androidx.compose.ui.text.font.FontWeight.Bold
+                        FontWeight.Bold
                     else
-                        androidx.compose.ui.text.font.FontWeight.Normal
+                        FontWeight.Normal
                 ),
                 color = if (isPretty)
                     MaterialTheme.colorScheme.secondary
@@ -1542,9 +1497,9 @@ private fun PrettyRawToggle(
                 text = "Raw",
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = if (!isPretty)
-                        androidx.compose.ui.text.font.FontWeight.Bold
+                        FontWeight.Bold
                     else
-                        androidx.compose.ui.text.font.FontWeight.Normal
+                        FontWeight.Normal
                 ),
                 color = if (!isPretty)
                     MaterialTheme.colorScheme.secondary
@@ -1570,7 +1525,6 @@ private fun BodyControlsRow(
     contentType: ContentType,
     isPrettyMode: Boolean,
     onPrettyModeToggle: () -> Unit,
-    onZoomClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -1583,91 +1537,11 @@ private fun BodyControlsRow(
             contentType = contentType,
             isAutoDetected = true
         )
-        // Zoom button - secondary action
-        ZoomBodyButton(
-            onClick = onZoomClick
-        )
         // Pretty/Raw toggle - most important, always visible
         PrettyRawToggle(
             isPretty = isPrettyMode,
             onToggle = onPrettyModeToggle
         )
-    }
-}
-
-/**
- * Toggle for enabling/disabling syntax highlighting.
- * Styled consistently with PrettyRawToggle.
- */
-@Composable
-private fun SyntaxHighlightToggle(
-    enabled: Boolean,
-    onToggle: () -> Unit
-) {
-    val colors = syntaxColors()
-    Surface(
-        onClick = onToggle,
-        shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = if (enabled) {
-            colors.property.copy(alpha = 0.1f)
-        } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        },
-        border = androidx.compose.foundation.BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.thin,
-            if (enabled) {
-                colors.property.copy(alpha = 0.4f)
-            } else {
-                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-            }
-        )
-    ) {
-        Row(
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
-            ),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Color indicator dots when enabled
-            if (enabled) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(4.dp)
-                            .background(colors.keyword, shape = CircleShape)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .size(4.dp)
-                            .background(colors.string, shape = CircleShape)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .size(4.dp)
-                            .background(colors.number, shape = CircleShape)
-                    )
-                }
-            }
-            Text(
-                text = if (enabled) "Syntax" else "Plain",
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (enabled) {
-                        androidx.compose.ui.text.font.FontWeight.SemiBold
-                    } else {
-                        androidx.compose.ui.text.font.FontWeight.Normal
-                    }
-                ),
-                color = if (enabled) {
-                    colors.property
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
-        }
     }
 }
 
@@ -1696,138 +1570,22 @@ private fun enhancedHighlightMatches(
             withStyle(
                 style = androidx.compose.ui.text.SpanStyle(
                     background = if (isCurrent)
-                        androidx.compose.ui.graphics.Color.Cyan.copy(alpha = 0.6f)
+                        Color.Cyan.copy(alpha = 0.6f)
                     else
-                        androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.4f),
+                        Color.Yellow.copy(alpha = 0.4f),
                     fontWeight = if (isCurrent)
-                        androidx.compose.ui.text.font.FontWeight.Bold
+                        FontWeight.Bold
                     else
-                        androidx.compose.ui.text.font.FontWeight.Normal,
+                        FontWeight.Normal,
                     color = if (isCurrent)
-                        androidx.compose.ui.graphics.Color.Black
+                        Color.Black
                     else
-                        androidx.compose.ui.graphics.Color.Unspecified
+                        Color.Unspecified
                 )
             ) {
                 append(text.substring(index, index + query.length))
             }
             start = index + query.length
-        }
-    }
-}
-
-/**
- * Highlights all matches in the full text, using global position for current match detection
- */
-private fun highlightMatchesInText(
-    text: String,
-    query: String,
-    currentMatchGlobalPos: Int?
-): androidx.compose.ui.text.AnnotatedString {
-    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
-    
-    return androidx.compose.ui.text.buildAnnotatedString {
-        var start = 0
-        while (start < text.length) {
-            val index = text.indexOf(query, start, ignoreCase = true)
-            if (index == -1) {
-                append(text.substring(start))
-                break
-            }
-            append(text.substring(start, index))
-            
-            val isCurrent = index == currentMatchGlobalPos
-
-            withStyle(style = androidx.compose.ui.text.SpanStyle(
-                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-            )) {
-                append(text.substring(index, index + query.length))
-            }
-            start = index + query.length
-        }
-    }
-}
-
-
-private fun highlightMatches(text: String, query: String, currentIndex: Int = -1): androidx.compose.ui.text.AnnotatedString {
-    return androidx.compose.ui.text.buildAnnotatedString {
-        var start = 0
-        var count = 0
-        while (start < text.length) {
-            val index = text.indexOf(query, start, ignoreCase = true)
-            if (index == -1) {
-                append(text.substring(start))
-                break
-            }
-            append(text.substring(start, index))
-            val isCurrent = count == currentIndex
-            withStyle(style = androidx.compose.ui.text.SpanStyle(
-                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-            )) {
-                append(text.substring(index, index + query.length))
-            }
-            start = index + query.length
-            count++
-        }
-    }
-}
-
-private fun highlightMatchesInLine(
-    line: String,
-    lineStart: Int,
-    query: String,
-    currentIndex: Int,
-    matchPositions: List<Int>
-): androidx.compose.ui.text.AnnotatedString {
-    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(line)
-    
-    return androidx.compose.ui.text.buildAnnotatedString {
-        var start = 0
-        while (start < line.length) {
-            val indexInLine = line.indexOf(query, start, ignoreCase = true)
-            if (indexInLine == -1) {
-                append(line.substring(start))
-                break
-            }
-            append(line.substring(start, indexInLine))
-            
-            val globalIndex = lineStart + indexInLine
-            val isCurrent = matchPositions.getOrNull(currentIndex) == globalIndex
-
-            withStyle(style = androidx.compose.ui.text.SpanStyle(
-                background = if (isCurrent) androidx.compose.ui.graphics.Color.Cyan else androidx.compose.ui.graphics.Color.Yellow.copy(alpha = 0.5f),
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-            )) {
-                append(line.substring(indexInLine, indexInLine + query.length))
-            }
-            start = indexInLine + query.length
-        }
-    }
-}
-
-
-@Composable
-private fun SectionHeader(title: String, onCopy: (() -> Unit)? = null) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.primary
-        )
-        if (onCopy != null) {
-            IconButton(onClick = onCopy) {
-                Icon(
-                    imageVector = Icons.Default.ContentCopy,
-                    contentDescription = "Copy",
-                    modifier = Modifier.size(16.dp)
-                )
-            }
         }
     }
 }

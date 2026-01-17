@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -174,11 +175,15 @@ private fun FullscreenImageContent(
         label = "background_alpha"
     )
 
+    // Get navigation bar padding explicitly for Dialog context
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black.copy(alpha = backgroundAlpha * 0.95f))
-            .windowInsetsPadding(WindowInsets.systemBars)
+            .padding(top = statusBarPadding, bottom = navigationBarPadding)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {

@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -85,10 +87,14 @@ fun FullscreenZoomableBodyViewer(
             decorFitsSystemWindows = false
         )
     ) {
+        // Get system bar padding explicitly for Dialog context
+        val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars),
+                .padding(top = statusBarPadding, bottom = navigationBarPadding),
             color = MaterialTheme.colorScheme.surface
         ) {
             ZoomableBodyContent(

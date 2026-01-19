@@ -6,10 +6,10 @@
             android:name=".ViewerActivity"
             android:exported="true"
             android:theme="@style/Theme.WormaCeptor.Viewer" />
-            
+
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:name=".WormaCeptorFileProvider"
+            android:authorities="${applicationId}.wormaceptor.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

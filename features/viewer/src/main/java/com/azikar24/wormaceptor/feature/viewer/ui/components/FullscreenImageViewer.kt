@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.core.content.FileProvider
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VectorConverter
@@ -80,7 +81,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
@@ -698,28 +698,23 @@ fun shareImage(context: Context, imageData: ByteArray, format: String) {
         }
 
         // Write to cache directory
-        val cacheDir = File(context.cacheDir, "shared_images")
-        if (!cacheDir.exists()) {
-            cacheDir.mkdirs()
-        }
+        val file = File(context.cacheDir, filename)
+        file.outputStream().use { it.write(imageData) }
 
-        val file = File(cacheDir, filename)
-        FileOutputStream(file).use { it.write(imageData) }
-
-        // Get content URI using FileProvider
+        // Get URI via FileProvider
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
 
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        val intent = Intent(Intent.ACTION_SEND).apply {
             type = mimeType
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        context.startActivity(Intent.createChooser(shareIntent, "Share Image"))
+        context.startActivity(Intent.createChooser(intent, "Share Image"))
     } catch (e: Exception) {
         Toast.makeText(context, "Failed to share image: ${e.message}", Toast.LENGTH_SHORT).show()
     }

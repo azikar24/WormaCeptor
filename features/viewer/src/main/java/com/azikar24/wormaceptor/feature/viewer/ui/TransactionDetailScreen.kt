@@ -255,6 +255,16 @@ private fun TransactionDetailContent(
     var searchQuery by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
 
+    // Request body for curl command
+    var curlRequestBody by remember(transaction.id) { mutableStateOf<String?>(null) }
+
+    // Load request body for curl command
+    LaunchedEffect(transaction.id, transaction.request.bodyRef) {
+        curlRequestBody = transaction.request.bodyRef?.let { blobId ->
+            com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
+        }
+    }
+
     val focusRequester = remember { FocusRequester() }
 
     // Search navigation state
@@ -363,7 +373,7 @@ private fun TransactionDetailContent(
                                     text = { Text("Copy as cURL") },
                                     onClick = {
                                         showMenu = false
-                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction))
+                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction, curlRequestBody))
                                     }
                                 )
                                 Divider()
@@ -1771,7 +1781,7 @@ private fun generateTextSummary(transaction: NetworkTransaction): String = build
     }
 }
 
-private fun generateCurlCommand(transaction: NetworkTransaction): String = buildString {
+private fun generateCurlCommand(transaction: NetworkTransaction, requestBody: String?): String = buildString {
     append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
     transaction.request.headers.forEach { (key, values) ->
         values.forEach { value ->
@@ -1780,9 +1790,10 @@ private fun generateCurlCommand(transaction: NetworkTransaction): String = build
             append(" -H '$escapedKey: $escapedValue'")
         }
     }
-    // Note: We don't include the body in the cURL command here as it might be binary or huge,
-    // and we only have the blobId in the domain entity. In a future version, 
-    // we could fetch the body if small.
+    if (!requestBody.isNullOrEmpty()) {
+        val escapedBody = requestBody.replace("'", "'\\''")
+        append(" -d '$escapedBody'")
+    }
 }
 
 private fun formatJson(json: String): String {

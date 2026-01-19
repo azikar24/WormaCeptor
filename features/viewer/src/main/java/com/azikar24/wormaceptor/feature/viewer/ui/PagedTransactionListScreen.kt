@@ -38,6 +38,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.*
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
 
 /**
@@ -307,7 +308,7 @@ private fun PagedTransactionItem(
             }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
-                text = "${transaction.tookMs ?: "?"}ms",
+                text = formatDuration(transaction.tookMs),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )

@@ -1,43 +1,42 @@
 package com.azikar24.wormaceptor.feature.viewer
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.CrashListScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.TransactionListScreen
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
+import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Modifier
+import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
+import kotlinx.coroutines.launch
 
 class ViewerActivity : ComponentActivity() {
 
@@ -63,6 +62,9 @@ class ViewerActivity : ComponentActivity() {
             val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
             val isRefreshingTransactions by viewModel.isRefreshingTransactions.collectAsState()
             val isRefreshingCrashes by viewModel.isRefreshingCrashes.collectAsState()
+            val selectedIds by viewModel.selectedIds.collectAsState()
+            val isSelectionMode by viewModel.isSelectionMode.collectAsState()
+            val scope = rememberCoroutineScope()
 
             WormaCeptorTheme {
                 val navController = rememberNavController()
@@ -128,7 +130,33 @@ class ViewerActivity : ComponentActivity() {
                             isRefreshingTransactions = isRefreshingTransactions,
                             isRefreshingCrashes = isRefreshingCrashes,
                             onRefreshTransactions = viewModel::refreshTransactions,
-                            onRefreshCrashes = viewModel::refreshCrashes
+                            onRefreshCrashes = viewModel::refreshCrashes,
+                            selectedIds = selectedIds,
+                            isSelectionMode = isSelectionMode,
+                            onSelectionToggle = viewModel::toggleSelection,
+                            onSelectAll = viewModel::selectAll,
+                            onClearSelection = viewModel::clearSelection,
+                            onDeleteSelected = { viewModel.deleteSelected() },
+                            onShareSelected = {
+                                val selected = viewModel.getSelectedTransactions()
+                                shareTransactions(selected)
+                            },
+                            onExportSelected = {
+                                scope.launch {
+                                    val selected = viewModel.getSelectedTransactions()
+                                    val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(this@ViewerActivity)
+                                    val fullTransactions = selected.mapNotNull { summary ->
+                                        CoreHolder.queryEngine?.getDetails(summary.id)
+                                    }
+                                    exportManager.exportTransactions(fullTransactions)
+                                }
+                            },
+                            onCopyUrl = { transaction -> copyUrlToClipboard(transaction) },
+                            onShare = { transaction -> shareTransaction(transaction) },
+                            onDelete = { transaction ->
+                                scope.launch { viewModel.deleteTransaction(transaction.id) }
+                            },
+                            onCopyAsCurl = { transaction -> copyAsCurl(transaction) }
                         )
                     }
 
@@ -191,5 +219,75 @@ class ViewerActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    private fun copyUrlToClipboard(transaction: TransactionSummary) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val url = buildFullUrl(transaction)
+        val clip = ClipData.newPlainText("URL", url)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this, "URL copied to clipboard", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun shareTransaction(transaction: TransactionSummary) {
+        val url = buildFullUrl(transaction)
+        val shareText = buildString {
+            appendLine("${transaction.method} $url")
+            appendLine("Status: ${transaction.code ?: "Pending"}")
+            transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
+        }
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareText)
+        }
+        startActivity(Intent.createChooser(intent, "Share Transaction"))
+    }
+
+    private fun shareTransactions(transactions: List<TransactionSummary>) {
+        val shareText = transactions.joinToString("\n\n") { transaction ->
+            val url = buildFullUrl(transaction)
+            buildString {
+                appendLine("${transaction.method} $url")
+                appendLine("Status: ${transaction.code ?: "Pending"}")
+                transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
+            }
+        }
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareText)
+        }
+        startActivity(Intent.createChooser(intent, "Share ${transactions.size} Transactions"))
+    }
+
+    private fun copyAsCurl(transaction: TransactionSummary) {
+        lifecycleScope.launch {
+            val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
+            if (fullTransaction == null) {
+                Toast.makeText(this@ViewerActivity, "Failed to load transaction details", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
+            val curl = buildCurlCommand(fullTransaction)
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("cURL", curl)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this@ViewerActivity, "cURL command copied to clipboard", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun buildFullUrl(transaction: TransactionSummary): String {
+        return "https://${transaction.host}${transaction.path}"
+    }
+
+    private fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {
+        append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
+        transaction.request.headers.forEach { (key, values) ->
+            values.forEach { value ->
+                val escapedKey = key.replace("'", "'\\''")
+                val escapedValue = value.replace("'", "'\\''")
+                append(" -H '$escapedKey: $escapedValue'")
+            }
+        }
+        // Note: Body is stored as blobId reference, not directly accessible here
     }
 }

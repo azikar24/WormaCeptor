@@ -33,7 +33,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -71,7 +70,6 @@ fun TransactionContextMenu(
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
     onCopyAsCurl: () -> Unit,
-    onReplay: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -114,16 +112,6 @@ fun TransactionContextMenu(
             label = "Copy as cURL",
             onClick = {
                 onCopyAsCurl()
-                onDismiss()
-            }
-        )
-
-        // Replay Request
-        ContextMenuItem(
-            icon = Icons.Outlined.Replay,
-            label = "Replay Request",
-            onClick = {
-                onReplay()
                 onDismiss()
             }
         )

@@ -64,7 +64,7 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
-import kotlinx.coroutines.delay
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 
 /**
  * A transaction list item with selection support.
@@ -89,7 +89,6 @@ fun SelectableTransactionItem(
     onCopyUrl: () -> Unit = {},
     onShare: () -> Unit = {},
     onCopyAsCurl: () -> Unit = {},
-    onReplay: () -> Unit = {},
     onDelete: () -> Unit = {}
 ) {
     val hapticFeedback = LocalHapticFeedback.current
@@ -258,7 +257,7 @@ fun SelectableTransactionItem(
                 }
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
-                    text = "${transaction.tookMs ?: "?"}ms",
+                    text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
@@ -272,7 +271,6 @@ fun SelectableTransactionItem(
             onCopyUrl = onCopyUrl,
             onShare = onShare,
             onCopyAsCurl = onCopyAsCurl,
-            onReplay = onReplay,
             onDelete = onDelete
         )
     }

@@ -36,8 +36,6 @@ import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
-import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
-import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilterBar
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
 import java.util.UUID
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
@@ -48,6 +46,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.TransactionListSkel
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
 
 /**
@@ -365,7 +364,7 @@ private fun TransactionItem(
             }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
-                text = "${transaction.tookMs ?: "?"}ms",
+                text = formatDuration(transaction.tookMs),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
@@ -718,7 +717,7 @@ fun PagedTransactionListScreenWithRefresh(
 // ============================================================================
 
 /**
- * TransactionListScreen with multi-select, quick filters, and context menu support.
+ * TransactionListScreen with multi-select and context menu support.
  *
  * @param transactions List of transactions to display
  * @param onItemClick Callback when a transaction is clicked
@@ -730,12 +729,9 @@ fun PagedTransactionListScreenWithRefresh(
  * @param isSelectionMode Whether multi-select mode is active
  * @param onSelectionToggle Callback when a selection is toggled
  * @param onLongClick Callback when an item is long-clicked (enters selection mode)
- * @param quickFilters Set of active quick filters
- * @param onQuickFilterToggle Callback when a quick filter is toggled
  * @param onCopyUrl Callback to copy transaction URL
  * @param onShare Callback to share transaction
  * @param onDelete Callback to delete transaction
- * @param onReplay Callback to replay transaction
  * @param onCopyAsCurl Callback to copy transaction as cURL
  * @param modifier Modifier for the screen
  * @param header Optional header composable
@@ -753,12 +749,9 @@ fun SelectableTransactionListScreen(
     isSelectionMode: Boolean = false,
     onSelectionToggle: (UUID) -> Unit = {},
     onLongClick: (UUID) -> Unit = {},
-    quickFilters: Set<QuickFilter> = emptySet(),
-    onQuickFilterToggle: (QuickFilter) -> Unit = {},
     onCopyUrl: (TransactionSummary) -> Unit = {},
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
-    onReplay: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null
@@ -784,22 +777,11 @@ fun SelectableTransactionListScreen(
         }
     }
 
-    val hasQuickFilters = quickFilters.isNotEmpty()
-
     val listContent: @Composable () -> Unit = {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
         ) {
-            // Quick filter bar
-            item(key = "quick_filters") {
-                QuickFilterBar(
-                    activeFilters = quickFilters,
-                    onFilterToggle = onQuickFilterToggle,
-                    modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
-                )
-            }
-
             // Optional header (e.g., MetricsCard)
             if (header != null) {
                 item(key = "header") {
@@ -826,7 +808,6 @@ fun SelectableTransactionListScreen(
                     onCopyUrl = { onCopyUrl(transaction) },
                     onShare = { onShare(transaction) },
                     onDelete = { onDelete(transaction) },
-                    onReplay = { onReplay(transaction) },
                     onCopyAsCurl = { onCopyAsCurl(transaction) },
                     modifier = Modifier.animateItem()
                 )
@@ -834,7 +815,7 @@ fun SelectableTransactionListScreen(
         }
     }
 
-    if (transactions.isEmpty() && !hasQuickFilters) {
+    if (transactions.isEmpty()) {
         // Empty state with pull-to-refresh
         if (onRefresh != null) {
             PullToRefreshBox(
@@ -852,50 +833,17 @@ fun SelectableTransactionListScreen(
                     )
                 }
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    // Always show quick filter bar
-                    QuickFilterBar(
-                        activeFilters = quickFilters,
-                        onFilterToggle = onQuickFilterToggle,
-                        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
-                    )
-                    EmptyState(
-                        hasActiveFilters = hasActiveFilters,
-                        onClearFilters = onClearFilters,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
-        } else {
-            Column(modifier = modifier.fillMaxSize()) {
-                QuickFilterBar(
-                    activeFilters = quickFilters,
-                    onFilterToggle = onQuickFilterToggle,
-                    modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
-                )
                 EmptyState(
                     hasActiveFilters = hasActiveFilters,
                     onClearFilters = onClearFilters,
                     modifier = Modifier.fillMaxSize()
                 )
             }
-        }
-    } else if (transactions.isEmpty() && hasQuickFilters) {
-        // Show quick filter bar even when empty due to filters
-        Column(modifier = modifier.fillMaxSize()) {
-            QuickFilterBar(
-                activeFilters = quickFilters,
-                onFilterToggle = onQuickFilterToggle,
-                modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm)
-            )
+        } else {
             EmptyState(
-                hasActiveFilters = true,
-                onClearFilters = {
-                    onClearFilters()
-                    // Also clear quick filters
-                    quickFilters.forEach { onQuickFilterToggle(it) }
-                },
-                modifier = Modifier.fillMaxSize()
+                hasActiveFilters = hasActiveFilters,
+                onClearFilters = onClearFilters,
+                modifier = modifier.fillMaxSize()
             )
         }
     } else {

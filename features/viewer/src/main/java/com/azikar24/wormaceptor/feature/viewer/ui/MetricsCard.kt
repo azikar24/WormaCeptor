@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
 import kotlin.math.roundToInt
 
 @Composable
@@ -144,7 +145,7 @@ fun MetricsCard(
 
                 MetricItem(
                     label = "Avg Time",
-                    value = "${avgDuration.toInt()}ms",
+                    value = formatDurationAvg(avgDuration),
                     color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f)
                 )

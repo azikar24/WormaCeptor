@@ -51,6 +51,7 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
+import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
@@ -78,6 +79,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
@@ -319,7 +321,10 @@ private fun TransactionDetailContent(
                                     }
                                 )
                             } else {
-                                Text(title, maxLines = 1)
+                                TextWithStartEllipsis(
+                                    text = title,
+                                    modifier = Modifier.weight(1f, fill = false)
+                                )
                             }
                         },
                         navigationIcon = {
@@ -612,7 +617,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             DetailRow("Method", transaction.request.method)
             DetailRow("Status", transaction.status.name)
             DetailRow("Response Code", transaction.response?.code?.toString() ?: "-")
-            DetailRow("Duration", "${transaction.durationMs ?: "?"}ms")
+            DetailRow("Duration", formatDuration(transaction.durationMs))
             DetailRow(
                 "Timestamp",
                 java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(transaction.timestamp))
@@ -738,7 +743,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "${durationMs}ms",
+                text = formatDuration(durationMs),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
@@ -1762,7 +1767,7 @@ private fun generateTextSummary(transaction: NetworkTransaction): String = build
     appendLine("Method: ${transaction.request.method}")
     appendLine("Status: ${transaction.status.name}")
     appendLine("Code: ${transaction.response?.code ?: "-"}")
-    appendLine("Duration: ${transaction.durationMs ?: "?"}ms")
+    appendLine("Duration: ${formatDuration(transaction.durationMs)}")
     appendLine("\n[Request Headers]")
     appendLine(formatHeaders(transaction.request.headers))
     transaction.response?.let { res ->

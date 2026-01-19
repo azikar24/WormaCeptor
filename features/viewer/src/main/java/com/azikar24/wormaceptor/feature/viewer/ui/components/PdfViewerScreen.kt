@@ -7,6 +7,7 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.core.content.FileProvider
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -94,7 +95,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.content.FileProvider
+
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.Dispatchers
@@ -886,15 +887,17 @@ private fun extractPdfVersion(data: ByteArray): String? {
 
 private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFile: File?) {
     try {
+        // Use existing file or create new one
         val file = existingFile ?: run {
-            val shareFile = File(context.cacheDir, "share_${System.currentTimeMillis()}.pdf")
-            FileOutputStream(shareFile).use { it.write(pdfData) }
-            shareFile
+            val newFile = File(context.cacheDir, "WormaCeptor_${System.currentTimeMillis()}.pdf")
+            newFile.outputStream().use { it.write(pdfData) }
+            newFile
         }
 
+        // Get URI via FileProvider
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
 

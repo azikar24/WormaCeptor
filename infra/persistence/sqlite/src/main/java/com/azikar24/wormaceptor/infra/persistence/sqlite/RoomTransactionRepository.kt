@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
+import com.azikar24.wormaceptor.domain.contracts.UrlParser
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
@@ -79,11 +80,12 @@ class RoomTransactionRepository(
     }
 
     private fun entityToSummary(entity: TransactionEntity): TransactionSummary {
+        val parsed = UrlParser.parse(entity.reqUrl)
         return TransactionSummary(
             id = entity.id,
             method = entity.reqMethod,
-            host = extractHost(entity.reqUrl),
-            path = extractPath(entity.reqUrl),
+            host = parsed.baseUrl,
+            path = parsed.path,
             code = entity.resCode,
             tookMs = entity.durationMs,
             hasRequestBody = entity.reqBodyRef != null,
@@ -91,21 +93,5 @@ class RoomTransactionRepository(
             status = entity.status,
             timestamp = entity.timestamp
         )
-    }
-
-    private fun extractHost(url: String): String {
-        return try {
-            java.net.URI(url).host ?: url
-        } catch (e: Exception) {
-            url
-        }
-    }
-
-    private fun extractPath(url: String): String {
-        return try {
-            java.net.URI(url).path ?: ""
-        } catch (e: Exception) {
-            ""
-        }
     }
 }

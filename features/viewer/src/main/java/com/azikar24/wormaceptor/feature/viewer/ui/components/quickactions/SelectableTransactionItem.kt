@@ -223,7 +223,7 @@ fun SelectableTransactionItem(
                 ) {
                     MethodBadge(transaction.method)
                     Text(
-                        text = truncateStart(transaction.path, 40),
+                        text = transaction.path,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
@@ -444,12 +444,4 @@ private fun methodColor(method: String): Color = when (method.uppercase()) {
     "DELETE" -> WormaCeptorColors.StatusRed
     "PATCH" -> Color(0xFF9C27B0)
     else -> WormaCeptorColors.StatusGrey
-}
-
-private fun truncateStart(text: String, maxLength: Int): String {
-    return if (text.length > maxLength) {
-        "..." + text.takeLast(maxLength - 3)
-    } else {
-        text
-    }
 }

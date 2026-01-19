@@ -796,14 +796,14 @@ Rebuilds entire AnnotatedString on every match navigation (currentMatchGlobalPos
 
 ## 9. Anti-Patterns to Eliminate
 
-1. **Service Locator (CoreHolder)** → Dependency Injection
-2. **Global Mutable State** → Scoped immutable state
-3. **runBlocking in Hot Paths** → Proper coroutine scopes
-4. **Force Unwrap (!!)** → Safe null handling
-5. **In-Memory Filtering** → Database queries with indexes
-6. **Callback Hell** → Suspend functions
-7. **Magic Numbers** → Named constants
-8. **Silent Failures** → Proper error handling
+1. **Service Locator (CoreHolder)** -> Dependency Injection
+2. **Global Mutable State** -> Scoped immutable state
+3. **runBlocking in Hot Paths** -> Proper coroutine scopes
+4. **Force Unwrap (!!)** -> Safe null handling
+5. **In-Memory Filtering** -> Database queries with indexes
+6. **Callback Hell** -> Suspend functions
+7. **Magic Numbers** -> Named constants
+8. **Silent Failures** -> Proper error handling
 
 ---
 

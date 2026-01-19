@@ -66,4 +66,4 @@ The Interceptor creates a `NetworkTransaction` and a `Request`. When the respons
 The UI queries `TransactionSummary`. This avoids loading heavy `headers` or `bodies` into memory while scrolling through hundreds of items. Only when a specific item is selected does the UI load the `Request`/`Response` metadata and the corresponding `Blob`.
 
 ## 4. Storage Extensions
-The model supports an `Extension` map on the Root entity for non-core metadata (e.g., Protobuf message names, GraphQL operation names) as defined in [PRODUCT_BOUNDARIES.md](file:///c:/Users/kroos/Documents/Dev/Projects/WormaCeptor/PRODUCT_BOUNDARIES.md).
+The model supports an `Extension` map on the Root entity for non-core metadata (e.g., Protobuf message names, GraphQL operation names) as defined in [PRODUCT_BOUNDARIES.md](PRODUCT_BOUNDARIES.md).

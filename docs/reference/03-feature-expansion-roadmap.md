@@ -500,7 +500,7 @@ These features represent significant strategic investments that fundamentally ex
 - Train model on transaction history
 - Detect anomalies:
   - Sudden response time increases
-  - Status code changes (200 → 500)
+  - Status code changes (200 -> 500)
   - Response size changes
   - New error patterns
 - Alert system for anomalies
@@ -554,7 +554,7 @@ These features represent significant strategic investments that fundamentally ex
 - Extract trace IDs from headers (X-Trace-Id, X-Request-Id)
 - Link transactions to trace IDs
 - Deep link to external tracing tools (Jaeger, Zipkin)
-- Visualize client → API → database flow
+- Visualize client -> API -> database flow
 - Span timing display
 
 **Complexity**: Medium (header extraction + integration)
@@ -642,7 +642,7 @@ These features represent significant strategic investments that fundamentally ex
 | AI Anomaly Detection | Low | Very High | 1 | Long |
 | GraphQL Schema Introspection | Low | High | 1 | Long |
 
-**Priority Score** = Value (High=3, Med=2, Low=1) × Inverse Complexity (Low=3, Med=2, High=1, Very High=0.5)
+**Priority Score** = Value (High=3, Med=2, Low=1) x Inverse Complexity (Low=3, Med=2, High=1, Very High=0.5)
 
 ## Implementation Sequence Recommendations
 

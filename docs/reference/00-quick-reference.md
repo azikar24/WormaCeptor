@@ -197,46 +197,46 @@ WormaCeptorApi.redactionConfig
 ## Architecture Quick Summary
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Host App (MainActivity)                                │
-│  - Initializes WormaCeptorApi                           │
-│  - Adds WormaCeptorInterceptor to OkHttp                │
-└───────────────────┬─────────────────────────────────────┘
-                    │
-┌───────────────────▼─────────────────────────────────────┐
-│  API Layer (:api:client)                                │
-│  - WormaCeptorApi (init, openViewer)                    │
-│  - WormaCeptorInterceptor (captures HTTP traffic)       │
-│  - ServiceProvider interface                            │
-└───────────────────┬─────────────────────────────────────┘
-                    │ (Reflection Discovery)
-┌───────────────────▼─────────────────────────────────────┐
-│  Implementation (:api:impl:persistence)                 │
-│  - ServiceProviderImpl (coordinates components)         │
-│  - NotificationHelper (ongoing notifications)           │
-└───────────────────┬─────────────────────────────────────┘
-                    │
-┌───────────────────▼─────────────────────────────────────┐
-│  Core Layer (:core:engine)                              │
-│  - CaptureEngine (business logic for capture)           │
-│  - QueryEngine (business logic for queries)             │
-│  - CrashReporter (exception handler)                    │
-└─────────┬──────────────────────┬────────────────────────┘
-          │                      │
-┌─────────▼──────────┐  ┌────────▼────────────────────────┐
-│  Domain Contracts  │  │  Infrastructure                 │
-│  - Repository IF   │  │  - RoomTransactionRepository    │
-│  - BlobStorage IF  │  │  - RoomCrashRepository          │
-└────────────────────┘  │  - FileSystemBlobStorage        │
-                        │  - Room Database (SQLite)       │
-                        └──────────┬──────────────────────┘
-                                   │
-                        ┌──────────▼──────────────────────┐
-                        │  Features (:features:viewer)    │
-                        │  - ViewerActivity (UI)          │
-                        │  - ViewerViewModel (state)      │
-                        │  - Compose screens              │
-                        └─────────────────────────────────┘
++-------------------------------------------------------------+
+|  Host App (MainActivity)                                    |
+|  - Initializes WormaCeptorApi                               |
+|  - Adds WormaCeptorInterceptor to OkHttp                    |
++---------------------------+---------------------------------+
+                            |
++---------------------------v---------------------------------+
+|  API Layer (:api:client)                                    |
+|  - WormaCeptorApi (init, openViewer)                        |
+|  - WormaCeptorInterceptor (captures HTTP traffic)           |
+|  - ServiceProvider interface                                |
++---------------------------+---------------------------------+
+                            | (Reflection Discovery)
++---------------------------v---------------------------------+
+|  Implementation (:api:impl:persistence)                     |
+|  - ServiceProviderImpl (coordinates components)             |
+|  - NotificationHelper (ongoing notifications)               |
++---------------------------+---------------------------------+
+                            |
++---------------------------v---------------------------------+
+|  Core Layer (:core:engine)                                  |
+|  - CaptureEngine (business logic for capture)               |
+|  - QueryEngine (business logic for queries)                 |
+|  - CrashReporter (exception handler)                        |
++---------+----------------------+----------------------------+
+          |                      |
++---------v----------+  +--------v------------------------+
+|  Domain Contracts  |  |  Infrastructure                 |
+|  - Repository IF   |  |  - RoomTransactionRepository    |
+|  - BlobStorage IF  |  |  - RoomCrashRepository          |
++--------------------+  |  - FileSystemBlobStorage        |
+                        |  - Room Database (SQLite)       |
+                        +----------+----------------------+
+                                   |
+                        +----------v----------------------+
+                        |  Features (:features:viewer)    |
+                        |  - ViewerActivity (UI)          |
+                        |  - ViewerViewModel (state)      |
+                        |  - Compose screens              |
+                        +---------------------------------+
 ```
 
 ## Technology Stack Summary

@@ -23,41 +23,41 @@ Android Library (AAR) designed for integration into Android applications as a de
 WormaCeptor V2 follows Clean Architecture principles with strict layer separation:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         HOST APPLICATION                        │
-│  (Your Android App - integrates via Gradle dependency)         │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                ┌────────────▼────────────┐
-                │   API LAYER             │
-                │   :api:client           │◄──── Always included
-                │   Public interfaces     │
-                └────────────┬────────────┘
-                             │ Reflection Discovery
-                ┌────────────▼──────────────────────┐
-                │   IMPLEMENTATION LAYER             │
-                │   :api:impl:persistence (SQLite)  │◄─ debugImplementation
-                │   :api:impl:imdb (In-Memory)      │◄─ optional
-                │   :api:impl:no-op (No-Op)         │◄─ fallback
-                └────────────┬──────────────────────┘
-                             │
-                ┌────────────▼────────────┐
-                │   CORE LAYER            │
-                │   :core:engine          │◄──── Business Logic
-                │   Orchestration         │
-                └─────┬──────────┬────────┘
-                      │          │
-        ┌─────────────▼──┐    ┌──▼─────────────────┐
-        │  DOMAIN LAYER  │    │  INFRASTRUCTURE    │
-        │  :domain:*     │    │  :infra:*          │
-        │  Pure Kotlin   │    │  Android/Room/OkHttp│
-        └────────────────┘    └─────┬──────────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │  FEATURE LAYER      │
-                         │  :features:viewer   │
-                         │  Jetpack Compose UI │
-                         └─────────────────────┘
++---------------------------------------------------------------------+
+|                         HOST APPLICATION                            |
+|  (Your Android App - integrates via Gradle dependency)              |
++-----------------------------+---------------------------------------+
+                              |
+                 +------------v------------+
+                 |   API LAYER             |
+                 |   :api:client           |<---- Always included
+                 |   Public interfaces     |
+                 +------------+------------+
+                              | Reflection Discovery
+                 +------------v----------------------+
+                 |   IMPLEMENTATION LAYER            |
+                 |   :api:impl:persistence (SQLite)  |<- debugImplementation
+                 |   :api:impl:imdb (In-Memory)      |<- optional
+                 |   :api:impl:no-op (No-Op)         |<- fallback
+                 +------------+---------------------+
+                              |
+                 +------------v------------+
+                 |   CORE LAYER            |
+                 |   :core:engine          |<---- Business Logic
+                 |   Orchestration         |
+                 +-----+----------+--------+
+                       |          |
+         +-------------v--+    +--v---------------------+
+         |  DOMAIN LAYER  |    |  INFRASTRUCTURE       |
+         |  :domain:*     |    |  :infra:*             |
+         |  Pure Kotlin   |    |  Android/Room/OkHttp  |
+         +----------------+    +-----+------------------+
+                                     |
+                          +----------v------------+
+                          |  FEATURE LAYER        |
+                          |  :features:viewer     |
+                          |  Jetpack Compose UI   |
+                          +-----------------------+
 ```
 
 ### Layer Responsibilities
@@ -407,94 +407,94 @@ class ShakeDetector(
 
 ```
 1. OkHttp Request Created
-   │
-   ▼
+   |
+   v
 2. WormaCeptorInterceptor.intercept() called
-   │
-   ├─ Read request body from okio.Buffer
-   ├─ Apply redaction (headers + body regex)
-   ├─ Call provider.startTransaction()
-   │  │
-   │  ▼
-   │  CaptureEngine.startTransaction()
-   │  ├─ Save body to BlobStorage → returns BlobID
-   │  ├─ Create NetworkTransaction with Request
-   │  └─ Save to TransactionRepository (Room)
-   │
-   ▼
+   |
+   +- Read request body from okio.Buffer
+   +- Apply redaction (headers + body regex)
+   +- Call provider.startTransaction()
+   |  |
+   |  v
+   |  CaptureEngine.startTransaction()
+   |  +- Save body to BlobStorage -> returns BlobID
+   |  +- Create NetworkTransaction with Request
+   |  +- Save to TransactionRepository (Room)
+   |
+   v
 3. Execute network call: chain.proceed(request)
-   │
-   ▼
+   |
+   v
 4. OkHttp Response Received
-   │
-   ▼
+   |
+   v
 5. Interceptor captures response
-   │
-   ├─ Peek response body (maxContentLength)
-   ├─ Apply redaction
-   ├─ Extract protocol and TLS version
-   ├─ Call provider.completeTransaction()
-   │  │
-   │  ▼
-   │  CaptureEngine.completeTransaction()
-   │  ├─ Save body to BlobStorage → returns BlobID
-   │  ├─ Update transaction with Response + duration
-   │  ├─ Save to TransactionRepository
-   │  └─ Show notification (if enabled)
-   │
-   ▼
+   |
+   +- Peek response body (maxContentLength)
+   +- Apply redaction
+   +- Extract protocol and TLS version
+   +- Call provider.completeTransaction()
+   |  |
+   |  v
+   |  CaptureEngine.completeTransaction()
+   |  +- Save body to BlobStorage -> returns BlobID
+   |  +- Update transaction with Response + duration
+   |  +- Save to TransactionRepository
+   |  +- Show notification (if enabled)
+   |
+   v
 6. Response returned to application
 ```
 
 **Storage Separation**:
-- **Metadata** (URL, headers, status) → SQLite database
-- **Bodies** (request/response payloads) → Filesystem blobs
+- **Metadata** (URL, headers, status) -> SQLite database
+- **Bodies** (request/response payloads) -> Filesystem blobs
 
 ### Read Path (Query Flow)
 
 ```
 1. User opens ViewerActivity
-   │
-   ▼
+   |
+   v
 2. ViewerViewModel created
-   │
-   ├─ Access CoreHolder.queryEngine
-   │
-   ▼
+   |
+   +- Access CoreHolder.queryEngine
+   |
+   v
 3. QueryEngine.observeTransactions() called
-   │
-   ▼
+   |
+   v
 4. TransactionRepository.getAllTransactions() returns Flow
-   │
-   ▼
+   |
+   v
 5. Room DAO emits List<TransactionEntity>
-   │
-   ├─ Mapped to domain models
-   │
-   ▼
+   |
+   +- Mapped to domain models
+   |
+   v
 6. Flow emitted to ViewModel
-   │
-   ▼
+   |
+   v
 7. StateFlow updated
-   │
-   ▼
+   |
+   v
 8. Compose UI recomposes with new data
-   │
-   ▼
+   |
+   v
 9. User taps transaction
-   │
-   ▼
+   |
+   v
 10. Navigate to TransactionDetailScreen
-    │
-    ├─ QueryEngine.getTransactionById(id)
-    │
-    ▼
+    |
+    +- QueryEngine.getTransactionById(id)
+    |
+    v
 11. User views request/response body
-    │
-    ├─ QueryEngine.getBodyContent(blobId)
-    ├─ BlobStorage.readBlob(blobId) reads file
-    │
-    ▼
+    |
+    +- QueryEngine.getBodyContent(blobId)
+    +- BlobStorage.readBlob(blobId) reads file
+    |
+    v
 12. Body displayed with JSON formatting
 ```
 
@@ -502,22 +502,22 @@ class ShakeDetector(
 
 ```
 1. User enters search query
-   │
-   ▼
+   |
+   v
 2. ViewerViewModel.search(query) called
-   │
-   ├─ Update searchQuery StateFlow
-   │
-   ▼
+   |
+   +- Update searchQuery StateFlow
+   |
+   v
 3. Combined Flow (transactions + query + filters)
-   │
-   ├─ QueryEngine.search(query) for DB search
-   ├─ In-memory filtering for method/status
-   │
-   ▼
+   |
+   +- QueryEngine.search(query) for DB search
+   +- In-memory filtering for method/status
+   |
+   v
 4. Filtered results emitted
-   │
-   ▼
+   |
+   v
 5. UI updates with filtered list
 ```
 
@@ -525,19 +525,19 @@ class ShakeDetector(
 
 ```
 1. Uncaught exception thrown
-   │
-   ▼
+   |
+   v
 2. CrashReporter.uncaughtException() called
-   │
-   ├─ Extract stack trace via StringWriter
-   ├─ Create Crash entity
-   ├─ Launch coroutine: CrashRepository.saveCrash()
-   ├─ Thread.sleep(500) to allow DB write
-   │
-   ▼
+   |
+   +- Extract stack trace via StringWriter
+   +- Create Crash entity
+   +- Launch coroutine: CrashRepository.saveCrash()
+   +- Thread.sleep(500) to allow DB write
+   |
+   v
 3. Delegate to original exception handler
-   │
-   └─ OR System.exit(2) if no original handler
+   |
+   +- OR System.exit(2) if no original handler
 ```
 
 ## Key Components and Interactions
@@ -600,11 +600,11 @@ NavHost {
 }
 
 // HomeScreen tabs:
-- Transactions tab → TransactionListScreen
-- Crashes tab → CrashListScreen
+- Transactions tab -> TransactionListScreen
+- Crashes tab -> CrashListScreen
 
-// Tap transaction → navigate("detail/$id")
-// Tap crash → navigate("crash/$timestamp")
+// Tap transaction -> navigate("detail/$id")
+// Tap crash -> navigate("crash/$timestamp")
 ```
 
 ## Technology Stack
@@ -797,365 +797,6 @@ if (WormaCeptorApi.isInitialized()) {
     }
 }
 ```
-
-## Environment Variables and Build Configuration
-
-### Build Types
-
-```kotlin
-// app/build.gradle.kts
-android {
-    buildTypes {
-        debug {
-            // WormaCeptor active (via debugImplementation)
-            isMinifyEnabled = false
-            isDebuggable = true
-        }
-
-        release {
-            // No WormaCeptor (only api:client with NoOp fallback)
-            isMinifyEnabled = true
-            isDebuggable = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-}
-```
-
-### Compile-Time Constants
-
-Key constants that could be externalized:
-
-```kotlin
-// Currently hard-coded in WormaCeptorInterceptor.kt
-const val DEFAULT_MAX_CONTENT_LENGTH = 250_000L  // 250KB
-const val DEFAULT_RETENTION = Period.ONE_WEEK
-
-// In ServiceProviderImpl.kt
-const val DATABASE_NAME = "wormaceptor-v2.db"
-
-// In FileSystemBlobStorage.kt
-const val BLOB_DIRECTORY = "wormaceptor_blobs"
-
-// In NotificationHelper.kt
-const val CHANNEL_ID = "wormaceptor_v2_channel"
-const val NOTIFICATION_ID = 4200
-
-// In ShakeDetector.kt
-const val SHAKE_THRESHOLD_GRAVITY = 2.7f
-const val SHAKE_SLOP_TIME_MS = 3000
-const val SHAKE_COUNT_RESET_TIME_MS = 500
-```
-
-**Recommendation**: Create `BuildConfig` or configuration object for externalization.
-
-## Extension Points
-
-### 1. Custom Storage Implementation
-
-Implement `BlobStorage` for cloud-based body storage:
-
-```kotlin
-class S3BlobStorage(
-    private val s3Client: AmazonS3Client,
-    private val bucketName: String
-) : BlobStorage {
-
-    override suspend fun saveBlob(stream: InputStream): BlobID {
-        val key = UUID.randomUUID().toString()
-        s3Client.putObject(bucketName, key, stream, ObjectMetadata())
-        return key
-    }
-
-    override suspend fun readBlob(id: BlobID): InputStream? {
-        return s3Client.getObject(bucketName, id).objectContent
-    }
-
-    override suspend fun deleteBlob(id: BlobID) {
-        s3Client.deleteObject(bucketName, id)
-    }
-}
-```
-
-### 2. Custom ServiceProvider
-
-Create a custom implementation module:
-
-```kotlin
-// In your custom module
-package com.azikar24.wormaceptor.api.internal
-
-class ServiceProviderImpl : ServiceProvider {
-    override fun init(context: Context, logCrashes: Boolean) {
-        // Your custom initialization
-        // Use Firebase, custom storage, etc.
-    }
-
-    override fun startTransaction(request: Request): UUID? {
-        // Custom capture logic
-    }
-
-    override fun completeTransaction(id: UUID, response: Response) {
-        // Custom completion logic
-    }
-}
-```
-
-**Note**: Must use exact package/class name for reflection discovery.
-
-### 3. Custom Repository Backend
-
-Implement `TransactionRepository` for remote sync:
-
-```kotlin
-class FirebaseTransactionRepository(
-    private val firestore: FirebaseFirestore
-) : TransactionRepository {
-
-    override fun getAllTransactions(): Flow<List<TransactionSummary>> {
-        return firestore.collection("transactions")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .snapshots()
-            .map { snapshot ->
-                snapshot.documents.map { it.toTransactionSummary() }
-            }
-    }
-
-    override suspend fun saveTransaction(transaction: NetworkTransaction) {
-        firestore.collection("transactions")
-            .document(transaction.id.toString())
-            .set(transaction.toMap())
-            .await()
-    }
-
-    // Implement other methods...
-}
-```
-
-### 4. Advanced Redaction Strategies
-
-Extend `RedactionConfig` with custom logic:
-
-```kotlin
-class CustomRedactionStrategy {
-    fun redactPII(body: String): String {
-        return body
-            .replace(EMAIL_REGEX, "[EMAIL REDACTED]")
-            .replace(PHONE_REGEX, "[PHONE REDACTED]")
-            .replace(SSN_REGEX, "[SSN REDACTED]")
-            .replace(CREDIT_CARD_REGEX, "[CC REDACTED]")
-    }
-
-    companion object {
-        val EMAIL_REGEX = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
-        val PHONE_REGEX = "\\d{3}-\\d{3}-\\d{4}".toRegex()
-        val SSN_REGEX = "\\d{3}-\\d{2}-\\d{4}".toRegex()
-        val CREDIT_CARD_REGEX = "\\d{4}[- ]?\\d{4}[- ]?\\d{4}[- ]?\\d{4}".toRegex()
-    }
-}
-```
-
-### 5. Custom Notification Handler
-
-Override notification behavior:
-
-```kotlin
-class CustomNotificationHelper(private val context: Context) {
-
-    fun show(transaction: NetworkTransaction) {
-        // Custom notification with rich media
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("${transaction.request.method} ${transaction.response?.code}")
-            .setContentText(transaction.request.url)
-            .setSmallIcon(R.drawable.ic_network)
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(formatTransactionDetails(transaction)))
-            .build()
-
-        notificationManager.notify(NOTIFICATION_ID, notification)
-    }
-}
-```
-
-### 6. Export Format Extensions
-
-Add custom export formats:
-
-```kotlin
-class HarExporter {
-    fun exportToHar(transactions: List<NetworkTransaction>): String {
-        val har = HarLog(
-            version = "1.2",
-            creator = HarCreator(name = "WormaCeptor", version = "2.0"),
-            entries = transactions.map { it.toHarEntry() }
-        )
-        return Json.encodeToString(har)
-    }
-}
-
-class PostmanCollectionExporter {
-    fun exportToPostman(transactions: List<NetworkTransaction>): String {
-        val collection = PostmanCollection(
-            info = Info(name = "Captured Requests", schema = POSTMAN_SCHEMA),
-            item = transactions.map { it.toPostmanRequest() }
-        )
-        return Json.encodeToString(collection)
-    }
-}
-```
-
-### 7. Parser Plugin Architecture
-
-Add GraphQL or Protobuf parsers:
-
-```kotlin
-// In :infra:parser:graphql
-interface BodyParser {
-    fun canParse(contentType: String): Boolean
-    fun parse(body: String): ParsedBody
-    fun format(body: String): String
-}
-
-class GraphQLParser : BodyParser {
-    override fun canParse(contentType: String) =
-        contentType.contains("application/graphql")
-
-    override fun parse(body: String): ParsedBody {
-        // Extract operation name, variables, query
-        val gqlRequest = Json.decodeFromString<GraphQLRequest>(body)
-        return ParsedBody.GraphQL(
-            operationName = gqlRequest.operationName,
-            query = gqlRequest.query,
-            variables = gqlRequest.variables
-        )
-    }
-
-    override fun format(body: String): String {
-        // Syntax highlighting, indentation
-        return formatGraphQLQuery(body)
-    }
-}
-```
-
-### 8. UI Theme Customization
-
-Extend Material 3 theme:
-
-```kotlin
-// In features/viewer/ui/theme/Theme.kt
-@Composable
-fun CustomWormaCeptorTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
-    brandColor: Color = Color(0xFF560BAD),  // Custom brand color
-    content: @Composable () -> Unit
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) dynamicDarkColorScheme(context)
-            else dynamicLightColorScheme(context)
-        }
-        darkTheme -> darkColorScheme(primary = brandColor)
-        else -> lightColorScheme(primary = brandColor)
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = CustomTypography,
-        content = content
-    )
-}
-```
-
-## Architectural Patterns
-
-### 1. Clean Architecture / Onion Architecture
-- Domain layer is pure Kotlin with no framework dependencies
-- Dependencies point inward (Infrastructure → Domain, never reverse)
-- Verified by ArchUnit tests
-
-### 2. Dependency Inversion Principle (DIP)
-- Core depends on repository interfaces, not concrete implementations
-- Infrastructure provides concrete implementations
-- Enables easy substitution (SQLite ↔ In-Memory ↔ Remote)
-
-### 3. Repository Pattern
-- Abstracts data access behind interfaces
-- Hides implementation details (Room, filesystem, network)
-- Exposes Flow-based reactive streams
-
-### 4. Service Provider Pattern
-- `ServiceProvider` interface defines contract
-- Multiple implementations (persistence, imdb, no-op)
-- Reflection-based discovery at runtime
-
-### 5. Adapter / Anti-Corruption Layer
-- Entity mappings prevent Room annotations from leaking into domain
-- `TransactionEntity.toDomain()` / `fromDomain()` conversions
-- OkHttp types converted to domain types at API boundary
-
-### 6. Strategy Pattern
-- Redaction strategies configurable via `RedactionConfig`
-- Storage modes (SQLite, In-Memory, No-Op)
-- Retention policies (ONE_HOUR, ONE_DAY, FOREVER)
-
-### 7. Observer Pattern (Reactive)
-- Room DAOs return `Flow<List<T>>`
-- UI observes via `collectAsState()` in Compose
-- Automatic UI updates on data changes
-
-### 8. Singleton / Holder Pattern
-- `WormaCeptorApi` is Kotlin object (singleton)
-- `CoreHolder` stores global engine references
-- Volatile fields for thread-safe lazy initialization
-
-### 9. Builder / Fluent API
-- `WormaCeptorInterceptor()` chainable configuration
-- `RedactionConfig` fluent methods
-
-### 10. Crash Safety / Defensive Programming
-- All interceptor operations wrapped in try-catch
-- Never throws from interceptor (would break HTTP calls)
-- CrashReporter delegates to original handler
-
-## Scalability Considerations
-
-### Current Limitations
-
-1. **No Pagination**: Room queries return full lists, not paginated
-2. **Search Performance**: LIKE queries without full-text search indexes
-3. **Memory Usage**: Large response bodies loaded entirely into memory
-4. **Single Device**: No multi-device sync or team collaboration
-5. **File System**: Blobs stored locally, no cloud backup
-
-### Scalability Improvements
-
-**For Large Transaction Volumes**:
-- Implement Paging 3 for lazy loading
-- Add Room FTS (Full-Text Search) for faster queries
-- Use `LIMIT` and `OFFSET` in SQL queries
-- Implement LRU cache for frequently accessed blobs
-
-**For Large Bodies**:
-- Stream large bodies instead of loading entirely
-- Implement chunked reading for display
-- Add compression for stored blobs (gzip)
-- Truncate very large bodies (configurable threshold)
-
-**For Team Collaboration**:
-- Add user identification to transactions
-- Implement remote sync with conflict resolution
-- WebSocket real-time updates
-- Role-based access control
-
-**For Performance**:
-- Add indexes on `timestamp`, `reqUrl`, `statusCode`
-- Use Room's `@Index` annotation
-- Implement database vacuuming/cleanup
-- Background thread for all DB operations (already done)
 
 ## Summary
 

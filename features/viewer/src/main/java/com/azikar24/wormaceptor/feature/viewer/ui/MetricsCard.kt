@@ -125,18 +125,6 @@ fun MetricsCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                MetricItem(
-                    label = "Total",
-                    value = totalRequests.toString(),
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.weight(1f)
-                )
-                MetricItem(
-                    label = "Avg Time",
-                    value = "${avgDuration.toInt()}ms",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier.weight(1f)
-                )
                 Box(
                     modifier = Modifier.weight(1f),
                     contentAlignment = Alignment.Center
@@ -146,6 +134,20 @@ fun MetricsCard(
                         percentage = successRate.toFloat()
                     )
                 }
+
+                MetricItem(
+                    label = "Total",
+                    value = totalRequests.toString(),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                MetricItem(
+                    label = "Avg Time",
+                    value = "${avgDuration.toInt()}ms",
+                    color = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.weight(1f)
+                )
             }
 
             // Expandable details

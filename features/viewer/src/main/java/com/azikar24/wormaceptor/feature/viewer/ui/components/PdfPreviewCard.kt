@@ -633,7 +633,7 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?) 
 
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
 

@@ -45,6 +45,7 @@ dependencies {
 
     implementation(project(":api:client"))
     debugImplementation(project(":api:impl:persistence"))
+//    debugImplementation(project(":api:impl:no-op"))
 //    debugImplementation(project(":api:impl:imdb"))
 
     implementation(libs.androidx.activity.compose)

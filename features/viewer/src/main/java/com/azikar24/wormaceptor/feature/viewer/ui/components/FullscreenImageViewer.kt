@@ -709,7 +709,7 @@ fun shareImage(context: Context, imageData: ByteArray, format: String) {
         // Get content URI using FileProvider
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
 

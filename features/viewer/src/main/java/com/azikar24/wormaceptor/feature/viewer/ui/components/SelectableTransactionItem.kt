@@ -52,6 +52,7 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 
 /**
  * A transaction list item that supports selection mode.
@@ -69,7 +70,6 @@ fun SelectableTransactionItem(
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
     onDelete: () -> Unit,
-    onReplay: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -180,11 +180,10 @@ fun SelectableTransactionItem(
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
                 ) {
                     MethodBadge(transaction.method)
-                    Text(
+                    TextWithStartEllipsis(
                         text = transaction.path,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
-                        maxLines = 1,
                         modifier = Modifier.weight(1f, fill = false),
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -216,7 +215,7 @@ fun SelectableTransactionItem(
                 }
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
-                    text = "${transaction.tookMs ?: "?"}ms",
+                    text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
@@ -231,7 +230,6 @@ fun SelectableTransactionItem(
             onCopyUrl = onCopyUrl,
             onShare = onShare,
             onDelete = onDelete,
-            onReplay = onReplay,
             onCopyAsCurl = onCopyAsCurl,
             offset = DpOffset(
                 x = WormaCeptorDesignSystem.Spacing.lg,

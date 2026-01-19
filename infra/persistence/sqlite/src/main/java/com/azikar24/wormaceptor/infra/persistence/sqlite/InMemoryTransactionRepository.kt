@@ -7,6 +7,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
+import com.azikar24.wormaceptor.domain.contracts.UrlParser
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import java.util.UUID
@@ -95,18 +96,21 @@ class InMemoryTransactionRepository : TransactionRepository {
         }
     }
 
-    private fun NetworkTransaction.toSummary() = TransactionSummary(
-        id = id,
-        timestamp = timestamp,
-        method = request.method,
-        host = try { java.net.URI(request.url).host ?: "" } catch (e: Exception) { "" },
-        path = try { java.net.URI(request.url).path ?: request.url } catch (e: Exception) { request.url },
-        code = response?.code,
-        tookMs = durationMs,
-        hasRequestBody = request.bodySize > 0,
-        hasResponseBody = (response?.bodySize ?: 0) > 0,
-        status = status
-    )
+    private fun NetworkTransaction.toSummary(): TransactionSummary {
+        val parsed = UrlParser.parse(request.url)
+        return TransactionSummary(
+            id = id,
+            timestamp = timestamp,
+            method = request.method,
+            host = parsed.baseUrl,
+            path = parsed.path,
+            code = response?.code,
+            tookMs = durationMs,
+            hasRequestBody = request.bodySize > 0,
+            hasResponseBody = (response?.bodySize ?: 0) > 0,
+            status = status
+        )
+    }
 
     private inner class InMemoryPagingSource(
         private val transactions: List<NetworkTransaction>,

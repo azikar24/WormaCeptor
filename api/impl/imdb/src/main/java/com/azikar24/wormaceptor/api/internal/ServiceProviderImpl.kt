@@ -2,11 +2,11 @@ package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import com.azikar24.wormaceptor.api.ServiceProvider
 import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.core.engine.CaptureEngine
 import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.domain.contracts.UrlParser
 import com.azikar24.wormaceptor.core.engine.CrashReporter
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryBlobStorage
@@ -99,10 +99,10 @@ internal class ServiceProviderImpl : ServiceProvider {
             val request = transaction.request
             val response = transaction.response
 
-            // Parse URL to extract host and path
-            val uri = Uri.parse(request.url)
-            val host = uri.host ?: ""
-            val path = uri.path ?: "/"
+            // Parse URL to extract base URL and path
+            val parsed = UrlParser.parse(request.url)
+            val host = parsed.baseUrl
+            val path = parsed.path
 
             // Get body content from blob storage
             val requestBody = request.bodyRef?.let { queryEngine?.getBody(it) }

@@ -65,7 +65,7 @@ class ExportManager(private val context: Context) {
         try {
             val uri = FileProvider.getUriForFile(
                 context,
-                "${context.packageName}.fileprovider",
+                "${context.packageName}.wormaceptor.fileprovider",
                 file
             )
             

@@ -48,7 +48,7 @@ private fun shareFile(context: Context, file: File, subject: String) {
     try {
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
         

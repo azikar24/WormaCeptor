@@ -894,7 +894,7 @@ private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFil
 
         val uri = FileProvider.getUriForFile(
             context,
-            "${context.packageName}.fileprovider",
+            "${context.packageName}.wormaceptor.fileprovider",
             file
         )
 

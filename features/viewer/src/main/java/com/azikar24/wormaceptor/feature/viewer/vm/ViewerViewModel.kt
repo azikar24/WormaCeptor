@@ -26,7 +26,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class ViewerViewModel(
-    private val queryEngine: QueryEngine
+    private val queryEngine: QueryEngine,
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
@@ -72,13 +72,13 @@ class ViewerViewModel(
         combine(
             _searchQuery.debounce(100),
             _filterMethod,
-            _filterStatusRange
+            _filterStatusRange,
         ) { query, method, statusRange ->
             Triple(query, method, statusRange)
         }.flatMapLatest { (query, method, statusRange) ->
             val filters = TransactionFilters(
                 statusRange = statusRange,
-                method = method
+                method = method,
             )
             // Update total count when filters change
             viewModelScope.launch {
@@ -87,7 +87,7 @@ class ViewerViewModel(
             queryEngine.observeTransactionsPaged(
                 searchQuery = query.takeIf { it.isNotBlank() },
                 filters = filters,
-                pageSize = 30
+                pageSize = 30,
             )
         }.cachedIn(viewModelScope)
 
@@ -96,13 +96,15 @@ class ViewerViewModel(
         _filterMethod,
         _filterStatusRange,
         _quickFilters,
-        allTransactions
+        allTransactions,
     ) { query, method, statusRange, quickFilters, list ->
         list.filter { transaction ->
-            val matchesSearch = if (query.isBlank()) true else {
+            val matchesSearch = if (query.isBlank()) {
+                true
+            } else {
                 transaction.path.contains(query, ignoreCase = true) ||
-                transaction.method.contains(query, ignoreCase = true) ||
-                transaction.status.name.contains(query, ignoreCase = true)
+                    transaction.method.contains(query, ignoreCase = true) ||
+                    transaction.status.name.contains(query, ignoreCase = true)
             }
 
             val matchesMethod = method == null || transaction.method.equals(method, ignoreCase = true)

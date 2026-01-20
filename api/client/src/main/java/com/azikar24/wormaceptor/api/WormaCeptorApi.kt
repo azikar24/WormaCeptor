@@ -13,7 +13,6 @@ object WormaCeptorApi {
 
     val redactionConfig = RedactionConfig()
 
-
     /**
      * Initializes WormaCeptor.
      * If an implementation module (persistence, imdb) is present in the classpath,
@@ -37,7 +36,7 @@ object WormaCeptorApi {
 
     fun startActivityOnShake(activity: ComponentActivity) {
         // Platform classes are safe to refer if they are in a common layout or handled similarly
-        // For simplicity, we'll delegate shake start to provider if needed, 
+        // For simplicity, we'll delegate shake start to provider if needed,
         // or keep it in platform if platform is a shared dependency.
         try {
             ShakeDetector.start(activity) {
@@ -59,7 +58,7 @@ object WormaCeptorApi {
             method: String,
             headers: Map<String, List<String>>,
             bodyStream: java.io.InputStream?,
-            bodySize: Long
+            bodySize: Long,
         ) = null
 
         override fun completeTransaction(
@@ -71,7 +70,7 @@ object WormaCeptorApi {
             bodySize: Long,
             protocol: String?,
             tlsVersion: String?,
-            error: String?
+            error: String?,
         ) {
         }
 

@@ -150,7 +150,7 @@ fun GlitchMeltdownEffect(
     isActive: Boolean,
     progress: Float,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     if (!isActive) {
         Box(modifier = modifier) {
@@ -163,23 +163,19 @@ fun GlitchMeltdownEffect(
         GlitchMeltdownEffectAGSL(
             progress = progress,
             modifier = modifier,
-            content = content
+            content = content,
         )
     } else {
         GlitchMeltdownEffectFallback(
             progress = progress,
             modifier = modifier,
-            content = content
+            content = content,
         )
     }
 }
 
 @Composable
-private fun GlitchMeltdownEffectAGSL(
-    progress: Float,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
+private fun GlitchMeltdownEffectAGSL(progress: Float, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
         Box(modifier = modifier) { content() }
         return
@@ -191,9 +187,9 @@ private fun GlitchMeltdownEffectAGSL(
         targetValue = 100f,
         animationSpec = infiniteRepeatable(
             animation = tween(10000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "time"
+        label = "time",
     )
 
     val configuration = LocalConfiguration.current
@@ -211,7 +207,7 @@ private fun GlitchMeltdownEffectAGSL(
             renderEffect = RenderEffect
                 .createRuntimeShaderEffect(shader, "content")
                 .asComposeRenderEffect()
-        }
+        },
     ) {
         content()
     }
@@ -221,7 +217,7 @@ private fun GlitchMeltdownEffectAGSL(
 private fun GlitchMeltdownEffectFallback(
     progress: Float,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "fallback_glitch")
 
@@ -230,9 +226,9 @@ private fun GlitchMeltdownEffectFallback(
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(50, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "shake"
+        label = "shake",
     )
 
     val rotationWobble by infiniteTransition.animateFloat(
@@ -240,9 +236,9 @@ private fun GlitchMeltdownEffectFallback(
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(100, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "rotation"
+        label = "rotation",
     )
 
     val noiseKey by infiniteTransition.animateFloat(
@@ -250,12 +246,11 @@ private fun GlitchMeltdownEffectFallback(
         targetValue = 1000f,
         animationSpec = infiniteRepeatable(
             animation = tween(1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "noise_key"
+        label = "noise_key",
     )
 
-    val density = LocalDensity.current
     val shakeIntensity = progress * 20f
     val rotationIntensity = progress * 3f
     val scaleVariation = 1f + (progress * 0.05f * shakeOffset)
@@ -269,10 +264,10 @@ private fun GlitchMeltdownEffectFallback(
                 .fillMaxSize()
                 .offset(
                     x = (shakeOffset * shakeIntensity).dp,
-                    y = (shakeOffset * shakeIntensity * 0.7f).dp
+                    y = (shakeOffset * shakeIntensity * 0.7f).dp,
                 )
                 .rotate(rotationWobble * rotationIntensity)
-                .scale(scaleVariation)
+                .scale(scaleVariation),
         ) {
             content()
         }
@@ -287,7 +282,7 @@ private fun GlitchMeltdownEffectFallback(
                         drawRect(
                             color = Color.Black.copy(alpha = scanLineAlpha),
                             topLeft = Offset(0f, y),
-                            size = Size(size.width, size.height / scanLineCount / 2)
+                            size = Size(size.width, size.height / scanLineCount / 2),
                         )
                     }
                 }
@@ -308,7 +303,7 @@ private fun GlitchMeltdownEffectFallback(
                     drawRect(
                         color = Color(brightness, brightness, brightness, noiseAlpha),
                         topLeft = Offset(x, y),
-                        size = Size(pixelSize, pixelSize)
+                        size = Size(pixelSize, pixelSize),
                     )
                 }
             }
@@ -318,7 +313,7 @@ private fun GlitchMeltdownEffectFallback(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = darkOverlayAlpha))
+                    .background(Color.Black.copy(alpha = darkOverlayAlpha)),
             )
         }
 
@@ -327,7 +322,7 @@ private fun GlitchMeltdownEffectFallback(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(flashColor.copy(alpha = flashAlpha))
+                    .background(flashColor.copy(alpha = flashAlpha)),
             )
         }
     }

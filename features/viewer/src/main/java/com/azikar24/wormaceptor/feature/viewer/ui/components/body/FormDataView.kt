@@ -32,10 +32,7 @@ import java.net.URLDecoder
  * Parses key-value pairs and displays them in a structured table format.
  */
 @Composable
-fun FormDataView(
-    formData: String,
-    modifier: Modifier = Modifier
-) {
+fun FormDataView(formData: String, modifier: Modifier = Modifier) {
     val parsedData = remember(formData) {
         parseFormData(formData)
     }
@@ -45,12 +42,12 @@ fun FormDataView(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "No form data",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         return
@@ -63,8 +60,8 @@ fun FormDataView(
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = WormaCeptorDesignSystem.Shapes.card
-            )
+                shape = WormaCeptorDesignSystem.Shapes.card,
+            ),
     ) {
         Row(
             modifier = Modifier
@@ -72,25 +69,25 @@ fun FormDataView(
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = "Key",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(0.4f)
+                modifier = Modifier.weight(0.4f),
             )
             Text(
                 text = "Value",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(0.6f)
+                modifier = Modifier.weight(0.6f),
             )
         }
 
@@ -100,13 +97,13 @@ fun FormDataView(
             FormDataRow(
                 key = key,
                 value = value,
-                isEven = index % 2 == 0
+                isEven = index % 2 == 0,
             )
 
             if (index < parsedData.lastIndex) {
                 Divider(
                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                    modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
+                    modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
                 )
             }
         }
@@ -114,11 +111,7 @@ fun FormDataView(
 }
 
 @Composable
-private fun FormDataRow(
-    key: String,
-    value: String,
-    isEven: Boolean
-) {
+private fun FormDataRow(key: String, value: String, isEven: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -127,25 +120,25 @@ private fun FormDataRow(
                     MaterialTheme.colorScheme.surface
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
-                }
+                },
             )
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.sm
+                vertical = WormaCeptorDesignSystem.Spacing.sm,
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
     ) {
         SelectionContainer(modifier = Modifier.weight(0.4f)) {
             Text(
                 text = key,
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 ),
                 color = MaterialTheme.colorScheme.primary,
                 maxLines = 3,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
 
@@ -153,9 +146,9 @@ private fun FormDataRow(
             Text(
                 text = value,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace
+                    fontFamily = FontFamily.Monospace,
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

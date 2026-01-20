@@ -35,7 +35,7 @@ class WormaCeptorContentProvider : ContentProvider() {
         private val TRANSACTION_COLUMNS = arrayOf(
             "id", "method", "host", "path", "code", "duration",
             "status", "timestamp", "has_request_body", "has_response_body",
-            "request_size", "response_size", "content_type"
+            "request_size", "response_size", "content_type",
         )
 
         private val STATUS_COLUMNS = arrayOf("capturing", "count")
@@ -59,7 +59,7 @@ class WormaCeptorContentProvider : ContentProvider() {
         projection: Array<out String>?,
         selection: String?,
         selectionArgs: Array<out String>?,
-        sortOrder: String?
+        sortOrder: String?,
     ): Cursor? {
         return when (uriMatcher.match(uri)) {
             CODE_TRANSACTIONS -> queryTransactions()
@@ -152,21 +152,23 @@ class WormaCeptorContentProvider : ContentProvider() {
             // Extract content type from response headers
             val contentType = response?.let { extractContentType(it) }
 
-            cursor.addRow(arrayOf(
-                getProperty(item, "id")?.toString() ?: return,
-                method,
-                host,
-                path,
-                code,
-                (getProperty(item, "durationMs") as? Number)?.toLong(),
-                getProperty(item, "status")?.toString() ?: TransactionStatus.COMPLETED.name,
-                (getProperty(item, "timestamp") as? Number)?.toLong() ?: System.currentTimeMillis(),
-                hasRequestBody,
-                hasResponseBody,
-                requestSize,
-                responseSize,
-                contentType
-            ))
+            cursor.addRow(
+                arrayOf(
+                    getProperty(item, "id")?.toString() ?: return,
+                    method,
+                    host,
+                    path,
+                    code,
+                    (getProperty(item, "durationMs") as? Number)?.toLong(),
+                    getProperty(item, "status")?.toString() ?: TransactionStatus.COMPLETED.name,
+                    (getProperty(item, "timestamp") as? Number)?.toLong() ?: System.currentTimeMillis(),
+                    hasRequestBody,
+                    hasResponseBody,
+                    requestSize,
+                    responseSize,
+                    contentType,
+                ),
+            )
         } catch (e: Exception) {
             Log.d(TAG, "Failed to add transaction to cursor", e)
         }
@@ -189,7 +191,11 @@ class WormaCeptorContentProvider : ContentProvider() {
             try {
                 obj.javaClass.getMethod("get${name.replaceFirstChar { it.uppercase() }}").invoke(obj)
             } catch (e: Exception) {
-                try { obj.javaClass.getMethod(name).invoke(obj) } catch (e: Exception) { null }
+                try {
+                    obj.javaClass.getMethod(name).invoke(obj)
+                } catch (e: Exception) {
+                    null
+                }
             }
         }
     }
@@ -218,7 +224,8 @@ class WormaCeptorContentProvider : ContentProvider() {
         }
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int = 0
+    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int =
+        0
 
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
         if (uriMatcher.match(uri) != CODE_TRANSACTION_DETAIL) return null
@@ -250,7 +257,9 @@ class WormaCeptorContentProvider : ContentProvider() {
                 } catch (e: Exception) {
                     Log.w(TAG, "Failed to write transaction detail", e)
                 } finally {
-                    try { writeEnd.close() } catch (_: Exception) {}
+                    try {
+                        writeEnd.close()
+                    } catch (_: Exception) {}
                 }
             }.start()
 

@@ -171,7 +171,8 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         titleLabel.alignmentX = JBLabel.CENTER_ALIGNMENT
         titleLabel.border = JBUI.Borders.emptyTop(8)
 
-        val messageLabel = JBLabel("<html><center>Connect a device and make network<br/>requests to see them here.</center></html>")
+        val messageLabel =
+            JBLabel("<html><center>Connect a device and make network<br/>requests to see them here.</center></html>")
         messageLabel.foreground = JBColor.GRAY
         messageLabel.alignmentX = JBLabel.CENTER_ALIGNMENT
         messageLabel.border = JBUI.Borders.emptyTop(4)
@@ -206,7 +207,10 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         titleLabel.alignmentX = JBLabel.CENTER_ALIGNMENT
         titleLabel.border = JBUI.Borders.emptyTop(8)
 
-        val messageLabel = JBLabel("<html><center>Could not connect to device.<br/>Make sure ADB is configured correctly.</center></html>")
+        val messageLabel =
+            JBLabel(
+                "<html><center>Could not connect to device.<br/>Make sure ADB is configured correctly.</center></html>",
+            )
         messageLabel.foreground = JBColor.GRAY
         messageLabel.alignmentX = JBLabel.CENTER_ALIGNMENT
         messageLabel.border = JBUI.Borders.emptyTop(4)
@@ -225,32 +229,42 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         val actionGroup = DefaultActionGroup()
 
         // Refresh action
-        actionGroup.add(object : AnAction("Refresh", "Refresh transaction list", AllIcons.Actions.Refresh) {
-            override fun actionPerformed(e: AnActionEvent) {
-                refreshTransactions()
-            }
-        })
+        actionGroup.add(
+            object : AnAction("Refresh", "Refresh transaction list", AllIcons.Actions.Refresh) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    refreshTransactions()
+                }
+            },
+        )
 
         // Clear action
-        actionGroup.add(object : AnAction("Clear", "Clear all transactions", AllIcons.Actions.GC) {
-            override fun actionPerformed(e: AnActionEvent) {
-                clearTransactions()
-            }
-        })
+        actionGroup.add(
+            object : AnAction("Clear", "Clear all transactions", AllIcons.Actions.GC) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    clearTransactions()
+                }
+            },
+        )
 
         actionGroup.addSeparator()
 
         // Open on device action
-        actionGroup.add(object : AnAction("Open on Device", "Open WormaCeptor viewer on device", AllIcons.Debugger.AttachToProcess) {
-            override fun actionPerformed(e: AnActionEvent) {
-                service.openViewerOnDevice()
-            }
-        })
+        actionGroup.add(
+            object : AnAction(
+                "Open on Device",
+                "Open WormaCeptor viewer on device",
+                AllIcons.Debugger.AttachToProcess,
+            ) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    service.openViewerOnDevice()
+                }
+            },
+        )
 
         val toolbar = ActionManager.getInstance().createActionToolbar(
             ActionPlaces.TOOLWINDOW_TITLE,
             actionGroup,
-            true
+            true,
         )
         toolbar.targetComponent = this
 
@@ -270,28 +284,32 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         }
 
         // Search listener
-        searchField.addDocumentListener(object : DocumentListener {
-            override fun insertUpdate(e: DocumentEvent?) = updateFilter()
-            override fun removeUpdate(e: DocumentEvent?) = updateFilter()
-            override fun changedUpdate(e: DocumentEvent?) = updateFilter()
-        })
+        searchField.addDocumentListener(
+            object : DocumentListener {
+                override fun insertUpdate(e: DocumentEvent?) = updateFilter()
+                override fun removeUpdate(e: DocumentEvent?) = updateFilter()
+                override fun changedUpdate(e: DocumentEvent?) = updateFilter()
+            },
+        )
 
         // Service state listener
-        service.addStateListener(object : WormaCeptorService.StateListener {
-            override fun onDeviceChanged(serial: String?) {
-                refreshTransactions()
-            }
-
-            override fun onTransactionsUpdated(transactions: List<TransactionSummary>) {
-                ApplicationManager.getApplication().invokeLater {
-                    updateTransactionList(transactions)
+        service.addStateListener(
+            object : WormaCeptorService.StateListener {
+                override fun onDeviceChanged(serial: String?) {
+                    refreshTransactions()
                 }
-            }
 
-            override fun onCaptureStatusChanged(active: Boolean, count: Int) {
-                // Update status bar widget
-            }
-        })
+                override fun onTransactionsUpdated(transactions: List<TransactionSummary>) {
+                    ApplicationManager.getApplication().invokeLater {
+                        updateTransactionList(transactions)
+                    }
+                }
+
+                override fun onCaptureStatusChanged(active: Boolean, count: Int) {
+                    // Update status bar widget
+                }
+            },
+        )
     }
 
     private fun refreshTransactions() {
@@ -340,9 +358,9 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         } else {
             allTransactions.filter { tx ->
                 tx.path.lowercase().contains(filterText) ||
-                        tx.host.lowercase().contains(filterText) ||
-                        tx.method.lowercase().contains(filterText) ||
-                        tx.statusDisplay.lowercase().contains(filterText)
+                    tx.host.lowercase().contains(filterText) ||
+                    tx.method.lowercase().contains(filterText) ||
+                    tx.statusDisplay.lowercase().contains(filterText)
             }
         }
 

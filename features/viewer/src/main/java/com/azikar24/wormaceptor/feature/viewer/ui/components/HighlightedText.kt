@@ -55,7 +55,7 @@ fun HighlightedText(
     searchQuery: String = "",
     currentSearchMatchIndex: Int? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
-    colors: ComposeSyntaxColors = syntaxColors()
+    colors: ComposeSyntaxColors = syntaxColors(),
 ) {
     val displayText = if (enableHighlighting && highlightedText != null) {
         // Apply search highlighting on top of syntax highlighting
@@ -63,7 +63,7 @@ fun HighlightedText(
             text = highlightedText,
             searchQuery = searchQuery,
             currentMatchIndex = currentSearchMatchIndex,
-            colors = colors
+            colors = colors,
         )
     } else {
         // Plain text with search highlighting only
@@ -71,7 +71,7 @@ fun HighlightedText(
             text = AnnotatedString(text),
             searchQuery = searchQuery,
             currentMatchIndex = currentSearchMatchIndex,
-            colors = colors
+            colors = colors,
         )
     }
 
@@ -82,7 +82,7 @@ fun HighlightedText(
             style = style,
             colors = colors,
             onTextLayout = onTextLayout,
-            modifier = modifier
+            modifier = modifier,
         )
     } else {
         SelectionContainer {
@@ -90,7 +90,7 @@ fun HighlightedText(
                 text = displayText,
                 style = style,
                 modifier = modifier.fillMaxWidth(),
-                onTextLayout = { onTextLayout?.invoke(it) }
+                onTextLayout = { onTextLayout?.invoke(it) },
             )
         }
     }
@@ -103,7 +103,7 @@ private fun HighlightedTextWithLineNumbers(
     style: TextStyle,
     colors: ComposeSyntaxColors,
     onTextLayout: ((TextLayoutResult) -> Unit)?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lines = remember(text) { text.lines() }
     val lineCount = lines.size
@@ -115,7 +115,7 @@ private fun HighlightedTextWithLineNumbers(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip)
+            .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip),
     ) {
         // Line numbers column
         Column(
@@ -124,18 +124,18 @@ private fun HighlightedTextWithLineNumbers(
                 .background(colors.lineNumberBackground)
                 .padding(
                     vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm
+                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 ),
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.End,
         ) {
             lines.forEachIndexed { index, _ ->
                 Text(
                     text = "${index + 1}",
                     style = style.copy(
                         color = colors.lineNumberText,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     ),
-                    modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.xs)
+                    modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.xs),
                 )
             }
         }
@@ -144,7 +144,7 @@ private fun HighlightedTextWithLineNumbers(
         Box(
             modifier = Modifier
                 .width(1.dp)
-                .background(colors.lineNumberText.copy(alpha = 0.2f))
+                .background(colors.lineNumberText.copy(alpha = 0.2f)),
         )
 
         // Code content with horizontal scroll
@@ -156,14 +156,14 @@ private fun HighlightedTextWithLineNumbers(
                     start = WormaCeptorDesignSystem.Spacing.md,
                     end = WormaCeptorDesignSystem.Spacing.sm,
                     top = WormaCeptorDesignSystem.Spacing.sm,
-                    bottom = WormaCeptorDesignSystem.Spacing.sm
-                )
+                    bottom = WormaCeptorDesignSystem.Spacing.sm,
+                ),
         ) {
             SelectionContainer {
                 Text(
                     text = displayText,
                     style = style,
-                    onTextLayout = { onTextLayout?.invoke(it) }
+                    onTextLayout = { onTextLayout?.invoke(it) },
                 )
             }
         }
@@ -179,7 +179,7 @@ private fun applySearchHighlighting(
     text: AnnotatedString,
     searchQuery: String,
     currentMatchIndex: Int?,
-    colors: ComposeSyntaxColors
+    colors: ComposeSyntaxColors,
 ): AnnotatedString {
     if (searchQuery.isEmpty()) return text
 
@@ -211,10 +211,10 @@ private fun applySearchHighlighting(
                         colors.searchHighlight
                     },
                     color = colors.searchHighlightText,
-                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal
+                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                 ),
                 start = range.first,
-                end = range.last + 1
+                end = range.last + 1,
             )
         }
     }
@@ -231,7 +231,7 @@ fun SearchHighlightedText(
     modifier: Modifier = Modifier,
     currentMatchIndex: Int? = null,
     style: TextStyle = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-    onTextLayout: ((TextLayoutResult) -> Unit)? = null
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val colors = syntaxColors()
     val highlightedText = remember(text, searchQuery, currentMatchIndex, colors) {
@@ -239,7 +239,7 @@ fun SearchHighlightedText(
             text = AnnotatedString(text),
             searchQuery = searchQuery,
             currentMatchIndex = currentMatchIndex,
-            colors = colors
+            colors = colors,
         )
     }
 
@@ -248,7 +248,7 @@ fun SearchHighlightedText(
             text = highlightedText,
             style = style,
             modifier = modifier,
-            onTextLayout = { onTextLayout?.invoke(it) }
+            onTextLayout = { onTextLayout?.invoke(it) },
         )
     }
 }
@@ -261,7 +261,7 @@ fun SearchHighlightedText(
 fun InlineCode(
     text: String,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace)
+    style: TextStyle = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
 ) {
     val colors = syntaxColors()
     Text(
@@ -270,11 +270,11 @@ fun InlineCode(
         modifier = modifier
             .background(
                 colors.codeBackground,
-                WormaCeptorDesignSystem.Shapes.chip
+                WormaCeptorDesignSystem.Shapes.chip,
             )
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
     )
 }

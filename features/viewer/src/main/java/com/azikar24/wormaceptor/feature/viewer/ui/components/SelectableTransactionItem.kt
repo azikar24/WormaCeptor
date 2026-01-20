@@ -71,7 +71,7 @@ fun SelectableTransactionItem(
     onShare: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     var showContextMenu by remember { mutableStateOf(false) }
@@ -95,9 +95,9 @@ fun SelectableTransactionItem(
         targetValue = if (isSelected && isSelectionMode) 0.98f else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         ),
-        label = "itemScale"
+        label = "itemScale",
     )
 
     Box(modifier = modifier) {
@@ -106,7 +106,7 @@ fun SelectableTransactionItem(
                 .fillMaxWidth()
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs
+                    vertical = WormaCeptorDesignSystem.Spacing.xs,
                 )
                 .scale(scale)
                 .clip(WormaCeptorDesignSystem.Shapes.card)
@@ -117,7 +117,7 @@ fun SelectableTransactionItem(
                     } else {
                         MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
                     },
-                    shape = WormaCeptorDesignSystem.Shapes.card
+                    shape = WormaCeptorDesignSystem.Shapes.card,
                 )
                 .background(
                     color = if (isSelected) {
@@ -125,7 +125,7 @@ fun SelectableTransactionItem(
                     } else {
                         statusColor.asSubtleBackground()
                     },
-                    shape = WormaCeptorDesignSystem.Shapes.card
+                    shape = WormaCeptorDesignSystem.Shapes.card,
                 )
                 .combinedClickable(
                     interactionSource = interactionSource,
@@ -143,16 +143,16 @@ fun SelectableTransactionItem(
                             showContextMenu = true
                         }
                         onLongClick()
-                    }
+                    },
                 )
                 .padding(WormaCeptorDesignSystem.Spacing.md),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Selection checkbox (animated)
             AnimatedVisibility(
                 visible = isSelectionMode,
                 enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
+                exit = fadeOut() + scaleOut(),
             ) {
                 Row {
                     SelectionCheckbox(isSelected = isSelected)
@@ -167,8 +167,8 @@ fun SelectableTransactionItem(
                     .height(48.dp)
                     .background(
                         statusColor,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
-                    )
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                    ),
             )
 
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
@@ -177,7 +177,7 @@ fun SelectableTransactionItem(
             Column(modifier = Modifier.weight(1f)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     MethodBadge(transaction.method)
                     TextWithStartEllipsis(
@@ -185,7 +185,7 @@ fun SelectableTransactionItem(
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.weight(1f, fill = false),
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
 
@@ -201,7 +201,7 @@ fun SelectableTransactionItem(
                 Surface(
                     color = statusColor.asSubtleBackground(),
                     contentColor = statusColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                 ) {
                     Text(
                         text = transaction.code?.toString() ?: "?",
@@ -209,15 +209,15 @@ fun SelectableTransactionItem(
                         fontSize = 14.sp,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xxs
-                        )
+                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
                     )
                 }
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
                     text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
         }
@@ -233,17 +233,14 @@ fun SelectableTransactionItem(
             onCopyAsCurl = onCopyAsCurl,
             offset = DpOffset(
                 x = WormaCeptorDesignSystem.Spacing.lg,
-                y = (-WormaCeptorDesignSystem.Spacing.sm)
-            )
+                y = (-WormaCeptorDesignSystem.Spacing.sm),
+            ),
         )
     }
 }
 
 @Composable
-private fun SelectionCheckbox(
-    isSelected: Boolean,
-    modifier: Modifier = Modifier
-) {
+private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier) {
     val checkboxColor = if (isSelected) {
         MaterialTheme.colorScheme.primary
     } else {
@@ -257,9 +254,11 @@ private fun SelectionCheckbox(
         border = if (!isSelected) {
             androidx.compose.foundation.BorderStroke(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = checkboxColor
+                color = checkboxColor,
             )
-        } else null
+        } else {
+            null
+        },
     ) {
         if (isSelected) {
             Icon(
@@ -268,7 +267,7 @@ private fun SelectionCheckbox(
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .padding(4.dp)
-                    .size(16.dp)
+                    .size(16.dp),
             )
         }
     }
@@ -279,7 +278,7 @@ private fun MethodBadge(method: String) {
     Surface(
         color = methodColor(method).copy(alpha = 0.15f),
         contentColor = methodColor(method),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
     ) {
         Text(
             text = method.uppercase(),
@@ -287,8 +286,8 @@ private fun MethodBadge(method: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }
@@ -297,7 +296,7 @@ private fun MethodBadge(method: String) {
 private fun HostChip(host: String) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(
             text = host,
@@ -305,8 +304,8 @@ private fun HostChip(host: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }

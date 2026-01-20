@@ -10,19 +10,15 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -37,7 +33,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,7 +56,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -75,6 +69,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutCallbacks
 import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutHandler
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -120,7 +115,7 @@ fun HomeScreen(
     onCopyUrl: (TransactionSummary) -> Unit = {},
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
-    onCopyAsCurl: (TransactionSummary) -> Unit = {}
+    onCopyAsCurl: (TransactionSummary) -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -144,7 +139,7 @@ fun HomeScreen(
     // Pager state for swipe between tabs - defined here so TabRow can access it
     val pagerState = rememberPagerState(
         initialPage = selectedTabIndex,
-        pageCount = { titles.size }
+        pageCount = { titles.size },
     )
 
     // Sync pagerState with selectedTabIndex when tab is clicked
@@ -187,13 +182,13 @@ fun HomeScreen(
             },
             onExport = {
                 scope.launch { onExportTransactions() }
-            }
+            },
         )
     }
 
     KeyboardShortcutHandler(
         callbacks = keyboardCallbacks,
-        enabled = selectedTabIndex == 0
+        enabled = selectedTabIndex == 0,
     ) {
         Scaffold(
             topBar = {
@@ -206,22 +201,22 @@ fun HomeScreen(
                         onDelete = { showDeleteSelectedDialog = true },
                         onExport = onExportSelected,
                         onSelectAll = onSelectAll,
-                        onCancel = onClearSelection
+                        onCancel = onClearSelection,
                     )
 
                     // Regular top bar when not in selection mode
                     AnimatedVisibility(
                         visible = !isSelectionMode,
                         enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut()
+                        exit = shrinkVertically() + fadeOut(),
                     ) {
                         TopAppBar(
                             title = { Text("WormaCeptor V2") },
                             navigationIcon = {
-                                IconButton(onClick = { (context as? android.app.Activity)?.finish() }) {
+                                IconButton(onClick = { (context as? Activity)?.finish() }) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Back"
+                                        contentDescription = "Back",
                                     )
                                 }
                             },
@@ -231,7 +226,7 @@ fun HomeScreen(
                                     val filterCount = listOfNotNull(
                                         filterMethod,
                                         filterStatusRange,
-                                        searchQuery.takeIf { it.isNotBlank() }
+                                        searchQuery.takeIf { it.isNotBlank() },
                                     ).size
 
                                     BadgedBox(
@@ -240,21 +235,23 @@ fun HomeScreen(
                                                 Badge(
                                                     containerColor = MaterialTheme.colorScheme.primary,
                                                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                                                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs)
+                                                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs),
                                                 ) {
                                                     Text(
                                                         text = filterCount.toString(),
                                                         style = MaterialTheme.typography.labelSmall,
-                                                        fontWeight = FontWeight.Bold
+                                                        fontWeight = FontWeight.Bold,
                                                     )
                                                 }
                                             }
-                                        }
+                                        },
                                     ) {
                                         IconButton(onClick = { showFilterSheet = true }) {
                                             val iconScale by animateFloatAsState(
                                                 targetValue = if (isFiltering) 1.1f else 1f,
-                                                animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast)
+                                                animationSpec = tween(
+                                                    durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast,
+                                                ),
                                             )
                                             Icon(
                                                 imageVector = Icons.Default.FilterList,
@@ -264,7 +261,7 @@ fun HomeScreen(
                                                 } else {
                                                     MaterialTheme.colorScheme.onSurface
                                                 },
-                                                modifier = Modifier.scale(iconScale)
+                                                modifier = Modifier.scale(iconScale),
                                             )
                                         }
                                     }
@@ -274,14 +271,14 @@ fun HomeScreen(
                                 IconButton(onClick = { showOverflowMenu = true }) {
                                     Icon(
                                         imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "More options"
+                                        contentDescription = "More options",
                                     )
                                 }
 
                                 DropdownMenu(
                                     expanded = showOverflowMenu,
                                     onDismissRequest = { showOverflowMenu = false },
-                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
                                 ) {
                                     if (pagerState.currentPage == 0) {
                                         DropdownMenuItem(
@@ -290,7 +287,7 @@ fun HomeScreen(
                                             onClick = {
                                                 showOverflowMenu = false
                                                 scope.launch { onExportTransactions() }
-                                            }
+                                            },
                                         )
                                         DropdownMenuItem(
                                             text = { Text("Clear All Transactions") },
@@ -298,7 +295,7 @@ fun HomeScreen(
                                             onClick = {
                                                 showOverflowMenu = false
                                                 showClearTransactionsDialog = true
-                                            }
+                                            },
                                         )
                                     } else {
                                         DropdownMenuItem(
@@ -307,7 +304,7 @@ fun HomeScreen(
                                             onClick = {
                                                 showOverflowMenu = false
                                                 scope.launch { onExportCrashes() }
-                                            }
+                                            },
                                         )
                                         DropdownMenuItem(
                                             text = { Text("Clear All Crashes") },
@@ -315,11 +312,11 @@ fun HomeScreen(
                                             onClick = {
                                                 showOverflowMenu = false
                                                 showClearCrashesDialog = true
-                                            }
+                                            },
                                         )
                                     }
                                 }
-                            }
+                            },
                         )
                     }
 
@@ -331,12 +328,12 @@ fun HomeScreen(
                                     if (isSelectionMode) onClearSelection()
                                     scope.launch { pagerState.animateScrollToPage(index) }
                                 },
-                                text = { Text(title) }
+                                text = { Text(title) },
                             )
                         }
                     }
                 }
-            }
+            },
         ) { padding ->
             Column(modifier = Modifier.padding(padding)) {
                 // Active Filters Banner
@@ -345,33 +342,33 @@ fun HomeScreen(
                     AnimatedVisibility(
                         visible = hasActiveFilters,
                         enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut()
+                        exit = shrinkVertically() + fadeOut(),
                     ) {
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-                            tonalElevation = WormaCeptorDesignSystem.Elevation.xs
+                            tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
                         ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(
                                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                                        vertical = WormaCeptorDesignSystem.Spacing.sm
+                                        vertical = WormaCeptorDesignSystem.Spacing.sm,
                                     ),
                                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = "Active filters:",
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
                                 )
 
                                 FlowRow(
                                     modifier = Modifier.weight(1f),
-                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                                 ) {
                                     if (searchQuery.isNotBlank()) {
                                         AssistChip(
@@ -379,24 +376,24 @@ fun HomeScreen(
                                             label = {
                                                 Text(
                                                     text = "\"$searchQuery\"",
-                                                    style = MaterialTheme.typography.labelSmall
+                                                    style = MaterialTheme.typography.labelSmall,
                                                 )
                                             },
                                             leadingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Search,
                                                     contentDescription = null,
-                                                    modifier = Modifier.size(16.dp)
+                                                    modifier = Modifier.size(16.dp),
                                                 )
                                             },
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
                                                     contentDescription = "Remove",
-                                                    modifier = Modifier.size(16.dp)
+                                                    modifier = Modifier.size(16.dp),
                                                 )
                                             },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip
+                                            shape = WormaCeptorDesignSystem.Shapes.chip,
                                         )
                                     }
 
@@ -406,17 +403,17 @@ fun HomeScreen(
                                             label = {
                                                 Text(
                                                     text = method,
-                                                    style = MaterialTheme.typography.labelSmall
+                                                    style = MaterialTheme.typography.labelSmall,
                                                 )
                                             },
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
                                                     contentDescription = "Remove",
-                                                    modifier = Modifier.size(16.dp)
+                                                    modifier = Modifier.size(16.dp),
                                                 )
                                             },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip
+                                            shape = WormaCeptorDesignSystem.Shapes.chip,
                                         )
                                     }
 
@@ -433,17 +430,17 @@ fun HomeScreen(
                                             label = {
                                                 Text(
                                                     text = label,
-                                                    style = MaterialTheme.typography.labelSmall
+                                                    style = MaterialTheme.typography.labelSmall,
                                                 )
                                             },
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
                                                     contentDescription = "Remove",
-                                                    modifier = Modifier.size(16.dp)
+                                                    modifier = Modifier.size(16.dp),
                                                 )
                                             },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip
+                                            shape = WormaCeptorDesignSystem.Shapes.chip,
                                         )
                                     }
                                 }
@@ -453,12 +450,12 @@ fun HomeScreen(
                                         onClearFilters()
                                         onSearchChanged("")
                                     },
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(32.dp),
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
                                         contentDescription = "Clear all filters",
-                                        modifier = Modifier.size(20.dp)
+                                        modifier = Modifier.size(20.dp),
                                     )
                                 }
                             }
@@ -472,7 +469,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f),
-                    beyondViewportPageCount = 1
+                    beyondViewportPageCount = 1,
                 ) { page ->
                     when (page) {
                         0 -> SelectableTransactionListScreen(
@@ -498,13 +495,13 @@ fun HomeScreen(
                             onDelete = onDelete,
                             onCopyAsCurl = onCopyAsCurl,
                             modifier = Modifier.fillMaxSize(),
-                            header = { MetricsCard(transactions = transactions) }
+                            header = { MetricsCard(transactions = transactions) },
                         )
                         1 -> CrashListScreen(
                             crashes = crashes,
                             onCrashClick = onCrashClick,
                             isRefreshing = isRefreshingCrashes,
-                            onRefresh = onRefreshCrashes
+                            onRefresh = onRefreshCrashes,
                         )
                     }
                 }
@@ -523,7 +520,7 @@ fun HomeScreen(
                         200..299 to allTransactions.count { (it.code ?: 0) in 200..299 },
                         300..399 to allTransactions.count { (it.code ?: 0) in 300..399 },
                         400..499 to allTransactions.count { (it.code ?: 0) in 400..499 },
-                        500..599 to allTransactions.count { (it.code ?: 0) in 500..599 }
+                        500..599 to allTransactions.count { (it.code ?: 0) in 500..599 },
                     )
                 }
 
@@ -534,7 +531,7 @@ fun HomeScreen(
                         showFilterSheet = false
                     },
                     sheetState = sheetState,
-                    shape = WormaCeptorDesignSystem.Shapes.sheet
+                    shape = WormaCeptorDesignSystem.Shapes.sheet,
                 ) {
                     FilterBottomSheetContent(
                         searchQuery = searchQuery,
@@ -551,7 +548,7 @@ fun HomeScreen(
                         filteredCount = transactions.size,
                         totalCount = allTransactions.size,
                         methodCounts = methodCounts,
-                        statusCounts = statusCounts
+                        statusCounts = statusCounts,
                     )
                 }
             }
@@ -561,7 +558,11 @@ fun HomeScreen(
                 AlertDialog(
                     onDismissRequest = { showClearTransactionsDialog = false },
                     title = { Text("Clear All Transactions?") },
-                    text = { Text("This will permanently delete all captured network transactions. This action cannot be undone.") },
+                    text = {
+                        Text(
+                            "This will permanently delete all captured network transactions. This action cannot be undone.",
+                        )
+                    },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -569,7 +570,7 @@ fun HomeScreen(
                                     onClearTransactions()
                                     showClearTransactionsDialog = false
                                 }
-                            }
+                            },
                         ) {
                             Text("Clear")
                         }
@@ -578,7 +579,7 @@ fun HomeScreen(
                         TextButton(onClick = { showClearTransactionsDialog = false }) {
                             Text("Cancel")
                         }
-                    }
+                    },
                 )
             }
 
@@ -587,7 +588,11 @@ fun HomeScreen(
                 AlertDialog(
                     onDismissRequest = { showClearCrashesDialog = false },
                     title = { Text("Clear All Crashes?") },
-                    text = { Text("This will permanently delete all captured crash reports. This action cannot be undone.") },
+                    text = {
+                        Text(
+                            "This will permanently delete all captured crash reports. This action cannot be undone.",
+                        )
+                    },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -595,7 +600,7 @@ fun HomeScreen(
                                     onClearCrashes()
                                     showClearCrashesDialog = false
                                 }
-                            }
+                            },
                         ) {
                             Text("Clear")
                         }
@@ -604,7 +609,7 @@ fun HomeScreen(
                         TextButton(onClick = { showClearCrashesDialog = false }) {
                             Text("Cancel")
                         }
-                    }
+                    },
                 )
             }
 
@@ -613,7 +618,11 @@ fun HomeScreen(
                 AlertDialog(
                     onDismissRequest = { showDeleteSelectedDialog = false },
                     title = { Text("Delete ${selectedIds.size} Transactions?") },
-                    text = { Text("This will permanently delete the selected transactions. This action cannot be undone.") },
+                    text = {
+                        Text(
+                            "This will permanently delete the selected transactions. This action cannot be undone.",
+                        )
+                    },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -621,7 +630,7 @@ fun HomeScreen(
                                     onDeleteSelected()
                                     showDeleteSelectedDialog = false
                                 }
-                            }
+                            },
                         ) {
                             Text("Delete", color = MaterialTheme.colorScheme.error)
                         }
@@ -630,7 +639,7 @@ fun HomeScreen(
                         TextButton(onClick = { showDeleteSelectedDialog = false }) {
                             Text("Cancel")
                         }
-                    }
+                    },
                 )
             }
         }

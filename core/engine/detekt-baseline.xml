@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ImplicitDefaultLocale:ParserRegistry.kt$DefaultParserRegistry$String.format("%02X", it)</ID>
+    <ID>MagicNumber:CaptureEngine.kt$CaptureEngine$400</ID>
+    <ID>MagicNumber:CrashReporter.kt$CrashReporter$500</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0.1f</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0xFF</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$1024</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$127</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$14</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$256</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$31</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$9</ID>
+    <ID>PrintStackTrace:CrashReporter.kt$CrashReporter$e</ID>
+    <ID>TooGenericExceptionCaught:CrashReporter.kt$CrashReporter$e: Exception</ID>
+    <ID>UnnecessaryParentheses:ParserRegistry.kt$DefaultParserRegistry$(b in 14..31)</ID>
+  </CurrentIssues>
+</SmellBaseline>

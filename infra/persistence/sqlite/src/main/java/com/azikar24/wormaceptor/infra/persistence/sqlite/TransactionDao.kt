@@ -33,11 +33,14 @@ interface TransactionDao {
     @Query("DELETE FROM transactions WHERE id IN (:ids)")
     suspend fun deleteByIds(ids: List<UUID>)
 
-    @Query("SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC")
+    @Query(
+        "SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC",
+    )
     fun search(query: String): Flow<List<TransactionEntity>>
 
     // Paged queries for lazy loading
-    @Query("""
+    @Query(
+        """
         SELECT * FROM transactions
         WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%')
           AND (:statusMin IS NULL OR resCode >= :statusMin)
@@ -45,19 +48,22 @@ interface TransactionDao {
           AND (:method IS NULL OR reqMethod = :method)
         ORDER BY timestamp DESC
         LIMIT :limit OFFSET :offset
-    """)
+    """,
+    )
     suspend fun getTransactionsPaged(
         offset: Int,
         limit: Int,
         searchQuery: String?,
         statusMin: Int?,
         statusMax: Int?,
-        method: String?
+        method: String?,
     ): List<TransactionEntity>
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*) FROM transactions
         WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%')
-    """)
+    """,
+    )
     suspend fun getTransactionCount(searchQuery: String?): Int
 }

@@ -8,13 +8,13 @@ class ArchitectureTest {
     @Test
     fun domainShouldNotDependOnAndroidTypes() {
         val importedClasses = ClassFileImporter().importPackages("com.azikar24.wormaceptor.domain")
-        
+
         // Domain entities should be framework agnostic
         val rule = noClasses().that().resideInAPackage("..domain.entities..")
             .should().dependOnClassesThat().resideInAPackage("android.widget..")
             .orShould().dependOnClassesThat().resideInAPackage("android.app..")
             .orShould().dependOnClassesThat().resideInAPackage("android.view..")
-            
+
         rule.check(importedClasses)
     }
 }

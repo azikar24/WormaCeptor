@@ -55,7 +55,7 @@ class TransactionListCellRenderer : ListCellRenderer<TransactionSummary> {
         value: TransactionSummary?,
         index: Int,
         isSelected: Boolean,
-        cellHasFocus: Boolean
+        cellHasFocus: Boolean,
     ): Component {
         if (value == null) return panel
 

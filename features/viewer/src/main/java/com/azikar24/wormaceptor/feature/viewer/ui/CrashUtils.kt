@@ -30,7 +30,7 @@ object CrashUtils {
         val methodName: String?,
         val fileName: String?,
         val lineNumber: Int?,
-        val isAppCode: Boolean
+        val isAppCode: Boolean,
     )
 
     /**
@@ -51,7 +51,7 @@ object CrashUtils {
      * - at com.example.MyClass$inner.method(MyClass.kt:123)
      * - at java.lang.Thread.run(Thread.java:764)
      */
-    private fun parseStackFrame(line: String, appPackage: String): StackFrame? {
+    private fun parseStackFrame(line: String, appPackage: String): StackFrame {
         val trimmed = line.trim()
 
         // Match pattern: at package.Class.method(File.kt:line)
@@ -78,7 +78,7 @@ object CrashUtils {
                 methodName = methodName,
                 fileName = fileName,
                 lineNumber = lineNumber,
-                isAppCode = isAppCode
+                isAppCode = isAppCode,
             )
         }
 
@@ -90,7 +90,7 @@ object CrashUtils {
             methodName = null,
             fileName = null,
             lineNumber = null,
-            isAppCode = false
+            isAppCode = false,
         )
     }
 

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import java.util.UUID
 
 class RoomTransactionRepository(
-    private val dao: TransactionDao
+    private val dao: TransactionDao,
 ) : TransactionRepository {
 
     override fun getAllTransactions(): Flow<List<TransactionSummary>> {
@@ -54,23 +54,23 @@ class RoomTransactionRepository(
     override fun getTransactionsPaged(
         searchQuery: String?,
         filters: TransactionFilters,
-        pageSize: Int
+        pageSize: Int,
     ): Flow<PagingData<TransactionSummary>> {
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
                 prefetchDistance = pageSize / 2,
                 enablePlaceholders = false,
-                initialLoadSize = pageSize
+                initialLoadSize = pageSize,
             ),
             pagingSourceFactory = {
                 TransactionPagingSource(
                     transactionDao = dao,
                     searchQuery = searchQuery,
                     filters = filters,
-                    entityToSummaryMapper = ::entityToSummary
+                    entityToSummaryMapper = ::entityToSummary,
                 )
-            }
+            },
         ).flow
     }
 
@@ -89,7 +89,7 @@ class RoomTransactionRepository(
             hasRequestBody = entity.reqBodyRef != null,
             hasResponseBody = entity.resBodyRef != null,
             status = entity.status,
-            timestamp = entity.timestamp
+            timestamp = entity.timestamp,
         )
     }
 

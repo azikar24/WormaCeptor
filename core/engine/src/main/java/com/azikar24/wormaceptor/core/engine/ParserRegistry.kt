@@ -57,7 +57,7 @@ class DefaultParserRegistry : ParserRegistry {
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.UNKNOWN,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -89,14 +89,14 @@ class DefaultParserRegistry : ParserRegistry {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.PLAIN_TEXT,
-                isValid = true
+                isValid = true,
             )
         } else {
             ParsedBody(
                 formatted = formatBinaryPreview(body),
                 contentType = ContentType.BINARY,
                 metadata = mapOf("size" to body.size.toString()),
-                isValid = true
+                isValid = true,
             )
         }
     }

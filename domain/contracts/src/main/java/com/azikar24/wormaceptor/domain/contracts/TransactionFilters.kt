@@ -8,5 +8,5 @@ data class TransactionFilters(
     val method: String? = null,
     val minDuration: Long? = null,
     val maxDuration: Long? = null,
-    val contentType: String? = null
+    val contentType: String? = null,
 )

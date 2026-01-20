@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper$Companion</ID>
+    <ID>ClassOrdering:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper$private val NetworkTransaction.path get() = try { java.net.URI(this.request.url).path } catch (e: Exception) { this.request.url }</ID>
+    <ID>MaxLineLength:ServiceProviderImpl.kt$ServiceProviderImpl$captureEngine?.completeTransaction(id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error)</ID>
+    <ID>MaximumLineLength:ServiceProviderImpl.kt$ServiceProviderImpl$ </ID>
+    <ID>SwallowedException:ServiceProviderImpl.kt$ServiceProviderImpl$e: Exception</ID>
+    <ID>SwallowedException:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ServiceProviderImpl.kt$ServiceProviderImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

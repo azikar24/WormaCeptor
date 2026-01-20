@@ -29,7 +29,7 @@ data class TransactionDetailDto(
     val protocol: String?,
     val tlsVersion: String?,
     val error: String?,
-    val contentType: String?
+    val contentType: String?,
 )
 
 /**
@@ -43,7 +43,7 @@ interface ServiceProvider {
         method: String,
         headers: Map<String, List<String>>,
         bodyStream: InputStream?,
-        bodySize: Long
+        bodySize: Long,
     ): UUID?
 
     fun completeTransaction(
@@ -55,7 +55,7 @@ interface ServiceProvider {
         bodySize: Long,
         protocol: String?,
         tlsVersion: String?,
-        error: String?
+        error: String?,
     )
 
     fun cleanup(threshold: Long)

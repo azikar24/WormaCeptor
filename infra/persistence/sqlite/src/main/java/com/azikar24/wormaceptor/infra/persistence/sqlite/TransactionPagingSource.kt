@@ -13,7 +13,7 @@ class TransactionPagingSource(
     private val transactionDao: TransactionDao,
     private val searchQuery: String?,
     private val filters: TransactionFilters,
-    private val entityToSummaryMapper: (TransactionEntity) -> TransactionSummary
+    private val entityToSummaryMapper: (TransactionEntity) -> TransactionSummary,
 ) : PagingSource<Int, TransactionSummary>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TransactionSummary> {
@@ -32,7 +32,7 @@ class TransactionPagingSource(
                 searchQuery = searchQuery,
                 statusMin = filters.statusRange?.first,
                 statusMax = filters.statusRange?.last,
-                method = filters.method
+                method = filters.method,
             )
 
             val transactions = entities.map(entityToSummaryMapper)
@@ -40,7 +40,7 @@ class TransactionPagingSource(
             LoadResult.Page(
                 data = transactions,
                 prevKey = if (page == 0) null else page - 1,
-                nextKey = if (transactions.size < pageSize) null else page + 1
+                nextKey = if (transactions.size < pageSize) null else page + 1,
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

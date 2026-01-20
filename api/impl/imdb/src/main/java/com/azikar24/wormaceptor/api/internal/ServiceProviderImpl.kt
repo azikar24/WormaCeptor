@@ -19,10 +19,10 @@ import java.io.InputStream
 import java.util.UUID
 
 internal class ServiceProviderImpl : ServiceProvider {
-    
+
     private var captureEngine: CaptureEngine? = null
     private var queryEngine: QueryEngine? = null
-    private var notificationHelper: com.azikar24.wormaceptor.api.internal.WormaCeptorNotificationHelper? = null
+    private var notificationHelper: WormaCeptorNotificationHelper? = null
 
     override fun init(context: Context, logCrashes: Boolean) {
         if (captureEngine != null) return
@@ -30,27 +30,43 @@ internal class ServiceProviderImpl : ServiceProvider {
         val repository = InMemoryTransactionRepository()
         val crashRepository = InMemoryCrashRepository()
         val blobStorage = InMemoryBlobStorage()
-        
+
         captureEngine = CaptureEngine(repository, blobStorage)
         queryEngine = QueryEngine(repository, blobStorage, crashRepository)
-        
+
         if (logCrashes) {
             val crashReporter = CrashReporter(crashRepository)
             crashReporter.init()
         }
-        
-        notificationHelper = com.azikar24.wormaceptor.api.internal.WormaCeptorNotificationHelper(context)
+
+        notificationHelper = WormaCeptorNotificationHelper(context)
 
         // Share with Feature Modules
         CoreHolder.captureEngine = captureEngine
         CoreHolder.queryEngine = queryEngine
     }
 
-    override fun startTransaction(url: String, method: String, headers: Map<String, List<String>>, bodyStream: InputStream?, bodySize: Long): UUID? = runBlocking {
+    override fun startTransaction(
+        url: String,
+        method: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+    ): UUID? = runBlocking {
         captureEngine?.startTransaction(url, method, headers, bodyStream, bodySize)
     }
 
-    override fun completeTransaction(id: UUID, code: Int, message: String, headers: Map<String, List<String>>, bodyStream: InputStream?, bodySize: Long, protocol: String?, tlsVersion: String?, error: String?) {
+    override fun completeTransaction(
+        id: UUID,
+        code: Int,
+        message: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+        protocol: String?,
+        tlsVersion: String?,
+        error: String?,
+    ) {
         runBlocking {
             captureEngine?.completeTransaction(id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error)
             val transaction = queryEngine?.getDetails(id)
@@ -99,8 +115,16 @@ internal class ServiceProviderImpl : ServiceProvider {
             val response = transaction.response
 
             // Parse URL to extract host and path
-            val host = try { java.net.URI(request.url).host ?: "" } catch (e: Exception) { "" }
-            val path = try { java.net.URI(request.url).path ?: request.url } catch (e: Exception) { request.url }
+            val host = try {
+                java.net.URI(request.url).host ?: ""
+            } catch (e: Exception) {
+                ""
+            }
+            val path = try {
+                java.net.URI(request.url).path ?: request.url
+            } catch (e: Exception) {
+                request.url
+            }
 
             // Get body content from blob storage
             val requestBody = request.bodyRef?.let { queryEngine?.getBody(it) }
@@ -131,7 +155,7 @@ internal class ServiceProviderImpl : ServiceProvider {
                 protocol = response?.protocol,
                 tlsVersion = response?.tlsVersion,
                 error = response?.error,
-                contentType = contentType
+                contentType = contentType,
             )
         } catch (e: Exception) {
             null

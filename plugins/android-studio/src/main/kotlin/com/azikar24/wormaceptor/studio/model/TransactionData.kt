@@ -10,7 +10,7 @@ package com.azikar24.wormaceptor.studio.model
 enum class TransactionStatus {
     ACTIVE,
     COMPLETED,
-    FAILED
+    FAILED,
 }
 
 /**
@@ -30,7 +30,7 @@ data class TransactionSummary(
     val timestamp: Long,
     val contentType: String? = null,
     val requestSize: Long = 0,
-    val responseSize: Long = 0
+    val responseSize: Long = 0,
 ) {
     /**
      * Returns a short display text for the transaction.
@@ -124,5 +124,5 @@ data class TransactionDetail(
     val responseMessage: String?,
     val protocol: String?,
     val tlsVersion: String?,
-    val error: String?
+    val error: String?,
 )

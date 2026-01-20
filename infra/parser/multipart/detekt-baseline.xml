@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ComplexCondition:MultipartBodyParser.kt$MultipartBodyParser$type.startsWith("image/") || type.startsWith("audio/") || type.startsWith("video/") || type.startsWith("application/octet-stream") || type.startsWith("application/pdf")</ID>
+    <ID>LoopWithTooManyJumpStatements:MultipartBodyParser.kt$MultipartBodyParser$for</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$0.1f</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$127</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$14</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$210</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$31</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$4</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$500</ID>
+    <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$9</ID>
+    <ID>TooGenericExceptionCaught:MultipartBodyParser.kt$MultipartBodyParser$e: Exception</ID>
+    <ID>UnnecessaryParentheses:MultipartBodyParser.kt$MultipartBodyParser$(code in 14..31)</ID>
+  </CurrentIssues>
+</SmellBaseline>

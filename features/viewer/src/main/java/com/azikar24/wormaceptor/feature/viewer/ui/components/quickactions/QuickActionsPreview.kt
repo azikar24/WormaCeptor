@@ -14,10 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Code
@@ -53,13 +50,13 @@ fun QuickActionsPreview() {
     MaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            color = MaterialTheme.colorScheme.background,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 // Section: Checkboxes
                 SectionHeader("Selection Checkboxes")
@@ -102,11 +99,11 @@ private fun SectionHeader(title: String) {
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
         HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
         )
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
     }
@@ -117,19 +114,19 @@ private fun CheckboxShowcase() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Circular checkbox - unselected
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SelectionCheckbox(
                 isSelected = false,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = "Unselected",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -137,13 +134,13 @@ private fun CheckboxShowcase() {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SelectionCheckbox(
                 isSelected = true,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = "Selected",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -151,13 +148,13 @@ private fun CheckboxShowcase() {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SquareSelectionCheckbox(
                 isSelected = false,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = "Square",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -165,13 +162,13 @@ private fun CheckboxShowcase() {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SquareSelectionCheckbox(
                 isSelected = true,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = "Selected",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -186,7 +183,7 @@ private fun QuickFilterBarShowcase() {
         Text(
             text = "Standard Filter Bar",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         QuickFilterBar(
             activeFilters = activeFilters,
@@ -197,7 +194,7 @@ private fun QuickFilterBarShowcase() {
                     activeFilters + filter
                 }
             },
-            onClearAll = { activeFilters = emptySet() }
+            onClearAll = { activeFilters = emptySet() },
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -206,25 +203,25 @@ private fun QuickFilterBarShowcase() {
         Text(
             text = "Filter Chip States",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Row(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             QuickFilterChip(
                 filter = QuickFilter.ERRORS,
                 isSelected = false,
-                onClick = {}
+                onClick = {},
             )
             QuickFilterChip(
                 filter = QuickFilter.ERRORS,
                 isSelected = true,
-                onClick = {}
+                onClick = {},
             )
             MaterialQuickFilterChip(
                 filter = QuickFilter.SLOW,
                 isSelected = true,
-                onClick = {}
+                onClick = {},
             )
         }
     }
@@ -237,7 +234,7 @@ private fun BulkActionBarShowcase() {
         Text(
             text = "Full Action Bar (3 of 10 selected)",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         BulkActionBar(
             selectedCount = 3,
@@ -246,14 +243,14 @@ private fun BulkActionBarShowcase() {
             onShare = {},
             onExport = {},
             onDelete = {},
-            onCancel = {}
+            onCancel = {},
         )
 
         // All selected state
         Text(
             text = "All Selected State",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         BulkActionBar(
             selectedCount = 10,
@@ -262,39 +259,39 @@ private fun BulkActionBarShowcase() {
             onShare = {},
             onExport = {},
             onDelete = {},
-            onCancel = {}
+            onCancel = {},
         )
 
         // Compact variant
         Text(
             text = "Compact Variant",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         CompactBulkActionBar(
             selectedCount = 5,
             onShare = {},
             onExport = {},
             onDelete = {},
-            onCancel = {}
+            onCancel = {},
         )
 
         // Floating variant
         Text(
             text = "Floating Variant",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             FloatingBulkActionBar(
                 selectedCount = 2,
                 onShare = {},
                 onExport = {},
                 onDelete = {},
-                onCancel = {}
+                onCancel = {},
             )
         }
     }
@@ -307,46 +304,46 @@ private fun ContextMenuActionsShowcase() {
             id = "copy",
             label = "Copy URL",
             icon = Icons.Outlined.ContentCopy,
-            onClick = {}
+            onClick = {},
         ),
         QuickAction(
             id = "share",
             label = "Share",
             icon = Icons.Outlined.Share,
-            onClick = {}
+            onClick = {},
         ),
         QuickAction(
             id = "curl",
             label = "Copy as cURL",
             icon = Icons.Outlined.Code,
-            onClick = {}
+            onClick = {},
         ),
         QuickAction(
             id = "replay",
             label = "Replay Request",
             icon = Icons.Outlined.Replay,
-            onClick = {}
+            onClick = {},
         ),
         QuickAction(
             id = "delete",
             label = "Delete",
             icon = Icons.Outlined.Delete,
             destructive = true,
-            onClick = {}
-        )
+            onClick = {},
+        ),
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
             text = "Custom Context Menu (visible)",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         CustomContextMenu(
             visible = true,
             actions = actions,
-            onDismiss = {}
+            onDismiss = {},
         )
     }
 }
@@ -357,7 +354,7 @@ private fun SelectableItemsShowcase() {
         createSampleTransaction("GET", "/api/users", 200, 150),
         createSampleTransaction("POST", "/api/orders", 201, 320),
         createSampleTransaction("GET", "/api/products/search", 500, 1200),
-        createSampleTransaction("DELETE", "/api/users/123", 404, 89)
+        createSampleTransaction("DELETE", "/api/users/123", 404, 89),
     )
 
     var selectedIds by remember { mutableStateOf(setOf(sampleTransactions[1].id)) }
@@ -367,7 +364,7 @@ private fun SelectableItemsShowcase() {
         Text(
             text = "Selection Mode: ${if (isSelectionMode) "ON" else "OFF"}",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         sampleTransactions.forEach { transaction ->
@@ -387,33 +384,29 @@ private fun SelectableItemsShowcase() {
                 onLongClick = {
                     isSelectionMode = true
                     selectedIds = setOf(transaction.id)
-                }
+                },
             )
         }
     }
 }
 
-private fun createSampleTransaction(
-    method: String,
-    path: String,
-    code: Int,
-    duration: Long
-): TransactionSummary = TransactionSummary(
-    id = UUID.randomUUID(),
-    method = method,
-    host = "api.example.com",
-    path = path,
-    code = code,
-    status = when {
-        code in 200..299 -> TransactionStatus.COMPLETED
-        code in 400..599 -> TransactionStatus.COMPLETED
-        else -> TransactionStatus.FAILED
-    },
-    tookMs = duration,
-    hasRequestBody = true,
-    hasResponseBody = true,
-    timestamp = System.currentTimeMillis()
-)
+private fun createSampleTransaction(method: String, path: String, code: Int, duration: Long): TransactionSummary =
+    TransactionSummary(
+        id = UUID.randomUUID(),
+        method = method,
+        host = "api.example.com",
+        path = path,
+        code = code,
+        status = when {
+            code in 200..299 -> TransactionStatus.COMPLETED
+            code in 400..599 -> TransactionStatus.COMPLETED
+            else -> TransactionStatus.FAILED
+        },
+        tookMs = duration,
+        hasRequestBody = true,
+        hasResponseBody = true,
+        timestamp = System.currentTimeMillis(),
+    )
 
 /**
  * Preview for individual components in isolation.
@@ -424,23 +417,23 @@ private fun SelectionCheckboxPreview() {
     MaterialTheme {
         Row(
             modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             SelectionCheckbox(
                 isSelected = false,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             SelectionCheckbox(
                 isSelected = true,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             SquareSelectionCheckbox(
                 isSelected = false,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
             SquareSelectionCheckbox(
                 isSelected = true,
-                accentColor = MaterialTheme.colorScheme.primary
+                accentColor = MaterialTheme.colorScheme.primary,
             )
         }
     }
@@ -453,7 +446,7 @@ private fun QuickFilterBarPreview() {
         QuickFilterBar(
             activeFilters = setOf(QuickFilter.ERRORS, QuickFilter.SLOW),
             onFilterToggle = {},
-            onClearAll = {}
+            onClearAll = {},
         )
     }
 }
@@ -469,7 +462,7 @@ private fun BulkActionBarPreview() {
             onShare = {},
             onExport = {},
             onDelete = {},
-            onCancel = {}
+            onCancel = {},
         )
     }
 }
@@ -483,9 +476,9 @@ private fun ContextMenuPreview() {
             actions = listOf(
                 QuickAction("copy", "Copy URL", Icons.Outlined.ContentCopy, onClick = {}),
                 QuickAction("share", "Share", Icons.Outlined.Share, onClick = {}),
-                QuickAction("delete", "Delete", Icons.Outlined.Delete, destructive = true, onClick = {})
+                QuickAction("delete", "Delete", Icons.Outlined.Delete, destructive = true, onClick = {}),
             ),
-            onDismiss = {}
+            onDismiss = {},
         )
     }
 }

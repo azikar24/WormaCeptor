@@ -7,16 +7,16 @@ import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.BlobID
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class QueryEngine(
     private val repository: TransactionRepository,
     private val blobStorage: BlobStorage,
-    private val crashRepository: CrashRepository? = null
+    private val crashRepository: CrashRepository? = null,
 ) {
 
     fun observeTransactions(): Flow<List<TransactionSummary>> {
@@ -39,12 +39,12 @@ class QueryEngine(
     fun observeTransactionsPaged(
         searchQuery: String? = null,
         filters: TransactionFilters = TransactionFilters(),
-        pageSize: Int = 30
+        pageSize: Int = 30,
     ): Flow<PagingData<TransactionSummary>> {
         return repository.getTransactionsPaged(
             searchQuery = searchQuery,
             filters = filters,
-            pageSize = pageSize
+            pageSize = pageSize,
         )
     }
 

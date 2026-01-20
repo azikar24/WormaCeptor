@@ -37,7 +37,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Image
@@ -46,7 +45,6 @@ import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -77,7 +75,7 @@ fun QuickFilterBar(
     activeFilters: Set<QuickFilter>,
     onFilterToggle: (QuickFilter) -> Unit,
     onClearAll: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val hasActiveFilters = activeFilters.isNotEmpty()
 
@@ -85,29 +83,29 @@ fun QuickFilterBar(
         visible = true,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = WormaCeptorDesignSystem.Elevation.xs
+            tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Filter chips scrollable area
                 LazyRow(
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                    contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                 ) {
                     items(QuickFilter.entries.toList()) { filter ->
                         QuickFilterChip(
                             filter = filter,
                             isSelected = filter in activeFilters,
-                            onClick = { onFilterToggle(filter) }
+                            onClick = { onFilterToggle(filter) },
                         )
                     }
                 }
@@ -116,17 +114,17 @@ fun QuickFilterBar(
                 AnimatedVisibility(
                     visible = hasActiveFilters,
                     enter = fadeIn(tween(150)),
-                    exit = fadeOut(tween(100))
+                    exit = fadeOut(tween(100)),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.md)
+                        modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         Box(
                             modifier = Modifier
                                 .width(1.dp)
                                 .size(20.dp)
-                                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+                                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
                         )
                         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         ClearFiltersButton(onClick = onClearAll)
@@ -141,19 +139,14 @@ fun QuickFilterBar(
  * Individual quick filter chip with icon and animation.
  */
 @Composable
-fun QuickFilterChip(
-    filter: QuickFilter,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun QuickFilterChip(filter: QuickFilter, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = spring(stiffness = 400f),
-        label = "chipScale"
+        label = "chipScale",
     )
 
     val backgroundColor by animateColorAsState(
@@ -163,7 +156,7 @@ fun QuickFilterChip(
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
         },
         animationSpec = tween(200),
-        label = "chipBg"
+        label = "chipBg",
     )
 
     val contentColor by animateColorAsState(
@@ -173,7 +166,7 @@ fun QuickFilterChip(
             MaterialTheme.colorScheme.onSurfaceVariant
         },
         animationSpec = tween(200),
-        label = "chipContent"
+        label = "chipContent",
     )
 
     val borderColor by animateColorAsState(
@@ -183,7 +176,7 @@ fun QuickFilterChip(
             Color.Transparent
         },
         animationSpec = tween(200),
-        label = "chipBorder"
+        label = "chipBorder",
     )
 
     Surface(
@@ -196,26 +189,26 @@ fun QuickFilterChip(
                     Modifier.border(
                         width = WormaCeptorDesignSystem.BorderWidth.thin,
                         color = borderColor,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
                     )
                 } else {
                     Modifier
-                }
+                },
             )
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill))
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onClick
-            )
+                onClick = onClick,
+            ),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.sm
+                vertical = WormaCeptorDesignSystem.Spacing.sm,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             // Leading icon (checkmark when selected, filter icon otherwise)
             if (isSelected) {
@@ -223,14 +216,14 @@ fun QuickFilterChip(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = contentColor
+                    tint = contentColor,
                 )
             } else {
                 Icon(
                     imageVector = filterIcon(filter),
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = contentColor.copy(alpha = 0.7f)
+                    tint = contentColor.copy(alpha = 0.7f),
                 )
             }
 
@@ -238,7 +231,7 @@ fun QuickFilterChip(
                 text = filter.label,
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                color = contentColor
+                color = contentColor,
             )
         }
     }
@@ -252,7 +245,7 @@ fun MaterialQuickFilterChip(
     filter: QuickFilter,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val color = filterColor(filter)
 
@@ -263,7 +256,7 @@ fun MaterialQuickFilterChip(
             Text(
                 text = filter.label,
                 style = MaterialTheme.typography.labelMedium,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
+                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
             )
         },
         leadingIcon = if (isSelected) {
@@ -271,7 +264,7 @@ fun MaterialQuickFilterChip(
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
             }
         } else {
@@ -279,7 +272,7 @@ fun MaterialQuickFilterChip(
                 Icon(
                     imageVector = filterIcon(filter),
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
             }
         },
@@ -287,7 +280,7 @@ fun MaterialQuickFilterChip(
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
             selectedLabelColor = color,
-            selectedLeadingIconColor = color
+            selectedLeadingIconColor = color,
         ),
         border = FilterChipDefaults.filterChipBorder(
             borderColor = Color.Transparent,
@@ -295,9 +288,9 @@ fun MaterialQuickFilterChip(
             borderWidth = WormaCeptorDesignSystem.BorderWidth.thin,
             selectedBorderWidth = WormaCeptorDesignSystem.BorderWidth.regular,
             enabled = true,
-            selected = isSelected
+            selected = isSelected,
         ),
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -305,17 +298,14 @@ fun MaterialQuickFilterChip(
  * Compact clear filters button.
  */
 @Composable
-private fun ClearFiltersButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun ClearFiltersButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.9f else 1f,
         animationSpec = spring(stiffness = 400f),
-        label = "clearScale"
+        label = "clearScale",
     )
 
     Surface(
@@ -328,18 +318,18 @@ private fun ClearFiltersButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onClick
-            )
+                onClick = onClick,
+            ),
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = "Clear all filters",
                 modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
         }
     }
@@ -354,37 +344,37 @@ fun ExpandedQuickFilterBar(
     filterCounts: Map<QuickFilter, Int>,
     onFilterToggle: (QuickFilter) -> Unit,
     onClearAll: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Header with active count and clear button
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Text(
                         text = "Quick Filters",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
 
                     if (activeFilters.isNotEmpty()) {
                         Surface(
                             shape = CircleShape,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         ) {
                             Text(
                                 text = activeFilters.size.toString(),
@@ -393,8 +383,8 @@ fun ExpandedQuickFilterBar(
                                 color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.padding(
                                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xxs
-                                )
+                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                ),
                             )
                         }
                     }
@@ -406,7 +396,7 @@ fun ExpandedQuickFilterBar(
                         color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f),
                         modifier = Modifier
                             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
-                            .clickable(onClick = onClearAll)
+                            .clickable(onClick = onClearAll),
                     ) {
                         Text(
                             text = "Clear all",
@@ -415,8 +405,8 @@ fun ExpandedQuickFilterBar(
                             color = MaterialTheme.colorScheme.error,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xs
-                            )
+                                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                            ),
                         )
                     }
                 }
@@ -429,14 +419,14 @@ fun ExpandedQuickFilterBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 QuickFilter.entries.forEach { filter ->
                     ExpandedFilterChip(
                         filter = filter,
                         isSelected = filter in activeFilters,
                         count = filterCounts[filter] ?: 0,
-                        onClick = { onFilterToggle(filter) }
+                        onClick = { onFilterToggle(filter) },
                     )
                 }
             }
@@ -453,7 +443,7 @@ private fun ExpandedFilterChip(
     isSelected: Boolean,
     count: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -462,7 +452,7 @@ private fun ExpandedFilterChip(
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = spring(stiffness = 400f),
-        label = "expandedChipScale"
+        label = "expandedChipScale",
     )
 
     val backgroundColor by animateColorAsState(
@@ -472,7 +462,7 @@ private fun ExpandedFilterChip(
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
         },
         animationSpec = tween(200),
-        label = "expandedChipBg"
+        label = "expandedChipBg",
     )
 
     Surface(
@@ -485,22 +475,22 @@ private fun ExpandedFilterChip(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = onClick,
-                enabled = count > 0
-            )
+                enabled = count > 0,
+            ),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.sm
+                vertical = WormaCeptorDesignSystem.Spacing.sm,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Icon(
                 imageVector = if (isSelected) Icons.Default.Check else filterIcon(filter),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
-                tint = if (isSelected) color else color.copy(alpha = if (count > 0) 0.7f else 0.3f)
+                tint = if (isSelected) color else color.copy(alpha = if (count > 0) 0.7f else 0.3f),
             )
 
             Column {
@@ -512,7 +502,7 @@ private fun ExpandedFilterChip(
                         if (isSelected) color else MaterialTheme.colorScheme.onSurface
                     } else {
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-                    }
+                    },
                 )
 
                 Text(
@@ -520,8 +510,8 @@ private fun ExpandedFilterChip(
                     style = MaterialTheme.typography.labelSmall,
                     fontSize = 10.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = if (count > 0) 0.6f else 0.3f
-                    )
+                        alpha = if (count > 0) 0.6f else 0.3f,
+                    ),
                 )
             }
         }

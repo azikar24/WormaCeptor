@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -31,10 +33,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
 
 @Composable
-fun MetricsCard(transactions: List<TransactionSummary>, modifier: Modifier = Modifier) {
+fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modifier = Modifier) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -106,6 +109,7 @@ fun MetricsCard(transactions: List<TransactionSummary>, modifier: Modifier = Mod
                     text = "Performance Metrics",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { heading() },
                 )
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
@@ -403,10 +407,11 @@ private fun SectionHeader(icon: androidx.compose.ui.graphics.vector.ImageVector,
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.semantics { heading() },
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = title,
             modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
         )

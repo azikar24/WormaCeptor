@@ -1,11 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -43,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -197,7 +196,7 @@ private fun QuickActionsRow(context: Context, crash: Crash) {
         ) {
             Icon(
                 imageVector = Icons.Default.ContentCopy,
-                contentDescription = null,
+                contentDescription = "Copy stack trace",
                 modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
@@ -212,7 +211,7 @@ private fun QuickActionsRow(context: Context, crash: Crash) {
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = null,
+                contentDescription = "Search on Stack Overflow",
                 modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
@@ -446,12 +445,6 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
     }
 }
 
-private fun copyToClipboard(context: Context, label: String, text: String) {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(label, text)
-    clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
-}
 
 private fun searchStackOverflow(context: Context, crash: Crash) {
     val query = CrashUtils.generateStackOverflowQuery(crash.exceptionType, crash.message)
@@ -461,7 +454,7 @@ private fun searchStackOverflow(context: Context, crash: Crash) {
 }
 
 private fun shareCrash(context: Context, crash: Crash) {
-    val shareText = buildString {
+    val text = buildString {
         appendLine("WormaCeptor Crash Report")
         appendLine("=======================")
         appendLine()
@@ -478,11 +471,5 @@ private fun shareCrash(context: Context, crash: Crash) {
         appendLine("Stack Trace:")
         appendLine(crash.stackTrace)
     }
-
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, shareText)
-        putExtra(Intent.EXTRA_SUBJECT, "Crash Report: ${crash.exceptionType}")
-    }
-    context.startActivity(Intent.createChooser(intent, "Share Crash Report"))
+    shareText(context, text, "Share Crash Report", "Crash Report: ${crash.exceptionType}")
 }

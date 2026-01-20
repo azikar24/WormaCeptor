@@ -59,7 +59,7 @@ fun TransactionContextMenu(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.ContentCopy,
-                    contentDescription = null,
+                    contentDescription = "Copy URL",
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -74,7 +74,7 @@ fun TransactionContextMenu(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = null,
+                    contentDescription = "Share transaction",
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -89,7 +89,7 @@ fun TransactionContextMenu(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Code,
-                    contentDescription = null,
+                    contentDescription = "Copy as cURL command",
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -111,7 +111,7 @@ fun TransactionContextMenu(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = null,
+                    contentDescription = "Delete transaction",
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(20.dp),
                 )

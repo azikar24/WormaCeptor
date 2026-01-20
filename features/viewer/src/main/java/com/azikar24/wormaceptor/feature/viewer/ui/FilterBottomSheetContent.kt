@@ -51,12 +51,21 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import kotlinx.collections.immutable.ImmutableMap
 
 /**
  * Modern filter bottom sheet content with distribution bars
@@ -74,8 +83,8 @@ fun FilterBottomSheetContent(
     onApply: () -> Unit,
     filteredCount: Int,
     totalCount: Int,
-    methodCounts: Map<String, Int>,
-    statusCounts: Map<IntRange, Int>,
+    methodCounts: ImmutableMap<String, Int>,
+    statusCounts: ImmutableMap<IntRange, Int>,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -192,13 +201,17 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
             }
         }
 
-        // Result count badge
+        // Result count badge with LiveRegion for accessibility announcements
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             color = if (filtersActive) {
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             } else {
                 MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            },
+            modifier = Modifier.semantics {
+                liveRegion = LiveRegionMode.Polite
+                contentDescription = "$filteredCount of $totalCount requests shown"
             },
         ) {
             Text(
@@ -294,7 +307,7 @@ private fun FilterSectionHeader(icon: ImageVector, title: String) {
 
 @Composable
 private fun MethodFilterBars(
-    methodCounts: Map<String, Int>,
+    methodCounts: ImmutableMap<String, Int>,
     selectedMethod: String?,
     onMethodSelected: (String?) -> Unit,
 ) {
@@ -335,7 +348,7 @@ private fun MethodFilterBars(
 
 @Composable
 private fun StatusFilterBars(
-    statusCounts: Map<IntRange, Int>,
+    statusCounts: ImmutableMap<IntRange, Int>,
     selectedRange: IntRange?,
     onStatusSelected: (IntRange?) -> Unit,
 ) {
@@ -420,6 +433,12 @@ private fun GridFilterCard(
         label = "border_animation",
     )
 
+    val stateDesc = when {
+        count == 0 -> "No items available"
+        isSelected -> "Selected, $count items"
+        else -> "$count items"
+    }
+
     Box(
         modifier = modifier
             .scale(scale)
@@ -436,6 +455,12 @@ private fun GridFilterCard(
                 onClick = onClick,
                 enabled = count > 0,
             )
+            .semantics {
+                role = Role.Button
+                selected = isSelected
+                stateDescription = stateDesc
+                contentDescription = "$label filter. $stateDesc. ${if (count > 0) "Double tap to ${if (isSelected) "deselect" else "select"}" else "Disabled"}"
+            }
             .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
         Row(

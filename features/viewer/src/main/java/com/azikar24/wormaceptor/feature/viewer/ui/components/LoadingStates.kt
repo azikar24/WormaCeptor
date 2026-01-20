@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 
 // ============================================================================
 // SKELETON LOADING COMPONENTS
@@ -375,7 +376,7 @@ fun ErrorState(
         ) {
             Icon(
                 imageVector = errorType.icon,
-                contentDescription = null,
+                contentDescription = "Error: ${errorType.title}",
                 modifier = Modifier.size(32.dp),
                 tint = WormaCeptorColors.StatusRed,
             )
@@ -431,7 +432,7 @@ fun ErrorState(
                 } else {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = null,
+                        contentDescription = "Retry",
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.onPrimary,
                     )
@@ -465,7 +466,7 @@ fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = 
     ) {
         Icon(
             imageVector = Icons.Outlined.ErrorOutline,
-            contentDescription = null,
+            contentDescription = "Error",
             modifier = Modifier.size(20.dp),
             tint = WormaCeptorColors.StatusRed,
         )
@@ -620,7 +621,7 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
             // Search icon representation
             Icon(
                 imageVector = Icons.Outlined.Search,
-                contentDescription = null,
+                contentDescription = "Search",
                 modifier = Modifier.size(40.dp),
                 tint = primaryColor,
             )
@@ -856,7 +857,7 @@ fun ScrollToTopExtendedFab(
             icon = {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = null,
+                    contentDescription = "Scroll to top",
                 )
             },
             text = {
@@ -872,20 +873,6 @@ fun ScrollToTopExtendedFab(
 // ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
-
-/**
- * Formats bytes into human-readable string.
- */
-fun formatBytes(bytes: Long): String {
-    if (bytes < 0) return "0 B"
-
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
-}
 
 /**
  * Modifier extension for applying graphics layer with alpha.

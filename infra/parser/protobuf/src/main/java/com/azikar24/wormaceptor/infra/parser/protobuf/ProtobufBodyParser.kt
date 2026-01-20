@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.protobuf
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.nio.ByteBuffer
 
 /**
@@ -49,11 +50,7 @@ class ProtobufBodyParser : BodyParser {
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.PROTOBUF,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.PROTOBUF)
         }
 
         return try {

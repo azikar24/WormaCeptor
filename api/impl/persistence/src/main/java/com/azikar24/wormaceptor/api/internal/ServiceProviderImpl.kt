@@ -2,10 +2,6 @@ package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
 import androidx.room.Room
-import com.azikar24.wormaceptor.core.engine.CaptureEngine
-import com.azikar24.wormaceptor.core.engine.CoreHolder
-import com.azikar24.wormaceptor.core.engine.CrashReporter
-import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.infra.persistence.sqlite.FileSystemBlobStorage
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomCrashRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomTransactionRepository
@@ -13,9 +9,7 @@ import com.azikar24.wormaceptor.infra.persistence.sqlite.WormaCeptorDatabase
 
 internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
-    override fun init(context: Context, logCrashes: Boolean) {
-        if (captureEngine != null) return
-
+    override fun createDependencies(context: Context): StorageDependencies {
         val database = Room.databaseBuilder(
             context.applicationContext,
             WormaCeptorDatabase::class.java,
@@ -24,25 +18,12 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
             .fallbackToDestructiveMigration()
             .build()
 
-        val repository = RoomTransactionRepository(database.transactionDao())
-        val crashRepository = RoomCrashRepository(database.crashDao())
-        val blobStorage = FileSystemBlobStorage(context.applicationContext)
-
-        val capture = CaptureEngine(repository, blobStorage)
-        val query = QueryEngine(repository, blobStorage, crashRepository)
-
-        if (!CoreHolder.initialize(capture, query)) {
-            return // Already initialized
-        }
-
-        captureEngine = capture
-        queryEngine = query
-
-        if (logCrashes) {
-            val crashReporter = CrashReporter(crashRepository)
-            crashReporter.init()
-        }
-
-        notificationHelper = WormaCeptorNotificationHelper(context)
+        return StorageDependencies(
+            transactionRepository = RoomTransactionRepository(database.transactionDao()),
+            crashRepository = RoomCrashRepository(database.crashDao()),
+            blobStorage = FileSystemBlobStorage(context.applicationContext),
+        )
     }
+
+    override fun getNotificationTitle() = "WormaCeptor: Recording..."
 }

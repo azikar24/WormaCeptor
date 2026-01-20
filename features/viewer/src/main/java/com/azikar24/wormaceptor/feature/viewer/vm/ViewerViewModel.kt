@@ -9,6 +9,7 @@ import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
 import com.azikar24.wormaceptor.feature.viewer.ui.components.applyQuickFilters
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -19,9 +20,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
@@ -64,8 +69,10 @@ class ViewerViewModel(
         .map { it.isNotEmpty() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    val allTransactions: StateFlow<List<TransactionSummary>> = queryEngine.observeTransactions()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val allTransactions: StateFlow<ImmutableList<TransactionSummary>> = queryEngine.observeTransactions()
+        .map { it.toImmutableList() }
+        .flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
     // Paged transactions with database-level pagination for better performance with large datasets
     val pagedTransactions: Flow<PagingData<TransactionSummary>> =
@@ -91,8 +98,8 @@ class ViewerViewModel(
             )
         }.cachedIn(viewModelScope)
 
-    val transactions: StateFlow<List<TransactionSummary>> = combine(
-        _searchQuery,
+    val transactions: StateFlow<ImmutableList<TransactionSummary>> = combine(
+        _searchQuery.debounce(150),
         _filterMethod,
         _filterStatusRange,
         _quickFilters,
@@ -112,11 +119,14 @@ class ViewerViewModel(
             val matchesStatus = statusRange == null || (transaction.code?.let { it in statusRange } ?: false)
 
             matchesSearch && matchesMethod && matchesStatus
-        }.applyQuickFilters(quickFilters)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        }.applyQuickFilters(quickFilters).toImmutableList()
+    }.flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
     val crashes = queryEngine.observeCrashes()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        .map { it.toImmutableList() }
+        .flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query

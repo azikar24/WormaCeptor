@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -34,7 +33,6 @@ fun TextWithStartEllipsis(
     style: TextStyle = LocalTextStyle.current,
 ) {
     val textMeasurer = rememberTextMeasurer()
-    LocalDensity.current
 
     val mergedStyle = style.merge(
         TextStyle(

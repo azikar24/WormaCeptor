@@ -288,7 +288,7 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Description,
-                        contentDescription = null,
+                        contentDescription = "Page count",
                         modifier = Modifier.size(14.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
@@ -391,7 +391,7 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Fullscreen,
-                        contentDescription = null,
+                        contentDescription = "Open PDF fullscreen",
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -445,7 +445,7 @@ private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
         icon?.let {
             Icon(
                 imageVector = it,
-                contentDescription = null,
+                contentDescription = text,
                 modifier = Modifier.size(14.dp),
                 tint = tint.copy(alpha = 0.7f),
             )
@@ -474,7 +474,7 @@ private fun ErrorContent(message: String) {
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
-                contentDescription = null,
+                contentDescription = "Error loading PDF",
                 modifier = Modifier.size(40.dp),
                 tint = MaterialTheme.colorScheme.error,
             )
@@ -518,7 +518,7 @@ private fun PasswordProtectedContent(
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 Icon(
                     imageVector = Icons.Default.Lock,
-                    contentDescription = null,
+                    contentDescription = "Password protected",
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.secondary,
                 )
@@ -559,7 +559,7 @@ private fun PasswordProtectedContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Download,
-                    contentDescription = null,
+                    contentDescription = "Download PDF",
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -572,7 +572,7 @@ private fun PasswordProtectedContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = null,
+                    contentDescription = "Share PDF",
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))

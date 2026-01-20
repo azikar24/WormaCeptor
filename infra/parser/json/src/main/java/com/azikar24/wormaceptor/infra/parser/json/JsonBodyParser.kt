@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.json
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -56,11 +57,7 @@ class JsonBodyParser(
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.JSON,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.JSON)
         }
 
         return try {

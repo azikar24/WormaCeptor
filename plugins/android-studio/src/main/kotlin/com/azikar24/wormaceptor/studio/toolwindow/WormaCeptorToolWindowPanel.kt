@@ -15,6 +15,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.CollectionListModel
@@ -39,7 +40,7 @@ import javax.swing.event.DocumentListener
  * Main tool window panel for WormaCeptor.
  * Contains a split view with transaction list on the left and details on the right.
  */
-class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindowPanel(true, true) {
+class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindowPanel(true, true), Disposable {
 
     private val service: WormaCeptorService = project.getService(WormaCeptorService::class.java)
 
@@ -62,6 +63,23 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
     // Auto-refresh timer - 2 second interval
     private val refreshTimer = Timer(2000) { autoRefresh() }
 
+    // State listener stored as field so it can be removed in dispose()
+    private val stateListener = object : WormaCeptorService.StateListener {
+        override fun onDeviceChanged(serial: String?) {
+            refreshTransactions()
+        }
+
+        override fun onTransactionsUpdated(transactions: List<TransactionSummary>) {
+            ApplicationManager.getApplication().invokeLater {
+                updateTransactionList(transactions)
+            }
+        }
+
+        override fun onCaptureStatusChanged(active: Boolean, count: Int) {
+            // Update status bar widget
+        }
+    }
+
     companion object {
         private const val CARD_LOADING = "loading"
         private const val CARD_EMPTY = "empty"
@@ -80,8 +98,9 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         refreshTimer.start()
     }
 
-    fun dispose() {
+    override fun dispose() {
         refreshTimer.stop()
+        service.removeStateListener(stateListener)
     }
 
     private fun autoRefresh() {
@@ -293,23 +312,7 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
         )
 
         // Service state listener
-        service.addStateListener(
-            object : WormaCeptorService.StateListener {
-                override fun onDeviceChanged(serial: String?) {
-                    refreshTransactions()
-                }
-
-                override fun onTransactionsUpdated(transactions: List<TransactionSummary>) {
-                    ApplicationManager.getApplication().invokeLater {
-                        updateTransactionList(transactions)
-                    }
-                }
-
-                override fun onCaptureStatusChanged(active: Boolean, count: Int) {
-                    // Update status bar widget
-                }
-            },
-        )
+        service.addStateListener(stateListener)
     }
 
     private fun refreshTransactions() {

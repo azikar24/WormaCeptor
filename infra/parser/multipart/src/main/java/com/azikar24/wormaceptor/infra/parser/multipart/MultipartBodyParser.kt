@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.multipart
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 
 /**
  * Parser for multipart form data (multipart/form-data).
@@ -39,11 +40,7 @@ class MultipartBodyParser : BodyParser {
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.MULTIPART,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.MULTIPART)
         }
 
         return try {
@@ -88,11 +85,7 @@ class MultipartBodyParser : BodyParser {
      */
     fun parseWithContentType(contentType: String, body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.MULTIPART,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.MULTIPART)
         }
 
         val boundary = extractBoundary(contentType)
@@ -152,7 +145,6 @@ class MultipartBodyParser : BodyParser {
     private fun parseParts(content: String, boundary: String): List<MultipartPart> {
         val parts = mutableListOf<MultipartPart>()
         val delimiter = "--$boundary"
-        "--$boundary--"
 
         // Split by boundary
         val sections = content.split(delimiter)
@@ -194,10 +186,10 @@ class MultipartBodyParser : BodyParser {
 
     private fun findHeaderBodySeparator(content: String): Int {
         // Look for \r\n\r\n or \n\n
-        var crlfIdx = content.indexOf("\r\n\r\n")
+        val crlfIdx = content.indexOf("\r\n\r\n")
         if (crlfIdx != -1) return crlfIdx + 4
 
-        var lfIdx = content.indexOf("\n\n")
+        val lfIdx = content.indexOf("\n\n")
         if (lfIdx != -1) return lfIdx + 2
 
         return -1

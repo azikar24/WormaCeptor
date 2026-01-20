@@ -1,7 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
@@ -79,12 +77,15 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
-import kotlin.math.log10
 
 /**
  * Transaction detail screen with swipe navigation.
@@ -241,7 +242,6 @@ private fun TransactionDetailContent(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    LocalHapticFeedback.current
     val tabs = listOf("Overview", "Request", "Response")
 
     // Tab pager state for content swipe
@@ -252,13 +252,24 @@ private fun TransactionDetailContent(
 
     var showSearch by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+    var debouncedSearchQuery by remember { mutableStateOf("") }
     var showMenu by remember { mutableStateOf(false) }
 
     val focusRequester = remember { FocusRequester() }
 
+    // Debounce search query for performance
+    LaunchedEffect(searchQuery) {
+        if (searchQuery.isEmpty()) {
+            debouncedSearchQuery = ""
+        } else {
+            delay(150)
+            debouncedSearchQuery = searchQuery
+        }
+    }
+
     // Search navigation state
-    var currentMatchIndex by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
-    var matchCount by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
+    var currentMatchIndex by remember(debouncedSearchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
+    var matchCount by remember(debouncedSearchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
 
     // Check if current tab has searchable content
     val requestHasContent = transaction.request.headers.isNotEmpty() || transaction.request.bodyRef != null
@@ -281,16 +292,12 @@ private fun TransactionDetailContent(
         if (showSearch) {
             showSearch = false
             searchQuery = ""
+            debouncedSearchQuery = ""
         }
     }
 
     val title = remember(transaction.request.url) {
-        try {
-            val uri = java.net.URI(transaction.request.url)
-            uri.path ?: transaction.request.url
-        } catch (_: Exception) {
-            transaction.request.url
-        }
+        extractUrlPath(transaction.request.url)
     }
 
     Scaffold(
@@ -443,7 +450,7 @@ private fun TransactionDetailContent(
                     0 -> OverviewTab(transaction, Modifier.fillMaxSize())
                     1 -> RequestTab(
                         transaction = transaction,
-                        searchQuery = searchQuery,
+                        searchQuery = debouncedSearchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
                         modifier = Modifier.fillMaxSize(),
@@ -451,7 +458,7 @@ private fun TransactionDetailContent(
 
                     2 -> ResponseTab(
                         transaction = transaction,
-                        searchQuery = searchQuery,
+                        searchQuery = debouncedSearchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
                         modifier = Modifier.fillMaxSize(),
@@ -538,73 +545,6 @@ private fun SwipeableTopBar(
             },
     ) {
         content()
-    }
-}
-
-/**
- * Swipeable tab row that allows users to swipe horizontally on the toolbar area
- * to navigate between tabs, in addition to tapping.
- */
-@Composable
-private fun SwipeableTabRow(
-    selectedTabIndex: Int,
-    onTabSelected: (Int) -> Unit,
-    tabs: List<String>,
-    modifier: Modifier = Modifier,
-) {
-    val haptics = LocalHapticFeedback.current
-    var dragOffset by remember { mutableFloatStateOf(0f) }
-    val tabCount = tabs.size
-
-    Column(
-        modifier = modifier
-            .pointerInput(selectedTabIndex) {
-                detectHorizontalDragGestures(
-                    onDragEnd = {
-                        val threshold = size.width * 0.15f
-                        when {
-                            dragOffset < -threshold && selectedTabIndex < tabCount - 1 -> {
-                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                onTabSelected(selectedTabIndex + 1)
-                            }
-
-                            dragOffset > threshold && selectedTabIndex > 0 -> {
-                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                onTabSelected(selectedTabIndex - 1)
-                            }
-                        }
-                        dragOffset = 0f
-                    },
-                    onDragCancel = { dragOffset = 0f },
-                    onHorizontalDrag = { _, dragAmount ->
-                        dragOffset += dragAmount
-                    },
-                )
-            },
-    ) {
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.primary,
-            divider = {},
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = { onTabSelected(index) },
-                    text = {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = if (selectedTabIndex == index) FontWeight.SemiBold else FontWeight.Normal,
-                        )
-                    },
-                )
-            }
-        }
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-        )
     }
 }
 
@@ -874,12 +814,6 @@ private fun EnhancedOverviewCard(
     }
 }
 
-private fun formatBytes(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    val units = listOf("B", "KB", "MB", "GB", "TB")
-    val digitGroup = (log10(bytes.toDouble()) / log10(1024.0)).toInt()
-    return String.format("%.2f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
-}
 
 /**
  * Data class holding information about a single search match
@@ -1077,14 +1011,11 @@ private fun RequestTab(
                                 }
 
                                 else -> {
-                                    val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                                        enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                                    }
                                     SelectionContainer {
-                                        Text(
-                                            text = annotatedBody,
-                                            fontFamily = FontFamily.Monospace,
-                                            style = MaterialTheme.typography.bodySmall,
+                                        HighlightedBodyText(
+                                            text = displayBody,
+                                            query = searchQuery,
+                                            currentMatchGlobalPos = currentMatchGlobalPos,
                                             modifier = Modifier.fillMaxWidth(),
                                             onTextLayout = { textLayoutResult = it },
                                         )
@@ -1093,14 +1024,11 @@ private fun RequestTab(
                             }
                         } else {
                             // Raw mode or searching - show flat text with highlighting
-                            val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                                enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                            }
                             SelectionContainer {
-                                Text(
-                                    text = annotatedBody,
-                                    fontFamily = FontFamily.Monospace,
-                                    style = MaterialTheme.typography.bodySmall,
+                                HighlightedBodyText(
+                                    text = displayBody,
+                                    query = searchQuery,
+                                    currentMatchGlobalPos = currentMatchGlobalPos,
                                     modifier = Modifier.fillMaxWidth(),
                                     onTextLayout = { textLayoutResult = it },
                                 )
@@ -1176,7 +1104,6 @@ private fun ResponseTab(
     var showImageViewer by remember { mutableStateOf(false) }
     var showPdfViewer by remember { mutableStateOf(false) }
     var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
-    rememberCoroutineScope()
 
     // Syntax highlighting colors
     val colors = syntaxColors()
@@ -1426,14 +1353,11 @@ private fun ResponseTab(
                                     }
 
                                     else -> {
-                                        val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                                            enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                                        }
                                         SelectionContainer {
-                                            Text(
-                                                text = annotatedBody,
-                                                fontFamily = FontFamily.Monospace,
-                                                style = MaterialTheme.typography.bodySmall,
+                                            HighlightedBodyText(
+                                                text = displayBody,
+                                                query = searchQuery,
+                                                currentMatchGlobalPos = currentMatchGlobalPos,
                                                 modifier = Modifier.fillMaxWidth(),
                                                 onTextLayout = { textLayoutResult = it },
                                             )
@@ -1442,14 +1366,11 @@ private fun ResponseTab(
                                 }
                             } else {
                                 // Raw mode or searching - show flat text with highlighting
-                                val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
-                                    enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
-                                }
                                 SelectionContainer {
-                                    Text(
-                                        text = annotatedBody,
-                                        fontFamily = FontFamily.Monospace,
-                                        style = MaterialTheme.typography.bodySmall,
+                                    HighlightedBodyText(
+                                        text = displayBody,
+                                        query = searchQuery,
+                                        currentMatchGlobalPos = currentMatchGlobalPos,
                                         modifier = Modifier.fillMaxWidth(),
                                         onTextLayout = { textLayoutResult = it },
                                     )
@@ -1724,43 +1645,130 @@ private fun BodyControlsRow(
 }
 
 /**
- * Enhanced highlight with better visual distinction for current match.
- * Uses Regex.findAll for O(n) performance instead of O(n^2) indexOf loop.
+ * Find all match positions using indexOf - faster than regex for simple substring matching.
+ * O(n) where n = text length.
  */
-private fun enhancedHighlightMatches(
+private fun findMatchRanges(text: String, query: String): List<IntRange> {
+    if (query.isEmpty()) return emptyList()
+    val matches = ArrayList<IntRange>(64) // Pre-size for typical case
+    var index = 0
+    while (true) {
+        index = text.indexOf(query, index, ignoreCase = true)
+        if (index < 0) break
+        matches.add(index until (index + query.length))
+        index++
+    }
+    return matches
+}
+
+/**
+ * Build base AnnotatedString with ALL matches highlighted (yellow).
+ * This is cached and reused - only rebuilt when text/query changes.
+ * Current match is NOT highlighted here - it uses an overlay for true O(1).
+ */
+private fun buildBaseHighlightedText(
+    text: String,
+    matchRanges: List<IntRange>,
+): androidx.compose.ui.text.AnnotatedString {
+    if (matchRanges.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
+
+    return androidx.compose.ui.text.buildAnnotatedString {
+        append(text)
+        val defaultStyle = androidx.compose.ui.text.SpanStyle(
+            background = Color.Yellow.copy(alpha = 0.4f),
+        )
+        matchRanges.forEach { range ->
+            addStyle(defaultStyle, range.first, range.last + 1)
+        }
+    }
+}
+
+/**
+ * True O(1) highlighted text component.
+ * Uses overlay for current match instead of rebuilding AnnotatedString.
+ */
+@Composable
+private fun HighlightedBodyText(
     text: String,
     query: String,
     currentMatchGlobalPos: Int?,
-): androidx.compose.ui.text.AnnotatedString {
-    if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
+    modifier: Modifier = Modifier,
+    onTextLayout: (androidx.compose.ui.text.TextLayoutResult) -> Unit = {},
+) {
+    // Level 1: Cache match ranges - only when text/query changes
+    val matchRanges = remember(text, query) {
+        findMatchRanges(text, query)
+    }
 
-    return androidx.compose.ui.text.buildAnnotatedString {
-        val regex = Regex(Regex.escape(query), RegexOption.IGNORE_CASE)
-        var lastEnd = 0
+    // Level 2: Cache base text with ALL matches in yellow - only when text/query changes
+    val baseHighlighted = remember(text, matchRanges) {
+        buildBaseHighlightedText(text, matchRanges)
+    }
 
-        regex.findAll(text).forEach { match ->
-            if (match.range.first > lastEnd) {
-                append(text.substring(lastEnd, match.range.first))
-            }
-            val isCurrent = match.range.first == currentMatchGlobalPos
-            withStyle(
-                style = androidx.compose.ui.text.SpanStyle(
-                    background = if (isCurrent) {
-                        Color.Cyan.copy(alpha = 0.6f)
-                    } else {
-                        Color.Yellow.copy(alpha = 0.4f)
-                    },
-                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                    color = if (isCurrent) Color.Black else Color.Unspecified,
-                ),
+    // Track layout for overlay positioning
+    var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
+
+    // Current match range for overlay - O(1) lookup
+    val currentMatchRange = remember(currentMatchGlobalPos, matchRanges) {
+        if (currentMatchGlobalPos == null) null
+        else matchRanges.find { it.first == currentMatchGlobalPos }
+    }
+
+    // Current match PATH (not bounds) - handles wrapped text correctly
+    val currentMatchPath = remember(textLayoutResult, currentMatchRange) {
+        val layout = textLayoutResult ?: return@remember null
+        val range = currentMatchRange ?: return@remember null
+
+        try {
+            layout.getPathForRange(range.first, range.last + 1)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    val highlightColor = Color.Cyan.copy(alpha = 0.7f)
+
+    Box(modifier = modifier) {
+        // Current match overlay using Canvas to draw the actual path shape
+        // This correctly handles text that wraps across multiple lines
+        currentMatchPath?.let { path ->
+            androidx.compose.foundation.Canvas(
+                modifier = Modifier.matchParentSize()
             ) {
-                append(match.value)
+                drawPath(path, highlightColor)
             }
-            lastEnd = match.range.last + 1
         }
-        if (lastEnd < text.length) {
-            append(text.substring(lastEnd))
-        }
+
+        // Base text with yellow highlights (cached, never changes on "next")
+        Text(
+            text = baseHighlighted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth(),
+            onTextLayout = {
+                textLayoutResult = it
+                onTextLayout(it)
+            },
+        )
+    }
+}
+
+/**
+ * Wrapper that returns AnnotatedString for compatibility with existing code.
+ * For small-medium texts, this is fine. For huge texts, use HighlightedBodyText directly.
+ */
+@Composable
+private fun rememberHighlightedText(
+    text: String,
+    query: String,
+    @Suppress("UNUSED_PARAMETER") currentMatchGlobalPos: Int?,
+): androidx.compose.ui.text.AnnotatedString {
+    val matchRanges = remember(text, query) {
+        findMatchRanges(text, query)
+    }
+
+    return remember(text, matchRanges) {
+        buildBaseHighlightedText(text, matchRanges)
     }
 }
 
@@ -1791,12 +1799,6 @@ private fun formatHeaders(headers: Map<String, List<String>>): String {
     return headers.entries.joinToString("\n") { "${it.key}: ${it.value.joinToString(", ")}" }
 }
 
-private fun copyToClipboard(context: Context, label: String, text: String) {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(label, text)
-    clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "$label Copied", Toast.LENGTH_SHORT).show()
-}
 
 private fun generateTextSummary(transaction: NetworkTransaction): String = buildString {
     appendLine("--- WormaCeptor Transaction ---")

@@ -1,10 +1,45 @@
 package com.azikar24.wormaceptor.api
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.util.UUID
+
+private const val TAG = "WormaCeptorInterceptor"
+
+/**
+ * File signature (magic bytes) constants for binary content detection.
+ * These are the first bytes of common binary file formats.
+ */
+private object MagicBytes {
+    // PNG signature: 89 50 4E 47 0D 0A 1A 0A
+    val PNG_SIGNATURE = byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47)
+
+    // JPEG signature: FF D8 FF
+    val JPEG_SIGNATURE = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte())
+
+    // GIF signature: 47 49 46 38 ("GIF8")
+    val GIF_SIGNATURE = byteArrayOf(0x47, 0x49, 0x46, 0x38)
+
+    // WebP container: RIFF....WEBP (52 49 46 46 ?? ?? ?? ?? 57 45 42 50)
+    val WEBP_RIFF_HEADER = byteArrayOf(0x52, 0x49, 0x46, 0x46)
+    val WEBP_SIGNATURE = byteArrayOf(0x57, 0x45, 0x42, 0x50)
+    const val WEBP_SIGNATURE_OFFSET = 8
+
+    // PDF signature: 25 50 44 46 ("%PDF")
+    val PDF_SIGNATURE = byteArrayOf(0x25, 0x50, 0x44, 0x46)
+
+    // ZIP signature: 50 4B 03 04 ("PK\x03\x04")
+    val ZIP_SIGNATURE = byteArrayOf(0x50, 0x4B, 0x03, 0x04)
+
+    // GZIP signature: 1F 8B
+    val GZIP_SIGNATURE = byteArrayOf(0x1F, 0x8B.toByte())
+
+    // BMP signature: 42 4D ("BM")
+    val BMP_SIGNATURE = byteArrayOf(0x42, 0x4D)
+}
 
 class WormaCeptorInterceptor : Interceptor {
 
@@ -50,40 +85,29 @@ class WormaCeptorInterceptor : Interceptor {
         if (data.size < 8) return false
 
         return when {
-            // PNG: 89 50 4E 47 0D 0A 1A 0A
-            data[0] == 0x89.toByte() && data[1] == 0x50.toByte() &&
-                data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> true
-
-            // JPEG: FF D8 FF
-            data[0] == 0xFF.toByte() && data[1] == 0xD8.toByte() &&
-                data[2] == 0xFF.toByte() -> true
-
-            // GIF: 47 49 46 38
-            data[0] == 0x47.toByte() && data[1] == 0x49.toByte() &&
-                data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> true
-
-            // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
-            data.size >= 12 && data[0] == 0x52.toByte() && data[1] == 0x49.toByte() &&
-                data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
-                data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
-                data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> true
-
-            // PDF: 25 50 44 46 (%PDF)
-            data[0] == 0x25.toByte() && data[1] == 0x50.toByte() &&
-                data[2] == 0x44.toByte() && data[3] == 0x46.toByte() -> true
-
-            // ZIP: 50 4B 03 04
-            data[0] == 0x50.toByte() && data[1] == 0x4B.toByte() &&
-                data[2] == 0x03.toByte() && data[3] == 0x04.toByte() -> true
-
-            // GZIP: 1F 8B
-            data[0] == 0x1F.toByte() && data[1] == 0x8B.toByte() -> true
-
-            // BMP: 42 4D
-            data[0] == 0x42.toByte() && data[1] == 0x4D.toByte() -> true
-
+            data.startsWith(MagicBytes.PNG_SIGNATURE) -> true
+            data.startsWith(MagicBytes.JPEG_SIGNATURE) -> true
+            data.startsWith(MagicBytes.GIF_SIGNATURE) -> true
+            data.size >= 12 &&
+                data.startsWith(MagicBytes.WEBP_RIFF_HEADER) &&
+                data.startsWith(MagicBytes.WEBP_SIGNATURE, MagicBytes.WEBP_SIGNATURE_OFFSET) -> true
+            data.startsWith(MagicBytes.PDF_SIGNATURE) -> true
+            data.startsWith(MagicBytes.ZIP_SIGNATURE) -> true
+            data.startsWith(MagicBytes.GZIP_SIGNATURE) -> true
+            data.startsWith(MagicBytes.BMP_SIGNATURE) -> true
             else -> false
         }
+    }
+
+    /**
+     * Checks if the byte array starts with the given prefix at the specified offset.
+     */
+    private fun ByteArray.startsWith(prefix: ByteArray, offset: Int = 0): Boolean {
+        if (this.size < offset + prefix.size) return false
+        for (i in prefix.indices) {
+            if (this[offset + i] != prefix[i]) return false
+        }
+        return true
     }
 
     @Throws(IOException::class)
@@ -126,7 +150,7 @@ class WormaCeptorInterceptor : Interceptor {
                 bodySize = bodySize,
             )
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.w(TAG, "Failed to capture request for ${request.url}", e)
         }
 
         // 2. Network Call
@@ -204,7 +228,7 @@ class WormaCeptorInterceptor : Interceptor {
                     error = null,
                 )
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.w(TAG, "Failed to capture response for ${request.url}", e)
             }
         }
 

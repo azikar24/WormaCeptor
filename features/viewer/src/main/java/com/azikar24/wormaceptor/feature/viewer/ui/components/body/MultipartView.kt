@@ -190,7 +190,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                 ) {
                     Icon(
                         imageVector = partIcon,
-                        contentDescription = null,
+                        contentDescription = "Multipart content type",
                         modifier = Modifier
                             .padding(WormaCeptorDesignSystem.Spacing.xs)
                             .size(16.dp),

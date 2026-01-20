@@ -61,6 +61,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -69,6 +74,9 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutCallbacks
 import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutHandler
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -79,8 +87,8 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
-    transactions: List<TransactionSummary>,
-    crashes: List<Crash>,
+    transactions: ImmutableList<TransactionSummary>,
+    crashes: ImmutableList<Crash>,
     searchQuery: String,
     onSearchChanged: (String) -> Unit,
     onTransactionClick: (TransactionSummary) -> Unit,
@@ -96,7 +104,7 @@ fun HomeScreen(
     onExportCrashes: suspend () -> Unit,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
-    allTransactions: List<TransactionSummary> = transactions,
+    allTransactions: ImmutableList<TransactionSummary> = transactions,
     // Pull-to-refresh parameters
     isRefreshingTransactions: Boolean = false,
     isRefreshingCrashes: Boolean = false,
@@ -382,18 +390,23 @@ fun HomeScreen(
                                             leadingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Search,
-                                                    contentDescription = "Search",
+                                                    contentDescription = null,
                                                     modifier = Modifier.size(16.dp),
                                                 )
                                             },
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
-                                                    contentDescription = "Remove",
+                                                    contentDescription = null,
                                                     modifier = Modifier.size(16.dp),
                                                 )
                                             },
                                             shape = WormaCeptorDesignSystem.Shapes.chip,
+                                            modifier = Modifier.semantics {
+                                                role = Role.Button
+                                                selected = true
+                                                contentDescription = "Search filter: $searchQuery, selected. Double tap to remove"
+                                            },
                                         )
                                     }
 
@@ -409,16 +422,21 @@ fun HomeScreen(
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
-                                                    contentDescription = "Remove",
+                                                    contentDescription = null,
                                                     modifier = Modifier.size(16.dp),
                                                 )
                                             },
                                             shape = WormaCeptorDesignSystem.Shapes.chip,
+                                            modifier = Modifier.semantics {
+                                                role = Role.Button
+                                                selected = true
+                                                contentDescription = "HTTP method filter: $method, selected. Double tap to remove"
+                                            },
                                         )
                                     }
 
                                     filterStatusRange?.let { range ->
-                                        val label = when {
+                                        val statusLabel = when {
                                             range == (200..299) -> "2xx"
                                             range == (300..399) -> "3xx"
                                             range == (400..499) -> "4xx"
@@ -429,18 +447,23 @@ fun HomeScreen(
                                             onClick = { onStatusFilterChanged(null) },
                                             label = {
                                                 Text(
-                                                    text = label,
+                                                    text = statusLabel,
                                                     style = MaterialTheme.typography.labelSmall,
                                                 )
                                             },
                                             trailingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Close,
-                                                    contentDescription = "Remove",
+                                                    contentDescription = null,
                                                     modifier = Modifier.size(16.dp),
                                                 )
                                             },
                                             shape = WormaCeptorDesignSystem.Shapes.chip,
+                                            modifier = Modifier.semantics {
+                                                role = Role.Button
+                                                selected = true
+                                                contentDescription = "Status code filter: $statusLabel, selected. Double tap to remove"
+                                            },
                                         )
                                     }
                                 }
@@ -450,7 +473,7 @@ fun HomeScreen(
                                         onClearFilters()
                                         onSearchChanged("")
                                     },
-                                    modifier = Modifier.size(32.dp),
+                                    modifier = Modifier.size(48.dp),
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
@@ -513,7 +536,7 @@ fun HomeScreen(
                 val focusManager = LocalFocusManager.current
 
                 val methodCounts = remember(allTransactions) {
-                    allTransactions.groupBy { it.method }.mapValues { it.value.size }
+                    allTransactions.groupBy { it.method }.mapValues { it.value.size }.toImmutableMap()
                 }
                 val statusCounts = remember(allTransactions) {
                     mapOf(
@@ -521,7 +544,7 @@ fun HomeScreen(
                         300..399 to allTransactions.count { (it.code ?: 0) in 300..399 },
                         400..499 to allTransactions.count { (it.code ?: 0) in 400..499 },
                         500..599 to allTransactions.count { (it.code ?: 0) in 500..599 },
-                    )
+                    ).toImmutableMap()
                 }
 
                 ModalBottomSheet(

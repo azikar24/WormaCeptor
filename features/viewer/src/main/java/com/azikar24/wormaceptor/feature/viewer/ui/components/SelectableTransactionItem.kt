@@ -52,12 +52,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
 
 /**
  * A transaction list item that supports selection mode.
@@ -81,18 +81,7 @@ fun SelectableTransactionItem(
     val hapticFeedback = LocalHapticFeedback.current
     var showContextMenu by remember { mutableStateOf(false) }
 
-    val statusColor = when (transaction.status) {
-        TransactionStatus.COMPLETED -> when {
-            transaction.code == null -> WormaCeptorColors.StatusAmber
-            transaction.code in 200..299 -> WormaCeptorColors.StatusGreen
-            transaction.code in 300..399 -> WormaCeptorColors.StatusBlue
-            transaction.code in 400..499 -> WormaCeptorColors.StatusAmber
-            transaction.code in 500..599 -> WormaCeptorColors.StatusRed
-            else -> WormaCeptorColors.StatusGrey
-        }
-        TransactionStatus.FAILED -> WormaCeptorColors.StatusRed
-        TransactionStatus.ACTIVE -> WormaCeptorColors.StatusGrey
-    }
+    val statusColor = getStatusColor(transaction.status, transaction.code)
 
     // Scale animation for press feedback
     val interactionSource = remember { MutableInteractionSource() }
@@ -285,9 +274,10 @@ private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier
 
 @Composable
 private fun MethodBadge(method: String) {
+    val color = getMethodColor(method)
     Surface(
-        color = methodColor(method).copy(alpha = 0.15f),
-        contentColor = methodColor(method),
+        color = color.copy(alpha = 0.15f),
+        contentColor = color,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
     ) {
         Text(
@@ -320,11 +310,3 @@ private fun HostChip(host: String) {
     }
 }
 
-private fun methodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> WormaCeptorColors.StatusGreen
-    "POST" -> WormaCeptorColors.StatusBlue
-    "PUT" -> WormaCeptorColors.StatusAmber
-    "DELETE" -> WormaCeptorColors.StatusRed
-    "PATCH" -> Color(0xFF9C27B0)
-    else -> WormaCeptorColors.StatusGrey
-}

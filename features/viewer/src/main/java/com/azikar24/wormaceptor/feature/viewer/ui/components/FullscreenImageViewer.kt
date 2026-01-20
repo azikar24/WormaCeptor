@@ -540,7 +540,7 @@ private fun MetadataChip(icon: ImageVector, text: String) {
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = text,
             tint = Color.White.copy(alpha = 0.7f),
             modifier = Modifier.size(16.dp),
         )
@@ -569,7 +569,7 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = label,
                 tint = Color.White,
                 modifier = Modifier.size(18.dp),
             )

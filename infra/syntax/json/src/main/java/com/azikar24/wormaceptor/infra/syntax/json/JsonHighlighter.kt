@@ -39,7 +39,7 @@ class JsonHighlighter : SyntaxHighlighter {
         // Booleans and null
         TokenPattern("""\b(?:true|false|null)\b""".toRegex(), TokenType.BOOLEAN),
         // Punctuation
-        TokenPattern("""[{}\[\],:]""".toRegex(), TokenType.PUNCTUATION)
+        TokenPattern("""[{}\[\],:]""".toRegex(), TokenType.PUNCTUATION),
     )
 
     override fun highlight(code: String, colors: SyntaxColors): AnnotatedString {
@@ -88,11 +88,7 @@ class JsonHighlighter : SyntaxHighlighter {
     /**
      * Builds an AnnotatedString from the code and tokens.
      */
-    private fun buildHighlightedString(
-        code: String,
-        tokens: List<Token>,
-        colors: SyntaxColors
-    ): AnnotatedString {
+    private fun buildHighlightedString(code: String, tokens: List<Token>, colors: SyntaxColors): AnnotatedString {
         return buildAnnotatedString {
             var lastEnd = 0
 
@@ -126,6 +122,6 @@ class JsonHighlighter : SyntaxHighlighter {
      */
     private data class TokenPattern(
         val regex: Regex,
-        val type: TokenType
+        val type: TokenType,
     )
 }

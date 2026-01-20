@@ -11,5 +11,5 @@ data class NetworkTransaction(
     val status: TransactionStatus = TransactionStatus.ACTIVE,
     val request: Request,
     val response: Response? = null,
-    val extensions: Map<String, String> = emptyMap()
+    val extensions: Map<String, String> = emptyMap(),
 )

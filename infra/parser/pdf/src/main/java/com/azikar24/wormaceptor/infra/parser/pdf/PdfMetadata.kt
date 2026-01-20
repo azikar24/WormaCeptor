@@ -32,7 +32,7 @@ data class PdfMetadata(
     val isEncrypted: Boolean = false,
     val producer: String? = null,
     val subject: String? = null,
-    val keywords: String? = null
+    val keywords: String? = null,
 ) {
     /**
      * Converts the metadata to a map for use with ParsedBody.

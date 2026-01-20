@@ -181,11 +181,7 @@ class XmlHighlighter : SyntaxHighlighter {
     /**
      * Builds an AnnotatedString from the code and tokens.
      */
-    private fun buildHighlightedString(
-        code: String,
-        tokens: List<Token>,
-        colors: SyntaxColors
-    ): AnnotatedString {
+    private fun buildHighlightedString(code: String, tokens: List<Token>, colors: SyntaxColors): AnnotatedString {
         return buildAnnotatedString {
             var lastEnd = 0
 

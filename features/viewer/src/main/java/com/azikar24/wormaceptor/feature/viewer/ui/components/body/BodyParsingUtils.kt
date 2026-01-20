@@ -48,7 +48,7 @@ object BodyParsingUtils {
         return when {
             // JSON detection
             (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-            (trimmed.startsWith("[") && trimmed.endsWith("]")) -> {
+                (trimmed.startsWith("[") && trimmed.endsWith("]")) -> {
                 try {
                     if (trimmed.startsWith("{")) {
                         JSONObject(trimmed)
@@ -63,16 +63,18 @@ object BodyParsingUtils {
 
             // XML detection
             trimmed.startsWith("<?xml") ||
-            (trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html") &&
-                    !trimmed.lowercase().startsWith("<html")) -> ContentType.XML
+                (
+                    trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html") &&
+                        !trimmed.lowercase().startsWith("<html")
+                    ) -> ContentType.XML
 
             // HTML detection
             trimmed.lowercase().contains("<!doctype html") ||
-            trimmed.lowercase().startsWith("<html") -> ContentType.HTML
+                trimmed.lowercase().startsWith("<html") -> ContentType.HTML
 
             // Form data detection (key=value&key2=value2)
             trimmed.contains("=") && trimmed.contains("&") &&
-            !trimmed.contains("<") && !trimmed.contains("{") -> ContentType.FORM_DATA
+                !trimmed.contains("<") && !trimmed.contains("{") -> ContentType.FORM_DATA
 
             else -> ContentType.PLAIN_TEXT
         }
@@ -107,7 +109,8 @@ object BodyParsingUtils {
             ContentType.IMAGE_SVG,
             ContentType.IMAGE_BMP,
             ContentType.IMAGE_ICO,
-            ContentType.IMAGE_OTHER -> "Image"
+            ContentType.IMAGE_OTHER,
+            -> "Image"
             ContentType.UNKNOWN -> "Unknown"
         }
     }
@@ -117,15 +120,15 @@ object BodyParsingUtils {
      */
     fun getContentTypeColorHint(contentType: ContentType): String {
         return when (contentType) {
-            ContentType.JSON -> "#F59E0B"      // Amber
-            ContentType.XML -> "#8B5CF6"       // Purple
-            ContentType.HTML -> "#EC4899"      // Pink
-            ContentType.PROTOBUF -> "#10B981"  // Emerald
+            ContentType.JSON -> "#F59E0B" // Amber
+            ContentType.XML -> "#8B5CF6" // Purple
+            ContentType.HTML -> "#EC4899" // Pink
+            ContentType.PROTOBUF -> "#10B981" // Emerald
             ContentType.FORM_DATA -> "#3B82F6" // Blue
             ContentType.MULTIPART -> "#6366F1" // Indigo
             ContentType.PLAIN_TEXT -> "#6B7280" // Gray
-            ContentType.BINARY -> "#EF4444"    // Red
-            ContentType.PDF -> "#DC2626"       // Red-600
+            ContentType.BINARY -> "#EF4444" // Red
+            ContentType.PDF -> "#DC2626" // Red-600
             ContentType.IMAGE_PNG,
             ContentType.IMAGE_JPEG,
             ContentType.IMAGE_GIF,
@@ -133,8 +136,9 @@ object BodyParsingUtils {
             ContentType.IMAGE_SVG,
             ContentType.IMAGE_BMP,
             ContentType.IMAGE_ICO,
-            ContentType.IMAGE_OTHER -> "#14B8A6" // Teal
-            ContentType.UNKNOWN -> "#9CA3AF"   // Gray-400
+            ContentType.IMAGE_OTHER,
+            -> "#14B8A6" // Teal
+            ContentType.UNKNOWN -> "#9CA3AF" // Gray-400
         }
     }
 }

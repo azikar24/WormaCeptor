@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -49,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
@@ -78,25 +76,25 @@ fun FilterBottomSheetContent(
     totalCount: Int,
     methodCounts: Map<String, Int>,
     statusCounts: Map<IntRange, Int>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
     val filtersActive = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         // Compact Header
         FilterHeader(
             filteredCount = filteredCount,
             totalCount = totalCount,
-            filtersActive = filtersActive
+            filtersActive = filtersActive,
         )
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
         )
 
         // Scrollable Content
@@ -105,13 +103,13 @@ fun FilterBottomSheetContent(
                 .fillMaxWidth()
                 .weight(1f, fill = false)
                 .verticalScroll(rememberScrollState())
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Search Field
             MinimalSearchField(
                 value = searchQuery,
                 onValueChange = onSearchChanged,
-                onSearch = { focusManager.clearFocus() }
+                onSearch = { focusManager.clearFocus() },
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
@@ -119,7 +117,7 @@ fun FilterBottomSheetContent(
             // HTTP Methods Section
             FilterSectionHeader(
                 icon = Icons.Outlined.Code,
-                title = "HTTP Method"
+                title = "HTTP Method",
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -127,7 +125,7 @@ fun FilterBottomSheetContent(
             MethodFilterBars(
                 methodCounts = methodCounts,
                 selectedMethod = filterMethod,
-                onMethodSelected = onMethodFilterChanged
+                onMethodSelected = onMethodFilterChanged,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
@@ -135,7 +133,7 @@ fun FilterBottomSheetContent(
             // Status Codes Section
             FilterSectionHeader(
                 icon = Icons.Outlined.DataUsage,
-                title = "Status Code"
+                title = "Status Code",
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -143,7 +141,7 @@ fun FilterBottomSheetContent(
             StatusFilterBars(
                 statusCounts = statusCounts,
                 selectedRange = filterStatusRange,
-                onStatusSelected = onStatusFilterChanged
+                onStatusSelected = onStatusFilterChanged,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
@@ -159,33 +157,29 @@ fun FilterBottomSheetContent(
             onApply = {
                 focusManager.clearFocus()
                 onApply()
-            }
+            },
         )
     }
 }
 
 @Composable
-private fun FilterHeader(
-    filteredCount: Int,
-    totalCount: Int,
-    filtersActive: Boolean
-) {
+private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.md
+                vertical = WormaCeptorDesignSystem.Spacing.md,
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column {
             Text(
                 text = "Filters",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
             if (filtersActive) {
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
@@ -193,7 +187,7 @@ private fun FilterHeader(
                     text = "$filteredCount of $totalCount requests",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
             }
         }
@@ -205,7 +199,7 @@ private fun FilterHeader(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             } else {
                 MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            }
+            },
         ) {
             Text(
                 text = filteredCount.toString(),
@@ -218,19 +212,15 @@ private fun FilterHeader(
                 },
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm
-                )
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
             )
         }
     }
 }
 
 @Composable
-private fun MinimalSearchField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    onSearch: () -> Unit
-) {
+private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, onSearch: () -> Unit) {
     TextField(
         value = value,
         onValueChange = onValueChange,
@@ -241,7 +231,7 @@ private fun MinimalSearchField(
             Text(
                 text = "Search path, host, or method...",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
             )
         },
         leadingIcon = {
@@ -249,20 +239,20 @@ private fun MinimalSearchField(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
             )
         },
         trailingIcon = {
             if (value.isNotEmpty()) {
                 IconButton(
                     onClick = { onValueChange("") },
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Clear",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -273,34 +263,31 @@ private fun MinimalSearchField(
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = MaterialTheme.colorScheme.primary
+            cursorColor = MaterialTheme.colorScheme.primary,
         ),
         textStyle = MaterialTheme.typography.bodyMedium,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() })
+        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
     )
 }
 
 @Composable
-private fun FilterSectionHeader(
-    icon: ImageVector,
-    title: String
-) {
+private fun FilterSectionHeader(icon: ImageVector, title: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
         )
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -309,17 +296,17 @@ private fun FilterSectionHeader(
 private fun MethodFilterBars(
     methodCounts: Map<String, Int>,
     selectedMethod: String?,
-    onMethodSelected: (String?) -> Unit
+    onMethodSelected: (String?) -> Unit,
 ) {
     val methods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         methods.chunked(2).forEach { rowMethods ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 rowMethods.forEach { method ->
                     val count = methodCounts[method] ?: 0
@@ -334,7 +321,7 @@ private fun MethodFilterBars(
                         onClick = {
                             onMethodSelected(if (isSelected) null else method)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
                 // Fill empty space if odd number of items
@@ -350,22 +337,22 @@ private fun MethodFilterBars(
 private fun StatusFilterBars(
     statusCounts: Map<IntRange, Int>,
     selectedRange: IntRange?,
-    onStatusSelected: (IntRange?) -> Unit
+    onStatusSelected: (IntRange?) -> Unit,
 ) {
     val statusFilters = listOf(
         Triple("2xx", 200..299, WormaCeptorColors.StatusGreen),
         Triple("3xx", 300..399, WormaCeptorColors.StatusBlue),
         Triple("4xx", 400..499, WormaCeptorColors.StatusAmber),
-        Triple("5xx", 500..599, WormaCeptorColors.StatusRed)
+        Triple("5xx", 500..599, WormaCeptorColors.StatusRed),
     )
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         statusFilters.chunked(2).forEach { rowFilters ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 rowFilters.forEach { (label, range, color) ->
                     val count = statusCounts[range] ?: 0
@@ -386,7 +373,7 @@ private fun StatusFilterBars(
                         onClick = {
                             onStatusSelected(if (isSelected) null else range)
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -402,7 +389,7 @@ private fun GridFilterCard(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    sublabel: String? = null
+    sublabel: String? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -410,7 +397,7 @@ private fun GridFilterCard(
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.96f else 1f,
         animationSpec = tween(durationMillis = 100),
-        label = "scale_animation"
+        label = "scale_animation",
     )
 
     val backgroundColor by animateColorAsState(
@@ -420,7 +407,7 @@ private fun GridFilterCard(
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f)
         },
         animationSpec = tween(durationMillis = 200),
-        label = "bg_animation"
+        label = "bg_animation",
     )
 
     val borderColor by animateColorAsState(
@@ -430,7 +417,7 @@ private fun GridFilterCard(
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f)
         },
         animationSpec = tween(durationMillis = 200),
-        label = "border_animation"
+        label = "border_animation",
     )
 
     Box(
@@ -441,33 +428,33 @@ private fun GridFilterCard(
             .border(
                 width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin,
                 color = borderColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = onClick,
-                enabled = count > 0
+                enabled = count > 0,
             )
-            .padding(WormaCeptorDesignSystem.Spacing.md)
+            .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Left side: dot, label, sublabel
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 // Color indicator dot
                 Box(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(if (count > 0) color else color.copy(alpha = 0.3f))
+                        .background(if (count > 0) color else color.copy(alpha = 0.3f)),
                 )
 
                 Column {
@@ -479,7 +466,7 @@ private fun GridFilterCard(
                             MaterialTheme.colorScheme.onSurface
                         } else {
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-                        }
+                        },
                     )
                     if (sublabel != null) {
                         Text(
@@ -487,8 +474,8 @@ private fun GridFilterCard(
                             style = MaterialTheme.typography.labelSmall,
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = if (count > 0) 0.6f else 0.3f
-                            )
+                                alpha = if (count > 0) 0.6f else 0.3f,
+                            ),
                         )
                     }
                 }
@@ -497,13 +484,13 @@ private fun GridFilterCard(
             // Right side: count and checkmark
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Text(
                     text = "$count",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (count > 0) color else color.copy(alpha = 0.3f)
+                    color = if (count > 0) color else color.copy(alpha = 0.3f),
                 )
 
                 // Selection indicator
@@ -513,13 +500,13 @@ private fun GridFilterCard(
                             .size(16.dp)
                             .clip(CircleShape)
                             .background(color),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Selected",
                             tint = Color.White,
-                            modifier = Modifier.size(10.dp)
+                            modifier = Modifier.size(10.dp),
                         )
                     }
                 }
@@ -529,21 +516,17 @@ private fun GridFilterCard(
 }
 
 @Composable
-private fun FilterActionButtons(
-    filtersActive: Boolean,
-    onClearAll: () -> Unit,
-    onApply: () -> Unit
-) {
+private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, onApply: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = WormaCeptorDesignSystem.Elevation.sm
+        tonalElevation = WormaCeptorDesignSystem.Elevation.sm,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             OutlinedButton(
                 onClick = onClearAll,
@@ -551,23 +534,23 @@ private fun FilterActionButtons(
                 enabled = filtersActive,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                )
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
             ) {
                 Text(
                     text = "Clear All",
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
             }
 
             Button(
                 onClick = onApply,
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
             ) {
                 Text(
                     text = "Done",
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }

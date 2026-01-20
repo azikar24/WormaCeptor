@@ -28,7 +28,7 @@ data class QuickAction(
     val label: String,
     val icon: ImageVector,
     val destructive: Boolean = false,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
 )
 
 /**
@@ -45,14 +45,14 @@ fun TransactionContextMenu(
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier,
-    offset: DpOffset = DpOffset(0.dp, 0.dp)
+    offset: DpOffset = DpOffset(0.dp, 0.dp),
 ) {
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismiss,
         modifier = modifier,
         offset = offset,
-        shape = WormaCeptorDesignSystem.Shapes.card
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         DropdownMenuItem(
             text = { Text("Copy URL") },
@@ -60,13 +60,13 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.ContentCopy,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             },
             onClick = {
                 onCopyUrl()
                 onDismiss()
-            }
+            },
         )
 
         DropdownMenuItem(
@@ -75,13 +75,13 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             },
             onClick = {
                 onShare()
                 onDismiss()
-            }
+            },
         )
 
         DropdownMenuItem(
@@ -90,13 +90,13 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.Code,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             },
             onClick = {
                 onCopyAsCurl()
                 onDismiss()
-            }
+            },
         )
 
         HorizontalDivider()
@@ -105,7 +105,7 @@ fun TransactionContextMenu(
             text = {
                 Text(
                     text = "Delete",
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
             },
             leadingIcon = {
@@ -113,13 +113,13 @@ fun TransactionContextMenu(
                     imageVector = Icons.Default.Delete,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             },
             onClick = {
                 onDelete()
                 onDismiss()
-            }
+            },
         )
     }
 }

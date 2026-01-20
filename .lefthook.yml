@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    spotless:
+      glob: "*.{kt,kts}"
+      run: ./gradlew spotlessApply --daemon
+      stage_fixed: true
+
+pre-push:
+  commands:
+    detekt:
+      glob: "*.kt"
+      run: ./gradlew detekt --daemon
+    lint:
+      run: ./gradlew lint --daemon

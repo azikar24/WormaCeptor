@@ -6,12 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
-import androidx.core.content.FileProvider
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,7 +26,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -42,9 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
+import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -61,7 +53,7 @@ data class PdfMetadata(
     val creationDate: String?,
     val fileSize: Long,
     val version: String?,
-    val isPasswordProtected: Boolean = false
+    val isPasswordProtected: Boolean = false,
 )
 
 /**
@@ -87,7 +79,7 @@ fun PdfPreviewCard(
     contentType: String?,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     var loadState by remember { mutableStateOf<PdfLoadState>(PdfLoadState.Loading) }
@@ -121,7 +113,7 @@ fun PdfPreviewCard(
                 val bitmap = Bitmap.createBitmap(
                     (page.width * scale).toInt(),
                     (page.height * scale).toInt(),
-                    Bitmap.Config.ARGB_8888
+                    Bitmap.Config.ARGB_8888,
                 )
                 bitmap.eraseColor(android.graphics.Color.WHITE)
                 page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
@@ -134,7 +126,7 @@ fun PdfPreviewCard(
                     creator = null,
                     creationDate = null,
                     fileSize = pdfData.size.toLong(),
-                    version = extractPdfVersion(pdfData)
+                    version = extractPdfVersion(pdfData),
                 )
 
                 renderer.close()
@@ -152,8 +144,8 @@ fun PdfPreviewCard(
                         creationDate = null,
                         fileSize = pdfData.size.toLong(),
                         version = extractPdfVersion(pdfData),
-                        isPasswordProtected = true
-                    )
+                        isPasswordProtected = true,
+                    ),
                 )
             } catch (e: Exception) {
                 loadState = PdfLoadState.Error(e.message ?: "Failed to load PDF")
@@ -179,8 +171,8 @@ fun PdfPreviewCard(
         colors = CardDefaults.cardColors(containerColor = surfaceColor),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f)
-        )
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
+        ),
     ) {
         when (val state = loadState) {
             is PdfLoadState.Loading -> LoadingContent()
@@ -190,14 +182,14 @@ fun PdfPreviewCard(
                 pdfData = pdfData,
                 tempFile = tempFile,
                 onFullscreen = onFullscreen,
-                onDownload = onDownload
+                onDownload = onDownload,
             )
             is PdfLoadState.Error -> ErrorContent(message = state.message)
             is PdfLoadState.PasswordProtected -> PasswordProtectedContent(
                 metadata = state.metadata,
                 pdfData = pdfData,
                 tempFile = tempFile,
-                onDownload = onDownload
+                onDownload = onDownload,
             )
         }
     }
@@ -209,21 +201,21 @@ private fun LoadingContent() {
         modifier = Modifier
             .fillMaxWidth()
             .height(280.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(40.dp),
                 strokeWidth = 3.dp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
             Text(
                 text = "Rendering PDF...",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -236,7 +228,7 @@ private fun SuccessContent(
     pdfData: ByteArray,
     tempFile: File?,
     onFullscreen: () -> Unit,
-    onDownload: () -> Unit
+    onDownload: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -249,16 +241,16 @@ private fun SuccessContent(
                 .clip(
                     RoundedCornerShape(
                         topStart = WormaCeptorDesignSystem.CornerRadius.md,
-                        topEnd = WormaCeptorDesignSystem.CornerRadius.md
-                    )
-                )
+                        topEnd = WormaCeptorDesignSystem.CornerRadius.md,
+                    ),
+                ),
         ) {
             // PDF page thumbnail
             Image(
                 bitmap = thumbnail.asImageBitmap(),
                 contentDescription = "PDF Preview",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             // Subtle vignette overlay at bottom for better text readability
@@ -271,10 +263,10 @@ private fun SuccessContent(
                         Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black.copy(alpha = 0.4f)
-                            )
-                        )
-                    )
+                                Color.Black.copy(alpha = 0.4f),
+                            ),
+                        ),
+                    ),
             )
 
             // Page count badge - top right
@@ -284,27 +276,27 @@ private fun SuccessContent(
                     .padding(WormaCeptorDesignSystem.Spacing.md),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
                 color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
-                shadowElevation = WormaCeptorDesignSystem.Elevation.sm
+                shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
             ) {
                 Row(
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Description,
                         contentDescription = null,
                         modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = "${metadata.pageCount} page${if (metadata.pageCount != 1) "s" else ""}",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -313,7 +305,7 @@ private fun SuccessContent(
             Surface(
                 modifier = Modifier.align(Alignment.Center),
                 shape = CircleShape,
-                color = Color.Black.copy(alpha = 0.6f)
+                color = Color.Black.copy(alpha = 0.6f),
             ) {
                 Icon(
                     imageVector = Icons.Default.Fullscreen,
@@ -321,7 +313,7 @@ private fun SuccessContent(
                     modifier = Modifier
                         .padding(WormaCeptorDesignSystem.Spacing.md)
                         .size(28.dp),
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
         }
@@ -334,12 +326,12 @@ private fun SuccessContent(
                     Brush.verticalGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.02f),
-                            Color.Transparent
-                        )
-                    )
+                            Color.Transparent,
+                        ),
+                    ),
                 )
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             // Title or filename
             Text(
@@ -348,31 +340,31 @@ private fun SuccessContent(
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             // Metadata row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 MetadataChip(
                     icon = Icons.Default.Description,
                     text = formatFileSize(metadata.fileSize),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.tertiary,
                 )
                 metadata.version?.let { version ->
                     MetadataChip(
                         icon = null,
                         text = "PDF $version",
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.secondary,
                     )
                 }
                 metadata.author?.let { author ->
                     MetadataChip(
                         icon = Icons.Default.Person,
                         text = author,
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.secondary,
                     )
                 }
             }
@@ -382,25 +374,25 @@ private fun SuccessContent(
             // Action buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 // Open button - primary action
                 Button(
                     onClick = onFullscreen,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.primary,
                     ),
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     contentPadding = PaddingValues(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.md
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.md,
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Fullscreen,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                     Text("Open", fontWeight = FontWeight.SemiBold)
@@ -412,14 +404,14 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
                     ),
-                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md)
+                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Download,
                         contentDescription = "Download",
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
 
@@ -429,14 +421,14 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
                     ),
-                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md)
+                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = "Share",
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -445,28 +437,24 @@ private fun SuccessContent(
 }
 
 @Composable
-private fun MetadataChip(
-    icon: ImageVector?,
-    text: String,
-    tint: Color
-) {
+private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         icon?.let {
             Icon(
                 imageVector = it,
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = tint.copy(alpha = 0.7f)
+                tint = tint.copy(alpha = 0.7f),
             )
         }
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -478,28 +466,28 @@ private fun ErrorContent(message: String) {
             .fillMaxWidth()
             .height(200.dp)
             .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
             Text(
                 text = "Failed to load PDF",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
             )
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
     }
@@ -510,7 +498,7 @@ private fun PasswordProtectedContent(
     metadata: PdfMetadata,
     pdfData: ByteArray,
     tempFile: File?,
-    onDownload: () -> Unit
+    onDownload: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -519,38 +507,38 @@ private fun PasswordProtectedContent(
             .fillMaxWidth()
             .padding(WormaCeptorDesignSystem.Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Lock icon with subtle background
         Surface(
             shape = CircleShape,
             color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-            modifier = Modifier.size(72.dp)
+            modifier = Modifier.size(72.dp),
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
             }
         }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             Text(
                 text = "Password Protected",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 text = "This PDF requires a password to view",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
 
@@ -558,21 +546,21 @@ private fun PasswordProtectedContent(
         MetadataChip(
             icon = Icons.Default.Description,
             text = formatFileSize(metadata.fileSize),
-            tint = MaterialTheme.colorScheme.tertiary
+            tint = MaterialTheme.colorScheme.tertiary,
         )
 
         // Action buttons
         Row(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             OutlinedButton(
                 onClick = onDownload,
-                shape = WormaCeptorDesignSystem.Shapes.button
+                shape = WormaCeptorDesignSystem.Shapes.button,
             ) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text("Download")
@@ -580,12 +568,12 @@ private fun PasswordProtectedContent(
 
             OutlinedButton(
                 onClick = { sharePdf(context, pdfData, tempFile) },
-                shape = WormaCeptorDesignSystem.Shapes.button
+                shape = WormaCeptorDesignSystem.Shapes.button,
             ) {
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text("Share")
@@ -618,7 +606,9 @@ private fun extractPdfVersion(data: ByteArray): String? {
         val header = data.take(20).toByteArray().decodeToString()
         if (header.startsWith("%PDF-")) {
             header.substring(5).takeWhile { it.isDigit() || it == '.' }
-        } else null
+        } else {
+            null
+        }
     } catch (e: Exception) {
         null
     }
@@ -637,7 +627,7 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?) 
         val uri = FileProvider.getUriForFile(
             context,
             "${context.packageName}.wormaceptor.fileprovider",
-            file
+            file,
         )
 
         val intent = Intent(Intent.ACTION_SEND).apply {

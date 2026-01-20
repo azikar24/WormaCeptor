@@ -21,20 +21,20 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = brandPrimaryColor,
     secondary = brandVariantColor,
-    tertiary = brandVariantColor
+    tertiary = brandVariantColor,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = brandPrimaryColor,
     secondary = brandVariantColor,
-    tertiary = brandVariantColor
+    tertiary = brandVariantColor,
 )
 
 @Composable
 fun WormaCeptorMainTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -55,6 +55,6 @@ fun WormaCeptorMainTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

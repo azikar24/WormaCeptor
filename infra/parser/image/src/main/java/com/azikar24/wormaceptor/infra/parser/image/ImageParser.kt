@@ -32,7 +32,7 @@ class ImageParser : BodyParser {
         "image/x-bmp",
         "image/x-icon",
         "image/vnd.microsoft.icon",
-        "image/ico"
+        "image/ico",
     )
 
     /**
@@ -64,7 +64,7 @@ class ImageParser : BodyParser {
                 formatted = "[Empty image data]",
                 contentType = ContentType.BINARY,
                 isValid = false,
-                errorMessage = "Empty body"
+                errorMessage = "Empty body",
             )
         }
 
@@ -77,10 +77,10 @@ class ImageParser : BodyParser {
                 contentType = ContentType.IMAGE_OTHER,
                 metadata = mapOf(
                     "size" to body.size.toString(),
-                    "sizeFormatted" to formatSize(body.size.toLong())
+                    "sizeFormatted" to formatSize(body.size.toLong()),
                 ),
                 isValid = false,
-                errorMessage = "Could not detect image format from magic bytes"
+                errorMessage = "Could not detect image format from magic bytes",
             )
         }
 
@@ -98,7 +98,7 @@ class ImageParser : BodyParser {
             formatted = formatted,
             contentType = format.contentType,
             metadata = buildMetadataMap(metadata),
-            isValid = metadata.width > 0 && metadata.height > 0
+            isValid = metadata.width > 0 && metadata.height > 0,
         )
     }
 

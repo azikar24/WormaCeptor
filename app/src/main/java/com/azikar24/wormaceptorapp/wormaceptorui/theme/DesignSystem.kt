@@ -4,7 +4,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -71,22 +70,22 @@ object WormaCeptorDesignSystem {
     object AnimationSpecs {
         val fastSpring = spring<Float>(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         )
 
         val normalSpring = spring<Float>(
             dampingRatio = Spring.DampingRatioNoBouncy,
-            stiffness = Spring.StiffnessMedium
+            stiffness = Spring.StiffnessMedium,
         )
 
         val fastTween = tween<Float>(
             durationMillis = AnimationDuration.fast,
-            easing = FastOutSlowInEasing
+            easing = FastOutSlowInEasing,
         )
 
         val normalTween = tween<Float>(
             durationMillis = AnimationDuration.normal,
-            easing = FastOutSlowInEasing
+            easing = FastOutSlowInEasing,
         )
     }
 

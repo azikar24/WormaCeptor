@@ -54,7 +54,7 @@ data class GestureColors(
     val swipeBackThreshold: Color,
 
     // Haptic feedback visual cues
-    val hapticPulse: Color
+    val hapticPulse: Color,
 )
 
 /**
@@ -91,7 +91,7 @@ val LightGestureColors = GestureColors(
     swipeBackThreshold = md_theme_light_primary,
 
     // Haptic feedback
-    hapticPulse = md_theme_light_primary.copy(alpha = 0.10f)
+    hapticPulse = md_theme_light_primary.copy(alpha = 0.10f),
 )
 
 /**
@@ -128,7 +128,7 @@ val DarkGestureColors = GestureColors(
     swipeBackThreshold = md_theme_dark_primary,
 
     // Haptic feedback
-    hapticPulse = md_theme_dark_primary.copy(alpha = 0.15f)
+    hapticPulse = md_theme_dark_primary.copy(alpha = 0.15f),
 )
 
 /**
@@ -200,24 +200,24 @@ object GestureSpring {
     // For snappy interactions like tap responses
     val snappy = androidx.compose.animation.core.spring<Float>(
         dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
-        stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
+        stiffness = androidx.compose.animation.core.Spring.StiffnessHigh,
     )
 
     // For smooth drag release animations
     val smooth = androidx.compose.animation.core.spring<Float>(
         dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
-        stiffness = androidx.compose.animation.core.Spring.StiffnessMedium
+        stiffness = androidx.compose.animation.core.Spring.StiffnessMedium,
     )
 
     // For bouncy feedback animations
     val bouncy = androidx.compose.animation.core.spring<Float>(
         dampingRatio = androidx.compose.animation.core.Spring.DampingRatioLowBouncy,
-        stiffness = androidx.compose.animation.core.Spring.StiffnessLow
+        stiffness = androidx.compose.animation.core.Spring.StiffnessLow,
     )
 
     // For quick snapping animations
     val snap = androidx.compose.animation.core.spring<Float>(
         dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
-        stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
+        stiffness = androidx.compose.animation.core.Spring.StiffnessHigh,
     )
 }

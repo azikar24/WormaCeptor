@@ -61,7 +61,7 @@ object ImageMetadataExtractor {
                 colorSpace = colorSpace,
                 hasAlpha = hasAlpha,
                 bitDepth = bitDepth,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "PNG")
@@ -125,7 +125,7 @@ object ImageMetadataExtractor {
                             colorSpace = colorSpace,
                             hasAlpha = false, // JPEG doesn't support alpha
                             bitDepth = precision,
-                            fileSize = data.size.toLong()
+                            fileSize = data.size.toLong(),
                         )
                     }
                 }
@@ -158,7 +158,7 @@ object ImageMetadataExtractor {
                 colorSpace = "Indexed",
                 hasAlpha = true, // GIF supports transparency
                 bitDepth = 8,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "GIF")
@@ -215,7 +215,7 @@ object ImageMetadataExtractor {
                 format = "WebP",
                 colorSpace = "YUV",
                 hasAlpha = false,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "WebP")
@@ -247,7 +247,7 @@ object ImageMetadataExtractor {
                 format = "WebP",
                 colorSpace = "RGBA",
                 hasAlpha = hasAlpha,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "WebP")
@@ -266,14 +266,18 @@ object ImageMetadataExtractor {
             val hasAlpha = (flags and 0x10) != 0
 
             // Canvas width (24 bits, little-endian) at offset 24
-            val width = ((data[24].toInt() and 0xFF) or
+            val width = (
+                (data[24].toInt() and 0xFF) or
                     ((data[25].toInt() and 0xFF) shl 8) or
-                    ((data[26].toInt() and 0xFF) shl 16)) + 1
+                    ((data[26].toInt() and 0xFF) shl 16)
+                ) + 1
 
             // Canvas height (24 bits, little-endian) at offset 27
-            val height = ((data[27].toInt() and 0xFF) or
+            val height = (
+                (data[27].toInt() and 0xFF) or
                     ((data[28].toInt() and 0xFF) shl 8) or
-                    ((data[29].toInt() and 0xFF) shl 16)) + 1
+                    ((data[29].toInt() and 0xFF) shl 16)
+                ) + 1
 
             return ImageMetadata(
                 width = width,
@@ -281,7 +285,7 @@ object ImageMetadataExtractor {
                 format = "WebP",
                 colorSpace = if (hasAlpha) "RGBA" else "RGB",
                 hasAlpha = hasAlpha,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "WebP")
@@ -310,7 +314,7 @@ object ImageMetadataExtractor {
                 colorSpace = if (bitCount <= 8) "Indexed" else "RGB",
                 hasAlpha = hasAlpha,
                 bitDepth = bitCount,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "BMP")
@@ -347,7 +351,7 @@ object ImageMetadataExtractor {
                 colorSpace = null,
                 hasAlpha = true, // ICO typically has transparency
                 bitDepth = if (bitCount > 0) bitCount else null,
-                fileSize = data.size.toLong()
+                fileSize = data.size.toLong(),
             )
         } catch (e: Exception) {
             return ImageMetadata.unknown(data.size.toLong()).copy(format = "ICO")
@@ -366,7 +370,7 @@ object ImageMetadataExtractor {
             format = "SVG",
             colorSpace = null,
             hasAlpha = true, // SVG supports transparency
-            fileSize = fileSize
+            fileSize = fileSize,
         )
 
         try {
@@ -379,9 +383,15 @@ object ImageMetadataExtractor {
             val svgTag = svgMatch.value
 
             // Extract width and height attributes
-            val widthMatch = Regex("""width\s*=\s*["']?(\d+(?:\.\d+)?)(px|em|%|pt|cm|mm|in)?["']?""", RegexOption.IGNORE_CASE)
+            val widthMatch = Regex(
+                """width\s*=\s*["']?(\d+(?:\.\d+)?)(px|em|%|pt|cm|mm|in)?["']?""",
+                RegexOption.IGNORE_CASE,
+            )
                 .find(svgTag)
-            val heightMatch = Regex("""height\s*=\s*["']?(\d+(?:\.\d+)?)(px|em|%|pt|cm|mm|in)?["']?""", RegexOption.IGNORE_CASE)
+            val heightMatch = Regex(
+                """height\s*=\s*["']?(\d+(?:\.\d+)?)(px|em|%|pt|cm|mm|in)?["']?""",
+                RegexOption.IGNORE_CASE,
+            )
                 .find(svgTag)
 
             val width = widthMatch?.groupValues?.get(1)?.toFloatOrNull()?.toInt() ?: 0
@@ -389,7 +399,10 @@ object ImageMetadataExtractor {
 
             // If no explicit dimensions, try viewBox
             if (width == 0 || height == 0) {
-                val viewBoxMatch = Regex("""viewBox\s*=\s*["']?(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)["']?""", RegexOption.IGNORE_CASE)
+                val viewBoxMatch = Regex(
+                    """viewBox\s*=\s*["']?(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)["']?""",
+                    RegexOption.IGNORE_CASE,
+                )
                     .find(svgTag)
 
                 if (viewBoxMatch != null) {

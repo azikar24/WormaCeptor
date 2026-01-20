@@ -37,7 +37,7 @@ fun XmlTreeView(
     xmlString: String,
     modifier: Modifier = Modifier,
     initiallyExpanded: Boolean = true,
-    colors: ComposeSyntaxColors = syntaxColors()
+    colors: ComposeSyntaxColors = syntaxColors(),
 ) {
     val formattedLines = remember(xmlString) {
         formatXml(xmlString)
@@ -47,19 +47,19 @@ fun XmlTreeView(
         modifier = modifier
             .fillMaxWidth()
             .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip)
-            .padding(WormaCeptorDesignSystem.Spacing.sm)
+            .padding(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         SelectionContainer {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
+                    .horizontalScroll(rememberScrollState()),
             ) {
                 formattedLines.forEachIndexed { index, line ->
                     XmlLineView(
                         line = line,
                         lineNumber = index + 1,
-                        colors = colors
+                        colors = colors,
                     )
                 }
             }
@@ -68,29 +68,25 @@ fun XmlTreeView(
 }
 
 @Composable
-private fun XmlLineView(
-    line: String,
-    lineNumber: Int,
-    colors: ComposeSyntaxColors
-) {
+private fun XmlLineView(line: String, lineNumber: Int, colors: ComposeSyntaxColors) {
     Row(
         modifier = Modifier.padding(vertical = 1.dp),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
     ) {
         Text(
             text = String.format("%4d", lineNumber),
             style = MaterialTheme.typography.bodySmall.copy(
-                fontFamily = FontFamily.Monospace
+                fontFamily = FontFamily.Monospace,
             ),
             color = colors.lineNumberText,
-            modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.sm)
+            modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.sm),
         )
 
         Text(
             text = highlightXmlLine(line, colors),
             style = MaterialTheme.typography.bodySmall.copy(
-                fontFamily = FontFamily.Monospace
-            )
+                fontFamily = FontFamily.Monospace,
+            ),
         )
     }
 }
@@ -306,36 +302,42 @@ private fun highlightAttributes(attributes: String, colors: ComposeSyntaxColors)
     var lastEnd = 0
     attrRegex.findAll(attributes).forEach { match ->
         if (match.range.first > lastEnd) {
-            result.add(buildAnnotatedString {
-                withStyle(SpanStyle(color = colors.default)) {
-                    append(attributes.substring(lastEnd, match.range.first))
-                }
-            })
+            result.add(
+                buildAnnotatedString {
+                    withStyle(SpanStyle(color = colors.default)) {
+                        append(attributes.substring(lastEnd, match.range.first))
+                    }
+                },
+            )
         }
 
         val (whitespace, name, value) = match.destructured
-        result.add(buildAnnotatedString {
-            append(whitespace)
-            withStyle(SpanStyle(color = colors.property)) {
-                append(name)
-            }
-            withStyle(SpanStyle(color = colors.punctuation)) {
-                append("=")
-            }
-            withStyle(SpanStyle(color = colors.string)) {
-                append(value)
-            }
-        })
+        result.add(
+            buildAnnotatedString {
+                append(whitespace)
+                withStyle(SpanStyle(color = colors.property)) {
+                    append(name)
+                }
+                withStyle(SpanStyle(color = colors.punctuation)) {
+                    append("=")
+                }
+                withStyle(SpanStyle(color = colors.string)) {
+                    append(value)
+                }
+            },
+        )
 
         lastEnd = match.range.last + 1
     }
 
     if (lastEnd < attributes.length) {
-        result.add(buildAnnotatedString {
-            withStyle(SpanStyle(color = colors.default)) {
-                append(attributes.substring(lastEnd))
-            }
-        })
+        result.add(
+            buildAnnotatedString {
+                withStyle(SpanStyle(color = colors.default)) {
+                    append(attributes.substring(lastEnd))
+                }
+            },
+        )
     }
 
     return result

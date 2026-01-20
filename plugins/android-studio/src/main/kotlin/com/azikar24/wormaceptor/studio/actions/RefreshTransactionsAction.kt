@@ -15,7 +15,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 class RefreshTransactionsAction : AnAction(
     "Refresh Transactions",
     "Refresh transaction list from device",
-    AllIcons.Actions.Refresh
+    AllIcons.Actions.Refresh,
 ) {
 
     override fun actionPerformed(e: AnActionEvent) {

@@ -36,7 +36,7 @@ data class ComposeSyntaxColors(
     val codeBackground: Color,
     val searchHighlight: Color,
     val searchHighlightCurrent: Color,
-    val searchHighlightText: Color
+    val searchHighlightText: Color,
 ) {
     /**
      * Returns the color for the given token type.
@@ -93,9 +93,9 @@ val LightComposeSyntaxColors = ComposeSyntaxColors(
     lineNumberText = Color(0xFF9E9E9E),
     lineNumberBackground = Color(0xFFF5F5F5),
     codeBackground = Color(0xFFFAFAFA),
-    searchHighlight = Color(0xFFFFF59D),           // Soft yellow
-    searchHighlightCurrent = Color(0xFF4DD0E1),   // Cyan for current match
-    searchHighlightText = Color(0xFF000000)        // Black text on highlight
+    searchHighlight = Color(0xFFFFF59D), // Soft yellow
+    searchHighlightCurrent = Color(0xFF4DD0E1), // Cyan for current match
+    searchHighlightText = Color(0xFF000000), // Black text on highlight
 )
 
 /**
@@ -118,9 +118,9 @@ val DarkComposeSyntaxColors = ComposeSyntaxColors(
     lineNumberText = Color(0xFF606060),
     lineNumberBackground = Color(0xFF1E1E1E),
     codeBackground = Color(0xFF252526),
-    searchHighlight = Color(0xFF613214),           // Muted orange for dark theme
-    searchHighlightCurrent = Color(0xFF264F78),   // Blue highlight for current
-    searchHighlightText = Color(0xFFFFFFFF)        // White text on highlight
+    searchHighlight = Color(0xFF613214), // Muted orange for dark theme
+    searchHighlightCurrent = Color(0xFF264F78), // Blue highlight for current
+    searchHighlightText = Color(0xFFFFFFFF), // White text on highlight
 )
 
 /**
@@ -142,10 +142,7 @@ fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): ComposeSyntaxColor
  * Wrap your content with this to make syntax colors available via LocalSyntaxColors.
  */
 @Composable
-fun ProvideSyntaxColors(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+fun ProvideSyntaxColors(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = syntaxColors(darkTheme)
     CompositionLocalProvider(LocalSyntaxColors provides colors) {
         content()

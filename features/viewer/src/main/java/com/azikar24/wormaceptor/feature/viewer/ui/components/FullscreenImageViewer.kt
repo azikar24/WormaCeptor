@@ -8,7 +8,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.core.content.FileProvider
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VectorConverter
@@ -31,12 +30,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -81,6 +77,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
@@ -107,7 +104,7 @@ fun FullscreenImageViewer(
     metadata: ImageMetadata?,
     onDismiss: () -> Unit,
     onDownload: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -115,15 +112,15 @@ fun FullscreenImageViewer(
             dismissOnBackPress = true,
             dismissOnClickOutside = false,
             usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
+            decorFitsSystemWindows = false,
+        ),
     ) {
         FullscreenImageContent(
             imageData = imageData,
             metadata = metadata,
             onDismiss = onDismiss,
             onDownload = onDownload,
-            onShare = onShare
+            onShare = onShare,
         )
     }
 }
@@ -134,7 +131,7 @@ private fun FullscreenImageContent(
     metadata: ImageMetadata?,
     onDismiss: () -> Unit,
     onDownload: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
 ) {
     val context = LocalContext.current
     val gifImageLoader = rememberGifImageLoader()
@@ -171,7 +168,7 @@ private fun FullscreenImageContent(
     val backgroundAlpha by animateFloatAsState(
         targetValue = 1f - (abs(swipeOffset) / dismissThreshold).coerceIn(0f, 0.5f),
         animationSpec = tween(durationMillis = 100),
-        label = "background_alpha"
+        label = "background_alpha",
     )
 
     Box(
@@ -191,15 +188,15 @@ private fun FullscreenImageContent(
                                     targetValue = 1f,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                                 animatedOffset.animateTo(
                                     targetValue = Offset.Zero,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                             } else {
                                 // Zoom in to tap location
@@ -208,14 +205,14 @@ private fun FullscreenImageContent(
                                     targetValue = targetScale,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                             }
                         }
-                    }
+                    },
                 )
-            }
+            },
     ) {
         // Main image with gestures
         Box(
@@ -267,7 +264,7 @@ private fun FullscreenImageContent(
                             scope.launch {
                                 animatedScale.animateTo(
                                     targetValue = 1f,
-                                    animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                                    animationSpec = spring(stiffness = Spring.StiffnessMedium),
                                 )
                             }
                         }
@@ -281,7 +278,7 @@ private fun FullscreenImageContent(
                                 val anim = Animatable(swipeOffset)
                                 anim.animateTo(
                                     targetValue = 0f,
-                                    animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                                    animationSpec = spring(stiffness = Spring.StiffnessMedium),
                                 ) {
                                     swipeOffset = value
                                 }
@@ -289,7 +286,7 @@ private fun FullscreenImageContent(
                         }
                     }
                 },
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -302,18 +299,18 @@ private fun FullscreenImageContent(
                 modifier = Modifier.fillMaxSize(),
                 onState = { state ->
                     isLoading = state is AsyncImagePainter.State.Loading
-                }
+                },
             )
 
             // Loading indicator
             AnimatedVisibility(
                 visible = isLoading,
                 enter = fadeIn(),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 CircularProgressIndicator(
                     color = Color.White,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(48.dp),
                 )
             }
         }
@@ -323,7 +320,7 @@ private fun FullscreenImageContent(
             visible = showControls,
             enter = slideInVertically { -it } + fadeIn(),
             exit = slideOutVertically { -it } + fadeOut(),
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier.align(Alignment.TopCenter),
         ) {
             TopControlBar(
                 onClose = onDismiss,
@@ -331,7 +328,7 @@ private fun FullscreenImageContent(
                     scope.launch {
                         animatedScale.animateTo(
                             (scale * 1.5f).coerceAtMost(5f),
-                            spring(stiffness = Spring.StiffnessMedium)
+                            spring(stiffness = Spring.StiffnessMedium),
                         )
                     }
                 },
@@ -339,14 +336,14 @@ private fun FullscreenImageContent(
                     scope.launch {
                         animatedScale.animateTo(
                             (scale / 1.5f).coerceAtLeast(1f),
-                            spring(stiffness = Spring.StiffnessMedium)
+                            spring(stiffness = Spring.StiffnessMedium),
                         )
                         if (animatedScale.value <= 1f) {
                             animatedOffset.animateTo(Offset.Zero)
                         }
                     }
                 },
-                currentZoom = scale
+                currentZoom = scale,
             )
         }
 
@@ -355,12 +352,12 @@ private fun FullscreenImageContent(
             visible = showControls,
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut(),
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             BottomControlBar(
                 metadata = metadata,
                 onDownload = onDownload,
-                onShare = onShare
+                onShare = onShare,
             )
         }
 
@@ -371,11 +368,11 @@ private fun FullscreenImageContent(
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 80.dp, end = WormaCeptorDesignSystem.Spacing.lg)
+                .padding(top = 80.dp, end = WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = Color.Black.copy(alpha = 0.6f)
+                color = Color.Black.copy(alpha = 0.6f),
             ) {
                 Text(
                     text = "${String.format("%.1f", scale)}x",
@@ -383,8 +380,8 @@ private fun FullscreenImageContent(
                     color = Color.White,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    ),
                 )
             }
         }
@@ -392,15 +389,10 @@ private fun FullscreenImageContent(
 }
 
 @Composable
-private fun TopControlBar(
-    onClose: () -> Unit,
-    onZoomIn: () -> Unit,
-    onZoomOut: () -> Unit,
-    currentZoom: Float
-) {
+private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: () -> Unit, currentZoom: Float) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.Black.copy(alpha = 0.4f)
+        color = Color.Black.copy(alpha = 0.4f),
     ) {
         Row(
             modifier = Modifier
@@ -408,26 +400,26 @@ private fun TopControlBar(
                 .padding(WormaCeptorDesignSystem.Spacing.md)
                 .windowInsetsPadding(WindowInsets.statusBars),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Close button
             FilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
                     containerColor = Color.White.copy(alpha = 0.15f),
-                    contentColor = Color.White
-                )
+                    contentColor = Color.White,
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close"
+                    contentDescription = "Close",
                 )
             }
 
             // Zoom controls
             Row(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 FilledTonalIconButton(
                     onClick = onZoomOut,
@@ -436,12 +428,12 @@ private fun TopControlBar(
                         containerColor = Color.White.copy(alpha = 0.15f),
                         contentColor = Color.White,
                         disabledContainerColor = Color.White.copy(alpha = 0.05f),
-                        disabledContentColor = Color.White.copy(alpha = 0.3f)
-                    )
+                        disabledContentColor = Color.White.copy(alpha = 0.3f),
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ZoomOut,
-                        contentDescription = "Zoom out"
+                        contentDescription = "Zoom out",
                     )
                 }
 
@@ -452,12 +444,12 @@ private fun TopControlBar(
                         containerColor = Color.White.copy(alpha = 0.15f),
                         contentColor = Color.White,
                         disabledContainerColor = Color.White.copy(alpha = 0.05f),
-                        disabledContentColor = Color.White.copy(alpha = 0.3f)
-                    )
+                        disabledContentColor = Color.White.copy(alpha = 0.3f),
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ZoomIn,
-                        contentDescription = "Zoom in"
+                        contentDescription = "Zoom in",
                     )
                 }
             }
@@ -466,53 +458,49 @@ private fun TopControlBar(
 }
 
 @Composable
-private fun BottomControlBar(
-    metadata: ImageMetadata?,
-    onDownload: () -> Unit,
-    onShare: () -> Unit
-) {
+private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, onShare: () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = Color.Black.copy(alpha = 0.6f)
+        color = Color.Black.copy(alpha = 0.6f),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Metadata row
             metadata?.let { meta ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     MetadataChip(
                         icon = Icons.Outlined.AspectRatio,
-                        text = "${meta.width} x ${meta.height}"
+                        text = "${meta.width} x ${meta.height}",
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     MetadataChip(
                         icon = Icons.Outlined.Memory,
-                        text = formatFileSize(meta.fileSize)
+                        text = formatFileSize(meta.fileSize),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = Color.White.copy(alpha = 0.15f)
+                        color = Color.White.copy(alpha = 0.15f),
                     ) {
                         Text(
                             text = meta.format,
                             style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
                             ),
                             color = Color.White,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xs
-                            )
+                                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                            ),
                         )
                     }
                 }
@@ -526,18 +514,18 @@ private fun BottomControlBar(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(
                     WormaCeptorDesignSystem.Spacing.md,
-                    Alignment.CenterHorizontally
-                )
+                    Alignment.CenterHorizontally,
+                ),
             ) {
                 ActionChip(
                     icon = Icons.Default.Download,
                     label = "Save to Gallery",
-                    onClick = onDownload
+                    onClick = onDownload,
                 )
                 ActionChip(
                     icon = Icons.Default.Share,
                     label = "Share",
-                    onClick = onShare
+                    onClick = onShare,
                 )
             }
         }
@@ -545,59 +533,52 @@ private fun BottomControlBar(
 }
 
 @Composable
-private fun MetadataChip(
-    icon: ImageVector,
-    text: String
-) {
+private fun MetadataChip(icon: ImageVector, text: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = Color.White.copy(alpha = 0.7f),
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = Color.White.copy(alpha = 0.9f)
+            color = Color.White.copy(alpha = 0.9f),
         )
     }
 }
 
 @Composable
-private fun ActionChip(
-    icon: ImageVector,
-    label: String,
-    onClick: () -> Unit
-) {
+private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-        color = Color.White.copy(alpha = 0.15f)
+        color = Color.White.copy(alpha = 0.15f),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.md
+                vertical = WormaCeptorDesignSystem.Spacing.md,
             ),
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(18.dp),
             )
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 ),
-                color = Color.White
+                color = Color.White,
             )
         }
     }
@@ -641,7 +622,7 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
 
             val uri = context.contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues
+                contentValues,
             )
 
             uri?.let {
@@ -705,7 +686,7 @@ fun shareImage(context: Context, imageData: ByteArray, format: String) {
         val uri = FileProvider.getUriForFile(
             context,
             "${context.packageName}.wormaceptor.fileprovider",
-            file
+            file,
         )
 
         val intent = Intent(Intent.ACTION_SEND).apply {

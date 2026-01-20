@@ -7,7 +7,6 @@ package com.azikar24.wormaceptorapp.sampleservice
 import retrofit2.Call
 import retrofit2.http.*
 
-
 interface HttpBinApi {
     @GET("/get")
     fun get(): Call<Void?>
@@ -21,7 +20,13 @@ interface HttpBinApi {
     @POST("/post")
     @FormUrlEncoded
     @Headers("ContentType: application/x-www-form-urlencoded")
-    fun postForm(@Field("param_string") string: String?, @Field("param_string_null") stringNil: String?, @Field("param_double") param2: Double, @Field("param_int") param3: Int, @Field("param_bool") param4: Boolean): Call<Void>
+    fun postForm(
+        @Field("param_string") string: String?,
+        @Field("param_string_null") stringNil: String?,
+        @Field("param_double") param2: Double,
+        @Field("param_int") param3: Int,
+        @Field("param_bool") param4: Boolean,
+    ): Call<Void>
 
     @PATCH("/patch")
     fun patch(@Body body: Data?): Call<Void>
@@ -82,7 +87,12 @@ interface HttpBinApi {
     fun basicAuth(@Path("user") user: String?, @Path("passwd") passwd: String?): Call<Void>
 
     @GET("/drip")
-    fun drip(@Query("numbytes") bytes: Int, @Query("duration") seconds: Int, @Query("delay") delay: Int, @Query("code") code: Int): Call<Void>
+    fun drip(
+        @Query("numbytes") bytes: Int,
+        @Query("duration") seconds: Int,
+        @Query("delay") delay: Int,
+        @Query("code") code: Int,
+    ): Call<Void>
 
     @GET("/deny")
     fun deny(): Call<Void>

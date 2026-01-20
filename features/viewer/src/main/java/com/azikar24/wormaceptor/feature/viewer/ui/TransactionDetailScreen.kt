@@ -5,80 +5,80 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.view.HapticFeedbackConstants
 import android.widget.Toast
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.foundation.background
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalView
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.FormDataView
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.BodyParsingUtils
-import com.azikar24.wormaceptor.domain.contracts.ContentType
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
-import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
-import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
-import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
-import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
-import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
-import com.azikar24.wormaceptor.feature.viewer.ui.components.extractImageMetadata
-import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
-import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
-import com.azikar24.wormaceptor.feature.viewer.ui.components.detectImageFormat
-import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
-import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
-import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
+import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
+import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
+import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
+import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.BodyParsingUtils
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.FormDataView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.detectImageFormat
+import com.azikar24.wormaceptor.feature.viewer.ui.components.extractImageMetadata
+import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
+import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
+import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -104,7 +104,7 @@ fun TransactionDetailPagerScreen(
     transactionIds: List<UUID>,
     initialTransactionIndex: Int,
     getTransaction: suspend (UUID) -> NetworkTransaction?,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val view = LocalView.current
 
@@ -154,7 +154,7 @@ fun TransactionDetailPagerScreen(
 
     SwipeBackContainer(
         onBack = onBack,
-        enabled = currentTransactionIndex == 0 // Only enable swipe-back on first transaction
+        enabled = currentTransactionIndex == 0, // Only enable swipe-back on first transaction
     ) {
         // Smooth directional slide transition
         AnimatedContent(
@@ -164,19 +164,19 @@ fun TransactionDetailPagerScreen(
                 if (navigationDirection >= 0) {
                     // Going forward (next) - content slides in from right
                     slideInHorizontally(slideSpec) { slideOffset } togetherWith
-                            slideOutHorizontally(slideSpec) { -slideOffset }
+                        slideOutHorizontally(slideSpec) { -slideOffset }
                 } else {
                     // Going backward (prev) - content slides in from left
                     slideInHorizontally(slideSpec) { -slideOffset } togetherWith
-                            slideOutHorizontally(slideSpec) { slideOffset }
+                        slideOutHorizontally(slideSpec) { slideOffset }
                 }
             },
-            label = "transaction_transition"
+            label = "transaction_transition",
         ) { (_, currentTransaction) ->
             if (isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
@@ -189,16 +189,16 @@ fun TransactionDetailPagerScreen(
                     onNavigatePrevTransaction = ::navigateToPrevTransaction,
                     onNavigateNextTransaction = ::navigateToNextTransaction,
                     canNavigatePrev = canNavigatePrev,
-                    canNavigateNext = canNavigateNext
+                    canNavigateNext = canNavigateNext,
                 )
             } else {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         "Transaction not found",
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
@@ -211,14 +211,11 @@ fun TransactionDetailPagerScreen(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionDetailScreen(
-    transaction: NetworkTransaction,
-    onBack: () -> Unit
-) {
+fun TransactionDetailScreen(transaction: NetworkTransaction, onBack: () -> Unit) {
     SwipeBackContainer(onBack = onBack) {
         TransactionDetailContent(
             transaction = transaction,
-            onBack = onBack
+            onBack = onBack,
         )
     }
 }
@@ -240,17 +237,17 @@ private fun TransactionDetailContent(
     onNavigatePrevTransaction: () -> Unit = {},
     onNavigateNextTransaction: () -> Unit = {},
     canNavigatePrev: Boolean = false,
-    canNavigateNext: Boolean = false
+    canNavigateNext: Boolean = false,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val haptics = LocalHapticFeedback.current
+    LocalHapticFeedback.current
     val tabs = listOf("Overview", "Request", "Response")
 
     // Tab pager state for content swipe
     val tabPagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { tabs.size }
+        pageCount = { tabs.size },
     )
 
     var showSearch by remember { mutableStateOf(false) }
@@ -294,7 +291,7 @@ private fun TransactionDetailContent(
                     onSwipeLeft = onNavigateNextTransaction,
                     onSwipeRight = onNavigatePrevTransaction,
                     canSwipeLeft = canNavigateNext,
-                    canSwipeRight = canNavigatePrev
+                    canSwipeRight = canNavigatePrev,
                 ) {
                     TopAppBar(
                         title = {
@@ -307,9 +304,9 @@ private fun TransactionDetailContent(
                                         .fillMaxWidth()
                                         .focusRequester(focusRequester),
                                     colors = TextFieldDefaults.colors(
-                                        focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                        unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                                        disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                                        focusedContainerColor = Color.Transparent,
+                                        unfocusedContainerColor = Color.Transparent,
+                                        disabledContainerColor = Color.Transparent,
                                     ),
                                     singleLine = true,
                                     trailingIcon = {
@@ -318,12 +315,12 @@ private fun TransactionDetailContent(
                                                 Icon(Icons.Default.Close, contentDescription = "Clear")
                                             }
                                         }
-                                    }
+                                    },
                                 )
                             } else {
                                 TextWithStartEllipsis(
                                     text = title,
-                                    modifier = Modifier.weight(1f, fill = false)
+                                    modifier = Modifier.weight(1f, fill = false),
                                 )
                             }
                         },
@@ -341,7 +338,7 @@ private fun TransactionDetailContent(
                                     AnimatedVisibility(!showSearch) {
                                         Icon(
                                             imageVector = Icons.Default.Search,
-                                            contentDescription = "Search"
+                                            contentDescription = "Search",
                                         )
                                     }
                                 }
@@ -355,43 +352,45 @@ private fun TransactionDetailContent(
 
                             DropdownMenu(
                                 expanded = showMenu,
-                                onDismissRequest = { showMenu = false }
+                                onDismissRequest = { showMenu = false },
                             ) {
                                 DropdownMenuItem(
                                     text = { Text("Copy as Text") },
                                     onClick = {
                                         showMenu = false
                                         copyToClipboard(context, "Transaction", generateTextSummary(transaction))
-                                    }
+                                    },
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Copy as cURL") },
                                     onClick = {
                                         showMenu = false
                                         copyToClipboard(context, "cURL", generateCurlCommand(transaction))
-                                    }
+                                    },
                                 )
                                 Divider()
                                 DropdownMenuItem(
                                     text = { Text("Share as JSON") },
                                     onClick = {
                                         showMenu = false
-                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(context)
+                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                            context,
+                                        )
                                         scope.launch {
                                             exportManager.exportTransactions(listOf(transaction))
                                         }
-                                    }
+                                    },
                                 )
                             }
-                        }
+                        },
                     )
                 }
                 // Tab row with click support (swipe is handled by the content pager)
                 TabRow(
                     selectedTabIndex = tabPagerState.currentPage,
-                    containerColor = androidx.compose.ui.graphics.Color.Transparent,
+                    containerColor = Color.Transparent,
                     contentColor = MaterialTheme.colorScheme.primary,
-                    divider = {}
+                    divider = {},
                 ) {
                     tabs.forEachIndexed { index, tabTitle ->
                         Tab(
@@ -405,17 +404,17 @@ private fun TransactionDetailContent(
                                 Text(
                                     text = tabTitle,
                                     style = MaterialTheme.typography.labelLarge,
-                                    fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal
+                                    fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal,
                                 )
-                            }
+                            },
                         )
                     }
                 }
                 HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                 )
             }
-        }
+        },
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
             // HorizontalPager for tab content - swipe here switches between Overview/Request/Response
@@ -427,7 +426,7 @@ private fun TransactionDetailContent(
                     .consumeWindowInsets(padding)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .windowInsetsPadding(WindowInsets.ime),
-                beyondViewportPageCount = 1
+                beyondViewportPageCount = 1,
             ) { page ->
                 when (page) {
                     0 -> OverviewTab(transaction, Modifier.fillMaxSize())
@@ -436,7 +435,7 @@ private fun TransactionDetailContent(
                         searchQuery = searchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
 
                     2 -> ResponseTab(
@@ -444,7 +443,7 @@ private fun TransactionDetailContent(
                         searchQuery = searchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
@@ -458,16 +457,16 @@ private fun TransactionDetailContent(
                         .padding(bottom = 32.dp, end = 16.dp),
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
                     color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-                    shadowElevation = 6.dp
+                    shadowElevation = 6.dp,
                 ) {
                     Row(
                         modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             text = "${currentMatchIndex + 1}/$matchCount",
                             style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(horizontal = 8.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp),
                         )
                         IconButton(onClick = {
                             currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount
@@ -496,7 +495,7 @@ private fun SwipeableTopBar(
     onSwipeRight: () -> Unit,
     canSwipeLeft: Boolean,
     canSwipeRight: Boolean,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
     var dragOffset by remember { mutableFloatStateOf(0f) }
@@ -523,9 +522,9 @@ private fun SwipeableTopBar(
                     onDragCancel = { dragOffset = 0f },
                     onHorizontalDrag = { _, dragAmount ->
                         dragOffset += dragAmount
-                    }
+                    },
                 )
-            }
+            },
     ) {
         content()
     }
@@ -540,7 +539,7 @@ private fun SwipeableTabRow(
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
     tabs: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val haptics = LocalHapticFeedback.current
     var dragOffset by remember { mutableFloatStateOf(0f) }
@@ -568,15 +567,15 @@ private fun SwipeableTabRow(
                     onDragCancel = { dragOffset = 0f },
                     onHorizontalDrag = { _, dragAmount ->
                         dragOffset += dragAmount
-                    }
+                    },
                 )
-            }
+            },
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
-            divider = {}
+            divider = {},
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
@@ -586,14 +585,14 @@ private fun SwipeableTabRow(
                         Text(
                             text = title,
                             style = MaterialTheme.typography.labelLarge,
-                            fontWeight = if (selectedTabIndex == index) FontWeight.SemiBold else FontWeight.Normal
+                            fontWeight = if (selectedTabIndex == index) FontWeight.SemiBold else FontWeight.Normal,
                         )
-                    }
+                    },
                 )
             }
         }
         HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
         )
     }
 }
@@ -605,13 +604,13 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(WormaCeptorDesignSystem.Spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Status & Timing Card with Timeline
         EnhancedOverviewCard(
             title = "Timing",
             icon = Icons.Default.Schedule,
-            iconTint = MaterialTheme.colorScheme.tertiary
+            iconTint = MaterialTheme.colorScheme.tertiary,
         ) {
             DetailRow("URL", transaction.request.url)
             DetailRow("Method", transaction.request.method)
@@ -620,7 +619,10 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             DetailRow("Duration", formatDuration(transaction.durationMs))
             DetailRow(
                 "Timestamp",
-                java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date(transaction.timestamp))
+                java.text.SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss",
+                    java.util.Locale.getDefault(),
+                ).format(java.util.Date(transaction.timestamp)),
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -628,7 +630,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             // Visual Timeline
             TransactionTimeline(
                 durationMs = transaction.durationMs ?: 0,
-                hasResponse = transaction.response != null
+                hasResponse = transaction.response != null,
             )
         }
 
@@ -636,7 +638,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
         EnhancedOverviewCard(
             title = "Security",
             icon = Icons.Default.Security,
-            iconTint = MaterialTheme.colorScheme.secondary
+            iconTint = MaterialTheme.colorScheme.secondary,
         ) {
             DetailRow("Protocol", transaction.response?.protocol ?: "Unknown")
 
@@ -646,7 +648,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             val isSsl = transaction.response?.tlsVersion != null
             SslBadge(
                 isSsl = isSsl,
-                tlsVersion = transaction.response?.tlsVersion
+                tlsVersion = transaction.response?.tlsVersion,
             )
         }
 
@@ -654,7 +656,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
         EnhancedOverviewCard(
             title = "Data Transfer",
             icon = Icons.Default.Storage,
-            iconTint = MaterialTheme.colorScheme.primary
+            iconTint = MaterialTheme.colorScheme.primary,
         ) {
             val reqSize = transaction.request.bodySize
             val resSize = transaction.response?.bodySize ?: 0
@@ -674,20 +676,20 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
             .fillMaxWidth()
             .background(
                 MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                shape = WormaCeptorDesignSystem.Shapes.chip
+                shape = WormaCeptorDesignSystem.Shapes.chip,
             )
-            .padding(WormaCeptorDesignSystem.Spacing.md)
+            .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
         Text(
             text = "Request/Response Timeline",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs)
+            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Request Phase
             Box(
@@ -698,9 +700,9 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                         MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(
                             topStart = WormaCeptorDesignSystem.CornerRadius.xs,
-                            bottomStart = WormaCeptorDesignSystem.CornerRadius.xs
-                        )
-                    )
+                            bottomStart = WormaCeptorDesignSystem.CornerRadius.xs,
+                        ),
+                    ),
             )
 
             // Processing/Network Phase
@@ -709,8 +711,8 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.4f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
-                    )
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
+                    ),
             )
 
             // Response Phase
@@ -719,15 +721,16 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.3f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        if (hasResponse)
+                        if (hasResponse) {
                             MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f)
-                        else
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.4f),
+                        } else {
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.4f)
+                        },
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(
                             topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
-                            bottomEnd = WormaCeptorDesignSystem.CornerRadius.xs
-                        )
-                    )
+                            bottomEnd = WormaCeptorDesignSystem.CornerRadius.xs,
+                        ),
+                    ),
             )
         }
 
@@ -735,24 +738,24 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = WormaCeptorDesignSystem.Spacing.xs),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = "Request",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = formatDuration(durationMs),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = if (hasResponse) "Response" else "Failed",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -762,39 +765,41 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
 private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = if (isSsl)
+        color = if (isSsl) {
             MaterialTheme.colorScheme.primary.asSubtleBackground()
-        else
-            MaterialTheme.colorScheme.error.asSubtleBackground(),
+        } else {
+            MaterialTheme.colorScheme.error.asSubtleBackground()
+        },
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            if (isSsl)
+            if (isSsl) {
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-            else
+            } else {
                 MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+            },
         ),
-        modifier = Modifier.wrapContentSize()
+        modifier = Modifier.wrapContentSize(),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.sm
+                vertical = WormaCeptorDesignSystem.Spacing.sm,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             Icon(
                 imageVector = if (isSsl) Icons.Default.Lock else Icons.Default.LockOpen,
                 contentDescription = if (isSsl) "Secure" else "Insecure",
                 tint = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Text(
                 text = if (isSsl) (tlsVersion ?: "Secure Connection") else "Insecure Connection",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
-                color = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                color = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
             )
         }
     }
@@ -805,51 +810,51 @@ private fun EnhancedOverviewCard(
     title: String,
     icon: ImageVector,
     iconTint: Color,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val gradientColors = listOf(
         iconTint.copy(alpha = 0.03f),
         iconTint.copy(alpha = 0.01f),
-        Color.Transparent
+        Color.Transparent,
     )
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
         ),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
         ),
-        shape = WormaCeptorDesignSystem.Shapes.card
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    brush = Brush.verticalGradient(gradientColors)
-                )
+                    brush = Brush.verticalGradient(gradientColors),
+                ),
         ) {
             Column(modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)) {
                 // Header with icon
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md)
+                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
                         tint = iconTint,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
                 content()
@@ -870,7 +875,7 @@ private fun formatBytes(bytes: Long): String {
  */
 private data class MatchInfo(
     val globalPosition: Int,
-    val lineIndex: Int
+    val lineIndex: Int,
 )
 
 @Composable
@@ -879,7 +884,7 @@ private fun RequestTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val blobId = transaction.request.bodyRef
@@ -957,7 +962,7 @@ private fun RequestTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Only show Headers section if headers exist
             if (transaction.request.headers.isNotEmpty()) {
@@ -965,7 +970,13 @@ private fun RequestTab(
                     title = "Headers",
                     isExpanded = headersExpanded,
                     onToggle = { headersExpanded = !headersExpanded },
-                    onCopy = { copyToClipboard(context, "Request Headers", formatHeaders(transaction.request.headers)) }
+                    onCopy = {
+                        copyToClipboard(
+                            context,
+                            "Request Headers",
+                            formatHeaders(transaction.request.headers),
+                        )
+                    },
                 ) {
                     Headers(transaction.request.headers)
                 }
@@ -978,7 +989,7 @@ private fun RequestTab(
                 if (isLoading) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                         Text("Processing body...", style = MaterialTheme.typography.bodySmall)
@@ -1002,7 +1013,7 @@ private fun RequestTab(
                             copyToClipboard(
                                 context,
                                 "Request Body",
-                                if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+                                if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!),
                             )
                         },
                         trailingContent = {
@@ -1011,7 +1022,7 @@ private fun RequestTab(
                                 isPrettyMode = isPrettyMode,
                                 onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
                             )
-                        }
+                        },
                     ) {
                         val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
@@ -1023,7 +1034,7 @@ private fun RequestTab(
                                     JsonTreeView(
                                         jsonString = displayBody,
                                         initiallyExpanded = true,
-                                        colors = colors
+                                        colors = colors,
                                     )
                                 }
 
@@ -1031,21 +1042,25 @@ private fun RequestTab(
                                     XmlTreeView(
                                         xmlString = displayBody,
                                         initiallyExpanded = true,
-                                        colors = colors
+                                        colors = colors,
                                     )
                                 }
 
                                 ContentType.FORM_DATA -> {
                                     FormDataView(
-                                        formData = displayBody
+                                        formData = displayBody,
                                     )
                                 }
 
                                 ContentType.MULTIPART -> {
-                                    val boundary = requestContentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
+                                    val boundary = requestContentType?.let {
+                                        BodyParsingUtils.extractMultipartBoundary(
+                                            it,
+                                        )
+                                    }
                                     MultipartView(
                                         multipartData = displayBody,
-                                        boundary = boundary
+                                        boundary = boundary,
                                     )
                                 }
 
@@ -1059,7 +1074,7 @@ private fun RequestTab(
                                             fontFamily = FontFamily.Monospace,
                                             style = MaterialTheme.typography.bodySmall,
                                             modifier = Modifier.fillMaxWidth(),
-                                            onTextLayout = { textLayoutResult = it }
+                                            onTextLayout = { textLayoutResult = it },
                                         )
                                     }
                                 }
@@ -1075,7 +1090,7 @@ private fun RequestTab(
                                     fontFamily = FontFamily.Monospace,
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.fillMaxWidth(),
-                                    onTextLayout = { textLayoutResult = it }
+                                    onTextLayout = { textLayoutResult = it },
                                 )
                             }
                         }
@@ -1087,12 +1102,12 @@ private fun RequestTab(
             if (transaction.request.headers.isEmpty() && blobId == null) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         "No request data",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -1105,7 +1120,7 @@ private fun RequestTab(
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             FloatingActionButton(
                 onClick = {
@@ -1120,7 +1135,7 @@ private fun RequestTab(
                     copyToClipboard(context, "Request Content", fullContent)
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
             }
@@ -1134,7 +1149,7 @@ private fun ResponseTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val blobId = transaction.response?.bodyRef
@@ -1252,7 +1267,7 @@ private fun ResponseTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             if (transaction.response != null) {
                 val hasHeaders = transaction.response?.headers?.isNotEmpty() == true
@@ -1264,7 +1279,15 @@ private fun ResponseTab(
                         title = "Headers",
                         isExpanded = headersExpanded,
                         onToggle = { headersExpanded = !headersExpanded },
-                        onCopy = { transaction.response?.headers?.let { copyToClipboard(context, "Response Headers", formatHeaders(it)) } }
+                        onCopy = {
+                            transaction.response?.headers?.let {
+                                copyToClipboard(
+                                    context,
+                                    "Response Headers",
+                                    formatHeaders(it),
+                                )
+                            }
+                        },
                     ) {
                         transaction.response?.headers?.let { Headers(it) }
                     }
@@ -1279,7 +1302,7 @@ private fun ResponseTab(
                     if (isLoading) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                             Text("Processing body...", style = MaterialTheme.typography.bodySmall)
@@ -1290,7 +1313,7 @@ private fun ResponseTab(
                             title = "Body (Image)",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
-                            onCopy = null
+                            onCopy = null,
                         ) {
                             ImagePreviewCard(
                                 imageData = rawBodyBytes!!,
@@ -1303,7 +1326,7 @@ private fun ResponseTab(
                                 onShare = {
                                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
                                     shareImage(context, rawBodyBytes!!, format)
-                                }
+                                },
                             )
                         }
                     } else if (isPdfContentDetected && rawBodyBytes != null) {
@@ -1312,7 +1335,7 @@ private fun ResponseTab(
                             title = "Body (PDF)",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
-                            onCopy = null
+                            onCopy = null,
                         ) {
                             PdfPreviewCard(
                                 pdfData = rawBodyBytes!!,
@@ -1321,7 +1344,7 @@ private fun ResponseTab(
                                 onDownload = {
                                     // Save PDF to downloads
                                     savePdfToDownloads(context, rawBodyBytes!!)
-                                }
+                                },
                             )
                         }
                     } else if (responseBody != null || rawBody != null) {
@@ -1338,7 +1361,7 @@ private fun ResponseTab(
                                 copyToClipboard(
                                     context,
                                     "Response Body",
-                                    if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+                                    if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!),
                                 )
                             },
                             trailingContent = {
@@ -1347,7 +1370,7 @@ private fun ResponseTab(
                                     isPrettyMode = isPrettyMode,
                                     onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
                                 )
-                            }
+                            },
                         ) {
                             val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
@@ -1359,7 +1382,7 @@ private fun ResponseTab(
                                         JsonTreeView(
                                             jsonString = displayBody,
                                             initiallyExpanded = true,
-                                            colors = colors
+                                            colors = colors,
                                         )
                                     }
 
@@ -1367,21 +1390,25 @@ private fun ResponseTab(
                                         XmlTreeView(
                                             xmlString = displayBody,
                                             initiallyExpanded = true,
-                                            colors = colors
+                                            colors = colors,
                                         )
                                     }
 
                                     ContentType.FORM_DATA -> {
                                         FormDataView(
-                                            formData = displayBody
+                                            formData = displayBody,
                                         )
                                     }
 
                                     ContentType.MULTIPART -> {
-                                        val boundary = contentType?.let { BodyParsingUtils.extractMultipartBoundary(it) }
+                                        val boundary = contentType?.let {
+                                            BodyParsingUtils.extractMultipartBoundary(
+                                                it,
+                                            )
+                                        }
                                         MultipartView(
                                             multipartData = displayBody,
-                                            boundary = boundary
+                                            boundary = boundary,
                                         )
                                     }
 
@@ -1395,7 +1422,7 @@ private fun ResponseTab(
                                                 fontFamily = FontFamily.Monospace,
                                                 style = MaterialTheme.typography.bodySmall,
                                                 modifier = Modifier.fillMaxWidth(),
-                                                onTextLayout = { textLayoutResult = it }
+                                                onTextLayout = { textLayoutResult = it },
                                             )
                                         }
                                     }
@@ -1411,7 +1438,7 @@ private fun ResponseTab(
                                         fontFamily = FontFamily.Monospace,
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier.fillMaxWidth(),
-                                        onTextLayout = { textLayoutResult = it }
+                                        onTextLayout = { textLayoutResult = it },
                                     )
                                 }
                             }
@@ -1423,24 +1450,24 @@ private fun ResponseTab(
                 if (!hasHeaders && !hasBody) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             "No response data",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             } else {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         "No response received",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
@@ -1453,7 +1480,7 @@ private fun ResponseTab(
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             FloatingActionButton(
                 onClick = {
@@ -1470,7 +1497,7 @@ private fun ResponseTab(
                     copyToClipboard(context, "Response Content", fullContent)
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
             }
@@ -1489,7 +1516,7 @@ private fun ResponseTab(
                 onShare = {
                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
                     shareImage(context, rawBodyBytes!!, format)
-                }
+                },
             )
         }
 
@@ -1500,7 +1527,7 @@ private fun ResponseTab(
                 onDismiss = { showPdfViewer = false },
                 onDownload = {
                     savePdfToDownloads(context, rawBodyBytes!!)
-                }
+                },
             )
         }
     }
@@ -1513,10 +1540,10 @@ private fun CollapsibleSection(
     onToggle: () -> Unit,
     onCopy: (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         // Header
         Row(
@@ -1525,43 +1552,43 @@ private fun CollapsibleSection(
                 .clickable(onClick = onToggle)
                 .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
                     modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 trailingContent?.invoke()
 
                 if (onCopy != null) {
                     IconButton(
                         onClick = onCopy,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.ContentCopy,
                             contentDescription = "Copy",
                             modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -1571,19 +1598,19 @@ private fun CollapsibleSection(
         AnimatedVisibility(
             visible = isExpanded,
             enter = expandVertically(
-                animationSpec = tween(durationMillis = 200)
+                animationSpec = tween(durationMillis = 200),
             ) + fadeIn(),
             exit = shrinkVertically(
-                animationSpec = tween(durationMillis = 200)
-            ) + fadeOut()
+                animationSpec = tween(durationMillis = 200),
+            ) + fadeOut(),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         top = WormaCeptorDesignSystem.Spacing.sm,
-                        bottom = WormaCeptorDesignSystem.Spacing.md
-                    )
+                        bottom = WormaCeptorDesignSystem.Spacing.md,
+                    ),
             ) {
                 content()
             }
@@ -1592,56 +1619,57 @@ private fun CollapsibleSection(
 }
 
 @Composable
-private fun PrettyRawToggle(
-    isPretty: Boolean,
-    onToggle: () -> Unit
-) {
+private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
     Surface(
         onClick = onToggle,
         shape = WormaCeptorDesignSystem.Shapes.chip,
         color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
-        )
+            MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+        ),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
         ) {
             Text(
                 text = "Pretty",
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (isPretty)
+                    fontWeight = if (isPretty) {
                         FontWeight.Bold
-                    else
+                    } else {
                         FontWeight.Normal
+                    },
                 ),
-                color = if (isPretty)
+                color = if (isPretty) {
                     MaterialTheme.colorScheme.secondary
-                else
+                } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
+                },
             )
             Text(
                 text = "|",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = "Raw",
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (!isPretty)
+                    fontWeight = if (!isPretty) {
                         FontWeight.Bold
-                    else
+                    } else {
                         FontWeight.Normal
+                    },
                 ),
-                color = if (!isPretty)
+                color = if (!isPretty) {
                     MaterialTheme.colorScheme.secondary
-                else
+                } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
+                },
             )
         }
     }
@@ -1662,22 +1690,22 @@ private fun BodyControlsRow(
     contentType: ContentType,
     isPrettyMode: Boolean,
     onPrettyModeToggle: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         // Content type chip - informational, can wrap first
         ContentTypeChip(
             contentType = contentType,
-            isAutoDetected = true
+            isAutoDetected = true,
         )
         // Pretty/Raw toggle - most important, always visible
         PrettyRawToggle(
             isPretty = isPrettyMode,
-            onToggle = onPrettyModeToggle
+            onToggle = onPrettyModeToggle,
         )
     }
 }
@@ -1688,7 +1716,7 @@ private fun BodyControlsRow(
 private fun enhancedHighlightMatches(
     text: String,
     query: String,
-    currentMatchGlobalPos: Int?
+    currentMatchGlobalPos: Int?,
 ): androidx.compose.ui.text.AnnotatedString {
     if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
 
@@ -1706,19 +1734,22 @@ private fun enhancedHighlightMatches(
 
             withStyle(
                 style = androidx.compose.ui.text.SpanStyle(
-                    background = if (isCurrent)
+                    background = if (isCurrent) {
                         Color.Cyan.copy(alpha = 0.6f)
-                    else
-                        Color.Yellow.copy(alpha = 0.4f),
-                    fontWeight = if (isCurrent)
+                    } else {
+                        Color.Yellow.copy(alpha = 0.4f)
+                    },
+                    fontWeight = if (isCurrent) {
                         FontWeight.Bold
-                    else
-                        FontWeight.Normal,
-                    color = if (isCurrent)
+                    } else {
+                        FontWeight.Normal
+                    },
+                    color = if (isCurrent) {
                         Color.Black
-                    else
+                    } else {
                         Color.Unspecified
-                )
+                    },
+                ),
             ) {
                 append(text.substring(index, index + query.length))
             }
@@ -1733,7 +1764,7 @@ private fun DetailRow(label: String, value: String) {
         Text(
             text = "$label: ",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.secondary,
         )
         SelectionContainer {
             Text(text = value, style = MaterialTheme.typography.bodyMedium)
@@ -1786,7 +1817,7 @@ private fun generateCurlCommand(transaction: NetworkTransaction): String = build
         }
     }
     // Note: We don't include the body in the cURL command here as it might be binary or huge,
-    // and we only have the blobId in the domain entity. In a future version, 
+    // and we only have the blobId in the domain entity. In a future version,
     // we could fetch the body if small.
 }
 
@@ -1798,9 +1829,13 @@ private fun formatJson(json: String): String {
 
     return try {
         val trimmed = json.trim()
-        if (trimmed.startsWith("{")) JSONObject(trimmed).toString(4)
-        else if (trimmed.startsWith("[")) JSONArray(trimmed).toString(4)
-        else json
+        if (trimmed.startsWith("{")) {
+            JSONObject(trimmed).toString(4)
+        } else if (trimmed.startsWith("[")) {
+            JSONArray(trimmed).toString(4)
+        } else {
+            json
+        }
     } catch (e: Exception) {
         json
     }
@@ -1823,7 +1858,7 @@ private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
 
             val uri = context.contentResolver.insert(
                 android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                contentValues
+                contentValues,
             )
 
             uri?.let { downloadUri ->
@@ -1843,7 +1878,7 @@ private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
             // Legacy approach for older Android versions
             @Suppress("DEPRECATION")
             val downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(
-                android.os.Environment.DIRECTORY_DOWNLOADS
+                android.os.Environment.DIRECTORY_DOWNLOADS,
             )
             val file = java.io.File(downloadsDir, fileName)
             java.io.FileOutputStream(file).use { it.write(pdfData) }

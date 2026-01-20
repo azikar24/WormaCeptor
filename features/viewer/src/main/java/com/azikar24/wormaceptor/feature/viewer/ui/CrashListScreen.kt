@@ -1,11 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.view.HapticFeedbackConstants
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Alpha
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.AnimationDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.BorderWidth
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.CornerRadius
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Spacing
@@ -58,7 +52,7 @@ fun CrashListScreen(
     onCrashClick: (Crash) -> Unit,
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
@@ -95,17 +89,17 @@ fun CrashListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.errorContainer,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
-                }
+                },
             ) {
                 EnhancedEmptyState(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         } else {
             EnhancedEmptyState(
-                modifier = modifier
+                modifier = modifier,
             )
         }
     } else {
@@ -122,18 +116,18 @@ fun CrashListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.errorContainer,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
-                }
+                },
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(Spacing.md)
+                    contentPadding = PaddingValues(Spacing.md),
                 ) {
                     items(crashes, key = { it.id }) { crash ->
                         EnhancedCrashItem(
                             crash = crash,
-                            onClick = { onCrashClick(crash) }
+                            onClick = { onCrashClick(crash) },
                         )
                         Spacer(modifier = Modifier.height(Spacing.sm))
                     }
@@ -142,12 +136,12 @@ fun CrashListScreen(
         } else {
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(Spacing.md)
+                contentPadding = PaddingValues(Spacing.md),
             ) {
                 items(crashes, key = { it.id }) { crash ->
                     EnhancedCrashItem(
                         crash = crash,
-                        onClick = { onCrashClick(crash) }
+                        onClick = { onCrashClick(crash) },
                     )
                     Spacer(modifier = Modifier.height(Spacing.sm))
                 }
@@ -165,7 +159,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
     var isPressed by remember { mutableStateOf(false) }
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) 0.7f else 1f,
-        label = "crash_item_alpha"
+        label = "crash_item_alpha",
     )
 
     Surface(
@@ -176,37 +170,37 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
             .alpha(alpha),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md),
         color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.subtle),
-        tonalElevation = 0.dp
+        tonalElevation = 0.dp,
     ) {
         Box(
             modifier = Modifier
                 .border(
                     width = BorderWidth.thin,
                     color = WormaCeptorColors.StatusRed.copy(alpha = 0.15f),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md)
-                )
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md),
+                ),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(Spacing.md),
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
             ) {
                 // Icon badge
                 Surface(
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
                     color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.light),
                     contentColor = WormaCeptorColors.StatusRed,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         Icon(
                             imageVector = if (isSevere) Icons.Default.BugReport else Icons.Default.Warning,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
                         )
                     }
                 }
@@ -222,7 +216,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                         color = MaterialTheme.colorScheme.error,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        letterSpacing = (-0.2).sp
+                        letterSpacing = (-0.2).sp,
                     )
 
                     Spacer(modifier = Modifier.height(Spacing.xs))
@@ -236,7 +230,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
-                            lineHeight = 18.sp
+                            lineHeight = 18.sp,
                         )
 
                         Spacer(modifier = Modifier.height(Spacing.sm))
@@ -246,7 +240,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     if (location != null) {
                         Surface(
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
                         ) {
                             Text(
                                 text = location,
@@ -255,7 +249,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
                             )
                         }
 
@@ -268,7 +262,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                        letterSpacing = 0.2.sp
+                        letterSpacing = 0.2.sp,
                     )
                 }
             }
@@ -283,29 +277,27 @@ fun CrashItem(crash: Crash, onClick: () -> Unit) {
 }
 
 @Composable
-private fun EnhancedEmptyState(
-    modifier: Modifier = Modifier
-) {
+private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         // Icon
         Surface(
             shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(64.dp),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
             }
         }
@@ -317,7 +309,7 @@ private fun EnhancedEmptyState(
             text = "No crashes captured",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(Spacing.xs))
@@ -326,17 +318,14 @@ private fun EnhancedEmptyState(
         Text(
             text = "Your app is running smoothly",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )
     }
 }
 
 @Composable
 @Deprecated("Use EnhancedEmptyState instead")
-private fun EmptyState(
-    message: String,
-    modifier: Modifier = Modifier
-) {
+private fun EmptyState(message: String, modifier: Modifier = Modifier) {
     EnhancedEmptyState(modifier = modifier)
 }
 
@@ -372,7 +361,7 @@ private fun isSevereException(exceptionType: String): Boolean {
         "StackOverflowError",
         "SecurityException",
         "IllegalStateException",
-        "AssertionError"
+        "AssertionError",
     )
     return severeTypes.any { exceptionType.contains(it, ignoreCase = true) }
 }

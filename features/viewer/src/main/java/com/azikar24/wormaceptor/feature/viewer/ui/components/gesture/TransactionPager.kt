@@ -24,16 +24,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerSnapDistance
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -41,7 +38,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -78,7 +74,7 @@ fun TransactionPager(
     onTransactionChanged: (UUID) -> Unit,
     modifier: Modifier = Modifier,
     showPositionIndicator: Boolean = true,
-    content: @Composable (transactionId: UUID, pageIndex: Int) -> Unit
+    content: @Composable (transactionId: UUID, pageIndex: Int) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val view = LocalView.current
@@ -91,7 +87,7 @@ fun TransactionPager(
     // Pager state
     val pagerState = rememberPagerState(
         initialPage = initialPage,
-        pageCount = { transactionIds.size }
+        pageCount = { transactionIds.size },
     )
 
     // Track previous page for haptic feedback
@@ -135,10 +131,10 @@ fun TransactionPager(
                 pagerSnapDistance = PagerSnapDistance.atMost(1),
                 snapAnimationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
+                    stiffness = Spring.StiffnessMedium,
+                ),
             ),
-            key = { page -> transactionIds.getOrNull(page) ?: page }
+            key = { page -> transactionIds.getOrNull(page) ?: page },
         ) { page ->
             val pageOffset = (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
 
@@ -157,7 +153,7 @@ fun TransactionPager(
 
                         // Subtle rotation for 3D effect
                         rotationY = pageOffset * -5f
-                    }
+                    },
             ) {
                 transactionIds.getOrNull(page)?.let { transactionId ->
                     content(transactionId, page)
@@ -169,7 +165,7 @@ fun TransactionPager(
         EdgeShadows(
             swipeOffset = swipeOffset,
             canSwipeLeft = pagerState.currentPage > 0,
-            canSwipeRight = pagerState.currentPage < transactionIds.size - 1
+            canSwipeRight = pagerState.currentPage < transactionIds.size - 1,
         )
 
         // Position indicator
@@ -180,7 +176,7 @@ fun TransactionPager(
                 exit = fadeOut() + slideOutVertically { it },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = WormaCeptorDesignSystem.Spacing.xl)
+                    .padding(bottom = WormaCeptorDesignSystem.Spacing.xl),
             ) {
                 TransactionPositionIndicator(
                     currentIndex = pagerState.currentPage,
@@ -198,7 +194,7 @@ fun TransactionPager(
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
                             }
                         }
-                    }
+                    },
                 )
             }
         }
@@ -206,7 +202,7 @@ fun TransactionPager(
         // Swipe navigation hints (shown briefly on first load)
         SwipeNavigationHint(
             canSwipeLeft = pagerState.currentPage > 0,
-            canSwipeRight = pagerState.currentPage < transactionIds.size - 1
+            canSwipeRight = pagerState.currentPage < transactionIds.size - 1,
         )
     }
 }
@@ -215,18 +211,18 @@ fun TransactionPager(
  * Edge shadows that appear during swipe gestures
  */
 @Composable
-private fun BoxScope.EdgeShadows(
-    swipeOffset: Float,
-    canSwipeLeft: Boolean,
-    canSwipeRight: Boolean
-) {
+private fun BoxScope.EdgeShadows(swipeOffset: Float, canSwipeLeft: Boolean, canSwipeRight: Boolean) {
     val leftShadowAlpha = if (canSwipeLeft && swipeOffset > 0) {
         (swipeOffset * 0.5f).coerceIn(0f, 0.3f)
-    } else 0f
+    } else {
+        0f
+    }
 
     val rightShadowAlpha = if (canSwipeRight && swipeOffset < 0) {
         (abs(swipeOffset) * 0.5f).coerceIn(0f, 0.3f)
-    } else 0f
+    } else {
+        0f
+    }
 
     // Left edge shadow
     if (leftShadowAlpha > 0) {
@@ -238,12 +234,12 @@ private fun BoxScope.EdgeShadows(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.scrim.copy(alpha = 0.3f),
-                            MaterialTheme.colorScheme.scrim.copy(alpha = 0f)
+                            MaterialTheme.colorScheme.scrim.copy(alpha = 0f),
                         ),
                         startX = 0f,
-                        endX = 100f
-                    )
-                )
+                        endX = 100f,
+                    ),
+                ),
         )
     }
 
@@ -257,10 +253,10 @@ private fun BoxScope.EdgeShadows(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.scrim.copy(alpha = 0f),
-                            MaterialTheme.colorScheme.scrim.copy(alpha = 0.3f)
-                        )
-                    )
-                )
+                            MaterialTheme.colorScheme.scrim.copy(alpha = 0.3f),
+                        ),
+                    ),
+                ),
         )
     }
 }
@@ -275,11 +271,11 @@ fun <T> SimplePager(
     initialIndex: Int = 0,
     onPageChanged: (Int, T) -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable (item: T, index: Int) -> Unit
+    content: @Composable (item: T, index: Int) -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = initialIndex.coerceIn(0, items.lastIndex.coerceAtLeast(0)),
-        pageCount = { items.size }
+        pageCount = { items.size },
     )
 
     LaunchedEffect(pagerState) {
@@ -295,7 +291,7 @@ fun <T> SimplePager(
     HorizontalPager(
         state = pagerState,
         modifier = modifier.fillMaxSize(),
-        beyondViewportPageCount = 1
+        beyondViewportPageCount = 1,
     ) { page ->
         items.getOrNull(page)?.let { item ->
             content(item, page)
@@ -307,19 +303,15 @@ fun <T> SimplePager(
  * Page indicator dots for compact representation
  */
 @Composable
-fun PageIndicatorDots(
-    totalPages: Int,
-    currentPage: Int,
-    modifier: Modifier = Modifier
-) {
+fun PageIndicatorDots(totalPages: Int, currentPage: Int, modifier: Modifier = Modifier) {
     if (totalPages <= 1) return
 
     androidx.compose.foundation.layout.Row(
         modifier = modifier,
         horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
-            WormaCeptorDesignSystem.Spacing.xs
+            WormaCeptorDesignSystem.Spacing.xs,
         ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Show max 7 dots, with ellipsis behavior for longer lists
         val displayRange = when {
@@ -349,8 +341,8 @@ fun PageIndicatorDots(
                         } else {
                             MaterialTheme.colorScheme.onSurface
                         },
-                        shape = androidx.compose.foundation.shape.CircleShape
-                    )
+                        shape = androidx.compose.foundation.shape.CircleShape,
+                    ),
             )
         }
     }

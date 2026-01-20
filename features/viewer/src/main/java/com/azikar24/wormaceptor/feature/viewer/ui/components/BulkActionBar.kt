@@ -46,40 +46,40 @@ fun BulkActionBar(
     onExport: () -> Unit,
     onSelectAll: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = selectedCount > 0,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             color = MaterialTheme.colorScheme.primaryContainer,
             tonalElevation = WormaCeptorDesignSystem.Elevation.sm,
             modifier = Modifier
                 .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.statusBars)
+                .windowInsetsPadding(WindowInsets.statusBars),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Left side: Cancel button and selection count
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onCancel) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Cancel selection",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
 
@@ -89,13 +89,13 @@ fun BulkActionBar(
                         text = "$selectedCount selected",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
 
                 // Right side: Action buttons
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Select all button (shows if not all selected)
                     if (selectedCount < totalCount) {
@@ -104,7 +104,7 @@ fun BulkActionBar(
                                 imageVector = Icons.Default.SelectAll,
                                 contentDescription = "Select all",
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(24.dp),
                             )
                         }
                     }
@@ -114,7 +114,7 @@ fun BulkActionBar(
                             imageVector = Icons.Default.Share,
                             contentDescription = "Share selected",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
                         )
                     }
 
@@ -123,7 +123,7 @@ fun BulkActionBar(
                             imageVector = Icons.Default.Download,
                             contentDescription = "Export selected",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
                         )
                     }
 
@@ -132,7 +132,7 @@ fun BulkActionBar(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete selected",
                             tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }

@@ -23,7 +23,7 @@ import java.io.FileOutputStream
  * Uses Android's PdfRenderer to extract metadata.
  */
 class PdfParser(
-    private val context: Context
+    private val context: Context,
 ) : BodyParser {
 
     override val supportedContentTypes: List<String> = listOf(
@@ -32,7 +32,7 @@ class PdfParser(
         "application/acrobat",
         "application/vnd.pdf",
         "text/pdf",
-        "text/x-pdf"
+        "text/x-pdf",
     )
 
     /**
@@ -56,7 +56,7 @@ class PdfParser(
                 formatted = "[Empty PDF]",
                 contentType = ContentType.PDF,
                 isValid = false,
-                errorMessage = "PDF body is empty"
+                errorMessage = "PDF body is empty",
             )
         }
 
@@ -66,7 +66,7 @@ class PdfParser(
                 formatted = "[Invalid PDF - Missing magic bytes]",
                 contentType = ContentType.PDF,
                 isValid = false,
-                errorMessage = "Invalid PDF: Missing %PDF- header"
+                errorMessage = "Invalid PDF: Missing %PDF- header",
             )
         }
 
@@ -78,7 +78,7 @@ class PdfParser(
                 formatted = formatted,
                 contentType = ContentType.PDF,
                 metadata = metadata.toMetadataMap(),
-                isValid = true
+                isValid = true,
             )
         } catch (e: SecurityException) {
             // Password-protected PDF
@@ -87,7 +87,7 @@ class PdfParser(
                 pageCount = 0,
                 fileSize = body.size.toLong(),
                 version = version,
-                isEncrypted = true
+                isEncrypted = true,
             )
 
             ParsedBody(
@@ -95,19 +95,21 @@ class PdfParser(
                 contentType = ContentType.PDF,
                 metadata = metadata.toMetadataMap(),
                 isValid = true,
-                errorMessage = "PDF is password-protected"
+                errorMessage = "PDF is password-protected",
             )
         } catch (e: Exception) {
             val version = extractPdfVersion(body)
             ParsedBody(
-                formatted = "[PDF - Unable to extract metadata]\nVersion: $version\nSize: ${formatFileSize(body.size.toLong())}",
+                formatted = "[PDF - Unable to extract metadata]\nVersion: $version\nSize: ${formatFileSize(
+                    body.size.toLong(),
+                )}",
                 contentType = ContentType.PDF,
                 metadata = mapOf(
                     "version" to version,
-                    "fileSize" to body.size.toString()
+                    "fileSize" to body.size.toString(),
                 ),
                 isValid = false,
-                errorMessage = "Failed to parse PDF: ${e.message}"
+                errorMessage = "Failed to parse PDF: ${e.message}",
             )
         }
     }
@@ -129,7 +131,7 @@ class PdfParser(
 
             fileDescriptor = ParcelFileDescriptor.open(
                 tempFile,
-                ParcelFileDescriptor.MODE_READ_ONLY
+                ParcelFileDescriptor.MODE_READ_ONLY,
             )
 
             pdfRenderer = PdfRenderer(fileDescriptor)
@@ -149,7 +151,7 @@ class PdfParser(
                 isEncrypted = false,
                 producer = documentInfo["Producer"],
                 subject = documentInfo["Subject"],
-                keywords = documentInfo["Keywords"]
+                keywords = documentInfo["Keywords"],
             )
         } finally {
             pdfRenderer?.close()
@@ -235,8 +237,14 @@ class PdfParser(
 
                 // List of metadata fields to extract
                 val fields = listOf(
-                    "Title", "Author", "Subject", "Keywords",
-                    "Creator", "Producer", "CreationDate", "ModDate"
+                    "Title",
+                    "Author",
+                    "Subject",
+                    "Keywords",
+                    "Creator",
+                    "Producer",
+                    "CreationDate",
+                    "ModDate",
                 )
 
                 for (field in fields) {
@@ -261,7 +269,7 @@ class PdfParser(
                 // Literal string: /Title (Some Title)
                 Regex("/$fieldName\\s*\\(([^)]+)\\)"),
                 // Hex string: /Title <48656C6C6F>
-                Regex("/$fieldName\\s*<([0-9A-Fa-f]+)>")
+                Regex("/$fieldName\\s*<([0-9A-Fa-f]+)>"),
             )
 
             for (pattern in patterns) {
@@ -327,7 +335,9 @@ class PdfParser(
                     val minute = dateStr.substring(10, 12)
                     val second = dateStr.substring(12, 14)
                     " $hour:$minute:$second"
-                } else ""
+                } else {
+                    ""
+                }
 
                 "$year-$month-$day$time"
             } catch (e: Exception) {

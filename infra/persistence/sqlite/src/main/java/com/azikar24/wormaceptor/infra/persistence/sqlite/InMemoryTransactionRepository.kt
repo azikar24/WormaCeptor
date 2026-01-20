@@ -9,11 +9,11 @@ import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryTransactionRepository : TransactionRepository {
     private val transactions = ConcurrentHashMap<UUID, NetworkTransaction>()
@@ -57,7 +57,7 @@ class InMemoryTransactionRepository : TransactionRepository {
         return getAllTransactions().map { list ->
             list.filter {
                 it.path.contains(query, ignoreCase = true) ||
-                it.method.contains(query, ignoreCase = true)
+                    it.method.contains(query, ignoreCase = true)
             }
         }
     }
@@ -65,22 +65,22 @@ class InMemoryTransactionRepository : TransactionRepository {
     override fun getTransactionsPaged(
         searchQuery: String?,
         filters: TransactionFilters,
-        pageSize: Int
+        pageSize: Int,
     ): Flow<PagingData<TransactionSummary>> {
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
                 prefetchDistance = pageSize / 2,
                 enablePlaceholders = false,
-                initialLoadSize = pageSize
+                initialLoadSize = pageSize,
             ),
             pagingSourceFactory = {
                 InMemoryPagingSource(
                     transactions = transactions.values.toList(),
                     searchQuery = searchQuery,
-                    filters = filters
+                    filters = filters,
                 )
-            }
+            },
         ).flow
     }
 
@@ -90,7 +90,7 @@ class InMemoryTransactionRepository : TransactionRepository {
         } else {
             transactions.values.count { tx ->
                 tx.request.url.contains(searchQuery, ignoreCase = true) ||
-                tx.request.method.contains(searchQuery, ignoreCase = true)
+                    tx.request.method.contains(searchQuery, ignoreCase = true)
             }
         }
     }
@@ -100,20 +100,28 @@ class InMemoryTransactionRepository : TransactionRepository {
             id = id,
             timestamp = timestamp,
             method = request.method,
-            host = try { java.net.URI(request.url).host ?: "" } catch (e: Exception) { "" },
-            path = try { java.net.URI(request.url).path ?: request.url } catch (e: Exception) { request.url },
+            host = try {
+                java.net.URI(request.url).host ?: ""
+            } catch (e: Exception) {
+                ""
+            },
+            path = try {
+                java.net.URI(request.url).path ?: request.url
+            } catch (e: Exception) {
+                request.url
+            },
             code = response?.code,
             tookMs = durationMs,
             hasRequestBody = request.bodySize > 0,
             hasResponseBody = (response?.bodySize ?: 0) > 0,
-            status = status
+            status = status,
         )
     }
 
     private inner class InMemoryPagingSource(
         private val transactions: List<NetworkTransaction>,
         private val searchQuery: String?,
-        private val filters: TransactionFilters
+        private val filters: TransactionFilters,
     ) : PagingSource<Int, TransactionSummary>() {
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TransactionSummary> {
@@ -150,7 +158,7 @@ class InMemoryTransactionRepository : TransactionRepository {
                 LoadResult.Page(
                     data = pagedItems,
                     prevKey = if (page == 0) null else page - 1,
-                    nextKey = if (pagedItems.size < pageSize) null else page + 1
+                    nextKey = if (pagedItems.size < pageSize) null else page + 1,
                 )
             } catch (e: Exception) {
                 LoadResult.Error(e)

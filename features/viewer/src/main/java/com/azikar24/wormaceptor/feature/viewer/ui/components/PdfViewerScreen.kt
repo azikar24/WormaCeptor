@@ -7,7 +7,6 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.core.content.FileProvider
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -95,7 +94,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-
+import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.Dispatchers
@@ -113,12 +112,7 @@ import java.io.FileOutputStream
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PdfViewerScreen(
-    pdfData: ByteArray,
-    initialPage: Int = 0,
-    onDismiss: () -> Unit,
-    onDownload: () -> Unit
-) {
+fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> Unit, onDownload: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -138,7 +132,7 @@ fun PdfViewerScreen(
     // Pager state for page navigation
     val pagerState = rememberPagerState(
         initialPage = initialPage,
-        pageCount = { pageCount }
+        pageCount = { pageCount },
     )
 
     // Thumbnail list state
@@ -157,7 +151,7 @@ fun PdfViewerScreen(
         if (showThumbnails && pages.isNotEmpty()) {
             thumbnailListState.animateScrollToItem(
                 index = pagerState.currentPage,
-                scrollOffset = -100
+                scrollOffset = -100,
             )
         }
     }
@@ -195,7 +189,7 @@ fun PdfViewerScreen(
                     creator = null,
                     creationDate = null,
                     fileSize = pdfData.size.toLong(),
-                    version = extractPdfVersion(pdfData)
+                    version = extractPdfVersion(pdfData),
                 )
 
                 // Render all pages (for smaller PDFs) or on-demand for larger ones
@@ -239,8 +233,8 @@ fun PdfViewerScreen(
         onDismissRequest = onDismiss,
         properties = DialogProperties(
             usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
+            decorFitsSystemWindows = false,
+        ),
     ) {
         Box(
             modifier = Modifier
@@ -248,9 +242,9 @@ fun PdfViewerScreen(
                 .background(Color(0xFF121212)) // Deep dark background
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onTap = { showControls = !showControls }
+                        onTap = { showControls = !showControls },
                     )
-                }
+                },
         ) {
             when {
                 isLoading -> LoadingOverlay()
@@ -260,12 +254,12 @@ fun PdfViewerScreen(
                     HorizontalPager(
                         state = pagerState,
                         modifier = Modifier.fillMaxSize(),
-                        beyondViewportPageCount = 2
+                        beyondViewportPageCount = 2,
                     ) { pageIndex ->
                         ZoomablePage(
                             bitmap = pages.getOrNull(pageIndex),
                             pageIndex = pageIndex,
-                            onTap = { showControls = !showControls }
+                            onTap = { showControls = !showControls },
                         )
                     }
 
@@ -274,7 +268,7 @@ fun PdfViewerScreen(
                         visible = showControls,
                         enter = fadeIn() + slideInVertically(),
                         exit = fadeOut() + slideOutVertically(),
-                        modifier = Modifier.align(Alignment.TopCenter)
+                        modifier = Modifier.align(Alignment.TopCenter),
                     ) {
                         TopControlBar(
                             title = metadata?.title ?: "PDF Document",
@@ -283,7 +277,7 @@ fun PdfViewerScreen(
                             onClose = onDismiss,
                             onPageJump = { showPageJumpDialog = true },
                             onDownload = onDownload,
-                            onShare = { sharePdfFromViewer(context, pdfData, tempFile) }
+                            onShare = { sharePdfFromViewer(context, pdfData, tempFile) },
                         )
                     }
 
@@ -292,7 +286,7 @@ fun PdfViewerScreen(
                         visible = showControls,
                         enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
                         exit = fadeOut() + slideOutVertically(targetOffsetY = { it }),
-                        modifier = Modifier.align(Alignment.BottomCenter)
+                        modifier = Modifier.align(Alignment.BottomCenter),
                     ) {
                         BottomNavigationBar(
                             currentPage = pagerState.currentPage,
@@ -314,7 +308,7 @@ fun PdfViewerScreen(
                             onLastPage = {
                                 scope.launch { pagerState.animateScrollToPage(pageCount - 1) }
                             },
-                            onToggleThumbnails = { showThumbnails = !showThumbnails }
+                            onToggleThumbnails = { showThumbnails = !showThumbnails },
                         )
                     }
 
@@ -325,7 +319,7 @@ fun PdfViewerScreen(
                         exit = fadeOut() + slideOutVertically(targetOffsetY = { it }),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(bottom = 100.dp)
+                            .padding(bottom = 100.dp),
                     ) {
                         ThumbnailStrip(
                             pages = pages,
@@ -333,7 +327,7 @@ fun PdfViewerScreen(
                             listState = thumbnailListState,
                             onPageSelect = { index ->
                                 scope.launch { pagerState.animateScrollToPage(index) }
-                            }
+                            },
                         )
                     }
                 }
@@ -350,7 +344,7 @@ fun PdfViewerScreen(
                             pagerState.animateScrollToPage(page - 1)
                         }
                         showPageJumpDialog = false
-                    }
+                    },
                 )
             }
         }
@@ -358,11 +352,7 @@ fun PdfViewerScreen(
 }
 
 @Composable
-private fun ZoomablePage(
-    bitmap: Bitmap?,
-    pageIndex: Int,
-    onTap: () -> Unit
-) {
+private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val minScale = 1f
@@ -371,7 +361,7 @@ private fun ZoomablePage(
     val animatedScale by animateFloatAsState(
         targetValue = scale,
         animationSpec = spring(stiffness = Spring.StiffnessLow),
-        label = "scale"
+        label = "scale",
     )
 
     Box(
@@ -390,10 +380,10 @@ private fun ZoomablePage(
                             // Center zoom on tap location
                             offset = Offset(
                                 x = (size.width / 2f - tapOffset.x) * (scale - 1),
-                                y = (size.height / 2f - tapOffset.y) * (scale - 1)
+                                y = (size.height / 2f - tapOffset.y) * (scale - 1),
                             )
                         }
-                    }
+                    },
                 )
             }
             .pointerInput(Unit) {
@@ -405,14 +395,14 @@ private fun ZoomablePage(
                         val maxY = (size.height * (scale - 1)) / 2
                         offset = Offset(
                             x = (offset.x + pan.x).coerceIn(-maxX, maxX),
-                            y = (offset.y + pan.y).coerceIn(-maxY, maxY)
+                            y = (offset.y + pan.y).coerceIn(-maxY, maxY),
                         )
                     } else {
                         offset = Offset.Zero
                     }
                 }
             },
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         if (bitmap != null) {
             Image(
@@ -426,7 +416,7 @@ private fun ZoomablePage(
                         translationX = offset.x
                         translationY = offset.y
                     },
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit,
             )
         } else {
             // Placeholder for pages not yet loaded
@@ -434,11 +424,11 @@ private fun ZoomablePage(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFF1E1E1E)),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(
                     color = Color.White.copy(alpha = 0.5f),
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 )
             }
         }
@@ -453,11 +443,11 @@ private fun TopControlBar(
     onClose: () -> Unit,
     onPageJump: () -> Unit,
     onDownload: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.Black.copy(alpha = 0.85f)
+        color = Color.Black.copy(alpha = 0.85f),
     ) {
         Row(
             modifier = Modifier
@@ -465,36 +455,36 @@ private fun TopControlBar(
                 .statusBarsPadding()
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Close button
             IconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Close",
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
 
             // Title and page indicator
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
             ) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
-                    maxLines = 1
+                    maxLines = 1,
                 )
                 Text(
                     text = "Page $currentPage of $totalPages",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.7f),
-                    modifier = Modifier.clickable { onPageJump() }
+                    modifier = Modifier.clickable { onPageJump() },
                 )
             }
 
@@ -503,7 +493,7 @@ private fun TopControlBar(
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = "Download",
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
 
@@ -511,7 +501,7 @@ private fun TopControlBar(
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = "Share",
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
         }
@@ -527,52 +517,52 @@ private fun BottomNavigationBar(
     onNextPage: () -> Unit,
     onFirstPage: () -> Unit,
     onLastPage: () -> Unit,
-    onToggleThumbnails: () -> Unit
+    onToggleThumbnails: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = Color.Black.copy(alpha = 0.85f)
+        color = Color.Black.copy(alpha = 0.85f),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.md
+                    vertical = WormaCeptorDesignSystem.Spacing.md,
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             // First page
             IconButton(
                 onClick = onFirstPage,
-                enabled = currentPage > 0
+                enabled = currentPage > 0,
             ) {
                 Icon(
                     imageVector = Icons.Default.FirstPage,
                     contentDescription = "First page",
-                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f)
+                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
 
             // Previous page
             IconButton(
                 onClick = onPreviousPage,
-                enabled = currentPage > 0
+                enabled = currentPage > 0,
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
                     contentDescription = "Previous page",
-                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f)
+                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
 
             // Page indicator
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                color = Color.White.copy(alpha = 0.1f)
+                color = Color.White.copy(alpha = 0.1f),
             ) {
                 Text(
                     text = "${currentPage + 1} / $totalPages",
@@ -581,32 +571,32 @@ private fun BottomNavigationBar(
                     color = Color.White,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
                 )
             }
 
             // Next page
             IconButton(
                 onClick = onNextPage,
-                enabled = currentPage < totalPages - 1
+                enabled = currentPage < totalPages - 1,
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = "Next page",
-                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f)
+                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
 
             // Last page
             IconButton(
                 onClick = onLastPage,
-                enabled = currentPage < totalPages - 1
+                enabled = currentPage < totalPages - 1,
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.LastPage,
                     contentDescription = "Last page",
-                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f)
+                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
 
@@ -615,7 +605,7 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = if (showThumbnails) Icons.Default.GridOff else Icons.Default.GridOn,
                     contentDescription = if (showThumbnails) "Hide thumbnails" else "Show thumbnails",
-                    tint = if (showThumbnails) MaterialTheme.colorScheme.primary else Color.White
+                    tint = if (showThumbnails) MaterialTheme.colorScheme.primary else Color.White,
                 )
             }
         }
@@ -627,15 +617,15 @@ private fun ThumbnailStrip(
     pages: List<Bitmap>,
     currentPage: Int,
     listState: androidx.compose.foundation.lazy.LazyListState,
-    onPageSelect: (Int) -> Unit
+    onPageSelect: (Int) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color.Black.copy(alpha = 0.9f),
         shape = RoundedCornerShape(
             topStart = WormaCeptorDesignSystem.CornerRadius.lg,
-            topEnd = WormaCeptorDesignSystem.CornerRadius.lg
-        )
+            topEnd = WormaCeptorDesignSystem.CornerRadius.lg,
+        ),
     ) {
         LazyRow(
             state = listState,
@@ -643,14 +633,14 @@ private fun ThumbnailStrip(
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.md)
+            contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.md),
         ) {
             itemsIndexed(pages) { index, bitmap ->
                 ThumbnailItem(
                     bitmap = bitmap,
                     pageNumber = index + 1,
                     isSelected = index == currentPage,
-                    onClick = { onPageSelect(index) }
+                    onClick = { onPageSelect(index) },
                 )
             }
         }
@@ -658,21 +648,16 @@ private fun ThumbnailStrip(
 }
 
 @Composable
-private fun ThumbnailItem(
-    bitmap: Bitmap,
-    pageNumber: Int,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
+private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, onClick: () -> Unit) {
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
         animationSpec = tween(200),
-        label = "border"
+        label = "border",
     )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { onClick() }
+        modifier = Modifier.clickable { onClick() },
     ) {
         Box(
             modifier = Modifier
@@ -682,14 +667,14 @@ private fun ThumbnailItem(
                 .border(
                     width = 2.dp,
                     color = borderColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm)
-                )
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                ),
         ) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = "Page $pageNumber",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         }
 
@@ -699,18 +684,13 @@ private fun ThumbnailItem(
             text = "$pageNumber",
             style = MaterialTheme.typography.labelSmall,
             color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.7f),
-            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
         )
     }
 }
 
 @Composable
-private fun PageJumpDialog(
-    currentPage: Int,
-    totalPages: Int,
-    onDismiss: () -> Unit,
-    onPageSelected: (Int) -> Unit
-) {
+private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> Unit, onPageSelected: (Int) -> Unit) {
     var pageInput by remember { mutableStateOf(currentPage.toString()) }
     var isError by remember { mutableStateOf(false) }
 
@@ -719,17 +699,17 @@ private fun PageJumpDialog(
         title = {
             Text(
                 "Go to Page",
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
             )
         },
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
                     "Enter a page number (1-$totalPages)",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 OutlinedTextField(
@@ -743,7 +723,7 @@ private fun PageJumpDialog(
                     isError = isError,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Go
+                        imeAction = ImeAction.Go,
                     ),
                     keyboardActions = KeyboardActions(
                         onGo = {
@@ -753,16 +733,16 @@ private fun PageJumpDialog(
                             } else {
                                 isError = true
                             }
-                        }
+                        },
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 if (isError) {
                     Text(
                         text = "Please enter a valid page number",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
@@ -776,7 +756,7 @@ private fun PageJumpDialog(
                     } else {
                         isError = true
                     }
-                }
+                },
             ) {
                 Text("Go", fontWeight = FontWeight.SemiBold)
             }
@@ -785,7 +765,7 @@ private fun PageJumpDialog(
             TextButton(onClick = onDismiss) {
                 Text("Cancel")
             }
-        }
+        },
     )
 }
 
@@ -793,59 +773,56 @@ private fun PageJumpDialog(
 private fun LoadingOverlay() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             CircularProgressIndicator(
                 color = Color.White,
                 modifier = Modifier.size(48.dp),
-                strokeWidth = 3.dp
+                strokeWidth = 3.dp,
             )
             Text(
                 text = "Loading PDF...",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.8f)
+                color = Color.White.copy(alpha = 0.8f),
             )
         }
     }
 }
 
 @Composable
-private fun ErrorOverlay(
-    message: String,
-    onDismiss: () -> Unit
-) {
+private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xl)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xl),
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
                 contentDescription = null,
                 modifier = Modifier.size(56.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
 
             Text(
                 text = "Failed to open PDF",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White
+                color = Color.White,
             )
 
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White.copy(alpha = 0.7f),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -853,8 +830,8 @@ private fun ErrorOverlay(
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White.copy(alpha = 0.2f)
-                )
+                    containerColor = Color.White.copy(alpha = 0.2f),
+                ),
             ) {
                 Text("Close", color = Color.White)
             }
@@ -879,7 +856,9 @@ private fun extractPdfVersion(data: ByteArray): String? {
         val header = data.take(20).toByteArray().decodeToString()
         if (header.startsWith("%PDF-")) {
             header.substring(5).takeWhile { it.isDigit() || it == '.' }
-        } else null
+        } else {
+            null
+        }
     } catch (e: Exception) {
         null
     }
@@ -898,7 +877,7 @@ private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFil
         val uri = FileProvider.getUriForFile(
             context,
             "${context.packageName}.wormaceptor.fileprovider",
-            file
+            file,
         )
 
         val intent = Intent(Intent.ACTION_SEND).apply {

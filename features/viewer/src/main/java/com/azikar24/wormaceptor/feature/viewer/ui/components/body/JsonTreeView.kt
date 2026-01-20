@@ -57,7 +57,7 @@ fun JsonTreeView(
     modifier: Modifier = Modifier,
     initiallyExpanded: Boolean = true,
     maxDepth: Int = 10,
-    colors: ComposeSyntaxColors = syntaxColors()
+    colors: ComposeSyntaxColors = syntaxColors(),
 ) {
     val json = remember(jsonString) {
         try {
@@ -76,14 +76,14 @@ fun JsonTreeView(
         modifier = modifier
             .fillMaxWidth()
             .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip)
-            .padding(WormaCeptorDesignSystem.Spacing.sm)
+            .padding(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         if (json != null) {
             SelectionContainer {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
+                        .horizontalScroll(rememberScrollState()),
                 ) {
                     when (json) {
                         is JSONObject -> JsonObjectNode(
@@ -91,14 +91,14 @@ fun JsonTreeView(
                             depth = 0,
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
-                            colors = colors
+                            colors = colors,
                         )
                         is JSONArray -> JsonArrayNode(
                             array = json,
                             depth = 0,
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
-                            colors = colors
+                            colors = colors,
                         )
                     }
                 }
@@ -108,9 +108,9 @@ fun JsonTreeView(
             Text(
                 text = jsonString,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace
+                    fontFamily = FontFamily.Monospace,
                 ),
-                color = colors.default
+                color = colors.default,
             )
         }
     }
@@ -123,13 +123,13 @@ private fun JsonObjectNode(
     maxDepth: Int,
     initiallyExpanded: Boolean,
     colors: ComposeSyntaxColors,
-    keyName: String? = null
+    keyName: String? = null,
 ) {
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-        label = "chevron_rotation"
+        label = "chevron_rotation",
     )
 
     val keys = remember(obj) { obj.keys().asSequence().toList() }
@@ -141,7 +141,7 @@ private fun JsonObjectNode(
             modifier = Modifier
                 .clickable(enabled = !isEmpty) { expanded = !expanded }
                 .padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width((depth * 16).dp))
 
@@ -152,7 +152,7 @@ private fun JsonObjectNode(
                     modifier = Modifier
                         .size(14.dp)
                         .rotate(rotation),
-                    tint = colors.punctuation
+                    tint = colors.punctuation,
                 )
             } else {
                 Spacer(modifier = Modifier.width(14.dp))
@@ -169,8 +169,8 @@ private fun JsonObjectNode(
                         }
                     },
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
             }
 
@@ -193,15 +193,15 @@ private fun JsonObjectNode(
                     }
                 },
                 style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace
-                )
+                    fontFamily = FontFamily.Monospace,
+                ),
             )
         }
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
             enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast))
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
         ) {
             Column {
                 keys.forEachIndexed { index, key ->
@@ -215,7 +215,7 @@ private fun JsonObjectNode(
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
                             colors = colors,
-                            keyName = key
+                            keyName = key,
                         )
                         is JSONArray -> JsonArrayNode(
                             array = value,
@@ -223,14 +223,14 @@ private fun JsonObjectNode(
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
                             colors = colors,
-                            keyName = key
+                            keyName = key,
                         )
                         else -> JsonValueNode(
                             key = key,
                             value = value,
                             depth = depth + 1,
                             isLast = isLast,
-                            colors = colors
+                            colors = colors,
                         )
                     }
                 }
@@ -240,9 +240,9 @@ private fun JsonObjectNode(
                     Text(
                         text = "}",
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontFamily = FontFamily.Monospace
+                            fontFamily = FontFamily.Monospace,
                         ),
-                        color = colors.punctuation
+                        color = colors.punctuation,
                     )
                 }
             }
@@ -257,13 +257,13 @@ private fun JsonArrayNode(
     maxDepth: Int,
     initiallyExpanded: Boolean,
     colors: ComposeSyntaxColors,
-    keyName: String? = null
+    keyName: String? = null,
 ) {
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-        label = "chevron_rotation"
+        label = "chevron_rotation",
     )
 
     val isEmpty = array.length() == 0
@@ -273,7 +273,7 @@ private fun JsonArrayNode(
             modifier = Modifier
                 .clickable(enabled = !isEmpty) { expanded = !expanded }
                 .padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width((depth * 16).dp))
 
@@ -284,7 +284,7 @@ private fun JsonArrayNode(
                     modifier = Modifier
                         .size(14.dp)
                         .rotate(rotation),
-                    tint = colors.punctuation
+                    tint = colors.punctuation,
                 )
             } else {
                 Spacer(modifier = Modifier.width(14.dp))
@@ -301,8 +301,8 @@ private fun JsonArrayNode(
                         }
                     },
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontFamily = FontFamily.Monospace
-                    )
+                        fontFamily = FontFamily.Monospace,
+                    ),
                 )
             }
 
@@ -325,15 +325,15 @@ private fun JsonArrayNode(
                     }
                 },
                 style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace
-                )
+                    fontFamily = FontFamily.Monospace,
+                ),
             )
         }
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
             enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast))
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
         ) {
             Column {
                 for (i in 0 until array.length()) {
@@ -346,20 +346,20 @@ private fun JsonArrayNode(
                             depth = depth + 1,
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
-                            colors = colors
+                            colors = colors,
                         )
                         is JSONArray -> JsonArrayNode(
                             array = value,
                             depth = depth + 1,
                             maxDepth = maxDepth,
                             initiallyExpanded = initiallyExpanded,
-                            colors = colors
+                            colors = colors,
                         )
                         else -> JsonArrayValueNode(
                             value = value,
                             depth = depth + 1,
                             isLast = isLast,
-                            colors = colors
+                            colors = colors,
                         )
                     }
                 }
@@ -369,9 +369,9 @@ private fun JsonArrayNode(
                     Text(
                         text = "]",
                         style = MaterialTheme.typography.bodySmall.copy(
-                            fontFamily = FontFamily.Monospace
+                            fontFamily = FontFamily.Monospace,
                         ),
-                        color = colors.punctuation
+                        color = colors.punctuation,
                     )
                 }
             }
@@ -380,16 +380,10 @@ private fun JsonArrayNode(
 }
 
 @Composable
-private fun JsonValueNode(
-    key: String,
-    value: Any?,
-    depth: Int,
-    isLast: Boolean,
-    colors: ComposeSyntaxColors
-) {
+private fun JsonValueNode(key: String, value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width((depth * 16 + 14).dp))
         Text(
@@ -408,22 +402,17 @@ private fun JsonValueNode(
                 }
             },
             style = MaterialTheme.typography.bodySmall.copy(
-                fontFamily = FontFamily.Monospace
-            )
+                fontFamily = FontFamily.Monospace,
+            ),
         )
     }
 }
 
 @Composable
-private fun JsonArrayValueNode(
-    value: Any?,
-    depth: Int,
-    isLast: Boolean,
-    colors: ComposeSyntaxColors
-) {
+private fun JsonArrayValueNode(value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width((depth * 16 + 14).dp))
         Text(
@@ -436,8 +425,8 @@ private fun JsonArrayValueNode(
                 }
             },
             style = MaterialTheme.typography.bodySmall.copy(
-                fontFamily = FontFamily.Monospace
-            )
+                fontFamily = FontFamily.Monospace,
+            ),
         )
     }
 }

@@ -19,15 +19,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -35,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /**
@@ -55,10 +51,9 @@ fun SwipeRefreshWrapper(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val state = rememberPullToRefreshState()
-    val scope = rememberCoroutineScope()
 
     // Calculate refresh state from pull progress
     val refreshState by remember(state.distanceFraction, isRefreshing) {
@@ -83,14 +78,14 @@ fun SwipeRefreshWrapper(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                contentAlignment = Alignment.TopCenter
+                contentAlignment = Alignment.TopCenter,
             ) {
                 PullToRefreshIndicator(
                     state = refreshState,
-                    pullProgress = state.distanceFraction
+                    pullProgress = state.distanceFraction,
                 )
             }
-        }
+        },
     ) {
         content()
     }
@@ -107,9 +102,9 @@ fun CustomSwipeRefreshWrapper(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     threshold: Float = 120f,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
+    rememberCoroutineScope()
     var pullDistance by remember { mutableFloatStateOf(0f) }
     val animatedPullDistance = remember { Animatable(0f) }
 
@@ -125,8 +120,8 @@ fun CustomSwipeRefreshWrapper(
                 targetValue = 0f,
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
+                    stiffness = Spring.StiffnessMedium,
+                ),
             )
         }
     }
@@ -150,7 +145,7 @@ fun CustomSwipeRefreshWrapper(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .offset { IntOffset(0, pullDistance.roundToInt()) }
+                .offset { IntOffset(0, pullDistance.roundToInt()) },
         ) {
             content()
         }
@@ -161,11 +156,11 @@ fun CustomSwipeRefreshWrapper(
                 .fillMaxWidth()
                 .offset { IntOffset(0, (pullDistance * 0.5f).roundToInt() - 48) }
                 .padding(top = 16.dp),
-            contentAlignment = Alignment.TopCenter
+            contentAlignment = Alignment.TopCenter,
         ) {
             PullToRefreshIndicator(
                 state = refreshState,
-                pullProgress = pullProgress
+                pullProgress = pullProgress,
             )
         }
     }
@@ -181,12 +176,12 @@ fun SimpleSwipeRefresh(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         content()
     }

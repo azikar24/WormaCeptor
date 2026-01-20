@@ -28,7 +28,6 @@ class MainActivityViewModel : ViewModel() {
         context.startActivity(intent)
     }
 
-
     fun doHttpActivity(context: Context) {
         val api = SampleApiService.getInstance()
 
@@ -68,7 +67,6 @@ class MainActivityViewModel : ViewModel() {
         api.cache("Mon").enqueue(callBack)
         api.cache(30).enqueue(callBack)
         api.post(VeryLargeData()).enqueue(callBack)
-
     }
 
     fun startWormaCeptor(context: Context) {

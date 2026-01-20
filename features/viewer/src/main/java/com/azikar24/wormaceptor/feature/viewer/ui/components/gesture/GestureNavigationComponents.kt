@@ -38,7 +38,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,7 +80,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -94,7 +92,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 // =============================================================================
@@ -109,7 +106,7 @@ enum class RefreshState {
     Pulling,
     ThresholdReached,
     Refreshing,
-    Complete
+    Complete,
 }
 
 /**
@@ -124,15 +121,15 @@ enum class RefreshState {
 fun PullToRefreshIndicator(
     state: RefreshState,
     pullProgress: Float, // 0f to 1f+
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = pullProgress.coerceIn(0f, 1.5f),
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+            stiffness = Spring.StiffnessLow,
         ),
-        label = "pull_progress"
+        label = "pull_progress",
     )
 
     val scale by animateFloatAsState(
@@ -145,9 +142,9 @@ fun PullToRefreshIndicator(
         },
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
+            stiffness = Spring.StiffnessMedium,
         ),
-        label = "indicator_scale"
+        label = "indicator_scale",
     )
 
     val primaryColor = MaterialTheme.colorScheme.primary
@@ -162,7 +159,7 @@ fun PullToRefreshIndicator(
             else -> 0f
         },
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        label = "color_transition"
+        label = "color_transition",
     )
 
     val currentColor = lerp(primaryColor, successColor, indicatorColor)
@@ -174,16 +171,16 @@ fun PullToRefreshIndicator(
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "rotation"
+        label = "rotation",
     )
 
     AnimatedVisibility(
         visible = state != RefreshState.Idle && state != RefreshState.Complete,
         enter = fadeIn() + scaleIn(initialScale = 0.5f),
         exit = fadeOut() + scaleOut(targetScale = 0.5f),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box(
             modifier = Modifier
@@ -191,21 +188,21 @@ fun PullToRefreshIndicator(
                 .scale(scale)
                 .shadow(
                     elevation = WormaCeptorDesignSystem.Elevation.md,
-                    shape = CircleShape
+                    shape = CircleShape,
                 )
                 .background(surfaceColor, CircleShape)
                 .border(
                     width = WormaCeptorDesignSystem.BorderWidth.thin,
                     color = currentColor.copy(alpha = 0.3f),
-                    shape = CircleShape
+                    shape = CircleShape,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             // Progress arc
             Canvas(
                 modifier = Modifier
                     .size(36.dp)
-                    .rotate(if (state == RefreshState.Refreshing) rotation else 0f)
+                    .rotate(if (state == RefreshState.Refreshing) rotation else 0f),
             ) {
                 val strokeWidth = 3.dp.toPx()
                 val sweepAngle = when (state) {
@@ -221,7 +218,7 @@ fun PullToRefreshIndicator(
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
-                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
                 )
 
                 // Progress arc
@@ -230,7 +227,7 @@ fun PullToRefreshIndicator(
                     startAngle = -90f,
                     sweepAngle = sweepAngle,
                     useCenter = false,
-                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                    style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
                 )
             }
 
@@ -242,7 +239,7 @@ fun PullToRefreshIndicator(
                     tint = currentColor,
                     modifier = Modifier
                         .size(16.dp)
-                        .rotate(rotation)
+                        .rotate(rotation),
                 )
             }
         }
@@ -263,7 +260,7 @@ fun TransactionPositionIndicator(
     totalCount: Int,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val canGoPrevious = currentIndex > 0
     val canGoNext = currentIndex < totalCount - 1
@@ -275,16 +272,16 @@ fun TransactionPositionIndicator(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        )
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+        ),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             // Previous button - minimum 48dp touch target for accessibility
             IconButton(
@@ -293,20 +290,20 @@ fun TransactionPositionIndicator(
                 modifier = Modifier.size(48.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = "Previous transaction",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             }
 
             // Position text
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 // Animated current number
                 AnimatedNumber(number = currentIndex + 1)
@@ -314,15 +311,15 @@ fun TransactionPositionIndicator(
                 Text(
                     text = "of",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 Text(
                     text = "$totalCount",
                     style = MaterialTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
@@ -333,13 +330,13 @@ fun TransactionPositionIndicator(
                 modifier = Modifier.size(48.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Next transaction",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }
@@ -350,26 +347,24 @@ fun TransactionPositionIndicator(
  * Compact variant of position indicator for smaller spaces
  */
 @Composable
-fun CompactPositionIndicator(
-    currentIndex: Int,
-    totalCount: Int,
-    modifier: Modifier = Modifier
-) {
+fun CompactPositionIndicator(currentIndex: Int, totalCount: Int, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm).copy(alpha = 0.9f)
+        color = MaterialTheme.colorScheme.surfaceColorAtElevation(
+            WormaCeptorDesignSystem.Elevation.sm,
+        ).copy(alpha = 0.9f),
     ) {
         Text(
             text = "${currentIndex + 1} / $totalCount",
             style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             ),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
         )
     }
 }
@@ -388,8 +383,8 @@ private fun AnimatedNumber(number: Int) {
                 targetValue = number.toFloat(),
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
+                    stiffness = Spring.StiffnessMedium,
+                ),
             )
             previousNumber = number
         }
@@ -398,9 +393,9 @@ private fun AnimatedNumber(number: Int) {
     Text(
         text = "${animatedValue.value.roundToInt()}",
         style = MaterialTheme.typography.labelLarge.copy(
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         ),
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
     )
 }
 
@@ -415,21 +410,21 @@ private fun AnimatedNumber(number: Int) {
 fun SwipeEdgePeek(
     direction: SwipeDirection,
     progress: Float, // 0f to 1f
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val alpha by animateFloatAsState(
         targetValue = (progress * 2f).coerceIn(0f, 1f),
         animationSpec = tween(100),
-        label = "peek_alpha"
+        label = "peek_alpha",
     )
 
     val offset by animateFloatAsState(
         targetValue = progress * 60f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
+            stiffness = Spring.StiffnessLow,
         ),
-        label = "peek_offset"
+        label = "peek_offset",
     )
 
     val isLeft = direction == SwipeDirection.Left
@@ -442,9 +437,9 @@ fun SwipeEdgePeek(
             .offset {
                 IntOffset(
                     x = if (isLeft) -offset.roundToInt() else offset.roundToInt(),
-                    y = 0
+                    y = 0,
                 )
-            }
+            },
     ) {
         // Gradient shadow
         Box(
@@ -455,16 +450,16 @@ fun SwipeEdgePeek(
                         colors = if (isLeft) {
                             listOf(
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                                Color.Transparent
+                                Color.Transparent,
                             )
                         } else {
                             listOf(
                                 Color.Transparent,
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                             )
-                        }
-                    )
-                )
+                        },
+                    ),
+                ),
         )
 
         // Arrow indicator
@@ -479,14 +474,14 @@ fun SwipeEdgePeek(
             modifier = Modifier
                 .align(if (isLeft) Alignment.CenterStart else Alignment.CenterEnd)
                 .padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
-                .size(24.dp)
+                .size(24.dp),
         )
     }
 }
 
 enum class SwipeDirection {
     Left,
-    Right
+    Right,
 }
 
 /**
@@ -494,20 +489,16 @@ enum class SwipeDirection {
  * Shows subtle arrows on edges that pulse to indicate gesture availability
  */
 @Composable
-fun SwipeNavigationHint(
-    canSwipeLeft: Boolean,
-    canSwipeRight: Boolean,
-    modifier: Modifier = Modifier
-) {
+fun SwipeNavigationHint(canSwipeLeft: Boolean, canSwipeRight: Boolean, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "hint_pulse")
     val pulseAlpha by infiniteTransition.animateFloat(
         initialValue = 0.3f,
         targetValue = 0.7f,
         animationSpec = infiniteRepeatable(
             animation = tween(1500, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulse"
+        label = "pulse",
     )
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -516,7 +507,7 @@ fun SwipeNavigationHint(
             visible = canSwipeLeft,
             enter = fadeIn(),
             exit = fadeOut(),
-            modifier = Modifier.align(Alignment.CenterStart)
+            modifier = Modifier.align(Alignment.CenterStart),
         ) {
             Box(
                 modifier = Modifier
@@ -528,11 +519,11 @@ fun SwipeNavigationHint(
                             colors = listOf(
                                 Color.Transparent,
                                 MaterialTheme.colorScheme.primary,
-                                Color.Transparent
-                            )
+                                Color.Transparent,
+                            ),
                         ),
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
-                    )
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+                    ),
             )
         }
 
@@ -541,7 +532,7 @@ fun SwipeNavigationHint(
             visible = canSwipeRight,
             enter = fadeIn(),
             exit = fadeOut(),
-            modifier = Modifier.align(Alignment.CenterEnd)
+            modifier = Modifier.align(Alignment.CenterEnd),
         ) {
             Box(
                 modifier = Modifier
@@ -553,11 +544,11 @@ fun SwipeNavigationHint(
                             colors = listOf(
                                 Color.Transparent,
                                 MaterialTheme.colorScheme.primary,
-                                Color.Transparent
-                            )
+                                Color.Transparent,
+                            ),
                         ),
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
-                    )
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+                    ),
             )
         }
     }
@@ -579,7 +570,7 @@ fun ZoomControls(
     onReset: () -> Unit,
     minZoom: Float = 0.5f,
     maxZoom: Float = 3f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val canZoomIn = currentZoom < maxZoom
     val canZoomOut = currentZoom > minZoom
@@ -592,13 +583,13 @@ fun ZoomControls(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        )
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+        ),
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             // Zoom in button
             IconButton(
@@ -607,13 +598,13 @@ fun ZoomControls(
                 modifier = Modifier.size(36.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomIn,
                     contentDescription = "Zoom in",
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -621,7 +612,7 @@ fun ZoomControls(
             ZoomLevelIndicator(
                 zoom = currentZoom,
                 minZoom = minZoom,
-                maxZoom = maxZoom
+                maxZoom = maxZoom,
             )
 
             // Zoom out button
@@ -631,13 +622,13 @@ fun ZoomControls(
                 modifier = Modifier.size(36.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomOut,
                     contentDescription = "Zoom out",
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -645,19 +636,19 @@ fun ZoomControls(
             AnimatedVisibility(
                 visible = isZoomed,
                 enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
+                exit = fadeOut() + scaleOut(),
             ) {
                 IconButton(
                     onClick = onReset,
                     modifier = Modifier.size(36.dp),
                     colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.tertiary
-                    )
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.RestartAlt,
                         contentDescription = "Reset zoom",
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -676,7 +667,7 @@ fun HorizontalZoomControls(
     onReset: () -> Unit,
     minZoom: Float = 0.5f,
     maxZoom: Float = 3f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val canZoomIn = currentZoom < maxZoom
     val canZoomOut = currentZoom > minZoom
@@ -689,16 +680,16 @@ fun HorizontalZoomControls(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        )
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+        ),
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             // Zoom out button - 40dp for compact layout but still accessible
             IconButton(
@@ -707,13 +698,13 @@ fun HorizontalZoomControls(
                 modifier = Modifier.size(40.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomOut,
                     contentDescription = "Zoom out",
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -721,10 +712,10 @@ fun HorizontalZoomControls(
             Text(
                 text = "${(currentZoom * 100).roundToInt()}%",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
                 color = if (isZoomed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.width(48.dp)
+                modifier = Modifier.width(48.dp),
             )
 
             // Zoom in button - 40dp for compact layout but still accessible
@@ -734,13 +725,13 @@ fun HorizontalZoomControls(
                 modifier = Modifier.size(40.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                )
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomIn,
                     contentDescription = "Zoom in",
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -748,19 +739,19 @@ fun HorizontalZoomControls(
             AnimatedVisibility(
                 visible = isZoomed,
                 enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
+                exit = fadeOut() + scaleOut(),
             ) {
                 IconButton(
                     onClick = onReset,
                     modifier = Modifier.size(40.dp),
                     colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.tertiary
-                    )
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.RestartAlt,
                         contentDescription = "Reset zoom",
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -772,24 +763,20 @@ fun HorizontalZoomControls(
  * Visual zoom level indicator with progress bar
  */
 @Composable
-private fun ZoomLevelIndicator(
-    zoom: Float,
-    minZoom: Float,
-    maxZoom: Float
-) {
+private fun ZoomLevelIndicator(zoom: Float, minZoom: Float, maxZoom: Float) {
     val normalizedZoom = ((zoom - minZoom) / (maxZoom - minZoom)).coerceIn(0f, 1f)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
     ) {
         // Zoom percentage
         Text(
             text = "${(zoom * 100).roundToInt()}%",
             style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             ),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         // Progress bar
@@ -798,7 +785,7 @@ private fun ZoomLevelIndicator(
                 .width(32.dp)
                 .height(3.dp)
                 .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
             Box(
                 modifier = Modifier
@@ -806,8 +793,8 @@ private fun ZoomLevelIndicator(
                     .fillMaxWidth(normalizedZoom)
                     .background(
                         MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
-                    )
+                        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+                    ),
             )
         }
     }
@@ -830,7 +817,7 @@ fun SwipeBackContainer(
     onBack: () -> Unit,
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -864,8 +851,8 @@ fun SwipeBackContainer(
                                     targetValue = maxOffset,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioNoBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                                 onBack()
                             } else {
@@ -874,8 +861,8 @@ fun SwipeBackContainer(
                                     targetValue = 0f,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                             }
                         }
@@ -884,7 +871,7 @@ fun SwipeBackContainer(
                         scope.launch {
                             animatedOffset.animateTo(
                                 targetValue = 0f,
-                                animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                                animationSpec = spring(stiffness = Spring.StiffnessMedium),
                             )
                         }
                     },
@@ -893,9 +880,9 @@ fun SwipeBackContainer(
                         scope.launch {
                             animatedOffset.snapTo(newOffset)
                         }
-                    }
+                    },
                 )
-            }
+            },
     ) {
         // Edge shadow overlay
         Box(
@@ -908,10 +895,10 @@ fun SwipeBackContainer(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
                             Color.Black.copy(alpha = 0.3f),
-                            Color.Transparent
-                        )
-                    )
-                )
+                            Color.Transparent,
+                        ),
+                    ),
+                ),
         )
 
         // Content with offset
@@ -932,14 +919,14 @@ fun SwipeBackContainer(
                             brush = Brush.horizontalGradient(
                                 colors = listOf(
                                     Color.Black.copy(alpha = shadowAlpha),
-                                    Color.Transparent
+                                    Color.Transparent,
                                 ),
                                 startX = -20.dp.toPx(),
-                                endX = 0f
-                            )
+                                endX = 0f,
+                            ),
                         )
                     }
-                }
+                },
         ) {
             content()
         }
@@ -951,7 +938,7 @@ fun SwipeBackContainer(
             exit = fadeOut() + slideOutVertically(),
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .padding(start = WormaCeptorDesignSystem.Spacing.md)
+                .padding(start = WormaCeptorDesignSystem.Spacing.md),
         ) {
             SwipeBackArrowIndicator(progress = progress)
         }
@@ -967,9 +954,9 @@ private fun SwipeBackArrowIndicator(progress: Float) {
         targetValue = if (progress >= 1f) 1.2f else 0.8f + (progress * 0.2f),
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
+            stiffness = Spring.StiffnessMedium,
         ),
-        label = "arrow_scale"
+        label = "arrow_scale",
     )
 
     val color = if (progress >= 1f) {
@@ -982,7 +969,7 @@ private fun SwipeBackArrowIndicator(progress: Float) {
         shape = CircleShape,
         color = MaterialTheme.colorScheme.surface,
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
-        modifier = Modifier.scale(scale)
+        modifier = Modifier.scale(scale),
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -990,7 +977,7 @@ private fun SwipeBackArrowIndicator(progress: Float) {
             tint = color,
             modifier = Modifier
                 .padding(WormaCeptorDesignSystem.Spacing.sm)
-                .size(20.dp)
+                .size(20.dp),
         )
     }
 }
@@ -1001,12 +988,12 @@ private fun SwipeBackArrowIndicator(progress: Float) {
 @Composable
 fun SwipeBackEdgeShadow(
     progress: Float, // 0f to 1f
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val alpha by animateFloatAsState(
         targetValue = (progress * 0.6f).coerceIn(0f, 0.6f),
         animationSpec = tween(50),
-        label = "shadow_alpha"
+        label = "shadow_alpha",
     )
 
     Box(
@@ -1018,10 +1005,10 @@ fun SwipeBackEdgeShadow(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
                         MaterialTheme.colorScheme.scrim.copy(alpha = 0.4f),
-                        Color.Transparent
-                    )
-                )
-            )
+                        Color.Transparent,
+                    ),
+                ),
+            ),
     )
 }
 
@@ -1037,7 +1024,7 @@ private fun lerp(start: Color, stop: Color, fraction: Float): Color {
         red = start.red + (stop.red - start.red) * fraction,
         green = start.green + (stop.green - start.green) * fraction,
         blue = start.blue + (stop.blue - start.blue) * fraction,
-        alpha = start.alpha + (stop.alpha - start.alpha) * fraction
+        alpha = start.alpha + (stop.alpha - start.alpha) * fraction,
     )
 }
 

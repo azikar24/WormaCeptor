@@ -18,7 +18,7 @@ import java.io.StringWriter
  * - DTD/schema reference display in metadata
  */
 class XmlBodyParser(
-    private val indentString: String = "  "
+    private val indentString: String = "  ",
 ) : BodyParser {
 
     override val supportedContentTypes: List<String> = listOf(
@@ -27,7 +27,7 @@ class XmlBodyParser(
         "application/xhtml+xml",
         "application/atom+xml",
         "application/rss+xml",
-        "application/soap+xml"
+        "application/soap+xml",
     )
 
     override val priority: Int = 240
@@ -50,7 +50,7 @@ class XmlBodyParser(
 
         val trimmed = String(body, Charsets.UTF_8).trimStart()
         return trimmed.startsWith("<?xml") ||
-               (trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true))
+            (trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true))
     }
 
     override fun parse(body: ByteArray): ParsedBody {
@@ -58,7 +58,7 @@ class XmlBodyParser(
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.XML,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -71,21 +71,21 @@ class XmlBodyParser(
                 formatted = formatted,
                 contentType = ContentType.XML,
                 metadata = metadata,
-                isValid = true
+                isValid = true,
             )
         } catch (e: XmlPullParserException) {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.XML,
                 isValid = false,
-                errorMessage = "Invalid XML: ${e.message}"
+                errorMessage = "Invalid XML: ${e.message}",
             )
         } catch (e: Exception) {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.XML,
                 isValid = false,
-                errorMessage = "XML parsing error: ${e.message}"
+                errorMessage = "XML parsing error: ${e.message}",
             )
         }
     }

@@ -37,10 +37,10 @@ class Converters {
     fun toHeaders(value: String?): Map<String, List<String>>? {
         return value?.let { json.decodeFromString(it) }
     }
-    
+
     @TypeConverter
     fun fromExtensions(ext: Map<String, String>?): String? = ext?.let { json.encodeToString(it) }
-    
+
     @TypeConverter
     fun toExtensions(value: String?): Map<String, String>? = value?.let { json.decodeFromString(it) }
 }

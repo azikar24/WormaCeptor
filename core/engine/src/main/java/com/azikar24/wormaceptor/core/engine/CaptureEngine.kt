@@ -11,7 +11,7 @@ import java.util.UUID
 
 class CaptureEngine(
     private val repository: TransactionRepository,
-    private val blobStorage: BlobStorage
+    private val blobStorage: BlobStorage,
 ) {
 
     suspend fun startTransaction(
@@ -19,13 +19,13 @@ class CaptureEngine(
         method: String,
         headers: Map<String, List<String>>,
         bodyStream: InputStream?,
-        bodySize: Long = 0
+        bodySize: Long = 0,
     ): UUID {
         val blobId = bodyStream?.let { blobStorage.saveBlob(it) }
-        
+
         val request = Request(url, method, headers, blobId, bodySize)
         val transaction = NetworkTransaction(request = request)
-        
+
         repository.saveTransaction(transaction)
         return transaction.id
     }
@@ -39,24 +39,24 @@ class CaptureEngine(
         bodySize: Long = 0,
         protocol: String? = null,
         tlsVersion: String? = null,
-        error: String? = null
+        error: String? = null,
     ) {
         val original = repository.getTransactionById(id) ?: return
-        
+
         val blobId = bodyStream?.let { blobStorage.saveBlob(it) }
         val response = Response(code, message, headers, blobId, error, protocol, tlsVersion, bodySize)
-        
+
         val status = if (error != null || code >= 400) TransactionStatus.FAILED else TransactionStatus.COMPLETED
         val duration = System.currentTimeMillis() - original.timestamp
-        
+
         val updated = original.copy(
             response = response,
             status = status,
-            durationMs = duration
+            durationMs = duration,
         )
         repository.saveTransaction(updated)
     }
-    
+
     suspend fun cleanup(timestampThreshold: Long) {
         repository.deleteTransactionsBefore(timestampThreshold)
     }

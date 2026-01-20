@@ -63,7 +63,7 @@ class DefaultHighlighterRegistry : HighlighterRegistry {
         "text/css" to "css",
         "application/javascript" to "javascript",
         "text/javascript" to "javascript",
-        "application/x-javascript" to "javascript"
+        "application/x-javascript" to "javascript",
     )
 
     override fun register(highlighter: SyntaxHighlighter) {

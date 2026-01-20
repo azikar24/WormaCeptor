@@ -79,7 +79,7 @@ data class ImageMetadata(
     val format: String,
     val fileSize: Long,
     val hasAlpha: Boolean = false,
-    val colorDepth: String = "8-bit"
+    val colorDepth: String = "8-bit",
 )
 
 /**
@@ -98,7 +98,7 @@ suspend fun extractImageMetadata(data: ByteArray): ImageMetadata? = withContext(
 
         val format = detectImageFormat(data)
         val hasAlpha = options.outMimeType?.contains("png") == true ||
-                options.outMimeType?.contains("webp") == true
+            options.outMimeType?.contains("webp") == true
 
         ImageMetadata(
             width = options.outWidth,
@@ -106,7 +106,7 @@ suspend fun extractImageMetadata(data: ByteArray): ImageMetadata? = withContext(
             format = format,
             fileSize = data.size.toLong(),
             hasAlpha = hasAlpha,
-            colorDepth = "8-bit"
+            colorDepth = "8-bit",
         )
     } catch (e: Exception) {
         null
@@ -122,28 +122,28 @@ fun detectImageFormat(data: ByteArray): String {
     return when {
         // PNG: 89 50 4E 47 0D 0A 1A 0A
         data[0] == 0x89.toByte() && data[1] == 0x50.toByte() &&
-                data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> "PNG"
+            data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> "PNG"
 
         // JPEG: FF D8 FF
         data[0] == 0xFF.toByte() && data[1] == 0xD8.toByte() &&
-                data[2] == 0xFF.toByte() -> "JPEG"
+            data[2] == 0xFF.toByte() -> "JPEG"
 
         // GIF: 47 49 46 38
         data[0] == 0x47.toByte() && data[1] == 0x49.toByte() &&
-                data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> "GIF"
+            data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> "GIF"
 
         // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
         data.size >= 12 && data[0] == 0x52.toByte() && data[1] == 0x49.toByte() &&
-                data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
-                data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
-                data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> "WebP"
+            data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
+            data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
+            data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> "WebP"
 
         // BMP: 42 4D
         data[0] == 0x42.toByte() && data[1] == 0x4D.toByte() -> "BMP"
 
         // ICO: 00 00 01 00
         data[0] == 0x00.toByte() && data[1] == 0x00.toByte() &&
-                data[2] == 0x01.toByte() && data[3] == 0x00.toByte() -> "ICO"
+            data[2] == 0x01.toByte() && data[3] == 0x00.toByte() -> "ICO"
 
         else -> "Unknown"
     }
@@ -156,13 +156,13 @@ fun isImageContentType(contentType: String?): Boolean {
     if (contentType == null) return false
     val normalized = contentType.lowercase().trim()
     return normalized.startsWith("image/") ||
-            normalized.contains("image/png") ||
-            normalized.contains("image/jpeg") ||
-            normalized.contains("image/jpg") ||
-            normalized.contains("image/gif") ||
-            normalized.contains("image/webp") ||
-            normalized.contains("image/svg") ||
-            normalized.contains("image/bmp")
+        normalized.contains("image/png") ||
+        normalized.contains("image/jpeg") ||
+        normalized.contains("image/jpg") ||
+        normalized.contains("image/gif") ||
+        normalized.contains("image/webp") ||
+        normalized.contains("image/svg") ||
+        normalized.contains("image/bmp")
 }
 
 /**
@@ -209,7 +209,7 @@ fun ImagePreviewCard(
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
     onShare: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val gifImageLoader = rememberGifImageLoader()
@@ -229,7 +229,7 @@ fun ImagePreviewCard(
     val animatedProgress by animateFloatAsState(
         targetValue = loadingProgress,
         animationSpec = tween(durationMillis = 300),
-        label = "loading_progress"
+        label = "loading_progress",
     )
 
     val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
@@ -237,49 +237,49 @@ fun ImagePreviewCard(
         colors = listOf(
             MaterialTheme.colorScheme.primary.copy(alpha = 0.03f),
             MaterialTheme.colorScheme.primary.copy(alpha = 0.01f),
-            Color.Transparent
-        )
+            Color.Transparent,
+        ),
     )
 
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = surfaceColor
+            containerColor = surfaceColor,
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
         ),
-        shape = WormaCeptorDesignSystem.Shapes.card
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(gradientBrush)
+                .background(gradientBrush),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 // Header with icon
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md)
+                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Text(
                         text = "Image Response",
                         style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.weight(1f))
 
@@ -287,18 +287,18 @@ fun ImagePreviewCard(
                     metadata?.let { meta ->
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
                         ) {
                             Text(
                                 text = meta.format,
                                 style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
                                 ),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.padding(
                                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xs
-                                )
+                                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                                ),
                             )
                         }
                     }
@@ -315,7 +315,7 @@ fun ImagePreviewCard(
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                         .clickable(onClick = onFullscreen)
                         .aspectRatio(constrainedAspectRatio, matchHeightConstraintsFirst = false),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     // Background pattern for transparency
                     Box(
@@ -325,10 +325,10 @@ fun ImagePreviewCard(
                                 brush = Brush.linearGradient(
                                     colors = listOf(
                                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
-                                        MaterialTheme.colorScheme.surface
-                                    )
-                                )
-                            )
+                                        MaterialTheme.colorScheme.surface,
+                                    ),
+                                ),
+                            ),
                     )
 
                     // Actual image
@@ -349,24 +349,24 @@ fun ImagePreviewCard(
                                 is AsyncImagePainter.State.Error -> loadingProgress = 0f
                                 else -> {}
                             }
-                        }
+                        },
                     )
 
                     // Loading overlay
                     androidx.compose.animation.AnimatedVisibility(
                         visible = imageLoadState is AsyncImagePainter.State.Loading,
                         enter = fadeIn(),
-                        exit = fadeOut()
+                        exit = fadeOut(),
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(32.dp),
-                                strokeWidth = 3.dp
+                                strokeWidth = 3.dp,
                             )
                         }
                     }
@@ -375,28 +375,28 @@ fun ImagePreviewCard(
                     androidx.compose.animation.AnimatedVisibility(
                         visible = imageLoadState is AsyncImagePainter.State.Error,
                         enter = fadeIn(),
-                        exit = fadeOut()
+                        exit = fadeOut(),
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.BrokenImage,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.error,
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(32.dp),
                                 )
                                 Text(
                                     text = "Failed to load image",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.error
+                                    color = MaterialTheme.colorScheme.error,
                                 )
                             }
                         }
@@ -406,12 +406,12 @@ fun ImagePreviewCard(
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .padding(WormaCeptorDesignSystem.Spacing.sm)
+                            .padding(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Surface(
                             shape = CircleShape,
                             color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
-                            shadowElevation = 2.dp
+                            shadowElevation = 2.dp,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Fullscreen,
@@ -419,7 +419,7 @@ fun ImagePreviewCard(
                                 tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .padding(WormaCeptorDesignSystem.Spacing.sm)
-                                    .size(18.dp)
+                                    .size(18.dp),
                             )
                         }
                     }
@@ -431,7 +431,7 @@ fun ImagePreviewCard(
                 if (!isLoadingMetadata && metadata != null) {
                     HorizontalDivider(
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                        thickness = 1.dp
+                        thickness = 1.dp,
                     )
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -439,26 +439,26 @@ fun ImagePreviewCard(
                     // Metadata grid
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         metadata?.let { meta ->
                             MetadataItem(
                                 icon = Icons.Outlined.AspectRatio,
                                 label = "Dimensions",
                                 value = "${meta.width} x ${meta.height}",
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
                             )
                             MetadataItem(
                                 icon = Icons.Outlined.Memory,
                                 label = "Size",
                                 value = formatFileSize(meta.fileSize),
-                                tint = MaterialTheme.colorScheme.secondary
+                                tint = MaterialTheme.colorScheme.secondary,
                             )
                             MetadataItem(
                                 icon = Icons.Outlined.ColorLens,
                                 label = "Color",
                                 value = if (meta.hasAlpha) "RGBA" else "RGB",
-                                tint = MaterialTheme.colorScheme.tertiary
+                                tint = MaterialTheme.colorScheme.tertiary,
                             )
                         }
                     }
@@ -469,26 +469,26 @@ fun ImagePreviewCard(
                 // Action buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     ActionButton(
                         icon = Icons.Default.Download,
                         label = "Save",
                         onClick = onDownload,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     ActionButton(
                         icon = Icons.Default.Share,
                         label = "Share",
                         onClick = onShare,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     ActionButton(
                         icon = Icons.Default.Fullscreen,
                         label = "Expand",
                         onClick = onFullscreen,
                         modifier = Modifier.weight(1f),
-                        isPrimary = true
+                        isPrimary = true,
                     )
                 }
             }
@@ -497,35 +497,29 @@ fun ImagePreviewCard(
 }
 
 @Composable
-private fun MetadataItem(
-    icon: ImageVector,
-    label: String,
-    value: String,
-    tint: Color,
-    modifier: Modifier = Modifier
-) {
+private fun MetadataItem(icon: ImageVector, label: String, value: String, tint: Color, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = tint,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
             ),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -536,7 +530,7 @@ private fun ActionButton(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isPrimary: Boolean = false
+    isPrimary: Boolean = false,
 ) {
     Surface(
         onClick = onClick,
@@ -553,17 +547,17 @@ private fun ActionButton(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
             } else {
                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
-            }
-        )
+            },
+        ),
     ) {
         Row(
             modifier = Modifier
                 .padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = icon,
@@ -573,19 +567,19 @@ private fun ActionButton(
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
-                }
+                },
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = if (isPrimary) FontWeight.SemiBold else FontWeight.Medium
+                    fontWeight = if (isPrimary) FontWeight.SemiBold else FontWeight.Medium,
                 ),
                 color = if (isPrimary) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
-                }
+                },
             )
         }
     }

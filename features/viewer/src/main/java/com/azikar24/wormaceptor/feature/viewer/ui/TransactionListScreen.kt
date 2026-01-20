@@ -30,24 +30,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
-import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
-import java.util.UUID
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.InlineErrorRetry
 import com.azikar24.wormaceptor.feature.viewer.ui.components.LoadingMoreIndicator
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ScrollToTopFab
+import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TransactionListSkeleton
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 /**
  * TransactionListScreen with pull-to-refresh support.
@@ -71,7 +69,7 @@ fun TransactionListScreen(
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
-    header: (@Composable () -> Unit)? = null
+    header: (@Composable () -> Unit)? = null,
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
@@ -108,21 +106,21 @@ fun TransactionListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                }
+                },
             ) {
                 EmptyState(
                     hasActiveFilters = hasActiveFilters,
                     onClearFilters = onClearFilters,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         } else {
             EmptyState(
                 hasActiveFilters = hasActiveFilters,
                 onClearFilters = onClearFilters,
-                modifier = modifier
+                modifier = modifier,
             )
         }
     } else {
@@ -139,13 +137,13 @@ fun TransactionListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                }
+                },
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     if (header != null) {
                         item {
@@ -156,7 +154,7 @@ fun TransactionListScreen(
                         TransactionItem(
                             transaction = transaction,
                             onClick = { onItemClick(transaction) },
-                            modifier = Modifier.animateItem()
+                            modifier = Modifier.animateItem(),
                         )
                     }
                 }
@@ -164,7 +162,7 @@ fun TransactionListScreen(
         } else {
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 if (header != null) {
                     item {
@@ -175,7 +173,7 @@ fun TransactionListScreen(
                     TransactionItem(
                         transaction = transaction,
                         onClick = { onItemClick(transaction) },
-                        modifier = Modifier.animateItem()
+                        modifier = Modifier.animateItem(),
                     )
                 }
             }
@@ -184,31 +182,27 @@ fun TransactionListScreen(
 }
 
 @Composable
-private fun EmptyState(
-    hasActiveFilters: Boolean,
-    onClearFilters: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         // Icon
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(64.dp),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Icon(
                     imageVector = Icons.Default.Wifi,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
             }
         }
@@ -220,33 +214,34 @@ private fun EmptyState(
             text = if (hasActiveFilters) "No matches found" else "No transactions yet",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         // Description
         Text(
-            text = if (hasActiveFilters)
+            text = if (hasActiveFilters) {
                 "Try adjusting your filters to see more results"
-            else
-                "Network requests will appear here",
+            } else {
+                "Network requests will appear here"
+            },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )
 
         if (hasActiveFilters) {
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
             Button(
                 onClick = onClearFilters,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
             ) {
                 Text(
                     text = "Clear Filters",
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                 )
             }
         }
@@ -254,11 +249,7 @@ private fun EmptyState(
 }
 
 @Composable
-private fun TransactionItem(
-    transaction: TransactionSummary,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val statusColor = when (transaction.status) {
         TransactionStatus.COMPLETED -> when {
             transaction.code == null -> WormaCeptorColors.StatusAmber
@@ -279,9 +270,9 @@ private fun TransactionItem(
         targetValue = if (isPressed) 0.98f else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         ),
-        label = "itemScale"
+        label = "itemScale",
     )
 
     Row(
@@ -289,26 +280,26 @@ private fun TransactionItem(
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             )
             .scale(scale)
             .clip(WormaCeptorDesignSystem.Shapes.card)
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .background(
                 color = statusColor.asSubtleBackground(),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onClick
+                onClick = onClick,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // 2dp left border as status indicator
         Box(
@@ -317,8 +308,8 @@ private fun TransactionItem(
                 .height(48.dp)
                 .background(
                     statusColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
-                )
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                ),
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
@@ -326,7 +317,7 @@ private fun TransactionItem(
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 MethodBadge(transaction.method)
                 Text(
@@ -335,7 +326,7 @@ private fun TransactionItem(
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     modifier = Modifier.weight(1f, fill = false),
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 
@@ -350,7 +341,7 @@ private fun TransactionItem(
             Surface(
                 color = statusColor.asSubtleBackground(),
                 contentColor = statusColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
             ) {
                 Text(
                     text = transaction.code?.toString() ?: "?",
@@ -358,15 +349,15 @@ private fun TransactionItem(
                     fontSize = 14.sp,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                 )
             }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
                 text = formatDuration(transaction.tookMs),
                 fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
     }
@@ -377,7 +368,7 @@ private fun MethodBadge(method: String) {
     Surface(
         color = methodColor(method).copy(alpha = 0.15f),
         contentColor = methodColor(method),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
     ) {
         Text(
             text = method.uppercase(),
@@ -385,8 +376,8 @@ private fun MethodBadge(method: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }
@@ -395,7 +386,7 @@ private fun MethodBadge(method: String) {
 private fun HostChip(host: String) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(
             text = host,
@@ -403,8 +394,8 @@ private fun HostChip(host: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }
@@ -442,7 +433,7 @@ fun PagedTransactionListScreen(
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
     modifier: Modifier = Modifier,
-    header: (@Composable () -> Unit)? = null
+    header: (@Composable () -> Unit)? = null,
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -464,7 +455,7 @@ fun PagedTransactionListScreen(
                 ErrorState(
                     message = refreshState.error.localizedMessage ?: "Failed to load transactions",
                     onRetry = { lazyPagingItems.refresh() },
-                    errorType = ErrorType.GENERIC
+                    errorType = ErrorType.GENERIC,
                 )
             }
 
@@ -474,14 +465,14 @@ fun PagedTransactionListScreen(
                     EmptyState(
                         hasActiveFilters = hasActiveFilters,
                         onClearFilters = onClearFilters,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     )
                 } else {
                     // Content loaded - show list
                     LazyColumn(
                         state = listState,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         // Optional header
                         if (header != null) {
@@ -493,13 +484,13 @@ fun PagedTransactionListScreen(
                         // Paged items
                         items(
                             count = lazyPagingItems.itemCount,
-                            key = lazyPagingItems.itemKey { it.id }
+                            key = lazyPagingItems.itemKey { it.id },
                         ) { index ->
                             lazyPagingItems[index]?.let { transaction ->
                                 TransactionItem(
                                     transaction = transaction,
                                     onClick = { onItemClick(transaction) },
-                                    modifier = Modifier.animateItem()
+                                    modifier = Modifier.animateItem(),
                                 )
                             }
                         }
@@ -516,7 +507,7 @@ fun PagedTransactionListScreen(
                                 item(key = "append_error") {
                                     InlineErrorRetry(
                                         message = appendState.error.localizedMessage ?: "Failed to load more",
-                                        onRetry = { lazyPagingItems.retry() }
+                                        onRetry = { lazyPagingItems.retry() },
                                     )
                                 }
                             }
@@ -540,7 +531,7 @@ fun PagedTransactionListScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         )
     }
 }
@@ -567,7 +558,7 @@ fun PagedTransactionListScreenWithRefresh(
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    header: (@Composable () -> Unit)? = null
+    header: (@Composable () -> Unit)? = null,
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
@@ -615,9 +606,9 @@ fun PagedTransactionListScreenWithRefresh(
                     isRefreshing = isActuallyRefreshing,
                     state = pullToRefreshState,
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
-            }
+            },
         ) {
             when (val refreshState = lazyPagingItems.loadState.refresh) {
                 is LoadState.Loading -> {
@@ -630,7 +621,7 @@ fun PagedTransactionListScreenWithRefresh(
                     ErrorState(
                         message = refreshState.error.localizedMessage ?: "Failed to load transactions",
                         onRetry = { lazyPagingItems.refresh() },
-                        errorType = ErrorType.GENERIC
+                        errorType = ErrorType.GENERIC,
                     )
                 }
 
@@ -640,14 +631,14 @@ fun PagedTransactionListScreenWithRefresh(
                         EmptyState(
                             hasActiveFilters = hasActiveFilters,
                             onClearFilters = onClearFilters,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         )
                     } else {
                         // Content loaded - show list
                         LazyColumn(
                             state = listState,
                             modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
                         ) {
                             // Optional header
                             if (header != null) {
@@ -659,13 +650,13 @@ fun PagedTransactionListScreenWithRefresh(
                             // Paged items
                             items(
                                 count = lazyPagingItems.itemCount,
-                                key = lazyPagingItems.itemKey { it.id }
+                                key = lazyPagingItems.itemKey { it.id },
                             ) { index ->
                                 lazyPagingItems[index]?.let { transaction ->
                                     TransactionItem(
                                         transaction = transaction,
                                         onClick = { onItemClick(transaction) },
-                                        modifier = Modifier.animateItem()
+                                        modifier = Modifier.animateItem(),
                                     )
                                 }
                             }
@@ -682,7 +673,7 @@ fun PagedTransactionListScreenWithRefresh(
                                     item(key = "append_error") {
                                         InlineErrorRetry(
                                             message = appendState.error.localizedMessage ?: "Failed to load more",
-                                            onRetry = { lazyPagingItems.retry() }
+                                            onRetry = { lazyPagingItems.retry() },
                                         )
                                     }
                                 }
@@ -707,7 +698,7 @@ fun PagedTransactionListScreenWithRefresh(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         )
     }
 }
@@ -754,7 +745,7 @@ fun SelectableTransactionListScreen(
     onDelete: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
     modifier: Modifier = Modifier,
-    header: (@Composable () -> Unit)? = null
+    header: (@Composable () -> Unit)? = null,
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
@@ -780,7 +771,7 @@ fun SelectableTransactionListScreen(
     val listContent: @Composable () -> Unit = {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
         ) {
             // Optional header (e.g., MetricsCard)
             if (header != null) {
@@ -809,7 +800,7 @@ fun SelectableTransactionListScreen(
                     onShare = { onShare(transaction) },
                     onDelete = { onDelete(transaction) },
                     onCopyAsCurl = { onCopyAsCurl(transaction) },
-                    modifier = Modifier.animateItem()
+                    modifier = Modifier.animateItem(),
                 )
             }
         }
@@ -829,21 +820,21 @@ fun SelectableTransactionListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                }
+                },
             ) {
                 EmptyState(
                     hasActiveFilters = hasActiveFilters,
                     onClearFilters = onClearFilters,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         } else {
             EmptyState(
                 hasActiveFilters = hasActiveFilters,
                 onClearFilters = onClearFilters,
-                modifier = modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize(),
             )
         }
     } else {
@@ -860,9 +851,9 @@ fun SelectableTransactionListScreen(
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                }
+                },
             ) {
                 listContent()
             }

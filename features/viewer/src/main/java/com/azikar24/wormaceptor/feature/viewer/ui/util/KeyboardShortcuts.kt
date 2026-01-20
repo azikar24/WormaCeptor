@@ -49,7 +49,7 @@ data class ShortcutKey(
     val key: Key,
     val ctrl: Boolean = false,
     val shift: Boolean = false,
-    val alt: Boolean = false
+    val alt: Boolean = false,
 )
 
 /**
@@ -62,7 +62,7 @@ data class KeyboardShortcutCallbacks(
     val onDelete: () -> Unit = {},
     val onClear: () -> Unit = {},
     val onExport: () -> Unit = {},
-    val onCopyCurl: () -> Unit = {}
+    val onCopyCurl: () -> Unit = {},
 )
 
 /**
@@ -77,7 +77,7 @@ data class KeyboardShortcutCallbacks(
 fun KeyboardShortcutHandler(
     callbacks: KeyboardShortcutCallbacks,
     enabled: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -140,7 +140,7 @@ fun KeyboardShortcutHandler(
 
                     else -> false
                 }
-            }
+            },
     ) {
         content()
     }
@@ -150,49 +150,47 @@ fun KeyboardShortcutHandler(
  * Extension function to create a modifier that handles keyboard shortcuts.
  * Use this when you need more control over the modifier chain.
  */
-fun Modifier.handleKeyboardShortcuts(
-    callbacks: KeyboardShortcutCallbacks,
-    enabled: Boolean = true
-): Modifier = this.then(
-    Modifier.onKeyEvent { event ->
-        if (!enabled || event.type != KeyEventType.KeyDown) {
-            return@onKeyEvent false
-        }
-
-        val isCtrl = event.isCtrlPressed || event.isMetaPressed
-
-        when {
-            isCtrl && event.key == Key.R -> {
-                callbacks.onRefresh()
-                true
+fun Modifier.handleKeyboardShortcuts(callbacks: KeyboardShortcutCallbacks, enabled: Boolean = true): Modifier =
+    this.then(
+        Modifier.onKeyEvent { event ->
+            if (!enabled || event.type != KeyEventType.KeyDown) {
+                return@onKeyEvent false
             }
 
-            isCtrl && event.key == Key.F -> {
-                callbacks.onSearch()
-                true
-            }
+            val isCtrl = event.isCtrlPressed || event.isMetaPressed
 
-            isCtrl && event.key == Key.A -> {
-                callbacks.onSelectAll()
-                true
-            }
+            when {
+                isCtrl && event.key == Key.R -> {
+                    callbacks.onRefresh()
+                    true
+                }
 
-            isCtrl && event.key == Key.E -> {
-                callbacks.onExport()
-                true
-            }
+                isCtrl && event.key == Key.F -> {
+                    callbacks.onSearch()
+                    true
+                }
 
-            event.key == Key.Delete || event.key == Key.Backspace -> {
-                callbacks.onDelete()
-                true
-            }
+                isCtrl && event.key == Key.A -> {
+                    callbacks.onSelectAll()
+                    true
+                }
 
-            event.key == Key.Escape -> {
-                callbacks.onClear()
-                true
-            }
+                isCtrl && event.key == Key.E -> {
+                    callbacks.onExport()
+                    true
+                }
 
-            else -> false
-        }
-    }
-)
+                event.key == Key.Delete || event.key == Key.Backspace -> {
+                    callbacks.onDelete()
+                    true
+                }
+
+                event.key == Key.Escape -> {
+                    callbacks.onClear()
+                    true
+                }
+
+                else -> false
+            }
+        },
+    )

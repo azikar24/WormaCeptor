@@ -8,19 +8,18 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
-import java.util.UUID
 
 internal class WormaCeptorNotificationHelper(private val context: Context) {
-    
+
     companion object {
         private const val CHANNEL_ID = "wormaceptor_v2_channel"
         private const val NOTIFICATION_ID = 4200
         private const val BUFFER_SIZE = 10
     }
 
-    private val notificationManager: NotificationManager = 
+    private val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    
+
     private val transactionBuffer = ArrayDeque<NetworkTransaction>(BUFFER_SIZE)
     private var transactionCount = 0
 
@@ -31,9 +30,9 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID, 
-                "WormaCeptor Transactions", 
-                NotificationManager.IMPORTANCE_LOW
+                CHANNEL_ID,
+                "WormaCeptor Transactions",
+                NotificationManager.IMPORTANCE_LOW,
             )
             notificationManager.createNotificationChannel(channel)
         }
@@ -51,8 +50,10 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
 
         val launchIntent = WormaCeptorApi.getLaunchIntent(context)
         val pendingIntent = PendingIntent.getActivity(
-            context, 0, launchIntent, 
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            context,
+            0,
+            launchIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -64,10 +65,10 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setSubText("$transactionCount transactions")
-            
+
         val inbox = NotificationCompat.InboxStyle()
         synchronized(this) {
-            transactionBuffer.reversed().forEach { 
+            transactionBuffer.reversed().forEach {
                 val code = it.response?.code ?: "..."
                 inbox.addLine("[$code] ${it.request.method} ${it.path}")
             }
@@ -77,5 +78,9 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
-    private val NetworkTransaction.path get() = try { java.net.URI(this.request.url).path } catch(e:Exception) { this.request.url }
+    private val NetworkTransaction.path get() = try {
+        java.net.URI(this.request.url).path
+    } catch (e: Exception) {
+        this.request.url
+    }
 }

@@ -15,7 +15,7 @@ data class QuickAction(
     val icon: ImageVector,
     val destructive: Boolean = false,
     val enabled: Boolean = true,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
 )
 
 /**
@@ -23,12 +23,12 @@ data class QuickAction(
  */
 enum class QuickFilter(
     val label: String,
-    val description: String
+    val description: String,
 ) {
     ERRORS("Errors", "4xx and 5xx responses"),
     SLOW("Slow", "Requests taking more than 1 second"),
     LARGE("Large", "Responses larger than 100KB"),
     TODAY("Today", "Requests from today"),
     JSON("JSON", "JSON content type responses"),
-    IMAGES("Images", "Image content type responses")
+    IMAGES("Images", "Image content type responses"),
 }

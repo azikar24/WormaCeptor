@@ -12,5 +12,5 @@ data class TransactionSummary(
     val hasRequestBody: Boolean,
     val hasResponseBody: Boolean,
     val status: TransactionStatus,
-    val timestamp: EpochMillis
+    val timestamp: EpochMillis,
 )

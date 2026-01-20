@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.5.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.5.2)" variant="all" version="8.5.2">
+
+    <issue
+        id="InvalidPackage"
+        message="Invalid package reference in com.tngtech.archunit:archunit; not included in Android: `java.lang.module`. Referenced from `com.tngtech.archunit.core.importer.ModuleLocationFactory`.">
+        <location
+            file="$GRADLE_USER_HOME/caches/modules-2/files-2.1/com.tngtech.archunit/archunit/1.0.1/cebb38fb1b17c68394cfd6c68c3ee2a1761326cf/archunit-1.0.1.jar"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.tngtech.archunit:archunit than 1.0.1 is available: 1.4.1"
+        errorLine1="    implementation(&quot;com.tngtech.archunit:archunit:1.0.1&quot;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="15"
+            column="20"/>
+    </issue>
+
+</issues>

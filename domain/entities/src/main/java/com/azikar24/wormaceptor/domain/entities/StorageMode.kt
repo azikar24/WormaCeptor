@@ -17,5 +17,5 @@ enum class StorageMode {
     /**
      * No data is captured or stored. Interceptor becomes a pass-through.
      */
-    NO_OP
+    NO_OP,
 }

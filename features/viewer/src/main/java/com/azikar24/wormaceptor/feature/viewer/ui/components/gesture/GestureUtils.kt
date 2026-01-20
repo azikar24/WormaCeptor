@@ -45,16 +45,21 @@ import kotlinx.coroutines.launch
 enum class GestureHapticType {
     /** Light tap feedback for minor interactions */
     LIGHT_TAP,
+
     /** Medium feedback for threshold crossings */
     THRESHOLD_CROSSED,
+
     /** Strong feedback for significant actions */
     ACTION_CONFIRMED,
+
     /** Error/rejection feedback */
     REJECTION,
+
     /** Page change feedback */
     PAGE_TURN,
+
     /** Zoom level change */
-    ZOOM_CHANGE
+    ZOOM_CHANGE,
 }
 
 /**
@@ -75,7 +80,7 @@ fun rememberGestureHaptics(): GestureHaptics {
  */
 class GestureHaptics(
     private val view: View,
-    private val hapticFeedback: HapticFeedback
+    private val hapticFeedback: HapticFeedback,
 ) {
     /**
      * Performs haptic feedback based on the gesture type.
@@ -150,7 +155,7 @@ data class DragState(
     val isDragging: Boolean = false,
     val offset: Offset = Offset.Zero,
     val velocity: Offset = Offset.Zero,
-    val startPosition: Offset = Offset.Zero
+    val startPosition: Offset = Offset.Zero,
 ) {
     val totalDistance: Float
         get() = offset.getDistance()
@@ -166,9 +171,7 @@ data class DragState(
  * Remembers and manages drag state with animated reset.
  */
 @Composable
-fun rememberAnimatedDragState(
-    initialOffset: Offset = Offset.Zero
-): AnimatedDragState {
+fun rememberAnimatedDragState(initialOffset: Offset = Offset.Zero): AnimatedDragState {
     val animatedX = remember { Animatable(initialOffset.x) }
     val animatedY = remember { Animatable(initialOffset.y) }
 
@@ -179,7 +182,7 @@ fun rememberAnimatedDragState(
 
 class AnimatedDragState(
     private val animatedX: Animatable<Float, AnimationVector1D>,
-    private val animatedY: Animatable<Float, AnimationVector1D>
+    private val animatedY: Animatable<Float, AnimationVector1D>,
 ) {
     val offset: Offset
         get() = Offset(animatedX.value, animatedY.value)
@@ -193,8 +196,8 @@ class AnimatedDragState(
         offset: Offset,
         animationSpec: androidx.compose.animation.core.AnimationSpec<Float> = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
-        )
+            stiffness = Spring.StiffnessMedium,
+        ),
     ) {
         coroutineScope {
             launch {
@@ -223,7 +226,7 @@ enum class DragDirection {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
 }
 
 fun Offset.dominantDirection(): DragDirection {
@@ -267,7 +270,7 @@ data class GestureThresholds(
     val swipeNavigation: Float = 0.3f, // As fraction of screen width
     val zoomDoubleTap: Float = 2f,
     val zoomMin: Float = 0.5f,
-    val zoomMax: Float = 3f
+    val zoomMax: Float = 3f,
 )
 
 /**
@@ -279,12 +282,7 @@ val DefaultGestureThresholds = GestureThresholds()
  * Checks if a value has crossed a threshold and triggers a callback.
  */
 @Composable
-fun ThresholdCrossing(
-    value: Float,
-    threshold: Float,
-    onCrossUp: () -> Unit = {},
-    onCrossDown: () -> Unit = {}
-) {
+fun ThresholdCrossing(value: Float, threshold: Float, onCrossUp: () -> Unit = {}, onCrossDown: () -> Unit = {}) {
     var wasAboveThreshold by remember { mutableStateOf(value >= threshold) }
 
     LaunchedEffect(value) {
@@ -309,7 +307,7 @@ fun ThresholdCrossing(
  */
 fun Modifier.hapticOnChange(
     value: Boolean,
-    hapticType: GestureHapticType = GestureHapticType.THRESHOLD_CROSSED
+    hapticType: GestureHapticType = GestureHapticType.THRESHOLD_CROSSED,
 ): Modifier = composed {
     val haptics = rememberGestureHaptics()
     var previousValue by remember { mutableStateOf(value) }
@@ -328,10 +326,7 @@ fun Modifier.hapticOnChange(
  * Modifier that adds a brief delay before showing content.
  * Useful for hint UI that shouldn't appear on quick gestures.
  */
-fun Modifier.delayedVisibility(
-    visible: Boolean,
-    delayMs: Long = 200
-): Modifier = composed {
+fun Modifier.delayedVisibility(visible: Boolean, delayMs: Long = 200): Modifier = composed {
     var delayedVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(visible) {
@@ -354,11 +349,7 @@ fun Modifier.delayedVisibility(
  * Calculates a decay position based on velocity.
  * Useful for fling animations.
  */
-fun calculateDecayTarget(
-    currentPosition: Float,
-    velocity: Float,
-    friction: Float = 0.8f
-): Float {
+fun calculateDecayTarget(currentPosition: Float, velocity: Float, friction: Float = 0.8f): Float {
     val deceleration = friction * -1
     val duration = velocity / deceleration
     return currentPosition + (velocity * duration) + (0.5f * deceleration * duration * duration)
@@ -367,12 +358,7 @@ fun calculateDecayTarget(
 /**
  * Clamps a position to boundaries with optional rubber-banding.
  */
-fun clampWithRubberBand(
-    position: Float,
-    min: Float,
-    max: Float,
-    rubberBandFactor: Float = 0.3f
-): Float {
+fun clampWithRubberBand(position: Float, min: Float, max: Float, rubberBandFactor: Float = 0.3f): Float {
     return when {
         position < min -> min - (min - position) * rubberBandFactor
         position > max -> max + (position - max) * rubberBandFactor

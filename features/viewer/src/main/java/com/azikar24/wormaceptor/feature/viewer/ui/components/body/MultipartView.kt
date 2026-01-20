@@ -59,7 +59,7 @@ data class MultipartPart(
     val contentType: String? = null,
     val headers: Map<String, String> = emptyMap(),
     val body: String,
-    val size: Int = body.length
+    val size: Int = body.length,
 )
 
 /**
@@ -67,11 +67,7 @@ data class MultipartPart(
  * Each part is displayed as an expandable section showing its headers and content.
  */
 @Composable
-fun MultipartView(
-    multipartData: String,
-    boundary: String? = null,
-    modifier: Modifier = Modifier
-) {
+fun MultipartView(multipartData: String, boundary: String? = null, modifier: Modifier = Modifier) {
     val parts = remember(multipartData, boundary) {
         parseMultipartData(multipartData, boundary)
     }
@@ -81,12 +77,12 @@ fun MultipartView(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "No multipart data or invalid format",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         return
@@ -94,28 +90,28 @@ fun MultipartView(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "${parts.size} ${if (parts.size == 1) "part" else "parts"}",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             if (boundary != null) {
                 Text(
                     text = "boundary: ${boundary.take(20)}${if (boundary.length > 20) "..." else ""}",
                     style = MaterialTheme.typography.labelSmall.copy(
-                        fontFamily = FontFamily.Monospace
+                        fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
         }
@@ -124,23 +120,19 @@ fun MultipartView(
             MultipartPartCard(
                 part = part,
                 index = index,
-                initiallyExpanded = parts.size <= 3
+                initiallyExpanded = parts.size <= 3,
             )
         }
     }
 }
 
 @Composable
-private fun MultipartPartCard(
-    part: MultipartPart,
-    index: Int,
-    initiallyExpanded: Boolean
-) {
+private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean) {
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-        label = "chevron_rotation"
+        label = "chevron_rotation",
     )
 
     val isFile = part.fileName != null
@@ -160,8 +152,8 @@ private fun MultipartPartCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                WormaCeptorDesignSystem.Elevation.sm
-            )
+                WormaCeptorDesignSystem.Elevation.sm,
+            ),
         ),
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.thin,
@@ -169,9 +161,9 @@ private fun MultipartPartCard(
                 accentColor.copy(alpha = 0.3f)
             } else {
                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-            }
+            },
         ),
-        shape = WormaCeptorDesignSystem.Shapes.card
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
@@ -179,7 +171,7 @@ private fun MultipartPartCard(
                     .fillMaxWidth()
                     .clickable { expanded = !expanded }
                     .padding(WormaCeptorDesignSystem.Spacing.md),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
@@ -187,14 +179,14 @@ private fun MultipartPartCard(
                     modifier = Modifier
                         .size(18.dp)
                         .rotate(rotation),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 ) {
                     Icon(
                         imageVector = partIcon,
@@ -202,7 +194,7 @@ private fun MultipartPartCard(
                         modifier = Modifier
                             .padding(WormaCeptorDesignSystem.Spacing.xs)
                             .size(16.dp),
-                        tint = accentColor
+                        tint = accentColor,
                     )
                 }
 
@@ -212,11 +204,11 @@ private fun MultipartPartCard(
                     Text(
                         text = part.name.ifEmpty { "Part ${index + 1}" },
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         ),
                         color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
 
                     if (part.fileName != null || part.contentType != null) {
@@ -229,14 +221,14 @@ private fun MultipartPartCard(
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
 
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = MaterialTheme.colorScheme.surfaceVariant
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                 ) {
                     Text(
                         text = formatSize(part.size),
@@ -244,8 +236,8 @@ private fun MultipartPartCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xxs
-                        )
+                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
                     )
                 }
             }
@@ -253,11 +245,11 @@ private fun MultipartPartCard(
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
-                exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal))
+                exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Divider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                     )
 
                     if (part.headers.isNotEmpty()) {
@@ -265,40 +257,40 @@ private fun MultipartPartCard(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                                 )
-                                .padding(WormaCeptorDesignSystem.Spacing.md)
+                                .padding(WormaCeptorDesignSystem.Spacing.md),
                         ) {
                             Text(
                                 text = "Headers",
                                 style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.SemiBold
+                                    fontWeight = FontWeight.SemiBold,
                                 ),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs)
+                                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
                             )
 
                             part.headers.forEach { (key, value) ->
                                 Row(
-                                    modifier = Modifier.padding(vertical = 2.dp)
+                                    modifier = Modifier.padding(vertical = 2.dp),
                                 ) {
                                     SelectionContainer {
                                         Text(
                                             text = "$key: ",
                                             style = MaterialTheme.typography.labelSmall.copy(
                                                 fontFamily = FontFamily.Monospace,
-                                                fontWeight = FontWeight.Medium
+                                                fontWeight = FontWeight.Medium,
                                             ),
-                                            color = MaterialTheme.colorScheme.primary
+                                            color = MaterialTheme.colorScheme.primary,
                                         )
                                     }
                                     SelectionContainer {
                                         Text(
                                             text = value,
                                             style = MaterialTheme.typography.labelSmall.copy(
-                                                fontFamily = FontFamily.Monospace
+                                                fontFamily = FontFamily.Monospace,
                                             ),
-                                            color = MaterialTheme.colorScheme.onSurface
+                                            color = MaterialTheme.colorScheme.onSurface,
                                         )
                                     }
                                 }
@@ -306,14 +298,14 @@ private fun MultipartPartCard(
                         }
 
                         Divider(
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
                         )
                     }
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(WormaCeptorDesignSystem.Spacing.md)
+                            .padding(WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         if (part.body.length > 1000) {
                             Column {
@@ -321,16 +313,16 @@ private fun MultipartPartCard(
                                     Text(
                                         text = part.body.take(1000),
                                         style = MaterialTheme.typography.bodySmall.copy(
-                                            fontFamily = FontFamily.Monospace
+                                            fontFamily = FontFamily.Monospace,
                                         ),
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = MaterialTheme.colorScheme.onSurface,
                                     )
                                 }
                                 Text(
                                     text = "... (${part.body.length - 1000} more characters)",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xs)
+                                    modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xs),
                                 )
                             }
                         } else {
@@ -338,13 +330,13 @@ private fun MultipartPartCard(
                                 Text(
                                     text = part.body.ifEmpty { "(empty)" },
                                     style = MaterialTheme.typography.bodySmall.copy(
-                                        fontFamily = FontFamily.Monospace
+                                        fontFamily = FontFamily.Monospace,
                                     ),
                                     color = if (part.body.isEmpty()) {
                                         MaterialTheme.colorScheme.onSurfaceVariant
                                     } else {
                                         MaterialTheme.colorScheme.onSurface
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -394,7 +386,7 @@ private fun parseMultipartPart(section: String): MultipartPart? {
 
     val headerSection = section.substring(0, headerBodySplit)
     val body = section.substring(
-        headerBodySplit + (if (section.contains("\r\n\r\n")) 4 else 2)
+        headerBodySplit + (if (section.contains("\r\n\r\n")) 4 else 2),
     ).trimEnd()
 
     val headers = mutableMapOf<String, String>()
@@ -423,7 +415,7 @@ private fun parseMultipartPart(section: String): MultipartPart? {
         contentType = contentType,
         headers = displayHeaders,
         body = body,
-        size = body.length
+        size = body.length,
     )
 }
 

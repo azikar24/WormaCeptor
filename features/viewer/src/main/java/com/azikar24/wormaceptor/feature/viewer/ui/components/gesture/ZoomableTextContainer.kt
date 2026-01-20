@@ -17,14 +17,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculatePan
@@ -41,8 +38,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +57,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.launch
 
@@ -90,13 +86,13 @@ fun ZoomableTextContainer(
     initialZoom: Float = DEFAULT_ZOOM,
     showZoomControls: Boolean = true,
     onZoomChange: ((Float) -> Unit)? = null,
-    content: (@Composable (scale: Float, offset: Offset) -> Unit)? = null
+    content: (@Composable (scale: Float, offset: Offset) -> Unit)? = null,
 ) {
     ZoomableContainer(
         modifier = modifier,
         initialZoom = initialZoom,
         showZoomControls = showZoomControls,
-        onZoomChange = onZoomChange
+        onZoomChange = onZoomChange,
     ) { scale, offset ->
         if (content != null) {
             content(scale, offset)
@@ -104,7 +100,7 @@ fun ZoomableTextContainer(
             DefaultTextContent(
                 text = text,
                 scale = scale,
-                offset = offset
+                offset = offset,
             )
         }
     }
@@ -119,18 +115,18 @@ fun ZoomableTextContainer(
     modifier: Modifier = Modifier,
     initialZoom: Float = DEFAULT_ZOOM,
     showZoomControls: Boolean = true,
-    onZoomChange: ((Float) -> Unit)? = null
+    onZoomChange: ((Float) -> Unit)? = null,
 ) {
     ZoomableContainer(
         modifier = modifier,
         initialZoom = initialZoom,
         showZoomControls = showZoomControls,
-        onZoomChange = onZoomChange
+        onZoomChange = onZoomChange,
     ) { scale, offset ->
         DefaultAnnotatedTextContent(
             text = annotatedText,
             scale = scale,
-            offset = offset
+            offset = offset,
         )
     }
 }
@@ -144,7 +140,7 @@ fun ZoomableContainer(
     initialZoom: Float = DEFAULT_ZOOM,
     showZoomControls: Boolean = true,
     onZoomChange: ((Float) -> Unit)? = null,
-    content: @Composable (scale: Float, offset: Offset) -> Unit
+    content: @Composable (scale: Float, offset: Offset) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -203,15 +199,15 @@ fun ZoomableContainer(
                                     targetValue = DEFAULT_ZOOM,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                                 animatedOffset.animateTo(
                                     targetValue = Offset.Zero,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                             } else {
                                 // Zoom in to 2x at tap location
@@ -219,12 +215,12 @@ fun ZoomableContainer(
                                     targetValue = DOUBLE_TAP_ZOOM,
                                     animationSpec = spring(
                                         dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium
-                                    )
+                                        stiffness = Spring.StiffnessMedium,
+                                    ),
                                 )
                             }
                         }
-                    }
+                    },
                 )
             }
             .pointerInput(Unit) {
@@ -251,7 +247,7 @@ fun ZoomableContainer(
                                 currentOffset = offset,
                                 panChange = panChange,
                                 scale = scale,
-                                containerSize = size
+                                containerSize = size,
                             )
                             scope.launch {
                                 animatedOffset.snapTo(newOffset)
@@ -272,16 +268,16 @@ fun ZoomableContainer(
                         if (scale < DEFAULT_ZOOM) {
                             animatedScale.animateTo(
                                 targetValue = DEFAULT_ZOOM,
-                                animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                                animationSpec = spring(stiffness = Spring.StiffnessMedium),
                             )
                             animatedOffset.animateTo(
                                 targetValue = Offset.Zero,
-                                animationSpec = spring(stiffness = Spring.StiffnessMedium)
+                                animationSpec = spring(stiffness = Spring.StiffnessMedium),
                             )
                         }
                     }
                 }
-            }
+            },
     ) {
         // Zoomable content
         Box(
@@ -292,7 +288,7 @@ fun ZoomableContainer(
                     scaleY = scale
                     translationX = offset.x
                     translationY = offset.y
-                }
+                },
         ) {
             content(scale, offset)
         }
@@ -306,7 +302,7 @@ fun ZoomableContainer(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .windowInsetsPadding(WindowInsets.navigationBars)
-                    .padding(WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 ZoomControls(
                     currentZoom = scale,
@@ -315,7 +311,7 @@ fun ZoomableContainer(
                         scope.launch {
                             animatedScale.animateTo(
                                 (scale * 1.5f).coerceAtMost(MAX_ZOOM),
-                                spring(stiffness = Spring.StiffnessMedium)
+                                spring(stiffness = Spring.StiffnessMedium),
                             )
                         }
                     },
@@ -324,7 +320,7 @@ fun ZoomableContainer(
                         scope.launch {
                             animatedScale.animateTo(
                                 (scale / 1.5f).coerceAtLeast(MIN_ZOOM),
-                                spring(stiffness = Spring.StiffnessMedium)
+                                spring(stiffness = Spring.StiffnessMedium),
                             )
                             if (animatedScale.value <= DEFAULT_ZOOM) {
                                 animatedOffset.animateTo(Offset.Zero)
@@ -336,16 +332,16 @@ fun ZoomableContainer(
                         scope.launch {
                             animatedScale.animateTo(
                                 DEFAULT_ZOOM,
-                                spring(stiffness = Spring.StiffnessMedium)
+                                spring(stiffness = Spring.StiffnessMedium),
                             )
                             animatedOffset.animateTo(
                                 Offset.Zero,
-                                spring(stiffness = Spring.StiffnessMedium)
+                                spring(stiffness = Spring.StiffnessMedium),
                             )
                         }
                     },
                     minZoom = MIN_ZOOM,
-                    maxZoom = MAX_ZOOM
+                    maxZoom = MAX_ZOOM,
                 )
             }
         }
@@ -357,7 +353,7 @@ fun ZoomableContainer(
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.md)
+                .padding(WormaCeptorDesignSystem.Spacing.md),
         ) {
             ZoomLevelBadge(zoom = scale)
         }
@@ -368,11 +364,7 @@ fun ZoomableContainer(
  * Default text rendering for plain strings
  */
 @Composable
-private fun DefaultTextContent(
-    text: String,
-    scale: Float,
-    offset: Offset
-) {
+private fun DefaultTextContent(text: String, scale: Float, offset: Offset) {
     val scrollState = rememberScrollState()
 
     SelectionContainer {
@@ -383,7 +375,7 @@ private fun DefaultTextContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.md)
+                .padding(WormaCeptorDesignSystem.Spacing.md),
         )
     }
 }
@@ -392,11 +384,7 @@ private fun DefaultTextContent(
  * Default text rendering for annotated strings (syntax highlighted)
  */
 @Composable
-private fun DefaultAnnotatedTextContent(
-    text: AnnotatedString,
-    scale: Float,
-    offset: Offset
-) {
+private fun DefaultAnnotatedTextContent(text: AnnotatedString, scale: Float, offset: Offset) {
     val scrollState = rememberScrollState()
 
     SelectionContainer {
@@ -407,7 +395,7 @@ private fun DefaultAnnotatedTextContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.md)
+                .padding(WormaCeptorDesignSystem.Spacing.md),
         )
     }
 }
@@ -422,19 +410,19 @@ private fun ZoomLevelBadge(zoom: Float) {
         color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.md),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-        )
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+        ),
     ) {
         Text(
             text = "${String.format("%.1f", zoom)}x",
             style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
             ),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
         )
     }
 }
@@ -446,7 +434,7 @@ private fun calculateConstrainedOffset(
     currentOffset: Offset,
     panChange: Offset,
     scale: Float,
-    containerSize: androidx.compose.ui.unit.IntSize
+    containerSize: androidx.compose.ui.unit.IntSize,
 ): Offset {
     // Calculate max allowed offset based on zoom level
     val maxX = (containerSize.width * (scale - 1) / 2).coerceAtLeast(0f)
@@ -454,7 +442,7 @@ private fun calculateConstrainedOffset(
 
     return Offset(
         x = (currentOffset.x + panChange.x * scale).coerceIn(-maxX, maxX),
-        y = (currentOffset.y + panChange.y * scale).coerceIn(-maxY, maxY)
+        y = (currentOffset.y + panChange.y * scale).coerceIn(-maxY, maxY),
     )
 }
 
@@ -462,16 +450,12 @@ private fun calculateConstrainedOffset(
  * Simplified zoomable wrapper for any composable content
  */
 @Composable
-fun ZoomableContent(
-    modifier: Modifier = Modifier,
-    initialZoom: Float = DEFAULT_ZOOM,
-    content: @Composable () -> Unit
-) {
+fun ZoomableContent(modifier: Modifier = Modifier, initialZoom: Float = DEFAULT_ZOOM, content: @Composable () -> Unit) {
     ZoomableContainer(
         modifier = modifier,
         initialZoom = initialZoom,
         showZoomControls = true,
-        onZoomChange = null
+        onZoomChange = null,
     ) { _, _ ->
         content()
     }

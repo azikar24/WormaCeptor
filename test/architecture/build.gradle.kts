@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.android) // or JVM plugin, but android project usually implies android
-    alias(libs.plugins.android.library) 
+    alias(libs.plugins.android.library)
 }
 
 android {
@@ -14,7 +14,7 @@ android {
 dependencies {
     implementation("com.tngtech.archunit:archunit:1.0.1")
     implementation(libs.junit)
-    
+
     // Depend on modules to scan
     implementation(project(":domain:entities"))
     implementation(project(":core:engine"))

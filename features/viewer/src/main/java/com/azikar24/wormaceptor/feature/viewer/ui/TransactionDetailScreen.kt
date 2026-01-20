@@ -310,20 +310,43 @@ private fun TransactionDetailContent(
                     canSwipeLeft = canNavigateNext,
                     canSwipeRight = canNavigatePrev,
                 ) {
-                    TopAppBar(
-                        title = {
-                            if (showSearch) {
+                    if (showSearch) {
+                        // Custom search bar that takes full width
+                        Surface(
+                            color = MaterialTheme.colorScheme.surface,
+                            tonalElevation = 0.dp,
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .statusBarsPadding()
+                                    .height(64.dp)
+                                    .padding(start = 4.dp, end = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                IconButton(onClick = {
+                                    showSearch = false
+                                    searchQuery = ""
+                                    debouncedSearchQuery = ""
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = "Close search",
+                                    )
+                                }
                                 TextField(
                                     value = searchQuery,
                                     onValueChange = { searchQuery = it },
                                     placeholder = { Text("Search in body...") },
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .weight(1f)
                                         .focusRequester(focusRequester),
                                     colors = TextFieldDefaults.colors(
                                         focusedContainerColor = Color.Transparent,
                                         unfocusedContainerColor = Color.Transparent,
                                         disabledContainerColor = Color.Transparent,
+                                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                                        unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
                                     ),
                                     singleLine = true,
                                     trailingIcon = {
@@ -334,74 +357,74 @@ private fun TransactionDetailContent(
                                         }
                                     },
                                 )
-                            } else {
+                            }
+                        }
+                    } else {
+                        TopAppBar(
+                            title = {
                                 TextWithStartEllipsis(
                                     text = title,
                                     modifier = Modifier.weight(1f, fill = false),
                                 )
-                            }
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = onBack) {
-                                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                            }
-                        },
-                        actions = {
-                            // Show search only for Request/Response tabs with content
-                            if (tabPagerState.currentPage > 0 && currentTabHasContent) {
-                                IconButton(onClick = {
-                                    showSearch = !showSearch
-                                    if (!showSearch) searchQuery = ""
-                                }) {
-                                    AnimatedVisibility(!showSearch) {
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = onBack) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Back",
+                                    )
+                                }
+                            },
+                            actions = {
+                                // Show search icon only for Request/Response tabs with content
+                                if (tabPagerState.currentPage > 0 && currentTabHasContent) {
+                                    IconButton(onClick = { showSearch = true }) {
                                         Icon(
                                             imageVector = Icons.Default.Search,
                                             contentDescription = "Search",
                                         )
                                     }
                                 }
-                            }
 
-                            if (!showSearch) {
                                 IconButton(onClick = { showMenu = true }) {
                                     Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
                                 }
-                            }
 
-                            DropdownMenu(
-                                expanded = showMenu,
-                                onDismissRequest = { showMenu = false },
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text("Copy as Text") },
-                                    onClick = {
-                                        showMenu = false
-                                        copyToClipboard(context, "Transaction", generateTextSummary(transaction))
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text("Copy as cURL") },
-                                    onClick = {
-                                        showMenu = false
-                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction))
-                                    },
-                                )
-                                HorizontalDivider()
-                                DropdownMenuItem(
-                                    text = { Text("Share as JSON") },
-                                    onClick = {
-                                        showMenu = false
-                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                            context,
-                                        )
-                                        scope.launch {
-                                            exportManager.exportTransactions(listOf(transaction))
-                                        }
-                                    },
-                                )
-                            }
-                        },
-                    )
+                                DropdownMenu(
+                                    expanded = showMenu,
+                                    onDismissRequest = { showMenu = false },
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Copy as Text") },
+                                        onClick = {
+                                            showMenu = false
+                                            copyToClipboard(context, "Transaction", generateTextSummary(transaction))
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Copy as cURL") },
+                                        onClick = {
+                                            showMenu = false
+                                            copyToClipboard(context, "cURL", generateCurlCommand(transaction))
+                                        },
+                                    )
+                                    HorizontalDivider()
+                                    DropdownMenuItem(
+                                        text = { Text("Share as JSON") },
+                                        onClick = {
+                                            showMenu = false
+                                            val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                context,
+                                            )
+                                            scope.launch {
+                                                exportManager.exportTransactions(listOf(transaction))
+                                            }
+                                        },
+                                    )
+                                }
+                            },
+                        )
+                    }
                 }
                 // Tab row with click support (swipe is handled by the content pager)
                 TabRow(
@@ -453,6 +476,7 @@ private fun TransactionDetailContent(
                         searchQuery = debouncedSearchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
+                        isSearchActive = showSearch,
                         modifier = Modifier.fillMaxSize(),
                     )
 
@@ -461,40 +485,59 @@ private fun TransactionDetailContent(
                         searchQuery = debouncedSearchQuery,
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
+                        isSearchActive = showSearch,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
 
-            // Search Navigation Controllers in Bottom Right
-            if (showSearch && matchCount > 0) {
+            // Search Navigation Controllers in Bottom Right - show immediately when search is active
+            AnimatedVisibility(
+                visible = showSearch && debouncedSearchQuery.isNotEmpty(),
+                enter = fadeIn(animationSpec = tween(150)) + scaleIn(animationSpec = tween(150)),
+                exit = fadeOut(animationSpec = tween(100)) + scaleOut(animationSpec = tween(100)),
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .imePadding()
+                    .padding(bottom = 32.dp, end = 16.dp),
+            ) {
                 Surface(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .imePadding()
-                        .padding(bottom = 32.dp, end = 16.dp),
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
                     color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
                     shadowElevation = 6.dp,
                 ) {
                     Row(
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
-                            text = "${currentMatchIndex + 1}/$matchCount",
-                            style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                        )
-                        IconButton(onClick = {
-                            currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount
-                        }) {
-                            Icon(Icons.Default.KeyboardArrowUp, "Prev")
-                        }
-                        IconButton(onClick = {
-                            currentMatchIndex = (currentMatchIndex + 1) % matchCount
-                        }) {
-                            Icon(Icons.Default.KeyboardArrowDown, "Next")
+                        if (matchCount > 0) {
+                            Text(
+                                text = "${currentMatchIndex + 1}/$matchCount",
+                                style = MaterialTheme.typography.labelLarge,
+                                modifier = Modifier.padding(end = 4.dp),
+                            )
+                            IconButton(
+                                onClick = {
+                                    currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount
+                                },
+                                modifier = Modifier.size(36.dp),
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowUp, "Previous match")
+                            }
+                            IconButton(
+                                onClick = {
+                                    currentMatchIndex = (currentMatchIndex + 1) % matchCount
+                                },
+                                modifier = Modifier.size(36.dp),
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowDown, "Next match")
+                            }
+                        } else {
+                            Text(
+                                text = "No matches",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                     }
                 }
@@ -829,6 +872,7 @@ private fun RequestTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
+    isSearchActive: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -1053,9 +1097,9 @@ private fun RequestTab(
             }
         }
 
-        // Floating Action Button for Copy All
+        // Floating Action Button for Copy All - hidden when search is active
         AnimatedVisibility(
-            visible = isScrolling && requestBody != null,
+            visible = isScrolling && requestBody != null && !isSearchActive,
             enter = fadeIn() + scaleIn(),
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
@@ -1089,6 +1133,7 @@ private fun ResponseTab(
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
+    isSearchActive: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -1407,9 +1452,9 @@ private fun ResponseTab(
             }
         }
 
-        // Floating Action Button for Copy All
+        // Floating Action Button for Copy All - hidden when search is active
         AnimatedVisibility(
-            visible = isScrolling && responseBody != null,
+            visible = isScrolling && responseBody != null && !isSearchActive,
             enter = fadeIn() + scaleIn(),
             exit = fadeOut() + scaleOut(),
             modifier = Modifier

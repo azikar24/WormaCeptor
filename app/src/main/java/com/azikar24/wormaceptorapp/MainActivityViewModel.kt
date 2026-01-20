@@ -28,7 +28,7 @@ class MainActivityViewModel : ViewModel() {
         context.startActivity(intent)
     }
 
-    fun doHttpActivity(context: Context) {
+    fun doHttpActivity() {
         val api = SampleApiService.getInstance()
 
         val callBack = object : Callback<Void?> {

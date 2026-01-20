@@ -117,7 +117,7 @@ class MainActivity : ComponentActivity() {
                         Content(
                             viewModel = viewModel,
                             onRunApiTestsClick = {
-                                viewModel.doHttpActivity(baseContext)
+                                viewModel.doHttpActivity()
                                 viewModel.doContentTypeTests()
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Running API tests...")
@@ -282,7 +282,6 @@ class MainActivity : ComponentActivity() {
                 title = stringResource(id = R.string.action_launch_title),
                 description = stringResource(id = R.string.action_launch_description),
                 onClick = { viewModel.startWormaCeptor(this@MainActivity) },
-                showChevron = true,
             )
 
             // Action buttons in a row: Run API Tests + Trigger Crash
@@ -464,7 +463,6 @@ class MainActivity : ComponentActivity() {
         title: String,
         description: String,
         onClick: () -> Unit,
-        showChevron: Boolean = false,
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         val isPressed by interactionSource.collectIsPressedAsState()
@@ -528,16 +526,14 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                if (showChevron) {
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
-                    Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                    modifier = Modifier.size(20.dp),
+                )
             }
         }
     }

@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     api(project(":api:client"))
     api(project(":domain:entities"))
+    api(project(":domain:contracts"))
     api(project(":core:engine"))
     api(project(":features:viewer"))
 }

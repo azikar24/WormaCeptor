@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.xml
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -55,11 +56,7 @@ class XmlBodyParser(
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.XML,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.XML)
         }
 
         return try {

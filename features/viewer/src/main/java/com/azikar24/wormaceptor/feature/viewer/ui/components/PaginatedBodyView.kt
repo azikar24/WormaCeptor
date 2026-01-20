@@ -30,6 +30,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 import kotlinx.coroutines.launch
 
 /**

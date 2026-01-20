@@ -8,9 +8,9 @@ Last updated: 2026-01-20
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Completed | 12 | ~15% |
+| Completed | 14 | ~17% |
 | In Progress | 0 | 0% |
-| Remaining | 70+ | ~85% |
+| Remaining | 68+ | ~83% |
 
 **Total Issues from Review:** 82+
 
@@ -32,6 +32,8 @@ Last updated: 2026-01-20
 | 2026-01-20 | Performance | O(n^2) search highlighting replaced with Regex.findAll O(n) | 03-CODE-QUALITY-ISSUES.md |
 | 2026-01-20 | Accessibility | contentDescription added to high priority icons (8 files) | 06-ACCESSIBILITY.md |
 | 2026-01-20 | Accessibility | Checkbox semantics added to SelectableTransactionItem | 06-ACCESSIBILITY.md |
+| 2026-01-20 | ANR Fix | ViewerActivity suspend functions wrapped in coroutine scopes | 02-BAD-PRACTICES.md |
+| 2026-01-20 | ANR Fix | ViewerViewModel filtering moved to Dispatchers.Default with flowOn | 03-CODE-QUALITY-ISSUES.md |
 
 ---
 

@@ -97,3 +97,20 @@ fun ContentType.isImage(): Boolean = when (this) {
     -> true
     else -> false
 }
+
+/**
+ * Creates a ParsedBody for empty body content.
+ * Use this in parser implementations to handle empty input consistently.
+ *
+ * @param contentType The content type to report
+ * @param formatted Optional formatted string (defaults to empty)
+ * @return ParsedBody representing an empty but valid body
+ */
+fun emptyParsedBody(
+    contentType: ContentType,
+    formatted: String = "",
+): ParsedBody = ParsedBody(
+    formatted = formatted,
+    contentType = contentType,
+    isValid = true,
+)

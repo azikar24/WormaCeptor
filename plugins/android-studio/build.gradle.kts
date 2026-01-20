@@ -2,9 +2,16 @@
  * Copyright AziKar24 2025.
  */
 
+// Version constants - keep in sync with gradle/libs.versions.toml
+object Versions {
+    const val KOTLIN = "2.0.21" // Must match libs.versions.toml kotlin version
+    const val INTELLIJ_PLATFORM = "2.2.1" // Must match libs.versions.toml intellijPlatform
+    const val GSON = "2.10.1" // Must match libs.versions.toml gson
+}
+
 plugins {
     id("org.jetbrains.intellij.platform") version "2.2.1"
-    kotlin("jvm") version "2.2.0-RC"
+    kotlin("jvm") version "2.0.21"
 }
 
 group = "com.azikar24.wormaceptor"
@@ -23,7 +30,7 @@ kotlin {
 }
 
 dependencies {
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:${Versions.GSON}")
 
     intellijPlatform {
         local("/Applications/Android Studio Preview.app/Contents")

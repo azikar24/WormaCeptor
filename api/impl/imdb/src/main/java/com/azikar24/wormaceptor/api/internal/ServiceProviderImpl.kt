@@ -1,38 +1,17 @@
 package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
-import com.azikar24.wormaceptor.core.engine.CaptureEngine
-import com.azikar24.wormaceptor.core.engine.CoreHolder
-import com.azikar24.wormaceptor.core.engine.CrashReporter
-import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryBlobStorage
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryCrashRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryTransactionRepository
 
 internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
-    override fun init(context: Context, logCrashes: Boolean) {
-        if (captureEngine != null) return
+    override fun createDependencies(context: Context) = StorageDependencies(
+        transactionRepository = InMemoryTransactionRepository(),
+        crashRepository = InMemoryCrashRepository(),
+        blobStorage = InMemoryBlobStorage(),
+    )
 
-        val repository = InMemoryTransactionRepository()
-        val crashRepository = InMemoryCrashRepository()
-        val blobStorage = InMemoryBlobStorage()
-
-        val capture = CaptureEngine(repository, blobStorage)
-        val query = QueryEngine(repository, blobStorage, crashRepository)
-
-        if (!CoreHolder.initialize(capture, query)) {
-            return // Already initialized
-        }
-
-        captureEngine = capture
-        queryEngine = query
-
-        if (logCrashes) {
-            val crashReporter = CrashReporter(crashRepository)
-            crashReporter.init()
-        }
-
-        notificationHelper = WormaCeptorNotificationHelper(context, "WormaCeptor (IMDB): Recording...")
-    }
+    override fun getNotificationTitle() = "WormaCeptor (IMDB): Recording..."
 }

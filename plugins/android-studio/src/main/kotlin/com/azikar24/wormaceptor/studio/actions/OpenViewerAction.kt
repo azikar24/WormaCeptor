@@ -22,6 +22,6 @@ class OpenViewerAction : AnAction("Open WormaCeptor Viewer", "Open WormaCeptor v
     override fun update(e: AnActionEvent) {
         val project = e.project
         e.presentation.isEnabled = project != null &&
-            project.getService(WormaCeptorService::class.java).isDeviceConnected()
+            project.getService(WormaCeptorService::class.java).isDeviceConnectedCached()
     }
 }

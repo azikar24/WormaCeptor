@@ -55,7 +55,7 @@ data class ParsedBody(
     val contentType: ContentType,
     val metadata: Map<String, String> = emptyMap(),
     val isValid: Boolean = true,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
 )
 
 /**
@@ -79,7 +79,7 @@ enum class ContentType {
     IMAGE_BMP,
     IMAGE_ICO,
     IMAGE_OTHER,
-    UNKNOWN
+    UNKNOWN,
 }
 
 /**
@@ -93,6 +93,7 @@ fun ContentType.isImage(): Boolean = when (this) {
     ContentType.IMAGE_SVG,
     ContentType.IMAGE_BMP,
     ContentType.IMAGE_ICO,
-    ContentType.IMAGE_OTHER -> true
+    ContentType.IMAGE_OTHER,
+    -> true
     else -> false
 }

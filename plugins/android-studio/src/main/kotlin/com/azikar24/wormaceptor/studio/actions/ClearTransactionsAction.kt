@@ -16,7 +16,7 @@ import com.intellij.openapi.ui.Messages
 class ClearTransactionsAction : AnAction(
     "Clear Transactions",
     "Clear all captured transactions",
-    AllIcons.Actions.GC
+    AllIcons.Actions.GC,
 ) {
 
     override fun actionPerformed(e: AnActionEvent) {
@@ -27,7 +27,7 @@ class ClearTransactionsAction : AnAction(
             project,
             "Are you sure you want to clear all captured transactions?",
             "Clear Transactions",
-            Messages.getQuestionIcon()
+            Messages.getQuestionIcon(),
         )
 
         if (result == Messages.YES) {
@@ -36,7 +36,7 @@ class ClearTransactionsAction : AnAction(
                     Messages.showErrorDialog(
                         project,
                         "Failed to clear transactions. Make sure the device is connected.",
-                        "Error"
+                        "Error",
                     )
                 }
             }
@@ -46,6 +46,6 @@ class ClearTransactionsAction : AnAction(
     override fun update(e: AnActionEvent) {
         val project = e.project
         e.presentation.isEnabled = project != null &&
-                project.getService(WormaCeptorService::class.java).isDeviceConnected()
+            project.getService(WormaCeptorService::class.java).isDeviceConnected()
     }
 }

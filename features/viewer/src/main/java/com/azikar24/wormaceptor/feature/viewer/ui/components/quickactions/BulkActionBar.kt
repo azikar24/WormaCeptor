@@ -22,9 +22,7 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +36,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -55,7 +52,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 
 /**
@@ -74,19 +70,19 @@ fun BulkActionBar(
     onExport: () -> Unit,
     onDelete: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = selectedCount > 0,
         enter = slideInVertically(
             initialOffsetY = { it },
-            animationSpec = tween(250)
+            animationSpec = tween(250),
         ) + fadeIn(animationSpec = tween(200)),
         exit = slideOutVertically(
             targetOffsetY = { it },
-            animationSpec = tween(200)
+            animationSpec = tween(200),
         ) + fadeOut(animationSpec = tween(150)),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             color = MaterialTheme.colorScheme.primaryContainer,
@@ -94,36 +90,36 @@ fun BulkActionBar(
             shadowElevation = WormaCeptorDesignSystem.Elevation.lg,
             shape = RoundedCornerShape(
                 topStart = WormaCeptorDesignSystem.CornerRadius.xl,
-                topEnd = WormaCeptorDesignSystem.CornerRadius.xl
-            )
+                topEnd = WormaCeptorDesignSystem.CornerRadius.xl,
+            ),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.md
+                        vertical = WormaCeptorDesignSystem.Spacing.md,
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Left side: Close button and selection count
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     // Close button
                     BulkActionIconButton(
                         icon = Icons.Default.Close,
                         contentDescription = "Cancel selection",
                         onClick = onCancel,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     // Selection count with badge
                     SelectionCountBadge(
                         count = selectedCount,
-                        total = totalCount
+                        total = totalCount,
                     )
 
                     // Select all button (if not all selected)
@@ -133,7 +129,7 @@ fun BulkActionBar(
                             contentDescription = "Select all",
                             onClick = onSelectAll,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
-                            compact = true
+                            compact = true,
                         )
                     }
                 }
@@ -141,14 +137,14 @@ fun BulkActionBar(
                 // Right side: Action buttons
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     // Share
                     BulkActionIconButton(
                         icon = Icons.Outlined.Share,
                         contentDescription = "Share selected",
                         onClick = onShare,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     // Export
@@ -156,7 +152,7 @@ fun BulkActionBar(
                         icon = Icons.Outlined.Download,
                         contentDescription = "Export selected",
                         onClick = onExport,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     // Vertical divider
@@ -165,8 +161,8 @@ fun BulkActionBar(
                             .width(1.dp)
                             .height(24.dp)
                             .background(
-                                MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f)
-                            )
+                                MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f),
+                            ),
                     )
 
                     // Delete - destructive action
@@ -175,7 +171,7 @@ fun BulkActionBar(
                         contentDescription = "Delete selected",
                         onClick = onDelete,
                         tint = MaterialTheme.colorScheme.error,
-                        destructive = true
+                        destructive = true,
                     )
                 }
             }
@@ -193,41 +189,41 @@ fun CompactBulkActionBar(
     onExport: () -> Unit,
     onDelete: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = selectedCount > 0,
         enter = expandVertically(animationSpec = tween(200)) + fadeIn(),
         exit = shrinkVertically(animationSpec = tween(150)) + fadeOut(),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     IconButton(
                         onClick = onCancel,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Cancel",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                     }
 
@@ -235,46 +231,46 @@ fun CompactBulkActionBar(
                         text = "$selectedCount selected",
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     IconButton(
                         onClick = onShare,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Share,
                             contentDescription = "Share",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                     }
 
                     IconButton(
                         onClick = onExport,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Download,
                             contentDescription = "Export",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                     }
 
                     IconButton(
                         onClick = onDelete,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
                             contentDescription = "Delete",
                             tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                     }
                 }
@@ -294,7 +290,7 @@ private fun BulkActionIconButton(
     tint: Color,
     modifier: Modifier = Modifier,
     destructive: Boolean = false,
-    compact: Boolean = false
+    compact: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -307,7 +303,7 @@ private fun BulkActionIconButton(
             else -> 1f
         },
         animationSpec = spring(stiffness = 400f),
-        label = "buttonScale"
+        label = "buttonScale",
     )
 
     val backgroundColor by animateColorAsState(
@@ -319,7 +315,7 @@ private fun BulkActionIconButton(
             else -> Color.Transparent
         },
         animationSpec = tween(100),
-        label = "buttonBg"
+        label = "buttonBg",
     )
 
     val buttonSize = if (compact) 36.dp else 40.dp
@@ -334,15 +330,15 @@ private fun BulkActionIconButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onClick
+                onClick = onClick,
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
             tint = tint,
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize),
         )
     }
 }
@@ -351,11 +347,7 @@ private fun BulkActionIconButton(
  * Badge showing the number of selected items.
  */
 @Composable
-private fun SelectionCountBadge(
-    count: Int,
-    total: Int,
-    modifier: Modifier = Modifier
-) {
+private fun SelectionCountBadge(count: Int, total: Int, modifier: Modifier = Modifier) {
     val allSelected = count == total
 
     val backgroundColor by animateColorAsState(
@@ -365,7 +357,7 @@ private fun SelectionCountBadge(
             MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.15f)
         },
         animationSpec = tween(200),
-        label = "badgeBg"
+        label = "badgeBg",
     )
 
     val textColor by animateColorAsState(
@@ -375,41 +367,41 @@ private fun SelectionCountBadge(
             MaterialTheme.colorScheme.onPrimaryContainer
         },
         animationSpec = tween(200),
-        label = "badgeText"
+        label = "badgeText",
     )
 
     Surface(
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
         color = backgroundColor,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             Text(
                 text = count.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = textColor
+                color = textColor,
             )
 
             if (!allSelected) {
                 Text(
                     text = "of $total",
                     style = MaterialTheme.typography.bodySmall,
-                    color = textColor.copy(alpha = 0.7f)
+                    color = textColor.copy(alpha = 0.7f),
                 )
             } else {
                 Text(
                     text = "All",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
-                    color = textColor.copy(alpha = 0.9f)
+                    color = textColor.copy(alpha = 0.9f),
                 )
             }
         }
@@ -426,44 +418,44 @@ fun FloatingBulkActionBar(
     onExport: () -> Unit,
     onDelete: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = selectedCount > 0,
         enter = slideInVertically(
             initialOffsetY = { it * 2 },
-            animationSpec = spring(dampingRatio = 0.7f)
+            animationSpec = spring(dampingRatio = 0.7f),
         ) + fadeIn(),
         exit = slideOutVertically(
             targetOffsetY = { it * 2 },
-            animationSpec = tween(150)
+            animationSpec = tween(150),
         ) + fadeOut(),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             color = MaterialTheme.colorScheme.inverseSurface,
             tonalElevation = WormaCeptorDesignSystem.Elevation.lg,
             shadowElevation = WormaCeptorDesignSystem.Elevation.lg,
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
         ) {
             Row(
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs
+                    vertical = WormaCeptorDesignSystem.Spacing.xs,
                 ),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 // Close button
                 IconButton(
                     onClick = onCancel,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Cancel",
                         tint = MaterialTheme.colorScheme.inverseOnSurface,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
 
@@ -472,7 +464,7 @@ fun FloatingBulkActionBar(
                     text = "$selectedCount",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.inverseOnSurface
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
                 )
 
                 // Divider
@@ -480,43 +472,43 @@ fun FloatingBulkActionBar(
                     modifier = Modifier
                         .width(1.dp)
                         .height(20.dp)
-                        .background(MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.3f))
+                        .background(MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.3f)),
                 )
 
                 // Actions
                 IconButton(
                     onClick = onShare,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Share,
                         contentDescription = "Share",
                         tint = MaterialTheme.colorScheme.inverseOnSurface,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
 
                 IconButton(
                     onClick = onExport,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Download,
                         contentDescription = "Export",
                         tint = MaterialTheme.colorScheme.inverseOnSurface,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
 
                 IconButton(
                     onClick = onDelete,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(36.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "Delete",
                         tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }

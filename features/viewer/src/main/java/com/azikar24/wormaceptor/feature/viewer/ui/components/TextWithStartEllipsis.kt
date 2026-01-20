@@ -34,14 +34,14 @@ fun TextWithStartEllipsis(
     style: TextStyle = LocalTextStyle.current,
 ) {
     val textMeasurer = rememberTextMeasurer()
-    val density = LocalDensity.current
+    LocalDensity.current
 
     val mergedStyle = style.merge(
         TextStyle(
             color = color,
             fontSize = fontSize,
-            fontWeight = fontWeight
-        )
+            fontWeight = fontWeight,
+        ),
     )
 
     BoxWithConstraints(modifier = modifier) {
@@ -64,7 +64,7 @@ fun TextWithStartEllipsis(
             style = style,
             maxLines = 1,
             overflow = TextOverflow.Clip,
-            softWrap = false
+            softWrap = false,
         )
     }
 }
@@ -73,7 +73,7 @@ private fun calculateStartEllipsisText(
     text: String,
     maxWidthPx: Int,
     style: TextStyle,
-    textMeasurer: androidx.compose.ui.text.TextMeasurer
+    textMeasurer: androidx.compose.ui.text.TextMeasurer,
 ): String {
     val fullTextWidth = textMeasurer.measure(text, style).size.width
 

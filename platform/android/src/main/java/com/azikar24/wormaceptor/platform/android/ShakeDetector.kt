@@ -65,7 +65,7 @@ class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
         fun start(activity: ComponentActivity, onShake: () -> Unit) {
             val sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) ?: return
-            
+
             val shakeDetector = ShakeDetector(onShake)
             shakeDetector.setOnShakeListener(object : OnShakeListener {
                 override fun onShake(count: Int) {

@@ -8,5 +8,5 @@ data class Response(
     val error: String? = null,
     val protocol: String? = null,
     val tlsVersion: String? = null,
-    val bodySize: Long = 0
+    val bodySize: Long = 0,
 )

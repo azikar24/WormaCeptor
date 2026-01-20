@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.util.UUID
 
-class WormaCeptorInterceptor() : Interceptor {
+class WormaCeptorInterceptor : Interceptor {
 
     enum class Period { ONE_HOUR, ONE_DAY, ONE_WEEK, ONE_MONTH, FOREVER }
 
@@ -30,7 +30,7 @@ class WormaCeptorInterceptor() : Interceptor {
         "application/x-7z-compressed",
         "application/vnd.",
         "font/",
-        "model/"
+        "model/",
     )
 
     /**
@@ -52,29 +52,29 @@ class WormaCeptorInterceptor() : Interceptor {
         return when {
             // PNG: 89 50 4E 47 0D 0A 1A 0A
             data[0] == 0x89.toByte() && data[1] == 0x50.toByte() &&
-                    data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> true
+                data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> true
 
             // JPEG: FF D8 FF
             data[0] == 0xFF.toByte() && data[1] == 0xD8.toByte() &&
-                    data[2] == 0xFF.toByte() -> true
+                data[2] == 0xFF.toByte() -> true
 
             // GIF: 47 49 46 38
             data[0] == 0x47.toByte() && data[1] == 0x49.toByte() &&
-                    data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> true
+                data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> true
 
             // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
             data.size >= 12 && data[0] == 0x52.toByte() && data[1] == 0x49.toByte() &&
-                    data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
-                    data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
-                    data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> true
+                data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
+                data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
+                data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> true
 
             // PDF: 25 50 44 46 (%PDF)
             data[0] == 0x25.toByte() && data[1] == 0x50.toByte() &&
-                    data[2] == 0x44.toByte() && data[3] == 0x46.toByte() -> true
+                data[2] == 0x44.toByte() && data[3] == 0x46.toByte() -> true
 
             // ZIP: 50 4B 03 04
             data[0] == 0x50.toByte() && data[1] == 0x4B.toByte() &&
-                    data[2] == 0x03.toByte() && data[3] == 0x04.toByte() -> true
+                data[2] == 0x03.toByte() && data[3] == 0x04.toByte() -> true
 
             // GZIP: 1F 8B
             data[0] == 0x1F.toByte() && data[1] == 0x8B.toByte() -> true
@@ -90,16 +90,16 @@ class WormaCeptorInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val provider = WormaCeptorApi.provider ?: return chain.proceed(chain.request())
         val redaction = WormaCeptorApi.redactionConfig
-        
+
         val request = chain.request()
         var transactionId: UUID? = null
-        
+
         // 1. Capture Request
         try {
             val buffer = okio.Buffer()
             request.body?.writeTo(buffer)
             val bodySize = buffer.size
-            
+
             val cleanHeaders = request.headers.toMultimap().mapValues { (key, values) ->
                 if (redaction.headersToRedact.contains(key.lowercase())) {
                     listOf(redaction.replacementText)
@@ -114,14 +114,16 @@ class WormaCeptorInterceptor() : Interceptor {
                     bodyText = bodyText.replace(regex, redaction.replacementText)
                 }
                 bodyText.byteInputStream()
-            } else null
+            } else {
+                null
+            }
 
             transactionId = provider.startTransaction(
                 url = request.url.toString(),
                 method = request.method,
                 headers = cleanHeaders,
                 bodyStream = bodyStream,
-                bodySize = bodySize
+                bodySize = bodySize,
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -132,19 +134,19 @@ class WormaCeptorInterceptor() : Interceptor {
         try {
             response = chain.proceed(request)
         } catch (e: Exception) {
-             if (transactionId != null) {
-                 provider.completeTransaction(
-                     id = transactionId,
-                     code = 0,
-                     message = "FAILED",
-                     headers = emptyMap(),
-                     bodyStream = null,
-                     bodySize = 0,
-                     protocol = null,
-                     tlsVersion = null,
-                     error = e.toString()
-                 )
-             }
+            if (transactionId != null) {
+                provider.completeTransaction(
+                    id = transactionId,
+                    code = 0,
+                    message = "FAILED",
+                    headers = emptyMap(),
+                    bodyStream = null,
+                    bodySize = 0,
+                    protocol = null,
+                    tlsVersion = null,
+                    error = e.toString(),
+                )
+            }
             throw e
         }
 
@@ -199,7 +201,7 @@ class WormaCeptorInterceptor() : Interceptor {
                     bodySize = bodySize,
                     protocol = protocol,
                     tlsVersion = tlsVersion,
-                    error = null
+                    error = null,
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -220,14 +222,14 @@ class WormaCeptorInterceptor() : Interceptor {
     }
 
     fun retainDataFor(period: Period): WormaCeptorInterceptor {
-        val millis = when(period) {
+        val millis = when (period) {
             Period.ONE_HOUR -> 60 * 60 * 1000L
             Period.ONE_DAY -> 24 * 60 * 60 * 1000L
             Period.ONE_WEEK -> 7 * 24 * 60 * 60 * 1000L
             Period.ONE_MONTH -> 30 * 24 * 60 * 60 * 1000L
             Period.FOREVER -> 0L
         }
-        
+
         if (millis > 0) {
             val threshold = System.currentTimeMillis() - millis
             WormaCeptorApi.provider?.cleanup(threshold)
@@ -244,4 +246,3 @@ class WormaCeptorInterceptor() : Interceptor {
         return this
     }
 }
-

@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -73,156 +72,162 @@ class ViewerActivity : ComponentActivity() {
                 // This prevents white flash in dark mode when navigating back
                 Surface(modifier = Modifier.fillMaxSize()) {
                     NavHost(
-                    navController = navController,
-                    startDestination = "home",
-                    enterTransition = {
-                        slideIntoContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Start,
-                            animationSpec = tween(400, easing = FastOutSlowInEasing),
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Start,
-                            animationSpec = tween(400, easing = FastOutSlowInEasing),
-                        )
-                    },
-                    popEnterTransition = {
-                        slideIntoContainer(
-                            AnimatedContentTransitionScope.SlideDirection.End,
-                            animationSpec = tween(400, easing = FastOutSlowInEasing),
-                        )
-                    },
-                    popExitTransition = {
-                        slideOutOfContainer(
-                            AnimatedContentTransitionScope.SlideDirection.End,
-                            animationSpec = tween(300, easing = FastOutSlowInEasing),
-                        )
-                    }
-                ) {
-                    composable("home") {
-                        HomeScreen(
-                            transactions = transactions,
-                            crashes = crashes,
-                            searchQuery = searchQuery,
-                            onSearchChanged = viewModel::onSearchQueryChanged,
-                            onTransactionClick = { navController.navigate("detail/${it.id}") },
-                            onCrashClick = { crash -> navController.navigate("crash/${crash.timestamp}") },
-                            filterMethod = filterMethod,
-                            filterStatusRange = filterStatusRange,
-                            onMethodFilterChanged = viewModel::setMethodFilter,
-                            onStatusFilterChanged = viewModel::setStatusFilter,
-                            onClearFilters = viewModel::clearFilters,
-                            onClearTransactions = { viewModel.clearAllTransactions() },
-                            onClearCrashes = { viewModel.clearAllCrashes() },
-                            onExportTransactions = {
-                                val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(this@ViewerActivity)
-                                val allTransactionsForExport = CoreHolder.queryEngine!!.getAllTransactionsForExport()
-                                exportManager.exportTransactions(allTransactionsForExport)
-                            },
-                            onExportCrashes = {
-                                val allCrashes = crashes
-                                com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(this@ViewerActivity, allCrashes)
-                            },
-                            selectedTabIndex = selectedTabIndex,
-                            onTabSelected = viewModel::updateSelectedTab,
-                            allTransactions = allTransactions,
-                            isRefreshingTransactions = isRefreshingTransactions,
-                            isRefreshingCrashes = isRefreshingCrashes,
-                            onRefreshTransactions = viewModel::refreshTransactions,
-                            onRefreshCrashes = viewModel::refreshCrashes,
-                            selectedIds = selectedIds,
-                            isSelectionMode = isSelectionMode,
-                            onSelectionToggle = viewModel::toggleSelection,
-                            onSelectAll = viewModel::selectAll,
-                            onClearSelection = viewModel::clearSelection,
-                            onDeleteSelected = { viewModel.deleteSelected() },
-                            onShareSelected = {
-                                val selected = viewModel.getSelectedTransactions()
-                                shareTransactions(selected)
-                            },
-                            onExportSelected = {
-                                scope.launch {
+                        navController = navController,
+                        startDestination = "home",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Start,
+                                animationSpec = tween(400, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Start,
+                                animationSpec = tween(400, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popEnterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.End,
+                                animationSpec = tween(400, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.End,
+                                animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        composable("home") {
+                            HomeScreen(
+                                transactions = transactions,
+                                crashes = crashes,
+                                searchQuery = searchQuery,
+                                onSearchChanged = viewModel::onSearchQueryChanged,
+                                onTransactionClick = { navController.navigate("detail/${it.id}") },
+                                onCrashClick = { crash -> navController.navigate("crash/${crash.timestamp}") },
+                                filterMethod = filterMethod,
+                                filterStatusRange = filterStatusRange,
+                                onMethodFilterChanged = viewModel::setMethodFilter,
+                                onStatusFilterChanged = viewModel::setStatusFilter,
+                                onClearFilters = viewModel::clearFilters,
+                                onClearTransactions = { viewModel.clearAllTransactions() },
+                                onClearCrashes = { viewModel.clearAllCrashes() },
+                                onExportTransactions = {
+                                    val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                        this@ViewerActivity,
+                                    )
+                                    val allTransactionsForExport = CoreHolder.queryEngine!!.getAllTransactionsForExport()
+                                    exportManager.exportTransactions(allTransactionsForExport)
+                                },
+                                onExportCrashes = {
+                                    val allCrashes = crashes
+                                    com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(
+                                        this@ViewerActivity,
+                                        allCrashes,
+                                    )
+                                },
+                                selectedTabIndex = selectedTabIndex,
+                                onTabSelected = viewModel::updateSelectedTab,
+                                allTransactions = allTransactions,
+                                isRefreshingTransactions = isRefreshingTransactions,
+                                isRefreshingCrashes = isRefreshingCrashes,
+                                onRefreshTransactions = viewModel::refreshTransactions,
+                                onRefreshCrashes = viewModel::refreshCrashes,
+                                selectedIds = selectedIds,
+                                isSelectionMode = isSelectionMode,
+                                onSelectionToggle = viewModel::toggleSelection,
+                                onSelectAll = viewModel::selectAll,
+                                onClearSelection = viewModel::clearSelection,
+                                onDeleteSelected = { viewModel.deleteSelected() },
+                                onShareSelected = {
                                     val selected = viewModel.getSelectedTransactions()
-                                    val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(this@ViewerActivity)
-                                    val fullTransactions = selected.mapNotNull { summary ->
-                                        CoreHolder.queryEngine?.getDetails(summary.id)
+                                    shareTransactions(selected)
+                                },
+                                onExportSelected = {
+                                    scope.launch {
+                                        val selected = viewModel.getSelectedTransactions()
+                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                            this@ViewerActivity,
+                                        )
+                                        val fullTransactions = selected.mapNotNull { summary ->
+                                            CoreHolder.queryEngine?.getDetails(summary.id)
+                                        }
+                                        exportManager.exportTransactions(fullTransactions)
                                     }
-                                    exportManager.exportTransactions(fullTransactions)
-                                }
-                            },
-                            onCopyUrl = { transaction -> copyUrlToClipboard(transaction) },
-                            onShare = { transaction -> shareTransaction(transaction) },
-                            onDelete = { transaction ->
-                                scope.launch { viewModel.deleteTransaction(transaction.id) }
-                            },
-                            onCopyAsCurl = { transaction -> copyAsCurl(transaction) }
-                        )
-                    }
+                                },
+                                onCopyUrl = { transaction -> copyUrlToClipboard(transaction) },
+                                onShare = { transaction -> shareTransaction(transaction) },
+                                onDelete = { transaction ->
+                                    scope.launch { viewModel.deleteTransaction(transaction.id) }
+                                },
+                                onCopyAsCurl = { transaction -> copyAsCurl(transaction) },
+                            )
+                        }
 
-                    composable("detail/{id}") { backStackEntry ->
-                        val id = backStackEntry.arguments?.getString("id")
-                        if (id != null) {
-                            val uuid = java.util.UUID.fromString(id)
-                            // Snapshot the transaction list when entering the detail screen
-                            // This prevents the pager from jumping when new requests come in
-                            val snapshotKey = backStackEntry.id
-                            val (transactionIds, initialIndex) = remember(snapshotKey) {
-                                val ids = transactions.map { it.id }
-                                val index = ids.indexOf(uuid).coerceAtLeast(0)
-                                ids to index
+                        composable("detail/{id}") { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id")
+                            if (id != null) {
+                                val uuid = java.util.UUID.fromString(id)
+                                // Snapshot the transaction list when entering the detail screen
+                                // This prevents the pager from jumping when new requests come in
+                                val snapshotKey = backStackEntry.id
+                                val (transactionIds, initialIndex) = remember(snapshotKey) {
+                                    val ids = transactions.map { it.id }
+                                    val index = ids.indexOf(uuid).coerceAtLeast(0)
+                                    ids to index
+                                }
+
+                                if (transactionIds.isNotEmpty()) {
+                                    TransactionDetailPagerScreen(
+                                        transactionIds = transactionIds,
+                                        initialTransactionIndex = initialIndex,
+                                        getTransaction = { transactionId ->
+                                            CoreHolder.queryEngine!!.getDetails(transactionId)
+                                        },
+                                        onBack = { navController.popBackStack() },
+                                    )
+                                } else {
+                                    // Fallback for single transaction view
+                                    var transaction by remember {
+                                        mutableStateOf<NetworkTransaction?>(null)
+                                    }
+
+                                    androidx.compose.runtime.LaunchedEffect(uuid) {
+                                        transaction = CoreHolder.queryEngine!!.getDetails(uuid)
+                                    }
+
+                                    transaction?.let {
+                                        TransactionDetailScreen(
+                                            transaction = it,
+                                            onBack = { navController.popBackStack() },
+                                        )
+                                    }
+                                }
                             }
+                        }
 
-                            if (transactionIds.isNotEmpty()) {
-                                TransactionDetailPagerScreen(
-                                    transactionIds = transactionIds,
-                                    initialTransactionIndex = initialIndex,
-                                    getTransaction = { transactionId ->
-                                        CoreHolder.queryEngine!!.getDetails(transactionId)
-                                    },
-                                    onBack = { navController.popBackStack() }
-                                )
-                            } else {
-                                // Fallback for single transaction view
-                                var transaction by remember {
-                                    mutableStateOf<NetworkTransaction?>(null)
-                                }
-
-                                androidx.compose.runtime.LaunchedEffect(uuid) {
-                                    transaction = CoreHolder.queryEngine!!.getDetails(uuid)
-                                }
-
-                                transaction?.let {
-                                    TransactionDetailScreen(
-                                        transaction = it,
-                                        onBack = { navController.popBackStack() }
+                        composable("crash/{timestamp}") { backStackEntry ->
+                            val timestamp = backStackEntry.arguments?.getString("timestamp")?.toLongOrNull()
+                            if (timestamp != null) {
+                                val crash = crashes.find { it.timestamp == timestamp }
+                                crash?.let {
+                                    CrashDetailScreen(
+                                        crash = it,
+                                        onBack = { navController.popBackStack() },
                                     )
                                 }
                             }
                         }
                     }
-
-                    composable("crash/{timestamp}") { backStackEntry ->
-                        val timestamp = backStackEntry.arguments?.getString("timestamp")?.toLongOrNull()
-                        if (timestamp != null) {
-                            val crash = crashes.find { it.timestamp == timestamp }
-                            crash?.let {
-                                CrashDetailScreen(
-                                    crash = it,
-                                    onBack = { navController.popBackStack() }
-                                )
-                            }
-                        }
-                    }
                 }
-                }
-
             }
         }
     }
 
     private fun copyUrlToClipboard(transaction: TransactionSummary) {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val url = buildFullUrl(transaction)
         val clip = ClipData.newPlainText("URL", url)
         clipboard.setPrimaryClip(clip)
@@ -268,7 +273,7 @@ class ViewerActivity : ComponentActivity() {
             }
 
             val curl = buildCurlCommand(fullTransaction)
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("cURL", curl)
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this@ViewerActivity, "cURL command copied to clipboard", Toast.LENGTH_SHORT).show()

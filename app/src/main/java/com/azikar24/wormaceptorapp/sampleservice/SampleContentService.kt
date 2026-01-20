@@ -25,7 +25,7 @@ object SampleContentService {
                 WormaCeptorInterceptor()
                     .showNotification(true)
                     .maxContentLength(500000L) // Larger limit for PDFs/images
-                    .retainDataFor(WormaCeptorInterceptor.Period.FOREVER)
+                    .retainDataFor(WormaCeptorInterceptor.Period.FOREVER),
             )
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
             .build()

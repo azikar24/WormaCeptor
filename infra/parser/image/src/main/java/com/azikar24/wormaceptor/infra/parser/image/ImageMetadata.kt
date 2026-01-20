@@ -18,13 +18,13 @@ data class ImageMetadata(
     val colorSpace: String? = null,
     val hasAlpha: Boolean = false,
     val bitDepth: Int? = null,
-    val fileSize: Long
+    val fileSize: Long,
 ) {
     /**
      * Returns formatted dimensions string (e.g., "1920x1080").
      */
     val dimensionsString: String
-        get() = "${width}x${height}"
+        get() = "${width}x$height"
 
     /**
      * Returns human-readable file size string.
@@ -44,7 +44,7 @@ data class ImageMetadata(
             width = 0,
             height = 0,
             format = "Unknown",
-            fileSize = fileSize
+            fileSize = fileSize,
         )
     }
 }

@@ -31,7 +31,8 @@ enum class QuickFilter(val label: String) {
     LARGE(">100KB"),
     TODAY("Today"),
     JSON("JSON"),
-    IMAGES("Images");
+    IMAGES("Images"),
+    ;
 
     /**
      * Returns true if the transaction matches this filter criteria.
@@ -42,14 +43,14 @@ enum class QuickFilter(val label: String) {
         LARGE -> false // Would need response size in TransactionSummary
         TODAY -> isToday(transaction.timestamp)
         JSON -> transaction.path.contains(".json", ignoreCase = true) ||
-                transaction.path.contains("json", ignoreCase = true)
+            transaction.path.contains("json", ignoreCase = true)
         IMAGES -> transaction.path.let { path ->
             path.endsWith(".png", ignoreCase = true) ||
-            path.endsWith(".jpg", ignoreCase = true) ||
-            path.endsWith(".jpeg", ignoreCase = true) ||
-            path.endsWith(".gif", ignoreCase = true) ||
-            path.endsWith(".webp", ignoreCase = true) ||
-            path.endsWith(".svg", ignoreCase = true)
+                path.endsWith(".jpg", ignoreCase = true) ||
+                path.endsWith(".jpeg", ignoreCase = true) ||
+                path.endsWith(".gif", ignoreCase = true) ||
+                path.endsWith(".webp", ignoreCase = true) ||
+                path.endsWith(".svg", ignoreCase = true)
         }
     }
 
@@ -71,12 +72,12 @@ fun QuickFilterBar(
     activeFilters: Set<QuickFilter>,
     onFilterToggle: (QuickFilter) -> Unit,
     modifier: Modifier = Modifier,
-    availableFilters: List<QuickFilter> = QuickFilter.entries
+    availableFilters: List<QuickFilter> = QuickFilter.entries,
 ) {
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+        contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.lg),
     ) {
         items(availableFilters) { filter ->
             val isSelected = filter in activeFilters
@@ -87,7 +88,7 @@ fun QuickFilterBar(
                 label = {
                     Text(
                         text = filter.label,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 },
                 leadingIcon = if (isSelected) {
@@ -95,21 +96,23 @@ fun QuickFilterBar(
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
                         )
                     }
-                } else null,
+                } else {
+                    null
+                },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
                     selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                     enabled = true,
-                    selected = isSelected
-                )
+                    selected = isSelected,
+                ),
             )
         }
     }
@@ -119,9 +122,7 @@ fun QuickFilterBar(
  * Applies all active quick filters to a list of transactions.
  * Uses AND logic: a transaction must match ALL active filters.
  */
-fun List<TransactionSummary>.applyQuickFilters(
-    activeFilters: Set<QuickFilter>
-): List<TransactionSummary> {
+fun List<TransactionSummary>.applyQuickFilters(activeFilters: Set<QuickFilter>): List<TransactionSummary> {
     if (activeFilters.isEmpty()) return this
 
     return filter { transaction ->

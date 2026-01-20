@@ -23,7 +23,7 @@ class ProtobufBodyParser : BodyParser {
         "application/protobuf",
         "application/x-google-protobuf",
         "application/grpc",
-        "application/grpc+proto"
+        "application/grpc+proto",
     )
 
     override val priority: Int = 150
@@ -52,7 +52,7 @@ class ProtobufBodyParser : BodyParser {
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.PROTOBUF,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -65,9 +65,9 @@ class ProtobufBodyParser : BodyParser {
                 contentType = ContentType.PROTOBUF,
                 metadata = mapOf(
                     "fieldCount" to fields.size.toString(),
-                    "size" to body.size.toString()
+                    "size" to body.size.toString(),
                 ),
-                isValid = true
+                isValid = true,
             )
         } catch (e: Exception) {
             // Fall back to hex dump
@@ -77,7 +77,7 @@ class ProtobufBodyParser : BodyParser {
                 contentType = ContentType.PROTOBUF,
                 metadata = mapOf("size" to body.size.toString()),
                 isValid = false,
-                errorMessage = "Protobuf decoding error: ${e.message}"
+                errorMessage = "Protobuf decoding error: ${e.message}",
             )
         }
     }
@@ -381,5 +381,5 @@ data class ProtobufField(
     val fieldNumber: Int,
     val wireType: Int,
     val wireTypeName: String,
-    val value: String
+    val value: String,
 )

@@ -4,8 +4,6 @@
 
 package com.azikar24.wormaceptor.studio.statusbar
 
-import com.azikar24.wormaceptor.studio.model.TransactionSummary
-import com.azikar24.wormaceptor.studio.service.WormaCeptorService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget

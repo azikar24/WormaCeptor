@@ -60,7 +60,7 @@ private const val LONG_PRESS_SCALE = 0.94f
 fun Modifier.longPressWithFeedback(
     onLongPress: () -> Unit,
     onClick: () -> Unit = {},
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ): Modifier = composed {
     val hapticFeedback = LocalHapticFeedback.current
     val view = LocalView.current
@@ -86,8 +86,8 @@ fun Modifier.longPressWithFeedback(
                             targetValue = PRESS_SCALE,
                             animationSpec = tween(
                                 durationMillis = 100,
-                                easing = LinearEasing
-                            )
+                                easing = LinearEasing,
+                            ),
                         )
                     }
 
@@ -100,8 +100,8 @@ fun Modifier.longPressWithFeedback(
                             targetValue = LONG_PRESS_SCALE,
                             animationSpec = tween(
                                 durationMillis = 150,
-                                easing = LinearEasing
-                            )
+                                easing = LinearEasing,
+                            ),
                         )
 
                         // Trigger haptic feedback
@@ -113,7 +113,7 @@ fun Modifier.longPressWithFeedback(
                     }
 
                     // Wait for release
-                    val released = tryAwaitRelease()
+                    tryAwaitRelease()
 
                     // Cancel long-press if released before threshold
                     longPressJob?.cancel()
@@ -126,14 +126,14 @@ fun Modifier.longPressWithFeedback(
                             targetValue = 1f,
                             animationSpec = spring(
                                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                                stiffness = Spring.StiffnessHigh
-                            )
+                                stiffness = Spring.StiffnessHigh,
+                            ),
                         )
                     }
                 },
                 onTap = {
                     onClick()
-                }
+                },
             )
         }
 }
@@ -153,7 +153,7 @@ fun Modifier.longPressWithProgress(
     onLongPress: () -> Unit,
     onClick: () -> Unit = {},
     onProgressChange: (Float) -> Unit = {},
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ): Modifier = composed {
     val hapticFeedback = LocalHapticFeedback.current
     val view = LocalView.current
@@ -195,7 +195,7 @@ fun Modifier.longPressWithProgress(
                         }
                     }
 
-                    val released = tryAwaitRelease()
+                    tryAwaitRelease()
 
                     // Cleanup
                     longPressJob?.cancel()
@@ -207,14 +207,14 @@ fun Modifier.longPressWithProgress(
                             1f,
                             spring(
                                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                                stiffness = Spring.StiffnessHigh
-                            )
+                                stiffness = Spring.StiffnessHigh,
+                            ),
                         )
                     }
                 },
                 onTap = {
                     onClick()
-                }
+                },
             )
         }
 }
@@ -244,67 +244,60 @@ fun rememberLongPressState(): LongPressState = remember { LongPressState() }
  * @param onLongPress Called when long-press is detected
  * @param onClick Called when tap is detected
  */
-fun Modifier.longPressState(
-    state: LongPressState,
-    onLongPress: () -> Unit,
-    onClick: () -> Unit = {}
-): Modifier = composed {
-    val hapticFeedback = LocalHapticFeedback.current
-    val view = LocalView.current
-    val scope = rememberCoroutineScope()
+fun Modifier.longPressState(state: LongPressState, onLongPress: () -> Unit, onClick: () -> Unit = {}): Modifier =
+    composed {
+        val hapticFeedback = LocalHapticFeedback.current
+        val view = LocalView.current
+        val scope = rememberCoroutineScope()
 
-    var longPressJob by remember { mutableStateOf<Job?>(null) }
+        var longPressJob by remember { mutableStateOf<Job?>(null) }
 
-    this.pointerInput(Unit) {
-        detectTapGestures(
-            onPress = { _ ->
-                state.isPressing = true
-                state.isLongPressTriggered = false
+        this.pointerInput(Unit) {
+            detectTapGestures(
+                onPress = { _ ->
+                    state.isPressing = true
+                    state.isLongPressTriggered = false
 
-                // Start progress tracking
-                longPressJob = scope.launch {
-                    val startTime = System.currentTimeMillis()
+                    // Start progress tracking
+                    longPressJob = scope.launch {
+                        val startTime = System.currentTimeMillis()
 
-                    while (true) {
-                        val elapsed = System.currentTimeMillis() - startTime
-                        state.progress = (elapsed.toFloat() / LONG_PRESS_THRESHOLD_MS).coerceIn(0f, 1f)
+                        while (true) {
+                            val elapsed = System.currentTimeMillis() - startTime
+                            state.progress = (elapsed.toFloat() / LONG_PRESS_THRESHOLD_MS).coerceIn(0f, 1f)
 
-                        if (state.progress >= 1f && !state.isLongPressTriggered) {
-                            state.isLongPressTriggered = true
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                            onLongPress()
-                            break
+                            if (state.progress >= 1f && !state.isLongPressTriggered) {
+                                state.isLongPressTriggered = true
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                                onLongPress()
+                                break
+                            }
+
+                            delay(16)
                         }
-
-                        delay(16)
                     }
-                }
 
-                val released = tryAwaitRelease()
+                    tryAwaitRelease()
 
-                // Cleanup
-                longPressJob?.cancel()
-                longPressJob = null
-                state.isPressing = false
-                state.progress = 0f
-            },
-            onTap = {
-                onClick()
-            }
-        )
+                    // Cleanup
+                    longPressJob?.cancel()
+                    longPressJob = null
+                    state.isPressing = false
+                    state.progress = 0f
+                },
+                onTap = {
+                    onClick()
+                },
+            )
+        }
     }
-}
 
 /**
  * Convenience modifier combining scale animation with long-press state.
  */
 @Composable
-fun Modifier.animatedLongPress(
-    state: LongPressState,
-    onLongPress: () -> Unit,
-    onClick: () -> Unit = {}
-): Modifier {
+fun Modifier.animatedLongPress(state: LongPressState, onLongPress: () -> Unit, onClick: () -> Unit = {}): Modifier {
     val scale = remember { Animatable(1f) }
 
     LaunchedEffect(state.isPressing, state.progress) {
@@ -321,9 +314,9 @@ fun Modifier.animatedLongPress(
             } else {
                 spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessHigh
+                    stiffness = Spring.StiffnessHigh,
                 )
-            }
+            },
         )
     }
 

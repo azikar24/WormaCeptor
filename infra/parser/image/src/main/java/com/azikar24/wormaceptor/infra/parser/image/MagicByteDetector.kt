@@ -10,12 +10,21 @@ object MagicByteDetector {
 
     // PNG: 89 50 4E 47 0D 0A 1A 0A
     private val PNG_SIGNATURE = byteArrayOf(
-        0x89.toByte(), 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A
+        0x89.toByte(),
+        0x50,
+        0x4E,
+        0x47,
+        0x0D,
+        0x0A,
+        0x1A,
+        0x0A,
     )
 
     // JPEG: FF D8 FF
     private val JPEG_SIGNATURE = byteArrayOf(
-        0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte()
+        0xFF.toByte(),
+        0xD8.toByte(),
+        0xFF.toByte(),
     )
 
     // GIF87a or GIF89a: 47 49 46 38 (37|39) 61
@@ -119,8 +128,8 @@ object MagicByteDetector {
 
         val lowercasePreview = preview.lowercase()
         return lowercasePreview.contains(SVG_TAG) ||
-                lowercasePreview.contains(SVG_DOCTYPE) ||
-                (lowercasePreview.contains(XML_DECLARATION) && lowercasePreview.contains("svg"))
+            lowercasePreview.contains(SVG_DOCTYPE) ||
+            (lowercasePreview.contains(XML_DECLARATION) && lowercasePreview.contains("svg"))
     }
 
     /**

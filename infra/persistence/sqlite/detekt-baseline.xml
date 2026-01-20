@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:TransactionPagingSource.kt$TransactionPagingSource$override fun getRefreshKey(state: PagingState&lt;Int, TransactionSummary&gt;): Int?</ID>
+    <ID>LongParameterList:TransactionDao.kt$TransactionDao$( offset: Int, limit: Int, searchQuery: String?, statusMin: Int?, statusMax: Int?, method: String?, )</ID>
+    <ID>MaxLineLength:TransactionDao.kt$TransactionDao$"SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC"</ID>
+    <ID>MaximumLineLength:TransactionDao.kt$TransactionDao$ </ID>
+    <ID>OptionalUnit:FileSystemBlobStorage.kt$FileSystemBlobStorage$val file = File(blobDir, id) if (file.exists()) file.delete() Unit</ID>
+    <ID>SwallowedException:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TransactionPagingSource.kt$TransactionPagingSource$e: Exception</ID>
+    <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$(response?.bodySize ?: 0)</ID>
+    <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$(tx.response?.code?.let { it in statusRange } ?: false)</ID>
+  </CurrentIssues>
+</SmellBaseline>

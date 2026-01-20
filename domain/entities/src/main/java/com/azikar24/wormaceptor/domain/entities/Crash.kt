@@ -5,5 +5,5 @@ data class Crash(
     val timestamp: Long,
     val exceptionType: String,
     val message: String?,
-    val stackTrace: String
+    val stackTrace: String,
 )

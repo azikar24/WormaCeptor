@@ -13,25 +13,29 @@ import com.azikar24.wormaceptor.domain.contracts.ParsedBody
  * - Metadata extraction (title, meta tags)
  */
 class HtmlBodyParser(
-    private val indentString: String = "  "
+    private val indentString: String = "  ",
 ) : BodyParser {
 
     override val supportedContentTypes: List<String> = listOf(
         "text/html",
-        "application/xhtml+xml"
+        "application/xhtml+xml",
     )
 
     override val priority: Int = 230
 
     // Tags that should not have their content formatted
     private val preformattedTags = setOf(
-        "pre", "code", "script", "style", "textarea"
+        "pre",
+        "code",
+        "script",
+        "style",
+        "textarea",
     )
 
     // Void elements (self-closing)
     private val voidElements = setOf(
         "area", "base", "br", "col", "embed", "hr", "img", "input",
-        "link", "meta", "param", "source", "track", "wbr"
+        "link", "meta", "param", "source", "track", "wbr",
     )
 
     // Inline elements
@@ -40,7 +44,7 @@ class HtmlBodyParser(
         "cite", "code", "dfn", "em", "i", "img", "input", "kbd",
         "label", "map", "object", "output", "q", "samp", "script",
         "select", "small", "span", "strong", "sub", "sup", "textarea",
-        "time", "tt", "var"
+        "time", "tt", "var",
     )
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
@@ -57,8 +61,8 @@ class HtmlBodyParser(
 
         val content = String(body, Charsets.UTF_8).trim().lowercase()
         return content.startsWith("<!doctype html") ||
-               content.startsWith("<html") ||
-               (content.contains("<html") && content.contains("</html>"))
+            content.startsWith("<html") ||
+            (content.contains("<html") && content.contains("</html>"))
     }
 
     override fun parse(body: ByteArray): ParsedBody {
@@ -66,7 +70,7 @@ class HtmlBodyParser(
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.HTML,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -79,14 +83,14 @@ class HtmlBodyParser(
                 formatted = formatted,
                 contentType = ContentType.HTML,
                 metadata = metadata,
-                isValid = true
+                isValid = true,
             )
         } catch (e: Exception) {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.HTML,
                 isValid = false,
-                errorMessage = "HTML parsing error: ${e.message}"
+                errorMessage = "HTML parsing error: ${e.message}",
             )
         }
     }
@@ -263,13 +267,17 @@ class HtmlBodyParser(
         }
 
         // Extract meta description
-        val descRegex = """<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(RegexOption.IGNORE_CASE)
+        val descRegex = """<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
+            RegexOption.IGNORE_CASE,
+        )
         descRegex.find(html)?.let {
             metadata["description"] = it.groupValues[1]
         }
 
         // Also check alternate attribute order
-        val descRegex2 = """<meta\s+content\s*=\s*["']([^"']*)["']\s+name\s*=\s*["']description["']""".toRegex(RegexOption.IGNORE_CASE)
+        val descRegex2 = """<meta\s+content\s*=\s*["']([^"']*)["']\s+name\s*=\s*["']description["']""".toRegex(
+            RegexOption.IGNORE_CASE,
+        )
         if (!metadata.containsKey("description")) {
             descRegex2.find(html)?.let {
                 metadata["description"] = it.groupValues[1]
@@ -283,7 +291,9 @@ class HtmlBodyParser(
         }
 
         // Extract viewport
-        val viewportRegex = """<meta\s+name\s*=\s*["']viewport["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(RegexOption.IGNORE_CASE)
+        val viewportRegex = """<meta\s+name\s*=\s*["']viewport["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
+            RegexOption.IGNORE_CASE,
+        )
         viewportRegex.find(html)?.let {
             metadata["viewport"] = it.groupValues[1]
         }

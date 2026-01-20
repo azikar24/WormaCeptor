@@ -110,12 +110,12 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
         requestPanel.setData(
             headers = detail.requestHeaders,
             body = detail.requestBody,
-            size = detail.summary.requestSize
+            size = detail.summary.requestSize,
         )
         responsePanel.setData(
             headers = detail.responseHeaders,
             body = detail.responseBody,
-            size = detail.summary.responseSize
+            size = detail.summary.responseSize,
         )
         showCard(CARD_CONTENT)
     }
@@ -199,7 +199,13 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
             add(JBScrollPane(gridPanel), BorderLayout.CENTER)
         }
 
-        private fun addRow(panel: JPanel, gbc: GridBagConstraints, row: Int, labelText: String, valueComponent: javax.swing.JComponent) {
+        private fun addRow(
+            panel: JPanel,
+            gbc: GridBagConstraints,
+            row: Int,
+            labelText: String,
+            valueComponent: javax.swing.JComponent,
+        ) {
             gbc.gridx = 0
             gbc.gridy = row
             gbc.weightx = 0.0

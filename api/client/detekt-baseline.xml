@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$Companion</ID>
+    <ID>CyclomaticComplexMethod:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private fun addTransactionToCursor(cursor: MatrixCursor, item: Any)</ID>
+    <ID>CyclomaticComplexMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$private fun isBinaryByMagicBytes(data: ByteArray): Boolean</ID>
+    <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${ }</ID>
+    <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${}</ID>
+    <ID>LateinitUsage:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private lateinit var uriMatcher: UriMatcher</ID>
+    <ID>LongMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
+    <ID>LongParameterList:ServiceProvider.kt$ServiceProvider$( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long, protocol: String?, tlsVersion: String?, error: String?, )</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$10</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$1000L</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$11</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$12</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$24</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$250_000L</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$3</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$30</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$60</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$7</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$8</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$9</ID>
+    <ID>NestedBlockDepth:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
+    <ID>PrintStackTrace:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e</ID>
+    <ID>SwallowedException:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
+    <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
+    <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: NoSuchFieldException</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

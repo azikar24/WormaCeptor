@@ -16,7 +16,7 @@ import java.net.URLDecoder
 class FormBodyParser : BodyParser {
 
     override val supportedContentTypes: List<String> = listOf(
-        "application/x-www-form-urlencoded"
+        "application/x-www-form-urlencoded",
     )
 
     override val priority: Int = 220
@@ -42,7 +42,7 @@ class FormBodyParser : BodyParser {
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.FORM_DATA,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -55,16 +55,16 @@ class FormBodyParser : BodyParser {
                 formatted = formatted,
                 contentType = ContentType.FORM_DATA,
                 metadata = mapOf(
-                    "parameterCount" to params.size.toString()
+                    "parameterCount" to params.size.toString(),
                 ),
-                isValid = true
+                isValid = true,
             )
         } catch (e: Exception) {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.FORM_DATA,
                 isValid = false,
-                errorMessage = "Form data parsing error: ${e.message}"
+                errorMessage = "Form data parsing error: ${e.message}",
             )
         }
     }
@@ -76,7 +76,8 @@ class FormBodyParser : BodyParser {
         // Should not start with JSON/XML markers
         val trimmed = content.trim()
         if (trimmed.startsWith("{") || trimmed.startsWith("[") ||
-            trimmed.startsWith("<") || trimmed.startsWith("<!")) {
+            trimmed.startsWith("<") || trimmed.startsWith("<!")
+        ) {
             return false
         }
 
@@ -88,7 +89,7 @@ class FormBodyParser : BodyParser {
         return pairs.any { pair ->
             val parts = pair.split('=', limit = 2)
             parts.size >= 1 && parts[0].isNotEmpty() &&
-            isValidParameterName(parts[0])
+                isValidParameterName(parts[0])
         }
     }
 
@@ -119,21 +120,25 @@ class FormBodyParser : BodyParser {
                 val value = URLDecoder.decode(rawValue, "UTF-8")
                 val (baseName, arrayIndex, nestedKeys) = parseParameterName(key)
 
-                params.add(FormParameter(
-                    rawKey = rawKey,
-                    key = baseName,
-                    value = value,
-                    arrayIndex = arrayIndex,
-                    nestedKeys = nestedKeys
-                ))
+                params.add(
+                    FormParameter(
+                        rawKey = rawKey,
+                        key = baseName,
+                        value = value,
+                        arrayIndex = arrayIndex,
+                        nestedKeys = nestedKeys,
+                    ),
+                )
             } catch (e: Exception) {
                 // Keep raw values if decoding fails
-                params.add(FormParameter(
-                    rawKey = rawKey,
-                    key = rawKey,
-                    value = rawValue,
-                    decodingFailed = true
-                ))
+                params.add(
+                    FormParameter(
+                        rawKey = rawKey,
+                        key = rawKey,
+                        value = rawValue,
+                        decodingFailed = true,
+                    ),
+                )
             }
         }
 
@@ -233,5 +238,5 @@ data class FormParameter(
     val value: String,
     val arrayIndex: Int? = null,
     val nestedKeys: List<String> = emptyList(),
-    val decodingFailed: Boolean = false
+    val decodingFailed: Boolean = false,
 )

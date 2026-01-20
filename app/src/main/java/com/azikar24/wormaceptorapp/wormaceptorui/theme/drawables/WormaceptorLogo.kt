@@ -20,14 +20,14 @@ fun WormaceptorLogo(): ImageVector {
             defaultWidth = 787.dp,
             defaultHeight = 340.dp,
             viewportWidth = 787f,
-            viewportHeight = 340f
+            viewportHeight = 340f,
         ).apply {
             path(
                 fill = SolidColor(
-                    if(isDarkTheme) Color(0xFFFFFFFF) else Color(0xFF000000)
+                    if (isDarkTheme) Color(0xFFFFFFFF) else Color(0xFF000000),
                 ),
                 stroke = null,
-                pathFillType = NonZero
+                pathFillType = NonZero,
             ) {
                 moveTo(769.9f, 27.47f)
                 curveTo(756.72f, 9.5f, 736.37f, 0f, 711.05f, 0f)

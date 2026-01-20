@@ -23,19 +23,31 @@ class ExportManager(private val context: Context) {
                         put("status", transaction.status.name)
                         put("durationMs", transaction.durationMs)
 
-                        put("request", JSONObject().apply {
-                            put("url", transaction.request.url)
-                            put("method", transaction.request.method)
-                            put("headers", JSONObject(transaction.request.headers.mapValues { it.value.joinToString(", ") }))
-                            put("bodyRef", transaction.request.bodyRef)
-                        })
+                        put(
+                            "request",
+                            JSONObject().apply {
+                                put("url", transaction.request.url)
+                                put("method", transaction.request.method)
+                                put(
+                                    "headers",
+                                    JSONObject(transaction.request.headers.mapValues { it.value.joinToString(", ") }),
+                                )
+                                put("bodyRef", transaction.request.bodyRef)
+                            },
+                        )
 
                         transaction.response?.let { response ->
-                            put("response", JSONObject().apply {
-                                put("code", response.code)
-                                put("headers", JSONObject(response.headers.mapValues { it.value.joinToString(", ") }))
-                                put("bodyRef", response.bodyRef)
-                            })
+                            put(
+                                "response",
+                                JSONObject().apply {
+                                    put("code", response.code)
+                                    put(
+                                        "headers",
+                                        JSONObject(response.headers.mapValues { it.value.joinToString(", ") }),
+                                    )
+                                    put("bodyRef", response.bodyRef)
+                                },
+                            )
                         }
                     }
                     jsonArray.put(jsonObject)

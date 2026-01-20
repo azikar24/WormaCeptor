@@ -97,9 +97,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                     return@executeOnPooledThread
                 }
                 executeAdbCommand(
-                    "-s", device,
-                    "shell", "am", "start",
-                    "-n", "$pkg/com.azikar24.wormaceptor.feature.viewer.ViewerActivity"
+                    "-s",
+                    device,
+                    "shell",
+                    "am",
+                    "start",
+                    "-n",
+                    "$pkg/com.azikar24.wormaceptor.feature.viewer.ViewerActivity",
                 )
             } catch (e: Exception) {
                 log.warn("Failed to open viewer on device", e)
@@ -122,9 +126,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                     false
                 } else {
                     executeAdbCommand(
-                        "-s", device,
-                        "shell", "content", "delete",
-                        "--uri", "content://$authority/transactions"
+                        "-s",
+                        device,
+                        "shell",
+                        "content",
+                        "delete",
+                        "--uri",
+                        "content://$authority/transactions",
                     )
                     true
                 }
@@ -161,9 +169,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                 }
 
                 val result = executeAdbCommand(
-                    "-s", device,
-                    "shell", "content", "query",
-                    "--uri", "content://$authority/status"
+                    "-s",
+                    device,
+                    "shell",
+                    "content",
+                    "query",
+                    "--uri",
+                    "content://$authority/status",
                 )
                 val active = result.contains("capturing=true")
                 val count = Regex("count=(\\d+)").find(result)?.groupValues?.get(1)?.toIntOrNull() ?: 0
@@ -198,9 +210,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         return try {
             val authority = getContentAuthority(device) ?: return emptyList()
             val result = executeAdbCommand(
-                "-s", device,
-                "shell", "content", "query",
-                "--uri", "content://$authority/transactions"
+                "-s",
+                device,
+                "shell",
+                "content",
+                "query",
+                "--uri",
+                "content://$authority/transactions",
             )
             parseTransactionsOutput(result)
         } catch (e: Exception) {
@@ -216,9 +232,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
             val authority = getContentAuthority(device) ?: return null
             // Use the new /detail endpoint that returns JSON via openFile()
             val result = executeAdbCommand(
-                "-s", device,
-                "shell", "content", "read",
-                "--uri", "content://$authority/transaction/$id/detail"
+                "-s",
+                device,
+                "shell",
+                "content",
+                "read",
+                "--uri",
+                "content://$authority/transaction/$id/detail",
             )
             parseTransactionDetail(result)
         } catch (e: Exception) {
@@ -250,7 +270,7 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                     timestamp = fields["timestamp"]?.toLongOrNull() ?: System.currentTimeMillis(),
                     contentType = fields["content_type"],
                     requestSize = fields["request_size"]?.toLongOrNull() ?: 0,
-                    responseSize = fields["response_size"]?.toLongOrNull() ?: 0
+                    responseSize = fields["response_size"]?.toLongOrNull() ?: 0,
                 )
                 transactions.add(transaction)
             } catch (e: Exception) {
@@ -310,7 +330,7 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                 timestamp = (data["timestamp"] as? Number)?.toLong() ?: System.currentTimeMillis(),
                 contentType = data["content_type"]?.toString(),
                 requestSize = (data["request_size"] as? Number)?.toLong() ?: 0,
-                responseSize = (data["response_size"] as? Number)?.toLong() ?: 0
+                responseSize = (data["response_size"] as? Number)?.toLong() ?: 0,
             )
 
             TransactionDetail(
@@ -322,7 +342,7 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
                 responseMessage = data["response_message"]?.toString(),
                 protocol = data["protocol"]?.toString(),
                 tlsVersion = data["tls_version"]?.toString(),
-                error = data["error"]?.toString()
+                error = data["error"]?.toString(),
             )
         } catch (e: Exception) {
             log.warn("Failed to parse transaction detail", e)
@@ -369,7 +389,7 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
             "$userHome/Android/Sdk/platform-tools/adb",
             // Windows default location
             "$userHome/AppData/Local/Android/Sdk/platform-tools/adb.exe",
-            "adb" // Fall back to PATH
+            "adb", // Fall back to PATH
         )
 
         for (path in adbPaths) {
@@ -432,9 +452,13 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     private fun tryContentProvider(device: String, packageName: String): Boolean {
         return try {
             val result = executeAdbCommand(
-                "-s", device,
-                "shell", "content", "query",
-                "--uri", "content://$packageName.wormaceptor.provider/status"
+                "-s",
+                device,
+                "shell",
+                "content",
+                "query",
+                "--uri",
+                "content://$packageName.wormaceptor.provider/status",
             )
             // If the query succeeds (no error), this package has the provider
             !result.contains("Unknown URI") && !result.contains("Could not find provider")

@@ -71,15 +71,15 @@ fun rememberShimmerBrush(): Brush {
                 durationMillis = 1200,
                 easing = LinearEasing,
             ),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "shimmerTranslate"
+        label = "shimmerTranslate",
     )
 
     return Brush.linearGradient(
         colors = shimmerColors,
         start = Offset(translateAnimation.value - 200f, 0f),
-        end = Offset(translateAnimation.value, 0f)
+        end = Offset(translateAnimation.value, 0f),
     )
 }
 
@@ -88,9 +88,7 @@ fun rememberShimmerBrush(): Brush {
  * Matches the exact layout of TransactionItem for seamless transition.
  */
 @Composable
-fun TransactionItemSkeleton(
-    modifier: Modifier = Modifier
-) {
+fun TransactionItemSkeleton(modifier: Modifier = Modifier) {
     val shimmerBrush = rememberShimmerBrush()
 
     Row(
@@ -98,27 +96,27 @@ fun TransactionItemSkeleton(
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             )
             .clip(WormaCeptorDesignSystem.Shapes.card)
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Status indicator skeleton
         Box(
             modifier = Modifier
                 .width(WormaCeptorDesignSystem.BorderWidth.thick)
                 .height(48.dp)
-                .background(shimmerBrush, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
+                .background(shimmerBrush, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
@@ -126,19 +124,19 @@ fun TransactionItemSkeleton(
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 // Method badge skeleton
                 SkeletonBox(
                     width = 36.dp,
                     height = 16.dp,
-                    brush = shimmerBrush
+                    brush = shimmerBrush,
                 )
                 // Path skeleton
                 SkeletonBox(
                     modifier = Modifier.weight(1f),
                     height = 18.dp,
-                    brush = shimmerBrush
+                    brush = shimmerBrush,
                 )
             }
 
@@ -149,7 +147,7 @@ fun TransactionItemSkeleton(
                 width = 120.dp,
                 height = 20.dp,
                 brush = shimmerBrush,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             )
         }
 
@@ -160,14 +158,14 @@ fun TransactionItemSkeleton(
             SkeletonBox(
                 width = 40.dp,
                 height = 24.dp,
-                brush = shimmerBrush
+                brush = shimmerBrush,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             // Duration skeleton
             SkeletonBox(
                 width = 32.dp,
                 height = 14.dp,
-                brush = shimmerBrush
+                brush = shimmerBrush,
             )
         }
     }
@@ -182,13 +180,13 @@ fun SkeletonBox(
     width: Dp? = null,
     height: Dp = 16.dp,
     brush: Brush = rememberShimmerBrush(),
-    shape: RoundedCornerShape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+    shape: RoundedCornerShape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
 ) {
     Box(
         modifier = modifier
             .then(if (width != null) Modifier.width(width) else Modifier)
             .height(height)
-            .background(brush, shape)
+            .background(brush, shape),
     )
 }
 
@@ -196,10 +194,7 @@ fun SkeletonBox(
  * Multiple skeleton placeholders for initial loading state.
  */
 @Composable
-fun TransactionListSkeleton(
-    itemCount: Int = 5,
-    modifier: Modifier = Modifier
-) {
+fun TransactionListSkeleton(itemCount: Int = 5, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
         repeat(itemCount) { index ->
             // Staggered fade-in animation for each skeleton
@@ -208,13 +203,13 @@ fun TransactionListSkeleton(
                 animationSpec = tween(
                     durationMillis = WormaCeptorDesignSystem.AnimationDuration.normal,
                     delayMillis = index * 50,
-                    easing = FastOutSlowInEasing
+                    easing = FastOutSlowInEasing,
                 ),
-                label = "skeletonAlpha$index"
+                label = "skeletonAlpha$index",
             )
 
             TransactionItemSkeleton(
-                modifier = Modifier.graphicsLayer { alpha = animatedAlpha }
+                modifier = Modifier.graphicsLayer { alpha = animatedAlpha },
             )
         }
     }
@@ -229,19 +224,16 @@ fun TransactionListSkeleton(
  * Features a subtle pulsing animation and contextual messaging.
  */
 @Composable
-fun LoadingMoreIndicator(
-    modifier: Modifier = Modifier,
-    message: String = "Loading more transactions..."
-) {
+fun LoadingMoreIndicator(modifier: Modifier = Modifier, message: String = "Loading more transactions...") {
     val infiniteTransition = rememberInfiniteTransition(label = "loadingMore")
     val pulse by infiniteTransition.animateFloat(
         initialValue = 0.8f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(600, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulse"
+        label = "pulse",
     )
 
     Row(
@@ -249,7 +241,7 @@ fun LoadingMoreIndicator(
             .fillMaxWidth()
             .padding(WormaCeptorDesignSystem.Spacing.lg),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Animated dots loading indicator
         LoadingDots()
@@ -260,7 +252,7 @@ fun LoadingMoreIndicator(
             text = message,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = pulse),
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -275,7 +267,7 @@ private fun LoadingDots() {
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(dotCount) { index ->
             val delay = index * 150
@@ -287,11 +279,11 @@ private fun LoadingDots() {
                     animation = tween(
                         durationMillis = 400,
                         delayMillis = delay,
-                        easing = FastOutSlowInEasing
+                        easing = FastOutSlowInEasing,
                     ),
-                    repeatMode = RepeatMode.Reverse
+                    repeatMode = RepeatMode.Reverse,
                 ),
-                label = "dotY$index"
+                label = "dotY$index",
             )
 
             val animatedAlpha by infiniteTransition.animateFloat(
@@ -301,11 +293,11 @@ private fun LoadingDots() {
                     animation = tween(
                         durationMillis = 400,
                         delayMillis = delay,
-                        easing = LinearEasing
+                        easing = LinearEasing,
                     ),
-                    repeatMode = RepeatMode.Reverse
+                    repeatMode = RepeatMode.Reverse,
                 ),
-                label = "dotAlpha$index"
+                label = "dotAlpha$index",
             )
 
             Box(
@@ -314,8 +306,8 @@ private fun LoadingDots() {
                     .offset(y = animatedY.dp)
                     .background(
                         MaterialTheme.colorScheme.primary.copy(alpha = animatedAlpha),
-                        CircleShape
-                    )
+                        CircleShape,
+                    ),
             )
         }
     }
@@ -329,12 +321,12 @@ fun CompactLoadingSpinner(
     modifier: Modifier = Modifier,
     size: Dp = 16.dp,
     strokeWidth: Dp = 2.dp,
-    color: Color = MaterialTheme.colorScheme.primary
+    color: Color = MaterialTheme.colorScheme.primary,
 ) {
     CircularProgressIndicator(
         modifier = modifier.size(size),
         strokeWidth = strokeWidth,
-        color = color
+        color = color,
     )
 }
 
@@ -352,7 +344,7 @@ fun ErrorState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     errorType: ErrorType = ErrorType.GENERIC,
-    isRetrying: Boolean = false
+    isRetrying: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -360,16 +352,16 @@ fun ErrorState(
         targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         ),
-        label = "retryScale"
+        label = "retryScale",
     )
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(WormaCeptorDesignSystem.Spacing.xl),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Error icon with subtle background
         Box(
@@ -377,15 +369,15 @@ fun ErrorState(
                 .size(64.dp)
                 .background(
                     WormaCeptorColors.StatusRed.asSubtleBackground(),
-                    CircleShape
+                    CircleShape,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = errorType.icon,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = WormaCeptorColors.StatusRed
+                tint = WormaCeptorColors.StatusRed,
             )
         }
 
@@ -395,7 +387,7 @@ fun ErrorState(
             text = errorType.title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -405,7 +397,7 @@ fun ErrorState(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xl)
+            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xl),
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
@@ -418,37 +410,37 @@ fun ErrorState(
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,
-                    enabled = !isRetrying
+                    enabled = !isRetrying,
                 ) { onRetry() },
             color = MaterialTheme.colorScheme.primary,
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
         ) {
             Row(
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.xl,
-                    vertical = WormaCeptorDesignSystem.Spacing.md
+                    vertical = WormaCeptorDesignSystem.Spacing.md,
                 ),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (isRetrying) {
                     CompactLoadingSpinner(
                         size = 18.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
                     text = if (isRetrying) "Retrying..." else "Try Again",
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         }
@@ -459,27 +451,23 @@ fun ErrorState(
  * Compact inline error for append loading failures.
  */
 @Composable
-fun InlineErrorRetry(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(WormaCeptorDesignSystem.Spacing.md)
             .background(
                 WormaCeptorColors.StatusRed.asSubtleBackground(),
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)
+                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = Icons.Outlined.ErrorOutline,
             contentDescription = null,
             modifier = Modifier.size(20.dp),
-            tint = WormaCeptorColors.StatusRed
+            tint = WormaCeptorColors.StatusRed,
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -488,7 +476,7 @@ fun InlineErrorRetry(
             text = message,
             style = MaterialTheme.typography.bodySmall,
             color = WormaCeptorColors.StatusRed,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -497,13 +485,13 @@ fun InlineErrorRetry(
             onClick = onRetry,
             contentPadding = PaddingValues(
                 horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
         ) {
             Text(
                 text = "Retry",
                 fontWeight = FontWeight.SemiBold,
-                color = WormaCeptorColors.StatusRed
+                color = WormaCeptorColors.StatusRed,
             )
         }
     }
@@ -511,11 +499,11 @@ fun InlineErrorRetry(
 
 enum class ErrorType(
     val icon: ImageVector,
-    val title: String
+    val title: String,
 ) {
     GENERIC(Icons.Outlined.ErrorOutline, "Something went wrong"),
     NETWORK(Icons.Outlined.SignalWifiOff, "Connection error"),
-    NOT_FOUND(Icons.Outlined.Search, "Not found")
+    NOT_FOUND(Icons.Outlined.Search, "Not found"),
 }
 
 // ============================================================================
@@ -531,7 +519,7 @@ fun EnhancedEmptyState(
     modifier: Modifier = Modifier,
     hasActiveFilters: Boolean = false,
     hasSearchQuery: Boolean = false,
-    onClearFilters: () -> Unit = {}
+    onClearFilters: () -> Unit = {},
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "emptyState")
     val pulseAlpha by infiniteTransition.animateFloat(
@@ -539,9 +527,9 @@ fun EnhancedEmptyState(
         targetValue = 0.6f,
         animationSpec = infiniteRepeatable(
             animation = tween(2000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulse"
+        label = "pulse",
     )
 
     Column(
@@ -549,7 +537,7 @@ fun EnhancedEmptyState(
             .fillMaxSize()
             .padding(WormaCeptorDesignSystem.Spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         // Visual illustration
         Box(
@@ -557,18 +545,18 @@ fun EnhancedEmptyState(
                 .size(120.dp)
                 .background(
                     MaterialTheme.colorScheme.primary.copy(alpha = pulseAlpha * 0.2f),
-                    CircleShape
+                    CircleShape,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier
                     .size(80.dp)
                     .background(
                         MaterialTheme.colorScheme.primary.copy(alpha = pulseAlpha * 0.3f),
-                        CircleShape
+                        CircleShape,
                     ),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 // Network icon representation using shapes
                 EmptyStateIcon(hasActiveFilters = hasActiveFilters || hasSearchQuery)
@@ -585,7 +573,7 @@ fun EnhancedEmptyState(
             },
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -598,7 +586,7 @@ fun EnhancedEmptyState(
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         if (hasActiveFilters || hasSearchQuery) {
@@ -608,15 +596,15 @@ fun EnhancedEmptyState(
                 onClick = onClearFilters,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                 border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular
-                )
+                    width = WormaCeptorDesignSystem.BorderWidth.regular,
+                ),
             ) {
                 Text(
                     text = if (hasSearchQuery) "Clear Search" else "Clear Filters",
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                 )
             }
         }
@@ -634,21 +622,21 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
                 imageVector = Icons.Outlined.Search,
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
-                tint = primaryColor
+                tint = primaryColor,
             )
         } else {
             // Network-like icon using circles and lines
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
                 repeat(3) {
                     Box(
                         modifier = Modifier
                             .width(24.dp)
                             .height(4.dp)
-                            .background(primaryColor, RoundedCornerShape(2.dp))
+                            .background(primaryColor, RoundedCornerShape(2.dp)),
                     )
                 }
             }
@@ -665,21 +653,16 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
  * Shows remaining bytes and loading state.
  */
 @Composable
-fun LoadMoreBodyButton(
-    remainingBytes: Long,
-    isLoading: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun LoadMoreBodyButton(remainingBytes: Long, isLoading: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.97f else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         ),
-        label = "loadMoreScale"
+        label = "loadMoreScale",
     )
 
     Surface(
@@ -690,29 +673,29 @@ fun LoadMoreBodyButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                enabled = !isLoading
+                enabled = !isLoading,
             ) { onClick() },
         color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (isLoading) {
                 CompactLoadingSpinner(
                     size = 16.dp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
                     text = "Loading more content...",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             } else {
                 // Expand icon
@@ -721,15 +704,15 @@ fun LoadMoreBodyButton(
                         .size(20.dp)
                         .background(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                            CircleShape
+                            CircleShape,
                         ),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "+",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -737,13 +720,13 @@ fun LoadMoreBodyButton(
                     text = "Load more",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                 Text(
                     text = "(${formatBytes(remainingBytes)} remaining)",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
         }
@@ -754,27 +737,23 @@ fun LoadMoreBodyButton(
  * Progress indicator for body loading showing how much has been loaded.
  */
 @Composable
-fun BodyLoadingProgress(
-    loadedBytes: Long,
-    totalBytes: Long,
-    modifier: Modifier = Modifier
-) {
+fun BodyLoadingProgress(loadedBytes: Long, totalBytes: Long, modifier: Modifier = Modifier) {
     val progress = if (totalBytes > 0) loadedBytes.toFloat() / totalBytes else 0f
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = formatBytes(loadedBytes),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
             Text(
                 text = formatBytes(totalBytes),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
 
@@ -801,15 +780,11 @@ fun BodyLoadingProgress(
  * Appears with animation when user scrolls down.
  */
 @Composable
-fun ScrollToTopFab(
-    visible: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val rotation by animateFloatAsState(
         targetValue = if (visible) 0f else 180f,
         animationSpec = tween(300, easing = FastOutSlowInEasing),
-        label = "fabRotation"
+        label = "fabRotation",
     )
 
     AnimatedVisibility(
@@ -818,29 +793,29 @@ fun ScrollToTopFab(
         enter = scaleIn(
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium
-            )
+                stiffness = Spring.StiffnessMedium,
+            ),
         ) + fadeIn(),
         exit = scaleOut(
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium
-            )
-        ) + fadeOut()
+                stiffness = Spring.StiffnessMedium,
+            ),
+        ) + fadeOut(),
     ) {
         FloatingActionButton(
             onClick = onClick,
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             shape = CircleShape,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(48.dp),
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowUp,
                 contentDescription = "Scroll to top",
                 modifier = Modifier
                     .size(24.dp)
-                    .rotate(rotation)
+                    .rotate(rotation),
             )
         }
     }
@@ -854,7 +829,7 @@ fun ScrollToTopExtendedFab(
     visible: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    showItemCount: Int? = null
+    showItemCount: Int? = null,
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -863,16 +838,16 @@ fun ScrollToTopExtendedFab(
             initialOffsetY = { it },
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium
-            )
+                stiffness = Spring.StiffnessMedium,
+            ),
         ) + fadeIn(),
         exit = slideOutVertically(
             targetOffsetY = { it },
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium
-            )
-        ) + fadeOut()
+                stiffness = Spring.StiffnessMedium,
+            ),
+        ) + fadeOut(),
     ) {
         ExtendedFloatingActionButton(
             onClick = onClick,
@@ -881,15 +856,15 @@ fun ScrollToTopExtendedFab(
             icon = {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             },
             text = {
                 Text(
                     text = if (showItemCount != null) "Back to top ($showItemCount)" else "Back to top",
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
-            }
+            },
         )
     }
 }
@@ -928,33 +903,31 @@ private fun Modifier.graphicsLayer(block: androidx.compose.ui.graphics.GraphicsL
  * Matches the overview tab structure for seamless loading transition.
  */
 @Composable
-fun TransactionDetailSkeleton(
-    modifier: Modifier = Modifier
-) {
+fun TransactionDetailSkeleton(modifier: Modifier = Modifier) {
     val shimmerBrush = rememberShimmerBrush()
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(WormaCeptorDesignSystem.Spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Timing card skeleton
         DetailCardSkeleton(
             shimmerBrush = shimmerBrush,
-            rowCount = 6
+            rowCount = 6,
         )
 
         // Security card skeleton
         DetailCardSkeleton(
             shimmerBrush = shimmerBrush,
-            rowCount = 2
+            rowCount = 2,
         )
 
         // Data transfer card skeleton
         DetailCardSkeleton(
             shimmerBrush = shimmerBrush,
-            rowCount = 3
+            rowCount = 3,
         )
     }
 }
@@ -963,41 +936,37 @@ fun TransactionDetailSkeleton(
  * Skeleton for a detail card section.
  */
 @Composable
-private fun DetailCardSkeleton(
-    shimmerBrush: Brush,
-    rowCount: Int,
-    modifier: Modifier = Modifier
-) {
+private fun DetailCardSkeleton(shimmerBrush: Brush, rowCount: Int, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
         ),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f)
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
         ),
-        shape = WormaCeptorDesignSystem.Shapes.card
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Header row with icon and title
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 SkeletonBox(
                     width = 20.dp,
                     height = 20.dp,
                     brush = shimmerBrush,
-                    shape = CircleShape
+                    shape = CircleShape,
                 )
                 SkeletonBox(
                     width = 100.dp,
                     height = 20.dp,
-                    brush = shimmerBrush
+                    brush = shimmerBrush,
                 )
             }
 
@@ -1015,7 +984,7 @@ private fun DetailCardSkeleton(
                         1 -> 200.dp
                         2 -> 120.dp
                         else -> 180.dp
-                    }
+                    },
                 )
             }
         }
@@ -1026,25 +995,21 @@ private fun DetailCardSkeleton(
  * Skeleton for a single detail row (label: value pair).
  */
 @Composable
-private fun DetailRowSkeleton(
-    shimmerBrush: Brush,
-    labelWidth: Dp,
-    valueWidth: Dp
-) {
+private fun DetailRowSkeleton(shimmerBrush: Brush, labelWidth: Dp, valueWidth: Dp) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SkeletonBox(
             width = labelWidth,
             height = 14.dp,
-            brush = shimmerBrush
+            brush = shimmerBrush,
         )
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
         SkeletonBox(
             width = valueWidth,
             height = 14.dp,
-            brush = shimmerBrush
+            brush = shimmerBrush,
         )
     }
 }
@@ -1053,29 +1018,27 @@ private fun DetailRowSkeleton(
  * Skeleton for request/response tab content with headers and body.
  */
 @Composable
-fun RequestResponseTabSkeleton(
-    modifier: Modifier = Modifier
-) {
+fun RequestResponseTabSkeleton(modifier: Modifier = Modifier) {
     val shimmerBrush = rememberShimmerBrush()
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(WormaCeptorDesignSystem.Spacing.lg),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xl)
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xl),
     ) {
         // Headers section
         CollapsibleSectionSkeleton(
             shimmerBrush = shimmerBrush,
             title = "Headers",
-            contentRowCount = 5
+            contentRowCount = 5,
         )
 
         // Body section
         CollapsibleSectionSkeleton(
             shimmerBrush = shimmerBrush,
             title = "Body",
-            isBodySection = true
+            isBodySection = true,
         )
     }
 }
@@ -1089,28 +1052,28 @@ private fun CollapsibleSectionSkeleton(
     title: String,
     modifier: Modifier = Modifier,
     contentRowCount: Int = 0,
-    isBodySection: Boolean = false
+    isBodySection: Boolean = false,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         // Section header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 SkeletonBox(
                     width = 18.dp,
                     height = 18.dp,
-                    brush = shimmerBrush
+                    brush = shimmerBrush,
                 )
                 SkeletonBox(
                     width = 80.dp,
                     height = 16.dp,
-                    brush = shimmerBrush
+                    brush = shimmerBrush,
                 )
             }
 
@@ -1121,14 +1084,14 @@ private fun CollapsibleSectionSkeleton(
                         width = 60.dp,
                         height = 24.dp,
                         brush = shimmerBrush,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                     )
                     // Pretty/Raw toggle skeleton
                     SkeletonBox(
                         width = 80.dp,
                         height = 24.dp,
                         brush = shimmerBrush,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                     )
                 }
             }
@@ -1137,7 +1100,7 @@ private fun CollapsibleSectionSkeleton(
                 width = 32.dp,
                 height = 32.dp,
                 brush = shimmerBrush,
-                shape = CircleShape
+                shape = CircleShape,
             )
         }
 
@@ -1151,10 +1114,10 @@ private fun CollapsibleSectionSkeleton(
                     .fillMaxWidth()
                     .background(
                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        WormaCeptorDesignSystem.Shapes.chip
+                        WormaCeptorDesignSystem.Shapes.chip,
                     )
                     .padding(WormaCeptorDesignSystem.Spacing.md),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 repeat(8) { index ->
                     val widthFraction = when (index % 4) {
@@ -1166,7 +1129,7 @@ private fun CollapsibleSectionSkeleton(
                     SkeletonBox(
                         modifier = Modifier.fillMaxWidth(widthFraction),
                         height = 14.dp,
-                        brush = shimmerBrush
+                        brush = shimmerBrush,
                     )
                 }
             }
@@ -1186,7 +1149,7 @@ private fun CollapsibleSectionSkeleton(
                             1 -> 220.dp
                             2 -> 150.dp
                             else -> 200.dp
-                        }
+                        },
                     )
                 }
             }
@@ -1198,26 +1161,23 @@ private fun CollapsibleSectionSkeleton(
  * Full-screen loading state with centered spinner and message.
  */
 @Composable
-fun FullScreenLoading(
-    modifier: Modifier = Modifier,
-    message: String = "Loading..."
-) {
+fun FullScreenLoading(modifier: Modifier = Modifier, message: String = "Loading...") {
     Box(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(48.dp),
-                strokeWidth = 4.dp
+                strokeWidth = 4.dp,
             )
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
     }

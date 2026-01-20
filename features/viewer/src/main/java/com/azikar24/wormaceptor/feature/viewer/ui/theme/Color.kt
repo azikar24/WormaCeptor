@@ -73,6 +73,6 @@ object WormaCeptorColors {
     val StatusGrey = Color(0xFF9E9E9E)
 
     // Content type colors for filter chips
-    val ContentPurple = Color(0xFF6B5778)  // Matches tertiary for JSON/data types
-    val ContentCyan = Color(0xFF00838F)    // For media/image content
+    val ContentPurple = Color(0xFF6B5778) // Matches tertiary for JSON/data types
+    val ContentCyan = Color(0xFF00838F) // For media/image content
 }

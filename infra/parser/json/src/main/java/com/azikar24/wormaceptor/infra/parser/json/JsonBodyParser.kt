@@ -17,7 +17,7 @@ import org.json.JSONTokener
  * - Metadata extraction (root type, key count)
  */
 class JsonBodyParser(
-    private val indentSpaces: Int = 2
+    private val indentSpaces: Int = 2,
 ) : BodyParser {
 
     override val supportedContentTypes: List<String> = listOf(
@@ -26,7 +26,7 @@ class JsonBodyParser(
         "application/vnd.api+json",
         "application/hal+json",
         "application/ld+json",
-        "application/json-patch+json"
+        "application/json-patch+json",
     )
 
     override val priority: Int = 250
@@ -59,7 +59,7 @@ class JsonBodyParser(
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.JSON,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -75,8 +75,8 @@ class JsonBodyParser(
                         parsed.toString(indentSpaces),
                         mapOf(
                             "rootType" to "object",
-                            "keyCount" to parsed.length().toString()
-                        )
+                            "keyCount" to parsed.length().toString(),
+                        ),
                     )
                 }
                 is JSONArray -> {
@@ -84,8 +84,8 @@ class JsonBodyParser(
                         parsed.toString(indentSpaces),
                         mapOf(
                             "rootType" to "array",
-                            "elementCount" to parsed.length().toString()
-                        )
+                            "elementCount" to parsed.length().toString(),
+                        ),
                     )
                 }
                 else -> {
@@ -97,7 +97,7 @@ class JsonBodyParser(
                 formatted = formatted,
                 contentType = ContentType.JSON,
                 metadata = metadata,
-                isValid = true
+                isValid = true,
             )
         } catch (e: JSONException) {
             // Return raw content with error
@@ -105,7 +105,7 @@ class JsonBodyParser(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.JSON,
                 isValid = false,
-                errorMessage = "Invalid JSON: ${e.message}"
+                errorMessage = "Invalid JSON: ${e.message}",
             )
         }
     }

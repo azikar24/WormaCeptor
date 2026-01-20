@@ -24,22 +24,22 @@ import java.util.UUID
         Index(value = ["timestamp"]),
         Index(value = ["resCode"]),
         Index(value = ["reqMethod"]),
-        Index(value = ["timestamp", "resCode"])
-    ]
+        Index(value = ["timestamp", "resCode"]),
+    ],
 )
 data class TransactionEntity(
     @PrimaryKey val id: UUID,
     val timestamp: Long,
     val durationMs: Long?,
     val status: TransactionStatus,
-    
+
     // Request Fields
     val reqUrl: String,
     val reqMethod: String,
     val reqHeaders: Map<String, List<String>>,
     val reqBodyRef: String?,
     val reqBodySize: Long = 0,
-    
+
     // Response Fields
     val resCode: Int?,
     val resMessage: String?,
@@ -49,8 +49,8 @@ data class TransactionEntity(
     val resProtocol: String? = null,
     val resTlsVersion: String? = null,
     val resBodySize: Long = 0,
-    
-    val extensions: Map<String, String>
+
+    val extensions: Map<String, String>,
 ) {
     fun toDomain(): NetworkTransaction {
         return NetworkTransaction(
@@ -63,7 +63,7 @@ data class TransactionEntity(
                 method = reqMethod,
                 headers = reqHeaders,
                 bodyRef = reqBodyRef,
-                bodySize = reqBodySize
+                bodySize = reqBodySize,
             ),
             response = if (resCode != null && resMessage != null && resHeaders != null) {
                 Response(
@@ -74,10 +74,12 @@ data class TransactionEntity(
                     error = resError,
                     protocol = resProtocol,
                     tlsVersion = resTlsVersion,
-                    bodySize = resBodySize
+                    bodySize = resBodySize,
                 )
-            } else null,
-            extensions = extensions
+            } else {
+                null
+            },
+            extensions = extensions,
         )
     }
 
@@ -101,7 +103,7 @@ data class TransactionEntity(
                 resProtocol = domain.response?.protocol,
                 resTlsVersion = domain.response?.tlsVersion,
                 resBodySize = domain.response?.bodySize ?: 0,
-                extensions = domain.extensions
+                extensions = domain.extensions,
             )
         }
     }

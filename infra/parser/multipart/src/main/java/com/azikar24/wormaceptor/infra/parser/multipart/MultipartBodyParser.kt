@@ -18,7 +18,7 @@ class MultipartBodyParser : BodyParser {
         "multipart/form-data",
         "multipart/mixed",
         "multipart/alternative",
-        "multipart/related"
+        "multipart/related",
     )
 
     override val priority: Int = 210
@@ -42,7 +42,7 @@ class MultipartBodyParser : BodyParser {
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.MULTIPART,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -61,16 +61,16 @@ class MultipartBodyParser : BodyParser {
                     contentType = ContentType.MULTIPART,
                     metadata = mapOf(
                         "partCount" to parts.size.toString(),
-                        "boundary" to boundary
+                        "boundary" to boundary,
                     ),
-                    isValid = true
+                    isValid = true,
                 )
             } else {
                 ParsedBody(
                     formatted = content,
                     contentType = ContentType.MULTIPART,
                     isValid = false,
-                    errorMessage = "Could not detect multipart boundary"
+                    errorMessage = "Could not detect multipart boundary",
                 )
             }
         } catch (e: Exception) {
@@ -78,7 +78,7 @@ class MultipartBodyParser : BodyParser {
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.MULTIPART,
                 isValid = false,
-                errorMessage = "Multipart parsing error: ${e.message}"
+                errorMessage = "Multipart parsing error: ${e.message}",
             )
         }
     }
@@ -91,7 +91,7 @@ class MultipartBodyParser : BodyParser {
             return ParsedBody(
                 formatted = "",
                 contentType = ContentType.MULTIPART,
-                isValid = true
+                isValid = true,
             )
         }
 
@@ -101,7 +101,7 @@ class MultipartBodyParser : BodyParser {
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.MULTIPART,
                 isValid = false,
-                errorMessage = "Missing boundary in Content-Type"
+                errorMessage = "Missing boundary in Content-Type",
             )
         }
 
@@ -115,16 +115,16 @@ class MultipartBodyParser : BodyParser {
                 contentType = ContentType.MULTIPART,
                 metadata = mapOf(
                     "partCount" to parts.size.toString(),
-                    "boundary" to boundary
+                    "boundary" to boundary,
                 ),
-                isValid = true
+                isValid = true,
             )
         } catch (e: Exception) {
             ParsedBody(
                 formatted = String(body, Charsets.UTF_8),
                 contentType = ContentType.MULTIPART,
                 isValid = false,
-                errorMessage = "Multipart parsing error: ${e.message}"
+                errorMessage = "Multipart parsing error: ${e.message}",
             )
         }
     }
@@ -152,7 +152,7 @@ class MultipartBodyParser : BodyParser {
     private fun parseParts(content: String, boundary: String): List<MultipartPart> {
         val parts = mutableListOf<MultipartPart>()
         val delimiter = "--$boundary"
-        val endDelimiter = "--$boundary--"
+        "--$boundary--"
 
         // Split by boundary
         val sections = content.split(delimiter)
@@ -177,14 +177,16 @@ class MultipartBodyParser : BodyParser {
             val headers = parseHeaders(headerSection)
             val disposition = parseContentDisposition(headers["Content-Disposition"])
 
-            parts.add(MultipartPart(
-                name = disposition.name,
-                filename = disposition.filename,
-                contentType = headers["Content-Type"],
-                headers = headers,
-                content = bodyContent,
-                isBinary = isBinaryContent(headers["Content-Type"], bodyContent)
-            ))
+            parts.add(
+                MultipartPart(
+                    name = disposition.name,
+                    filename = disposition.filename,
+                    contentType = headers["Content-Type"],
+                    headers = headers,
+                    content = bodyContent,
+                    isBinary = isBinaryContent(headers["Content-Type"], bodyContent),
+                ),
+            )
         }
 
         return parts
@@ -236,7 +238,8 @@ class MultipartBodyParser : BodyParser {
                 type.startsWith("audio/") ||
                 type.startsWith("video/") ||
                 type.startsWith("application/octet-stream") ||
-                type.startsWith("application/pdf")) {
+                type.startsWith("application/pdf")
+            ) {
                 return true
             }
         }
@@ -300,7 +303,7 @@ data class MultipartPart(
     val contentType: String?,
     val headers: Map<String, String>,
     val content: String,
-    val isBinary: Boolean
+    val isBinary: Boolean,
 )
 
 /**
@@ -308,5 +311,5 @@ data class MultipartPart(
  */
 private data class ContentDisposition(
     val name: String? = null,
-    val filename: String? = null
+    val filename: String? = null,
 )

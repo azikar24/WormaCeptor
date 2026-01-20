@@ -60,7 +60,7 @@ fun SwipeBackContainer(
     enabled: Boolean = true,
     edgeWidth: Float = 48f,
     thresholdFraction: Float = 0.35f,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
@@ -102,8 +102,8 @@ fun SwipeBackContainer(
                                             targetValue = screenWidthPx,
                                             animationSpec = spring(
                                                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                                                stiffness = Spring.StiffnessMedium
-                                            )
+                                                stiffness = Spring.StiffnessMedium,
+                                            ),
                                         )
                                         onBack()
                                     } else {
@@ -112,8 +112,8 @@ fun SwipeBackContainer(
                                             targetValue = 0f,
                                             animationSpec = spring(
                                                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                                                stiffness = Spring.StiffnessHigh
-                                            )
+                                                stiffness = Spring.StiffnessHigh,
+                                            ),
                                         )
                                     }
                                     dragStartedFromEdge = false
@@ -126,8 +126,8 @@ fun SwipeBackContainer(
                                         targetValue = 0f,
                                         animationSpec = spring(
                                             dampingRatio = Spring.DampingRatioMediumBouncy,
-                                            stiffness = Spring.StiffnessHigh
-                                        )
+                                            stiffness = Spring.StiffnessHigh,
+                                        ),
                                     )
                                 }
                                 dragStartedFromEdge = false
@@ -148,13 +148,13 @@ fun SwipeBackContainer(
                                         }
                                     }
                                 }
-                            }
+                            },
                         )
                     }
                 } else {
                     Modifier
-                }
-            )
+                },
+            ),
     ) {
         // Background scrim that shows when swiping
         val progress = (offsetX.value / screenWidthPx).coerceIn(0f, 1f)
@@ -163,7 +163,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.3f * (1f - progress)))
+                    .background(Color.Black.copy(alpha = 0.3f * (1f - progress))),
             )
         }
 
@@ -178,21 +178,21 @@ fun SwipeBackContainer(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
                                 MaterialTheme.colorScheme.primaryContainer.copy(alpha = progress * 0.6f),
-                                Color.Transparent
-                            )
-                        )
+                                Color.Transparent,
+                            ),
+                        ),
                     ),
-                contentAlignment = Alignment.CenterStart
+                contentAlignment = Alignment.CenterStart,
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.primary.copy(
-                        alpha = (progress * 2f).coerceIn(0f, 1f)
+                        alpha = (progress * 2f).coerceIn(0f, 1f),
                     ),
                     modifier = Modifier
                         .offset { IntOffset((16f * progress).roundToInt(), 0) }
-                        .alpha((progress * 2f).coerceIn(0f, 1f))
+                        .alpha((progress * 2f).coerceIn(0f, 1f)),
                 )
             }
         }
@@ -205,10 +205,10 @@ fun SwipeBackContainer(
                 .shadow(
                     elevation = (16.dp * progress),
                     ambientColor = Color.Black.copy(alpha = 0.5f),
-                    spotColor = Color.Black.copy(alpha = 0.5f)
+                    spotColor = Color.Black.copy(alpha = 0.5f),
                 )
                 .background(MaterialTheme.colorScheme.surface),
-            content = content
+            content = content,
         )
     }
 }

@@ -4,10 +4,7 @@
 
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,7 +51,7 @@ fun PagedTransactionListScreen(
     hasActiveFilters: Boolean = false,
     hasSearchQuery: Boolean = false,
     onClearFilters: () -> Unit = {},
-    header: (@Composable () -> Unit)? = null
+    header: (@Composable () -> Unit)? = null,
 ) {
     val lazyListState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -75,14 +72,14 @@ fun PagedTransactionListScreen(
             isRefreshing = isRefreshing,
             onRefresh = { lazyPagingItems.refresh() },
             state = pullToRefreshState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             when {
                 // Initial loading state
                 lazyPagingItems.loadState.refresh is LoadState.Loading && lazyPagingItems.itemCount == 0 -> {
                     TransactionListSkeleton(
                         itemCount = 6,
-                        modifier = Modifier.padding(top = if (header != null) 72.dp else 0.dp)
+                        modifier = Modifier.padding(top = if (header != null) 72.dp else 0.dp),
                     )
                     // Still show header during loading
                     header?.let {
@@ -101,7 +98,7 @@ fun PagedTransactionListScreen(
                             message = error.localizedMessage ?: "Failed to load transactions",
                             onRetry = { lazyPagingItems.refresh() },
                             errorType = determineErrorType(error),
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }
@@ -114,7 +111,7 @@ fun PagedTransactionListScreen(
                             hasActiveFilters = hasActiveFilters,
                             hasSearchQuery = hasSearchQuery,
                             onClearFilters = onClearFilters,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }
@@ -124,7 +121,7 @@ fun PagedTransactionListScreen(
                     LazyColumn(
                         state = lazyListState,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs)
+                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         // Header
                         if (header != null) {
@@ -136,13 +133,13 @@ fun PagedTransactionListScreen(
                         // Transaction items
                         items(
                             count = lazyPagingItems.itemCount,
-                            key = { index -> lazyPagingItems.peek(index)?.id ?: "item_$index" }
+                            key = { index -> lazyPagingItems.peek(index)?.id ?: "item_$index" },
                         ) { index ->
                             lazyPagingItems[index]?.let { transaction ->
                                 PagedTransactionItem(
                                     transaction = transaction,
                                     onClick = { onItemClick(transaction) },
-                                    modifier = Modifier.animateItem()
+                                    modifier = Modifier.animateItem(),
                                 )
                             } ?: run {
                                 // Placeholder while item loads
@@ -162,7 +159,7 @@ fun PagedTransactionListScreen(
                                 item(key = "append_error") {
                                     InlineErrorRetry(
                                         message = error.localizedMessage ?: "Failed to load more",
-                                        onRetry = { lazyPagingItems.retry() }
+                                        onRetry = { lazyPagingItems.retry() },
                                     )
                                 }
                             }
@@ -190,7 +187,7 @@ fun PagedTransactionListScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         )
     }
 }
@@ -199,11 +196,7 @@ fun PagedTransactionListScreen(
  * Transaction item optimized for paged lists.
  */
 @Composable
-private fun PagedTransactionItem(
-    transaction: TransactionSummary,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val statusColor = when (transaction.status) {
         TransactionStatus.COMPLETED -> when {
             transaction.code == null -> WormaCeptorColors.StatusAmber
@@ -223,9 +216,9 @@ private fun PagedTransactionItem(
         targetValue = if (isPressed) 0.98f else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh
+            stiffness = Spring.StiffnessHigh,
         ),
-        label = "itemScale"
+        label = "itemScale",
     )
 
     Row(
@@ -233,26 +226,26 @@ private fun PagedTransactionItem(
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
             )
             .scale(scale)
             .clip(WormaCeptorDesignSystem.Shapes.card)
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .background(
                 color = statusColor.asSubtleBackground(),
-                shape = WormaCeptorDesignSystem.Shapes.card
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onClick
+                onClick = onClick,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Status indicator bar
         Box(
@@ -261,8 +254,8 @@ private fun PagedTransactionItem(
                 .height(48.dp)
                 .background(
                     statusColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
-                )
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                ),
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
@@ -270,7 +263,7 @@ private fun PagedTransactionItem(
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 MethodBadge(transaction.method)
                 Text(
@@ -279,7 +272,7 @@ private fun PagedTransactionItem(
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     modifier = Modifier.weight(1f, fill = false),
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 
@@ -294,7 +287,7 @@ private fun PagedTransactionItem(
             Surface(
                 color = statusColor.asSubtleBackground(),
                 contentColor = statusColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
             ) {
                 Text(
                     text = transaction.code?.toString() ?: "?",
@@ -302,15 +295,15 @@ private fun PagedTransactionItem(
                     fontSize = 14.sp,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs
-                    )
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                 )
             }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
                 text = formatDuration(transaction.tookMs),
                 fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
     }
@@ -321,7 +314,7 @@ private fun MethodBadge(method: String) {
     Surface(
         color = methodColor(method).copy(alpha = 0.15f),
         contentColor = methodColor(method),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
     ) {
         Text(
             text = method.uppercase(),
@@ -329,8 +322,8 @@ private fun MethodBadge(method: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }
@@ -339,7 +332,7 @@ private fun MethodBadge(method: String) {
 private fun HostChip(host: String) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill)
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(
             text = host,
@@ -347,8 +340,8 @@ private fun HostChip(host: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
         )
     }
 }
@@ -357,29 +350,27 @@ private fun HostChip(host: String) {
  * Indicator shown when the user has scrolled to the end of the list.
  */
 @Composable
-private fun EndOfListIndicator(
-    modifier: Modifier = Modifier
-) {
+private fun EndOfListIndicator(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.xl,
-                vertical = WormaCeptorDesignSystem.Spacing.lg
+                vertical = WormaCeptorDesignSystem.Spacing.lg,
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HorizontalDivider(
             modifier = Modifier
                 .width(40.dp)
                 .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-            thickness = 2.dp
+            thickness = 2.dp,
         )
         Text(
             text = "You've reached the end",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
         )
     }
 }
@@ -396,7 +387,9 @@ private fun methodColor(method: String): Color = when (method.uppercase()) {
 private fun determineErrorType(error: Throwable): ErrorType {
     val message = error.message?.lowercase() ?: ""
     return when {
-        message.contains("network") || message.contains("connection") || message.contains("timeout") -> ErrorType.NETWORK
+        message.contains(
+            "network",
+        ) || message.contains("connection") || message.contains("timeout") -> ErrorType.NETWORK
         message.contains("not found") || message.contains("404") -> ErrorType.NOT_FOUND
         else -> ErrorType.GENERIC
     }

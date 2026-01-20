@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
@@ -49,10 +48,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashDetailScreen(
-    crash: Crash,
-    onBack: () -> Unit
-) {
+fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
     val context = LocalContext.current
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
@@ -76,16 +72,16 @@ fun CrashDetailScreen(
                     IconButton(onClick = { shareCrash(context, crash) }) {
                         Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(WormaCeptorDesignSystem.Spacing.lg)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Exception Info Card
             ExceptionInfoCard(crash, dateFormat)
@@ -116,28 +112,28 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f)
-        )
+            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f),
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Error indicator
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill))
-                        .background(MaterialTheme.colorScheme.error)
+                        .background(MaterialTheme.colorScheme.error),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
                     text = "CRASH",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.error,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
 
@@ -149,7 +145,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                     text = crash.exceptionType,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.error,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
 
@@ -159,7 +155,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
             Text(
                 text = dateFormat.format(Date(crash.timestamp)),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             // Crash Location
@@ -170,7 +166,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                     Text(
                         text = "at ",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     SelectionContainer {
                         Text(
@@ -178,7 +174,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
                             color = MaterialTheme.colorScheme.secondary,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         )
                     }
                 }
@@ -191,18 +187,18 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
 private fun QuickActionsRow(context: Context, crash: Crash) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         // Copy stack trace
         OutlinedButton(
             onClick = { copyToClipboard(context, "Stack Trace", crash.stackTrace) },
             modifier = Modifier.weight(1f),
-            shape = WormaCeptorDesignSystem.Shapes.button
+            shape = WormaCeptorDesignSystem.Shapes.button,
         ) {
             Icon(
                 imageVector = Icons.Default.ContentCopy,
                 contentDescription = null,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
             Text("Copy", fontSize = 13.sp)
@@ -212,12 +208,12 @@ private fun QuickActionsRow(context: Context, crash: Crash) {
         OutlinedButton(
             onClick = { searchStackOverflow(context, crash) },
             modifier = Modifier.weight(1f),
-            shape = WormaCeptorDesignSystem.Shapes.button
+            shape = WormaCeptorDesignSystem.Shapes.button,
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
             Text("Search", fontSize = 13.sp)
@@ -231,30 +227,30 @@ private fun MessageCard(message: String, context: Context) {
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Exception Message",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
                 IconButton(
                     onClick = { copyToClipboard(context, "Message", message) },
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = "Copy message",
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
                     )
                 }
             }
@@ -265,7 +261,7 @@ private fun MessageCard(message: String, context: Context) {
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -280,30 +276,30 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Stack Trace",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
                 IconButton(
                     onClick = { copyToClipboard(context, "Stack Trace", fullStackTrace) },
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = "Copy stack trace",
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
                     )
                 }
             }
@@ -319,7 +315,7 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     text = "App Code (${appFrames.size})",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm)
+                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
                 )
                 appFrames.forEach { frame ->
                     StackFrameItem(frame, isHighlighted = true)
@@ -336,17 +332,17 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                         .clickable { showAllFrames = !showAllFrames }
                         .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "Framework & System (${frameworkFrames.size})",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Icon(
                         imageVector = if (showAllFrames) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                         contentDescription = if (showAllFrames) "Collapse" else "Expand",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
@@ -355,15 +351,15 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     enter = expandVertically(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessMedium
-                        )
+                            stiffness = Spring.StiffnessMedium,
+                        ),
                     ) + fadeIn(),
                     exit = shrinkVertically(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessMedium
-                        )
-                    ) + fadeOut()
+                            stiffness = Spring.StiffnessMedium,
+                        ),
+                    ) + fadeOut(),
                 ) {
                     Column {
                         frameworkFrames.forEach { frame ->
@@ -396,8 +392,8 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
             .background(backgroundColor, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs
-            )
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
     ) {
         if (frame.className != null && frame.methodName != null) {
             // Parsed frame with syntax highlighting
@@ -407,7 +403,12 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
                         withStyle(SpanStyle(color = textColor.copy(alpha = 0.6f))) {
                             append("at ")
                         }
-                        withStyle(SpanStyle(color = textColor, fontWeight = if (isHighlighted) FontWeight.Medium else FontWeight.Normal)) {
+                        withStyle(
+                            SpanStyle(
+                                color = textColor,
+                                fontWeight = if (isHighlighted) FontWeight.Medium else FontWeight.Normal,
+                            ),
+                        ) {
                             append("${frame.className}.")
                         }
                         withStyle(SpanStyle(color = textColor, fontWeight = FontWeight.Bold)) {
@@ -427,7 +428,7 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
             }
         } else {
@@ -438,7 +439,7 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
                     color = textColor,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
             }
         }
@@ -465,7 +466,9 @@ private fun shareCrash(context: Context, crash: Crash) {
         appendLine("=======================")
         appendLine()
         appendLine("Exception: ${crash.exceptionType}")
-        appendLine("Time: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(crash.timestamp))}")
+        appendLine(
+            "Time: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(crash.timestamp))}",
+        )
         if (!crash.message.isNullOrBlank()) {
             appendLine()
             appendLine("Message:")
@@ -483,5 +486,3 @@ private fun shareCrash(context: Context, crash: Crash) {
     }
     context.startActivity(Intent.createChooser(intent, "Share Crash Report"))
 }
-
-

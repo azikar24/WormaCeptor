@@ -344,32 +344,6 @@ fun TransactionPositionIndicator(
 }
 
 /**
- * Compact variant of position indicator for smaller spaces
- */
-@Composable
-fun CompactPositionIndicator(currentIndex: Int, totalCount: Int, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(
-            WormaCeptorDesignSystem.Elevation.sm,
-        ).copy(alpha = 0.9f),
-    ) {
-        Text(
-            text = "${currentIndex + 1} / $totalCount",
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs,
-            ),
-        )
-    }
-}
-
-/**
  * Animated number that slides when value changes
  */
 @Composable
@@ -982,36 +956,6 @@ private fun SwipeBackArrowIndicator(progress: Float) {
     }
 }
 
-/**
- * Edge shadow that appears on the left side during swipe-back
- */
-@Composable
-fun SwipeBackEdgeShadow(
-    progress: Float, // 0f to 1f
-    modifier: Modifier = Modifier,
-) {
-    val alpha by animateFloatAsState(
-        targetValue = (progress * 0.6f).coerceIn(0f, 0.6f),
-        animationSpec = tween(50),
-        label = "shadow_alpha",
-    )
-
-    Box(
-        modifier = modifier
-            .fillMaxHeight()
-            .width(32.dp)
-            .alpha(alpha)
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.scrim.copy(alpha = 0.4f),
-                        Color.Transparent,
-                    ),
-                ),
-            ),
-    )
-}
-
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
@@ -1026,13 +970,4 @@ private fun lerp(start: Color, stop: Color, fraction: Float): Color {
         blue = start.blue + (stop.blue - start.blue) * fraction,
         alpha = start.alpha + (stop.alpha - start.alpha) * fraction,
     )
-}
-
-/**
- * Rounds float to specified decimal places
- */
-private fun Float.roundTo(decimals: Int): Float {
-    var multiplier = 1f
-    repeat(decimals) { multiplier *= 10 }
-    return kotlin.math.round(this * multiplier) / multiplier
 }

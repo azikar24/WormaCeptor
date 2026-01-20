@@ -260,6 +260,16 @@ private fun TransactionDetailContent(
     var currentMatchIndex by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
     var matchCount by remember(searchQuery, tabPagerState.currentPage) { mutableIntStateOf(0) }
 
+    // Check if current tab has searchable content
+    val requestHasContent = transaction.request.headers.isNotEmpty() || transaction.request.bodyRef != null
+    val responseHasContent = (transaction.response?.headers?.isNotEmpty() == true) ||
+        (transaction.response?.bodyRef != null)
+    val currentTabHasContent = when (tabPagerState.currentPage) {
+        1 -> requestHasContent
+        2 -> responseHasContent
+        else -> false
+    }
+
     LaunchedEffect(showSearch) {
         if (showSearch) {
             focusRequester.requestFocus()
@@ -330,7 +340,8 @@ private fun TransactionDetailContent(
                             }
                         },
                         actions = {
-                            if (tabPagerState.currentPage > 0) { // Show search for Request/Response tabs
+                            // Show search only for Request/Response tabs with content
+                            if (tabPagerState.currentPage > 0 && currentTabHasContent) {
                                 IconButton(onClick = {
                                     showSearch = !showSearch
                                     if (!showSearch) searchQuery = ""
@@ -845,7 +856,7 @@ private fun EnhancedOverviewCard(
                 ) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = null,
+                        contentDescription = title,
                         tint = iconTint,
                         modifier = Modifier.size(20.dp),
                     )
@@ -1026,9 +1037,10 @@ private fun RequestTab(
                     ) {
                         val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                        val hasActiveSearch = searchQuery.isNotEmpty()
 
-                        // Format-specific rendering in pretty mode
-                        if (isPrettyMode) {
+                        // Format-specific rendering in pretty mode (use flat text when searching)
+                        if (isPrettyMode && !hasActiveSearch) {
                             when (detectedContentType) {
                                 ContentType.JSON -> {
                                     JsonTreeView(
@@ -1080,7 +1092,7 @@ private fun RequestTab(
                                 }
                             }
                         } else {
-                            // Raw mode
+                            // Raw mode or searching - show flat text with highlighting
                             val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
                                 enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
                             }
@@ -1374,9 +1386,10 @@ private fun ResponseTab(
                         ) {
                             val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
+                            val hasActiveSearch = searchQuery.isNotEmpty()
 
-                            // Format-specific rendering in pretty mode
-                            if (isPrettyMode) {
+                            // Format-specific rendering in pretty mode (use flat text when searching)
+                            if (isPrettyMode && !hasActiveSearch) {
                                 when (detectedContentType) {
                                     ContentType.JSON -> {
                                         JsonTreeView(
@@ -1428,7 +1441,7 @@ private fun ResponseTab(
                                     }
                                 }
                             } else {
-                                // Raw mode
+                                // Raw mode or searching - show flat text with highlighting
                                 val annotatedBody = remember(displayBody, searchQuery, currentMatchGlobalPos) {
                                     enhancedHighlightMatches(displayBody, searchQuery, currentMatchGlobalPos)
                                 }
@@ -1711,7 +1724,8 @@ private fun BodyControlsRow(
 }
 
 /**
- * Enhanced highlight with better visual distinction for current match
+ * Enhanced highlight with better visual distinction for current match.
+ * Uses Regex.findAll for O(n) performance instead of O(n^2) indexOf loop.
  */
 private fun enhancedHighlightMatches(
     text: String,
@@ -1721,17 +1735,14 @@ private fun enhancedHighlightMatches(
     if (query.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
 
     return androidx.compose.ui.text.buildAnnotatedString {
-        var start = 0
-        while (start < text.length) {
-            val index = text.indexOf(query, start, ignoreCase = true)
-            if (index == -1) {
-                append(text.substring(start))
-                break
+        val regex = Regex(Regex.escape(query), RegexOption.IGNORE_CASE)
+        var lastEnd = 0
+
+        regex.findAll(text).forEach { match ->
+            if (match.range.first > lastEnd) {
+                append(text.substring(lastEnd, match.range.first))
             }
-            append(text.substring(start, index))
-
-            val isCurrent = index == currentMatchGlobalPos
-
+            val isCurrent = match.range.first == currentMatchGlobalPos
             withStyle(
                 style = androidx.compose.ui.text.SpanStyle(
                     background = if (isCurrent) {
@@ -1739,21 +1750,16 @@ private fun enhancedHighlightMatches(
                     } else {
                         Color.Yellow.copy(alpha = 0.4f)
                     },
-                    fontWeight = if (isCurrent) {
-                        FontWeight.Bold
-                    } else {
-                        FontWeight.Normal
-                    },
-                    color = if (isCurrent) {
-                        Color.Black
-                    } else {
-                        Color.Unspecified
-                    },
+                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
+                    color = if (isCurrent) Color.Black else Color.Unspecified,
                 ),
             ) {
-                append(text.substring(index, index + query.length))
+                append(match.value)
             }
-            start = index + query.length
+            lastEnd = match.range.last + 1
+        }
+        if (lastEnd < text.length) {
+            append(text.substring(lastEnd))
         }
     }
 }

@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo

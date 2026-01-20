@@ -28,8 +28,15 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
         val crashRepository = RoomCrashRepository(database.crashDao())
         val blobStorage = FileSystemBlobStorage(context.applicationContext)
 
-        captureEngine = CaptureEngine(repository, blobStorage)
-        queryEngine = QueryEngine(repository, blobStorage, crashRepository)
+        val capture = CaptureEngine(repository, blobStorage)
+        val query = QueryEngine(repository, blobStorage, crashRepository)
+
+        if (!CoreHolder.initialize(capture, query)) {
+            return // Already initialized
+        }
+
+        captureEngine = capture
+        queryEngine = query
 
         if (logCrashes) {
             val crashReporter = CrashReporter(crashRepository)
@@ -37,8 +44,5 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
         }
 
         notificationHelper = WormaCeptorNotificationHelper(context)
-
-        CoreHolder.captureEngine = captureEngine
-        CoreHolder.queryEngine = queryEngine
     }
 }

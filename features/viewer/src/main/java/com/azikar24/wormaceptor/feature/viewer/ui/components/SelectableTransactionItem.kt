@@ -41,6 +41,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
@@ -248,7 +253,12 @@ private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier
     }
 
     Surface(
-        modifier = modifier.size(24.dp),
+        modifier = modifier
+            .size(24.dp)
+            .semantics(mergeDescendants = true) {
+                role = Role.Checkbox
+                toggleableState = if (isSelected) ToggleableState.On else ToggleableState.Off
+            },
         shape = CircleShape,
         color = if (isSelected) checkboxColor else Color.Transparent,
         border = if (!isSelected) {

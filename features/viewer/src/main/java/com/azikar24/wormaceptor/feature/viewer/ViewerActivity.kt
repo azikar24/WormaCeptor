@@ -46,7 +46,9 @@ class ViewerActivity : ComponentActivity() {
         val factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ViewerViewModel(CoreHolder.queryEngine!!) as T
+                return ViewerViewModel(requireNotNull(CoreHolder.queryEngine) {
+                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                }) as T
             }
         }
         val viewModel = ViewModelProvider(this, factory)[ViewerViewModel::class.java]
@@ -118,7 +120,9 @@ class ViewerActivity : ComponentActivity() {
                                     val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                         this@ViewerActivity,
                                     )
-                                    val allTransactionsForExport = CoreHolder.queryEngine!!.getAllTransactionsForExport()
+                                    val allTransactionsForExport = requireNotNull(CoreHolder.queryEngine) {
+                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                }.getAllTransactionsForExport()
                                     exportManager.exportTransactions(allTransactionsForExport)
                                 },
                                 onExportCrashes = {
@@ -184,7 +188,9 @@ class ViewerActivity : ComponentActivity() {
                                         transactionIds = transactionIds,
                                         initialTransactionIndex = initialIndex,
                                         getTransaction = { transactionId ->
-                                            CoreHolder.queryEngine!!.getDetails(transactionId)
+                                            requireNotNull(CoreHolder.queryEngine) {
+                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                }.getDetails(transactionId)
                                         },
                                         onBack = { navController.popBackStack() },
                                     )
@@ -195,7 +201,9 @@ class ViewerActivity : ComponentActivity() {
                                     }
 
                                     androidx.compose.runtime.LaunchedEffect(uuid) {
-                                        transaction = CoreHolder.queryEngine!!.getDetails(uuid)
+                                        transaction = requireNotNull(CoreHolder.queryEngine) {
+                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                }.getDetails(uuid)
                                     }
 
                                     transaction?.let {

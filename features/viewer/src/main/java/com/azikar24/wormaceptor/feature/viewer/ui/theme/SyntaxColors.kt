@@ -7,6 +7,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.domain.contracts.DarkSyntaxColors
@@ -18,6 +19,7 @@ import com.azikar24.wormaceptor.domain.contracts.TokenType
  * Compose-friendly syntax colors that integrate with the theme system.
  * Provides both light and dark theme variants with additional UI-specific colors.
  */
+@Immutable
 data class ComposeSyntaxColors(
     val keyword: Color,
     val string: Color,

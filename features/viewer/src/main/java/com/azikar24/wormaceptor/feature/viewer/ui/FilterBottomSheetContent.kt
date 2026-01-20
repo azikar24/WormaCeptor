@@ -237,7 +237,7 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = null,
+                contentDescription = "Search",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.size(20.dp),
             )
@@ -279,7 +279,7 @@ private fun FilterSectionHeader(icon: ImageVector, title: String) {
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = title,
             modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
         )

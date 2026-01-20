@@ -27,6 +27,6 @@ dependencies {
     implementation(project(":infra:persistence:sqlite"))
     implementation(project(":domain:contracts"))
     implementation(project(":platform:android"))
-    implementation(project(":features:viewer"))
+    api(project(":features:viewer"))
     implementation(libs.androidx.room.runtime)
 }

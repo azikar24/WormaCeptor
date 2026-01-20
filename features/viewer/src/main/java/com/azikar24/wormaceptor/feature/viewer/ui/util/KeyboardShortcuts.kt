@@ -3,7 +3,9 @@ package com.azikar24.wormaceptor.feature.viewer.ui.util
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -45,6 +47,7 @@ object KeyboardShortcuts {
 /**
  * Represents a keyboard shortcut with modifiers.
  */
+@Immutable
 data class ShortcutKey(
     val key: Key,
     val ctrl: Boolean = false,
@@ -55,6 +58,7 @@ data class ShortcutKey(
 /**
  * Callbacks for keyboard shortcut handling.
  */
+@Stable
 data class KeyboardShortcutCallbacks(
     val onRefresh: () -> Unit = {},
     val onSearch: () -> Unit = {},

@@ -5,7 +5,12 @@ import android.content.Intent
 import com.azikar24.wormaceptor.api.ServiceProvider
 import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.core.engine.CaptureEngine
+import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.engine.CrashReporter
 import com.azikar24.wormaceptor.core.engine.QueryEngine
+import com.azikar24.wormaceptor.domain.contracts.BlobStorage
+import com.azikar24.wormaceptor.domain.contracts.CrashRepository
+import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,13 +24,45 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     protected var queryEngine: QueryEngine? = null
     protected var notificationHelper: WormaCeptorNotificationHelper? = null
 
+    protected data class StorageDependencies(
+        val transactionRepository: TransactionRepository,
+        val crashRepository: CrashRepository,
+        val blobStorage: BlobStorage,
+    )
+
+    protected abstract fun createDependencies(context: Context): StorageDependencies
+    protected abstract fun getNotificationTitle(): String
+
+    override fun init(context: Context, logCrashes: Boolean) {
+        if (captureEngine != null) return
+
+        val deps = createDependencies(context)
+
+        val capture = CaptureEngine(deps.transactionRepository, deps.blobStorage)
+        val query = QueryEngine(deps.transactionRepository, deps.blobStorage, deps.crashRepository)
+
+        if (!CoreHolder.initialize(capture, query)) {
+            return // Already initialized
+        }
+
+        captureEngine = capture
+        queryEngine = query
+
+        if (logCrashes) {
+            val crashReporter = CrashReporter(deps.crashRepository)
+            crashReporter.init()
+        }
+
+        notificationHelper = WormaCeptorNotificationHelper(context, getNotificationTitle())
+    }
+
     override fun startTransaction(
         url: String,
         method: String,
         headers: Map<String, List<String>>,
         bodyStream: InputStream?,
         bodySize: Long,
-    ): UUID? = runBlocking {
+    ): UUID? = runBlocking(Dispatchers.IO) {
         captureEngine?.startTransaction(url, method, headers, bodyStream, bodySize)
     }
 
@@ -40,7 +77,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         tlsVersion: String?,
         error: String?,
     ) {
-        runBlocking {
+        runBlocking(Dispatchers.IO) {
             captureEngine?.completeTransaction(
                 id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error,
             )
@@ -61,11 +98,11 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         return Intent(context, com.azikar24.wormaceptor.feature.viewer.ViewerActivity::class.java)
     }
 
-    override fun getAllTransactions(): List<Any> = runBlocking {
+    override fun getAllTransactions(): List<Any> = runBlocking(Dispatchers.IO) {
         queryEngine?.getAllTransactionsForExport() ?: emptyList()
     }
 
-    override fun getTransaction(id: String): Any? = runBlocking {
+    override fun getTransaction(id: String): Any? = runBlocking(Dispatchers.IO) {
         try {
             queryEngine?.getDetails(UUID.fromString(id))
         } catch (_: Exception) {
@@ -73,17 +110,17 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         }
     }
 
-    override fun getTransactionCount(): Int = runBlocking {
+    override fun getTransactionCount(): Int = runBlocking(Dispatchers.IO) {
         queryEngine?.getTransactionCount() ?: 0
     }
 
     override fun clearTransactions() {
-        runBlocking {
+        runBlocking(Dispatchers.IO) {
             queryEngine?.clear()
         }
     }
 
-    override fun getTransactionDetail(id: String): TransactionDetailDto? = runBlocking {
+    override fun getTransactionDetail(id: String): TransactionDetailDto? = runBlocking(Dispatchers.IO) {
         try {
             val transaction = queryEngine?.getDetails(UUID.fromString(id)) ?: return@runBlocking null
             val request = transaction.request

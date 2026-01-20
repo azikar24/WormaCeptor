@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import kotlin.math.sqrt
 
 class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
 
@@ -37,7 +38,7 @@ class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
             val gZ = z / SensorManager.GRAVITY_EARTH
 
             // gForce will be close to 1 when there is no movement.
-            val gForce = Math.sqrt((gX * gX + gY * gY + gZ * gZ).toDouble()).toFloat()
+            val gForce = sqrt((gX * gX + gY * gY + gZ * gZ).toDouble()).toFloat()
             if (gForce > SHAKE_THRESHOLD_GRAVITY) {
                 val now = System.currentTimeMillis()
                 // ignore shake events too close to each other (500ms)

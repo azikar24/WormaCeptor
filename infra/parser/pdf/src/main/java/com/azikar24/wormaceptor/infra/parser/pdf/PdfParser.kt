@@ -10,6 +10,7 @@ import android.os.ParcelFileDescriptor
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.io.File
 import java.io.FileOutputStream
 
@@ -52,12 +53,7 @@ class PdfParser(
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "[Empty PDF]",
-                contentType = ContentType.PDF,
-                isValid = false,
-                errorMessage = "PDF body is empty",
-            )
+            return emptyParsedBody(ContentType.PDF, "[Empty PDF]")
         }
 
         // Verify magic bytes

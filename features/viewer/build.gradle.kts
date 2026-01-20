@@ -40,5 +40,6 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
+    implementation(libs.kotlinx.collections.immutable)
     debugImplementation(libs.androidx.ui.tooling)
 }

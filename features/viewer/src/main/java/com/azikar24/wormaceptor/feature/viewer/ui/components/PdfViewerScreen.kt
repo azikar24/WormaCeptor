@@ -806,7 +806,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
-                contentDescription = null,
+                contentDescription = "Error opening PDF",
                 modifier = Modifier.size(56.dp),
                 tint = MaterialTheme.colorScheme.error,
             )

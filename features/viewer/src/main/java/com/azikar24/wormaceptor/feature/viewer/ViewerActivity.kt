@@ -1,10 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -34,6 +31,9 @@ import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
+import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
 import kotlinx.coroutines.launch
 
@@ -114,16 +114,18 @@ class ViewerActivity : ComponentActivity() {
                                 onMethodFilterChanged = viewModel::setMethodFilter,
                                 onStatusFilterChanged = viewModel::setStatusFilter,
                                 onClearFilters = viewModel::clearFilters,
-                                onClearTransactions = { viewModel.clearAllTransactions() },
-                                onClearCrashes = { viewModel.clearAllCrashes() },
+                                onClearTransactions = { scope.launch { viewModel.clearAllTransactions() } },
+                                onClearCrashes = { scope.launch { viewModel.clearAllCrashes() } },
                                 onExportTransactions = {
-                                    val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                        this@ViewerActivity,
-                                    )
-                                    val allTransactionsForExport = requireNotNull(CoreHolder.queryEngine) {
-                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
-                }.getAllTransactionsForExport()
-                                    exportManager.exportTransactions(allTransactionsForExport)
+                                    scope.launch {
+                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                            this@ViewerActivity,
+                                        )
+                                        val allTransactionsForExport = requireNotNull(CoreHolder.queryEngine) {
+                                            "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                                        }.getAllTransactionsForExport()
+                                        exportManager.exportTransactions(allTransactionsForExport)
+                                    }
                                 },
                                 onExportCrashes = {
                                     val allCrashes = crashes
@@ -144,7 +146,7 @@ class ViewerActivity : ComponentActivity() {
                                 onSelectionToggle = viewModel::toggleSelection,
                                 onSelectAll = viewModel::selectAll,
                                 onClearSelection = viewModel::clearSelection,
-                                onDeleteSelected = { viewModel.deleteSelected() },
+                                onDeleteSelected = { scope.launch { viewModel.deleteSelected() } },
                                 onShareSelected = {
                                     val selected = viewModel.getSelectedTransactions()
                                     shareTransactions(selected)
@@ -235,61 +237,43 @@ class ViewerActivity : ComponentActivity() {
     }
 
     private fun copyUrlToClipboard(transaction: TransactionSummary) {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val url = buildFullUrl(transaction)
-        val clip = ClipData.newPlainText("URL", url)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(this, "URL copied to clipboard", Toast.LENGTH_SHORT).show()
+        val url = buildFullUrl(transaction.host, transaction.path)
+        copyToClipboard(this, "URL", url)
     }
 
     private fun shareTransaction(transaction: TransactionSummary) {
-        val url = buildFullUrl(transaction)
-        val shareText = buildString {
+        val url = buildFullUrl(transaction.host, transaction.path)
+        val text = buildString {
             appendLine("${transaction.method} $url")
             appendLine("Status: ${transaction.code ?: "Pending"}")
             transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
         }
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, shareText)
-        }
-        startActivity(Intent.createChooser(intent, "Share Transaction"))
+        shareText(this, text, "Share Transaction")
     }
 
     private fun shareTransactions(transactions: List<TransactionSummary>) {
-        val shareText = transactions.joinToString("\n\n") { transaction ->
-            val url = buildFullUrl(transaction)
+        val text = transactions.joinToString("\n\n") { transaction ->
+            val url = buildFullUrl(transaction.host, transaction.path)
             buildString {
                 appendLine("${transaction.method} $url")
                 appendLine("Status: ${transaction.code ?: "Pending"}")
                 transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
             }
         }
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, shareText)
-        }
-        startActivity(Intent.createChooser(intent, "Share ${transactions.size} Transactions"))
+        shareText(this, text, "Share ${transactions.size} Transactions")
     }
 
     private fun copyAsCurl(transaction: TransactionSummary) {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
-                Toast.makeText(this@ViewerActivity, "Failed to load transaction details", Toast.LENGTH_SHORT).show()
+                android.widget.Toast.makeText(this@ViewerActivity, "Failed to load transaction details", android.widget.Toast.LENGTH_SHORT).show()
                 return@launch
             }
 
             val curl = buildCurlCommand(fullTransaction)
-            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("cURL", curl)
-            clipboard.setPrimaryClip(clip)
-            Toast.makeText(this@ViewerActivity, "cURL command copied to clipboard", Toast.LENGTH_SHORT).show()
+            copyToClipboard(this@ViewerActivity, "cURL", curl)
         }
-    }
-
-    private fun buildFullUrl(transaction: TransactionSummary): String {
-        return "https://${transaction.host}${transaction.path}"
     }
 
     private fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {

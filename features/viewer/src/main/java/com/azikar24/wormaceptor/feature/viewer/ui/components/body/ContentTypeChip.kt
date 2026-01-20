@@ -83,7 +83,7 @@ fun ContentTypeChip(
         ) {
             Icon(
                 imageVector = chipInfo.icon,
-                contentDescription = null,
+                contentDescription = chipInfo.displayName,
                 modifier = Modifier.size(14.dp),
                 tint = chipInfo.color,
             )

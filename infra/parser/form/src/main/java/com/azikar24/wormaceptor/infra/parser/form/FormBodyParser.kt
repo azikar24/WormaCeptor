@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.form
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.net.URLDecoder
 
 /**
@@ -39,11 +40,7 @@ class FormBodyParser : BodyParser {
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.FORM_DATA,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.FORM_DATA)
         }
 
         return try {

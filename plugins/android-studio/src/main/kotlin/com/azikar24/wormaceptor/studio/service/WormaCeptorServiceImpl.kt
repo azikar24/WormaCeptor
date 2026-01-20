@@ -15,7 +15,9 @@ import com.intellij.openapi.project.Project
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 /**
  * Implementation of WormaCeptorService using ADB commands.
@@ -25,17 +27,26 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     private val log = Logger.getInstance(WormaCeptorServiceImpl::class.java)
     private val gson = Gson()
     private val listeners = CopyOnWriteArrayList<WormaCeptorService.StateListener>()
-    private var selectedDeviceSerial: String? = null
-    private var cachedTransactions = listOf<TransactionSummary>()
-    private var captureActive = false
-    private var transactionCount = 0
+    @Volatile private var selectedDeviceSerial: String? = null
+    @Volatile private var cachedTransactions = listOf<TransactionSummary>()
+    @Volatile private var captureActive = false
+    @Volatile private var transactionCount = 0
 
     // Cached target package for WormaCeptor content provider
-    private var targetPackage: String? = null
-    private var lastPackageDetectionDevice: String? = null
+    @Volatile private var targetPackage: String? = null
+    @Volatile private var lastPackageDetectionDevice: String? = null
+
+    // Cached device connection status for EDT-safe access
+    @Volatile private var deviceConnectedCached = false
 
     override fun isDeviceConnected(): Boolean {
-        return getConnectedDevices().isNotEmpty()
+        val connected = getConnectedDevices().isNotEmpty()
+        deviceConnectedCached = connected
+        return connected
+    }
+
+    override fun isDeviceConnectedCached(): Boolean {
+        return deviceConnectedCached
     }
 
     override fun getConnectedDevices(): List<String> {
@@ -358,20 +369,28 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
             .redirectErrorStream(true)
             .start()
 
-        val output = StringBuilder()
-        BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
-            reader.lineSequence().forEach { line ->
-                output.appendLine(line)
+        val executor = Executors.newSingleThreadExecutor()
+        try {
+            val future = executor.submit<String> {
+                val output = StringBuilder()
+                BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
+                    reader.lineSequence().forEach { line ->
+                        output.appendLine(line)
+                    }
+                }
+                output.toString()
             }
-        }
 
-        val completed = process.waitFor(10, TimeUnit.SECONDS)
-        if (!completed) {
-            process.destroyForcibly()
-            throw RuntimeException("ADB command timed out")
+            return try {
+                future.get(10, TimeUnit.SECONDS)
+            } catch (e: TimeoutException) {
+                future.cancel(true)
+                process.destroyForcibly()
+                throw RuntimeException("ADB command timed out")
+            }
+        } finally {
+            executor.shutdownNow()
         }
-
-        return output.toString()
     }
 
     private fun findAdbPath(): String {

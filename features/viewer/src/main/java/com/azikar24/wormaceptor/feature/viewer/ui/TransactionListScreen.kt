@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
-import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
@@ -40,10 +39,12 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.LoadingMoreIndicato
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ScrollToTopFab
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TransactionListSkeleton
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -62,7 +63,7 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionListScreen(
-    transactions: List<TransactionSummary>,
+    transactions: ImmutableList<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
@@ -200,7 +201,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
             ) {
                 Icon(
                     imageVector = Icons.Default.Wifi,
-                    contentDescription = null,
+                    contentDescription = "No transactions",
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
@@ -250,18 +251,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
 
 @Composable
 private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val statusColor = when (transaction.status) {
-        TransactionStatus.COMPLETED -> when {
-            transaction.code == null -> WormaCeptorColors.StatusAmber
-            transaction.code in 200..299 -> WormaCeptorColors.StatusGreen
-            transaction.code in 300..399 -> WormaCeptorColors.StatusBlue
-            transaction.code in 400..499 -> WormaCeptorColors.StatusAmber
-            transaction.code in 500..599 -> WormaCeptorColors.StatusRed
-            else -> WormaCeptorColors.StatusGrey
-        }
-        TransactionStatus.FAILED -> WormaCeptorColors.StatusRed
-        TransactionStatus.ACTIVE -> WormaCeptorColors.StatusGrey
-    }
+    val statusColor = getStatusColor(transaction.status, transaction.code)
 
     // Press interaction for scale animation
     val interactionSource = remember { MutableInteractionSource() }
@@ -365,9 +355,10 @@ private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit
 
 @Composable
 private fun MethodBadge(method: String) {
+    val color = getMethodColor(method)
     Surface(
-        color = methodColor(method).copy(alpha = 0.15f),
-        contentColor = methodColor(method),
+        color = color.copy(alpha = 0.15f),
+        contentColor = color,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
     ) {
         Text(
@@ -400,14 +391,6 @@ private fun HostChip(host: String) {
     }
 }
 
-private fun methodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> WormaCeptorColors.StatusGreen
-    "POST" -> WormaCeptorColors.StatusBlue
-    "PUT" -> WormaCeptorColors.StatusAmber
-    "DELETE" -> WormaCeptorColors.StatusRed
-    "PATCH" -> Color(0xFF9C27B0)
-    else -> WormaCeptorColors.StatusGrey
-}
 
 // ============================================================================
 // PAGED VERSION WITH LAZY LOADING
@@ -730,7 +713,7 @@ fun PagedTransactionListScreenWithRefresh(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectableTransactionListScreen(
-    transactions: List<TransactionSummary>,
+    transactions: ImmutableList<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},

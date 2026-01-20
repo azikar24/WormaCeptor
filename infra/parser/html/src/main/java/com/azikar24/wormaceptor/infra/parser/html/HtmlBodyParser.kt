@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.html
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 
 /**
  * Parser for HTML content.
@@ -67,11 +68,7 @@ class HtmlBodyParser(
 
     override fun parse(body: ByteArray): ParsedBody {
         if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.HTML,
-                isValid = true,
-            )
+            return emptyParsedBody(ContentType.HTML)
         }
 
         return try {

@@ -1,7 +1,13 @@
+/*
+ * NOTE: This module requires Android dependencies due to:
+ * - SyntaxHighlighter uses Compose AnnotatedString and Color
+ * - TransactionRepository uses AndroidX Paging
+ * Consider moving SyntaxHighlighter to features/viewer in a future refactor
+ * to make this module pure Kotlin.
+ */
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -21,11 +27,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain:entities")) // Contracts likely use Entities
-    implementation(libs.androidx.core.ktx)
+    implementation(project(":domain:entities"))
+
+    // Required for TransactionRepository pagination support
     implementation(libs.androidx.paging.runtime)
 
-    // Compose UI for AnnotatedString and Color in SyntaxHighlighter
+    // Required for SyntaxHighlighter (AnnotatedString, Color)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)

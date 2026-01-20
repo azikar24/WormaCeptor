@@ -25,6 +25,12 @@ interface WormaCeptorService {
     fun isDeviceConnected(): Boolean
 
     /**
+     * Check if a device is connected (cached version for EDT-safe access).
+     * Returns the last known device connection state without blocking.
+     */
+    fun isDeviceConnectedCached(): Boolean
+
+    /**
      * Get list of connected device serial numbers.
      */
     fun getConnectedDevices(): List<String>

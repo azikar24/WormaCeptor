@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
+import kotlinx.collections.immutable.ImmutableList
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Alpha
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.BorderWidth
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.CornerRadius
@@ -48,7 +49,7 @@ import java.util.concurrent.TimeUnit
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashListScreen(
-    crashes: List<Crash>,
+    crashes: ImmutableList<Crash>,
     onCrashClick: (Crash) -> Unit,
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
@@ -199,7 +200,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     ) {
                         Icon(
                             imageVector = if (isSevere) Icons.Default.BugReport else Icons.Default.Warning,
-                            contentDescription = null,
+                            contentDescription = if (isSevere) "Critical crash" else "Warning",
                             modifier = Modifier.size(18.dp),
                         )
                     }
@@ -295,7 +296,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
-                    contentDescription = null,
+                    contentDescription = "No crashes",
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )

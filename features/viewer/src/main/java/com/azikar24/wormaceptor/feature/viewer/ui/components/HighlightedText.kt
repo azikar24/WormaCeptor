@@ -57,22 +57,24 @@ fun HighlightedText(
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
     colors: ComposeSyntaxColors = syntaxColors(),
 ) {
-    val displayText = if (enableHighlighting && highlightedText != null) {
-        // Apply search highlighting on top of syntax highlighting
-        applySearchHighlighting(
-            text = highlightedText,
-            searchQuery = searchQuery,
-            currentMatchIndex = currentSearchMatchIndex,
-            colors = colors,
-        )
-    } else {
-        // Plain text with search highlighting only
-        applySearchHighlighting(
-            text = AnnotatedString(text),
-            searchQuery = searchQuery,
-            currentMatchIndex = currentSearchMatchIndex,
-            colors = colors,
-        )
+    // Level 1: Memoize the base text (with or without syntax highlighting)
+    val baseText = remember(text, highlightedText, enableHighlighting) {
+        if (enableHighlighting && highlightedText != null) highlightedText else AnnotatedString(text)
+    }
+
+    // Level 2: Memoize match positions - only recompute when text or query changes
+    val matches = remember(text, searchQuery) {
+        if (searchQuery.isEmpty()) emptyList() else findAllMatches(text, searchQuery)
+    }
+
+    // Level 3: Cache base text with ALL matches highlighted (yellow)
+    val baseWithAllMatches = remember(baseText, matches, colors) {
+        applyAllMatchesHighlight(baseText, matches, colors)
+    }
+
+    // Level 4: Apply current match highlight - O(1) operation
+    val displayText = remember(baseWithAllMatches, matches, currentSearchMatchIndex, colors) {
+        applyCurrentMatchOnly(baseWithAllMatches, matches, currentSearchMatchIndex, colors)
     }
 
     if (showLineNumbers) {
@@ -171,52 +173,70 @@ private fun HighlightedTextWithLineNumbers(
 }
 
 /**
- * Applies search highlighting on top of existing AnnotatedString.
- * Search matches are shown with a highlight background,
- * and the current match is shown with a distinct color.
+ * Finds all match positions for a search query in text.
+ * Uses indexOf for O(n) performance - faster than regex for simple substring matching.
  */
-private fun applySearchHighlighting(
-    text: AnnotatedString,
-    searchQuery: String,
-    currentMatchIndex: Int?,
-    colors: ComposeSyntaxColors,
-): AnnotatedString {
-    if (searchQuery.isEmpty()) return text
+private fun findAllMatches(text: String, searchQuery: String): List<IntRange> {
+    if (searchQuery.isEmpty()) return emptyList()
 
-    val plainText = text.text
-    val matches = mutableListOf<IntRange>()
-
-    var startIndex = 0
+    val matches = ArrayList<IntRange>(64) // Pre-size for typical case
+    var index = 0
     while (true) {
-        val index = plainText.indexOf(searchQuery, startIndex, ignoreCase = true)
+        index = text.indexOf(searchQuery, index, ignoreCase = true)
         if (index < 0) break
         matches.add(index until (index + searchQuery.length))
-        startIndex = index + 1
+        index++
     }
+    return matches
+}
 
+/**
+ * Apply default highlight (yellow) to ALL matches.
+ * This is cached and only rebuilt when text/query changes.
+ */
+private fun applyAllMatchesHighlight(
+    text: AnnotatedString,
+    matches: List<IntRange>,
+    colors: ComposeSyntaxColors,
+): AnnotatedString {
     if (matches.isEmpty()) return text
 
     return buildAnnotatedString {
-        // First, append all the original spans
         append(text)
-
-        // Then overlay search highlights
-        matches.forEachIndexed { matchIndex, range ->
-            val isCurrent = matchIndex == currentMatchIndex
-            addStyle(
-                style = SpanStyle(
-                    background = if (isCurrent) {
-                        colors.searchHighlightCurrent
-                    } else {
-                        colors.searchHighlight
-                    },
-                    color = colors.searchHighlightText,
-                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-                ),
-                start = range.first,
-                end = range.last + 1,
-            )
+        val defaultStyle = SpanStyle(
+            background = colors.searchHighlight,
+            color = colors.searchHighlightText,
+        )
+        matches.forEach { range ->
+            addStyle(defaultStyle, range.first, range.last + 1)
         }
+    }
+}
+
+/**
+ * Apply current match highlight on top of base - O(1) operation.
+ * Just adds one style span for the current match.
+ */
+private fun applyCurrentMatchOnly(
+    base: AnnotatedString,
+    matches: List<IntRange>,
+    currentMatchIndex: Int?,
+    colors: ComposeSyntaxColors,
+): AnnotatedString {
+    if (currentMatchIndex == null || matches.isEmpty()) return base
+    val range = matches.getOrNull(currentMatchIndex) ?: return base
+
+    return buildAnnotatedString {
+        append(base)
+        addStyle(
+            SpanStyle(
+                background = colors.searchHighlightCurrent,
+                color = colors.searchHighlightText,
+                fontWeight = FontWeight.Bold,
+            ),
+            range.first,
+            range.last + 1,
+        )
     }
 }
 
@@ -234,13 +254,21 @@ fun SearchHighlightedText(
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val colors = syntaxColors()
-    val highlightedText = remember(text, searchQuery, currentMatchIndex, colors) {
-        applySearchHighlighting(
-            text = AnnotatedString(text),
-            searchQuery = searchQuery,
-            currentMatchIndex = currentMatchIndex,
-            colors = colors,
-        )
+
+    // Level 1: Cache match ranges
+    val matches = remember(text, searchQuery) {
+        if (searchQuery.isEmpty()) emptyList() else findAllMatches(text, searchQuery)
+    }
+
+    // Level 2: Cache base with all matches highlighted
+    val baseText = remember(text) { AnnotatedString(text) }
+    val baseWithMatches = remember(baseText, matches, colors) {
+        applyAllMatchesHighlight(baseText, matches, colors)
+    }
+
+    // Level 3: Apply current match - O(1)
+    val highlightedText = remember(baseWithMatches, matches, currentMatchIndex, colors) {
+        applyCurrentMatchOnly(baseWithMatches, matches, currentMatchIndex, colors)
     }
 
     SelectionContainer {

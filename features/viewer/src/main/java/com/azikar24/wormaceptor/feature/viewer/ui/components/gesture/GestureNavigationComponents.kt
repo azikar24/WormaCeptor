@@ -443,7 +443,7 @@ fun SwipeEdgePeek(
             } else {
                 Icons.AutoMirrored.Filled.ArrowForward
             },
-            contentDescription = null,
+            contentDescription = if (isLeft) "Navigate to previous" else "Navigate to next",
             tint = MaterialTheme.colorScheme.primary.copy(alpha = alpha * 0.8f),
             modifier = Modifier
                 .align(if (isLeft) Alignment.CenterStart else Alignment.CenterEnd)

@@ -8,9 +8,9 @@ Last updated: 2026-01-20
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Completed | 14 | ~17% |
+| Completed | 34 | ~41% |
 | In Progress | 0 | 0% |
-| Remaining | 68+ | ~83% |
+| Remaining | 48+ | ~59% |
 
 **Total Issues from Review:** 82+
 
@@ -34,6 +34,25 @@ Last updated: 2026-01-20
 | 2026-01-20 | Accessibility | Checkbox semantics added to SelectableTransactionItem | 06-ACCESSIBILITY.md |
 | 2026-01-20 | ANR Fix | ViewerActivity suspend functions wrapped in coroutine scopes | 02-BAD-PRACTICES.md |
 | 2026-01-20 | ANR Fix | ViewerViewModel filtering moved to Dispatchers.Default with flowOn | 03-CODE-QUALITY-ISSUES.md |
+| 2026-01-20 | Build Config | `compileSdk` updated from 34 to 36 (matches targetSdk) | 07-GRADLE-CONFIG.md |
+| 2026-01-20 | ANR Fix | `runBlocking` removed from ServiceProviderImpl (both imdb + persistence) | 02-BAD-PRACTICES.md |
+| 2026-01-20 | Memory Leak | StateListener properly removed in dispose() | 04-ANDROID-STUDIO-PLUGIN.md |
+| 2026-01-20 | EDT Blocking | ADB calls moved to executeOnPooledThread in WormaCeptorServiceImpl | 04-ANDROID-STUDIO-PLUGIN.md |
+| 2026-01-20 | Resource Leak | Timer stopped in dispose() via refreshTimer.stop() | 04-ANDROID-STUDIO-PLUGIN.md |
+| 2026-01-20 | Duplicate Code | ServiceProviderImpl 95% duplicate fixed with BaseServiceProviderImpl (~173 lines shared) | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Duplicate Code | formatBytes() consolidated to CommonUtils.kt | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Duplicate Code | copyToClipboard() consolidated to CommonUtils.kt | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Duplicate Code | shareText() consolidated to CommonUtils.kt | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Duplicate Code | URL parsing logic consolidated to CommonUtils.kt | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Duplicate Code | Status color logic consolidated to CommonUtils.kt | 01-DUPLICATE-CODE.md |
+| 2026-01-20 | Build Config | ProGuard/R8 rules added (app/proguard-rules.pro - 79 lines) | 07-GRADLE-CONFIG.md |
+| 2026-01-20 | Dead Code | SwipeRefreshWrapper.kt deleted (unused) | 03-CODE-QUALITY-ISSUES.md |
+| 2026-01-20 | Build Config | Jetifier disabled in gradle.properties | 07-GRADLE-CONFIG.md |
+| 2026-01-20 | Plugin Safety | Process timeout with destroyForcibly() for ADB commands | 04-ANDROID-STUDIO-PLUGIN.md |
+| 2026-01-20 | Dead Code | GestureNavigationComponents.kt trimmed (973->412 lines, -561 lines) | 03-CODE-QUALITY-ISSUES.md |
+| 2026-01-20 | Code Quality | Non-idiomatic Math.sqrt already using kotlin.math.sqrt | 02-BAD-PRACTICES.md |
+| 2026-01-20 | Code Quality | CompositionLocal subscriptions verified as used | 03-CODE-QUALITY-ISSUES.md |
+| 2026-01-20 | Code Quality | MultipartBodyParser variables verified as used | 03-CODE-QUALITY-ISSUES.md |
 
 ---
 
@@ -47,62 +66,41 @@ None currently.
 
 ### Immediate Priority (Critical)
 
-| # | Issue | File | Source |
-|---|-------|------|--------|
-| 1 | `compileSdk` (34) < `targetSdk` (36) | gradle/libs.versions.toml | 07-GRADLE-CONFIG.md |
-| 2 | `runBlocking` in production code (ANR risk) | ServiceProviderImpl.kt (2 files) | 02-BAD-PRACTICES.md |
-| 3 | Memory leak - StateListener not removed | WormaCeptorToolWindowPanel.kt | 04-ANDROID-STUDIO-PLUGIN.md |
-| 4 | EDT blocking - synchronous ADB calls | ClearTransactionsAction.kt, OpenViewerAction.kt | 04-ANDROID-STUDIO-PLUGIN.md |
-| 5 | Touch target < 48dp | HomeScreen.kt:451 | 06-ACCESSIBILITY.md |
-| 6 | Process timeout ineffective (ADB hang risk) | WormaCeptorServiceImpl.kt | 04-ANDROID-STUDIO-PLUGIN.md |
-| 7 | Missing dispose hook for timer | WormaCeptorToolWindowPanel.kt | 04-ANDROID-STUDIO-PLUGIN.md |
+None remaining.
 
 ### High Priority
 
-| # | Issue | File | Source |
-|---|-------|------|--------|
-| 1 | ServiceProviderImpl 95% duplicate (~110 lines) | api/impl/imdb, api/impl/persistence | 01-DUPLICATE-CODE.md |
+None remaining.
 
 ### Medium Priority
 
 | # | Issue | File | Source |
 |---|-------|------|--------|
-| 1 | formatBytes() - 3 variations | TransactionDetailScreen.kt, LoadingStates.kt | 01-DUPLICATE-CODE.md |
-| 2 | copyToClipboard() - 4+ occurrences | Multiple files | 01-DUPLICATE-CODE.md |
-| 3 | shareText() - 4+ occurrences | Multiple files | 01-DUPLICATE-CODE.md |
-| 4 | URL parsing pattern - 6+ occurrences | Multiple files | 01-DUPLICATE-CODE.md |
-| 5 | Parser empty body handling - 7+ occurrences | infra/parser/*/ | 01-DUPLICATE-CODE.md |
-| 6 | Status color logic - 3+ occurrences | Multiple files | 01-DUPLICATE-CODE.md |
-| 7 | Magic numbers in 28 files | Multiple files | 02-BAD-PRACTICES.md |
-| 8 | Hardcoded magic bytes | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
-| 9 | Silent error handling | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
-| 10 | Hardcoded strings (i18n) | HomeScreen.kt, plugin files | 02-BAD-PRACTICES.md |
-| 11 | Unstable List/Map parameters | HomeScreen.kt | 05-COMPOSE-STABILITY.md |
-| 12 | Missing ProGuard/R8 rules | app/build.gradle.kts | 07-GRADLE-CONFIG.md |
-| 13 | Hardcoded versions in plugin | plugins/android-studio/build.gradle.kts | 07-GRADLE-CONFIG.md |
-| 14 | Kotlin version mismatch | libs.versions.toml vs plugin | 07-GRADLE-CONFIG.md |
-| 15 | Mixed responsibilities in ServiceProviderImpl | ServiceProviderImpl.kt | 03-CODE-QUALITY-ISSUES.md |
-| 16 | Filter chip semantics missing | HomeScreen.kt | 06-ACCESSIBILITY.md |
-| 17 | Filter card state announcements missing | FilterBottomSheetContent.kt | 06-ACCESSIBILITY.md |
-| 18 | Missing contentDescription (remaining icons) | Multiple files | 06-ACCESSIBILITY.md |
+| 1 | Parser empty body handling - 7+ occurrences | infra/parser/*/ | 01-DUPLICATE-CODE.md |
+| 2 | Magic numbers in 28 files | Multiple files | 02-BAD-PRACTICES.md |
+| 3 | Hardcoded magic bytes | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
+| 4 | Silent error handling | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
+| 5 | Hardcoded strings (i18n) | HomeScreen.kt, plugin files | 02-BAD-PRACTICES.md |
+| 6 | Unstable List/Map parameters | HomeScreen.kt | 05-COMPOSE-STABILITY.md |
+| 7 | Hardcoded versions in plugin | plugins/android-studio/build.gradle.kts | 07-GRADLE-CONFIG.md |
+| 8 | Kotlin version mismatch | libs.versions.toml vs plugin | 07-GRADLE-CONFIG.md |
+| 9 | Mixed responsibilities in ServiceProviderImpl | ServiceProviderImpl.kt | 03-CODE-QUALITY-ISSUES.md |
+| 10 | Filter chip semantics missing | HomeScreen.kt | 06-ACCESSIBILITY.md |
+| 11 | Filter card state announcements missing | FilterBottomSheetContent.kt | 06-ACCESSIBILITY.md |
+| 12 | Missing contentDescription (remaining icons) | Multiple files | 06-ACCESSIBILITY.md |
 
 ### Low Priority
 
 | # | Issue | File | Source |
 |---|-------|------|--------|
-| 1 | Unused CompositionLocal subscriptions | TextWithStartEllipsis.kt, TransactionDetailScreen.kt | 03-CODE-QUALITY-ISSUES.md |
-| 2 | Dead code - unused functions | SwipeRefreshWrapper.kt, GestureNavigationComponents.kt | 03-CODE-QUALITY-ISSUES.md |
-| 3 | Unused variables in MultipartBodyParser | MultipartBodyParser.kt | 03-CODE-QUALITY-ISSUES.md |
-| 4 | Non-idiomatic Kotlin (Math.sqrt) | ShakeDetector.kt | 02-BAD-PRACTICES.md |
-| 5 | Large function (375 lines) | TransactionDetailScreen.kt ResponseTab | 02-BAD-PRACTICES.md |
-| 6 | Resource leak - InputStream not closed | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
-| 7 | Jetifier still enabled | gradle.properties | 07-GRADLE-CONFIG.md |
-| 8 | Android deps in domain modules | domain/entities, domain/contracts | 07-GRADLE-CONFIG.md |
-| 9 | Missing test dependencies | All module build files | 07-GRADLE-CONFIG.md |
-| 10 | Shared mutable state in plugin | WormaCeptorServiceImpl.kt | 04-ANDROID-STUDIO-PLUGIN.md |
-| 11 | Missing heading semantics | MetricsCard.kt | 06-ACCESSIBILITY.md |
-| 12 | Unused rememberCoroutineScope | SwipeRefreshWrapper.kt | 05-COMPOSE-STABILITY.md |
-| 13 | Missing derivedStateOf | HomeScreen.kt | 05-COMPOSE-STABILITY.md |
+| 1 | Large function (375 lines) | TransactionDetailScreen.kt ResponseTab | 02-BAD-PRACTICES.md |
+| 2 | Resource leak - InputStream not closed | WormaCeptorInterceptor.kt | 02-BAD-PRACTICES.md |
+| 3 | Android deps in domain modules | domain/entities, domain/contracts | 07-GRADLE-CONFIG.md |
+| 4 | Missing test dependencies | All module build files | 07-GRADLE-CONFIG.md |
+| 5 | Shared mutable state in plugin | WormaCeptorServiceImpl.kt | 04-ANDROID-STUDIO-PLUGIN.md |
+| 6 | Missing heading semantics | MetricsCard.kt | 06-ACCESSIBILITY.md |
+| 7 | Missing derivedStateOf | HomeScreen.kt | 05-COMPOSE-STABILITY.md |
+| 8 | @Immutable/@Stable annotations (remaining classes) | Multiple files | 05-COMPOSE-STABILITY.md |
 
 ---
 
@@ -123,11 +121,13 @@ None currently.
 
 ## Quick Wins (Can be fixed quickly)
 
-1. **Fix compileSdk** - Change 34 to 36 in libs.versions.toml
+1. ~~**Fix compileSdk** - Change 34 to 36 in libs.versions.toml~~ DONE
 2. ~~**Enable parallel builds** - Uncomment line in gradle.properties~~ DONE
 3. ~~**Add @Immutable annotations** - 3 data classes~~ DONE
-4. **Remove unused code** - 8+ unused functions
+4. ~~**Remove unused code** - GestureNavigationComponents (561 lines removed)~~ DONE
 5. ~~**Add contentDescription** - 15+ null icons~~ PARTIAL (high priority done)
+6. ~~**Disable Jetifier** - Set to false in gradle.properties~~ DONE
+7. ~~**Add ProGuard rules** - Create proguard-rules.pro~~ DONE
 
 ---
 
@@ -136,3 +136,5 @@ None currently.
 - Issue counts reflect original code review findings
 - Completed items reduce the total lines of duplicate code
 - Some issues have multiple occurrences counted as one pattern
+- CommonUtils.kt consolidates 5 duplicate patterns (~200 lines saved)
+- BaseServiceProviderImpl.kt eliminates 95% duplication (~173 lines shared)

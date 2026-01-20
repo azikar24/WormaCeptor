@@ -5,6 +5,28 @@
 
 ---
 
+## Updates
+
+### 2026-01-20: Dead Code Cleanup
+
+**Removed:** `features/viewer/src/main/java/com/azikar24/wormaceptor/feature/viewer/ui/components/quickactions/` directory
+
+This directory contained ~2000 lines of unused duplicate/experimental components that were never integrated into production code:
+
+| Removed File | Description |
+|--------------|-------------|
+| `BulkActionBar.kt` | Enhanced version - production uses `components/BulkActionBar.kt` |
+| `SelectableTransactionItem.kt` | Enhanced version - production uses `components/SelectableTransactionItem.kt` |
+| `TransactionContextMenu.kt` | Enhanced version - production uses `components/TransactionContextMenu.kt` |
+| `QuickFilterBar.kt` | Enhanced version - production uses `components/QuickFilterBar.kt` |
+| `LongPressModifier.kt` | 6 unused modifier extensions |
+| `QuickActionModels.kt` | Models only used by preview |
+| `QuickActionsPreview.kt` | Preview file for unused components |
+
+**Verification:** Kotlin compilation, detekt, and app build all pass.
+
+---
+
 ## Executive Summary
 
 WormaCeptor V2 demonstrates **excellent architectural patterns** with strict Clean Architecture separation, proper modularization, and modern Android development practices. However, it suffers from **critical performance and scalability issues** that will cause severe degradation beyond 1,000 transactions. The codebase has near-zero test coverage and several production-critical bugs including main thread blocking and memory leaks.
@@ -646,7 +668,7 @@ Rebuilds entire AnnotatedString on every match navigation (currentMatchGlobalPos
 ### Code Smell Summary
 
 - **Magic Numbers:** Truncation limits, debounce delays hardcoded
-- **Dead Code:** Unused functions in TransactionDetailScreen (lines 615-671)
+- **Dead Code:** ~~Unused functions in TransactionDetailScreen (lines 615-671)~~ Partially addressed - `quickactions/` directory removed (2026-01-20)
 - **Force Unwrap:** `CoreHolder.queryEngine!!` appears multiple times
 - **Global State:** Mutable singletons throughout
 - **Callback Hell:** Retrofit callbacks instead of suspend functions

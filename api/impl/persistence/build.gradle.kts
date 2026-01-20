@@ -22,6 +22,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(project(":api:client"))
+    implementation(project(":api:common"))
     implementation(project(":core:engine"))
     implementation(project(":infra:persistence:sqlite"))
     implementation(project(":domain:contracts"))

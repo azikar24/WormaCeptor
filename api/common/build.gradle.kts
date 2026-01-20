@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.azikar24.wormaceptor.api.impl.imdb"
+    namespace = "com.azikar24.wormaceptor.api.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -21,11 +22,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(project(":api:client"))
-    implementation(project(":api:common"))
-    implementation(project(":core:engine"))
-    implementation(project(":infra:persistence:sqlite")) // For InMemory repos hosted there
-    implementation(project(":domain:contracts"))
-    implementation(project(":platform:android"))
-    implementation(project(":features:viewer"))
+    api(project(":api:client"))
+    api(project(":domain:entities"))
+    api(project(":core:engine"))
+    api(project(":features:viewer"))
 }

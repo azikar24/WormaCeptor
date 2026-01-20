@@ -25,6 +25,7 @@ include(":app")
 
 // Phase 1: Foundation & Guardrails
 include(":api:client")
+include(":api:common")
 include(":api:impl:persistence")
 include(":api:impl:imdb")
 include(":api:impl:no-op")

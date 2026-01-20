@@ -9,19 +9,22 @@ import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 
-internal class WormaCeptorNotificationHelper(private val context: Context) {
-
-    companion object {
-        private const val CHANNEL_ID = "wormaceptor_v2_channel"
-        private const val NOTIFICATION_ID = 4200
-        private const val BUFFER_SIZE = 10
-    }
+class WormaCeptorNotificationHelper(
+    private val context: Context,
+    private val title: String = "WormaCeptor: Recording...",
+) {
 
     private val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val transactionBuffer = ArrayDeque<NetworkTransaction>(BUFFER_SIZE)
     private var transactionCount = 0
+
+    private val NetworkTransaction.path get() = try {
+        java.net.URI(this.request.url).path
+    } catch (_: Exception) {
+        this.request.url
+    }
 
     init {
         createChannel()
@@ -57,7 +60,7 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_menu_rotate)
-            .setContentTitle("WormaCeptor: Recording...")
+            .setContentTitle(title)
             .setContentText("${transaction.request.method} ${transaction.request.url}")
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
@@ -77,9 +80,9 @@ internal class WormaCeptorNotificationHelper(private val context: Context) {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
-    private val NetworkTransaction.path get() = try {
-        java.net.URI(this.request.url).path
-    } catch (_: Exception) {
-        this.request.url
+    companion object {
+        private const val CHANNEL_ID = "wormaceptor_v2_channel"
+        private const val NOTIFICATION_ID = 4200
+        private const val BUFFER_SIZE = 10
     }
 }

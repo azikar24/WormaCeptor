@@ -5,32 +5,6 @@ This document lists duplicate code patterns found in the WormaCeptor codebase.
 ---
 
 ## Critical Duplicates
-
-### 1. WormaCeptorNotificationHelper - 100% Duplicate
-
-**Impact:** 82 lines of nearly identical code
-
-| Location | File |
-|----------|------|
-| 1 | `api/impl/imdb/src/main/java/com/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper.kt:1-82` |
-| 2 | `api/impl/persistence/src/main/java/com/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper.kt:1-83` |
-
-**Only Difference:** Line 60 - `"WormaCeptor (IMDB): Recording..."` vs `"WormaCeptor: Recording..."`
-
-**Fix:** Move to shared module with parameterized title:
-
-```kotlin
-// In api/common or api/client
-internal class WormaCeptorNotificationHelper(
-    private val context: Context,
-    private val title: String = "WormaCeptor: Recording..."
-) {
-    // ... shared implementation
-}
-```
-
----
-
 ### 2. ServiceProviderImpl - 95% Duplicate
 
 **Impact:** ~110 lines of duplicate code

@@ -278,7 +278,7 @@ private fun TransactionDetailContent(
         try {
             val uri = java.net.URI(transaction.request.url)
             uri.path ?: transaction.request.url
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             transaction.request.url
         }
     }
@@ -368,7 +368,7 @@ private fun TransactionDetailContent(
                                         copyToClipboard(context, "cURL", generateCurlCommand(transaction))
                                     },
                                 )
-                                Divider()
+                                HorizontalDivider()
                                 DropdownMenuItem(
                                     text = { Text("Share as JSON") },
                                     onClick = {
@@ -1836,7 +1836,7 @@ private fun formatJson(json: String): String {
         } else {
             json
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         json
     }
 }

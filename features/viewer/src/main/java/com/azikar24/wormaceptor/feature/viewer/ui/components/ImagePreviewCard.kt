@@ -270,7 +270,7 @@ fun ImagePreviewCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
-                        contentDescription = null,
+                        contentDescription = "Image",
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp),
                     )
@@ -389,7 +389,7 @@ fun ImagePreviewCard(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.BrokenImage,
-                                    contentDescription = null,
+                                    contentDescription = "Error loading image",
                                     tint = MaterialTheme.colorScheme.error,
                                     modifier = Modifier.size(32.dp),
                                 )
@@ -505,7 +505,7 @@ private fun MetadataItem(icon: ImageVector, label: String, value: String, tint: 
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = label,
             tint = tint,
             modifier = Modifier.size(18.dp),
         )
@@ -561,7 +561,7 @@ private fun ActionButton(
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = label,
                 modifier = Modifier.size(16.dp),
                 tint = if (isPrimary) {
                     MaterialTheme.colorScheme.primary

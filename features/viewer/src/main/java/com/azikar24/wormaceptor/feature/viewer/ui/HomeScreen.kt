@@ -382,7 +382,7 @@ fun HomeScreen(
                                             leadingIcon = {
                                                 Icon(
                                                     imageVector = Icons.Default.Search,
-                                                    contentDescription = null,
+                                                    contentDescription = "Search",
                                                     modifier = Modifier.size(16.dp),
                                                 )
                                             },

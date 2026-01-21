@@ -29,20 +29,8 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material.icons.filled.Cable
-import androidx.compose.material.icons.filled.Cookie
-import androidx.compose.material.icons.filled.DeveloperBoard
-import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material.icons.filled.BorderStyle
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
@@ -138,21 +126,11 @@ fun HomeScreen(
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
-    // Tools navigation
-    onNavigateToPreferences: () -> Unit = {},
+    // Tools navigation - quick access in overflow menu
     onNavigateToLogs: () -> Unit = {},
     onNavigateToDeviceInfo: () -> Unit = {},
-    onNavigateToDatabase: () -> Unit = {},
-    onNavigateToFileBrowser: () -> Unit = {},
-    onNavigateToMemory: () -> Unit = {},
-    onNavigateToFps: () -> Unit = {},
-    onNavigateToWebSocket: () -> Unit = {},
-    onNavigateToCookies: () -> Unit = {},
-    onNavigateToCpu: () -> Unit = {},
-    onNavigateToTouchViz: () -> Unit = {},
-    onNavigateToViewBorders: () -> Unit = {},
-    onNavigateToLocation: () -> Unit = {},
-    onNavigateToPushSimulator: () -> Unit = {},
+    // Generic tool navigation for Tools tab
+    onToolNavigate: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -166,7 +144,7 @@ fun HomeScreen(
         }
     }
 
-    val titles = listOf("Transactions", "Crashes")
+    val titles = listOf("Transactions", "Crashes", "Tools")
     var showFilterSheet by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
@@ -317,53 +295,53 @@ fun HomeScreen(
                                     onDismissRequest = { showOverflowMenu = false },
                                     shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
                                 ) {
-                                    if (pagerState.currentPage == 0) {
-                                        DropdownMenuItem(
-                                            text = { Text("Export Transactions") },
-                                            leadingIcon = { Icon(Icons.Default.Share, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                scope.launch { onExportTransactions() }
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Clear All Transactions") },
-                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                showClearTransactionsDialog = true
-                                            },
-                                        )
-                                    } else {
-                                        DropdownMenuItem(
-                                            text = { Text("Export Crashes") },
-                                            leadingIcon = { Icon(Icons.Default.Share, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                scope.launch { onExportCrashes() }
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Clear All Crashes") },
-                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                showClearCrashesDialog = true
-                                            },
+                                    when (pagerState.currentPage) {
+                                        0 -> {
+                                            // Transactions tab menu
+                                            DropdownMenuItem(
+                                                text = { Text("Export Transactions") },
+                                                leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    scope.launch { onExportTransactions() }
+                                                },
+                                            )
+                                            DropdownMenuItem(
+                                                text = { Text("Clear All Transactions") },
+                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    showClearTransactionsDialog = true
+                                                },
+                                            )
+                                        }
+                                        1 -> {
+                                            // Crashes tab menu
+                                            DropdownMenuItem(
+                                                text = { Text("Export Crashes") },
+                                                leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    scope.launch { onExportCrashes() }
+                                                },
+                                            )
+                                            DropdownMenuItem(
+                                                text = { Text("Clear All Crashes") },
+                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    showClearCrashesDialog = true
+                                                },
+                                            )
+                                        }
+                                        // No menu items for Tools tab (page 2)
+                                    }
+                                    // Quick access tools - always shown
+                                    if (pagerState.currentPage != 2) {
+                                        androidx.compose.material3.HorizontalDivider(
+                                            modifier = Modifier.padding(vertical = 4.dp),
                                         )
                                     }
-                                    // Tools section divider
-                                    androidx.compose.material3.HorizontalDivider(
-                                        modifier = Modifier.padding(vertical = 4.dp),
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("SharedPreferences") },
-                                        leadingIcon = { Icon(Icons.Default.Settings, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToPreferences()
-                                        },
-                                    )
                                     DropdownMenuItem(
                                         text = { Text("Console Logs") },
                                         leadingIcon = { Icon(Icons.Default.Terminal, null) },
@@ -378,94 +356,6 @@ fun HomeScreen(
                                         onClick = {
                                             showOverflowMenu = false
                                             onNavigateToDeviceInfo()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Database Browser") },
-                                        leadingIcon = { Icon(Icons.Default.Storage, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToDatabase()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("File Browser") },
-                                        leadingIcon = { Icon(Icons.Default.Folder, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToFileBrowser()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Memory Monitor") },
-                                        leadingIcon = { Icon(Icons.Default.Memory, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToMemory()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("FPS Monitor") },
-                                        leadingIcon = { Icon(Icons.Default.Speed, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToFps()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("WebSocket Monitor") },
-                                        leadingIcon = { Icon(Icons.Default.Cable, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToWebSocket()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Cookies Manager") },
-                                        leadingIcon = { Icon(Icons.Default.Cookie, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToCookies()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("CPU Monitor") },
-                                        leadingIcon = { Icon(Icons.Default.DeveloperBoard, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToCpu()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Touch Visualization") },
-                                        leadingIcon = { Icon(Icons.Default.TouchApp, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToTouchViz()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("View Borders") },
-                                        leadingIcon = { Icon(Icons.Default.BorderStyle, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToViewBorders()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Location Simulator") },
-                                        leadingIcon = { Icon(Icons.Default.LocationOn, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToLocation()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Push Simulator") },
-                                        leadingIcon = { Icon(Icons.Default.Notifications, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToPushSimulator()
                                         },
                                     )
                                 }
@@ -670,6 +560,10 @@ fun HomeScreen(
                             onCrashClick = onCrashClick,
                             isRefreshing = isRefreshingCrashes,
                             onRefresh = onRefreshCrashes,
+                        )
+                        2 -> ToolsTab(
+                            onNavigate = onToolNavigate,
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }

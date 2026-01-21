@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":api:client"))
     implementation(project(":core:engine"))
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
@@ -42,6 +43,20 @@ dependencies {
     implementation(project(":features:viewborders"))
     implementation(project(":features:location"))
     implementation(project(":features:pushsimulator"))
+    // Phase 5 features
+    implementation(project(":features:viewhierarchy"))
+    implementation(project(":features:leakdetection"))
+    implementation(project(":features:threadviolation"))
+    implementation(project(":features:webviewmonitor"))
+    implementation(project(":features:crypto"))
+    implementation(project(":features:gridoverlay"))
+    implementation(project(":features:measurement"))
+    implementation(project(":features:securestorage"))
+    implementation(project(":features:composerender"))
+    implementation(project(":features:ratelimit"))
+    implementation(project(":features:pushtoken"))
+    implementation(project(":features:loadedlibraries"))
+    implementation(project(":features:interception"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

@@ -13,15 +13,28 @@ object WormaCeptorApi {
     internal var provider: ServiceProvider? = null
         private set
 
+    @Volatile
+    private var enabledFeatures: Set<Feature> = Feature.DEFAULT
+
     val redactionConfig = RedactionConfig()
 
     /**
      * Initializes WormaCeptor.
      * If an implementation module (persistence, imdb) is present in the classpath,
      * it will be automatically discovered and initialized.
+     *
+     * @param context Application context
+     * @param logCrashes Whether to capture uncaught exceptions
+     * @param features Set of features to enable (defaults to all features)
      */
-    fun init(context: Context, logCrashes: Boolean = true) {
+    fun init(
+        context: Context,
+        logCrashes: Boolean = true,
+        features: Set<Feature> = Feature.DEFAULT
+    ) {
         if (provider != null) return
+
+        enabledFeatures = features
 
         // Discovery via reflection to avoid compile-time dependency on implementation modules
         val implClass = try {
@@ -35,6 +48,19 @@ object WormaCeptorApi {
 
         provider?.init(context, logCrashes)
     }
+
+    /**
+     * Check if a specific feature is enabled.
+     * @param feature The feature to check
+     * @return true if the feature is enabled, false otherwise
+     */
+    fun isFeatureEnabled(feature: Feature): Boolean = feature in enabledFeatures
+
+    /**
+     * Get all currently enabled features.
+     * @return A copy of the enabled features set
+     */
+    fun getEnabledFeatures(): Set<Feature> = enabledFeatures.toSet()
 
     fun startActivityOnShake(activity: ComponentActivity) {
         // Platform classes are safe to refer if they are in a common layout or handled similarly

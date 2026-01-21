@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.core.engine
 
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
+import com.azikar24.wormaceptor.domain.contracts.ExtensionContext
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.Request
@@ -12,6 +13,7 @@ import java.util.UUID
 class CaptureEngine(
     private val repository: TransactionRepository,
     private val blobStorage: BlobStorage,
+    private val extensionRegistry: ExtensionRegistry? = null,
 ) {
 
     suspend fun startTransaction(
@@ -49,10 +51,22 @@ class CaptureEngine(
         val status = if (error != null || code >= 400) TransactionStatus.FAILED else TransactionStatus.COMPLETED
         val duration = System.currentTimeMillis() - original.timestamp
 
+        // Extract custom extensions from registered providers
+        val extensions = extensionRegistry?.let { registry ->
+            val context = ExtensionContext(
+                request = original.request,
+                response = response,
+                durationMs = duration,
+                timestamp = original.timestamp,
+            )
+            registry.extractAll(context)
+        } ?: emptyMap()
+
         val updated = original.copy(
             response = response,
             status = status,
             durationMs = duration,
+            extensions = extensions,
         )
         repository.saveTransaction(updated)
     }

@@ -3,7 +3,7 @@ package com.azikar24.wormaceptor.core.engine
 import java.util.concurrent.atomic.AtomicReference
 
 object CoreHolder {
-    private val engines = AtomicReference<Pair<CaptureEngine, QueryEngine>?>(null)
+    private val engines = AtomicReference<Triple<CaptureEngine, QueryEngine, ExtensionRegistry?>?>(null)
 
     val captureEngine: CaptureEngine?
         get() = engines.get()?.first
@@ -11,7 +11,14 @@ object CoreHolder {
     val queryEngine: QueryEngine?
         get() = engines.get()?.second
 
-    fun initialize(capture: CaptureEngine, query: QueryEngine): Boolean {
-        return engines.compareAndSet(null, capture to query)
+    val extensionRegistry: ExtensionRegistry?
+        get() = engines.get()?.third
+
+    fun initialize(
+        capture: CaptureEngine,
+        query: QueryEngine,
+        extensions: ExtensionRegistry? = null,
+    ): Boolean {
+        return engines.compareAndSet(null, Triple(capture, query, extensions))
     }
 }

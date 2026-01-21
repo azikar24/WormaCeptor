@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.ComponentActivity
+import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.platform.android.ShakeDetector
 
 object WormaCeptorApi {
@@ -164,6 +165,38 @@ object WormaCeptorApi {
         } else {
             null
         }
+    }
+
+    // ========== Extension Provider API ==========
+
+    /**
+     * Register a custom extension provider.
+     * Extension providers extract custom metadata from network transactions.
+     * The extracted data will be stored with the transaction and displayed in the UI.
+     *
+     * @param provider The extension provider to register
+     */
+    fun registerExtensionProvider(provider: ExtensionProvider) {
+        CoreHolder.extensionRegistry?.register(provider)
+    }
+
+    /**
+     * Unregister an extension provider by name.
+     *
+     * @param name The name of the provider to unregister
+     * @return true if a provider was removed, false otherwise
+     */
+    fun unregisterExtensionProvider(name: String): Boolean {
+        return CoreHolder.extensionRegistry?.unregister(name) ?: false
+    }
+
+    /**
+     * Get the names of all registered extension providers.
+     *
+     * @return List of provider names, or empty list if not initialized
+     */
+    fun getRegisteredExtensionProviders(): List<String> {
+        return CoreHolder.extensionRegistry?.getRegisteredProviders() ?: emptyList()
     }
 
     private class NoOpProvider : ServiceProvider {

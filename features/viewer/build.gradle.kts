@@ -30,6 +30,9 @@ dependencies {
     implementation(project(":features:preferences"))
     implementation(project(":features:logs"))
     implementation(project(":features:deviceinfo"))
+    implementation(project(":features:settings"))
+    implementation(project(":features:database"))
+    implementation(project(":features:filebrowser"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

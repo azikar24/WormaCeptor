@@ -32,6 +32,8 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
@@ -131,6 +133,8 @@ fun HomeScreen(
     onNavigateToPreferences: () -> Unit = {},
     onNavigateToLogs: () -> Unit = {},
     onNavigateToDeviceInfo: () -> Unit = {},
+    onNavigateToDatabase: () -> Unit = {},
+    onNavigateToFileBrowser: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -356,6 +360,22 @@ fun HomeScreen(
                                         onClick = {
                                             showOverflowMenu = false
                                             onNavigateToDeviceInfo()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Database Browser") },
+                                        leadingIcon = { Icon(Icons.Default.Storage, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToDatabase()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("File Browser") },
+                                        leadingIcon = { Icon(Icons.Default.Folder, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToFileBrowser()
                                         },
                                     )
                                 }

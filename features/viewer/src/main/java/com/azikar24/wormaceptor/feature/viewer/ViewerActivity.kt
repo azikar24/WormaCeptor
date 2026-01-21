@@ -36,6 +36,8 @@ import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
+import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
+import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
@@ -182,6 +184,8 @@ class ViewerActivity : ComponentActivity() {
                                 onNavigateToPreferences = { navController.navigate("preferences") },
                                 onNavigateToLogs = { navController.navigate("logs") },
                                 onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
+                                onNavigateToDatabase = { navController.navigate("database") },
+                                onNavigateToFileBrowser = { navController.navigate("filebrowser") },
                             )
                         }
 
@@ -265,6 +269,22 @@ class ViewerActivity : ComponentActivity() {
                         composable("deviceinfo") {
                             DeviceInfoScreen(
                                 onBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Database Browser route
+                        composable("database") {
+                            DatabaseBrowser(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // File Browser route
+                        composable("filebrowser") {
+                            FileBrowser(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
                             )
                         }
                     }

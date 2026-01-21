@@ -50,6 +50,21 @@ import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
 import com.azikar24.wormaceptor.feature.viewborders.ViewBordersFeature
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
+import com.azikar24.wormaceptor.feature.viewhierarchy.ViewHierarchyInspector
+import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
+import com.azikar24.wormaceptor.feature.leakdetection.LeakDetectionFeature
+import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
+import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationFeature
+import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitor as WebViewMonitorScreen
+import com.azikar24.wormaceptor.feature.crypto.CryptoTool
+import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
+import com.azikar24.wormaceptor.feature.measurement.MeasurementTool
+import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
+import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
+import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
+import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
+import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
+import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
@@ -62,6 +77,9 @@ class ViewerActivity : ComponentActivity() {
     private val webSocketMonitorEngine = WebSocketFeature.createEngine()
     private val touchVisualizationEngine by lazy { TouchVisualizationFeature.createEngine(this) }
     private val viewBordersEngine by lazy { ViewBordersFeature.createEngine() }
+    // Phase 5 engines
+    private val leakDetectionEngine by lazy { LeakDetectionFeature.createEngine() }
+    private val threadViolationEngine by lazy { ThreadViolationFeature.createEngine() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,20 +214,11 @@ class ViewerActivity : ComponentActivity() {
                                     scope.launch { viewModel.deleteTransaction(transaction.id) }
                                 },
                                 onCopyAsCurl = { transaction -> copyAsCurl(transaction) },
-                                onNavigateToPreferences = { navController.navigate("preferences") },
+                                // Quick access navigation in overflow menu
                                 onNavigateToLogs = { navController.navigate("logs") },
                                 onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
-                                onNavigateToDatabase = { navController.navigate("database") },
-                                onNavigateToFileBrowser = { navController.navigate("filebrowser") },
-                                onNavigateToMemory = { navController.navigate("memory") },
-                                onNavigateToFps = { navController.navigate("fps") },
-                                onNavigateToWebSocket = { navController.navigate("websocket") },
-                                onNavigateToCookies = { navController.navigate("cookies") },
-                                onNavigateToCpu = { navController.navigate("cpu") },
-                                onNavigateToTouchViz = { navController.navigate("touchviz") },
-                                onNavigateToViewBorders = { navController.navigate("viewborders") },
-                                onNavigateToLocation = { navController.navigate("location") },
-                                onNavigateToPushSimulator = { navController.navigate("pushsimulator") },
+                                // Generic tool navigation for Tools tab
+                                onToolNavigate = { route -> navController.navigate(route) },
                             )
                         }
 
@@ -376,6 +385,106 @@ class ViewerActivity : ComponentActivity() {
                         composable("pushsimulator") {
                             PushSimulator(
                                 context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Phase 5 Routes
+
+                        // View Hierarchy Inspector route
+                        composable("viewhierarchy") {
+                            ViewHierarchyInspector(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Leak Detection route
+                        composable("leakdetection") {
+                            LeakDetector(
+                                engine = leakDetectionEngine,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Thread Violation Detection route
+                        composable("threadviolation") {
+                            ThreadViolationMonitor(
+                                engine = threadViolationEngine,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // WebView Monitor route
+                        composable("webviewmonitor") {
+                            WebViewMonitorScreen(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Crypto Tool route
+                        composable("crypto") {
+                            CryptoTool(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Grid Overlay route
+                        composable("gridoverlay") {
+                            GridOverlayControl(
+                                activity = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Measurement Tool route
+                        composable("measurement") {
+                            MeasurementTool(
+                                activity = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Secure Storage Viewer route
+                        composable("securestorage") {
+                            SecureStorageViewer(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Compose Render Tracker route
+                        composable("composerender") {
+                            ComposeRenderTracker(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Rate Limiter route
+                        composable("ratelimit") {
+                            RateLimiter(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Push Token Manager route
+                        composable("pushtoken") {
+                            PushTokenManager(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Loaded Libraries Inspector route
+                        composable("loadedlibraries") {
+                            LoadedLibrariesInspector(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Interception Framework route
+                        composable("interception") {
+                            InterceptionFramework(
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }

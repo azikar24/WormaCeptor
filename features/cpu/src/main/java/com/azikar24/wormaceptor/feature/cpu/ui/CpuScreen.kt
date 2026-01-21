@@ -1,0 +1,858 @@
+/*
+ * Copyright AziKar24 2025.
+ */
+
+package com.azikar24.wormaceptor.feature.cpu.ui
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
+import kotlinx.collections.immutable.ImmutableList
+import java.text.DecimalFormat
+
+/**
+ * Main screen for CPU Monitoring.
+ *
+ * Features:
+ * - Overall CPU usage as animated percentage arc/gauge
+ * - Per-core usage bars (horizontal bars for each core)
+ * - CPU frequency display
+ * - Line chart showing CPU usage over time
+ * - Color coding: green < 50%, yellow 50-80%, red > 80%
+ * - Temperature display (if available)
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CpuScreen(
+    currentCpu: CpuInfo,
+    cpuHistory: ImmutableList<CpuInfo>,
+    isMonitoring: Boolean,
+    isCpuWarning: Boolean,
+    onStartMonitoring: () -> Unit,
+    onStopMonitoring: () -> Unit,
+    onClearHistory: () -> Unit,
+    onBack: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    val colors = cpuColors()
+    val scrollState = rememberScrollState()
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = "CPU Monitor",
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                        // Warning badge
+                        AnimatedVisibility(
+                            visible = isCpuWarning,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            WarningBadge()
+                        }
+                    }
+                },
+                navigationIcon = {
+                    onBack?.let { back ->
+                        IconButton(onClick = back) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    // Monitoring toggle
+                    IconButton(onClick = {
+                        if (isMonitoring) onStopMonitoring() else onStartMonitoring()
+                    }) {
+                        Icon(
+                            imageVector = if (isMonitoring) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            contentDescription = if (isMonitoring) "Pause monitoring" else "Start monitoring",
+                            tint = if (isMonitoring) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
+                        )
+                    }
+
+                    // Clear history
+                    IconButton(onClick = onClearHistory) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Clear history",
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            )
+        },
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(scrollState)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            // Status bar
+            StatusBar(
+                isMonitoring = isMonitoring,
+                sampleCount = cpuHistory.size,
+            )
+
+            // CPU usage gauge card
+            CpuUsageGaugeCard(
+                currentCpu = currentCpu,
+                isWarning = isCpuWarning,
+                colors = colors,
+            )
+
+            // Per-core usage card
+            PerCoreUsageCard(
+                currentCpu = currentCpu,
+                colors = colors,
+            )
+
+            // CPU usage over time chart
+            CpuChartCard(
+                history = cpuHistory,
+                colors = colors,
+            )
+
+            // System info card (frequency, temperature)
+            SystemInfoCard(
+                currentCpu = currentCpu,
+                colors = colors,
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatusBar(
+    isMonitoring: Boolean,
+    sampleCount: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            // Monitoring indicator
+            val indicatorColor by animateColorAsState(
+                targetValue = if (isMonitoring) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.outline
+                },
+                animationSpec = tween(300),
+                label = "indicator",
+            )
+
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(indicatorColor),
+            )
+
+            Text(
+                text = if (isMonitoring) "Monitoring" else "Paused",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
+        Text(
+            text = "$sampleCount samples",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.Monospace,
+        )
+    }
+}
+
+@Composable
+private fun CpuUsageGaugeCard(
+    currentCpu: CpuInfo,
+    isWarning: Boolean,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    val statusColor = colors.statusColorForUsage(currentCpu.overallUsagePercent)
+    val formatter = DecimalFormat("#,##0.0")
+
+    // Animated sweep angle for the gauge
+    val animatedProgress by animateFloatAsState(
+        targetValue = currentCpu.overallUsagePercent / 100f,
+        animationSpec = tween(durationMillis = 500),
+        label = "gauge_progress",
+    )
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colors.cardBackground,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Memory,
+                        contentDescription = null,
+                        tint = statusColor,
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Text(
+                        text = "Overall CPU Usage",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.labelPrimary,
+                    )
+                }
+
+                // Warning indicator
+                if (isWarning) {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = colors.critical.copy(alpha = 0.15f),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = null,
+                                tint = colors.critical,
+                                modifier = Modifier.size(16.dp),
+                            )
+                            Text(
+                                text = "HIGH",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = colors.critical,
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Circular gauge
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                CpuGauge(
+                    progress = animatedProgress,
+                    statusColor = statusColor,
+                    colors = colors,
+                    modifier = Modifier.size(160.dp),
+                )
+
+                // Center text
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = "${formatter.format(currentCpu.overallUsagePercent)}%",
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = statusColor,
+                    )
+                    Text(
+                        text = "${currentCpu.coreCount} cores",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.labelSecondary,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CpuGauge(
+    progress: Float,
+    statusColor: Color,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier = modifier) {
+        val strokeWidth = 16.dp.toPx()
+        val radius = (size.minDimension - strokeWidth) / 2
+        val center = Offset(size.width / 2, size.height / 2)
+
+        // Draw background arc
+        drawArc(
+            color = colors.gaugeTrack,
+            startAngle = 135f,
+            sweepAngle = 270f,
+            useCenter = false,
+            topLeft = Offset(center.x - radius, center.y - radius),
+            size = Size(radius * 2, radius * 2),
+            style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+        )
+
+        // Draw progress arc
+        drawArc(
+            color = statusColor,
+            startAngle = 135f,
+            sweepAngle = 270f * progress.coerceIn(0f, 1f),
+            useCenter = false,
+            topLeft = Offset(center.x - radius, center.y - radius),
+            size = Size(radius * 2, radius * 2),
+            style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+        )
+    }
+}
+
+@Composable
+private fun PerCoreUsageCard(
+    currentCpu: CpuInfo,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colors.cardBackground,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = "Per-Core Usage",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = colors.labelPrimary,
+            )
+
+            if (currentCpu.perCoreUsage.isEmpty()) {
+                Text(
+                    text = "No core data available",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.labelSecondary,
+                )
+            } else {
+                currentCpu.perCoreUsage.forEachIndexed { index, usage ->
+                    CoreUsageBar(
+                        coreIndex = index,
+                        usage = usage,
+                        color = colors.colorForCore(index),
+                        colors = colors,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CoreUsageBar(
+    coreIndex: Int,
+    usage: Float,
+    color: Color,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = usage / 100f,
+        animationSpec = tween(durationMillis = 300),
+        label = "core_progress_$coreIndex",
+    )
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        // Core label
+        Text(
+            text = "Core $coreIndex",
+            style = MaterialTheme.typography.labelMedium,
+            color = colors.labelSecondary,
+            modifier = Modifier.width(56.dp),
+        )
+
+        // Progress bar
+        LinearProgressIndicator(
+            progress = { animatedProgress.coerceIn(0f, 1f) },
+            modifier = Modifier
+                .weight(1f)
+                .height(8.dp)
+                .clip(RoundedCornerShape(4.dp)),
+            color = color,
+            trackColor = colors.chartBackground,
+        )
+
+        // Percentage
+        Text(
+            text = "${usage.toInt()}%",
+            style = MaterialTheme.typography.labelSmall,
+            fontFamily = FontFamily.Monospace,
+            color = colors.statusColorForUsage(usage),
+            modifier = Modifier.width(36.dp),
+        )
+    }
+}
+
+@Composable
+private fun CpuChartCard(
+    history: ImmutableList<CpuInfo>,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colors.cardBackground,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = "CPU Usage Over Time",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = colors.labelPrimary,
+            )
+
+            // Chart
+            if (history.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(colors.chartBackground),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "No data yet",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colors.labelSecondary,
+                    )
+                }
+            } else {
+                CpuLineChart(
+                    history = history,
+                    colors = colors,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp),
+                )
+            }
+
+            // Legend
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ChartLegendItem(
+                    label = "CPU Usage",
+                    color = colors.cpuUsage,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CpuLineChart(
+    history: ImmutableList<CpuInfo>,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    if (history.isEmpty()) return
+
+    Canvas(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(colors.chartBackground),
+    ) {
+        val width = size.width
+        val height = size.height
+        val padding = 16.dp.toPx()
+        val chartWidth = width - padding * 2
+        val chartHeight = height - padding * 2
+
+        // Draw grid lines
+        val gridLineCount = 4
+        for (i in 0..gridLineCount) {
+            val y = padding + (chartHeight / gridLineCount) * i
+            drawLine(
+                color = colors.gridLines,
+                start = Offset(padding, y),
+                end = Offset(width - padding, y),
+                strokeWidth = 1.dp.toPx(),
+            )
+        }
+
+        // Draw threshold lines
+        // 50% threshold (warning)
+        val warningY = padding + chartHeight * 0.5f
+        drawLine(
+            color = colors.warning.copy(alpha = 0.3f),
+            start = Offset(padding, warningY),
+            end = Offset(width - padding, warningY),
+            strokeWidth = 1.dp.toPx(),
+        )
+
+        // 80% threshold (critical)
+        val criticalY = padding + chartHeight * 0.2f
+        drawLine(
+            color = colors.critical.copy(alpha = 0.3f),
+            start = Offset(padding, criticalY),
+            end = Offset(width - padding, criticalY),
+            strokeWidth = 1.dp.toPx(),
+        )
+
+        if (history.size < 2) return@Canvas
+
+        // Draw CPU usage line
+        val cpuPath = Path()
+        history.forEachIndexed { index, info ->
+            val x = padding + (chartWidth / (history.size - 1)) * index
+            val y = padding + chartHeight - (info.overallUsagePercent / 100f * chartHeight)
+
+            if (index == 0) {
+                cpuPath.moveTo(x, y)
+            } else {
+                cpuPath.lineTo(x, y)
+            }
+        }
+        drawPath(
+            path = cpuPath,
+            color = colors.cpuUsage,
+            style = Stroke(
+                width = 2.dp.toPx(),
+                cap = StrokeCap.Round,
+            ),
+        )
+
+        // Draw area fill
+        val areaPath = Path()
+        history.forEachIndexed { index, info ->
+            val x = padding + (chartWidth / (history.size - 1)) * index
+            val y = padding + chartHeight - (info.overallUsagePercent / 100f * chartHeight)
+
+            if (index == 0) {
+                areaPath.moveTo(x, padding + chartHeight)
+                areaPath.lineTo(x, y)
+            } else {
+                areaPath.lineTo(x, y)
+            }
+        }
+        areaPath.lineTo(padding + chartWidth, padding + chartHeight)
+        areaPath.close()
+
+        drawPath(
+            path = areaPath,
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    colors.cpuUsage.copy(alpha = 0.3f),
+                    colors.cpuUsage.copy(alpha = 0.05f),
+                ),
+            ),
+        )
+    }
+}
+
+@Composable
+private fun ChartLegendItem(
+    label: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .clip(CircleShape)
+                .background(color),
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun SystemInfoCard(
+    currentCpu: CpuInfo,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colors.cardBackground,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = "System Info",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = colors.labelPrimary,
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                // CPU Frequency
+                SystemInfoItem(
+                    icon = Icons.Default.Speed,
+                    label = "Frequency",
+                    value = if (currentCpu.cpuFrequencyMHz > 0) {
+                        "${currentCpu.cpuFrequencyMHz} MHz"
+                    } else {
+                        "N/A"
+                    },
+                    iconTint = colors.cpuUsage,
+                    colors = colors,
+                )
+
+                // Temperature
+                val cpuTemp = currentCpu.cpuTemperature
+                SystemInfoItem(
+                    icon = Icons.Default.Thermostat,
+                    label = "Temperature",
+                    value = cpuTemp?.let {
+                        String.format("%.1f C", it)
+                    } ?: "N/A",
+                    iconTint = when {
+                        cpuTemp != null && cpuTemp > 70f -> colors.critical
+                        cpuTemp != null && cpuTemp > 50f -> colors.warning
+                        else -> colors.normal
+                    },
+                    colors = colors,
+                )
+
+                // Core count
+                SystemInfoItem(
+                    icon = Icons.Default.Memory,
+                    label = "Cores",
+                    value = "${currentCpu.coreCount}",
+                    iconTint = colors.cpuUsage,
+                    colors = colors,
+                )
+            }
+
+            // Uptime
+            if (currentCpu.uptime > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = "Uptime: ${formatUptime(currentCpu.uptime)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.labelSecondary,
+                        fontFamily = FontFamily.Monospace,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SystemInfoItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    value: String,
+    iconTint: Color,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = iconTint,
+            modifier = Modifier.size(24.dp),
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = colors.labelSecondary,
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily.Monospace,
+            color = colors.labelPrimary,
+        )
+    }
+}
+
+@Composable
+private fun WarningBadge(
+    modifier: Modifier = Modifier,
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "warning")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0.5f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "warning_alpha",
+    )
+
+    Surface(
+        modifier = modifier,
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.error.copy(alpha = alpha),
+    ) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "CPU warning",
+            tint = MaterialTheme.colorScheme.onError,
+            modifier = Modifier
+                .padding(4.dp)
+                .size(16.dp),
+        )
+    }
+}
+
+/**
+ * Formats uptime in milliseconds to a human-readable string.
+ */
+private fun formatUptime(uptimeMs: Long): String {
+    val seconds = uptimeMs / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+    val days = hours / 24
+
+    return when {
+        days > 0 -> "${days}d ${hours % 24}h ${minutes % 60}m"
+        hours > 0 -> "${hours}h ${minutes % 60}m ${seconds % 60}s"
+        minutes > 0 -> "${minutes}m ${seconds % 60}s"
+        else -> "${seconds}s"
+    }
+}

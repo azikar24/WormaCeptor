@@ -1,0 +1,48 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+}
+
+android {
+    namespace = "com.azikar24.wormaceptor.feature.location"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+    buildFeatures {
+        compose = true
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+dependencies {
+    implementation(project(":core:engine"))
+    implementation(project(":domain:contracts"))
+    implementation(project(":domain:entities"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.androidx.datastore.preferences)
+
+    // Google Play Services Location for getting real location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    // Coroutines support for Play Services Tasks
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    debugImplementation(libs.androidx.ui.tooling)
+}

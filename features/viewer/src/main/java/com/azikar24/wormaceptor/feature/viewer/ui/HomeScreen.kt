@@ -34,6 +34,15 @@ import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Cable
+import androidx.compose.material.icons.filled.Cookie
+import androidx.compose.material.icons.filled.DeveloperBoard
+import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.BorderStyle
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
@@ -135,6 +144,15 @@ fun HomeScreen(
     onNavigateToDeviceInfo: () -> Unit = {},
     onNavigateToDatabase: () -> Unit = {},
     onNavigateToFileBrowser: () -> Unit = {},
+    onNavigateToMemory: () -> Unit = {},
+    onNavigateToFps: () -> Unit = {},
+    onNavigateToWebSocket: () -> Unit = {},
+    onNavigateToCookies: () -> Unit = {},
+    onNavigateToCpu: () -> Unit = {},
+    onNavigateToTouchViz: () -> Unit = {},
+    onNavigateToViewBorders: () -> Unit = {},
+    onNavigateToLocation: () -> Unit = {},
+    onNavigateToPushSimulator: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -376,6 +394,78 @@ fun HomeScreen(
                                         onClick = {
                                             showOverflowMenu = false
                                             onNavigateToFileBrowser()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Memory Monitor") },
+                                        leadingIcon = { Icon(Icons.Default.Memory, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToMemory()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("FPS Monitor") },
+                                        leadingIcon = { Icon(Icons.Default.Speed, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToFps()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("WebSocket Monitor") },
+                                        leadingIcon = { Icon(Icons.Default.Cable, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToWebSocket()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Cookies Manager") },
+                                        leadingIcon = { Icon(Icons.Default.Cookie, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToCookies()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("CPU Monitor") },
+                                        leadingIcon = { Icon(Icons.Default.DeveloperBoard, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToCpu()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Touch Visualization") },
+                                        leadingIcon = { Icon(Icons.Default.TouchApp, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToTouchViz()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("View Borders") },
+                                        leadingIcon = { Icon(Icons.Default.BorderStyle, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToViewBorders()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Location Simulator") },
+                                        leadingIcon = { Icon(Icons.Default.LocationOn, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToLocation()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Push Simulator") },
+                                        leadingIcon = { Icon(Icons.Default.Notifications, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToPushSimulator()
                                         },
                                     )
                                 }

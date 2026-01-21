@@ -30,6 +30,7 @@ data class TransactionDetailDto(
     val tlsVersion: String?,
     val error: String?,
     val contentType: String?,
+    val extensions: Map<String, String> = emptyMap(),
 )
 
 /**

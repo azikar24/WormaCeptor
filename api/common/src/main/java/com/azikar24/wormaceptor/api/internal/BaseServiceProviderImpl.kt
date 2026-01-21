@@ -7,6 +7,8 @@ import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.core.engine.CaptureEngine
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.CrashReporter
+import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
+import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
@@ -22,6 +24,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
     protected var captureEngine: CaptureEngine? = null
     protected var queryEngine: QueryEngine? = null
+    protected var extensionRegistry: ExtensionRegistry? = null
     protected var notificationHelper: WormaCeptorNotificationHelper? = null
 
     protected data class StorageDependencies(
@@ -38,15 +41,17 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
         val deps = createDependencies(context)
 
-        val capture = CaptureEngine(deps.transactionRepository, deps.blobStorage)
+        val extensions = DefaultExtensionRegistry()
+        val capture = CaptureEngine(deps.transactionRepository, deps.blobStorage, extensions)
         val query = QueryEngine(deps.transactionRepository, deps.blobStorage, deps.crashRepository)
 
-        if (!CoreHolder.initialize(capture, query)) {
+        if (!CoreHolder.initialize(capture, query, extensions)) {
             return // Already initialized
         }
 
         captureEngine = capture
         queryEngine = query
+        extensionRegistry = extensions
 
         if (logCrashes) {
             val crashReporter = CrashReporter(deps.crashRepository)
@@ -165,6 +170,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
                 tlsVersion = response?.tlsVersion,
                 error = response?.error,
                 contentType = contentType,
+                extensions = transaction.extensions,
             )
         } catch (_: Exception) {
             null

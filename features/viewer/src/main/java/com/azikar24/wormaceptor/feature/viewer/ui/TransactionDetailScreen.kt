@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -659,6 +660,19 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
             DetailRow("Request Size", formatBytes(reqSize))
             DetailRow("Response Size", formatBytes(resSize))
             DetailRow("Total Transfer", formatBytes(totalSize))
+        }
+
+        // Extensions Card - only shown when extensions exist
+        if (transaction.extensions.isNotEmpty()) {
+            EnhancedOverviewCard(
+                title = "Extensions",
+                icon = Icons.Default.Extension,
+                iconTint = MaterialTheme.colorScheme.tertiary,
+            ) {
+                transaction.extensions.forEach { (key, value) ->
+                    DetailRow(key, value)
+                }
+            }
         }
     }
 }

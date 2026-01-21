@@ -22,6 +22,8 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     api(project(":domain:entities"))
+    api(project(":domain:contracts"))
+    implementation(project(":core:engine"))
     implementation(libs.okhttp)
     implementation(libs.androidx.activity.ktx)
     implementation(project(":platform:android"))

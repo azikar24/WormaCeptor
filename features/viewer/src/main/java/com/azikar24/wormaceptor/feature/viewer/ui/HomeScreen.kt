@@ -70,6 +70,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
@@ -144,7 +145,18 @@ fun HomeScreen(
         }
     }
 
-    val titles = listOf("Transactions", "Crashes", "Tools")
+    // Dynamic tabs based on enabled features
+    val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
+    val showToolsTab = remember(enabledFeatures) {
+        ToolCategories.hasAnyEnabledTools(enabledFeatures)
+    }
+    val titles = remember(showToolsTab) {
+        buildList {
+            add("Transactions")
+            add("Crashes")
+            if (showToolsTab) add("Tools")
+        }
+    }
     var showFilterSheet by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
@@ -334,10 +346,11 @@ fun HomeScreen(
                                                 },
                                             )
                                         }
-                                        // No menu items for Tools tab (page 2)
+                                        // No menu items for Tools tab
                                     }
-                                    // Quick access tools - always shown
-                                    if (pagerState.currentPage != 2) {
+                                    // Quick access tools - always shown except on Tools tab
+                                    val toolsTabIndex = if (showToolsTab) 2 else -1
+                                    if (pagerState.currentPage != toolsTabIndex) {
                                         androidx.compose.material3.HorizontalDivider(
                                             modifier = Modifier.padding(vertical = 4.dp),
                                         )
@@ -561,10 +574,12 @@ fun HomeScreen(
                             isRefreshing = isRefreshingCrashes,
                             onRefresh = onRefreshCrashes,
                         )
-                        2 -> ToolsTab(
-                            onNavigate = onToolNavigate,
-                            modifier = Modifier.fillMaxSize(),
-                        )
+                        2 -> if (showToolsTab) {
+                            ToolsTab(
+                                onNavigate = onToolNavigate,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
                     }
                 }
             }

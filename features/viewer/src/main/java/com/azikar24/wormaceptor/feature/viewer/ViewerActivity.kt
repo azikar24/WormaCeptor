@@ -31,6 +31,11 @@ import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
+import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
+import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
+import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
+import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
@@ -39,9 +44,14 @@ import kotlinx.coroutines.launch
 
 class ViewerActivity : ComponentActivity() {
 
+    private val logCaptureEngine = LogCaptureEngine()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // Initialize log capture engine
+        logCaptureEngine.start()
 
         val factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -169,6 +179,9 @@ class ViewerActivity : ComponentActivity() {
                                     scope.launch { viewModel.deleteTransaction(transaction.id) }
                                 },
                                 onCopyAsCurl = { transaction -> copyAsCurl(transaction) },
+                                onNavigateToPreferences = { navController.navigate("preferences") },
+                                onNavigateToLogs = { navController.navigate("logs") },
+                                onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
                             )
                         }
 
@@ -230,6 +243,30 @@ class ViewerActivity : ComponentActivity() {
                                 }
                             }
                         }
+
+                        // Preferences route - uses PreferencesInspector which handles internal navigation
+                        composable("preferences") {
+                            PreferencesInspector(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Logs route
+                        composable("logs") {
+                            val logsViewModel = remember { LogsViewModel(logCaptureEngine) }
+                            LogsScreen(
+                                viewModel = logsViewModel,
+                                onBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Device Info route
+                        composable("deviceinfo") {
+                            DeviceInfoScreen(
+                                onBack = { navController.popBackStack() },
+                            )
+                        }
                     }
                 }
             }
@@ -274,6 +311,11 @@ class ViewerActivity : ComponentActivity() {
             val curl = buildCurlCommand(fullTransaction)
             copyToClipboard(this@ViewerActivity, "cURL", curl)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        logCaptureEngine.stop()
     }
 
     private fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- READ_LOGS permission is required for logcat capture on newer Android versions -->
+    <!-- Note: This permission is signature-level and may require ADB grant on non-rooted devices -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+</manifest>

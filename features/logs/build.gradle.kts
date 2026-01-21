@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.azikar24.wormaceptor.platform.android"
+    namespace = "com.azikar24.wormaceptor.feature.logs"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -24,15 +24,16 @@ android {
 }
 
 dependencies {
-    // Provide Android specific implementations or wrappers
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.startup)
-    implementation(libs.androidx.activity.ktx)
-    implementation(project(":domain:contracts"))
+    implementation(project(":core:engine"))
+    implementation(project(":domain:entities"))
 
-    // Compose dependencies for FloatingButtonService
+    implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.collections.immutable)
+    debugImplementation(libs.androidx.ui.tooling)
 }

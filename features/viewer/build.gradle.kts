@@ -27,6 +27,9 @@ dependencies {
     implementation(project(":core:engine"))
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
+    implementation(project(":features:preferences"))
+    implementation(project(":features:logs"))
+    implementation(project(":features:deviceinfo"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))

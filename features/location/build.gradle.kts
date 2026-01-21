@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.azikar24.wormaceptor.feature.viewer"
+    namespace = "com.azikar24.wormaceptor.feature.location"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -27,21 +27,6 @@ dependencies {
     implementation(project(":core:engine"))
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
-    implementation(project(":features:preferences"))
-    implementation(project(":features:logs"))
-    implementation(project(":features:deviceinfo"))
-    implementation(project(":features:settings"))
-    implementation(project(":features:database"))
-    implementation(project(":features:filebrowser"))
-    implementation(project(":features:memory"))
-    implementation(project(":features:fps"))
-    implementation(project(":features:websocket"))
-    implementation(project(":features:cookies"))
-    implementation(project(":features:cpu"))
-    implementation(project(":features:touchvisualization"))
-    implementation(project(":features:viewborders"))
-    implementation(project(":features:location"))
-    implementation(project(":features:pushsimulator"))
 
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
@@ -51,10 +36,13 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.gif)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.androidx.datastore.preferences)
+
+    // Google Play Services Location for getting real location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    // Coroutines support for Play Services Tasks
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
     debugImplementation(libs.androidx.ui.tooling)
 }

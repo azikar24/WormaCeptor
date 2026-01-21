@@ -38,6 +38,18 @@ import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
 import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
 import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
+import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
+import com.azikar24.wormaceptor.feature.fps.FpsMonitor
+import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
+import com.azikar24.wormaceptor.feature.websocket.WebSocketFeature
+import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
+import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
+import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
+import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualizationFeature
+import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
+import com.azikar24.wormaceptor.feature.viewborders.ViewBordersFeature
+import com.azikar24.wormaceptor.feature.location.LocationSimulator
+import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
@@ -47,6 +59,9 @@ import kotlinx.coroutines.launch
 class ViewerActivity : ComponentActivity() {
 
     private val logCaptureEngine = LogCaptureEngine()
+    private val webSocketMonitorEngine = WebSocketFeature.createEngine()
+    private val touchVisualizationEngine by lazy { TouchVisualizationFeature.createEngine(this) }
+    private val viewBordersEngine by lazy { ViewBordersFeature.createEngine() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,6 +201,15 @@ class ViewerActivity : ComponentActivity() {
                                 onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
                                 onNavigateToDatabase = { navController.navigate("database") },
                                 onNavigateToFileBrowser = { navController.navigate("filebrowser") },
+                                onNavigateToMemory = { navController.navigate("memory") },
+                                onNavigateToFps = { navController.navigate("fps") },
+                                onNavigateToWebSocket = { navController.navigate("websocket") },
+                                onNavigateToCookies = { navController.navigate("cookies") },
+                                onNavigateToCpu = { navController.navigate("cpu") },
+                                onNavigateToTouchViz = { navController.navigate("touchviz") },
+                                onNavigateToViewBorders = { navController.navigate("viewborders") },
+                                onNavigateToLocation = { navController.navigate("location") },
+                                onNavigateToPushSimulator = { navController.navigate("pushsimulator") },
                             )
                         }
 
@@ -283,6 +307,74 @@ class ViewerActivity : ComponentActivity() {
                         // File Browser route
                         composable("filebrowser") {
                             FileBrowser(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Memory Monitor route
+                        composable("memory") {
+                            MemoryMonitor(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // FPS Monitor route
+                        composable("fps") {
+                            FpsMonitor(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // WebSocket Monitor route
+                        composable("websocket") {
+                            WebSocketMonitor(
+                                engine = webSocketMonitorEngine,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Cookies Manager route
+                        composable("cookies") {
+                            CookiesInspector(
+                                context = this@ViewerActivity,
+                            )
+                        }
+
+                        // CPU Monitor route
+                        composable("cpu") {
+                            CpuMonitor(
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Touch Visualization route
+                        composable("touchviz") {
+                            TouchVisualization(
+                                engine = touchVisualizationEngine,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // View Borders route
+                        composable("viewborders") {
+                            ViewBorders(
+                                activity = this@ViewerActivity,
+                                engine = viewBordersEngine,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Location Simulator route
+                        composable("location") {
+                            LocationSimulator(
+                                context = this@ViewerActivity,
+                            )
+                        }
+
+                        // Push Notification Simulator route
+                        composable("pushsimulator") {
+                            PushSimulator(
                                 context = this@ViewerActivity,
                                 onNavigateBack = { navController.popBackStack() },
                             )

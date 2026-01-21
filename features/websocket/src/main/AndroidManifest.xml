@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- WebSocket monitoring does not require additional permissions -->
+    <!-- Network permission is handled by the host application -->
+</manifest>

@@ -29,6 +29,7 @@ work = "2.9.1"
 coil = "2.6.0"
 splashscreen = "1.0.1"
 kotlinx-collections-immutable = "0.3.7"
+datastore = "1.1.1"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "23"
@@ -84,6 +85,7 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "composeRulesDetekt" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

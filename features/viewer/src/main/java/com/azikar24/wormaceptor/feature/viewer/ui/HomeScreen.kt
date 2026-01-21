@@ -29,6 +29,9 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Terminal
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
@@ -124,6 +127,10 @@ fun HomeScreen(
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
+    // Tools navigation
+    onNavigateToPreferences: () -> Unit = {},
+    onNavigateToLogs: () -> Unit = {},
+    onNavigateToDeviceInfo: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -323,6 +330,34 @@ fun HomeScreen(
                                             },
                                         )
                                     }
+                                    // Tools section divider
+                                    androidx.compose.material3.HorizontalDivider(
+                                        modifier = Modifier.padding(vertical = 4.dp),
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("SharedPreferences") },
+                                        leadingIcon = { Icon(Icons.Default.Settings, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToPreferences()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Console Logs") },
+                                        leadingIcon = { Icon(Icons.Default.Terminal, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToLogs()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Device Info") },
+                                        leadingIcon = { Icon(Icons.Default.Info, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToDeviceInfo()
+                                        },
+                                    )
                                 }
                             },
                         )

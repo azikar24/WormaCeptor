@@ -30,6 +30,7 @@ coil = "2.6.0"
 splashscreen = "1.0.1"
 kotlinx-collections-immutable = "0.3.7"
 datastore = "1.1.1"
+firebase-messaging = "24.0.0"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "23"
@@ -86,6 +87,7 @@ compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", ver
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebase-messaging" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

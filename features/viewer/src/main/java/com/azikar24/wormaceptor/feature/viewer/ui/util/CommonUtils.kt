@@ -9,6 +9,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import java.io.File
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
@@ -42,6 +44,12 @@ fun formatBytes(bytes: Long): String {
 // ============================================================================
 
 /**
+ * Maximum size in bytes for clipboard copy operations.
+ * Content larger than this should use shareAsFile instead.
+ */
+const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB
+
+/**
  * Copies text to the system clipboard and shows a toast confirmation.
  *
  * @param context Android context for clipboard service access
@@ -53,6 +61,38 @@ fun copyToClipboard(context: Context, label: String, text: String) {
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
     Toast.makeText(context, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
+}
+
+/**
+ * Checks if content is too large for clipboard and returns appropriate action.
+ *
+ * @param text The text to check
+ * @return true if content is too large for clipboard
+ */
+fun isContentTooLargeForClipboard(text: String): Boolean {
+    return text.length > MAX_CLIPBOARD_SIZE
+}
+
+/**
+ * Copies text to clipboard if small enough, otherwise shows a warning toast.
+ *
+ * @param context Android context
+ * @param label Label for the clipboard data
+ * @param text The text to copy
+ * @return true if copied successfully, false if too large
+ */
+fun copyToClipboardWithSizeCheck(context: Context, label: String, text: String): Boolean {
+    return if (isContentTooLargeForClipboard(text)) {
+        Toast.makeText(
+            context,
+            "Content too large (${formatBytes(text.length.toLong())}). Use 'Share as File' instead.",
+            Toast.LENGTH_LONG,
+        ).show()
+        false
+    } else {
+        copyToClipboard(context, label, text)
+        true
+    }
 }
 
 // ============================================================================
@@ -74,6 +114,63 @@ fun shareText(context: Context, text: String, title: String = "Share", subject: 
         subject?.let { putExtra(Intent.EXTRA_SUBJECT, it) }
     }
     context.startActivity(Intent.createChooser(intent, title))
+}
+
+/**
+ * Shares content as a file using the Android share sheet.
+ * Creates a temporary file and shares it via FileProvider.
+ *
+ * @param context Android context
+ * @param content The content to write to the file
+ * @param fileName The name for the shared file (e.g., "response.json")
+ * @param mimeType The MIME type of the content (e.g., "application/json", "text/plain")
+ * @param title Optional title for the share chooser dialog
+ */
+fun shareAsFile(
+    context: Context,
+    content: String,
+    fileName: String,
+    mimeType: String = "text/plain",
+    title: String = "Share File",
+) {
+    try {
+        // Create temp file in cache directory
+        val cacheDir = File(context.cacheDir, "shared_bodies")
+        cacheDir.mkdirs()
+        val file = File(cacheDir, fileName)
+        file.writeText(content)
+
+        // Get content URI via FileProvider
+        val uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.wormaceptor.fileprovider",
+            file,
+        )
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = mimeType
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(Intent.createChooser(intent, title))
+    } catch (e: Exception) {
+        Toast.makeText(context, "Failed to share file: ${e.message}", Toast.LENGTH_LONG).show()
+    }
+}
+
+/**
+ * Determines the appropriate file extension and MIME type based on content type.
+ *
+ * @param contentType The detected content type
+ * @return Pair of (file extension, MIME type)
+ */
+fun getFileInfoForContentType(contentType: String?): Pair<String, String> {
+    return when {
+        contentType?.contains("json", ignoreCase = true) == true -> "json" to "application/json"
+        contentType?.contains("xml", ignoreCase = true) == true -> "xml" to "application/xml"
+        contentType?.contains("html", ignoreCase = true) == true -> "html" to "text/html"
+        else -> "txt" to "text/plain"
+    }
 }
 
 // ============================================================================

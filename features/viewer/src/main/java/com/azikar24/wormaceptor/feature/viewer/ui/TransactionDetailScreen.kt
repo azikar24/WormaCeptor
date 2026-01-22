@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
@@ -78,8 +79,12 @@ import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboardWithSizeCheck
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
+import com.azikar24.wormaceptor.feature.viewer.ui.util.isContentTooLargeForClipboard
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -1006,16 +1011,29 @@ private fun RequestTab(
                     }
                     val colors = syntaxColors()
 
+                    val bodyContent = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+                    val isLargeBody = isContentTooLargeForClipboard(bodyContent)
+
                     CollapsibleSection(
                         title = "Body",
                         isExpanded = bodyExpanded,
                         onToggle = { bodyExpanded = !bodyExpanded },
                         onCopy = {
-                            copyToClipboard(
-                                context,
-                                "Request Body",
-                                if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!),
-                            )
+                            copyToClipboardWithSizeCheck(context, "Request Body", bodyContent)
+                        },
+                        onShare = if (isLargeBody) {
+                            {
+                                val (ext, mime) = getFileInfoForContentType(requestContentType)
+                                shareAsFile(
+                                    context = context,
+                                    content = bodyContent,
+                                    fileName = "request_body.$ext",
+                                    mimeType = mime,
+                                    title = "Share Request Body",
+                                )
+                            }
+                        } else {
+                            null
                         },
                         trailingContent = {
                             BodyControlsRow(
@@ -1349,16 +1367,29 @@ private fun ResponseTab(
                             BodyParsingUtils.detectContentType(contentType, rawBody)
                         }
 
+                        val responseBodyContent = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+                        val isLargeResponseBody = isContentTooLargeForClipboard(responseBodyContent)
+
                         CollapsibleSection(
                             title = "Body",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = {
-                                copyToClipboard(
-                                    context,
-                                    "Response Body",
-                                    if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!),
-                                )
+                                copyToClipboardWithSizeCheck(context, "Response Body", responseBodyContent)
+                            },
+                            onShare = if (isLargeResponseBody) {
+                                {
+                                    val (ext, mime) = getFileInfoForContentType(contentType)
+                                    shareAsFile(
+                                        context = context,
+                                        content = responseBodyContent,
+                                        fileName = "response_body.$ext",
+                                        mimeType = mime,
+                                        title = "Share Response Body",
+                                    )
+                                }
+                            } else {
+                                null
                             },
                             trailingContent = {
                                 BodyControlsRow(
@@ -1530,6 +1561,7 @@ private fun CollapsibleSection(
     isExpanded: Boolean,
     onToggle: () -> Unit,
     onCopy: (() -> Unit)? = null,
+    onShare: (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
@@ -1569,6 +1601,20 @@ private fun CollapsibleSection(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 trailingContent?.invoke()
+
+                if (onShare != null) {
+                    IconButton(
+                        onClick = onShare,
+                        modifier = Modifier.size(32.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Share as File",
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
 
                 if (onCopy != null) {
                     IconButton(

@@ -13,6 +13,7 @@ import com.azikar24.wormaceptorapp.sampleservice.Data
 import com.azikar24.wormaceptorapp.sampleservice.LoginData
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.SampleContentService
+import com.azikar24.wormaceptorapp.sampleservice.SampleWebSocketService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -100,6 +101,10 @@ class MainActivityViewModel : ViewModel() {
 
         // HTML
         api.html().enqueue(callBack)
+    }
+
+    fun doWebSocketTest() {
+        SampleWebSocketService.connect()
     }
 
     fun simulateCrash() {

@@ -119,6 +119,7 @@ class MainActivity : ComponentActivity() {
                             onRunApiTestsClick = {
                                 viewModel.doHttpActivity(baseContext)
                                 viewModel.doContentTypeTests()
+                                viewModel.doWebSocketTest()
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Running API tests...")
                                 }

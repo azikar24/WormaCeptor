@@ -313,7 +313,7 @@ private fun SuccessContent(
                     modifier = Modifier
                         .padding(WormaCeptorDesignSystem.Spacing.md)
                         .size(28.dp),
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = Color.White,
                 )
             }
         }

@@ -1,17 +1,23 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.view.HapticFeedbackConstants
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +28,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,12 +35,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -45,9 +55,121 @@ import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Pager screen for crash details with swipe navigation between crashes.
+ * Swipe on the top bar to navigate between crashes.
+ *
+ * @param crashes List of all crashes
+ * @param initialCrashIndex Initial index to display
+ * @param onBack Callback to navigate back
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CrashDetailPagerScreen(
+    crashes: List<Crash>,
+    initialCrashIndex: Int,
+    onBack: () -> Unit,
+) {
+    val view = LocalView.current
+
+    // Current crash index state with direction tracking
+    var currentCrashIndex by remember {
+        mutableIntStateOf(initialCrashIndex.coerceIn(0, (crashes.size - 1).coerceAtLeast(0)))
+    }
+    var navigationDirection by remember { mutableIntStateOf(0) } // -1 = prev, 1 = next, 0 = none
+
+    // Current crash data
+    val currentCrash = crashes.getOrNull(currentCrashIndex)
+
+    // Navigation functions
+    val canNavigatePrev = currentCrashIndex > 0
+    val canNavigateNext = currentCrashIndex < crashes.size - 1
+
+    fun navigateToPrevCrash() {
+        if (canNavigatePrev) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            navigationDirection = -1
+            currentCrashIndex--
+        }
+    }
+
+    fun navigateToNextCrash() {
+        if (canNavigateNext) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            navigationDirection = 1
+            currentCrashIndex++
+        }
+    }
+
+    // Smooth animation config
+    val animDuration = 250
+    val slideOffset = 100
+
+    // Smooth directional slide transition
+    AnimatedContent(
+        targetState = currentCrashIndex to currentCrash,
+        transitionSpec = {
+            val slideSpec = tween<IntOffset>(animDuration, easing = FastOutSlowInEasing)
+            if (navigationDirection >= 0) {
+                // Going forward (next) - content slides in from right
+                slideInHorizontally(slideSpec) { slideOffset } togetherWith
+                    slideOutHorizontally(slideSpec) { -slideOffset }
+            } else {
+                // Going backward (prev) - content slides in from left
+                slideInHorizontally(slideSpec) { -slideOffset } togetherWith
+                    slideOutHorizontally(slideSpec) { slideOffset }
+            }
+        },
+        label = "crash_transition",
+    ) { (_, crash) ->
+        if (crash != null) {
+            CrashDetailContent(
+                crash = crash,
+                onBack = onBack,
+                onNavigatePrevCrash = ::navigateToPrevCrash,
+                onNavigateNextCrash = ::navigateToNextCrash,
+                canNavigatePrev = canNavigatePrev,
+                canNavigateNext = canNavigateNext,
+            )
+        } else {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "Crash not found",
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Original CrashDetailScreen - kept for backward compatibility
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
+    CrashDetailContent(
+        crash = crash,
+        onBack = onBack,
+    )
+}
+
+/**
+ * Crash detail content - the actual content
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CrashDetailContent(
+    crash: Crash,
+    onBack: () -> Unit,
+    onNavigatePrevCrash: () -> Unit = {},
+    onNavigateNextCrash: () -> Unit = {},
+    canNavigatePrev: Boolean = false,
+    canNavigateNext: Boolean = false,
+) {
     val context = LocalContext.current
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
@@ -57,22 +179,27 @@ fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Crash Details") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { searchStackOverflow(context, crash) }) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search Stack Overflow")
-                    }
-                    IconButton(onClick = { shareCrash(context, crash) }) {
-                        Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
-                    }
-                },
-            )
+            // Swipeable TopAppBar for crash navigation
+            SwipeableTopBar(
+                onSwipeLeft = onNavigateNextCrash,
+                onSwipeRight = onNavigatePrevCrash,
+                canSwipeLeft = canNavigateNext,
+                canSwipeRight = canNavigatePrev,
+            ) {
+                TopAppBar(
+                    title = { Text("Crash Details") },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { shareCrash(context, crash) }) {
+                            Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
+                        }
+                    },
+                )
+            }
         },
     ) { padding ->
         Column(
@@ -84,11 +211,6 @@ fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
         ) {
             // Exception Info Card
             ExceptionInfoCard(crash, dateFormat)
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-            // Quick Actions
-            QuickActionsRow(context, crash)
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
@@ -102,6 +224,51 @@ fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
             // Stack Trace Section
             StackTraceSection(stackFrames, crash.stackTrace, context)
         }
+    }
+}
+
+/**
+ * Swipeable container for the TopAppBar that handles horizontal swipes
+ * to navigate between crashes.
+ */
+@Composable
+private fun SwipeableTopBar(
+    onSwipeLeft: () -> Unit,
+    onSwipeRight: () -> Unit,
+    canSwipeLeft: Boolean,
+    canSwipeRight: Boolean,
+    content: @Composable () -> Unit,
+) {
+    val haptics = LocalHapticFeedback.current
+    var dragOffset by remember { mutableFloatStateOf(0f) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(canSwipeLeft, canSwipeRight) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        val threshold = size.width * 0.15f
+                        when {
+                            dragOffset < -threshold && canSwipeLeft -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onSwipeLeft()
+                            }
+                            dragOffset > threshold && canSwipeRight -> {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                onSwipeRight()
+                            }
+                        }
+                        dragOffset = 0f
+                    },
+                    onDragCancel = { dragOffset = 0f },
+                    onHorizontalDrag = { _, dragAmount ->
+                        dragOffset += dragAmount
+                    },
+                )
+            },
+    ) {
+        content()
     }
 }
 
@@ -178,44 +345,6 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun QuickActionsRow(context: Context, crash: Crash) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-    ) {
-        // Copy stack trace
-        OutlinedButton(
-            onClick = { copyToClipboard(context, "Stack Trace", crash.stackTrace) },
-            modifier = Modifier.weight(1f),
-            shape = WormaCeptorDesignSystem.Shapes.button,
-        ) {
-            Icon(
-                imageVector = Icons.Default.ContentCopy,
-                contentDescription = "Copy stack trace",
-                modifier = Modifier.size(16.dp),
-            )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-            Text("Copy", fontSize = 13.sp)
-        }
-
-        // Search on Stack Overflow
-        OutlinedButton(
-            onClick = { searchStackOverflow(context, crash) },
-            modifier = Modifier.weight(1f),
-            shape = WormaCeptorDesignSystem.Shapes.button,
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search on Stack Overflow",
-                modifier = Modifier.size(16.dp),
-            )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-            Text("Search", fontSize = 13.sp)
         }
     }
 }
@@ -443,13 +572,6 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
             }
         }
     }
-}
-
-private fun searchStackOverflow(context: Context, crash: Crash) {
-    val query = CrashUtils.generateStackOverflowQuery(crash.exceptionType, crash.message)
-    val url = "https://stackoverflow.com/search?q=${Uri.encode(query)}"
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    context.startActivity(intent)
 }
 
 private fun shareCrash(context: Context, crash: Crash) {

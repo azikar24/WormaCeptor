@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.stateIn
  * ViewModel for the CPU Monitoring screen.
  *
  * Provides access to CPU metrics and controls for monitoring behavior.
- * Automatically starts monitoring when subscribed to and stops when cleared.
+ * Monitoring state is managed by the engine and persists across navigation.
+ * User must explicitly start/stop monitoring.
  */
 class CpuViewModel(
     private val engine: CpuMonitorEngine,
@@ -55,11 +56,6 @@ class CpuViewModel(
             false,
         )
 
-    init {
-        // Auto-start monitoring when ViewModel is created
-        startMonitoring()
-    }
-
     /**
      * Starts CPU monitoring.
      */
@@ -83,7 +79,7 @@ class CpuViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        // Stop monitoring when ViewModel is cleared
-        engine.stop()
+        // Note: We don't stop the engine here - monitoring persists across navigation.
+        // The engine lifecycle is managed by the user via explicit start/stop.
     }
 }

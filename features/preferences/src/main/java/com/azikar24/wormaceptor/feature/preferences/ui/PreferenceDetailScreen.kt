@@ -50,6 +50,9 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -75,6 +78,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -277,7 +281,7 @@ fun PreferenceDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
                 ) {
                     items(items, key = { it.key }) { item ->
-                        PreferenceItemRow(
+                        SwipeablePreferenceItem(
                             item = item,
                             onEdit = { onEditItem(item) },
                             onDelete = { showDeleteConfirmDialog = item.key },
@@ -338,11 +342,79 @@ fun PreferenceDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PreferenceItemRow(
+private fun SwipeablePreferenceItem(
     item: PreferenceItem,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { dismissValue ->
+            when (dismissValue) {
+                SwipeToDismissBoxValue.EndToStart -> {
+                    onDelete()
+                    false // Don't dismiss, let the dialog handle it
+                }
+                SwipeToDismissBoxValue.StartToEnd -> {
+                    onEdit()
+                    false
+                }
+                SwipeToDismissBoxValue.Settled -> false
+            }
+        }
+    )
+
+    SwipeToDismissBox(
+        state = dismissState,
+        modifier = modifier,
+        backgroundContent = {
+            val direction = dismissState.dismissDirection
+            val color = when (direction) {
+                SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
+                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primaryContainer
+                else -> Color.Transparent
+            }
+            val icon = when (direction) {
+                SwipeToDismissBoxValue.EndToStart -> Icons.Default.Delete
+                SwipeToDismissBoxValue.StartToEnd -> Icons.Default.Edit
+                else -> null
+            }
+            val alignment = when (direction) {
+                SwipeToDismissBoxValue.EndToStart -> Alignment.CenterEnd
+                else -> Alignment.CenterStart
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color, RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md))
+                    .padding(horizontal = 20.dp),
+                contentAlignment = alignment
+            ) {
+                icon?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = null,
+                        tint = when (direction) {
+                            SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.onErrorContainer
+                            else -> MaterialTheme.colorScheme.onPrimaryContainer
+                        }
+                    )
+                }
+            }
+        },
+        content = {
+            PreferenceItemContent(item = item, onClick = onEdit)
+        }
+    )
+}
+
+@Composable
+private fun PreferenceItemContent(
+    item: PreferenceItem,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = PreferencesDesignSystem.TypeColors.forTypeName(item.value.typeName)
@@ -375,7 +447,7 @@ private fun PreferenceItemRow(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = onEdit,
+                onClick = onClick,
             )
             .padding(PreferencesDesignSystem.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
@@ -445,33 +517,6 @@ private fun PreferenceItemRow(
                     horizontal = PreferencesDesignSystem.Spacing.sm,
                     vertical = PreferencesDesignSystem.Spacing.xxs,
                 ),
-            )
-        }
-
-        Spacer(modifier = Modifier.width(PreferencesDesignSystem.Spacing.xs))
-
-        // Actions
-        IconButton(
-            onClick = onEdit,
-            modifier = Modifier.size(32.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Edit",
-                modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
-
-        IconButton(
-            onClick = onDelete,
-            modifier = Modifier.size(32.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Delete",
-                modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.error,
             )
         }
     }

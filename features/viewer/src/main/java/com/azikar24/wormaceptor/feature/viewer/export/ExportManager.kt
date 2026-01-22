@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.export
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,6 +18,14 @@ class ExportManager(private val context: Context) {
                 val jsonArray = JSONArray()
 
                 transactions.forEach { transaction ->
+                    // Fetch actual body content
+                    val requestBody = transaction.request.bodyRef?.let { blobId ->
+                        CoreHolder.queryEngine?.getBody(blobId)
+                    }
+                    val responseBody = transaction.response?.bodyRef?.let { blobId ->
+                        CoreHolder.queryEngine?.getBody(blobId)
+                    }
+
                     val jsonObject = JSONObject().apply {
                         put("id", transaction.id.toString())
                         put("timestamp", transaction.timestamp)
@@ -32,7 +41,10 @@ class ExportManager(private val context: Context) {
                                     "headers",
                                     JSONObject(transaction.request.headers.mapValues { it.value.joinToString(", ") }),
                                 )
-                                put("bodyRef", transaction.request.bodyRef)
+                                put("bodySize", transaction.request.bodySize)
+                                if (requestBody != null) {
+                                    put("body", requestBody)
+                                }
                             },
                         )
 
@@ -41,11 +53,15 @@ class ExportManager(private val context: Context) {
                                 "response",
                                 JSONObject().apply {
                                     put("code", response.code)
+                                    put("message", response.message)
                                     put(
                                         "headers",
                                         JSONObject(response.headers.mapValues { it.value.joinToString(", ") }),
                                     )
-                                    put("bodyRef", response.bodyRef)
+                                    put("bodySize", response.bodySize)
+                                    if (responseBody != null) {
+                                        put("body", responseBody)
+                                    }
                                 },
                             )
                         }

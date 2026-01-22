@@ -188,7 +188,7 @@ class ViewBordersViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        // Disable the overlay when ViewModel is cleared
-        engine.disable()
+        // Note: We don't disable the engine here - overlay persists across navigation.
+        // The engine lifecycle is managed by the user via explicit enable/disable.
     }
 }

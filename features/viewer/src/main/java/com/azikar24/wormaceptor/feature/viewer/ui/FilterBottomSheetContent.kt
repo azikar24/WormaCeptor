@@ -530,7 +530,7 @@ private fun GridFilterCard(
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Selected",
-                            tint = Color.White,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(10.dp),
                         )
                     }

@@ -149,6 +149,7 @@ private fun PreferencesNavHost(
                     viewModel.selectFile(file.name)
                     navController.navigate("detail")
                 },
+                onNavigateBack = onNavigateBack,
             )
         }
 

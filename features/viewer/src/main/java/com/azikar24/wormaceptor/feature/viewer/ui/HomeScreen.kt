@@ -228,6 +228,7 @@ fun HomeScreen(
                         onDelete = { showDeleteSelectedDialog = true },
                         onExport = onExportSelected,
                         onSelectAll = onSelectAll,
+                        onDeselectAll = onClearSelection,
                         onCancel = onClearSelection,
                     )
 
@@ -348,29 +349,29 @@ fun HomeScreen(
                                         }
                                         // No menu items for Tools tab
                                     }
-                                    // Quick access tools - always shown except on Tools tab
+                                    // Quick access tools - only shown when NOT on Tools tab
                                     val toolsTabIndex = if (showToolsTab) 2 else -1
                                     if (pagerState.currentPage != toolsTabIndex) {
                                         androidx.compose.material3.HorizontalDivider(
                                             modifier = Modifier.padding(vertical = 4.dp),
                                         )
+                                        DropdownMenuItem(
+                                            text = { Text("Console Logs") },
+                                            leadingIcon = { Icon(Icons.Default.Terminal, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                onNavigateToLogs()
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("Device Info") },
+                                            leadingIcon = { Icon(Icons.Default.Info, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                onNavigateToDeviceInfo()
+                                            },
+                                        )
                                     }
-                                    DropdownMenuItem(
-                                        text = { Text("Console Logs") },
-                                        leadingIcon = { Icon(Icons.Default.Terminal, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToLogs()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Device Info") },
-                                        leadingIcon = { Icon(Icons.Default.Info, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToDeviceInfo()
-                                        },
-                                    )
                                 }
                             },
                         )

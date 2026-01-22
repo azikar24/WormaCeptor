@@ -148,6 +148,7 @@ private fun CookiesNavHost(
                 },
                 onDeleteDomain = viewModel::deleteAllCookiesForDomain,
                 onClearAll = viewModel::clearAllCookies,
+                onBack = onNavigateBack,
             )
         }
 

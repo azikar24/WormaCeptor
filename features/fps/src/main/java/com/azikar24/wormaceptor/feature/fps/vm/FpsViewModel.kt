@@ -77,7 +77,7 @@ class FpsViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        // Stop monitoring when ViewModel is cleared
-        fpsMonitorEngine.stop()
+        // Note: We don't stop the engine here - monitoring persists across navigation.
+        // The engine lifecycle is managed by the user via explicit start/stop.
     }
 }

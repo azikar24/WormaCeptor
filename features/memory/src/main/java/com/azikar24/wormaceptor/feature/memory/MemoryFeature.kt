@@ -63,15 +63,16 @@ class MemoryViewModelFactory(
  * Main composable for the Memory Monitoring feature.
  * Displays real-time memory usage with charts and controls.
  *
+ * @param engine Pre-created engine instance (required - must be created at Activity/Application level for state persistence)
  * @param modifier Modifier for the root layout
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
 fun MemoryMonitor(
+    engine: MemoryMonitorEngine,
     modifier: Modifier = Modifier,
     onNavigateBack: (() -> Unit)? = null,
 ) {
-    val engine = remember { MemoryFeature.createEngine() }
     val factory = remember { MemoryFeature.createViewModelFactory(engine) }
     val viewModel: MemoryViewModel = viewModel(factory = factory)
 

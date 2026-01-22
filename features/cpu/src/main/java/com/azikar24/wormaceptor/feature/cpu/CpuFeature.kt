@@ -63,15 +63,16 @@ class CpuViewModelFactory(
  * Main composable for the CPU Monitoring feature.
  * Displays real-time CPU usage with charts and controls.
  *
+ * @param engine Pre-created engine instance (required - must be created at Activity/Application level for state persistence)
  * @param modifier Modifier for the root layout
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
 fun CpuMonitor(
+    engine: CpuMonitorEngine,
     modifier: Modifier = Modifier,
     onNavigateBack: (() -> Unit)? = null,
 ) {
-    val engine = remember { CpuFeature.createEngine() }
     val factory = remember { CpuFeature.createViewModelFactory(engine) }
     val viewModel: CpuViewModel = viewModel(factory = factory)
 

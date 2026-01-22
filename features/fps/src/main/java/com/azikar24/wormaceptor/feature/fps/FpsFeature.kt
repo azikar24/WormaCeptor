@@ -54,18 +54,17 @@ class FpsViewModelFactory(
 /**
  * Main composable for the FPS Monitor feature.
  *
+ * @param engine Pre-created engine instance (required - must be created at Activity/Application level for state persistence)
  * @param modifier Modifier for the root composable
  * @param onNavigateBack Optional callback for back navigation
- * @param engine Optional pre-created engine instance. If null, a new one is created.
  */
 @Composable
 fun FpsMonitor(
+    engine: FpsMonitorEngine,
     modifier: Modifier = Modifier,
     onNavigateBack: (() -> Unit)? = null,
-    engine: FpsMonitorEngine? = null,
 ) {
-    val fpsEngine = remember { engine ?: FpsFeature.createEngine() }
-    val factory = remember { FpsFeature.createViewModelFactory(fpsEngine) }
+    val factory = remember { FpsFeature.createViewModelFactory(engine) }
     val viewModel: FpsViewModel = viewModel(factory = factory)
 
     FpsScreen(

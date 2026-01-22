@@ -43,7 +43,6 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.NetworkCheck
 import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Storage
@@ -57,6 +56,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -159,12 +159,6 @@ fun DeviceInfoScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { refreshKey++ }) {
-                        Icon(
-                            imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh",
-                        )
-                    }
                     deviceInfo?.let { info ->
                         IconButton(onClick = { copyAllToClipboard(context, info) }) {
                             Icon(
@@ -183,55 +177,61 @@ fun DeviceInfoScreen(
             )
         },
     ) { padding ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            deviceInfo?.let { info ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                        .verticalScroll(rememberScrollState())
-                        .padding(DeviceInfoDesignSystem.Spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.lg),
+        PullToRefreshBox(
+            isRefreshing = isLoading,
+            onRefresh = { refreshKey++ },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            if (isLoading && deviceInfo == null) {
+                // Initial loading state - show centered spinner
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    // Device Section
-                    DeviceSection(info.device)
+                    CircularProgressIndicator()
+                }
+            } else {
+                deviceInfo?.let { info ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .padding(DeviceInfoDesignSystem.Spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.lg),
+                    ) {
+                        // Device Section
+                        DeviceSection(info.device)
 
-                    // OS Section
-                    OsSection(info.os)
+                        // OS Section
+                        OsSection(info.os)
 
-                    // Screen Section
-                    ScreenSection(info.screen)
+                        // Screen Section
+                        ScreenSection(info.screen)
 
-                    // Memory Section
-                    MemorySection(info.memory)
+                        // Memory Section
+                        MemorySection(info.memory)
 
-                    // Storage Section
-                    StorageSection(info.storage)
+                        // Storage Section
+                        StorageSection(info.storage)
 
-                    // App Section
-                    AppSection(info.app)
+                        // App Section
+                        AppSection(info.app)
 
-                    // Network Section
-                    NetworkSection(info.network)
+                        // Network Section
+                        NetworkSection(info.network)
 
-                    // Timestamp footer
-                    Text(
-                        text = "Collected: ${formatTimestamp(info.timestamp)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = DeviceInfoDesignSystem.Spacing.sm),
-                    )
+                        // Timestamp footer
+                        Text(
+                            text = "Collected: ${formatTimestamp(info.timestamp)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = DeviceInfoDesignSystem.Spacing.sm),
+                        )
 
-                    Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xl))
+                        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xl))
+                    }
                 }
             }
         }
@@ -664,7 +664,7 @@ private fun copyToClipboard(context: Context, label: String, text: String) {
 }
 
 private fun copyAllToClipboard(context: Context, info: DeviceInfo) {
-    val text = generateFullReport(info)
+    val text = generateCompactReport(info)
     copyToClipboard(context, "Device Information", text)
 }
 
@@ -676,6 +676,45 @@ private fun shareDeviceInfo(context: Context, info: DeviceInfo) {
         putExtra(Intent.EXTRA_SUBJECT, "Device Information Report")
     }
     context.startActivity(Intent.createChooser(intent, "Share Device Info"))
+}
+
+private fun generateCompactReport(info: DeviceInfo): String = buildString {
+    // Device
+    appendLine("Manufacturer: ${info.device.manufacturer}")
+    appendLine("Model: ${info.device.model}")
+    appendLine("Brand: ${info.device.brand}")
+    appendLine("Device: ${info.device.device}")
+    appendLine("Emulator: ${if (info.device.isEmulator) "Yes" else "No"}")
+    appendLine()
+
+    // OS
+    appendLine("Android: ${info.os.androidVersion} (SDK ${info.os.sdkLevel})")
+    appendLine("Build ID: ${info.os.buildId}")
+    info.os.securityPatch?.let { appendLine("Security Patch: $it") }
+    appendLine()
+
+    // Screen
+    appendLine("Screen: ${info.screen.widthPixels}x${info.screen.heightPixels} @ ${info.screen.densityDpi}dpi")
+    appendLine("Refresh Rate: ${info.screen.refreshRate.toInt()}Hz")
+    appendLine()
+
+    // Memory
+    appendLine("RAM: ${formatBytes(info.memory.usedRam)}/${formatBytes(info.memory.totalRam)} (${String.format("%.1f", info.memory.usagePercentage)}% used)")
+    appendLine()
+
+    // Storage
+    appendLine("Storage: ${formatBytes(info.storage.internalUsed)}/${formatBytes(info.storage.internalTotal)}")
+    appendLine()
+
+    // App
+    appendLine("Package: ${info.app.packageName}")
+    appendLine("Version: ${info.app.versionName} (${info.app.versionCode})")
+    appendLine("Target SDK: ${info.app.targetSdk}, Min SDK: ${info.app.minSdk}")
+    appendLine("Debuggable: ${if (info.app.isDebuggable) "Yes" else "No"}")
+    appendLine()
+
+    // Network
+    appendLine("Network: ${info.network.connectionType} (${if (info.network.isConnected) "Connected" else "Disconnected"})")
 }
 
 private fun generateFullReport(info: DeviceInfo): String = buildString {

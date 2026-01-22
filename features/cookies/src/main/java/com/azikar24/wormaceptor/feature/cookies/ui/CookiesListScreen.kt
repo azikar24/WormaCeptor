@@ -33,6 +33,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.Delete
@@ -98,6 +99,7 @@ fun CookiesListScreen(
     onCookieClick: (CookieInfo) -> Unit,
     onDeleteDomain: (String) -> Unit,
     onClearAll: () -> Unit,
+    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     var showClearAllDialog by remember { mutableStateOf(false) }
@@ -119,6 +121,16 @@ fun CookiesListScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
+                    }
+                },
+                navigationIcon = {
+                    onBack?.let { back ->
+                        IconButton(onClick = back) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                            )
+                        }
                     }
                 },
                 actions = {

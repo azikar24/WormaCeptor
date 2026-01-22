@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.engine.MonitoringEngineHolder
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailScreen
@@ -31,7 +32,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
-import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
@@ -41,20 +41,15 @@ import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
 import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
 import com.azikar24.wormaceptor.feature.fps.FpsMonitor
 import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
-import com.azikar24.wormaceptor.feature.websocket.WebSocketFeature
 import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
-import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualizationFeature
 import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
-import com.azikar24.wormaceptor.feature.viewborders.ViewBordersFeature
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
 import com.azikar24.wormaceptor.feature.viewhierarchy.ViewHierarchyInspector
 import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
-import com.azikar24.wormaceptor.feature.leakdetection.LeakDetectionFeature
 import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
-import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationFeature
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitor as WebViewMonitorScreen
 import com.azikar24.wormaceptor.feature.crypto.CryptoTool
 import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
@@ -73,20 +68,12 @@ import kotlinx.coroutines.launch
 
 class ViewerActivity : ComponentActivity() {
 
-    private val logCaptureEngine = LogCaptureEngine()
-    private val webSocketMonitorEngine = WebSocketFeature.createEngine()
-    private val touchVisualizationEngine by lazy { TouchVisualizationFeature.createEngine(this) }
-    private val viewBordersEngine by lazy { ViewBordersFeature.createEngine() }
-    // Phase 5 engines
-    private val leakDetectionEngine by lazy { LeakDetectionFeature.createEngine() }
-    private val threadViolationEngine by lazy { ThreadViolationFeature.createEngine() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // Initialize log capture engine
-        logCaptureEngine.start()
+        // Initialize log capture engine (uses singleton from holder)
+        MonitoringEngineHolder.logCaptureEngine.start()
 
         val factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -291,7 +278,7 @@ class ViewerActivity : ComponentActivity() {
 
                         // Logs route
                         composable("logs") {
-                            val logsViewModel = remember { LogsViewModel(logCaptureEngine) }
+                            val logsViewModel = remember { LogsViewModel(MonitoringEngineHolder.logCaptureEngine) }
                             LogsScreen(
                                 viewModel = logsViewModel,
                                 onBack = { navController.popBackStack() },
@@ -324,6 +311,7 @@ class ViewerActivity : ComponentActivity() {
                         // Memory Monitor route
                         composable("memory") {
                             MemoryMonitor(
+                                engine = MonitoringEngineHolder.memoryMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -331,6 +319,7 @@ class ViewerActivity : ComponentActivity() {
                         // FPS Monitor route
                         composable("fps") {
                             FpsMonitor(
+                                engine = MonitoringEngineHolder.fpsMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -338,7 +327,7 @@ class ViewerActivity : ComponentActivity() {
                         // WebSocket Monitor route
                         composable("websocket") {
                             WebSocketMonitor(
-                                engine = webSocketMonitorEngine,
+                                engine = MonitoringEngineHolder.webSocketMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -347,12 +336,14 @@ class ViewerActivity : ComponentActivity() {
                         composable("cookies") {
                             CookiesInspector(
                                 context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
                             )
                         }
 
                         // CPU Monitor route
                         composable("cpu") {
                             CpuMonitor(
+                                engine = MonitoringEngineHolder.cpuMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -360,7 +351,7 @@ class ViewerActivity : ComponentActivity() {
                         // Touch Visualization route
                         composable("touchviz") {
                             TouchVisualization(
-                                engine = touchVisualizationEngine,
+                                engine = MonitoringEngineHolder.getTouchVisualizationEngine(this@ViewerActivity),
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -369,7 +360,7 @@ class ViewerActivity : ComponentActivity() {
                         composable("viewborders") {
                             ViewBorders(
                                 activity = this@ViewerActivity,
-                                engine = viewBordersEngine,
+                                engine = MonitoringEngineHolder.viewBordersEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -378,6 +369,7 @@ class ViewerActivity : ComponentActivity() {
                         composable("location") {
                             LocationSimulator(
                                 context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
                             )
                         }
 
@@ -401,7 +393,7 @@ class ViewerActivity : ComponentActivity() {
                         // Leak Detection route
                         composable("leakdetection") {
                             LeakDetector(
-                                engine = leakDetectionEngine,
+                                engine = MonitoringEngineHolder.leakDetectionEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -409,7 +401,7 @@ class ViewerActivity : ComponentActivity() {
                         // Thread Violation Detection route
                         composable("threadviolation") {
                             ThreadViolationMonitor(
-                                engine = threadViolationEngine,
+                                engine = MonitoringEngineHolder.threadViolationEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -536,10 +528,11 @@ class ViewerActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        logCaptureEngine.stop()
+        // Note: Engines are NOT stopped here - they persist across Activity lifecycle
+        // via MonitoringEngineHolder. User controls monitoring via explicit start/stop.
     }
 
-    private fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {
+    private suspend fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {
         append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
         transaction.request.headers.forEach { (key, values) ->
             values.forEach { value ->
@@ -548,6 +541,14 @@ class ViewerActivity : ComponentActivity() {
                 append(" -H '$escapedKey: $escapedValue'")
             }
         }
-        // Note: Body is stored as blobId reference, not directly accessible here
+        // Include request body for methods that typically have a body
+        val methodsWithBody = setOf("POST", "PUT", "PATCH", "DELETE")
+        if (transaction.request.method.uppercase() in methodsWithBody && transaction.request.bodyRef != null) {
+            val body = CoreHolder.queryEngine?.getBody(transaction.request.bodyRef!!)
+            if (body != null) {
+                val escapedBody = body.replace("'", "'\\''")
+                append(" -d '$escapedBody'")
+            }
+        }
     }
 }

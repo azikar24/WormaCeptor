@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,6 +46,7 @@ fun BulkActionBar(
     onDelete: () -> Unit,
     onExport: () -> Unit,
     onSelectAll: () -> Unit,
+    onDeselectAll: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -97,12 +99,21 @@ fun BulkActionBar(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    // Select all button (shows if not all selected)
+                    // Select all / Deselect all button
                     if (selectedCount < totalCount) {
                         IconButton(onClick = onSelectAll) {
                             Icon(
                                 imageVector = Icons.Default.SelectAll,
                                 contentDescription = "Select all",
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = onDeselectAll) {
+                            Icon(
+                                imageVector = Icons.Outlined.Deselect,
+                                contentDescription = "Deselect all",
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.size(24.dp),
                             )

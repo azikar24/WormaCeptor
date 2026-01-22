@@ -83,6 +83,7 @@ class LocationViewModelFactory(
 fun LocationSimulator(
     context: Context,
     modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
     val engine = remember { LocationFeature.createEngine(context) }
     val repository = remember { LocationFeature.createRepository(context, engine) }
@@ -124,6 +125,7 @@ fun LocationSimulator(
         onSavePreset = viewModel::saveCurrentAsPreset,
         onClearError = viewModel::clearError,
         onClearSuccessMessage = viewModel::clearSuccessMessage,
+        onBack = onNavigateBack,
         modifier = modifier,
     )
 }

@@ -35,6 +35,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -50,12 +51,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -64,6 +67,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -87,6 +92,7 @@ import kotlinx.collections.immutable.ImmutableList
 /**
  * Main screen for the Location Simulation feature.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(
     latitudeInput: String,
@@ -111,6 +117,7 @@ fun LocationScreen(
     onSavePreset: (String) -> Unit,
     onClearError: () -> Unit,
     onClearSuccessMessage: () -> Unit,
+    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -132,12 +139,63 @@ fun LocationScreen(
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(LocationDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(LocationDesignSystem.Spacing.lg),
-        ) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = null,
+                            tint = LocationDesignSystem.LocationColors.enabled,
+                        )
+                        Text(
+                            text = "Location Simulator",
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                        if (isMockEnabled) {
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = LocationDesignSystem.LocationColors.enabled.copy(alpha = 0.15f),
+                            ) {
+                                Text(
+                                    text = "ACTIVE",
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = LocationDesignSystem.LocationColors.enabled,
+                                )
+                            }
+                        }
+                    }
+                },
+                navigationIcon = {
+                    onBack?.let { back ->
+                        IconButton(onClick = back) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                            )
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(LocationDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(LocationDesignSystem.Spacing.lg),
+            ) {
             // Warning banner if mock locations not available
             if (!isMockLocationAvailable) {
                 item {
@@ -244,21 +302,16 @@ fun LocationScreen(
             }
         }
 
-        // Loading overlay
-        AnimatedVisibility(
-            visible = isLoading,
-            enter = fadeIn(),
-            exit = fadeOut(),
-            modifier = Modifier.align(Alignment.Center),
-        ) {
-            CircularProgressIndicator()
+            // Loading overlay
+            AnimatedVisibility(
+                visible = isLoading,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier = Modifier.align(Alignment.Center),
+            ) {
+                CircularProgressIndicator()
+            }
         }
-
-        // Snackbar host
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter),
-        )
     }
 
     // Save preset dialog

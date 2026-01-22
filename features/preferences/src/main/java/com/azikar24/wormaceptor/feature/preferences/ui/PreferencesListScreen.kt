@@ -28,15 +28,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,58 +59,79 @@ import kotlinx.collections.immutable.ImmutableList
 /**
  * Screen displaying a list of SharedPreferences files.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferencesListScreen(
     files: ImmutableList<PreferenceFile>,
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onFileClick: (PreferenceFile) -> Unit,
+    onNavigateBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        // Search bar
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = onSearchQueryChanged,
-            placeholder = { Text("Search preferences files...") },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(PreferencesDesignSystem.Spacing.md),
-            singleLine = true,
-            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-            ),
-        )
-
-        if (files.isEmpty()) {
-            EmptyFilesState(
-                hasSearchQuery = searchQuery.isNotBlank(),
-                modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("SharedPreferences") },
+                navigationIcon = {
+                    onNavigateBack?.let { callback ->
+                        IconButton(onClick = callback) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                            )
+                        }
+                    }
+                },
             )
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    horizontal = PreferencesDesignSystem.Spacing.md,
-                    vertical = PreferencesDesignSystem.Spacing.xs,
-                ),
-                verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
-            ) {
-                items(files, key = { it.name }) { file ->
-                    PreferenceFileItem(
-                        file = file,
-                        onClick = { onFileClick(file) },
-                        modifier = Modifier.animateItem(),
+        },
+        modifier = modifier,
+    ) { padding ->
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            // Search bar
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = onSearchQueryChanged,
+                placeholder = { Text("Search preferences files...") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PreferencesDesignSystem.Spacing.md),
+                singleLine = true,
+                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                ),
+            )
+
+            if (files.isEmpty()) {
+                EmptyFilesState(
+                    hasSearchQuery = searchQuery.isNotBlank(),
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        horizontal = PreferencesDesignSystem.Spacing.md,
+                        vertical = PreferencesDesignSystem.Spacing.xs,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
+                ) {
+                    items(files, key = { it.name }) { file ->
+                        PreferenceFileItem(
+                            file = file,
+                            onClick = { onFileClick(file) },
+                            modifier = Modifier.animateItem(),
+                        )
+                    }
                 }
             }
         }

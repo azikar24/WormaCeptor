@@ -893,10 +893,12 @@ private fun RequestTab(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val blobId = transaction.request.bodyRef
     var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
+    var isSharing by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
@@ -1023,18 +1025,26 @@ private fun RequestTab(
                         },
                         onShare = if (isLargeBody) {
                             {
-                                val (ext, mime) = getFileInfoForContentType(requestContentType)
-                                shareAsFile(
-                                    context = context,
-                                    content = bodyContent,
-                                    fileName = "request_body.$ext",
-                                    mimeType = mime,
-                                    title = "Share Request Body",
-                                )
+                                scope.launch {
+                                    isSharing = true
+                                    try {
+                                        val (ext, mime) = getFileInfoForContentType(requestContentType)
+                                        shareAsFile(
+                                            context = context,
+                                            content = bodyContent,
+                                            fileName = "request_body.$ext",
+                                            mimeType = mime,
+                                            title = "Share Request Body",
+                                        )
+                                    } finally {
+                                        isSharing = false
+                                    }
+                                }
                             }
                         } else {
                             null
                         },
+                        isShareLoading = isSharing,
                         trailingContent = {
                             BodyControlsRow(
                                 contentType = detectedContentType,
@@ -1167,11 +1177,13 @@ private fun ResponseTab(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val blobId = transaction.response?.bodyRef
     var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
+    var isSharing by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
@@ -1379,18 +1391,26 @@ private fun ResponseTab(
                             },
                             onShare = if (isLargeResponseBody) {
                                 {
-                                    val (ext, mime) = getFileInfoForContentType(contentType)
-                                    shareAsFile(
-                                        context = context,
-                                        content = responseBodyContent,
-                                        fileName = "response_body.$ext",
-                                        mimeType = mime,
-                                        title = "Share Response Body",
-                                    )
+                                    scope.launch {
+                                        isSharing = true
+                                        try {
+                                            val (ext, mime) = getFileInfoForContentType(contentType)
+                                            shareAsFile(
+                                                context = context,
+                                                content = responseBodyContent,
+                                                fileName = "response_body.$ext",
+                                                mimeType = mime,
+                                                title = "Share Response Body",
+                                            )
+                                        } finally {
+                                            isSharing = false
+                                        }
+                                    }
                                 }
                             } else {
                                 null
                             },
+                            isShareLoading = isSharing,
                             trailingContent = {
                                 BodyControlsRow(
                                     contentType = detectedContentType,
@@ -1562,6 +1582,7 @@ private fun CollapsibleSection(
     onToggle: () -> Unit,
     onCopy: (() -> Unit)? = null,
     onShare: (() -> Unit)? = null,
+    isShareLoading: Boolean = false,
     trailingContent: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
@@ -1606,13 +1627,22 @@ private fun CollapsibleSection(
                     IconButton(
                         onClick = onShare,
                         modifier = Modifier.size(32.dp),
+                        enabled = !isShareLoading,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = "Share as File",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                        if (isShareLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(16.dp),
+                                strokeWidth = 2.dp,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = "Share as File",
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
                     }
                 }
 

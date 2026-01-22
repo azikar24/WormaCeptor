@@ -10,6 +10,8 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -119,6 +121,7 @@ fun shareText(context: Context, text: String, title: String = "Share", subject: 
 /**
  * Shares content as a file using the Android share sheet.
  * Creates a temporary file and shares it via FileProvider.
+ * Runs file I/O on background thread to avoid blocking UI.
  *
  * @param context Android context
  * @param content The content to write to the file
@@ -126,7 +129,7 @@ fun shareText(context: Context, text: String, title: String = "Share", subject: 
  * @param mimeType The MIME type of the content (e.g., "application/json", "text/plain")
  * @param title Optional title for the share chooser dialog
  */
-fun shareAsFile(
+suspend fun shareAsFile(
     context: Context,
     content: String,
     fileName: String,
@@ -134,19 +137,21 @@ fun shareAsFile(
     title: String = "Share File",
 ) {
     try {
-        // Create temp file in cache directory
-        val cacheDir = File(context.cacheDir, "shared_bodies")
-        cacheDir.mkdirs()
-        val file = File(cacheDir, fileName)
-        file.writeText(content)
+        // Write file on IO thread
+        val uri = withContext(Dispatchers.IO) {
+            val cacheDir = File(context.cacheDir, "shared_bodies")
+            cacheDir.mkdirs()
+            val file = File(cacheDir, fileName)
+            file.writeText(content)
 
-        // Get content URI via FileProvider
-        val uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.wormaceptor.fileprovider",
-            file,
-        )
+            FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.wormaceptor.fileprovider",
+                file,
+            )
+        }
 
+        // Launch share intent on main thread
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = mimeType
             putExtra(Intent.EXTRA_STREAM, uri)
@@ -154,7 +159,9 @@ fun shareAsFile(
         }
         context.startActivity(Intent.createChooser(intent, title))
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to share file: ${e.message}", Toast.LENGTH_LONG).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Failed to share file: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 }
 

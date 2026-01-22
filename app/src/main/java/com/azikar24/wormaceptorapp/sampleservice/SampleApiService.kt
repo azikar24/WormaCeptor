@@ -28,7 +28,8 @@ object SampleApiService {
                     .showNotification(true)
                     .maxContentLength(250000L)
                     .retainDataFor(WormaCeptorInterceptor.Period.FOREVER)
-                    .redactHeader("Authorization"),
+                    .redactHeader("Authorization")
+                    .redactJsonValue("password"),
             )
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()

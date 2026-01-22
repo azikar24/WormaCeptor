@@ -133,11 +133,9 @@ class WormaCeptorInterceptor : Interceptor {
             }
 
             val bodyStream = if (bodySize > 0) {
-                var bodyText = buffer.clone().readUtf8()
-                redaction.bodyPatternsToRedact.forEach { regex ->
-                    bodyText = bodyText.replace(regex, redaction.replacementText)
-                }
-                bodyText.byteInputStream()
+                val bodyText = buffer.clone().readUtf8()
+                val redactedBody = redaction.applyRedactions(bodyText)
+                redactedBody.byteInputStream()
             } else {
                 null
             }
@@ -208,12 +206,10 @@ class WormaCeptorInterceptor : Interceptor {
                     bodySize = rawBytes.size.toLong()
                 } else {
                     // For text content, apply redaction patterns
-                    var bodyText = String(rawBytes, Charsets.UTF_8)
-                    redaction.bodyPatternsToRedact.forEach { regex ->
-                        bodyText = bodyText.replace(regex, redaction.replacementText)
-                    }
-                    bodyStream = bodyText.byteInputStream()
-                    bodySize = bodyText.length.toLong()
+                    val bodyText = String(rawBytes, Charsets.UTF_8)
+                    val redactedBody = redaction.applyRedactions(bodyText)
+                    bodyStream = redactedBody.byteInputStream()
+                    bodySize = redactedBody.length.toLong()
                 }
 
                 provider.completeTransaction(
@@ -265,8 +261,19 @@ class WormaCeptorInterceptor : Interceptor {
         WormaCeptorApi.redactionConfig.redactHeader(name)
         return this
     }
-    fun redactBody(name: String): WormaCeptorInterceptor {
-        WormaCeptorApi.redactionConfig.redactBody(name)
+
+    fun redactBody(pattern: String): WormaCeptorInterceptor {
+        WormaCeptorApi.redactionConfig.redactBody(pattern)
+        return this
+    }
+
+    fun redactJsonValue(key: String): WormaCeptorInterceptor {
+        WormaCeptorApi.redactionConfig.redactJsonValue(key)
+        return this
+    }
+
+    fun redactXmlValue(tag: String): WormaCeptorInterceptor {
+        WormaCeptorApi.redactionConfig.redactXmlValue(tag)
         return this
     }
 }

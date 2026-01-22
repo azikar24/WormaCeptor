@@ -71,5 +71,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
     implementation(libs.kotlinx.collections.immutable)
+    // DI
+    implementation(libs.koin.compose)
     debugImplementation(libs.androidx.ui.tooling)
 }

@@ -1,12 +1,12 @@
-# Fix: Tools Lifecycle - Persistent Monitoring Across Activity Lifecycle
+# Fix: Tools Lifecycle - Persistent Monitoring with Koin DI
 
 ## Problem
 
 Several tools in the Tools tab would stop collecting data when:
 1. Navigating away from the tool screen within WormaCeptor
-2. **Navigating back to the host app (Demo-MainActivity) and returning to WormaCeptor**
+2. Navigating back to the host app (Demo-MainActivity) and returning to WormaCeptor
 
-This was problematic because these tools are meant to monitor the host app continuously, not just when actively viewed.
+This was problematic because these tools are meant to monitor the host app continuously.
 
 **Affected tools:**
 - Memory Monitor
@@ -21,160 +21,142 @@ This was problematic because these tools are meant to monitor the host app conti
 
 ## Root Causes
 
-### 1. ViewModel `onCleared()` stopping engines (Navigation within WormaCeptor)
+1. **ViewModel `onCleared()` stopping engines** - ViewModels called `engine.stop()` when cleared
+2. **Engines created inside `remember {}`** - Lost state on recomposition
+3. **Engines created at Activity level** - Lost when ViewerActivity destroyed
 
-ViewModels were calling `engine.stop()` or `engine.disable()` in their `onCleared()` method.
+## Solution: Koin Dependency Injection
 
-### 2. Engines created inside `remember {}` (Navigation within WormaCeptor)
+### Architecture
 
-Engines were being created inside the composable's `remember {}` block, which loses state when the composable leaves composition.
+```
++------------------+
+|   Koin Module    |  (Singleton scope - persists app lifetime)
+|------------------|
+| MemoryEngine     |
+| FpsEngine        |
+| CpuEngine        |
+| TouchVizEngine   |
+| ViewBordersEngine|
+| LogCaptureEngine |
+| WebSocketEngine  |
+| LeakEngine       |
+| ThreadViolEngine |
++------------------+
+         |
+         | inject()
+         v
++------------------+
+| ViewerActivity   |  (Uses injected singletons)
++------------------+
+```
 
-### 3. Engines created at Activity level (Navigation to host app)
+### Part 1: Koin Module
 
-Even when engines were created at Activity level, they were lost when ViewerActivity was destroyed (e.g., pressing back to return to Demo app).
-
-## Solution
-
-### Part 1: MonitoringEngineHolder Singleton
-
-Created a new singleton holder that persists engine instances across the entire app process lifetime:
-
-**New file:** `core/engine/src/main/java/.../MonitoringEngineHolder.kt`
+**File:** `core/engine/src/main/java/.../di/EngineModule.kt`
 
 ```kotlin
-object MonitoringEngineHolder {
-    private var _memoryMonitorEngine: MemoryMonitorEngine? = null
-    private var _fpsMonitorEngine: FpsMonitorEngine? = null
-    // ... other engines
+val engineModule = module {
+    // Performance monitoring engines
+    single { MemoryMonitorEngine() }
+    single { FpsMonitorEngine() }
+    single { CpuMonitorEngine() }
 
-    val memoryMonitorEngine: MemoryMonitorEngine
-        get() {
-            if (_memoryMonitorEngine == null) {
-                _memoryMonitorEngine = MemoryMonitorEngine()
-            }
-            return _memoryMonitorEngine!!
-        }
-    // ... other getters
+    // Visual debug engines
+    single { TouchVisualizationEngine(androidContext()) }
+    single { ViewBordersEngine() }
+
+    // Logging and monitoring
+    single { LogCaptureEngine() }
+    single { WebSocketMonitorEngine() }
+
+    // Detection engines
+    single { LeakDetectionEngine() }
+    single { ThreadViolationEngine() }
 }
 ```
 
-### Part 2: Remove auto-stop in ViewModel `onCleared()`
+### Part 2: Library-Safe Koin Initialization
 
-Updated all affected ViewModels to not stop their engines when cleared:
+**File:** `core/engine/src/main/java/.../di/WormaCeptorKoin.kt`
 
-**Files modified:**
-- `features/memory/src/main/java/.../vm/MemoryViewModel.kt`
-- `features/fps/src/main/java/.../vm/FpsViewModel.kt`
-- `features/cpu/src/main/java/.../vm/CpuViewModel.kt`
-- `features/viewborders/src/main/java/.../vm/ViewBordersViewModel.kt`
+```kotlin
+object WormaCeptorKoin {
+    fun init(context: Context) {
+        val koin = GlobalContext.getOrNull()
+        if (koin != null) {
+            // Host app has Koin - load modules into existing instance
+            koin.loadModules(listOf(engineModule))
+        } else {
+            // Start Koin ourselves
+            startKoin {
+                androidContext(context.applicationContext)
+                modules(engineModule)
+            }
+        }
+    }
+}
+```
+
+### Part 3: ViewerActivity Injection
+
+**File:** `features/viewer/src/main/java/.../ViewerActivity.kt`
+
+```kotlin
+class ViewerActivity : ComponentActivity() {
+    // Inject engines via Koin
+    private val memoryMonitorEngine: MemoryMonitorEngine by inject()
+    private val fpsMonitorEngine: FpsMonitorEngine by inject()
+    private val cpuMonitorEngine: CpuMonitorEngine by inject()
+    // ... other engines
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // Initialize Koin before injection
+        WormaCeptorKoin.init(applicationContext)
+        super.onCreate(savedInstanceState)
+        // ...
+    }
+}
+```
+
+### Part 4: ViewModel Changes (No Auto-Stop)
 
 ```kotlin
 override fun onCleared() {
     super.onCleared()
-    // Note: We don't stop the engine here - monitoring persists across navigation.
-    // The engine lifecycle is managed by the user via explicit start/stop.
+    // Note: We don't stop the engine here - monitoring persists
+    // via Koin singleton scope. User controls via explicit start/stop.
 }
 ```
 
-### Part 3: Require engine parameter in composables
+## Benefits of Koin DI
 
-Changed composables to require engine as a parameter instead of creating internally:
-
-**Files modified:**
-- `features/memory/src/main/java/.../MemoryFeature.kt`
-- `features/fps/src/main/java/.../FpsFeature.kt`
-- `features/cpu/src/main/java/.../CpuFeature.kt`
-
-```kotlin
-@Composable
-fun MemoryMonitor(
-    engine: MemoryMonitorEngine,  // Required parameter
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) { ... }
-```
-
-### Part 4: ViewerActivity uses MonitoringEngineHolder
-
-Updated ViewerActivity to get engines from the singleton holder:
-
-**File modified:**
-- `features/viewer/src/main/java/.../ViewerActivity.kt`
-
-```kotlin
-class ViewerActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // Uses singleton engines
-        MonitoringEngineHolder.logCaptureEngine.start()
-        // ...
-
-        composable("memory") {
-            MemoryMonitor(
-                engine = MonitoringEngineHolder.memoryMonitorEngine,
-                onNavigateBack = { navController.popBackStack() },
-            )
-        }
-        // ... same for all other tools
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Note: Engines are NOT stopped here - they persist across Activity lifecycle
-    }
-}
-```
+1. **Testability** - Easy to mock engines in tests
+2. **Proper Scoping** - Singleton scope manages lifecycle correctly
+3. **Decoupling** - Components don't reference static singletons
+4. **Host App Compatible** - Safely integrates with apps that already use Koin
 
 ## New Behavior
 
-- **Manual toggle only**: User must explicitly start/stop monitoring
-- **Persistent across navigation**: Monitoring continues while navigating within WormaCeptor
-- **Persistent across Activity lifecycle**: Monitoring continues when returning to host app and back
-- **Stops on**: User manually stops OR app process dies
+- **Manual toggle only** - User explicitly starts/stops monitoring
+- **Persistent state** - Survives Activity destruction/recreation
+- **App-process lifetime** - Engines live until process dies
+- **Host app safe** - Works alongside existing Koin setup
 
-## Lifecycle Diagram
-
-```
-App Process Start
-    |
-    v
-MonitoringEngineHolder created (lazy, singleton)
-    |
-    +---> ViewerActivity created
-    |         |
-    |         v
-    |     Get engines from holder
-    |         |
-    |         v
-    |     User starts FPS monitoring
-    |         |
-    |         v
-    |     User navigates back to Demo app
-    |         |
-    |         v
-    |     ViewerActivity destroyed
-    |     (engines NOT stopped - still in holder)
-    |         |
-    |         v
-    +---> ViewerActivity created again
-              |
-              v
-          Get SAME engines from holder
-          (FPS still monitoring!)
-```
-
-## Files Changed Summary
+## Files Changed
 
 | File | Changes |
 |------|---------|
-| `MonitoringEngineHolder.kt` | **NEW** - Singleton holder for all monitoring engines |
-| `MemoryViewModel.kt` | Removed `init { startMonitoring() }`, removed `engine.stop()` in `onCleared()` |
-| `FpsViewModel.kt` | Removed `engine.stop()` in `onCleared()` |
-| `CpuViewModel.kt` | Removed `init { startMonitoring() }`, removed `engine.stop()` in `onCleared()` |
-| `ViewBordersViewModel.kt` | Removed `engine.disable()` in `onCleared()` |
-| `MemoryFeature.kt` | Added `engine` parameter to `MemoryMonitor()` composable |
-| `FpsFeature.kt` | Made `engine` parameter required in `FpsMonitor()` composable |
-| `CpuFeature.kt` | Added `engine` parameter to `CpuMonitor()` composable |
-| `ViewerActivity.kt` | Removed local engines, uses `MonitoringEngineHolder` for all engines |
+| `core/engine/build.gradle.kts` | Added `api(libs.koin.android)` |
+| `features/viewer/build.gradle.kts` | Added `implementation(libs.koin.compose)` |
+| `di/EngineModule.kt` | **NEW** - Koin module with singleton engines |
+| `di/WormaCeptorKoin.kt` | **NEW** - Library-safe Koin initialization |
+| `ViewerActivity.kt` | Uses Koin `by inject()` for engines |
+| `MemoryViewModel.kt` | Removed auto-stop in `onCleared()` |
+| `FpsViewModel.kt` | Removed auto-stop in `onCleared()` |
+| `CpuViewModel.kt` | Removed auto-stop in `onCleared()` |
+| `ViewBordersViewModel.kt` | Removed auto-stop in `onCleared()` |
+| `MonitoringEngineHolder.kt` | **DELETED** - Replaced by Koin |
 
 ## Testing
 
@@ -184,4 +166,4 @@ MonitoringEngineHolder created (lazy, singleton)
 4. Interact with Demo app (generates FPS data)
 5. Open WormaCeptor again
 6. Go to FPS Monitor
-7. **Verify**: FPS should still be monitoring with data from step 4
+7. **Verify**: FPS should still be monitoring with collected data

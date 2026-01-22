@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptorapp.sampleservice.Data
+import com.azikar24.wormaceptorapp.sampleservice.LoginData
 import com.azikar24.wormaceptorapp.sampleservice.SampleApiService
 import com.azikar24.wormaceptorapp.sampleservice.SampleContentService
 import com.azikar24.wormaceptorapp.sampleservice.VeryLargeData
@@ -37,6 +38,7 @@ class MainActivityViewModel : ViewModel() {
         }
 
         api.get().enqueue(callBack)
+        api.login(LoginData("user@example.com", "secretPassword123", true)).enqueue(callBack)
         api.post(Data("posted")).enqueue(callBack)
 
         api.postForm("I Am String", null, 2.34567891, 1234, false).enqueue(callBack)

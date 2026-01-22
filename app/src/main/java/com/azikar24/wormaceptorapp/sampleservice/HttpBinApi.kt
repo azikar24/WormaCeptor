@@ -18,6 +18,9 @@ interface HttpBinApi {
     fun post(@Body body: VeryLargeData?): Call<Void?>
 
     @POST("/post")
+    fun login(@Body body: LoginData): Call<Void?>
+
+    @POST("/post")
     @FormUrlEncoded
     @Headers("ContentType: application/x-www-form-urlencoded")
     fun postForm(

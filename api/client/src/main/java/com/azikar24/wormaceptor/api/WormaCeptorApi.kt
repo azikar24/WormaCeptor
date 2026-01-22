@@ -167,6 +167,81 @@ object WormaCeptorApi {
         }
     }
 
+    // ========== Performance Overlay API ==========
+
+    /**
+     * Show the performance overlay on top of the app.
+     * The overlay displays real-time FPS, Memory, and CPU metrics.
+     * It is draggable and can be expanded to show mini sparkline charts.
+     * Tapping the overlay opens the detailed performance screens.
+     *
+     * Note: Requires SYSTEM_ALERT_WINDOW permission.
+     * Call [canShowFloatingButton] first to check if permission is granted.
+     *
+     * @param activity The activity to attach the overlay to
+     * @return true if the overlay was shown, false if permission not granted
+     */
+    fun showPerformanceOverlay(activity: ComponentActivity): Boolean {
+        if (!canShowFloatingButton(activity)) {
+            return false
+        }
+
+        return try {
+            val engineClass = Class.forName(
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+            )
+            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val getMethod = koinClass.getMethod("get", Class::class.java)
+            val engine = getMethod.invoke(null, engineClass)
+            val showMethod = engineClass.getMethod("show", ComponentActivity::class.java.superclass)
+            showMethod.invoke(engine, activity)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    /**
+     * Hide the performance overlay.
+     */
+    fun hidePerformanceOverlay() {
+        try {
+            val engineClass = Class.forName(
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+            )
+            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val getMethod = koinClass.getMethod("get", Class::class.java)
+            val engine = getMethod.invoke(null, engineClass)
+            val hideMethod = engineClass.getMethod("hide")
+            hideMethod.invoke(engine)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Check if the performance overlay is currently visible.
+     *
+     * @return true if the overlay is visible, false otherwise
+     */
+    fun isPerformanceOverlayVisible(): Boolean {
+        return try {
+            val engineClass = Class.forName(
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+            )
+            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val getMethod = koinClass.getMethod("get", Class::class.java)
+            val engine = getMethod.invoke(null, engineClass)
+            val isVisibleField = engineClass.getMethod("isVisible")
+            val stateFlow = isVisibleField.invoke(engine)
+            val valueMethod = stateFlow.javaClass.getMethod("getValue")
+            valueMethod.invoke(stateFlow) as? Boolean ?: false
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     // ========== Extension Provider API ==========
 
     /**

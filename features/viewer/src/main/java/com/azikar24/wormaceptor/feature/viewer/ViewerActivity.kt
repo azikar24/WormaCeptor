@@ -9,6 +9,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -70,10 +72,13 @@ import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
 import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
 import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
 import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
+import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class ViewerActivity : ComponentActivity() {
@@ -89,6 +94,15 @@ class ViewerActivity : ComponentActivity() {
     private val leakDetectionEngine: LeakDetectionEngine by inject()
     private val threadViolationEngine: ThreadViolationEngine by inject()
 
+    // Deep link handling - use SharedFlow to emit navigation events
+    private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
+        extraBufferCapacity = 1,
+    )
+    private val deepLinkNavigation = _deepLinkNavigation.asSharedFlow()
+
+    // Store initial deep link destination to handle on first composition
+    private var initialDeepLink: DeepLinkHandler.DeepLinkDestination? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Initialize Koin before super.onCreate() to ensure injection works
         WormaCeptorKoin.init(applicationContext)
@@ -98,6 +112,12 @@ class ViewerActivity : ComponentActivity() {
 
         // Start log capture engine
         logCaptureEngine.start()
+
+        // Handle initial deep link (if activity was launched via deep link)
+        if (savedInstanceState == null) {
+            initialDeepLink = DeepLinkHandler.parseDeepLink(intent)
+                .takeIf { it !is DeepLinkHandler.DeepLinkDestination.Invalid }
+        }
 
         val factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -125,6 +145,20 @@ class ViewerActivity : ComponentActivity() {
 
             WormaCeptorTheme {
                 val navController = rememberNavController()
+
+                // Handle deep link navigation
+                LaunchedEffect(Unit) {
+                    // Handle initial deep link
+                    initialDeepLink?.let { destination ->
+                        handleDeepLinkDestination(navController, viewModel, destination)
+                        initialDeepLink = null
+                    }
+
+                    // Handle subsequent deep links (when activity receives new intent)
+                    deepLinkNavigation.collect { destination ->
+                        handleDeepLinkDestination(navController, viewModel, destination)
+                    }
+                }
 
                 // Wrap NavHost in Surface to ensure proper background during navigation transitions
                 // This prevents white flash in dark mode when navigating back
@@ -550,10 +584,49 @@ class ViewerActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Handle deep link when activity is already running (singleTask launch mode)
+        val destination = DeepLinkHandler.parseDeepLink(intent)
+        if (destination !is DeepLinkHandler.DeepLinkDestination.Invalid) {
+            _deepLinkNavigation.tryEmit(destination)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         // Note: Engines are NOT stopped here - they persist across Activity lifecycle
         // via Koin singleton scope. User controls monitoring via explicit start/stop.
+    }
+
+    /**
+     * Handles a deep link destination by navigating to the appropriate screen.
+     */
+    private fun handleDeepLinkDestination(
+        navController: NavHostController,
+        viewModel: ViewerViewModel,
+        destination: DeepLinkHandler.DeepLinkDestination,
+    ) {
+        when (destination) {
+            is DeepLinkHandler.DeepLinkDestination.Tab -> {
+                // Navigate to home and select the specified tab
+                navController.popBackStack("home", inclusive = false)
+                viewModel.updateSelectedTab(destination.tabIndex)
+            }
+
+            is DeepLinkHandler.DeepLinkDestination.Tool -> {
+                // Navigate directly to the tool screen
+                // First ensure we're on home, then navigate to the tool
+                if (navController.currentDestination?.route != "home") {
+                    navController.popBackStack("home", inclusive = false)
+                }
+                navController.navigate(destination.route)
+            }
+
+            is DeepLinkHandler.DeepLinkDestination.Invalid -> {
+                // Do nothing for invalid deep links
+            }
+        }
     }
 
     private suspend fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {

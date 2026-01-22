@@ -9,6 +9,7 @@ import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.TouchVisualizationEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
@@ -27,6 +28,7 @@ val engineModule = module {
     single { MemoryMonitorEngine() }
     single { FpsMonitorEngine() }
     single { CpuMonitorEngine() }
+    single { PerformanceOverlayEngine(androidContext()) }
 
     // Visual debug engines
     single { TouchVisualizationEngine(androidContext()) }

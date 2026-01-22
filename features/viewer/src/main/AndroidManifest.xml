@@ -5,7 +5,19 @@
         <activity
             android:name=".ViewerActivity"
             android:exported="true"
-            android:theme="@style/Theme.WormaCeptor.Viewer" />
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.WormaCeptor.Viewer">
+
+            <!-- Deep link intent filter for wormaceptor:// scheme -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Handle wormaceptor://tools, wormaceptor://tools/*, etc. -->
+                <data android:scheme="wormaceptor" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name=".WormaCeptorFileProvider"

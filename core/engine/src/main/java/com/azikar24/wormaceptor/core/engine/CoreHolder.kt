@@ -14,11 +14,7 @@ object CoreHolder {
     val extensionRegistry: ExtensionRegistry?
         get() = engines.get()?.third
 
-    fun initialize(
-        capture: CaptureEngine,
-        query: QueryEngine,
-        extensions: ExtensionRegistry? = null,
-    ): Boolean {
+    fun initialize(capture: CaptureEngine, query: QueryEngine, extensions: ExtensionRegistry? = null): Boolean {
         return engines.compareAndSet(null, Triple(capture, query, extensions))
     }
 }

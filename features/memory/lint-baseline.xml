@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.5.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.5.2)" variant="all" version="8.5.2">
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        bytes >= 1_073_741_824 -> String.format(&quot;%.1f GB&quot;, bytes / 1_073_741_824.0)"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/memory/ui/MemoryScreen.kt"
+            line="741"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        bytes >= 1_048_576 -> String.format(&quot;%.1f MB&quot;, bytes / 1_048_576.0)"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/memory/ui/MemoryScreen.kt"
+            line="742"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        bytes >= 1_024 -> String.format(&quot;%.1f KB&quot;, bytes / 1_024.0)"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/memory/ui/MemoryScreen.kt"
+            line="743"
+            column="27"/>
+    </issue>
+
+</issues>

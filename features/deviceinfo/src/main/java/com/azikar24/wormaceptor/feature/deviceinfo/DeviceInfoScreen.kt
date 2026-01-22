@@ -56,10 +56,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -129,9 +129,7 @@ private object DeviceInfoDesignSystem {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeviceInfoScreen(
-    onBack: () -> Unit,
-) {
+fun DeviceInfoScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     var deviceInfo by remember { mutableStateOf<DeviceInfo?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -369,7 +367,9 @@ private fun StorageSection(storage: StorageDetails) {
 
         val internalUsagePercent = if (storage.internalTotal > 0) {
             (storage.internalUsed.toFloat() / storage.internalTotal.toFloat()) * 100f
-        } else 0f
+        } else {
+            0f
+        }
 
         Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
         LinearProgressIndicator(
@@ -406,7 +406,9 @@ private fun StorageSection(storage: StorageDetails) {
 
             val externalUsagePercent = if (extTotal > 0) {
                 (extUsed.toFloat() / extTotal.toFloat()) * 100f
-            } else 0f
+            } else {
+                0f
+            }
 
             Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
             LinearProgressIndicator(
@@ -699,7 +701,11 @@ private fun generateCompactReport(info: DeviceInfo): String = buildString {
     appendLine()
 
     // Memory
-    appendLine("RAM: ${formatBytes(info.memory.usedRam)}/${formatBytes(info.memory.totalRam)} (${String.format("%.1f", info.memory.usagePercentage)}% used)")
+    appendLine(
+        "RAM: ${formatBytes(
+            info.memory.usedRam,
+        )}/${formatBytes(info.memory.totalRam)} (${String.format("%.1f", info.memory.usagePercentage)}% used)",
+    )
     appendLine()
 
     // Storage
@@ -714,7 +720,9 @@ private fun generateCompactReport(info: DeviceInfo): String = buildString {
     appendLine()
 
     // Network
-    appendLine("Network: ${info.network.connectionType} (${if (info.network.isConnected) "Connected" else "Disconnected"})")
+    appendLine(
+        "Network: ${info.network.connectionType} (${if (info.network.isConnected) "Connected" else "Disconnected"})",
+    )
 }
 
 private fun generateFullReport(info: DeviceInfo): String = buildString {

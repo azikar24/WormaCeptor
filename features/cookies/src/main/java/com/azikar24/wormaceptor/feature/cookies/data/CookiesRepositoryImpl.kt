@@ -44,7 +44,7 @@ class CookiesRepositoryImpl(
                     emit(dataSource.getAllCookies())
                 }
             }
-        }
+        },
     ).flowOn(Dispatchers.IO)
 
     override fun getCookiesForDomain(domain: String): Flow<List<CookieInfo>> = merge(
@@ -60,26 +60,23 @@ class CookiesRepositoryImpl(
                     emit(dataSource.getCookiesForDomain(domain))
                 }
             }
-        }
+        },
     ).flowOn(Dispatchers.IO)
 
-    override suspend fun deleteCookie(domain: String, name: String) =
-        withContext(Dispatchers.IO) {
-            dataSource.deleteCookie(domain, name)
-            refreshTrigger.emit(Unit)
-        }
+    override suspend fun deleteCookie(domain: String, name: String) = withContext(Dispatchers.IO) {
+        dataSource.deleteCookie(domain, name)
+        refreshTrigger.emit(Unit)
+    }
 
-    override suspend fun deleteAllCookiesForDomain(domain: String) =
-        withContext(Dispatchers.IO) {
-            dataSource.deleteAllCookiesForDomain(domain)
-            refreshTrigger.emit(Unit)
-        }
+    override suspend fun deleteAllCookiesForDomain(domain: String) = withContext(Dispatchers.IO) {
+        dataSource.deleteAllCookiesForDomain(domain)
+        refreshTrigger.emit(Unit)
+    }
 
-    override suspend fun clearAllCookies() =
-        withContext(Dispatchers.IO) {
-            dataSource.clearAllCookies()
-            refreshTrigger.emit(Unit)
-        }
+    override suspend fun clearAllCookies() = withContext(Dispatchers.IO) {
+        dataSource.clearAllCookies()
+        refreshTrigger.emit(Unit)
+    }
 
     override suspend fun refresh() {
         refreshTrigger.emit(Unit)

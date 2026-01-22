@@ -56,15 +56,15 @@ data class MemoryColors(
  */
 val LightMemoryColors = MemoryColors(
     // Chart colors - saturated for visibility
-    heapUsed = Color(0xFF4CAF50),      // Green 500
-    heapFree = Color(0xFFC8E6C9),      // Green 100
-    heapTotal = Color(0xFF81C784),     // Green 300
-    nativeHeap = Color(0xFF2196F3),    // Blue 500
+    heapUsed = Color(0xFF4CAF50), // Green 500
+    heapFree = Color(0xFFC8E6C9), // Green 100
+    heapTotal = Color(0xFF81C784), // Green 300
+    nativeHeap = Color(0xFF2196F3), // Blue 500
 
     // Status colors
-    normal = Color(0xFF4CAF50),        // Green 500
-    warning = Color(0xFFFF9800),       // Orange 500
-    critical = Color(0xFFF44336),      // Red 500
+    normal = Color(0xFF4CAF50), // Green 500
+    warning = Color(0xFFFF9800), // Orange 500
+    critical = Color(0xFFF44336), // Red 500
 
     // Background colors
     cardBackground = Color(0xFFFAFAFA),
@@ -82,15 +82,15 @@ val LightMemoryColors = MemoryColors(
  */
 val DarkMemoryColors = MemoryColors(
     // Chart colors - slightly muted for dark backgrounds
-    heapUsed = Color(0xFF66BB6A),      // Green 400
-    heapFree = Color(0xFF2E7D32),      // Green 800
-    heapTotal = Color(0xFF81C784),     // Green 300
-    nativeHeap = Color(0xFF42A5F5),    // Blue 400
+    heapUsed = Color(0xFF66BB6A), // Green 400
+    heapFree = Color(0xFF2E7D32), // Green 800
+    heapTotal = Color(0xFF81C784), // Green 300
+    nativeHeap = Color(0xFF42A5F5), // Blue 400
 
     // Status colors
-    normal = Color(0xFF66BB6A),        // Green 400
-    warning = Color(0xFFFFB74D),       // Orange 300
-    critical = Color(0xFFEF5350),      // Red 400
+    normal = Color(0xFF66BB6A), // Green 400
+    warning = Color(0xFFFFB74D), // Orange 300
+    critical = Color(0xFFEF5350), // Red 400
 
     // Background colors
     cardBackground = Color(0xFF1E1E1E),

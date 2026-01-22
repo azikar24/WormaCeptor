@@ -28,11 +28,11 @@ data class PushTokenInfo(
      * Supported push notification providers.
      */
     enum class PushProvider {
-        FCM,           // Firebase Cloud Messaging
-        HUAWEI_HMS,    // Huawei Mobile Services
+        FCM, // Firebase Cloud Messaging
+        HUAWEI_HMS, // Huawei Mobile Services
         XIAOMI_MIPUSH, // Xiaomi Mi Push
-        ONESIGNAL,     // OneSignal
-        UNKNOWN,       // Unknown or undetected provider
+        ONESIGNAL, // OneSignal
+        UNKNOWN, // Unknown or undetected provider
     }
 
     companion object {
@@ -67,9 +67,9 @@ data class TokenHistory(
      * Types of token lifecycle events.
      */
     enum class TokenEvent {
-        CREATED,      // Token was first created
-        REFRESHED,    // Token was refreshed/updated
-        INVALIDATED,  // Token was marked as invalid
-        DELETED,      // Token was deleted
+        CREATED, // Token was first created
+        REFRESHED, // Token was refreshed/updated
+        INVALIDATED, // Token was marked as invalid
+        DELETED, // Token was deleted
     }
 }

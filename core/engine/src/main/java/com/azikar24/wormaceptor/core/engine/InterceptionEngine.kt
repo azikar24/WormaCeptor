@@ -220,11 +220,7 @@ class InterceptionEngine {
      */
     fun shouldBlockView(view: View): Boolean = interceptView(view).blocked
 
-    private fun findMatchingViewRule(
-        viewId: String?,
-        viewClass: String,
-        contentDesc: String?,
-    ): InterceptionRule? {
+    private fun findMatchingViewRule(viewId: String?, viewClass: String, contentDesc: String?): InterceptionRule? {
         return _config.value.activeRulesByType(InterceptionType.VIEW).find { rule ->
             val idPattern = rule.parameters[InterceptionRule.PARAM_VIEW_ID_PATTERN]
             val classPattern = rule.parameters[InterceptionRule.PARAM_VIEW_CLASS_PATTERN]
@@ -550,8 +546,7 @@ class InterceptionEngine {
     /**
      * Returns events filtered by type.
      */
-    fun getEventsByType(type: InterceptionType): List<InterceptionEvent> =
-        _events.value.filter { it.type == type }
+    fun getEventsByType(type: InterceptionType): List<InterceptionEvent> = _events.value.filter { it.type == type }
 
     // ================== Statistics ==================
 

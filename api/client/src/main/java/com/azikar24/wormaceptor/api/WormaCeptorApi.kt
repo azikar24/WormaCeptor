@@ -28,11 +28,7 @@ object WormaCeptorApi {
      * @param logCrashes Whether to capture uncaught exceptions
      * @param features Set of features to enable (defaults to all features)
      */
-    fun init(
-        context: Context,
-        logCrashes: Boolean = true,
-        features: Set<Feature> = Feature.DEFAULT
-    ) {
+    fun init(context: Context, logCrashes: Boolean = true, features: Set<Feature> = Feature.DEFAULT) {
         if (provider != null) return
 
         enabledFeatures = features
@@ -115,7 +111,7 @@ object WormaCeptorApi {
         // Use reflection to start FloatingButtonService to avoid hard dependency
         return try {
             val serviceClass = Class.forName(
-                "com.azikar24.wormaceptor.platform.android.FloatingButtonService"
+                "com.azikar24.wormaceptor.platform.android.FloatingButtonService",
             )
             val startMethod = serviceClass.getDeclaredMethod("start", Context::class.java)
             val companion = serviceClass.getDeclaredField("Companion").get(null)
@@ -138,7 +134,7 @@ object WormaCeptorApi {
         // Use reflection to stop FloatingButtonService to avoid hard dependency
         try {
             val serviceClass = Class.forName(
-                "com.azikar24.wormaceptor.platform.android.FloatingButtonService"
+                "com.azikar24.wormaceptor.platform.android.FloatingButtonService",
             )
             val companion = serviceClass.getDeclaredField("Companion").get(null)
             val companionClass = companion.javaClass
@@ -160,7 +156,7 @@ object WormaCeptorApi {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                android.net.Uri.parse("package:${context.packageName}")
+                android.net.Uri.parse("package:${context.packageName}"),
             )
         } else {
             null
@@ -188,7 +184,7 @@ object WormaCeptorApi {
 
         return try {
             val engineClass = Class.forName(
-                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
             val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
             val getMethod = koinClass.getMethod("get", Class::class.java)
@@ -208,7 +204,7 @@ object WormaCeptorApi {
     fun hidePerformanceOverlay() {
         try {
             val engineClass = Class.forName(
-                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
             val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
             val getMethod = koinClass.getMethod("get", Class::class.java)
@@ -228,7 +224,7 @@ object WormaCeptorApi {
     fun isPerformanceOverlayVisible(): Boolean {
         return try {
             val engineClass = Class.forName(
-                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine"
+                "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
             val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
             val getMethod = koinClass.getMethod("get", Class::class.java)

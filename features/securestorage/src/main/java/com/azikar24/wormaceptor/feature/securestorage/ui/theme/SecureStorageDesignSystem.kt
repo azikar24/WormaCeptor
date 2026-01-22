@@ -49,14 +49,14 @@ data class SecureStorageColors(
  */
 val LightSecureStorageColors = SecureStorageColors(
     // Feature accent colors
-    primary = Color(0xFF5C6BC0),        // Indigo 400
-    encrypted = Color(0xFF4CAF50),      // Green 500
-    unencrypted = Color(0xFFFF9800),    // Orange 500
+    primary = Color(0xFF5C6BC0), // Indigo 400
+    encrypted = Color(0xFF4CAF50), // Green 500
+    unencrypted = Color(0xFFFF9800), // Orange 500
 
     // Storage type colors
     encryptedPrefs = Color(0xFF7C4DFF), // Deep Purple A200
-    keystore = Color(0xFF2196F3),       // Blue 500
-    datastore = Color(0xFF009688),      // Teal 500
+    keystore = Color(0xFF2196F3), // Blue 500
+    datastore = Color(0xFF009688), // Teal 500
 
     // Background colors
     cardBackground = Color(0xFFFAFAFA),
@@ -76,14 +76,14 @@ val LightSecureStorageColors = SecureStorageColors(
  */
 val DarkSecureStorageColors = SecureStorageColors(
     // Feature accent colors
-    primary = Color(0xFF7986CB),        // Indigo 300
-    encrypted = Color(0xFF81C784),      // Green 300
-    unencrypted = Color(0xFFFFB74D),    // Orange 300
+    primary = Color(0xFF7986CB), // Indigo 300
+    encrypted = Color(0xFF81C784), // Green 300
+    unencrypted = Color(0xFFFFB74D), // Orange 300
 
     // Storage type colors
     encryptedPrefs = Color(0xFFB388FF), // Deep Purple A100
-    keystore = Color(0xFF64B5F6),       // Blue 300
-    datastore = Color(0xFF4DB6AC),      // Teal 300
+    keystore = Color(0xFF64B5F6), // Blue 300
+    datastore = Color(0xFF4DB6AC), // Teal 300
 
     // Background colors
     cardBackground = Color(0xFF1E1E1E),

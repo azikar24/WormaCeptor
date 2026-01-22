@@ -42,12 +42,7 @@ interface DatabaseRepository {
      * @param limit Maximum number of rows to return
      * @param offset Number of rows to skip
      */
-    fun queryTable(
-        databaseName: String,
-        tableName: String,
-        limit: Int = 100,
-        offset: Int = 0,
-    ): QueryResult
+    fun queryTable(databaseName: String, tableName: String, limit: Int = 100, offset: Int = 0): QueryResult
 
     /**
      * Executes a custom SQL query.

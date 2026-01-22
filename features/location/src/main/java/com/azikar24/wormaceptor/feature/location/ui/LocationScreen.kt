@@ -10,8 +10,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -38,7 +36,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MyLocation
@@ -59,7 +56,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -196,111 +192,111 @@ fun LocationScreen(
                 contentPadding = PaddingValues(LocationDesignSystem.Spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(LocationDesignSystem.Spacing.lg),
             ) {
-            // Warning banner if mock locations not available
-            if (!isMockLocationAvailable) {
+                // Warning banner if mock locations not available
+                if (!isMockLocationAvailable) {
+                    item {
+                        MockLocationWarningBanner()
+                    }
+                }
+
+                // Current mock location status card
                 item {
-                    MockLocationWarningBanner()
-                }
-            }
-
-            // Current mock location status card
-            item {
-                MockLocationStatusCard(
-                    currentMockLocation = currentMockLocation,
-                    isMockEnabled = isMockEnabled,
-                    onToggle = {
-                        if (isMockEnabled) onClearMockLocation() else onSetMockLocation()
-                    },
-                    isEnabled = isMockLocationAvailable && (isMockEnabled || isInputValid),
-                )
-            }
-
-            // Coordinate input section
-            item {
-                CoordinateInputCard(
-                    latitudeInput = latitudeInput,
-                    longitudeInput = longitudeInput,
-                    isInputValid = isInputValid,
-                    isLoading = isLoading,
-                    isMockEnabled = isMockEnabled,
-                    isMockLocationAvailable = isMockLocationAvailable,
-                    onLatitudeChanged = onLatitudeChanged,
-                    onLongitudeChanged = onLongitudeChanged,
-                    onSetMockLocation = onSetMockLocation,
-                    onSetToCurrentLocation = onSetToCurrentLocation,
-                    onSaveAsPreset = { showSavePresetDialog = true },
-                )
-            }
-
-            // Presets section header
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Location Presets",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = "${presets.size} locations",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    MockLocationStatusCard(
+                        currentMockLocation = currentMockLocation,
+                        isMockEnabled = isMockEnabled,
+                        onToggle = {
+                            if (isMockEnabled) onClearMockLocation() else onSetMockLocation()
+                        },
+                        isEnabled = isMockLocationAvailable && (isMockEnabled || isInputValid),
                     )
                 }
-            }
 
-            // Search presets
-            item {
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = onSearchQueryChanged,
-                    placeholder = { Text("Search presets...") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                // Coordinate input section
+                item {
+                    CoordinateInputCard(
+                        latitudeInput = latitudeInput,
+                        longitudeInput = longitudeInput,
+                        isInputValid = isInputValid,
+                        isLoading = isLoading,
+                        isMockEnabled = isMockEnabled,
+                        isMockLocationAvailable = isMockLocationAvailable,
+                        onLatitudeChanged = onLatitudeChanged,
+                        onLongitudeChanged = onLongitudeChanged,
+                        onSetMockLocation = onSetMockLocation,
+                        onSetToCurrentLocation = onSetToCurrentLocation,
+                        onSaveAsPreset = { showSavePresetDialog = true },
+                    )
+                }
+
+                // Presets section header
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Location Presets",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    ),
-                )
-            }
+                        Text(
+                            text = "${presets.size} locations",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
 
-            // Preset items
-            items(presets, key = { it.id }) { preset ->
-                PresetItem(
-                    preset = preset,
-                    isSelected = currentMockLocation?.let {
-                        it.latitude == preset.location.latitude &&
-                            it.longitude == preset.location.longitude
-                    } == true,
-                    onClick = { onPresetClick(preset) },
-                    onDelete = if (!preset.isBuiltIn) {
-                        { onDeletePreset(preset.id) }
-                    } else {
-                        null
-                    },
-                    modifier = Modifier.animateItem(),
-                )
-            }
-
-            // Empty state for presets
-            if (presets.isEmpty()) {
+                // Search presets
                 item {
-                    EmptyPresetsState(hasSearchQuery = searchQuery.isNotBlank())
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChanged,
+                        placeholder = { Text("Search presets...") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        ),
+                    )
+                }
+
+                // Preset items
+                items(presets, key = { it.id }) { preset ->
+                    PresetItem(
+                        preset = preset,
+                        isSelected = currentMockLocation?.let {
+                            it.latitude == preset.location.latitude &&
+                                it.longitude == preset.location.longitude
+                        } == true,
+                        onClick = { onPresetClick(preset) },
+                        onDelete = if (!preset.isBuiltIn) {
+                            { onDeletePreset(preset.id) }
+                        } else {
+                            null
+                        },
+                        modifier = Modifier.animateItem(),
+                    )
+                }
+
+                // Empty state for presets
+                if (presets.isEmpty()) {
+                    item {
+                        EmptyPresetsState(hasSearchQuery = searchQuery.isNotBlank())
+                    }
                 }
             }
-        }
 
             // Loading overlay
             AnimatedVisibility(
@@ -726,9 +722,7 @@ private fun PresetItem(
 }
 
 @Composable
-private fun EmptyPresetsState(
-    hasSearchQuery: Boolean,
-) {
+private fun EmptyPresetsState(hasSearchQuery: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -777,10 +771,7 @@ private fun EmptyPresetsState(
 }
 
 @Composable
-private fun SavePresetDialog(
-    onDismiss: () -> Unit,
-    onSave: (String) -> Unit,
-) {
+private fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
     var presetName by remember { mutableStateOf("") }
 
     AlertDialog(

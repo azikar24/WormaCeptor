@@ -30,10 +30,13 @@ data class LoadedLibrary(
     enum class LibraryType {
         /** Native shared object (.so) file */
         NATIVE_SO,
+
         /** Dalvik executable (.dex) file */
         DEX,
+
         /** Java archive (.jar) file */
         JAR,
+
         /** Resource from AAR (Android Archive) */
         AAR_RESOURCE,
     }

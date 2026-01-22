@@ -64,11 +64,7 @@ class FileBrowserViewModelFactory(
  * Handles navigation between browser, viewer, and info screens.
  */
 @Composable
-fun FileBrowser(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val repository = remember { FileBrowserFeature.createRepository(context) }
     val factory = remember { FileBrowserFeature.createViewModelFactory(repository) }
     val viewModel: FileBrowserViewModel = viewModel(factory = factory)

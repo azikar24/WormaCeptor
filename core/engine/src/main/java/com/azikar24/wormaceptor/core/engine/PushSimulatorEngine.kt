@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.core.engine
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -45,7 +46,9 @@ class PushSimulatorEngine(private val context: Context) {
      *
      * @param notification The notification configuration to send
      * @return The notification ID used (for later cancellation)
+     * @throws NotificationPermissionException if notification permission is not granted
      */
+    @SuppressLint("MissingPermission") // Permission checked via hasNotificationPermission() before notify()
     fun sendNotification(notification: SimulatedNotification): Int {
         ensureChannelExists(notification.channelId)
 
@@ -102,12 +105,12 @@ class PushSimulatorEngine(private val context: Context) {
             builder.setStyle(NotificationCompat.BigTextStyle().bigText(notification.body))
         }
 
-        try {
-            notificationManagerCompat.notify(notificationId, builder.build())
-        } catch (e: SecurityException) {
-            // POST_NOTIFICATIONS permission not granted on Android 13+
-            throw NotificationPermissionException("Notification permission not granted", e)
+        // Check permission before posting (required for Android 13+)
+        if (!hasNotificationPermission()) {
+            throw NotificationPermissionException("Notification permission not granted")
         }
+
+        notificationManagerCompat.notify(notificationId, builder.build())
 
         return notificationId
     }
@@ -208,10 +211,7 @@ class PushSimulatorEngine(private val context: Context) {
      * @param notification Optional notification configuration; if null, uses data for title/body
      * @return The notification ID
      */
-    fun simulateFcmPayload(
-        data: Map<String, String>,
-        notification: SimulatedNotification? = null,
-    ): Int {
+    fun simulateFcmPayload(data: Map<String, String>, notification: SimulatedNotification? = null): Int {
         val finalNotification = notification ?: SimulatedNotification(
             id = System.currentTimeMillis().toString(),
             title = data["title"] ?: "FCM Message",

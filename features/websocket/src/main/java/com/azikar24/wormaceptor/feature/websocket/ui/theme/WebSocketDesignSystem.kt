@@ -104,24 +104,24 @@ data class WebSocketColors(
  */
 val LightWebSocketColors = WebSocketColors(
     // Connection states
-    connecting = Color(0xFFF57C00),   // Orange 700
-    open = Color(0xFF388E3C),          // Green 700
-    closing = Color(0xFFE65100),       // Deep Orange 700
-    closed = Color(0xFF757575),        // Gray 600
+    connecting = Color(0xFFF57C00), // Orange 700
+    open = Color(0xFF388E3C), // Green 700
+    closing = Color(0xFFE65100), // Deep Orange 700
+    closed = Color(0xFF757575), // Gray 600
     // Directions
-    sent = Color(0xFF1976D2),          // Blue 700
-    received = Color(0xFF388E3C),      // Green 700
+    sent = Color(0xFF1976D2), // Blue 700
+    received = Color(0xFF388E3C), // Green 700
     // Message types
-    textMessage = Color(0xFF424242),   // Gray 800
+    textMessage = Color(0xFF424242), // Gray 800
     binaryMessage = Color(0xFF7B1FA2), // Purple 700
-    pingPong = Color(0xFF0097A7),      // Cyan 700
+    pingPong = Color(0xFF0097A7), // Cyan 700
     // Backgrounds
-    sentBackground = Color(0xFFE3F2FD),      // Blue 50
-    receivedBackground = Color(0xFFE8F5E9),  // Green 50
+    sentBackground = Color(0xFFE3F2FD), // Blue 50
+    receivedBackground = Color(0xFFE8F5E9), // Green 50
     connectingBackground = Color(0xFFFFF3E0), // Orange 50
-    openBackground = Color(0xFFE8F5E9),       // Green 50
-    closingBackground = Color(0xFFFBE9E7),    // Deep Orange 50
-    closedBackground = Color(0xFFF5F5F5),     // Gray 100
+    openBackground = Color(0xFFE8F5E9), // Green 50
+    closingBackground = Color(0xFFFBE9E7), // Deep Orange 50
+    closedBackground = Color(0xFFF5F5F5), // Gray 100
 )
 
 /**
@@ -129,24 +129,24 @@ val LightWebSocketColors = WebSocketColors(
  */
 val DarkWebSocketColors = WebSocketColors(
     // Connection states
-    connecting = Color(0xFFFFB74D),   // Orange 300
-    open = Color(0xFF81C784),          // Green 300
-    closing = Color(0xFFFF8A65),       // Deep Orange 300
-    closed = Color(0xFF9E9E9E),        // Gray 500
+    connecting = Color(0xFFFFB74D), // Orange 300
+    open = Color(0xFF81C784), // Green 300
+    closing = Color(0xFFFF8A65), // Deep Orange 300
+    closed = Color(0xFF9E9E9E), // Gray 500
     // Directions
-    sent = Color(0xFF64B5F6),          // Blue 300
-    received = Color(0xFF81C784),      // Green 300
+    sent = Color(0xFF64B5F6), // Blue 300
+    received = Color(0xFF81C784), // Green 300
     // Message types
-    textMessage = Color(0xFFE0E0E0),   // Gray 300
+    textMessage = Color(0xFFE0E0E0), // Gray 300
     binaryMessage = Color(0xFFBA68C8), // Purple 300
-    pingPong = Color(0xFF4DD0E1),      // Cyan 300
+    pingPong = Color(0xFF4DD0E1), // Cyan 300
     // Backgrounds (dark tints)
-    sentBackground = Color(0xFF0D47A1).copy(alpha = 0.2f),      // Blue with alpha
+    sentBackground = Color(0xFF0D47A1).copy(alpha = 0.2f), // Blue with alpha
     receivedBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
     connectingBackground = Color(0xFFE65100).copy(alpha = 0.2f), // Orange with alpha
-    openBackground = Color(0xFF1B5E20).copy(alpha = 0.2f),      // Green with alpha
-    closingBackground = Color(0xFFBF360C).copy(alpha = 0.2f),   // Deep Orange with alpha
-    closedBackground = Color(0xFF212121),                        // Gray 900
+    openBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
+    closingBackground = Color(0xFFBF360C).copy(alpha = 0.2f), // Deep Orange with alpha
+    closedBackground = Color(0xFF212121), // Gray 900
 )
 
 /**

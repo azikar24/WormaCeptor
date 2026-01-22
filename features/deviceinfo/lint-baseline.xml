@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.5.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.5.2)" variant="all" version="8.5.2">
+
+    <issue
+        id="MissingPermission"
+        message="Missing permissions required by TelephonyManager.getDataNetworkType: android.permission.READ_PHONE_STATE or android.permission.READ_BASIC_PHONE_STATE"
+        errorLine1="                cellularNetworkType = when (telephonyManager?.dataNetworkType) {"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/GetDeviceInfoUseCase.kt"
+            line="294"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        InfoRow(&quot;Density&quot;, String.format(&quot;%.2f&quot;, screen.density))"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="289"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        InfoRow(&quot;Scaled Density&quot;, String.format(&quot;%.2f&quot;, screen.scaledDensity))"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="290"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="                    text = &quot;${String.format(&quot;%.1f&quot;, memory.usagePercentage)}%&quot;,"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="323"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        bytes &lt; 1024 * 1024 -> String.format(&quot;%.1f KB&quot;, bytes / 1024.0)"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="650"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        bytes &lt; 1024 * 1024 * 1024 -> String.format(&quot;%.1f MB&quot;, bytes / (1024.0 * 1024.0))"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="651"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        else -> String.format(&quot;%.2f GB&quot;, bytes / (1024.0 * 1024.0 * 1024.0))"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="652"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="        )}/${formatBytes(info.memory.totalRam)} (${String.format(&quot;%.1f&quot;, info.memory.usagePercentage)}% used)&quot;,"
+        errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="707"
+            column="52"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="    appendLine(&quot;Density: ${String.format(&quot;%.2f&quot;, screen.density)}&quot;)"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="786"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="    appendLine(&quot;Scaled Density: ${String.format(&quot;%.2f&quot;, screen.scaledDensity)}&quot;)"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="787"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="    appendLine(&quot;Usage: ${String.format(&quot;%.1f&quot;, memory.usagePercentage)}%&quot;)"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="797"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="            securityPatch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/GetDeviceInfoUseCase.kt"
+            line="82"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/GetDeviceInfoUseCase.kt"
+            line="256"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="AutoboxingStateCreation"
+        message="Prefer `mutableIntStateOf` instead of `mutableStateOf`"
+        errorLine1="    var refreshKey by remember { mutableStateOf(0) }"
+        errorLine2="                                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreen.kt"
+            line="136"
+            column="34"/>
+    </issue>
+
+</issues>

@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -68,7 +67,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
@@ -208,11 +206,7 @@ fun CpuScreen(
 }
 
 @Composable
-private fun StatusBar(
-    isMonitoring: Boolean,
-    sampleCount: Int,
-    modifier: Modifier = Modifier,
-) {
+private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -371,12 +365,7 @@ private fun CpuUsageGaugeCard(
 }
 
 @Composable
-private fun CpuGauge(
-    progress: Float,
-    statusColor: Color,
-    colors: CpuColors,
-    modifier: Modifier = Modifier,
-) {
+private fun CpuGauge(progress: Float, statusColor: Color, colors: CpuColors, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
         val strokeWidth = 16.dp.toPx()
         val radius = (size.minDimension - strokeWidth) / 2
@@ -407,11 +396,7 @@ private fun CpuGauge(
 }
 
 @Composable
-private fun PerCoreUsageCard(
-    currentCpu: CpuInfo,
-    colors: CpuColors,
-    modifier: Modifier = Modifier,
-) {
+private fun PerCoreUsageCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -500,11 +485,7 @@ private fun CoreUsageBar(
 }
 
 @Composable
-private fun CpuChartCard(
-    history: ImmutableList<CpuInfo>,
-    colors: CpuColors,
-    modifier: Modifier = Modifier,
-) {
+private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -564,11 +545,7 @@ private fun CpuChartCard(
 }
 
 @Composable
-private fun CpuLineChart(
-    history: ImmutableList<CpuInfo>,
-    colors: CpuColors,
-    modifier: Modifier = Modifier,
-) {
+private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, modifier: Modifier = Modifier) {
     if (history.isEmpty()) return
 
     Canvas(
@@ -665,11 +642,7 @@ private fun CpuLineChart(
 }
 
 @Composable
-private fun ChartLegendItem(
-    label: String,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
+private fun ChartLegendItem(label: String, color: Color, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -690,11 +663,7 @@ private fun ChartLegendItem(
 }
 
 @Composable
-private fun SystemInfoCard(
-    currentCpu: CpuInfo,
-    colors: CpuColors,
-    modifier: Modifier = Modifier,
-) {
+private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -810,9 +779,7 @@ private fun SystemInfoItem(
 }
 
 @Composable
-private fun WarningBadge(
-    modifier: Modifier = Modifier,
-) {
+private fun WarningBadge(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,

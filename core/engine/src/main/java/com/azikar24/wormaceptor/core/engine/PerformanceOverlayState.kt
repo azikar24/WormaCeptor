@@ -79,7 +79,8 @@ object PerformanceThresholds {
 enum class MetricStatus {
     GOOD,
     WARNING,
-    CRITICAL;
+    CRITICAL,
+    ;
 
     companion object {
         /**

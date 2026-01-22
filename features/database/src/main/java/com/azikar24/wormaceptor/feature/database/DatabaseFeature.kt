@@ -72,11 +72,7 @@ class DatabaseViewModelFactory(
  * Handles navigation between database list, table list, and table data screens.
  */
 @Composable
-fun DatabaseBrowser(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val repository = remember { DatabaseFeature.createRepository(context) }
     val factory = remember { DatabaseFeature.createViewModelFactory(repository) }
     val viewModel: DatabaseViewModel = viewModel(factory = factory)

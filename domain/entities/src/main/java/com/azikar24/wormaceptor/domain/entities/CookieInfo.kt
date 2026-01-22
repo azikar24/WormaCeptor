@@ -45,7 +45,8 @@ data class CookieInfo(
     enum class SameSite {
         STRICT,
         LAX,
-        NONE;
+        NONE,
+        ;
 
         companion object {
             fun fromString(value: String?): SameSite? = when (value?.uppercase()) {

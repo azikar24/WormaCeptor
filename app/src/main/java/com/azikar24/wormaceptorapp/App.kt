@@ -20,9 +20,7 @@ class App : Application() {
         WormaCeptorApi.registerExtensionProvider(
             object : ExtensionProvider {
                 override val name = "TestExtension"
-                override fun extractExtensions(
-                    context: ExtensionContext,
-                ): Map<String, String> {
+                override fun extractExtensions(context: ExtensionContext): Map<String, String> {
                     return mapOf(
                         "request_method" to context.request.method,
                         "has_response" to (context.response != null).toString(),

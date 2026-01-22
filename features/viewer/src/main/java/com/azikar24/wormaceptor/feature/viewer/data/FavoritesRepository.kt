@@ -14,7 +14,7 @@ class FavoritesRepository(context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
         PREFS_NAME,
-        Context.MODE_PRIVATE
+        Context.MODE_PRIVATE,
     )
 
     private val _favorites = MutableStateFlow<Set<Feature>>(loadFavorites())
@@ -120,7 +120,7 @@ class FavoritesRepository(context: Context) {
             Feature.CONSOLE_LOGS,
             Feature.SHARED_PREFERENCES,
             Feature.MEMORY_MONITOR,
-            Feature.VIEW_HIERARCHY
+            Feature.VIEW_HIERARCHY,
         )
 
         @Volatile

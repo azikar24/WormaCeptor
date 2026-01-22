@@ -4,10 +4,7 @@
 
 package com.azikar24.wormaceptor.feature.websocket.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -63,7 +60,6 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
-import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -202,11 +198,7 @@ internal fun WebSocketDetailScreen(
 }
 
 @Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun SearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -314,11 +306,7 @@ private fun DirectionFilterChips(
 }
 
 @Composable
-private fun StatsBar(
-    totalCount: Int,
-    filteredCount: Int,
-    modifier: Modifier = Modifier,
-) {
+private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -475,10 +463,7 @@ private fun MessageItem(
 }
 
 @Composable
-private fun EmptyMessagesState(
-    hasFilters: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

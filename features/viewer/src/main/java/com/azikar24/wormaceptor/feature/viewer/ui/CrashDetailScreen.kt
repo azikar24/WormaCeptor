@@ -445,7 +445,6 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
     }
 }
 
-
 private fun searchStackOverflow(context: Context, crash: Crash) {
     val query = CrashUtils.generateStackOverflowQuery(crash.exceptionType, crash.message)
     val url = "https://stackoverflow.com/search?q=${Uri.encode(query)}"

@@ -42,7 +42,8 @@ enum class Feature {
 
     // Core (always shown in overflow menu, also available in Tools tab)
     CONSOLE_LOGS,
-    DEVICE_INFO;
+    DEVICE_INFO,
+    ;
 
     companion object {
         /** All available features */

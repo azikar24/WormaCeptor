@@ -16,7 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.ViewHierarchyEngine
 import com.azikar24.wormaceptor.feature.viewhierarchy.ui.ViewHierarchyScreen
 import com.azikar24.wormaceptor.feature.viewhierarchy.vm.ViewHierarchyViewModel
-import kotlinx.collections.immutable.toImmutableSet
 
 /**
  * Entry point for the View Hierarchy Inspector feature.
@@ -79,10 +78,7 @@ class ViewHierarchyViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun ViewHierarchyInspector(
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun ViewHierarchyInspector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { ViewHierarchyFeature.createEngine() }
     val factory = remember { ViewHierarchyFeature.createViewModelFactory(engine) }
     val viewModel: ViewHierarchyViewModel = viewModel(factory = factory)

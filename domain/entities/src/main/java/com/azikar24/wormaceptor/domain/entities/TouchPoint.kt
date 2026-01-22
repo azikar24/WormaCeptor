@@ -46,8 +46,10 @@ data class TouchPoint(
 enum class TouchAction {
     /** Finger touched the screen */
     DOWN,
+
     /** Finger moved on the screen */
     MOVE,
+
     /** Finger lifted from the screen */
     UP,
 }

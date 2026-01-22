@@ -36,50 +36,50 @@ import com.azikar24.wormaceptor.core.engine.TouchVisualizationEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
-import org.koin.android.ext.android.inject
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
+import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
+import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
+import com.azikar24.wormaceptor.feature.crypto.CryptoTool
+import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
+import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
+import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
+import com.azikar24.wormaceptor.feature.fps.FpsMonitor
+import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
+import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
+import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
+import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
+import com.azikar24.wormaceptor.feature.location.LocationSimulator
+import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
+import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
+import com.azikar24.wormaceptor.feature.measurement.MeasurementTool
+import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
+import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
+import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
+import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
+import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
+import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
+import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
+import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
+import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
+import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
-import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
-import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
-import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
-import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
-import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
-import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
-import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
-import com.azikar24.wormaceptor.feature.fps.FpsMonitor
-import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
-import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
-import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
-import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
-import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
-import com.azikar24.wormaceptor.feature.location.LocationSimulator
-import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
-import com.azikar24.wormaceptor.feature.viewhierarchy.ViewHierarchyInspector
-import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
-import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
-import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitor as WebViewMonitorScreen
-import com.azikar24.wormaceptor.feature.crypto.CryptoTool
-import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
-import com.azikar24.wormaceptor.feature.measurement.MeasurementTool
-import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
-import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
-import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
-import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
-import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
-import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
-import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
+import com.azikar24.wormaceptor.feature.viewhierarchy.ViewHierarchyInspector
+import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitor as WebViewMonitorScreen
 
 class ViewerActivity : ComponentActivity() {
 
@@ -122,9 +122,11 @@ class ViewerActivity : ComponentActivity() {
         val factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ViewerViewModel(requireNotNull(CoreHolder.queryEngine) {
-                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
-                }) as T
+                return ViewerViewModel(
+                    requireNotNull(CoreHolder.queryEngine) {
+                        "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                    },
+                ) as T
             }
         }
         val viewModel = ViewModelProvider(this, factory)[ViewerViewModel::class.java]
@@ -286,8 +288,8 @@ class ViewerActivity : ComponentActivity() {
                                         initialTransactionIndex = initialIndex,
                                         getTransaction = { transactionId ->
                                             requireNotNull(CoreHolder.queryEngine) {
-                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
-                }.getDetails(transactionId)
+                                                "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                                            }.getDetails(transactionId)
                                         },
                                         onBack = { navController.popBackStack() },
                                     )
@@ -299,8 +301,8 @@ class ViewerActivity : ComponentActivity() {
 
                                     androidx.compose.runtime.LaunchedEffect(uuid) {
                                         transaction = requireNotNull(CoreHolder.queryEngine) {
-                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
-                }.getDetails(uuid)
+                                            "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                                        }.getDetails(uuid)
                                     }
 
                                     transaction?.let {
@@ -575,7 +577,11 @@ class ViewerActivity : ComponentActivity() {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
-                android.widget.Toast.makeText(this@ViewerActivity, "Failed to load transaction details", android.widget.Toast.LENGTH_SHORT).show()
+                android.widget.Toast.makeText(
+                    this@ViewerActivity,
+                    "Failed to load transaction details",
+                    android.widget.Toast.LENGTH_SHORT,
+                ).show()
                 return@launch
             }
 

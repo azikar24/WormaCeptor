@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.infra.parser.image
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 
 /**
  * Parser for image content types.

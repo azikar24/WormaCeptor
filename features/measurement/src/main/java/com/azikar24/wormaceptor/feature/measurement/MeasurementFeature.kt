@@ -43,12 +43,17 @@ class MeasurementViewModel(private val engine: MeasurementEngine) : ViewModel() 
     val config: StateFlow<MeasurementConfig> = engine.config
     private var activity: Activity? = null
 
-    fun setActivity(activity: Activity) { this.activity = activity }
-    fun toggleEnabled() { if (engine.isEnabled.value) engine.disable() else activity?.let { engine.enable(it) } }
+    fun setActivity(activity: Activity) {
+        this.activity = activity
+    }
+    fun toggleEnabled() {
+        if (engine.isEnabled.value) engine.disable() else activity?.let { engine.enable(it) }
+    }
     fun setMode(mode: MeasurementMode) = engine.setMode(mode)
     fun clear() = engine.clear()
     fun toggleSnapToGrid() = engine.updateConfig(engine.config.value.copy(snapToGrid = !engine.config.value.snapToGrid))
-    fun toggleGuidelines() = engine.updateConfig(engine.config.value.copy(showGuidelines = !engine.config.value.showGuidelines))
+    fun toggleGuidelines() =
+        engine.updateConfig(engine.config.value.copy(showGuidelines = !engine.config.value.showGuidelines))
 }
 
 class MeasurementViewModelFactory(private val engine: MeasurementEngine) : ViewModelProvider.Factory {
@@ -58,11 +63,7 @@ class MeasurementViewModelFactory(private val engine: MeasurementEngine) : ViewM
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MeasurementTool(
-    activity: Activity,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun MeasurementTool(activity: Activity, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { MeasurementFeature.createEngine() }
     val factory = remember { MeasurementFeature.createViewModelFactory(engine) }
     val viewModel: MeasurementViewModel = viewModel(factory = factory)
@@ -79,11 +80,22 @@ fun MeasurementTool(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(Icons.Default.Straighten, null, tint = Color(0xFF009688))
-                    Text("Measurement", fontWeight = FontWeight.SemiBold)
-                }},
-                navigationIcon = { onNavigateBack?.let { IconButton(onClick = it) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } } },
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Icon(Icons.Default.Straighten, null, tint = Color(0xFF009688))
+                        Text("Measurement", fontWeight = FontWeight.SemiBold)
+                    }
+                },
+                navigationIcon = {
+                    onNavigateBack?.let {
+                        IconButton(
+                            onClick = it,
+                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
+                    }
+                },
                 actions = {
                     IconButton(onClick = { viewModel.clear() }) { Icon(Icons.Default.Delete, "Clear") }
                 },
@@ -92,15 +104,47 @@ fun MeasurementTool(
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).padding(16.dp), Arrangement.spacedBy(16.dp)) {
             // Enable toggle
-            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA))) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            ) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Box(Modifier.size(48.dp).clip(RoundedCornerShape(12.dp)).background((if (isEnabled) Color(0xFF009688) else Color(0xFF9E9E9E)).copy(alpha = 0.15f)), Alignment.Center) {
-                            Icon(Icons.Default.Straighten, null, tint = if (isEnabled) Color(0xFF009688) else Color(0xFF9E9E9E), modifier = Modifier.size(24.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Box(
+                            Modifier.size(
+                                48.dp,
+                            ).clip(
+                                RoundedCornerShape(12.dp),
+                            ).background(
+                                (
+                                    if (isEnabled) {
+                                        Color(
+                                            0xFF009688,
+                                        )
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    }
+                                    ).copy(alpha = 0.15f),
+                            ),
+                            Alignment.Center,
+                        ) {
+                            Icon(
+                                Icons.Default.Straighten,
+                                null,
+                                tint = if (isEnabled) Color(0xFF009688) else MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp),
+                            )
                         }
                         Column {
                             Text("Measurement Mode", fontWeight = FontWeight.SemiBold)
-                            Text(if (isEnabled) "Tap to measure" else "Disabled", style = MaterialTheme.typography.bodySmall, color = Color(0xFF757575))
+                            Text(
+                                if (isEnabled) "Tap to measure" else "Disabled",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                     }
                     Switch(checked = isEnabled, onCheckedChange = { viewModel.toggleEnabled() })
@@ -108,36 +152,67 @@ fun MeasurementTool(
             }
 
             // Mode selection
-            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA))) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp), Arrangement.spacedBy(12.dp)) {
                     Text("Mode", fontWeight = FontWeight.SemiBold)
                     Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
-                        FilterChip(selected = mode == MeasurementMode.DISTANCE, onClick = { viewModel.setMode(MeasurementMode.DISTANCE) },
-                            label = { Text("Distance") }, leadingIcon = { Icon(Icons.Default.Straighten, null, Modifier.size(18.dp)) }, enabled = isEnabled)
-                        FilterChip(selected = mode == MeasurementMode.VIEW_BOUNDS, onClick = { viewModel.setMode(MeasurementMode.VIEW_BOUNDS) },
-                            label = { Text("View Bounds") }, leadingIcon = { Icon(Icons.Default.CropSquare, null, Modifier.size(18.dp)) }, enabled = isEnabled)
+                        FilterChip(
+                            selected = mode == MeasurementMode.DISTANCE,
+                            onClick = { viewModel.setMode(MeasurementMode.DISTANCE) },
+                            label = {
+                                Text("Distance")
+                            },
+                            leadingIcon = { Icon(Icons.Default.Straighten, null, Modifier.size(18.dp)) },
+                            enabled = isEnabled,
+                        )
+                        FilterChip(
+                            selected = mode == MeasurementMode.VIEW_BOUNDS,
+                            onClick = { viewModel.setMode(MeasurementMode.VIEW_BOUNDS) },
+                            label = {
+                                Text("View Bounds")
+                            },
+                            leadingIcon = { Icon(Icons.Default.CropSquare, null, Modifier.size(18.dp)) },
+                            enabled = isEnabled,
+                        )
                     }
                 }
             }
 
             // Options
-            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA))) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp), Arrangement.spacedBy(8.dp)) {
                     Text("Options", fontWeight = FontWeight.SemiBold)
                     Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
                         Text("Snap to Grid")
-                        Switch(checked = config.snapToGrid, onCheckedChange = { viewModel.toggleSnapToGrid() }, enabled = isEnabled)
+                        Switch(
+                            checked = config.snapToGrid,
+                            onCheckedChange = { viewModel.toggleSnapToGrid() },
+                            enabled = isEnabled,
+                        )
                     }
                     Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
                         Text("Show Guidelines")
-                        Switch(checked = config.showGuidelines, onCheckedChange = { viewModel.toggleGuidelines() }, enabled = isEnabled)
+                        Switch(
+                            checked = config.showGuidelines,
+                            onCheckedChange = { viewModel.toggleGuidelines() },
+                            enabled = isEnabled,
+                        )
                     }
                 }
             }
 
             // Result
             measurement?.let { m ->
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF009688).copy(alpha = 0.1f))) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF009688).copy(alpha = 0.1f)),
+                ) {
                     Column(Modifier.fillMaxWidth().padding(16.dp), Arrangement.spacedBy(8.dp)) {
                         Text("Distance Measurement", fontWeight = FontWeight.SemiBold, color = Color(0xFF009688))
                         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
@@ -150,11 +225,21 @@ fun MeasurementTool(
             }
 
             selectedView?.let { v ->
-                Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF009688).copy(alpha = 0.1f))) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF009688).copy(alpha = 0.1f)),
+                ) {
                     Column(Modifier.fillMaxWidth().padding(16.dp), Arrangement.spacedBy(8.dp)) {
                         Text("View Measurement", fontWeight = FontWeight.SemiBold, color = Color(0xFF009688))
                         Text(v.viewClass, fontFamily = FontFamily.Monospace, color = Color(0xFF212121))
-                        v.resourceId?.let { Text("@id/$it", fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodySmall, color = Color(0xFF757575)) }
+                        v.resourceId?.let {
+                            Text(
+                                "@id/$it",
+                                fontFamily = FontFamily.Monospace,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
                         Divider(Modifier.padding(vertical = 4.dp))
                         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
                             MeasureValue("Width", "${v.widthDp.toInt()} dp", Color(0xFF009688))
@@ -162,10 +247,20 @@ fun MeasurementTool(
                             MeasureValue("Position", "${v.x}, ${v.y}", Color(0xFF2196F3))
                         }
                         if (v.paddingLeft > 0 || v.paddingTop > 0 || v.paddingRight > 0 || v.paddingBottom > 0) {
-                            Text("Padding: ${v.paddingLeft}, ${v.paddingTop}, ${v.paddingRight}, ${v.paddingBottom}", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = Color(0xFF757575))
+                            Text(
+                                "Padding: ${v.paddingLeft}, ${v.paddingTop}, ${v.paddingRight}, ${v.paddingBottom}",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                         if (v.marginLeft > 0 || v.marginTop > 0 || v.marginRight > 0 || v.marginBottom > 0) {
-                            Text("Margin: ${v.marginLeft}, ${v.marginTop}, ${v.marginRight}, ${v.marginBottom}", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = Color(0xFF757575))
+                            Text(
+                                "Margin: ${v.marginLeft}, ${v.marginTop}, ${v.marginRight}, ${v.marginBottom}",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                     }
                 }
@@ -178,6 +273,6 @@ fun MeasurementTool(
 private fun MeasureValue(label: String, value: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(value, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = color)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = Color(0xFF757575))
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

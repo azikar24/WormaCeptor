@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
-import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Search
@@ -258,7 +257,11 @@ fun CookiesListScreen(
         AlertDialog(
             onDismissRequest = { showClearAllDialog = false },
             title = { Text("Clear All Cookies") },
-            text = { Text("Are you sure you want to delete all $totalCookieCount cookies from $totalDomainCount domains? This action cannot be undone.") },
+            text = {
+                Text(
+                    "Are you sure you want to delete all $totalCookieCount cookies from $totalDomainCount domains? This action cannot be undone.",
+                )
+            },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -419,11 +422,7 @@ private fun DomainSection(
 }
 
 @Composable
-private fun CookieItem(
-    cookie: CookieInfo,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun CookieItem(cookie: CookieInfo, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -553,11 +552,7 @@ private fun CookieItem(
 }
 
 @Composable
-private fun AttributeBadge(
-    text: String,
-    color: androidx.compose.ui.graphics.Color,
-    modifier: Modifier = Modifier,
-) {
+private fun AttributeBadge(text: String, color: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
     Surface(
         color = color.copy(alpha = 0.15f),
         contentColor = color,
@@ -575,10 +570,7 @@ private fun AttributeBadge(
 }
 
 @Composable
-private fun EmptyCookiesState(
-    hasSearchQuery: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyCookiesState(hasSearchQuery: Boolean, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

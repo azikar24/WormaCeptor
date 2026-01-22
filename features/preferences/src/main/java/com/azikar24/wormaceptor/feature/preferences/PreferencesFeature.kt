@@ -73,11 +73,7 @@ class PreferencesViewModelFactory(
  * Handles navigation between list and detail screens.
  */
 @Composable
-fun PreferencesInspector(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun PreferencesInspector(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val repository = remember { PreferencesFeature.createRepository(context) }
     val factory = remember { PreferencesFeature.createViewModelFactory(repository) }
     val viewModel: PreferencesViewModel = viewModel(factory = factory)

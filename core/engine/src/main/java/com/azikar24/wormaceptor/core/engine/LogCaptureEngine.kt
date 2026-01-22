@@ -56,7 +56,7 @@ class LogCaptureEngine(
     // Threadtime format regex pattern
     // Example: 01-21 14:30:45.123  1234  5678 D MyTag  : This is a log message
     private val threadtimePattern = Regex(
-        """^(\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}\.\d{3})\s+(\d+)\s+(\d+)\s+([VDIWEA])\s+(.+?)\s*:\s*(.*)$"""
+        """^(\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}\.\d{3})\s+(\d+)\s+(\d+)\s+([VDIWEA])\s+(.+?)\s*:\s*(.*)$""",
     )
 
     // Date format for parsing logcat timestamps

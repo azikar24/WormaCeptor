@@ -49,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
-import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -152,11 +151,7 @@ internal fun WebSocketListScreen(
 }
 
 @Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun SearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -194,11 +189,7 @@ private fun SearchBar(
 }
 
 @Composable
-private fun StatsBar(
-    totalCount: Int,
-    filteredCount: Int,
-    modifier: Modifier = Modifier,
-) {
+private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -350,10 +341,7 @@ private fun ConnectionItem(
 }
 
 @Composable
-private fun EmptyConnectionsState(
-    hasSearchQuery: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

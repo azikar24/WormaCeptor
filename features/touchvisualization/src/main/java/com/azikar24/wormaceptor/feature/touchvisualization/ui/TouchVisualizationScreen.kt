@@ -178,10 +178,7 @@ fun TouchVisualizationScreen(
 }
 
 @Composable
-private fun EnabledIndicator(
-    isEnabled: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EnabledIndicator(isEnabled: Boolean, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -202,7 +199,7 @@ private fun EnabledIndicator(
                     MaterialTheme.colorScheme.primary.copy(alpha = alpha)
                 } else {
                     MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-                }
+                },
             ),
     )
 }
@@ -553,12 +550,7 @@ private fun ColorPickerCard(
 }
 
 @Composable
-private fun ColorSwatch(
-    color: Long,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun ColorSwatch(color: Long, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) {
             MaterialTheme.colorScheme.primary

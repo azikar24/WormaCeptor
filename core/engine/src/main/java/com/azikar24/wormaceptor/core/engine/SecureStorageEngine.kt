@@ -5,8 +5,6 @@
 package com.azikar24.wormaceptor.core.engine
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.security.keystore.KeyProperties
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
@@ -249,7 +247,9 @@ class SecureStorageEngine(
 
             val creationDate = keyStore.getCreationDate(alias)
             creationDate?.let {
-                info.append("\nCreated: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(it)}")
+                info.append(
+                    "\nCreated: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(it)}",
+                )
             }
         } catch (e: Exception) {
             info.append("[KeyStore alias]")
@@ -327,7 +327,13 @@ class SecureStorageEngine(
 
         // Check for common sensitive patterns
         val sensitivePatterns = listOf(
-            "password", "secret", "token", "key", "auth", "credential", "api_key",
+            "password",
+            "secret",
+            "token",
+            "key",
+            "auth",
+            "credential",
+            "api_key",
         )
 
         val lowerValue = value.lowercase()

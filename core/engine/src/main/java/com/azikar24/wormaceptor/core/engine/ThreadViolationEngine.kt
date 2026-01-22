@@ -212,10 +212,7 @@ class ThreadViolationEngine(
     /**
      * Formats the description to be more human-readable.
      */
-    private fun formatDescription(
-        type: ThreadViolation.ViolationType,
-        originalDescription: String,
-    ): String {
+    private fun formatDescription(type: ThreadViolation.ViolationType, originalDescription: String): String {
         val prefix = when (type) {
             ThreadViolation.ViolationType.DISK_READ -> "Disk Read"
             ThreadViolation.ViolationType.DISK_WRITE -> "Disk Write"
@@ -279,11 +276,7 @@ class ThreadViolationEngine(
      * Manually records a custom violation.
      * Useful for integrating with custom performance monitoring.
      */
-    fun recordViolation(
-        type: ThreadViolation.ViolationType,
-        description: String,
-        durationMs: Long? = null,
-    ) {
+    fun recordViolation(type: ThreadViolation.ViolationType, description: String, durationMs: Long? = null) {
         val violation = ThreadViolation(
             id = violationIdCounter.incrementAndGet(),
             timestamp = System.currentTimeMillis(),

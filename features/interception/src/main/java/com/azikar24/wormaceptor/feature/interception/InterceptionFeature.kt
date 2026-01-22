@@ -30,7 +30,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Block
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FilterList
@@ -41,7 +40,6 @@ import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -49,8 +47,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
@@ -74,7 +70,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -98,7 +93,6 @@ import com.azikar24.wormaceptor.domain.entities.InterceptionEvent
 import com.azikar24.wormaceptor.domain.entities.InterceptionRule
 import com.azikar24.wormaceptor.domain.entities.InterceptionType
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 // ================== Feature Object ==================
 
@@ -144,10 +138,7 @@ class InterceptionViewModelFactory(private val engine: InterceptionEngine) : Vie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InterceptionFramework(
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun InterceptionFramework(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { InterceptionFeature.createEngine() }
     val factory = remember { InterceptionFeature.createViewModelFactory(engine) }
     val viewModel: InterceptionViewModel = viewModel(factory = factory)
@@ -347,7 +338,7 @@ private fun OverviewTab(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Row(
                     modifier = Modifier
@@ -364,13 +355,27 @@ private fun OverviewTab(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
-                                .background(if (config.globalEnabled) Color(0xFF9C27B0).copy(alpha = 0.1f) else Color(0xFFE0E0E0)),
+                                .background(
+                                    if (config.globalEnabled) {
+                                        Color(
+                                            0xFF9C27B0,
+                                        ).copy(alpha = 0.1f)
+                                    } else {
+                                        MaterialTheme.colorScheme.outlineVariant
+                                    },
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 if (config.globalEnabled) Icons.Default.PlayArrow else Icons.Default.Block,
                                 null,
-                                tint = if (config.globalEnabled) Color(0xFF9C27B0) else Color(0xFF9E9E9E),
+                                tint = if (config.globalEnabled) {
+                                    Color(
+                                        0xFF9C27B0,
+                                    )
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                },
                                 modifier = Modifier.size(24.dp),
                             )
                         }
@@ -379,7 +384,7 @@ private fun OverviewTab(
                             Text(
                                 if (config.globalEnabled) "Active - intercepting events" else "Disabled",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -395,7 +400,7 @@ private fun OverviewTab(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -422,7 +427,7 @@ private fun OverviewTab(
                                         InterceptionType.LOCATION -> Icons.Default.LocationOn
                                     },
                                     null,
-                                    tint = Color(0xFF757575),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.size(20.dp),
                                 )
                                 Text(type.name.lowercase().replaceFirstChar { it.uppercase() })
@@ -434,7 +439,7 @@ private fun OverviewTab(
                                 Text(
                                     "${config.enabledRuleCountByType(type)}/${config.ruleCountByType(type)} rules",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = Color(0xFF757575),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                                 Switch(
                                     checked = config.isTypeEnabled(type),
@@ -452,7 +457,7 @@ private fun OverviewTab(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -491,7 +496,7 @@ private fun OverviewTab(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -520,7 +525,7 @@ private fun OverviewTab(
         item {
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -572,7 +577,7 @@ private fun StatItem(label: String, value: Int, color: Color) {
         Text(
             label,
             style = MaterialTheme.typography.bodySmall,
-            color = Color(0xFF757575),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -606,12 +611,12 @@ private fun RulesTab(
                 Spacer(Modifier.height(16.dp))
                 Text(
                     "No ${type.name.lowercase()} rules",
-                    color = Color(0xFF757575),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
                     "Tap + to add a rule",
-                    color = Color(0xFF9E9E9E),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -635,19 +640,20 @@ private fun RulesTab(
 }
 
 @Composable
-private fun RuleCard(
-    rule: InterceptionRule,
-    onToggle: (Boolean) -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-) {
+private fun RuleCard(rule: InterceptionRule, onToggle: (Boolean) -> Unit, onEdit: () -> Unit, onDelete: () -> Unit) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (rule.enabled) Color(0xFFFAFAFA) else Color(0xFFF5F5F5),
+            containerColor = if (rule.enabled) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant.copy(
+                    alpha = 0.5f,
+                )
+            },
         ),
     ) {
         Column(
@@ -729,7 +735,7 @@ private fun RuleCard(
                                 "  $key: $value",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontFamily = FontFamily.Monospace,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -786,11 +792,7 @@ private fun RuleCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AddRuleBottomSheet(
-    type: InterceptionType,
-    onDismiss: () -> Unit,
-    onAddRule: (InterceptionRule) -> Unit,
-) {
+private fun AddRuleBottomSheet(type: InterceptionType, onDismiss: () -> Unit, onAddRule: (InterceptionRule) -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var name by remember { mutableStateOf("") }
@@ -951,10 +953,7 @@ private fun AddRuleBottomSheet(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TemplatesBottomSheet(
-    onDismiss: () -> Unit,
-    onSelectTemplate: (InterceptionRule) -> Unit,
-) {
+private fun TemplatesBottomSheet(onDismiss: () -> Unit, onSelectTemplate: (InterceptionRule) -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
@@ -983,7 +982,7 @@ private fun TemplatesBottomSheet(
                             Text(
                                 type.name.lowercase().replaceFirstChar { it.uppercase() },
                                 fontWeight = FontWeight.Medium,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                         rules.forEach { template ->
@@ -993,7 +992,9 @@ private fun TemplatesBottomSheet(
                                         .fillMaxWidth()
                                         .clickable { onSelectTemplate(template) },
                                     shape = RoundedCornerShape(12.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    ),
                                 ) {
                                     Row(
                                         modifier = Modifier
@@ -1021,7 +1022,7 @@ private fun TemplatesBottomSheet(
                                             Text(
                                                 template.targetPattern,
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = Color(0xFF757575),
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 maxLines = 1,
                                                 overflow = TextOverflow.Ellipsis,
                                             )
@@ -1045,11 +1046,7 @@ private fun TemplatesBottomSheet(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EventLogBottomSheet(
-    events: List<InterceptionEvent>,
-    onDismiss: () -> Unit,
-    onClearEvents: () -> Unit,
-) {
+private fun EventLogBottomSheet(events: List<InterceptionEvent>, onDismiss: () -> Unit, onClearEvents: () -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var filterType by remember { mutableStateOf<InterceptionType?>(null) }
 
@@ -1130,7 +1127,7 @@ private fun EventLogBottomSheet(
 private fun EventItem(event: InterceptionEvent) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Row(
             modifier = Modifier
@@ -1166,7 +1163,7 @@ private fun EventItem(event: InterceptionEvent) {
                 Text(
                     event.originalValue,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF757575),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -1183,7 +1180,7 @@ private fun EventItem(event: InterceptionEvent) {
             Text(
                 event.formattedTimestamp,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF9E9E9E),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
     }
@@ -1192,11 +1189,7 @@ private fun EventItem(event: InterceptionEvent) {
 // ================== Edit Rule Dialog ==================
 
 @Composable
-private fun EditRuleDialog(
-    rule: InterceptionRule,
-    onDismiss: () -> Unit,
-    onSave: (InterceptionRule) -> Unit,
-) {
+private fun EditRuleDialog(rule: InterceptionRule, onDismiss: () -> Unit, onSave: (InterceptionRule) -> Unit) {
     var name by remember { mutableStateOf(rule.name) }
     var targetPattern by remember { mutableStateOf(rule.targetPattern) }
     var priority by remember { mutableStateOf(rule.priority.toString()) }
@@ -1273,8 +1266,18 @@ private fun getActionIcon(action: InterceptionAction): ImageVector = when (actio
 
 private fun getActionsForType(type: InterceptionType): List<InterceptionAction> = when (type) {
     InterceptionType.VIEW -> listOf(InterceptionAction.BLOCK, InterceptionAction.LOG_ONLY)
-    InterceptionType.TOUCH -> listOf(InterceptionAction.BLOCK, InterceptionAction.MODIFY, InterceptionAction.DELAY, InterceptionAction.LOG_ONLY)
-    InterceptionType.LOCATION -> listOf(InterceptionAction.BLOCK, InterceptionAction.MOCK, InterceptionAction.MODIFY, InterceptionAction.LOG_ONLY)
+    InterceptionType.TOUCH -> listOf(
+        InterceptionAction.BLOCK,
+        InterceptionAction.MODIFY,
+        InterceptionAction.DELAY,
+        InterceptionAction.LOG_ONLY,
+    )
+    InterceptionType.LOCATION -> listOf(
+        InterceptionAction.BLOCK,
+        InterceptionAction.MOCK,
+        InterceptionAction.MODIFY,
+        InterceptionAction.LOG_ONLY,
+    )
 }
 
 // ================== External Engine Composable ==================

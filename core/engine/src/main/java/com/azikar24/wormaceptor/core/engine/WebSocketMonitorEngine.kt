@@ -12,7 +12,6 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -208,7 +207,7 @@ class WebSocketMonitorEngine(
                     payload = text,
                     timestamp = System.currentTimeMillis(),
                     size = text.toByteArray(Charsets.UTF_8).size.toLong(),
-                )
+                ),
             )
             delegate?.onMessage(webSocket, text)
         }
@@ -224,7 +223,7 @@ class WebSocketMonitorEngine(
                     payload = bytes.hex(),
                     timestamp = System.currentTimeMillis(),
                     size = bytes.size.toLong(),
-                )
+                ),
             )
             delegate?.onMessage(webSocket, bytes)
         }
@@ -288,7 +287,7 @@ class WebSocketMonitorEngine(
                     payload = text,
                     timestamp = System.currentTimeMillis(),
                     size = text.toByteArray(Charsets.UTF_8).size.toLong(),
-                )
+                ),
             )
         }
 
@@ -308,7 +307,7 @@ class WebSocketMonitorEngine(
                     payload = bytes.hex(),
                     timestamp = System.currentTimeMillis(),
                     size = bytes.size.toLong(),
-                )
+                ),
             )
         }
 
@@ -327,7 +326,7 @@ class WebSocketMonitorEngine(
                     payload = payload.hex(),
                     timestamp = System.currentTimeMillis(),
                     size = payload.size.toLong(),
-                )
+                ),
             )
         }
 
@@ -346,7 +345,7 @@ class WebSocketMonitorEngine(
                     payload = payload.hex(),
                     timestamp = System.currentTimeMillis(),
                     size = payload.size.toLong(),
-                )
+                ),
             )
         }
 

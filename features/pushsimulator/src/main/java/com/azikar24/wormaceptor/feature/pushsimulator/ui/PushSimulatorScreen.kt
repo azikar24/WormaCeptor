@@ -41,7 +41,6 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,7 +50,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -92,11 +90,7 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PushSimulatorScreen(
-    viewModel: PushSimulatorViewModel,
-    onBack: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
     val uiState by viewModel.uiState.collectAsState()
     val templates by viewModel.templates.collectAsState()
     val channels by viewModel.channels.collectAsState()
@@ -262,7 +256,9 @@ fun PushSimulatorScreen(
             onDismissRequest = { showPermissionDialog = false },
             title = { Text("Permission Required") },
             text = {
-                Text("Notification permission is required to send test notifications. Please grant the permission in app settings.")
+                Text(
+                    "Notification permission is required to send test notifications. Please grant the permission in app settings.",
+                )
             },
             confirmButton = {
                 TextButton(onClick = { showPermissionDialog = false }) {
@@ -352,10 +348,7 @@ private fun NotificationFormCard(
 }
 
 @Composable
-private fun NotificationPreview(
-    title: String,
-    body: String,
-) {
+private fun NotificationPreview(title: String, body: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -566,10 +559,7 @@ private fun ActionButtonsSection(
 }
 
 @Composable
-private fun ActionButtonsRow(
-    onSendClick: () -> Unit,
-    onSaveClick: () -> Unit,
-) {
+private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.md),
@@ -762,10 +752,7 @@ private fun TemplateCard(
 }
 
 @Composable
-private fun SaveTemplateDialog(
-    onDismiss: () -> Unit,
-    onSave: (String) -> Unit,
-) {
+private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
     var templateName by remember { mutableStateOf("") }
 
     AlertDialog(

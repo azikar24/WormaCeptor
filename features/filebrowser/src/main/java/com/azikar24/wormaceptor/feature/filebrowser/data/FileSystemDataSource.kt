@@ -28,7 +28,12 @@ class FileSystemDataSource(private val context: Context) {
         )
 
         private val IMAGE_EXTENSIONS = setOf(
-            "png", "jpg", "jpeg", "gif", "webp", "bmp",
+            "png",
+            "jpg",
+            "jpeg",
+            "gif",
+            "webp",
+            "bmp",
         )
     }
 

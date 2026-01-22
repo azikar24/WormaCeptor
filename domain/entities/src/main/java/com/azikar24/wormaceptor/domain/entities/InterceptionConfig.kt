@@ -35,14 +35,12 @@ data class InterceptionConfig(
     /**
      * Returns rules filtered by type.
      */
-    fun rulesByType(type: InterceptionType): List<InterceptionRule> =
-        rules.filter { it.type == type }
+    fun rulesByType(type: InterceptionType): List<InterceptionRule> = rules.filter { it.type == type }
 
     /**
      * Returns active rules filtered by type.
      */
-    fun activeRulesByType(type: InterceptionType): List<InterceptionRule> =
-        activeRules.filter { it.type == type }
+    fun activeRulesByType(type: InterceptionType): List<InterceptionRule> = activeRules.filter { it.type == type }
 
     /**
      * Returns whether a specific interception type is enabled.
@@ -235,8 +233,7 @@ data class InterceptionConfig(
             /**
              * Returns templates for a specific type.
              */
-            fun templatesForType(type: InterceptionType): List<InterceptionRule> =
-                allTemplates[type] ?: emptyList()
+            fun templatesForType(type: InterceptionType): List<InterceptionRule> = allTemplates[type] ?: emptyList()
         }
     }
 }

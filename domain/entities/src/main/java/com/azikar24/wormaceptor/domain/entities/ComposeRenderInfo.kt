@@ -33,7 +33,9 @@ data class ComposeRenderInfo(
     val recomposeRatio: Float
         get() = if (recomposeCount + skipCount > 0) {
             recomposeCount.toFloat() / (recomposeCount + skipCount)
-        } else 0f
+        } else {
+            0f
+        }
 
     companion object {
         fun empty() = ComposeRenderInfo(

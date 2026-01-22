@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import kotlinx.collections.immutable.ImmutableList
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Alpha
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.BorderWidth
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.CornerRadius
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Spacing
+import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

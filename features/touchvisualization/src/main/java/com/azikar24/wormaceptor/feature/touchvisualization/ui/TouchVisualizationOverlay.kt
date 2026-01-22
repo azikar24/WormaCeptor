@@ -108,12 +108,7 @@ fun TouchVisualizationOverlay(
 /**
  * Draws a single touch point with ripple effect.
  */
-private fun DrawScope.drawTouchPoint(
-    touch: TouchPoint,
-    color: Color,
-    baseSize: Float,
-    rippleProgress: Float,
-) {
+private fun DrawScope.drawTouchPoint(touch: TouchPoint, color: Color, baseSize: Float, rippleProgress: Float) {
     val center = Offset(touch.x, touch.y)
 
     // Adjust size based on pressure
@@ -166,10 +161,7 @@ private fun DrawScope.drawTouchPoint(
 /**
  * Draws touch trails.
  */
-private fun DrawScope.drawTouchTrails(
-    touchTrail: List<TouchPoint>,
-    color: Color,
-) {
+private fun DrawScope.drawTouchTrails(touchTrail: List<TouchPoint>, color: Color) {
     // Group trail points by pointer ID
     val trailsByPointer = touchTrail.groupBy { it.id }
 
@@ -229,10 +221,7 @@ private fun DrawScope.drawTouchTrails(
 /**
  * Draws coordinate text near a touch point.
  */
-private fun DrawScope.drawCoordinates(
-    touch: TouchPoint,
-    baseSize: Float,
-) {
+private fun DrawScope.drawCoordinates(touch: TouchPoint, baseSize: Float) {
     val text = "(${touch.x.toInt()}, ${touch.y.toInt()})"
     val textSize = 28f
     val padding = 8f

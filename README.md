@@ -1,46 +1,104 @@
-# WormaCeptor V2 🪱
+# WormaCeptor V2
 
-### The Clean-Architecture, Production-Safe Network Inspector for Android.
+### The Clean-Architecture, Production-Safe Network Inspector and Debugging Toolkit for Android
 
-**WormaCeptor V2** is a complete architectural rewrite of the classic network interceptor, designed for modularity, safety, and zero-impact production builds. It decouples the *inspection logic* from the *interception point*, ensuring your debug tools never crash your production app.
-
----
-
-## Executive Summary
-
-**What it solves:**  
-traditional network inspectors are often monolithic, heavy, and tightly coupled to their UI. They can accidentally leak into release builds, increase APK size, or cause runtime crashes if not carefully managed.
-
-**Why V2 exists:**  
-WormaCeptor V2 was born from the need to have a powerful debug tool that adheres to **Clean Architecture** principles. It separates the "API" (what you call) from the "Implementation" (how it stores/shows data).
-
-**Use it when:**
-- You need deep insight into HTTP traffic (Headers, TLS, Sizes, Timing).
-- You want a debug tool that *guarantees* no-op in release builds without complex ProGuard rules.
-- You care about modularity and don't want to coupled your app to a specific database or UI library.
-- You need "Shake-to-Report" functionality for QA teams.
-
-**Do NOT use it when:**
-- You are looking for a simple `Log.d` printer (use `HttpLoggingInterceptor`).
-- You need a tool to *modify* or *mock* responses explicitly (WormaCeptor is a passive *observer*).
+**WormaCeptor V2** is a complete architectural rewrite of the classic network interceptor, now expanded into a comprehensive debugging toolkit. Designed for modularity, safety, and zero-impact production builds, it decouples inspection logic from interception points.
 
 ---
 
-## Key Principles & Design Philosophy
+## Quick Start
 
-1.  **Strict Separation of Concerns**: The `api-client` module knows *nothing* about the database, the UI, or the notification system. It only knows `Contracts`.
-2.  **Reflection-Based Discovery**: You simply add the `implementation` module (e.g., `api-impl-persistence`) to your debug configuration. The core API discovers it at runtime. If it's missing (release builds), it gracefully falls back to a No-Op implementation.
-3.  **Crash Safety**: Interceptors are wrapped in safety blocks. A bug in your logging tool should **never** crash your user's purchase flow.
-4.  **Non-Invasive**: The interceptor does not modify the request/response stream unless redaction is explicitly requested.
-5.  **Debug vs. Release**:
-    - **Debug**: Full inspection (Persistence or In-Memory), notifications, UI.
-    - **Release**: Zero logic, zero DB, zero UI dependencies.
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.github.azikar24.WormaCeptor:api-client:1.0.2")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:1.0.2")
+}
+```
+
+```kotlin
+// Application.kt
+class MyApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        WormaCeptorApi.init(this)
+    }
+}
+
+// OkHttp setup
+val client = OkHttpClient.Builder()
+    .addInterceptor(WormaCeptorInterceptor())
+    .build()
+```
+
+For detailed integration, see [Quick Reference](docs/reference/00-quick-reference.md).
 
 ---
 
-## High-Level Architecture
+## Why WormaCeptor V2?
 
-```text
+| Problem | Solution |
+|---------|----------|
+| Traditional inspectors leak into release builds | Physical dependency separation via `debugImplementation` |
+| Monolithic architecture couples UI + Logic | Modular design with 50+ independent modules |
+| Debug tools can crash production apps | Reflection-based discovery with graceful No-Op fallback |
+| Limited to network inspection only | Comprehensive debugging toolkit with 30+ features |
+
+---
+
+## Feature Overview
+
+### Network Inspection
+- HTTP/HTTPS traffic capture with headers, body, timing, TLS info
+- Request/response body parsing (JSON, XML, HTML, multipart, images, PDFs)
+- Syntax highlighting and tree views
+- Search, filter, and favorites
+- cURL and JSON export
+
+### Performance Monitoring
+- **FPS Monitor**: Real-time frame rate tracking with history
+- **Memory Monitor**: Heap usage with threshold alerts
+- **CPU Monitor**: Per-core and overall usage tracking
+- **Performance Overlay**: Draggable floating badge showing live metrics with mini sparklines
+
+### UI Debugging Tools
+- **View Hierarchy Inspector**: Navigate and inspect view trees
+- **View Borders**: Highlight view boundaries with customizable borders
+- **Grid Overlay**: Configurable alignment grid (8dp, 16dp, 24dp)
+- **Measurement Tool**: Measure distances and view dimensions in dp/px
+- **Touch Visualization**: Display touch points with ripple effects
+- **Compose Render Tracker**: Track recomposition counts
+
+### System Inspection
+- **SQLite Browser**: Browse tables and execute custom queries
+- **SharedPreferences Inspector**: View and edit preferences
+- **Secure Storage Inspector**: View encrypted preferences
+- **File Browser**: Navigate app file system
+- **Device Info**: Comprehensive device details
+- **Cookies Manager**: View HTTP cookies
+- **Loaded Libraries**: List native .so files
+
+### Advanced Debugging
+- **Leak Detection**: Automatic memory leak detection for Activities/Fragments
+- **Thread Violation Detection**: ANR warnings and main thread violations
+- **Crash Reporting**: Integrated exception capture with stack traces
+
+### Network Simulation
+- **Rate Limiter**: Throttle network with presets (2G, 3G, 4G, WiFi) or custom speeds
+- **Interception Framework**: Create rules to intercept/modify View, Touch, Location events
+- **WebSocket Monitor**: Real-time WebSocket frame inspection
+- **WebView Monitor**: Track WebView activity and JS bridges
+
+### Testing Tools
+- **Push Notification Simulator**: Send test notifications
+- **Location Simulator**: Mock GPS location
+- **Crypto Tool**: Encrypt/decrypt with AES, RSA
+
+---
+
+## Architecture
+
+```
 [ Your App ]
      |
      v
@@ -61,160 +119,241 @@ WormaCeptor V2 was born from the need to have a powerful debug tool that adheres
                    |         |         |
                [ Core ]  [ Infra ]  [ UI ]
                   |          |         |
-               Engine   SQLite/Mem  Viewer
+               Engine   SQLite/Mem  Features
 ```
 
----
+### Module Structure
 
-## Core Features
+| Layer | Modules | Purpose |
+|-------|---------|---------|
+| **API** | client, common, impl-persistence, impl-imdb, impl-no-op | Public interface and implementations |
+| **Core** | engine | Business logic, monitoring engines, capture/query |
+| **Domain** | entities, contracts | Framework-agnostic data models and interfaces |
+| **Features** | 31 modules | UI screens for each debugging feature |
+| **Infra** | persistence, networking, parsers, syntax | Concrete implementations |
+| **Platform** | android | Android-specific utilities (notifications, shake) |
 
-*   **Network Interception**: Captures method, headers, body, latency, protocol, and TLS version.
-*   **Safety First**: Handles `IOException` and memory pressure gracefully without disrupting the app flow.
-*   **Redaction Systems**: Configurable regex-based masking for sensitive headers (Auth tokens) and body content (PII).
-*   **Crash Recording**: Automatic capture of uncaught exceptions and HTTP failures.
-*   **Smart Retention**: Auto-cleanup policies (`ONE_HOUR`, `ONE_DAY`, `FOREVER`) to prevent database bloat.
-*   **Environment Awareness**:
-    *   `debugImplementation` = Full Features.
-    *   `releaseImplementation` = auto-no-op (or simply omit the impl dependency).
-*   **Shake-to-Open**: Integrated shake detection to launch the dashboard.
-*   **Export**: Share transactions and crash logs via JSON/Text to Slack/Jira.
-*   **Search & Filter**: Powerful on-device search by URL, method, status code, or time range.
+See [Repository Structure](docs/architecture/REPO_STRUCTURE.md) for full details.
 
 ---
 
 ## Installation
 
-Add the core API and the implementation modules to your `build.gradle.kts`.
+### JitPack
+
+Add JitPack repository:
 
 ```kotlin
-dependencies {
-    // 1. Always include the API client (lightweight, safe)
-    implementation("com.azikar24.wormaceptor:api-client:2.0.0")
-
-    // 2. Choose your implementation for debug/QA builds:
-    
-    // Option A: SQLite Persistence (Keeps logs across app restarts)
-    debugImplementation("com.azikar24.wormaceptor:api-impl-persistence:2.0.0")
-    
-    // OR Option B: In-Memory DB (Faster, clears on app kill)
-    // debugImplementation("com.azikar24.wormaceptor:api-impl-imdb:2.0.0")
-
-    // 3. (Optional) Explicit No-Op for release, though usually not needed if you use debugImplementation above
-    // releaseImplementation("com.azikar24.wormaceptor:api-impl-no-op:2.0.0")
-}
-```
-
----
-
-## Basic Usage
-
-### 1. Initialize
-
-In your `Application.onCreate()`:
-
-```kotlin
-import com.azikar24.wormaceptor.api.WormaCeptorApi
-
-class MyApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        
-        // Auto-detects if a real provider is available.
-        // If 'api-impl-persistence' is missing, this does nothing safely.
-        WormaCeptorApi.init(this)
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        maven { url = uri("https://jitpack.io") }
     }
 }
 ```
 
-### 2. Add Validator
-
-In your OkHttp setup (e.g., Dagger/Hilt module):
+Add dependencies:
 
 ```kotlin
-import com.azikar24.wormaceptor.api.WormaCeptorInterceptor
+dependencies {
+    // Required: Lightweight API client
+    implementation("com.github.azikar24.WormaCeptor:api-client:1.0.2")
 
-val client = OkHttpClient.Builder()
-    .addInterceptor(WormaCeptorInterceptor()) // Add this!
-    .build()
+    // Debug: Choose one implementation
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:1.0.2")
+    // OR for in-memory (clears on app kill):
+    // debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:1.0.2")
+
+    // Optional: Explicit no-op for release (usually not needed)
+    // releaseImplementation("com.github.azikar24.WormaCeptor:api-impl-no-op:1.0.2")
+}
 ```
 
 ---
 
-## Advanced Usage
+## Configuration
 
-### Custom Configuration
-
-You can chain configuration methods on the interceptor:
+### Interceptor Options
 
 ```kotlin
 WormaCeptorInterceptor()
-    .showNotification(true)           // Toggle system notifications
-    .maxContentLength(500_000L)       // Cap body capture size (bytes)
-    .retainDataFor(Period.ONE_WEEK)   // Auto-delete old data
+    .showNotification(true)           // System notification for new transactions
+    .maxContentLength(500_000L)       // Max body capture size in bytes
+    .retainDataFor(Period.ONE_WEEK)   // Auto-cleanup policy
     .redactHeader("Authorization")    // Mask sensitive headers
-    .redactBody("password\":\".*?\"") // Mask JSON fields via Regex
+    .redactHeader("Cookie")
+    .redactBody("password\":\".*?\"") // Mask JSON fields via regex
 ```
 
-### Launching the UI Manually
-
-If you don't like "Shake-to-Open", you can trigger it programmatically:
+### Launch UI Manually
 
 ```kotlin
-// Launch the dashboard
+// If shake-to-open is disabled
 startActivity(WormaCeptorApi.getLaunchIntent(context))
 ```
+
+### Feature Toggles
+
+Enable/disable features programmatically or via Settings > Feature Toggles:
+- Network Tab
+- Crashes Tab
+- SharedPreferences tool
+- Console Logs
+- Device Info
+- SQLite Browser
+- File Browser
+
+---
+
+## Performance Overlay
+
+The draggable overlay shows real-time FPS, Memory, and CPU metrics. Enable via Tools > Performance Overlay.
+
+**Features**:
+- Collapsed: Compact badge with three metrics
+- Expanded: Mini sparkline charts for each metric
+- Tap metrics to deep-link to detail screens
+- Long-press to drag anywhere on screen
+
+**Deep Links**:
+- `wormaceptor://tools/fps` - FPS detail
+- `wormaceptor://tools/memory` - Memory detail
+- `wormaceptor://tools/cpu` - CPU detail
+- `wormaceptor://tools` - Tools tab
+
+---
+
+## Permissions
+
+Some features require additional permissions:
+
+| Permission | Features |
+|------------|----------|
+| `SYSTEM_ALERT_WINDOW` | Performance Overlay, View Borders, Grid Overlay, Touch Visualization, Measurement |
+| `READ_EXTERNAL_STORAGE` | File Browser |
+| `QUERY_ALL_PACKAGES` | Loaded Libraries |
 
 ---
 
 ## Best Practices
 
-*   **Initialize Early**: Call `init()` as the first thing in `Application.onCreate` to ensure crash reporting catches early startup issues.
-*   **Do NOT Log Everything**: Use the `redactHeader` and `redactBody` generously. Logging user passwords or credit card info to a local DB is a security risk, even in debug builds.
-*   **Performance**: The default `maxContentLength` is 250KB. Avoid increasing this for large binary downloads (images/videos) as it consumes memory and DB space.
-*   **Production Safety**: strictly use `debugImplementation` for the `api-impl-persistence` artifact. This guarantees that your release APK contains **zero** footprint of the database, UI, and logic code.
+1. **Initialize Early**: Call `WormaCeptorApi.init()` first in `Application.onCreate()`
+2. **Redact Sensitive Data**: Use `redactHeader()` and `redactBody()` for tokens, passwords, PII
+3. **Limit Content Size**: Default is 250KB - avoid increasing for large binary downloads
+4. **Debug Only**: Always use `debugImplementation` for persistence modules
+5. **Performance Overlay**: Disable in performance-critical scenarios (adds ~1% overhead)
 
 ---
 
-## Common Pitfalls
+## Troubleshooting
 
-*   **"I see no logs!"**: Double-check you added `debugImplementation("...:api-impl-persistence")`. Without it, the API defaults to No-Op.
-*   **"My release build crashes"**: Ensure you did NOT include the persistence module in `implementation` or `releaseImplementation`.
-*   **"Shake doesn't work"**: Shake detection requires the `api-impl-persistence` module. It is disabled in No-Op.
-
----
-
-## Benefits Over Traditional Interceptors
-
-| Feature             | Traditional Tools (Chucker/Chuck) | WormaCeptor V2                             |
-| :------------------ | :-------------------------------- | :----------------------------------------- |
-| **Architecture**    | Monolithic (UI + Logic)           | Modular (API decoupled from Impl)          |
-| **Release Safety**  | ProGuard rules / No-Op Stubs      | Physical dependency separation             |
-| **Crash Reporting** | Usually separate library          | Integrated & correlated with network calls |
-| **Design**          | Basic List                        | Modern, Search-First, Filter-Rich UI       |
+| Issue | Solution |
+|-------|----------|
+| No logs appearing | Verify `debugImplementation` for `api-impl-persistence` |
+| Release build crashes | Ensure persistence module is NOT in `implementation` or `releaseImplementation` |
+| Shake not working | Requires `api-impl-persistence` module (disabled in No-Op) |
+| Overlay not showing | Grant `SYSTEM_ALERT_WINDOW` permission |
+| Feature toggles not persisting | Check DataStore initialization |
 
 ---
 
-## Roadmap / Extensibility
+## Technology Stack
 
-WormaCeptor V2 is designed to be **pluggable**.
-*   **Core**: The engine handles data ingestion.
-*   **Plugins**: New "Providers" can be written.
-    *   *Planned*: **GraphQL Support** - Specialized viewer for GraphQL query/mutation parsing.
-    *   *Planned*: **gRPC Support** - Native Protobuf decoding and viewer.
-    *   *Planned*: **Custom Formatters** - Plug in your own JSON/XML pretty printers.
-    *   *Planned*: **CI/CD Integration** - Headless mode to dump network logs to a file during UI tests.
-
-To extend, simply implement the `ServiceProvider` interface and register it via the internal discovery mechanism.
+| Component | Version |
+|-----------|---------|
+| Kotlin | 2.0.21 |
+| Min SDK | 23 |
+| Target SDK | 36 |
+| Jetpack Compose | BOM 2024.10.01 |
+| Room | 2.6.1 |
+| OkHttp | 4.12.0 |
+| Koin | 4.0.0 |
+| Coroutines | 1.8.1 |
 
 ---
 
-## License & Contribution
+## Documentation
 
-**License**: MIT. Free for personal and commercial use.
+| Document | Description |
+|----------|-------------|
+| [Quick Reference](docs/reference/00-quick-reference.md) | 5-minute integration guide |
+| [Technical Docs](docs/reference/01-technical-documentation.md) | Comprehensive architecture |
+| [Feature Inventory](docs/reference/02-feature-inventory.md) | Complete feature list |
+| [Repository Structure](docs/architecture/REPO_STRUCTURE.md) | Module layout |
+| [Design System](docs/architecture/DESIGN_SYSTEM.md) | UI guidelines |
+| [Product Boundaries](docs/architecture/PRODUCT_BOUNDARIES.md) | Scope definition |
 
-**Contribution**: We welcome PRs! Please stick to the Clean Architecture boundaries.
-- Logic goes in `core:engine`
-- Entity definitions go in `domain:entities`
-- UI goes in `features:viewer`
+---
 
-Strive for **modularity**. If your feature adds a heavy library, it belongs in a new module.
+## Comparison
+
+| Feature | Traditional Tools | WormaCeptor V2 |
+|---------|-------------------|----------------|
+| Architecture | Monolithic | Modular (50+ modules) |
+| Release Safety | ProGuard rules | Physical dependency separation |
+| Crash Reporting | Separate library | Integrated and correlated |
+| Performance Monitoring | Not included | FPS, Memory, CPU with overlay |
+| UI Debugging | Not included | View hierarchy, borders, grid, measurement |
+| System Inspection | Limited | SQLite, SharedPrefs, Files, Cookies |
+
+---
+
+## Roadmap
+
+### Implemented
+- Network interception with full HTTP inspection
+- Performance monitoring (FPS, Memory, CPU)
+- Performance overlay with deep linking
+- UI debugging tools (view hierarchy, borders, grid, measurement)
+- System inspection (SQLite, SharedPrefs, Files)
+- Feature toggle system
+- Leak detection and thread violation detection
+- Rate limiting and network simulation
+
+### Planned
+- GraphQL query/mutation parsing
+- gRPC/Protobuf native support
+- Custom formatter plugins
+- CI/CD headless mode for UI tests
+- Remote inspection via ADB
+
+---
+
+## Contributing
+
+We welcome PRs. Please respect Clean Architecture boundaries:
+
+| Type | Location |
+|------|----------|
+| Business logic | `core/engine` |
+| Data models | `domain/entities` |
+| Interfaces | `domain/contracts` |
+| UI screens | `features/*` |
+| Storage/Network | `infra/*` |
+
+If your feature adds a heavy library, create a new module.
+
+### Development
+
+```bash
+# Build
+./gradlew build
+
+# Run demo app
+./gradlew :app:installDebug
+
+# Format code
+./gradlew spotlessApply
+
+# Static analysis
+./gradlew detekt
+
+# Architecture tests
+./gradlew :test:architecture:test
+```
+
+---
+
+## License
+
+MIT License - Free for personal and commercial use.

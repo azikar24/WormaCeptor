@@ -64,7 +64,7 @@ import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
 import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
 import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
 import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
-import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailScreen
+import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
@@ -318,10 +318,19 @@ class ViewerActivity : ComponentActivity() {
                         composable("crash/{timestamp}") { backStackEntry ->
                             val timestamp = backStackEntry.arguments?.getString("timestamp")?.toLongOrNull()
                             if (timestamp != null) {
-                                val crash = crashes.find { it.timestamp == timestamp }
-                                crash?.let {
-                                    CrashDetailScreen(
-                                        crash = it,
+                                // Snapshot the crash list when entering the detail screen
+                                // This prevents the pager from jumping when new crashes come in
+                                val snapshotKey = backStackEntry.id
+                                val (crashList, initialIndex) = remember(snapshotKey) {
+                                    val index = crashes.indexOfFirst { it.timestamp == timestamp }
+                                        .coerceAtLeast(0)
+                                    crashes to index
+                                }
+
+                                if (crashList.isNotEmpty()) {
+                                    CrashDetailPagerScreen(
+                                        crashes = crashList,
+                                        initialCrashIndex = initialIndex,
                                         onBack = { navController.popBackStack() },
                                     )
                                 }

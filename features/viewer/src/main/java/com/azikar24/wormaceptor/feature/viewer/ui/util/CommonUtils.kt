@@ -136,13 +136,22 @@ suspend fun shareAsFile(
     mimeType: String = "text/plain",
     title: String = "Share File",
 ) {
+    // Show immediate feedback
+    withContext(Dispatchers.Main) {
+        Toast.makeText(context, "Preparing file (${formatBytes(content.length.toLong())})...", Toast.LENGTH_SHORT).show()
+    }
+
     try {
         // Write file on IO thread
         val uri = withContext(Dispatchers.IO) {
             val cacheDir = File(context.cacheDir, "shared_bodies")
             cacheDir.mkdirs()
             val file = File(cacheDir, fileName)
-            file.writeText(content)
+
+            // Use buffered writer for large content
+            file.bufferedWriter().use { writer ->
+                writer.write(content)
+            }
 
             FileProvider.getUriForFile(
                 context,
@@ -152,12 +161,14 @@ suspend fun shareAsFile(
         }
 
         // Launch share intent on main thread
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = mimeType
-            putExtra(Intent.EXTRA_STREAM, uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        withContext(Dispatchers.Main) {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = mimeType
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            context.startActivity(Intent.createChooser(intent, title))
         }
-        context.startActivity(Intent.createChooser(intent, title))
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "Failed to share file: ${e.message}", Toast.LENGTH_LONG).show()

@@ -51,6 +51,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -79,10 +81,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.ComponentActivity
 import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
+import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import org.koin.java.KoinJavaComponent.get
 
 /**
  * Category accent colors for visual differentiation.
@@ -139,6 +144,10 @@ fun ToolsTab(
     val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
+    // Performance overlay state
+    val performanceOverlayEngine = remember { get<PerformanceOverlayEngine>(PerformanceOverlayEngine::class.java) }
+    val isOverlayVisible by performanceOverlayEngine.isVisible.collectAsState()
+
     val filteredCategories = remember(enabledFeatures) {
         ToolCategories.allCategories.map { category ->
             category.copy(tools = category.tools.filter { it.feature in enabledFeatures })
@@ -184,6 +193,24 @@ fun ToolsTab(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
                     vertical = WormaCeptorDesignSystem.Spacing.md,
                 ),
+        )
+
+        // Performance Overlay Toggle
+        PerformanceOverlayToggle(
+            isEnabled = isOverlayVisible,
+            onToggle = { enabled ->
+                if (enabled) {
+                    (context as? ComponentActivity)?.let { activity ->
+                        performanceOverlayEngine.show(activity)
+                    }
+                } else {
+                    performanceOverlayEngine.hide()
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                .padding(bottom = WormaCeptorDesignSystem.Spacing.md),
         )
 
         LazyColumn(
@@ -713,6 +740,116 @@ private fun EmptyToolsState(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
             )
+        }
+    }
+}
+
+/**
+ * Toggle card for enabling/disabling the performance overlay.
+ */
+@Composable
+private fun PerformanceOverlayToggle(
+    isEnabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val canDrawOverlays = remember { WormaCeptorApi.canShowFloatingButton(context) }
+
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = if (isEnabled) {
+            CategoryColors.performance.copy(alpha = 0.1f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        },
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp,
+            if (isEnabled) {
+                CategoryColors.performance.copy(alpha = 0.3f)
+            } else {
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+            },
+        ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.md,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(
+                            color = CategoryColors.performance.copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(8.dp),
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Speed,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = CategoryColors.performance,
+                    )
+                }
+
+                Column {
+                    Text(
+                        text = "Performance Overlay",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = if (isEnabled) "Showing FPS, Memory, CPU" else "Tap to enable floating metrics",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            if (canDrawOverlays) {
+                Switch(
+                    checked = isEnabled,
+                    onCheckedChange = onToggle,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = CategoryColors.performance,
+                        checkedTrackColor = CategoryColors.performance.copy(alpha = 0.5f),
+                    ),
+                )
+            } else {
+                // Show permission required badge
+                Surface(
+                    onClick = {
+                        WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
+                            context.startActivity(intent)
+                        }
+                    },
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.errorContainer,
+                ) {
+                    Text(
+                        text = "Grant Permission",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
+                    )
+                }
+            }
         }
     }
 }

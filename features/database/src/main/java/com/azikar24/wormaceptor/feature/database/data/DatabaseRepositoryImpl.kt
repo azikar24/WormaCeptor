@@ -36,12 +36,7 @@ class DatabaseRepositoryImpl(
         return dataSource.getTableSchema(path, tableName)
     }
 
-    override fun queryTable(
-        databaseName: String,
-        tableName: String,
-        limit: Int,
-        offset: Int,
-    ): QueryResult {
+    override fun queryTable(databaseName: String, tableName: String, limit: Int, offset: Int): QueryResult {
         val path = databasePaths[databaseName] ?: return QueryResult(
             columns = emptyList(),
             rows = emptyList(),

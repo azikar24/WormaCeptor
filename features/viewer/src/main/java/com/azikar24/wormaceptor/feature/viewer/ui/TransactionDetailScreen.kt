@@ -21,9 +21,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
@@ -50,7 +50,6 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.domain.contracts.ContentType
@@ -870,7 +869,6 @@ private fun EnhancedOverviewCard(
         }
     }
 }
-
 
 /**
  * Data class holding information about a single search match
@@ -1769,8 +1767,11 @@ private fun HighlightedBodyText(
 
     // Current match range for overlay - O(1) lookup
     val currentMatchRange = remember(currentMatchGlobalPos, matchRanges) {
-        if (currentMatchGlobalPos == null) null
-        else matchRanges.find { it.first == currentMatchGlobalPos }
+        if (currentMatchGlobalPos == null) {
+            null
+        } else {
+            matchRanges.find { it.first == currentMatchGlobalPos }
+        }
     }
 
     // Current match PATH (not bounds) - handles wrapped text correctly
@@ -1792,7 +1793,7 @@ private fun HighlightedBodyText(
         // This correctly handles text that wraps across multiple lines
         currentMatchPath?.let { path ->
             androidx.compose.foundation.Canvas(
-                modifier = Modifier.matchParentSize()
+                modifier = Modifier.matchParentSize(),
             ) {
                 drawPath(path, highlightColor)
             }
@@ -1857,7 +1858,6 @@ private fun Headers(headers: Map<String, List<String>>) {
 private fun formatHeaders(headers: Map<String, List<String>>): String {
     return headers.entries.joinToString("\n") { "${it.key}: ${it.value.joinToString(", ")}" }
 }
-
 
 private fun generateTextSummary(transaction: NetworkTransaction): String = buildString {
     appendLine("--- WormaCeptor Transaction ---")

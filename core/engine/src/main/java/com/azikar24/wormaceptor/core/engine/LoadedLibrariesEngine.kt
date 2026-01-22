@@ -6,7 +6,6 @@ package com.azikar24.wormaceptor.core.engine
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import kotlinx.coroutines.CoroutineScope
@@ -391,7 +390,12 @@ class LoadedLibrariesEngine(
         val libraries = _libraries.value
 
         sb.appendLine("=== Loaded Libraries Report ===")
-        sb.appendLine("Generated: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US).format(java.util.Date())}")
+        sb.appendLine(
+            "Generated: ${java.text.SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                java.util.Locale.US,
+            ).format(java.util.Date())}",
+        )
         sb.appendLine("Package: $packageName")
         sb.appendLine()
 

@@ -133,9 +133,9 @@ class LocationSimulatorEngine(private val context: Context) {
                 false, // requiresSatellite
                 false, // requiresCell
                 false, // hasMonetaryCost
-                true,  // supportsAltitude
-                true,  // supportsSpeed
-                true,  // supportsBearing
+                true, // supportsAltitude
+                true, // supportsSpeed
+                true, // supportsBearing
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     ProviderProperties.POWER_USAGE_LOW
                 } else {
@@ -187,9 +187,9 @@ class LocationSimulatorEngine(private val context: Context) {
                 false, // requiresSatellite
                 false, // requiresCell
                 false, // hasMonetaryCost
-                true,  // supportsAltitude
-                true,  // supportsSpeed
-                true,  // supportsBearing
+                true, // supportsAltitude
+                true, // supportsSpeed
+                true, // supportsBearing
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     ProviderProperties.POWER_USAGE_LOW
                 } else {

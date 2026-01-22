@@ -80,11 +80,7 @@ class PushSimulatorViewModelFactory(
  * Main composable for the Push Notification Simulator screen.
  */
 @Composable
-fun PushSimulator(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun PushSimulator(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { PushSimulatorFeature.createEngine(context) }
     val dataSource = remember { PushSimulatorFeature.createDataSource(context) }
     val repository = remember {

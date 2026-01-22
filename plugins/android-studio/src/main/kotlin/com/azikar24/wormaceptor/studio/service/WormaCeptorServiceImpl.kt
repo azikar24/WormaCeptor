@@ -27,13 +27,18 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     private val log = Logger.getInstance(WormaCeptorServiceImpl::class.java)
     private val gson = Gson()
     private val listeners = CopyOnWriteArrayList<WormaCeptorService.StateListener>()
+
     @Volatile private var selectedDeviceSerial: String? = null
+
     @Volatile private var cachedTransactions = listOf<TransactionSummary>()
+
     @Volatile private var captureActive = false
+
     @Volatile private var transactionCount = 0
 
     // Cached target package for WormaCeptor content provider
     @Volatile private var targetPackage: String? = null
+
     @Volatile private var lastPackageDetectionDevice: String? = null
 
     // Cached device connection status for EDT-safe access

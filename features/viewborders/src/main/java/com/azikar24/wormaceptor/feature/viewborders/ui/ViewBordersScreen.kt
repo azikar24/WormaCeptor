@@ -236,11 +236,7 @@ fun ViewBordersScreen(
 }
 
 @Composable
-private fun EnableToggleSection(
-    enabled: Boolean,
-    onToggle: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun EnableToggleSection(enabled: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
     val backgroundColor by animateColorAsState(
         targetValue = if (enabled) {
             MaterialTheme.colorScheme.primaryContainer
@@ -321,10 +317,7 @@ private fun EnableToggleSection(
 }
 
 @Composable
-private fun ColorLegendCard(
-    colors: ViewBordersColors,
-    modifier: Modifier = Modifier,
-) {
+private fun ColorLegendCard(colors: ViewBordersColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
@@ -407,11 +400,7 @@ private fun ColorLegendCard(
 }
 
 @Composable
-private fun LegendItem(
-    color: Color,
-    label: String,
-    modifier: Modifier = Modifier,
-) {
+private fun LegendItem(color: Color, label: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -432,10 +421,7 @@ private fun LegendItem(
 }
 
 @Composable
-private fun SectionHeader(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
+private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleSmall,
@@ -448,11 +434,7 @@ private fun SectionHeader(
 }
 
 @Composable
-private fun BorderWidthSlider(
-    borderWidth: Int,
-    onWidthChange: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun BorderWidthSlider(borderWidth: Int, onWidthChange: (Int) -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -643,12 +625,7 @@ private fun ColorPalette(
 }
 
 @Composable
-private fun ColorSwatch(
-    color: Color,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun ColorSwatch(color: Color, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .size(32.dp)

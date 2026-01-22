@@ -75,18 +75,18 @@ data class LoadedLibrariesColors(
  */
 val LightLoadedLibrariesColors = LoadedLibrariesColors(
     // Primary accent
-    primary = Color(0xFF7C4DFF),       // Deep Purple A200
+    primary = Color(0xFF7C4DFF), // Deep Purple A200
 
     // Library type colors - vibrant for visibility
-    nativeSo = Color(0xFF2196F3),      // Blue 500 - native code
-    dex = Color(0xFF9C27B0),           // Purple 500 - bytecode
-    jar = Color(0xFFFF9800),           // Orange 500 - archives
-    aarResource = Color(0xFF00BCD4),   // Cyan 500 - resources
+    nativeSo = Color(0xFF2196F3), // Blue 500 - native code
+    dex = Color(0xFF9C27B0), // Purple 500 - bytecode
+    jar = Color(0xFFFF9800), // Orange 500 - archives
+    aarResource = Color(0xFF00BCD4), // Cyan 500 - resources
 
     // Source type colors
     systemLibrary = Color(0xFF607D8B), // Blue Gray 500
-    appLibrary = Color(0xFF4CAF50),    // Green 500
-    systemBadge = Color(0xFF78909C),   // Blue Gray 400
+    appLibrary = Color(0xFF4CAF50), // Green 500
+    systemBadge = Color(0xFF78909C), // Blue Gray 400
 
     // Background colors
     cardBackground = Color(0xFFFAFAFA),
@@ -110,18 +110,18 @@ val LightLoadedLibrariesColors = LoadedLibrariesColors(
  */
 val DarkLoadedLibrariesColors = LoadedLibrariesColors(
     // Primary accent
-    primary = Color(0xFFB388FF),       // Deep Purple A100
+    primary = Color(0xFFB388FF), // Deep Purple A100
 
     // Library type colors - slightly muted for dark backgrounds
-    nativeSo = Color(0xFF64B5F6),      // Blue 300
-    dex = Color(0xFFBA68C8),           // Purple 300
-    jar = Color(0xFFFFB74D),           // Orange 300
-    aarResource = Color(0xFF4DD0E1),   // Cyan 300
+    nativeSo = Color(0xFF64B5F6), // Blue 300
+    dex = Color(0xFFBA68C8), // Purple 300
+    jar = Color(0xFFFFB74D), // Orange 300
+    aarResource = Color(0xFF4DD0E1), // Cyan 300
 
     // Source type colors
     systemLibrary = Color(0xFF90A4AE), // Blue Gray 300
-    appLibrary = Color(0xFF81C784),    // Green 300
-    systemBadge = Color(0xFF90A4AE),   // Blue Gray 300
+    appLibrary = Color(0xFF81C784), // Green 300
+    systemBadge = Color(0xFF90A4AE), // Blue Gray 300
 
     // Background colors
     cardBackground = Color(0xFF1E1E1E),

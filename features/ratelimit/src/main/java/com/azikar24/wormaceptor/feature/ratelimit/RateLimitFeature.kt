@@ -78,10 +78,7 @@ class RateLimitViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun RateLimiter(
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun RateLimiter(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { RateLimitFeature.createEngine() }
     val factory = remember { RateLimitFeature.createViewModelFactory(engine) }
     val viewModel: RateLimitViewModel = viewModel(factory = factory)
@@ -117,11 +114,7 @@ fun RateLimiter(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun RateLimiter(
-    engine: RateLimitEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun RateLimiter(engine: RateLimitEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember(engine) { RateLimitFeature.createViewModelFactory(engine) }
     val viewModel: RateLimitViewModel = viewModel(factory = factory)
 

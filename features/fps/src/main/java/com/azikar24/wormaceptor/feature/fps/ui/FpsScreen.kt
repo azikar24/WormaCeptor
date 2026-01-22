@@ -81,11 +81,7 @@ import kotlin.math.roundToInt
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FpsScreen(
-    viewModel: FpsViewModel,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-) {
+fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
     val currentInfo by viewModel.currentFpsInfo.collectAsState()
     val history by viewModel.fpsHistory.collectAsState()
     val isMonitoring by viewModel.isMonitoring.collectAsState()
@@ -201,10 +197,7 @@ fun FpsScreen(
 }
 
 @Composable
-private fun MonitoringIndicator(
-    isMonitoring: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun MonitoringIndicator(isMonitoring: Boolean, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -225,18 +218,13 @@ private fun MonitoringIndicator(
                     MaterialTheme.colorScheme.primary.copy(alpha = alpha)
                 } else {
                     MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-                }
+                },
             ),
     )
 }
 
 @Composable
-private fun CurrentFpsCard(
-    fpsInfo: FpsInfo,
-    isMonitoring: Boolean,
-    colors: FpsColors,
-    modifier: Modifier = Modifier,
-) {
+private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier) {
     val fpsColor by animateColorAsState(
         targetValue = if (fpsInfo.currentFps > 0) {
             colors.forFps(fpsInfo.currentFps)
@@ -307,11 +295,7 @@ private fun CurrentFpsCard(
 }
 
 @Composable
-private fun StatisticsRow(
-    fpsInfo: FpsInfo,
-    colors: FpsColors,
-    modifier: Modifier = Modifier,
-) {
+private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -319,33 +303,46 @@ private fun StatisticsRow(
         StatCard(
             label = "Min",
             value = if (fpsInfo.minFps > 0) fpsInfo.minFps.roundToInt().toString() else "--",
-            color = if (fpsInfo.minFps > 0) colors.forFps(fpsInfo.minFps) else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (fpsInfo.minFps > 0) {
+                colors.forFps(
+                    fpsInfo.minFps,
+                )
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
             modifier = Modifier.weight(1f),
         )
 
         StatCard(
             label = "Avg",
             value = if (fpsInfo.averageFps > 0) fpsInfo.averageFps.roundToInt().toString() else "--",
-            color = if (fpsInfo.averageFps > 0) colors.forFps(fpsInfo.averageFps) else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (fpsInfo.averageFps > 0) {
+                colors.forFps(
+                    fpsInfo.averageFps,
+                )
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
             modifier = Modifier.weight(1f),
         )
 
         StatCard(
             label = "Max",
             value = if (fpsInfo.maxFps > 0) fpsInfo.maxFps.roundToInt().toString() else "--",
-            color = if (fpsInfo.maxFps > 0) colors.forFps(fpsInfo.maxFps) else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (fpsInfo.maxFps > 0) {
+                colors.forFps(
+                    fpsInfo.maxFps,
+                )
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
             modifier = Modifier.weight(1f),
         )
     }
 }
 
 @Composable
-private fun StatCard(
-    label: String,
-    value: String,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
+private fun StatCard(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
@@ -378,12 +375,7 @@ private fun StatCard(
 }
 
 @Composable
-private fun DroppedFramesCard(
-    droppedFrames: Int,
-    jankFrames: Int,
-    colors: FpsColors,
-    modifier: Modifier = Modifier,
-) {
+private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
@@ -482,11 +474,7 @@ private fun DroppedFramesCard(
 }
 
 @Composable
-private fun FpsChartCard(
-    history: ImmutableList<FpsInfo>,
-    colors: FpsColors,
-    modifier: Modifier = Modifier,
-) {
+private fun FpsChartCard(history: ImmutableList<FpsInfo>, colors: FpsColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
@@ -528,11 +516,7 @@ private fun FpsChartCard(
 }
 
 @Composable
-private fun FpsChart(
-    data: ImmutableList<FpsInfo>,
-    colors: FpsColors,
-    modifier: Modifier = Modifier,
-) {
+private fun FpsChart(data: ImmutableList<FpsInfo>, colors: FpsColors, modifier: Modifier = Modifier) {
     val lineColor = colors.chartLine
     val fillColor = colors.chartFill
     val gridColor = colors.chartGrid
@@ -628,10 +612,7 @@ private fun FpsChart(
 }
 
 @Composable
-private fun EmptyState(
-    onStartMonitoring: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -72,7 +71,6 @@ import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -412,7 +410,11 @@ private fun TypeFilterChips(
         )
         StorageType.entries.forEach { type ->
             val (icon, label, color) = when (type) {
-                StorageType.ENCRYPTED_SHARED_PREFS -> Triple(Icons.Default.EnhancedEncryption, "Prefs", colors.encryptedPrefs)
+                StorageType.ENCRYPTED_SHARED_PREFS -> Triple(
+                    Icons.Default.EnhancedEncryption,
+                    "Prefs",
+                    colors.encryptedPrefs,
+                )
                 StorageType.KEYSTORE -> Triple(Icons.Default.Key, "KeyStore", colors.keystore)
                 StorageType.DATASTORE -> Triple(Icons.Default.DataObject, "DataStore", colors.datastore)
             }

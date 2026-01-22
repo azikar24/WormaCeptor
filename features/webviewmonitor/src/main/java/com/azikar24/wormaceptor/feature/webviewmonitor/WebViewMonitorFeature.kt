@@ -11,7 +11,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +20,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -68,7 +65,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -94,7 +90,6 @@ import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -218,10 +213,7 @@ class WebViewMonitorViewModelFactory(
  * Main composable for the WebView Monitor feature with internal engine.
  */
 @Composable
-fun WebViewMonitor(
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { WebViewMonitorFeature.createEngine() }
     WebViewMonitor(
         engine = engine,
@@ -234,11 +226,7 @@ fun WebViewMonitor(
  * Main composable for the WebView Monitor feature with external engine.
  */
 @Composable
-fun WebViewMonitor(
-    engine: WebViewMonitorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember(engine) { WebViewMonitorFeature.createViewModelFactory(engine) }
     val viewModel: WebViewMonitorViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
@@ -367,12 +355,12 @@ private fun WebViewMonitorListScreen(
                             tint = if (showFilters || resourceTypeFilter.isNotEmpty()) {
                                 Color(0xFF2196F3)
                             } else {
-                                Color(0xFF757575)
+                                MaterialTheme.colorScheme.onSurfaceVariant
                             },
                         )
                     }
                     IconButton(onClick = onClearRequests) {
-                        Icon(Icons.Default.Delete, "Clear", tint = Color(0xFF757575))
+                        Icon(Icons.Default.Delete, "Clear", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
             )
@@ -388,7 +376,7 @@ private fun WebViewMonitorListScreen(
             // Enable toggle card
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Row(
                     modifier = Modifier
@@ -408,7 +396,7 @@ private fun WebViewMonitorListScreen(
                             Icon(
                                 Icons.Default.Language,
                                 null,
-                                tint = if (isEnabled) Color(0xFF2196F3) else Color(0xFF9E9E9E),
+                                tint = if (isEnabled) Color(0xFF2196F3) else MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(24.dp),
                             )
                         }
@@ -417,7 +405,7 @@ private fun WebViewMonitorListScreen(
                             Text(
                                 if (isEnabled) "Capturing requests" else "Disabled",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -429,7 +417,7 @@ private fun WebViewMonitorListScreen(
             if (stats.totalRequests > 0) {
                 Card(
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 ) {
                     Row(
                         modifier = Modifier
@@ -466,19 +454,19 @@ private fun WebViewMonitorListScreen(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,
                 placeholder = { Text("Search requests...") },
-                leadingIcon = { Icon(Icons.Default.Search, null, tint = Color(0xFF757575)) },
+                leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchQueryChanged("") }) {
-                            Icon(Icons.Default.Clear, "Clear", tint = Color(0xFF757575))
+                            Icon(Icons.Default.Clear, "Clear", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFFFAFAFA),
-                    unfocusedContainerColor = Color(0xFFFAFAFA),
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -489,7 +477,7 @@ private fun WebViewMonitorListScreen(
             AnimatedVisibility(visible = showFilters) {
                 Card(
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 ) {
                     Column(
                         modifier = Modifier
@@ -547,7 +535,7 @@ private fun WebViewMonitorListScreen(
                     "${requests.size} of $totalCount requests"
                 },
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF757575),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             // Request list
@@ -566,11 +554,11 @@ private fun WebViewMonitorListScreen(
                             Icons.Default.Language,
                             null,
                             modifier = Modifier.size(64.dp),
-                            tint = Color(0xFFE0E0E0),
+                            tint = MaterialTheme.colorScheme.outlineVariant,
                         )
                         Text(
                             if (isEnabled) "No requests captured yet" else "Enable monitoring to capture requests",
-                            color = Color(0xFF757575),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -592,11 +580,7 @@ private fun WebViewMonitorListScreen(
 }
 
 @Composable
-private fun StatItem(
-    value: String,
-    label: String,
-    color: Color,
-) {
+private fun StatItem(value: String, label: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
@@ -607,22 +591,19 @@ private fun StatItem(
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = Color(0xFF757575),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
 
 @Composable
-private fun WebViewRequestItem(
-    request: WebViewRequest,
-    onClick: () -> Unit,
-) {
+private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Row(
             modifier = Modifier
@@ -673,7 +654,7 @@ private fun WebViewRequestItem(
                     Text(
                         text = request.resourceType.displayName,
                         fontSize = 10.sp,
-                        color = Color(0xFF757575),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -742,7 +723,7 @@ private fun WebViewRequestItem(
                 Text(
                     text = request.host,
                     fontSize = 11.sp,
-                    color = Color(0xFF757575),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -755,7 +736,7 @@ private fun WebViewRequestItem(
                     Text(
                         text = formatTimestamp(request.timestamp),
                         fontSize = 10.sp,
-                        color = Color(0xFF9E9E9E),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     )
 
                     // Duration
@@ -767,13 +748,13 @@ private fun WebViewRequestItem(
                             Icon(
                                 Icons.Default.AccessTime,
                                 null,
-                                tint = Color(0xFF9E9E9E),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                                 modifier = Modifier.size(10.dp),
                             )
                             Text(
                                 text = formatDuration(duration),
                                 fontSize = 10.sp,
-                                color = Color(0xFF9E9E9E),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             )
                         }
                     }
@@ -783,7 +764,7 @@ private fun WebViewRequestItem(
                         Text(
                             text = formatBytes(length),
                             fontSize = 10.sp,
-                            color = Color(0xFF9E9E9E),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                         )
                     }
                 }
@@ -794,10 +775,7 @@ private fun WebViewRequestItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun WebViewRequestDetailScreen(
-    request: WebViewRequest,
-    onNavigateBack: () -> Unit,
-) {
+private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -811,7 +789,7 @@ private fun WebViewRequestDetailScreen(
                         Text(
                             request.host,
                             fontSize = 12.sp,
-                            color = Color(0xFF757575),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 },
@@ -834,7 +812,7 @@ private fun WebViewRequestDetailScreen(
             // Status card
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Row(
                     modifier = Modifier
@@ -877,7 +855,7 @@ private fun WebViewRequestDetailScreen(
                             Text(
                                 request.statusCode?.let { "Status: $it" } ?: request.errorMessage ?: "Waiting for response",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -892,7 +870,7 @@ private fun WebViewRequestDetailScreen(
                             Text(
                                 "Duration",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color(0xFF757575),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -905,7 +883,7 @@ private fun WebViewRequestDetailScreen(
                     text = request.url,
                     fontFamily = FontFamily.Monospace,
                     fontSize = 13.sp,
-                    color = Color(0xFF212121),
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
@@ -965,13 +943,10 @@ private fun WebViewRequestDetailScreen(
 }
 
 @Composable
-private fun DetailCard(
-    title: String,
-    content: @Composable () -> Unit,
-) {
+private fun DetailCard(title: String, content: @Composable () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Column(
             modifier = Modifier
@@ -990,10 +965,7 @@ private fun DetailCard(
 }
 
 @Composable
-private fun DetailRow(
-    label: String,
-    value: String,
-) {
+private fun DetailRow(label: String, value: String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -1001,17 +973,17 @@ private fun DetailRow(
         Text(
             text = label,
             fontSize = 11.sp,
-            color = Color(0xFF757575),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = value,
             fontSize = 13.sp,
             fontFamily = FontFamily.Monospace,
-            color = Color(0xFF212121),
+            color = MaterialTheme.colorScheme.onSurface,
         )
         HorizontalDivider(
             modifier = Modifier.padding(top = 8.dp),
-            color = Color(0xFFEEEEEE),
+            color = MaterialTheme.colorScheme.outlineVariant,
         )
     }
 }

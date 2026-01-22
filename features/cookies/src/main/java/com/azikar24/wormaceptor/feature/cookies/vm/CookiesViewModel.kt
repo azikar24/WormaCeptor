@@ -74,7 +74,7 @@ class CookiesViewModel(
             .map { (domain, domainCookies) ->
                 CookieDomain(
                     domain = domain,
-                    cookies = domainCookies.sortedBy { it.name.lowercase() }
+                    cookies = domainCookies.sortedBy { it.name.lowercase() },
                 )
             }
             .sortedBy { it.domain.lowercase() }

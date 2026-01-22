@@ -200,10 +200,7 @@ class WebViewMonitorEngine(
      * @param delegate Optional existing WebViewClient to delegate calls to
      * @return A WebViewClient that monitors requests and delegates to the provided client
      */
-    fun createMonitoringClient(
-        webViewId: String,
-        delegate: WebViewClient? = null,
-    ): WebViewClient {
+    fun createMonitoringClient(webViewId: String, delegate: WebViewClient? = null): WebViewClient {
         return MonitoringWebViewClient(webViewId, delegate)
     }
 
@@ -285,10 +282,7 @@ class WebViewMonitorEngine(
         private val delegate: WebViewClient?,
     ) : WebViewClient() {
 
-        override fun shouldInterceptRequest(
-            view: WebView?,
-            request: WebResourceRequest?,
-        ): WebResourceResponse? {
+        override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
             if (_isEnabled.value && request != null) {
                 val url = request.url.toString()
                 val method = request.method ?: "GET"
@@ -351,11 +345,7 @@ class WebViewMonitorEngine(
             delegate?.onPageFinished(view, url)
         }
 
-        override fun onReceivedError(
-            view: WebView?,
-            request: WebResourceRequest?,
-            error: WebResourceError?,
-        ) {
+        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
             if (_isEnabled.value && request != null && error != null) {
                 val url = request.url.toString()
                 val errorDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -377,12 +367,7 @@ class WebViewMonitorEngine(
         }
 
         @Suppress("DEPRECATION")
-        override fun onReceivedError(
-            view: WebView?,
-            errorCode: Int,
-            description: String?,
-            failingUrl: String?,
-        ) {
+        override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
             if (_isEnabled.value && failingUrl != null) {
                 _requests.value.find { it.url == failingUrl && it.webViewId == webViewId && it.isPending }?.let { req ->
                     updateRequest(
@@ -418,11 +403,7 @@ class WebViewMonitorEngine(
             delegate?.onReceivedHttpError(view, request, errorResponse)
         }
 
-        override fun onReceivedSslError(
-            view: WebView?,
-            handler: SslErrorHandler?,
-            error: SslError?,
-        ) {
+        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
             if (_isEnabled.value && error != null) {
                 val url = error.url
 
@@ -437,6 +418,7 @@ class WebViewMonitorEngine(
             delegate?.onReceivedSslError(view, handler, error)
         }
 
+        @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.N)
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             return delegate?.shouldOverrideUrlLoading(view, request) ?: false
         }

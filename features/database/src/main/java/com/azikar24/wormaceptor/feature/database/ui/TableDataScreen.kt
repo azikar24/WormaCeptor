@@ -5,7 +5,6 @@
 package com.azikar24.wormaceptor.feature.database.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -164,10 +163,7 @@ fun TableDataScreen(
 }
 
 @Composable
-private fun SchemaView(
-    schema: ImmutableList<ColumnInfo>,
-    modifier: Modifier = Modifier,
-) {
+private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(0.dp),
@@ -229,10 +225,7 @@ private fun SchemaView(
 }
 
 @Composable
-private fun DataTable(
-    result: QueryResult,
-    modifier: Modifier = Modifier,
-) {
+private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
     val horizontalScrollState = rememberScrollState()
 
     LazyColumn(

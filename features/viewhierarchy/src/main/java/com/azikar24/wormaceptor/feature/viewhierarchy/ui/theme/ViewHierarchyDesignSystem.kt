@@ -80,18 +80,18 @@ data class ViewHierarchyColors(
  */
 val LightViewHierarchyColors = ViewHierarchyColors(
     // Primary accent
-    primary = Color(0xFF7C4DFF),        // Deep Purple A200
+    primary = Color(0xFF7C4DFF), // Deep Purple A200
 
     // View type colors
-    layout = Color(0xFF9C27B0),         // Purple 500
-    text = Color(0xFF2196F3),           // Blue 500
-    image = Color(0xFF4CAF50),          // Green 500
-    button = Color(0xFFE91E63),         // Pink 500
-    list = Color(0xFF00BCD4),           // Cyan 500
-    input = Color(0xFFFF9800),          // Orange 500
-    web = Color(0xFFFFC107),            // Amber 500
-    surface = Color(0xFF009688),        // Teal 500
-    other = Color(0xFF9E9E9E),          // Gray 500
+    layout = Color(0xFF9C27B0), // Purple 500
+    text = Color(0xFF2196F3), // Blue 500
+    image = Color(0xFF4CAF50), // Green 500
+    button = Color(0xFFE91E63), // Pink 500
+    list = Color(0xFF00BCD4), // Cyan 500
+    input = Color(0xFFFF9800), // Orange 500
+    web = Color(0xFFFFC107), // Amber 500
+    surface = Color(0xFF009688), // Teal 500
+    other = Color(0xFF9E9E9E), // Gray 500
 
     // Hierarchy visualization
     treeLine = Color(0xFFBDBDBD),
@@ -109,8 +109,8 @@ val LightViewHierarchyColors = ViewHierarchyColors(
     labelPrimary = Color(0xFF212121),
     labelSecondary = Color(0xFF757575),
     valuePrimary = Color(0xFF424242),
-    className = Color(0xFF1565C0),      // Blue 800
-    resourceId = Color(0xFF6A1B9A),     // Purple 800
+    className = Color(0xFF1565C0), // Blue 800
+    resourceId = Color(0xFF6A1B9A), // Purple 800
 )
 
 /**
@@ -118,18 +118,18 @@ val LightViewHierarchyColors = ViewHierarchyColors(
  */
 val DarkViewHierarchyColors = ViewHierarchyColors(
     // Primary accent
-    primary = Color(0xFFB388FF),        // Deep Purple A100
+    primary = Color(0xFFB388FF), // Deep Purple A100
 
     // View type colors
-    layout = Color(0xFFCE93D8),         // Purple 200
-    text = Color(0xFF64B5F6),           // Blue 300
-    image = Color(0xFF81C784),          // Green 300
-    button = Color(0xFFF48FB1),         // Pink 200
-    list = Color(0xFF4DD0E1),           // Cyan 300
-    input = Color(0xFFFFB74D),          // Orange 300
-    web = Color(0xFFFFD54F),            // Amber 300
-    surface = Color(0xFF4DB6AC),        // Teal 300
-    other = Color(0xFF757575),          // Gray 600
+    layout = Color(0xFFCE93D8), // Purple 200
+    text = Color(0xFF64B5F6), // Blue 300
+    image = Color(0xFF81C784), // Green 300
+    button = Color(0xFFF48FB1), // Pink 200
+    list = Color(0xFF4DD0E1), // Cyan 300
+    input = Color(0xFFFFB74D), // Orange 300
+    web = Color(0xFFFFD54F), // Amber 300
+    surface = Color(0xFF4DB6AC), // Teal 300
+    other = Color(0xFF757575), // Gray 600
 
     // Hierarchy visualization
     treeLine = Color(0xFF616161),
@@ -147,8 +147,8 @@ val DarkViewHierarchyColors = ViewHierarchyColors(
     labelPrimary = Color(0xFFE0E0E0),
     labelSecondary = Color(0xFF9E9E9E),
     valuePrimary = Color(0xFFBDBDBD),
-    className = Color(0xFF90CAF9),      // Blue 200
-    resourceId = Color(0xFFE1BEE7),     // Purple 100
+    className = Color(0xFF90CAF9), // Blue 200
+    resourceId = Color(0xFFE1BEE7), // Purple 100
 )
 
 /**

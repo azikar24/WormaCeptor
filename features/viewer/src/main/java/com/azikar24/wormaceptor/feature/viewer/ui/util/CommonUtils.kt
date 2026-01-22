@@ -67,12 +67,7 @@ fun copyToClipboard(context: Context, label: String, text: String) {
  * @param title Optional title for the share chooser dialog
  * @param subject Optional subject line (used by email apps)
  */
-fun shareText(
-    context: Context,
-    text: String,
-    title: String = "Share",
-    subject: String? = null,
-) {
+fun shareText(context: Context, text: String, title: String = "Share", subject: String? = null) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, text)

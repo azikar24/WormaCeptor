@@ -111,8 +111,7 @@ object CryptoFeature {
     /**
      * Creates a CryptoViewModel factory for use with viewModel().
      */
-    fun createViewModelFactory(engine: CryptoEngine): CryptoViewModelFactory =
-        CryptoViewModelFactory(engine)
+    fun createViewModelFactory(engine: CryptoEngine): CryptoViewModelFactory = CryptoViewModelFactory(engine)
 }
 
 /**
@@ -196,10 +195,7 @@ class CryptoViewModelFactory(
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun CryptoTool(
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { CryptoFeature.createEngine() }
     val factory = remember { CryptoFeature.createViewModelFactory(engine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
@@ -243,7 +239,7 @@ fun CryptoTool(
                         Icon(
                             Icons.Default.History,
                             "History",
-                            tint = if (showHistory) Color(0xFF673AB7) else Color(0xFF757575),
+                            tint = if (showHistory) Color(0xFF673AB7) else MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 },
@@ -261,7 +257,7 @@ fun CryptoTool(
             // Presets
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -289,7 +285,7 @@ fun CryptoTool(
             // Algorithm & Mode Selection
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -346,7 +342,7 @@ fun CryptoTool(
             // Key & IV Input
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -439,7 +435,7 @@ fun CryptoTool(
             // Input Text Area
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Column(
                     modifier = Modifier
@@ -602,7 +598,7 @@ private fun ResultCard(
                     )
                 }
                 IconButton(onClick = onClear) {
-                    Icon(Icons.Default.Delete, "Clear result", tint = Color(0xFF757575))
+                    Icon(Icons.Default.Delete, "Clear result", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
 
@@ -611,13 +607,13 @@ private fun ResultCard(
                 Text(
                     "Output:",
                     style = MaterialTheme.typography.labelMedium,
-                    color = Color(0xFF757575),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.surface)
                         .padding(12.dp),
                 ) {
                     Text(
@@ -660,17 +656,14 @@ private fun ResultCard(
             Text(
                 "${result.algorithm.displayName}/${result.mode.displayName} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = Color(0xFF9E9E9E),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
     }
 }
 
 @Composable
-private fun ErrorCard(
-    message: String,
-    onDismiss: () -> Unit,
-) {
+private fun ErrorCard(message: String, onDismiss: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF44336).copy(alpha = 0.1f)),
@@ -695,7 +688,7 @@ private fun ErrorCard(
                 )
             }
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Delete, "Dismiss", tint = Color(0xFF757575))
+                Icon(Icons.Default.Delete, "Dismiss", tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -710,7 +703,7 @@ private fun HistorySection(
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFAFAFA)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Column(
             modifier = Modifier
@@ -742,7 +735,7 @@ private fun HistorySection(
                     onRemove = { onRemoveResult(result.id) },
                 )
                 if (result != history.take(10).last()) {
-                    HorizontalDivider(color = Color(0xFFE0E0E0))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 }
             }
         }
@@ -750,11 +743,7 @@ private fun HistorySection(
 }
 
 @Composable
-private fun HistoryItem(
-    result: CryptoResult,
-    onLoad: () -> Unit,
-    onRemove: () -> Unit,
-) {
+private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
     val accentColor = if (result.success) {
         if (result.operation == CryptoOperation.ENCRYPT) Color(0xFF673AB7) else Color(0xFF009688)
@@ -790,17 +779,19 @@ private fun HistoryItem(
             Text(
                 result.input.take(50) + if (result.input.length > 50) "..." else "",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF757575),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = FontFamily.Monospace,
             )
             Text(
-                "${dateFormat.format(Date(result.timestamp))} | ${if (result.success) "Success" else "Failed"} | ${result.durationMs}ms",
+                "${dateFormat.format(
+                    Date(result.timestamp),
+                )} | ${if (result.success) "Success" else "Failed"} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = Color(0xFF9E9E9E),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
         IconButton(onClick = onRemove) {
-            Icon(Icons.Default.Delete, "Remove", tint = Color(0xFF757575))
+            Icon(Icons.Default.Delete, "Remove", tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

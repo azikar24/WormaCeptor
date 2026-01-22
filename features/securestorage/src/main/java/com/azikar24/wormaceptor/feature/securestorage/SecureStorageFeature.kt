@@ -67,11 +67,7 @@ class SecureStorageViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun SecureStorageViewer(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun SecureStorageViewer(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { SecureStorageFeature.createEngine(context) }
     val factory = remember { SecureStorageFeature.createViewModelFactory(engine) }
     val viewModel: SecureStorageViewModel = viewModel(factory = factory)

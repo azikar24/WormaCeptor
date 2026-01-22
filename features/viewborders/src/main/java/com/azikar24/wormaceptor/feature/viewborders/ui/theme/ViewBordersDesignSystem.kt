@@ -39,26 +39,26 @@ data class ViewBordersColors(
  * Light theme colors for View Borders.
  */
 val LightViewBordersColors = ViewBordersColors(
-    margin = Color(0xFFFF9800),          // Orange 500
-    padding = Color(0xFF4CAF50),         // Green 500
-    content = Color(0xFF2196F3),         // Blue 500
+    margin = Color(0xFFFF9800), // Orange 500
+    padding = Color(0xFF4CAF50), // Green 500
+    content = Color(0xFF2196F3), // Blue 500
     marginBackground = Color(0xFFFFF3E0), // Orange 50
     paddingBackground = Color(0xFFE8F5E9), // Green 50
     contentBackground = Color(0xFFE3F2FD), // Blue 50
-    legendBorder = Color(0xFFE0E0E0),    // Gray 300
+    legendBorder = Color(0xFFE0E0E0), // Gray 300
 )
 
 /**
  * Dark theme colors for View Borders.
  */
 val DarkViewBordersColors = ViewBordersColors(
-    margin = Color(0xFFFFB74D),          // Orange 300
-    padding = Color(0xFF81C784),         // Green 300
-    content = Color(0xFF64B5F6),         // Blue 300
-    marginBackground = Color(0xFFE65100).copy(alpha = 0.2f),  // Orange with alpha
+    margin = Color(0xFFFFB74D), // Orange 300
+    padding = Color(0xFF81C784), // Green 300
+    content = Color(0xFF64B5F6), // Blue 300
+    marginBackground = Color(0xFFE65100).copy(alpha = 0.2f), // Orange with alpha
     paddingBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
     contentBackground = Color(0xFF0D47A1).copy(alpha = 0.2f), // Blue with alpha
-    legendBorder = Color(0xFF424242),    // Gray 800
+    legendBorder = Color(0xFF424242), // Gray 800
 )
 
 /**

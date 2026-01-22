@@ -53,23 +53,20 @@ class PreferencesRepositoryImpl(
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getPreference(fileName: String, key: String): PreferenceValue? =
-        withContext(Dispatchers.IO) {
-            dataSource.getPreference(fileName, key)
-        }
+    override suspend fun getPreference(fileName: String, key: String): PreferenceValue? = withContext(Dispatchers.IO) {
+        dataSource.getPreference(fileName, key)
+    }
 
     override suspend fun setPreference(fileName: String, key: String, value: PreferenceValue) =
         withContext(Dispatchers.IO) {
             dataSource.setPreference(fileName, key, value)
         }
 
-    override suspend fun deletePreference(fileName: String, key: String) =
-        withContext(Dispatchers.IO) {
-            dataSource.deletePreference(fileName, key)
-        }
+    override suspend fun deletePreference(fileName: String, key: String) = withContext(Dispatchers.IO) {
+        dataSource.deletePreference(fileName, key)
+    }
 
-    override suspend fun clearFile(fileName: String) =
-        withContext(Dispatchers.IO) {
-            dataSource.clearFile(fileName)
-        }
+    override suspend fun clearFile(fileName: String) = withContext(Dispatchers.IO) {
+        dataSource.clearFile(fileName)
+    }
 }

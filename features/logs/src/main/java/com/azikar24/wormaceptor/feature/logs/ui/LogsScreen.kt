@@ -11,9 +11,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,11 +88,7 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogsScreen(
-    viewModel: LogsViewModel,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-) {
+fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
     val logs by viewModel.logs.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedLevels by viewModel.selectedLevels.collectAsState()
@@ -251,11 +245,7 @@ fun LogsScreen(
 }
 
 @Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun SearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -385,7 +375,7 @@ private fun StatsBar(
                                 MaterialTheme.colorScheme.primary
                             } else {
                                 MaterialTheme.colorScheme.outline
-                            }
+                            },
                         ),
                 )
                 Text(
@@ -441,10 +431,7 @@ private fun LogList(
 }
 
 @Composable
-private fun LogEntryItem(
-    entry: LogEntry,
-    modifier: Modifier = Modifier,
-) {
+private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
     val colors = logLevelColors()
     val levelColor = colors.forLevel(entry.level)
     val backgroundColor = colors.backgroundForLevel(entry.level)
@@ -524,11 +511,7 @@ private fun LogEntryItem(
 }
 
 @Composable
-private fun EmptyLogsState(
-    isCapturing: Boolean,
-    onStartCapture: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

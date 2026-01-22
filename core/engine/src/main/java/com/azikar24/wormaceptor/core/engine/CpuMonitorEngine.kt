@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.RandomAccessFile
 
 /**
  * Engine that monitors CPU usage and exposes it as StateFlows.
@@ -160,7 +159,8 @@ class CpuMonitorEngine(
 
             // Calculate per-core usage from delta
             val perCoreUsage = if (previousPerCoreStats != null &&
-                previousPerCoreStats!!.size == currentPerCoreStats.size) {
+                previousPerCoreStats!!.size == currentPerCoreStats.size
+            ) {
                 currentPerCoreStats.mapIndexed { index, currentStats ->
                     calculateUsagePercent(previousPerCoreStats!![index], currentStats)
                 }

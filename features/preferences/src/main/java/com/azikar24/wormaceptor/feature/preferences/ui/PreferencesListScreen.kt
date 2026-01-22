@@ -51,7 +51,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import kotlinx.collections.immutable.ImmutableList
@@ -139,11 +138,7 @@ fun PreferencesListScreen(
 }
 
 @Composable
-private fun PreferenceFileItem(
-    file: PreferenceFile,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -223,10 +218,7 @@ private fun PreferenceFileItem(
 }
 
 @Composable
-private fun EmptyFilesState(
-    hasSearchQuery: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

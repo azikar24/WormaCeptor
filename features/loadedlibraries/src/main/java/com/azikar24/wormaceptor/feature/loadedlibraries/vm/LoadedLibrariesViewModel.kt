@@ -61,16 +61,32 @@ class LoadedLibrariesViewModel(
             if (!showSystem) filtered = filtered.filter { !it.isSystemLibrary }
             if (query.isNotBlank()) {
                 val lowerQuery = query.lowercase()
-                filtered = filtered.filter { it.name.lowercase().contains(lowerQuery) || it.path.lowercase().contains(lowerQuery) }
+                filtered = filtered.filter {
+                    it.name.lowercase().contains(
+                        lowerQuery,
+                    ) || it.path.lowercase().contains(lowerQuery)
+                }
             }
             filtered.toImmutableList()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
-    fun setSelectedType(type: LibraryType?) { _selectedType.value = type }
-    fun setShowSystemLibs(show: Boolean) { _showSystemLibs.value = show }
-    fun setSearchQuery(query: String) { _searchQuery.value = query }
-    fun selectLibrary(library: LoadedLibrary) { _selectedLibrary.value = library }
-    fun dismissDetail() { _selectedLibrary.value = null }
-    fun refresh() { engine.refresh() }
+    fun setSelectedType(type: LibraryType?) {
+        _selectedType.value = type
+    }
+    fun setShowSystemLibs(show: Boolean) {
+        _showSystemLibs.value = show
+    }
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+    fun selectLibrary(library: LoadedLibrary) {
+        _selectedLibrary.value = library
+    }
+    fun dismissDetail() {
+        _selectedLibrary.value = null
+    }
+    fun refresh() {
+        engine.refresh()
+    }
     fun exportAsText(): String = engine.exportAsText()
 }

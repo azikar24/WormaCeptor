@@ -37,12 +37,7 @@ import java.io.File
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FileViewerScreen(
-    filePath: String,
-    content: FileContent,
-    onBack: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun FileViewerScreen(filePath: String, content: FileContent, onBack: () -> Unit, modifier: Modifier = Modifier) {
     val fileName = File(filePath).name
 
     Scaffold(
@@ -77,7 +72,9 @@ fun FileViewerScreen(
                     ImageFileContent(content)
                 }
                 is FileContent.TooLarge -> {
-                    ErrorContent("File too large: ${formatBytes(content.sizeBytes)}\nMax size: ${formatBytes(content.maxSize)}")
+                    ErrorContent(
+                        "File too large: ${formatBytes(content.sizeBytes)}\nMax size: ${formatBytes(content.maxSize)}",
+                    )
                 }
                 is FileContent.Error -> {
                     ErrorContent(content.message)

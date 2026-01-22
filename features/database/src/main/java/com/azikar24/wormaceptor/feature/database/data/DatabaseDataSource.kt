@@ -25,7 +25,11 @@ class DatabaseDataSource(private val context: Context) {
     fun findDatabases(): List<DatabaseInfo> {
         return try {
             context.databaseList()
-                .filter { it.endsWith(".db") || (!it.contains("-journal") && !it.contains("-wal") && !it.contains("-shm")) }
+                .filter {
+                    it.endsWith(
+                        ".db",
+                    ) || (!it.contains("-journal") && !it.contains("-wal") && !it.contains("-shm"))
+                }
                 .mapNotNull { dbName ->
                     try {
                         val dbPath = context.getDatabasePath(dbName).absolutePath

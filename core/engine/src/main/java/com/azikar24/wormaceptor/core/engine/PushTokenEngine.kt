@@ -402,7 +402,7 @@ class PushTokenEngine(
                         token = obj.getString("token"),
                         timestamp = obj.getLong("timestamp"),
                         event = event,
-                    )
+                    ),
                 )
             }
 

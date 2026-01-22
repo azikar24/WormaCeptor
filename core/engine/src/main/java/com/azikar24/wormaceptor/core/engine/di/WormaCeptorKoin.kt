@@ -6,10 +6,8 @@ package com.azikar24.wormaceptor.core.engine.di
 
 import android.content.Context
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.KoinApplication
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
-import org.koin.core.module.Module
 
 /**
  * Helper object for managing Koin initialization in WormaCeptor library.

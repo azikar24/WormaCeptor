@@ -79,11 +79,7 @@ class ComposeRenderEngine {
      * @param parameters Optional list of parameter names for context
      * @param depth Nesting depth in the composition tree
      */
-    fun trackRecomposition(
-        name: String,
-        parameters: List<String> = emptyList(),
-        depth: Int = 0,
-    ) {
+    fun trackRecomposition(name: String, parameters: List<String> = emptyList(), depth: Int = 0) {
         if (!_isTracking.value) return
 
         val startTime = System.nanoTime()
@@ -148,11 +144,7 @@ class ComposeRenderEngine {
      * @param parameters Optional list of parameter names for context
      * @param depth Nesting depth in the composition tree
      */
-    fun trackComposable(
-        name: String,
-        parameters: List<String> = emptyList(),
-        depth: Int = 0,
-    ) {
+    fun trackComposable(name: String, parameters: List<String> = emptyList(), depth: Int = 0) {
         val data = trackedComposables.getOrPut(name) { TrackingData() }
         data.parameters = parameters
         data.depth = depth
@@ -172,7 +164,9 @@ class ComposeRenderEngine {
                 lastRenderTimeNs = data.lastRenderTimeNs,
                 averageRenderTimeNs = if (data.renderCount > 0) {
                     data.totalRenderTimeNs / data.renderCount
-                } else 0L,
+                } else {
+                    0L
+                },
                 parameters = data.parameters,
                 depth = data.depth,
                 timestamp = data.lastTimestamp,

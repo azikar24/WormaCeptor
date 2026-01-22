@@ -50,12 +50,8 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -63,10 +59,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,15 +75,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
-import com.azikar24.wormaceptor.domain.entities.PreferenceValue
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditDialog
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.asSubtleBackground
 import kotlinx.collections.immutable.ImmutableList
@@ -298,7 +295,11 @@ fun PreferenceDetailScreen(
         AlertDialog(
             onDismissRequest = { showClearConfirmDialog = false },
             title = { Text("Clear All Preferences") },
-            text = { Text("Are you sure you want to delete all preferences in $fileName? This action cannot be undone.") },
+            text = {
+                Text(
+                    "Are you sure you want to delete all preferences in $fileName? This action cannot be undone.",
+                )
+            },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -363,7 +364,7 @@ private fun SwipeablePreferenceItem(
                 }
                 SwipeToDismissBoxValue.Settled -> false
             }
-        }
+        },
     )
 
     SwipeToDismissBox(
@@ -391,7 +392,7 @@ private fun SwipeablePreferenceItem(
                     .fillMaxSize()
                     .background(color, RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md))
                     .padding(horizontal = 20.dp),
-                contentAlignment = alignment
+                contentAlignment = alignment,
             ) {
                 icon?.let {
                     Icon(
@@ -400,23 +401,19 @@ private fun SwipeablePreferenceItem(
                         tint = when (direction) {
                             SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.onErrorContainer
                             else -> MaterialTheme.colorScheme.onPrimaryContainer
-                        }
+                        },
                     )
                 }
             }
         },
         content = {
             PreferenceItemContent(item = item, onClick = onEdit)
-        }
+        },
     )
 }
 
 @Composable
-private fun PreferenceItemContent(
-    item: PreferenceItem,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val typeColor = PreferencesDesignSystem.TypeColors.forTypeName(item.value.typeName)
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -523,10 +520,7 @@ private fun PreferenceItemContent(
 }
 
 @Composable
-private fun EmptyItemsState(
-    hasFilters: Boolean,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

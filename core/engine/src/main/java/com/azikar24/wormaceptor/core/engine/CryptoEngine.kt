@@ -242,9 +242,13 @@ class CryptoEngine {
         } catch (e: Exception) {
             val durationMs = System.currentTimeMillis() - startTime
             val errorMessage = when {
-                e.message?.contains("padding") == true -> "Decryption failed: Invalid padding (wrong key/IV or corrupted data)"
+                e.message?.contains(
+                    "padding",
+                ) == true -> "Decryption failed: Invalid padding (wrong key/IV or corrupted data)"
                 e.message?.contains("tag") == true -> "Decryption failed: Authentication tag mismatch (wrong key/IV)"
-                e.message?.contains("IllegalBlockSize") == true -> "Decryption failed: Invalid block size (corrupted data)"
+                e.message?.contains(
+                    "IllegalBlockSize",
+                ) == true -> "Decryption failed: Invalid block size (corrupted data)"
                 else -> e.message ?: "Unknown decryption error"
             }
             _error.value = errorMessage

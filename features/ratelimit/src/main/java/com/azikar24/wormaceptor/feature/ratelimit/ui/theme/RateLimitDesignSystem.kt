@@ -55,22 +55,22 @@ data class RateLimitColors(
  */
 val LightRateLimitColors = RateLimitColors(
     // Feature accent colors
-    primary = Color(0xFF7C4DFF),        // Deep Purple A200
-    download = Color(0xFF2196F3),       // Blue 500
-    upload = Color(0xFF4CAF50),         // Green 500
-    latency = Color(0xFFFF9800),        // Orange 500
-    packetLoss = Color(0xFFF44336),     // Red 500
+    primary = Color(0xFF7C4DFF), // Deep Purple A200
+    download = Color(0xFF2196F3), // Blue 500
+    upload = Color(0xFF4CAF50), // Green 500
+    latency = Color(0xFFFF9800), // Orange 500
+    packetLoss = Color(0xFFF44336), // Red 500
 
     // Status colors
-    enabled = Color(0xFF4CAF50),        // Green 500
-    disabled = Color(0xFF9E9E9E),       // Grey 500
+    enabled = Color(0xFF4CAF50), // Green 500
+    disabled = Color(0xFF9E9E9E), // Grey 500
 
     // Preset badge colors
-    presetWifi = Color(0xFF4CAF50),     // Green
-    preset3G = Color(0xFF2196F3),       // Blue
-    preset2G = Color(0xFFFF9800),       // Orange
-    presetEdge = Color(0xFFFF5722),     // Deep Orange
-    presetOffline = Color(0xFFF44336),  // Red
+    presetWifi = Color(0xFF4CAF50), // Green
+    preset3G = Color(0xFF2196F3), // Blue
+    preset2G = Color(0xFFFF9800), // Orange
+    presetEdge = Color(0xFFFF5722), // Deep Orange
+    presetOffline = Color(0xFFF44336), // Red
 
     // Background colors
     cardBackground = Color(0xFFFAFAFA),
@@ -88,22 +88,22 @@ val LightRateLimitColors = RateLimitColors(
  */
 val DarkRateLimitColors = RateLimitColors(
     // Feature accent colors
-    primary = Color(0xFFB388FF),        // Deep Purple A100
-    download = Color(0xFF64B5F6),       // Blue 300
-    upload = Color(0xFF81C784),         // Green 300
-    latency = Color(0xFFFFB74D),        // Orange 300
-    packetLoss = Color(0xFFE57373),     // Red 300
+    primary = Color(0xFFB388FF), // Deep Purple A100
+    download = Color(0xFF64B5F6), // Blue 300
+    upload = Color(0xFF81C784), // Green 300
+    latency = Color(0xFFFFB74D), // Orange 300
+    packetLoss = Color(0xFFE57373), // Red 300
 
     // Status colors
-    enabled = Color(0xFF81C784),        // Green 300
-    disabled = Color(0xFF757575),       // Grey 600
+    enabled = Color(0xFF81C784), // Green 300
+    disabled = Color(0xFF757575), // Grey 600
 
     // Preset badge colors
-    presetWifi = Color(0xFF81C784),     // Green 300
-    preset3G = Color(0xFF64B5F6),       // Blue 300
-    preset2G = Color(0xFFFFB74D),       // Orange 300
-    presetEdge = Color(0xFFFF8A65),     // Deep Orange 300
-    presetOffline = Color(0xFFE57373),  // Red 300
+    presetWifi = Color(0xFF81C784), // Green 300
+    preset3G = Color(0xFF64B5F6), // Blue 300
+    preset2G = Color(0xFFFFB74D), // Orange 300
+    presetEdge = Color(0xFFFF8A65), // Deep Orange 300
+    presetOffline = Color(0xFFE57373), // Red 300
 
     // Background colors
     cardBackground = Color(0xFF1E1E1E),

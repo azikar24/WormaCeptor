@@ -38,10 +38,7 @@ object LocationFeature {
      * Creates a LocationSimulatorRepository instance.
      * The repository coordinates between persistence and the engine.
      */
-    fun createRepository(
-        context: Context,
-        engine: LocationSimulatorEngine,
-    ): LocationSimulatorRepository {
+    fun createRepository(context: Context, engine: LocationSimulatorEngine): LocationSimulatorRepository {
         val dataSource = LocationDataSource(context.applicationContext)
         return LocationRepositoryImpl(dataSource, engine)
     }
@@ -80,11 +77,7 @@ class LocationViewModelFactory(
  * Call this from your navigation host with route "location".
  */
 @Composable
-fun LocationSimulator(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { LocationFeature.createEngine(context) }
     val repository = remember { LocationFeature.createRepository(context, engine) }
     val factory = remember { LocationFeature.createViewModelFactory(repository, engine, context) }

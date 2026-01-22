@@ -59,11 +59,7 @@ class FpsViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun FpsMonitor(
-    engine: FpsMonitorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun FpsMonitor(engine: FpsMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember { FpsFeature.createViewModelFactory(engine) }
     val viewModel: FpsViewModel = viewModel(factory = factory)
 

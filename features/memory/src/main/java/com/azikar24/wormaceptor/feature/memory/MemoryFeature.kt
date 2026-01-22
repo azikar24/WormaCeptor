@@ -68,11 +68,7 @@ class MemoryViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun MemoryMonitor(
-    engine: MemoryMonitorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun MemoryMonitor(engine: MemoryMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember { MemoryFeature.createViewModelFactory(engine) }
     val viewModel: MemoryViewModel = viewModel(factory = factory)
 

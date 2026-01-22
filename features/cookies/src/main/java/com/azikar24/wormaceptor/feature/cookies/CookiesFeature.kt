@@ -69,11 +69,7 @@ class CookiesViewModelFactory(
  * Handles navigation between list and detail screens.
  */
 @Composable
-fun CookiesInspector(
-    context: Context,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun CookiesInspector(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val repository = remember { CookiesFeature.createRepository(context) }
     val factory = remember { CookiesFeature.createViewModelFactory(repository) }
     val viewModel: CookiesViewModel = viewModel(factory = factory)

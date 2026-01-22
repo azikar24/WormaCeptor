@@ -101,12 +101,7 @@ class RateLimitEngine {
      * @param latencyMs Additional latency in milliseconds
      * @param packetLossPercent Packet loss percentage (0-100)
      */
-    fun setCustomConfig(
-        downloadSpeedKbps: Long,
-        uploadSpeedKbps: Long,
-        latencyMs: Long,
-        packetLossPercent: Float,
-    ) {
+    fun setCustomConfig(downloadSpeedKbps: Long, uploadSpeedKbps: Long, latencyMs: Long, packetLossPercent: Float) {
         _config.value = RateLimitConfig(
             enabled = true,
             downloadSpeedKbps = downloadSpeedKbps,

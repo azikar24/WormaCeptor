@@ -146,20 +146,28 @@ data class ViewNode(
 enum class ViewType {
     /** ViewGroups and layout containers */
     LAYOUT,
+
     /** TextViews and EditTexts */
     TEXT,
+
     /** ImageViews */
     IMAGE,
+
     /** Buttons and clickable elements */
     BUTTON,
+
     /** Lists, RecyclerViews, ScrollViews */
     LIST,
+
     /** Checkboxes, switches, radio buttons */
     INPUT,
+
     /** WebViews */
     WEB,
+
     /** SurfaceViews, TextureViews */
     SURFACE,
+
     /** Any other view type */
     OTHER,
 }

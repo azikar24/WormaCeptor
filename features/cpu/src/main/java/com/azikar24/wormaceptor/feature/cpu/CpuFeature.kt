@@ -68,11 +68,7 @@ class CpuViewModelFactory(
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun CpuMonitor(
-    engine: CpuMonitorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun CpuMonitor(engine: CpuMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember { CpuFeature.createViewModelFactory(engine) }
     val viewModel: CpuViewModel = viewModel(factory = factory)
 

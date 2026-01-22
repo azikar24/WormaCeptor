@@ -58,7 +58,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -97,7 +96,10 @@ fun LoadedLibrariesScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         Icon(Icons.Default.Extension, null, tint = colors.primary)
                         Text("Loaded Libraries", fontWeight = FontWeight.SemiBold)
                     }
@@ -107,8 +109,11 @@ fun LoadedLibrariesScreen(
                 },
                 actions = {
                     IconButton(onClick = onRefresh, enabled = !isLoading) {
-                        if (isLoading) CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
-                        else Icon(Icons.Default.Refresh, "Refresh")
+                        if (isLoading) {
+                            CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
+                        } else {
+                            Icon(Icons.Default.Refresh, "Refresh")
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -116,15 +121,36 @@ fun LoadedLibrariesScreen(
         },
     ) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
-            SearchBar(searchQuery, onSearchQueryChanged, colors, Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp))
+            SearchBar(
+                searchQuery,
+                onSearchQueryChanged,
+                colors,
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+            )
             SummarySection(summary, colors, Modifier.fillMaxWidth().padding(horizontal = 16.dp))
             Spacer(Modifier.height(8.dp))
-            FilterSection(selectedType, showSystemLibs, onTypeSelected, onShowSystemLibsChanged, colors, Modifier.fillMaxWidth().padding(horizontal = 16.dp))
+            FilterSection(
+                selectedType,
+                showSystemLibs,
+                onTypeSelected,
+                onShowSystemLibsChanged,
+                colors,
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            )
             Spacer(Modifier.height(8.dp))
 
             error?.let {
-                Surface(Modifier.fillMaxWidth().padding(horizontal = 16.dp), RoundedCornerShape(8.dp), MaterialTheme.colorScheme.errorContainer) {
-                    Text(it, Modifier.padding(12.dp), MaterialTheme.colorScheme.onErrorContainer, style = MaterialTheme.typography.bodySmall)
+                Surface(
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    RoundedCornerShape(8.dp),
+                    MaterialTheme.colorScheme.errorContainer,
+                ) {
+                    Text(
+                        it,
+                        Modifier.padding(12.dp),
+                        MaterialTheme.colorScheme.onErrorContainer,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
             }
 
@@ -134,7 +160,11 @@ fun LoadedLibrariesScreen(
                 LazyColumn(
                     Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 16.dp,
+                    ),
                 ) {
                     items(libraries, key = { it.path }) { lib ->
                         LibraryCard(lib, { onLibrarySelected(lib) }, colors)
@@ -152,7 +182,12 @@ fun LoadedLibrariesScreen(
 }
 
 @Composable
-private fun SearchBar(query: String, onQueryChanged: (String) -> Unit, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier) {
+private fun SearchBar(
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    modifier: Modifier,
+) {
     TextField(
         value = query,
         onValueChange = onQueryChanged,
@@ -161,7 +196,9 @@ private fun SearchBar(query: String, onQueryChanged: (String) -> Unit, colors: c
         leadingIcon = { Icon(Icons.Default.Search, null, tint = colors.labelSecondary) },
         trailingIcon = {
             AnimatedVisibility(query.isNotBlank(), enter = fadeIn(), exit = fadeOut()) {
-                IconButton(onClick = { onQueryChanged("") }) { Icon(Icons.Default.Close, "Clear", tint = colors.labelSecondary) }
+                IconButton(
+                    onClick = { onQueryChanged("") },
+                ) { Icon(Icons.Default.Close, "Clear", tint = colors.labelSecondary) }
             }
         },
         singleLine = true,
@@ -176,7 +213,11 @@ private fun SearchBar(query: String, onQueryChanged: (String) -> Unit, colors: c
 }
 
 @Composable
-private fun SummarySection(summary: LibrarySummary, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier) {
+private fun SummarySection(
+    summary: LibrarySummary,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    modifier: Modifier,
+) {
     Row(modifier, Arrangement.spacedBy(8.dp)) {
         SummaryCard("Native", summary.nativeSoCount, colors.nativeSo, colors, Modifier.weight(1f))
         SummaryCard("DEX", summary.dexCount, colors.dex, colors, Modifier.weight(1f))
@@ -186,10 +227,21 @@ private fun SummarySection(summary: LibrarySummary, colors: com.azikar24.wormace
 }
 
 @Composable
-private fun SummaryCard(label: String, count: Int, color: Color, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier) {
+private fun SummaryCard(
+    label: String,
+    count: Int,
+    color: Color,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    modifier: Modifier,
+) {
     Card(modifier, RoundedCornerShape(12.dp), CardDefaults.cardColors(colors.cardBackground)) {
         Column(Modifier.fillMaxWidth().padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(count.toString(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = color)
+            Text(
+                count.toString(),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = color,
+            )
             Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
         }
     }
@@ -216,7 +268,8 @@ private fun FilterSection(
                     else -> Triple(Icons.Default.Extension, "Other", colors.primary)
                 }
                 FilterChip(
-                    selectedType == type, { onTypeSelected(if (selectedType == type) null else type) },
+                    selectedType == type,
+                    { onTypeSelected(if (selectedType == type) null else type) },
                     { Text(label) },
                     leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
                     colors = FilterChipDefaults.filterChipColors(color.copy(0.2f), color, color),
@@ -231,7 +284,11 @@ private fun FilterSection(
 }
 
 @Composable
-private fun LibraryCard(library: LoadedLibrary, onClick: () -> Unit, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors) {
+private fun LibraryCard(
+    library: LoadedLibrary,
+    onClick: () -> Unit,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+) {
     val (icon, color) = when (library.type) {
         LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
         LibraryType.DEX -> Icons.Default.Android to colors.dex
@@ -239,29 +296,69 @@ private fun LibraryCard(library: LoadedLibrary, onClick: () -> Unit, colors: com
         LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
     }
 
-    Card(Modifier.fillMaxWidth().clickable(onClick = onClick), RoundedCornerShape(12.dp), CardDefaults.cardColors(colors.cardBackground)) {
+    Card(
+        Modifier.fillMaxWidth().clickable(onClick = onClick),
+        RoundedCornerShape(12.dp),
+        CardDefaults.cardColors(colors.cardBackground),
+    ) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(40.dp).clip(RoundedCornerShape(8.dp)).background(color.copy(0.15f)), Alignment.Center) {
                 Icon(icon, null, tint = color, modifier = Modifier.size(20.dp))
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(library.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = colors.labelPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(library.path, style = MaterialTheme.typography.bodySmall, color = colors.labelSecondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    library.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.labelPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    library.path,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colors.labelSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    library.size?.let { Text(formatSize(it), style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = color) }
-                    if (library.isSystemLibrary) Text("System", style = MaterialTheme.typography.labelSmall, color = colors.systemBadge)
+                    library.size?.let {
+                        Text(
+                            formatSize(it),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = color,
+                        )
+                    }
+                    if (library.isSystemLibrary) {
+                        Text(
+                            "System",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.systemBadge,
+                        )
+                    }
                 }
             }
             Surface(shape = RoundedCornerShape(4.dp), color = color.copy(0.15f)) {
-                Text(library.type.name.take(3), Modifier.padding(horizontal = 6.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = color)
+                Text(
+                    library.type.name.take(3),
+                    Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = color,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun LibraryDetailContent(library: LoadedLibrary, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier) {
+private fun LibraryDetailContent(
+    library: LoadedLibrary,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    modifier: Modifier,
+) {
     val (icon, color) = when (library.type) {
         LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
         LibraryType.DEX -> Icons.Default.Android to colors.dex
@@ -275,33 +372,56 @@ private fun LibraryDetailContent(library: LoadedLibrary, colors: com.azikar24.wo
                 Icon(icon, null, tint = color, modifier = Modifier.size(24.dp))
             }
             Column {
-                Text(library.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = colors.labelPrimary)
+                Text(
+                    library.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.labelPrimary,
+                )
                 Text(library.type.name.replace("_", " "), style = MaterialTheme.typography.bodySmall, color = color)
             }
         }
 
-        DetailSection("Details", listOfNotNull(
-            "Path" to library.path,
-            library.size?.let { "Size" to formatSize(it) },
-            library.loadAddress?.let { "Load Address" to it },
-            library.version?.let { "Version" to it },
-            "Type" to if (library.isSystemLibrary) "System Library" else "App Library",
-        ), colors)
+        DetailSection(
+            "Details",
+            listOfNotNull(
+                "Path" to library.path,
+                library.size?.let { "Size" to formatSize(it) },
+                library.loadAddress?.let { "Load Address" to it },
+                library.version?.let { "Version" to it },
+                "Type" to if (library.isSystemLibrary) "System Library" else "App Library",
+            ),
+            colors,
+        )
 
         Spacer(Modifier.height(16.dp))
     }
 }
 
 @Composable
-private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors) {
+private fun DetailSection(
+    title: String,
+    items: List<Pair<String, String>>,
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
-        Text(title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = colors.labelSecondary)
+        Text(
+            title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = colors.labelSecondary,
+        )
         Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.searchBackground) {
             Column(Modifier.padding(12.dp), Arrangement.spacedBy(8.dp)) {
                 items.forEach { (label, value) ->
                     Column {
                         Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-                        Text(value, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = colors.valuePrimary)
+                        Text(
+                            value,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = colors.valuePrimary,
+                        )
                     }
                 }
             }
@@ -310,7 +430,10 @@ private fun DetailSection(title: String, items: List<Pair<String, String>>, colo
 }
 
 @Composable
-private fun EmptyState(colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier) {
+private fun EmptyState(
+    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    modifier: Modifier,
+) {
     Box(modifier, Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Icon(Icons.Default.Extension, null, tint = colors.labelSecondary, modifier = Modifier.size(48.dp))

@@ -59,16 +59,16 @@ data class ThreadViolationColors(
  * Light theme thread violation colors.
  */
 val LightThreadViolationColors = ThreadViolationColors(
-    primary = Color(0xFFE91E63),          // Pink 500
+    primary = Color(0xFFE91E63), // Pink 500
 
-    diskRead = Color(0xFF2196F3),         // Blue 500
-    diskWrite = Color(0xFF1565C0),        // Blue 800
-    network = Color(0xFFFF9800),          // Orange 500
-    slowCall = Color(0xFFF44336),         // Red 500
-    customSlowCode = Color(0xFF9C27B0),   // Purple 500
+    diskRead = Color(0xFF2196F3), // Blue 500
+    diskWrite = Color(0xFF1565C0), // Blue 800
+    network = Color(0xFFFF9800), // Orange 500
+    slowCall = Color(0xFFF44336), // Red 500
+    customSlowCode = Color(0xFF9C27B0), // Purple 500
 
-    monitoring = Color(0xFF4CAF50),       // Green 500
-    idle = Color(0xFF9E9E9E),             // Grey 500
+    monitoring = Color(0xFF4CAF50), // Green 500
+    idle = Color(0xFF9E9E9E), // Grey 500
 
     cardBackground = Color(0xFFFAFAFA),
     detailBackground = Color(0xFFF5F5F5),
@@ -82,16 +82,16 @@ val LightThreadViolationColors = ThreadViolationColors(
  * Dark theme thread violation colors.
  */
 val DarkThreadViolationColors = ThreadViolationColors(
-    primary = Color(0xFFF48FB1),          // Pink 200
+    primary = Color(0xFFF48FB1), // Pink 200
 
-    diskRead = Color(0xFF64B5F6),         // Blue 300
-    diskWrite = Color(0xFF42A5F5),        // Blue 400
-    network = Color(0xFFFFB74D),          // Orange 300
-    slowCall = Color(0xFFE57373),         // Red 300
-    customSlowCode = Color(0xFFCE93D8),   // Purple 200
+    diskRead = Color(0xFF64B5F6), // Blue 300
+    diskWrite = Color(0xFF42A5F5), // Blue 400
+    network = Color(0xFFFFB74D), // Orange 300
+    slowCall = Color(0xFFE57373), // Red 300
+    customSlowCode = Color(0xFFCE93D8), // Purple 200
 
-    monitoring = Color(0xFF81C784),       // Green 300
-    idle = Color(0xFF757575),             // Grey 600
+    monitoring = Color(0xFF81C784), // Green 300
+    idle = Color(0xFF757575), // Grey 600
 
     cardBackground = Color(0xFF1E1E1E),
     detailBackground = Color(0xFF2D2D2D),

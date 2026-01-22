@@ -131,7 +131,8 @@ enum class WebViewResourceType(
     OBJECT("Object", "Plugin content"),
     IFRAME("IFrame", "Inline frame content"),
     OTHER("Other", "Other resource types"),
-    UNKNOWN("Unknown", "Unknown resource type");
+    UNKNOWN("Unknown", "Unknown resource type"),
+    ;
 
     companion object {
         /**

@@ -12,8 +12,10 @@ import java.util.UUID
 enum class InterceptionType {
     /** Intercept view operations by ID, class, or content description */
     VIEW,
+
     /** Intercept touch events to block, modify coordinates, or delay */
     TOUCH,
+
     /** Intercept location requests to mock or offset coordinates */
     LOCATION,
 }
@@ -24,12 +26,16 @@ enum class InterceptionType {
 enum class InterceptionAction {
     /** Block the event entirely */
     BLOCK,
+
     /** Log the event without modification */
     LOG_ONLY,
+
     /** Modify the event according to rule parameters */
     MODIFY,
+
     /** Delay the event processing */
     DELAY,
+
     /** Replace with mock data */
     MOCK,
 }
@@ -109,24 +115,19 @@ data class InterceptionRule(
         /**
          * Creates a rule to block touches in a specific area.
          */
-        fun blockTouchInArea(
-            name: String,
-            left: Int,
-            top: Int,
-            right: Int,
-            bottom: Int,
-        ): InterceptionRule = InterceptionRule(
-            name = name,
-            type = InterceptionType.TOUCH,
-            targetPattern = "area:$left,$top,$right,$bottom",
-            action = InterceptionAction.BLOCK,
-            parameters = mapOf(
-                PARAM_TOUCH_AREA_LEFT to left.toString(),
-                PARAM_TOUCH_AREA_TOP to top.toString(),
-                PARAM_TOUCH_AREA_RIGHT to right.toString(),
-                PARAM_TOUCH_AREA_BOTTOM to bottom.toString(),
-            ),
-        )
+        fun blockTouchInArea(name: String, left: Int, top: Int, right: Int, bottom: Int): InterceptionRule =
+            InterceptionRule(
+                name = name,
+                type = InterceptionType.TOUCH,
+                targetPattern = "area:$left,$top,$right,$bottom",
+                action = InterceptionAction.BLOCK,
+                parameters = mapOf(
+                    PARAM_TOUCH_AREA_LEFT to left.toString(),
+                    PARAM_TOUCH_AREA_TOP to top.toString(),
+                    PARAM_TOUCH_AREA_RIGHT to right.toString(),
+                    PARAM_TOUCH_AREA_BOTTOM to bottom.toString(),
+                ),
+            )
 
         /**
          * Creates a rule to offset touch coordinates.
@@ -178,11 +179,7 @@ data class InterceptionRule(
         /**
          * Creates a rule to offset location coordinates.
          */
-        fun offsetLocation(
-            name: String,
-            latOffset: Double,
-            lngOffset: Double,
-        ): InterceptionRule = InterceptionRule(
+        fun offsetLocation(name: String, latOffset: Double, lngOffset: Double): InterceptionRule = InterceptionRule(
             name = name,
             type = InterceptionType.LOCATION,
             targetPattern = "offset:$latOffset,$lngOffset",

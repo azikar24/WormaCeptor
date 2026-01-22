@@ -314,6 +314,8 @@ class FileBrowserViewModel(
     }
 
     enum class SortMode {
-        NAME, SIZE, DATE
+        NAME,
+        SIZE,
+        DATE,
     }
 }

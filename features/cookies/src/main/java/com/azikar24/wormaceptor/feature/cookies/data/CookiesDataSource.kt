@@ -11,7 +11,6 @@ import com.azikar24.wormaceptor.domain.entities.CookieInfo
 import java.net.CookieHandler
 import java.net.CookieStore
 import java.net.HttpCookie
-import java.net.URI
 
 /**
  * Data source for reading and managing HTTP cookies.
@@ -63,7 +62,7 @@ class CookiesDataSource(private val context: Context) {
                     it.domain.equals(domain, ignoreCase = true) ||
                         it.domain.endsWith(".$domain", ignoreCase = true) ||
                         domain.endsWith(".${it.domain}", ignoreCase = true)
-                }
+                },
             )
         }
 

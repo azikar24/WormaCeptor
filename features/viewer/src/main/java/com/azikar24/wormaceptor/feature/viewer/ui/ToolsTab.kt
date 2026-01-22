@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
@@ -81,7 +82,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.activity.ComponentActivity
 import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
@@ -130,10 +130,7 @@ private object CategoryColors {
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ToolsTab(
-    onNavigate: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
 
@@ -171,10 +168,12 @@ fun ToolsTab(
     val filteredFavorites = remember(favorites, enabledFeatures, searchQuery) {
         favorites.filter { feature ->
             feature in enabledFeatures &&
-                (searchQuery.isBlank() || ToolCategories.getToolByFeature(feature)?.name?.contains(
-                    searchQuery,
-                    ignoreCase = true,
-                ) == true)
+                (
+                    searchQuery.isBlank() || ToolCategories.getToolByFeature(feature)?.name?.contains(
+                        searchQuery,
+                        ignoreCase = true,
+                    ) == true
+                    )
         }
     }
 
@@ -280,11 +279,7 @@ fun ToolsTab(
 }
 
 @Composable
-private fun ToolsSearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun ToolsSearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
     val surfaceColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     val borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
 
@@ -403,12 +398,7 @@ private fun FavoritesStrip(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun FavoriteTile(
-    tool: ToolItem,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () -> Unit, modifier: Modifier = Modifier) {
     val haptic = LocalHapticFeedback.current
 
     Surface(
@@ -702,10 +692,7 @@ private fun ToolTile(
 }
 
 @Composable
-private fun EmptyToolsState(
-    searchQuery: String,
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -748,11 +735,7 @@ private fun EmptyToolsState(
  * Toggle card for enabling/disabling the performance overlay.
  */
 @Composable
-private fun PerformanceOverlayToggle(
-    isEnabled: Boolean,
-    onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun PerformanceOverlayToggle(isEnabled: Boolean, onToggle: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val canDrawOverlays = remember { WormaCeptorApi.canShowFloatingButton(context) }
 

@@ -124,6 +124,5 @@ object ToolCategories {
      * Check if any tools are enabled based on the provided enabled features set.
      * Used to determine whether to show the Tools tab.
      */
-    fun hasAnyEnabledTools(enabledFeatures: Set<Feature>): Boolean =
-        allTools.any { it.feature in enabledFeatures }
+    fun hasAnyEnabledTools(enabledFeatures: Set<Feature>): Boolean = allTools.any { it.feature in enabledFeatures }
 }

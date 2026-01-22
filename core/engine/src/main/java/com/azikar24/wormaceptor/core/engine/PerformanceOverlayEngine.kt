@@ -24,6 +24,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -35,7 +36,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
 import java.lang.ref.WeakReference
 
 /**
@@ -270,14 +270,19 @@ class PerformanceOverlayEngine(
             ) { values ->
                 @Suppress("UNCHECKED_CAST")
                 val fpsInfo = values[0] as com.azikar24.wormaceptor.domain.entities.FpsInfo
+
                 @Suppress("UNCHECKED_CAST")
                 val fpsHistory = values[1] as List<com.azikar24.wormaceptor.domain.entities.FpsInfo>
+
                 @Suppress("UNCHECKED_CAST")
                 val memoryInfo = values[2] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
+
                 @Suppress("UNCHECKED_CAST")
                 val memoryHistory = values[3] as List<com.azikar24.wormaceptor.domain.entities.MemoryInfo>
+
                 @Suppress("UNCHECKED_CAST")
                 val cpuInfo = values[4] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+
                 @Suppress("UNCHECKED_CAST")
                 val cpuHistory = values[5] as List<com.azikar24.wormaceptor.domain.entities.CpuInfo>
 

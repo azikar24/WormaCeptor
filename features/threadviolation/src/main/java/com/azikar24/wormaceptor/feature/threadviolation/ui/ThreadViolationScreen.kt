@@ -62,7 +62,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -338,9 +337,18 @@ private fun ViolationCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(formatTime(violation.timestamp), style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
+                    Text(
+                        formatTime(violation.timestamp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colors.labelSecondary,
+                    )
                     violation.durationMs?.let {
-                        Text("${it}ms", style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = typeColor)
+                        Text(
+                            "${it}ms",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = typeColor,
+                        )
                     }
                 }
             }
@@ -369,14 +377,25 @@ private fun ViolationDetailContent(
         item {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Box(
-                    modifier = Modifier.size(48.dp).clip(RoundedCornerShape(12.dp)).background(typeColor.copy(alpha = 0.15f)),
+                    modifier = Modifier.size(
+                        48.dp,
+                    ).clip(RoundedCornerShape(12.dp)).background(typeColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(Icons.Default.Warning, null, tint = typeColor, modifier = Modifier.size(24.dp))
                 }
                 Column {
-                    Text(violation.violationType.name.replace("_", " "), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = colors.labelPrimary)
-                    Text(violation.threadName, style = MaterialTheme.typography.bodySmall, color = colors.labelSecondary)
+                    Text(
+                        violation.violationType.name.replace("_", " "),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.labelPrimary,
+                    )
+                    Text(
+                        violation.threadName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.labelSecondary,
+                    )
                 }
             }
         }
@@ -396,14 +415,28 @@ private fun ViolationDetailContent(
         if (violation.stackTrace.isNotEmpty()) {
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Stack Trace", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = colors.labelSecondary)
+                    Text(
+                        "Stack Trace",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.labelSecondary,
+                    )
                     Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.detailBackground) {
                         Column(Modifier.padding(12.dp), Arrangement.spacedBy(2.dp)) {
                             violation.stackTrace.take(20).forEach {
-                                Text(it, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = colors.valuePrimary)
+                                Text(
+                                    it,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = FontFamily.Monospace,
+                                    color = colors.valuePrimary,
+                                )
                             }
                             if (violation.stackTrace.size > 20) {
-                                Text("... ${violation.stackTrace.size - 20} more", style = MaterialTheme.typography.bodySmall, color = colors.labelSecondary)
+                                Text(
+                                    "... ${violation.stackTrace.size - 20} more",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = colors.labelSecondary,
+                                )
                             }
                         }
                     }
@@ -416,15 +449,29 @@ private fun ViolationDetailContent(
 }
 
 @Composable
-private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors) {
+private fun DetailSection(
+    title: String,
+    items: List<Pair<String, String>>,
+    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
-        Text(title, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = colors.labelSecondary)
+        Text(
+            title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = colors.labelSecondary,
+        )
         Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.detailBackground) {
             Column(Modifier.padding(12.dp), Arrangement.spacedBy(8.dp)) {
                 items.forEach { (label, value) ->
                     Column {
                         Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-                        Text(value, style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = colors.valuePrimary)
+                        Text(
+                            value,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = colors.valuePrimary,
+                        )
                     }
                 }
             }
@@ -433,12 +480,29 @@ private fun DetailSection(title: String, items: List<Pair<String, String>>, colo
 }
 
 @Composable
-private fun EmptyState(isMonitoring: Boolean, colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors, modifier: Modifier = Modifier) {
+private fun EmptyState(
+    isMonitoring: Boolean,
+    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    modifier: Modifier = Modifier,
+) {
     Box(modifier, Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(Icons.Default.Warning, null, tint = if (isMonitoring) colors.monitoring else colors.labelSecondary, modifier = Modifier.size(48.dp))
-            Text(if (isMonitoring) "Monitoring..." else "No violations", style = MaterialTheme.typography.bodyLarge, color = colors.labelSecondary)
-            Text(if (isMonitoring) "Violations will appear here" else "Start monitoring to detect violations", style = MaterialTheme.typography.bodySmall, color = colors.labelSecondary)
+            Icon(
+                Icons.Default.Warning,
+                null,
+                tint = if (isMonitoring) colors.monitoring else colors.labelSecondary,
+                modifier = Modifier.size(48.dp),
+            )
+            Text(
+                if (isMonitoring) "Monitoring..." else "No violations",
+                style = MaterialTheme.typography.bodyLarge,
+                color = colors.labelSecondary,
+            )
+            Text(
+                if (isMonitoring) "Violations will appear here" else "Start monitoring to detect violations",
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.labelSecondary,
+            )
         }
     }
 }

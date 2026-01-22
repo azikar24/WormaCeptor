@@ -66,25 +66,25 @@ data class CpuColors(
  */
 val LightCpuColors = CpuColors(
     // Chart colors - saturated for visibility
-    cpuUsage = Color(0xFF2196F3),        // Blue 500
-    cpuUsageLight = Color(0xFFBBDEFB),   // Blue 100
+    cpuUsage = Color(0xFF2196F3), // Blue 500
+    cpuUsageLight = Color(0xFFBBDEFB), // Blue 100
 
     // Per-core colors - distinct colors for each core
     coreColors = listOf(
-        Color(0xFF2196F3),  // Blue
-        Color(0xFF4CAF50),  // Green
-        Color(0xFFFF9800),  // Orange
-        Color(0xFF9C27B0),  // Purple
-        Color(0xFF00BCD4),  // Cyan
-        Color(0xFFE91E63),  // Pink
-        Color(0xFF607D8B),  // Blue Grey
-        Color(0xFF795548),  // Brown
+        Color(0xFF2196F3), // Blue
+        Color(0xFF4CAF50), // Green
+        Color(0xFFFF9800), // Orange
+        Color(0xFF9C27B0), // Purple
+        Color(0xFF00BCD4), // Cyan
+        Color(0xFFE91E63), // Pink
+        Color(0xFF607D8B), // Blue Grey
+        Color(0xFF795548), // Brown
     ),
 
     // Status colors
-    normal = Color(0xFF4CAF50),        // Green 500
-    warning = Color(0xFFFF9800),       // Orange 500
-    critical = Color(0xFFF44336),      // Red 500
+    normal = Color(0xFF4CAF50), // Green 500
+    warning = Color(0xFFFF9800), // Orange 500
+    critical = Color(0xFFF44336), // Red 500
 
     // Background colors
     cardBackground = Color(0xFFFAFAFA),
@@ -106,25 +106,25 @@ val LightCpuColors = CpuColors(
  */
 val DarkCpuColors = CpuColors(
     // Chart colors - slightly muted for dark backgrounds
-    cpuUsage = Color(0xFF42A5F5),        // Blue 400
-    cpuUsageLight = Color(0xFF1565C0),   // Blue 800
+    cpuUsage = Color(0xFF42A5F5), // Blue 400
+    cpuUsageLight = Color(0xFF1565C0), // Blue 800
 
     // Per-core colors - slightly lighter for dark mode
     coreColors = listOf(
-        Color(0xFF42A5F5),  // Blue
-        Color(0xFF66BB6A),  // Green
-        Color(0xFFFFB74D),  // Orange
-        Color(0xFFAB47BC),  // Purple
-        Color(0xFF26C6DA),  // Cyan
-        Color(0xFFEC407A),  // Pink
-        Color(0xFF78909C),  // Blue Grey
-        Color(0xFF8D6E63),  // Brown
+        Color(0xFF42A5F5), // Blue
+        Color(0xFF66BB6A), // Green
+        Color(0xFFFFB74D), // Orange
+        Color(0xFFAB47BC), // Purple
+        Color(0xFF26C6DA), // Cyan
+        Color(0xFFEC407A), // Pink
+        Color(0xFF78909C), // Blue Grey
+        Color(0xFF8D6E63), // Brown
     ),
 
     // Status colors
-    normal = Color(0xFF66BB6A),        // Green 400
-    warning = Color(0xFFFFB74D),       // Orange 300
-    critical = Color(0xFFEF5350),      // Red 400
+    normal = Color(0xFF66BB6A), // Green 400
+    warning = Color(0xFFFFB74D), // Orange 300
+    critical = Color(0xFFEF5350), // Red 400
 
     // Background colors
     cardBackground = Color(0xFF1E1E1E),

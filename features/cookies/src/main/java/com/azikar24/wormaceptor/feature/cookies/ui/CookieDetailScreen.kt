@@ -73,12 +73,7 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CookieDetailScreen(
-    cookie: CookieInfo,
-    onBack: () -> Unit,
-    onDelete: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun CookieDetailScreen(cookie: CookieInfo, onBack: () -> Unit, onDelete: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var showDeleteDialog by remember { mutableStateOf(false) }
 
@@ -190,10 +185,7 @@ fun CookieDetailScreen(
 }
 
 @Composable
-private fun StatusCard(
-    cookie: CookieInfo,
-    modifier: Modifier = Modifier,
-) {
+private fun StatusCard(cookie: CookieInfo, modifier: Modifier = Modifier) {
     val statusColor = CookiesDesignSystem.CookieColors.forExpirationStatus(cookie.expirationStatus)
 
     Row(
@@ -255,11 +247,7 @@ private fun StatusCard(
 }
 
 @Composable
-private fun ValueCard(
-    value: String,
-    onCopy: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun ValueCard(value: String, onCopy: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -323,10 +311,7 @@ private fun ValueCard(
 }
 
 @Composable
-private fun AttributesSection(
-    cookie: CookieInfo,
-    modifier: Modifier = Modifier,
-) {
+private fun AttributesSection(cookie: CookieInfo, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -381,10 +366,7 @@ private fun AttributesSection(
 }
 
 @Composable
-private fun SecuritySection(
-    cookie: CookieInfo,
-    modifier: Modifier = Modifier,
-) {
+private fun SecuritySection(cookie: CookieInfo, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -432,10 +414,7 @@ private fun SecuritySection(
 }
 
 @Composable
-private fun ExpirationSection(
-    cookie: CookieInfo,
-    modifier: Modifier = Modifier,
-) {
+private fun ExpirationSection(cookie: CookieInfo, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -504,11 +483,7 @@ private fun ExpirationSection(
 }
 
 @Composable
-private fun SectionHeader(
-    icon: ImageVector,
-    title: String,
-    modifier: Modifier = Modifier,
-) {
+private fun SectionHeader(icon: ImageVector, title: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -566,12 +541,7 @@ private fun AttributeRow(
 }
 
 @Composable
-private fun SecurityAttribute(
-    label: String,
-    isEnabled: Boolean,
-    description: String,
-    modifier: Modifier = Modifier,
-) {
+private fun SecurityAttribute(label: String, isEnabled: Boolean, description: String, modifier: Modifier = Modifier) {
     val color = if (isEnabled) {
         CookiesDesignSystem.CookieColors.secure
     } else {

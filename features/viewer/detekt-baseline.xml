@@ -25,8 +25,6 @@
     <ID>CyclomaticComplexMethod:BodyParsingUtils.kt$BodyParsingUtils$fun detectContentType(contentTypeHeader: String?, body: String?): ContentType</ID>
     <ID>CyclomaticComplexMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: List&lt;TransactionSummary&gt;, crashes: List&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethod: String?, filterStatusRange: IntRange?, onMethodFilterChanged: (String?) -&gt; Unit, onStatusFilterChanged: (IntRange?) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: List&lt;TransactionSummary&gt; = transactions, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, )</ID>
     <ID>CyclomaticComplexMethod:ImagePreviewCard.kt$fun detectImageFormat(data: ByteArray): String</ID>
-    <ID>CyclomaticComplexMethod:KeyboardShortcuts.kt$@Composable fun KeyboardShortcutHandler( callbacks: KeyboardShortcutCallbacks, enabled: Boolean = true, content: @Composable () -&gt; Unit, )</ID>
-    <ID>CyclomaticComplexMethod:KeyboardShortcuts.kt$fun Modifier.handleKeyboardShortcuts(callbacks: KeyboardShortcutCallbacks, enabled: Boolean = true): Modifier</ID>
     <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: List&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
     <ID>CyclomaticComplexMethod:PagedTransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreen( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, hasActiveFilters: Boolean = false, hasSearchQuery: Boolean = false, onClearFilters: () -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
@@ -442,7 +440,6 @@
     <ID>ModifierMissing:CrashDetailScreen.kt$CrashDetailScreen</ID>
     <ID>ModifierMissing:CrashListScreen.kt$EnhancedCrashItem</ID>
     <ID>ModifierMissing:HomeScreen.kt$HomeScreen</ID>
-    <ID>ModifierMissing:KeyboardShortcuts.kt$KeyboardShortcutHandler</ID>
     <ID>ModifierMissing:PdfViewerScreen.kt$PdfViewerScreen</ID>
     <ID>ModifierMissing:SwipeBackContainer.kt$SwipeBackContainer</ID>
     <ID>ModifierMissing:TransactionDetailScreen.kt$TransactionDetailPagerScreen</ID>
@@ -494,7 +491,6 @@
     <ID>SwallowedException:FormDataView.kt$e: Exception</ID>
     <ID>SwallowedException:ImagePreviewCard.kt$e: Exception</ID>
     <ID>SwallowedException:JsonTreeView.kt$e: Exception</ID>
-    <ID>SwallowedException:KeyboardShortcuts.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: SecurityException</ID>
     <ID>SwallowedException:PdfViewerScreen.kt$e: Exception</ID>
@@ -508,7 +504,6 @@
     <ID>TooGenericExceptionCaught:FullscreenImageViewer.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ImagePreviewCard.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:KeyboardShortcuts.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PaginatedBodyView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfViewerScreen.kt$e: Exception</ID>

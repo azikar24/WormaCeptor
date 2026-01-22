@@ -75,8 +75,6 @@ import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutCallbacks
-import com.azikar24.wormaceptor.feature.viewer.ui.util.KeyboardShortcutHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -84,7 +82,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
- * HomeScreen with multi-select, context menus, and keyboard shortcuts.
+ * HomeScreen with multi-select and context menus.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -187,36 +185,7 @@ fun HomeScreen(
             }
     }
 
-    // Keyboard shortcuts callbacks
-    val keyboardCallbacks = remember(isSelectionMode, selectedIds) {
-        KeyboardShortcutCallbacks(
-            onRefresh = onRefreshTransactions,
-            onSearch = { showFilterSheet = true },
-            onSelectAll = onSelectAll,
-            onDelete = {
-                if (isSelectionMode && selectedIds.isNotEmpty()) {
-                    showDeleteSelectedDialog = true
-                }
-            },
-            onClear = {
-                if (isSelectionMode) {
-                    onClearSelection()
-                } else {
-                    onClearFilters()
-                    onSearchChanged("")
-                }
-            },
-            onExport = {
-                scope.launch { onExportTransactions() }
-            },
-        )
-    }
-
-    KeyboardShortcutHandler(
-        callbacks = keyboardCallbacks,
-        enabled = selectedTabIndex == 0,
-    ) {
-        Scaffold(
+    Scaffold(
             topBar = {
                 Column {
                     // Show bulk action bar when in selection mode
@@ -720,5 +689,4 @@ fun HomeScreen(
                 )
             }
         }
-    }
 }

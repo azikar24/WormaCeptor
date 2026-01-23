@@ -38,6 +38,7 @@ private val PillBackground = Color(0xFF1C1C1E)
 private val GoodColor = Color(0xFF32D74B)
 private val WarningColor = Color(0xFFFF9F0A)
 private val CriticalColor = Color(0xFFFF453A)
+private val InactiveColor = Color(0xFF8E8E93)
 private val TextSecondary = Color(0xFF8E8E93)
 
 /**
@@ -90,7 +91,7 @@ fun PerformanceOverlayContent(
                 label = "CPU",
                 value = state.cpuPercent,
                 suffix = "%",
-                status = MetricStatus.fromCpuPercent(state.cpuPercent),
+                status = MetricStatus.fromCpuPercent(state.cpuPercent, state.cpuMonitorRunning),
             )
         }
 
@@ -99,7 +100,7 @@ fun PerformanceOverlayContent(
                 label = "MEM",
                 value = state.memoryPercent,
                 suffix = "%",
-                status = MetricStatus.fromMemoryPercent(state.memoryPercent),
+                status = MetricStatus.fromMemoryPercent(state.memoryPercent, state.memoryMonitorRunning),
             )
         }
 
@@ -108,7 +109,7 @@ fun PerformanceOverlayContent(
                 label = "FPS",
                 value = state.fpsValue,
                 suffix = "",
-                status = MetricStatus.fromFps(state.fpsValue),
+                status = MetricStatus.fromFps(state.fpsValue, state.fpsMonitorRunning),
             )
         }
     }
@@ -161,4 +162,5 @@ private fun MetricStatus.toColor(): Color = when (this) {
     MetricStatus.GOOD -> GoodColor
     MetricStatus.WARNING -> WarningColor
     MetricStatus.CRITICAL -> CriticalColor
+    MetricStatus.INACTIVE -> InactiveColor
 }

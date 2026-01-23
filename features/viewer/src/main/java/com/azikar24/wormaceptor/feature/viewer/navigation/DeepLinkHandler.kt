@@ -105,6 +105,7 @@ object DeepLinkHandler {
             "ratelimit", "rate" -> "ratelimit"
             "pushtoken", "token" -> "pushtoken"
             "loadedlibraries", "libraries" -> "loadedlibraries"
+            "dependencies", "deps" -> "dependencies"
             "interception", "intercept" -> "interception"
             "logs", "console" -> "logs"
             "deviceinfo", "device" -> "deviceinfo"

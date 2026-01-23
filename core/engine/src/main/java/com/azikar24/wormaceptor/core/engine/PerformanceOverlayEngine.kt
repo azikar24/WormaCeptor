@@ -543,10 +543,13 @@ class PerformanceOverlayEngine(
             combine(
                 fpsMonitorEngine.currentFpsInfo,
                 fpsMonitorEngine.fpsHistory,
+                fpsMonitorEngine.isRunning,
                 memoryMonitorEngine.currentMemory,
                 memoryMonitorEngine.memoryHistory,
+                memoryMonitorEngine.isMonitoring,
                 cpuMonitorEngine.currentCpu,
                 cpuMonitorEngine.cpuHistory,
+                cpuMonitorEngine.isMonitoring,
             ) { values ->
                 @Suppress("UNCHECKED_CAST")
                 val fpsInfo = values[0] as com.azikar24.wormaceptor.domain.entities.FpsInfo
@@ -554,17 +557,23 @@ class PerformanceOverlayEngine(
                 @Suppress("UNCHECKED_CAST")
                 val fpsHistory = values[1] as List<com.azikar24.wormaceptor.domain.entities.FpsInfo>
 
-                @Suppress("UNCHECKED_CAST")
-                val memoryInfo = values[2] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
+                val fpsRunning = values[2] as Boolean
 
                 @Suppress("UNCHECKED_CAST")
-                val memoryHistory = values[3] as List<com.azikar24.wormaceptor.domain.entities.MemoryInfo>
+                val memoryInfo = values[3] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
 
                 @Suppress("UNCHECKED_CAST")
-                val cpuInfo = values[4] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+                val memoryHistory = values[4] as List<com.azikar24.wormaceptor.domain.entities.MemoryInfo>
+
+                val memoryRunning = values[5] as Boolean
 
                 @Suppress("UNCHECKED_CAST")
-                val cpuHistory = values[5] as List<com.azikar24.wormaceptor.domain.entities.CpuInfo>
+                val cpuInfo = values[6] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+
+                @Suppress("UNCHECKED_CAST")
+                val cpuHistory = values[7] as List<com.azikar24.wormaceptor.domain.entities.CpuInfo>
+
+                val cpuRunning = values[8] as Boolean
 
                 val currentState = _state.value
 
@@ -573,14 +582,17 @@ class PerformanceOverlayEngine(
                     fpsHistory = fpsHistory
                         .takeLast(PerformanceOverlayState.HISTORY_SIZE)
                         .map { it.currentFps },
+                    fpsMonitorRunning = fpsRunning,
                     memoryPercent = memoryInfo.heapUsagePercent.toInt(),
                     memoryHistory = memoryHistory
                         .takeLast(PerformanceOverlayState.HISTORY_SIZE)
                         .map { it.heapUsagePercent },
+                    memoryMonitorRunning = memoryRunning,
                     cpuPercent = cpuInfo.overallUsagePercent.toInt(),
                     cpuHistory = cpuHistory
                         .takeLast(PerformanceOverlayState.HISTORY_SIZE)
                         .map { it.overallUsagePercent },
+                    cpuMonitorRunning = cpuRunning,
                 )
             }.collect { newState ->
                 _state.value = newState

@@ -51,6 +51,7 @@ import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
 import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
 import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
 import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
+import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
@@ -552,6 +553,14 @@ class ViewerActivity : ComponentActivity() {
                         // Loaded Libraries Inspector route
                         composable("loadedlibraries") {
                             LoadedLibrariesInspector(
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
+                        }
+
+                        // Dependencies Inspector route
+                        composable("dependencies") {
+                            DependenciesInspector(
                                 context = this@ViewerActivity,
                                 onNavigateBack = { navController.popBackStack() },
                             )

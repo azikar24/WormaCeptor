@@ -23,10 +23,13 @@ import androidx.compose.ui.geometry.Offset
  * @property cpuEnabled Whether CPU metric is enabled and should be displayed
  * @property fpsValue Current frames per second
  * @property fpsHistory History of FPS values for sparkline (last 30 data points)
+ * @property fpsMonitorRunning Whether the FPS monitor is actively running
  * @property memoryPercent Current memory usage percentage
  * @property memoryHistory History of memory percentage values for sparkline
+ * @property memoryMonitorRunning Whether the memory monitor is actively running
  * @property cpuPercent Current CPU usage percentage
  * @property cpuHistory History of CPU percentage values for sparkline
+ * @property cpuMonitorRunning Whether the CPU monitor is actively running
  */
 @Stable
 data class PerformanceOverlayState(
@@ -38,10 +41,13 @@ data class PerformanceOverlayState(
     val cpuEnabled: Boolean = false,
     val fpsValue: Int = 0,
     val fpsHistory: List<Float> = emptyList(),
+    val fpsMonitorRunning: Boolean = false,
     val memoryPercent: Int = 0,
     val memoryHistory: List<Float> = emptyList(),
+    val memoryMonitorRunning: Boolean = false,
     val cpuPercent: Int = 0,
     val cpuHistory: List<Float> = emptyList(),
+    val cpuMonitorRunning: Boolean = false,
 ) {
     companion object {
         /**
@@ -99,14 +105,20 @@ enum class MetricStatus {
     GOOD,
     WARNING,
     CRITICAL,
+    /** Metric is not being actively monitored (paused). */
+    INACTIVE,
     ;
 
     companion object {
         /**
          * Determines FPS status based on value.
          * Higher FPS is better.
+         *
+         * @param fps The current FPS value
+         * @param isMonitoring Whether the FPS monitor is actively running
          */
-        fun fromFps(fps: Int): MetricStatus = when {
+        fun fromFps(fps: Int, isMonitoring: Boolean = true): MetricStatus = when {
+            !isMonitoring -> INACTIVE
             fps >= PerformanceThresholds.FPS_GOOD -> GOOD
             fps >= PerformanceThresholds.FPS_WARNING -> WARNING
             else -> CRITICAL
@@ -115,8 +127,12 @@ enum class MetricStatus {
         /**
          * Determines memory status based on percentage.
          * Lower memory usage is better.
+         *
+         * @param percent The current memory usage percentage
+         * @param isMonitoring Whether the memory monitor is actively running
          */
-        fun fromMemoryPercent(percent: Int): MetricStatus = when {
+        fun fromMemoryPercent(percent: Int, isMonitoring: Boolean = true): MetricStatus = when {
+            !isMonitoring -> INACTIVE
             percent < PerformanceThresholds.MEMORY_GOOD -> GOOD
             percent <= PerformanceThresholds.MEMORY_WARNING -> WARNING
             else -> CRITICAL
@@ -125,8 +141,12 @@ enum class MetricStatus {
         /**
          * Determines CPU status based on percentage.
          * Lower CPU usage is better.
+         *
+         * @param percent The current CPU usage percentage
+         * @param isMonitoring Whether the CPU monitor is actively running
          */
-        fun fromCpuPercent(percent: Int): MetricStatus = when {
+        fun fromCpuPercent(percent: Int, isMonitoring: Boolean = true): MetricStatus = when {
+            !isMonitoring -> INACTIVE
             percent < PerformanceThresholds.CPU_GOOD -> GOOD
             percent <= PerformanceThresholds.CPU_WARNING -> WARNING
             else -> CRITICAL

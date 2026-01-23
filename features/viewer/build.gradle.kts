@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":features:ratelimit"))
     implementation(project(":features:pushtoken"))
     implementation(project(":features:loadedlibraries"))
+    implementation(project(":features:dependenciesinspector"))
     implementation(project(":features:interception"))
 
     implementation(libs.androidx.core.ktx)

@@ -1,43 +1,14 @@
 # WormaCeptor Features - Manual Test Checklist
 
-## Performance Monitoring
-### FPS Monitor
-Real-time FPS tracking with history.
-- [ ] Navigate to Tools > FPS Monitor
-- [ ] Start monitoring
-- [ ] Scroll in host app
-- [ ] Verify FPS values update in real-time
-
-### Memory Monitor
-Heap memory tracking with charts and GC monitoring.
-- [ ] Navigate to Tools > Memory Monitor
-- [ ] Observe memory usage chart
-- [ ] Trigger GC from host app
-- [ ] Verify GC event is detected
-
-### CPU Monitor
-CPU usage tracking per core.
-- [ ] Navigate to Tools > CPU Monitor
-- [ ] Run intensive operation in host app
-- [ ] Verify CPU usage increases
-
 ### Compose Render Tracker
 Track Compose recomposition counts and identify excessive recompositions.
 - [ ] Navigate to Tools > Compose Render
 - [ ] Interact with Compose UI in host app
 - [ ] Check recomposition stats are recorded
 
-### Performance Overlay
-Draggable overlay showing FPS/memory/CPU in real-time.
-- [ ] Navigate to Tools > toggle Performance Overlay
-- [ ] Verify overlay appears on screen
-- [ ] Drag overlay to different positions
-- [ ] Verify metrics update in real-time
-
 ---
 
 ## Data & Storage Inspection
-
 ### SharedPreferences Inspector
 Browse and edit SharedPreferences.
 - [ ] Navigate to Tools > Preferences
@@ -162,11 +133,16 @@ Navigate and inspect view tree.
 ---
 
 ## Utility & Analysis
-### Loaded Libraries
-List all loaded native libraries.
-- [ ] Navigate to Tools > Loaded Libraries
-- [ ] Verify .so files are listed
-- [ ] Check library paths are displayed
+### Dependencies Inspector
+Detect Java/Kotlin libraries with version detection.
+- [ ] Navigate to Tools > Dependencies
+- [ ] Verify common libraries are detected (OkHttp, Retrofit, Koin, etc.)
+- [ ] Check versions are displayed when detectable
+- [ ] Filter by category (Networking, DI, UI, etc.)
+- [ ] Toggle "Show only versioned" filter
+- [ ] Search for a specific library
+- [ ] Tap a library to view details (Maven coordinate, detection method)
+- [ ] Verify website link opens in browser
 
 ### Crypto Tool
 Encrypt/decrypt with multiple algorithms (AES, RSA).

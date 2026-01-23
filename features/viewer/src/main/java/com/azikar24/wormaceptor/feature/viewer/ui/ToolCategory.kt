@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.DeveloperBoard
+import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.GridOn
@@ -60,6 +61,7 @@ object ToolCategories {
         ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"),
         ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"),
         ToolItem(Feature.LOADED_LIBRARIES, "Loaded Libraries", Icons.Default.LibraryBooks, "loadedlibraries"),
+        ToolItem(Feature.DEPENDENCIES_INSPECTOR, "Dependencies", Icons.Default.Extension, "dependencies"),
         ToolItem(Feature.SECURE_STORAGE, "Secure Storage", Icons.Default.Security, "securestorage"),
         ToolItem(Feature.COOKIES_MANAGER, "Cookies Manager", Icons.Default.Cookie, "cookies"),
         ToolItem(Feature.WEBVIEW_MONITOR, "WebView Monitor", Icons.Default.Language, "webviewmonitor"),

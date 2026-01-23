@@ -109,7 +109,8 @@ class ViewerViewModel(
             val matchesSearch = if (query.isBlank()) {
                 true
             } else {
-                transaction.path.contains(query, ignoreCase = true) ||
+                transaction.host.contains(query, ignoreCase = true) ||
+                    transaction.path.contains(query, ignoreCase = true) ||
                     transaction.method.contains(query, ignoreCase = true) ||
                     transaction.status.name.contains(query, ignoreCase = true)
             }

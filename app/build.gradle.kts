@@ -56,6 +56,8 @@ dependencies {
 
     implementation(project(":api:client"))
     debugImplementation(project(":api:impl:persistence"))
+    debugImplementation(project(":core:engine"))
+    debugImplementation(libs.koin.android)
 //    debugImplementation(project(":api:impl:no-op"))
 //    debugImplementation(project(":api:impl:imdb"))
 

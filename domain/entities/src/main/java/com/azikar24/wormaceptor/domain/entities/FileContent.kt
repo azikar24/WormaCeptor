@@ -18,11 +18,30 @@ sealed class FileContent {
     ) : FileContent()
 
     /**
-     * Binary file content with a hex preview.
+     * JSON file content with formatted/pretty-printed content.
+     */
+    data class Json(
+        val rawContent: String,
+        val formattedContent: String,
+        val isValid: Boolean,
+        val lineCount: Int = formattedContent.lines().size,
+    ) : FileContent()
+
+    /**
+     * XML file content with formatted content.
+     */
+    data class Xml(
+        val rawContent: String,
+        val formattedContent: String,
+        val isValid: Boolean,
+        val lineCount: Int = formattedContent.lines().size,
+    ) : FileContent()
+
+    /**
+     * Binary file content with raw bytes for hex viewing.
      */
     data class Binary(
         val bytes: ByteArray,
-        val previewHex: String,
         val displaySize: Int = bytes.size,
     ) : FileContent() {
         override fun equals(other: Any?): Boolean {
@@ -32,7 +51,6 @@ sealed class FileContent {
             other as Binary
 
             if (!bytes.contentEquals(other.bytes)) return false
-            if (previewHex != other.previewHex) return false
             if (displaySize != other.displaySize) return false
 
             return true
@@ -40,7 +58,6 @@ sealed class FileContent {
 
         override fun hashCode(): Int {
             var result = bytes.contentHashCode()
-            result = 31 * result + previewHex.hashCode()
             result = 31 * result + displaySize
             return result
         }
@@ -77,6 +94,15 @@ sealed class FileContent {
             return result
         }
     }
+
+    /**
+     * PDF file content with path for rendering.
+     */
+    data class Pdf(
+        val filePath: String,
+        val pageCount: Int,
+        val sizeBytes: Long,
+    ) : FileContent()
 
     /**
      * File is too large to display.

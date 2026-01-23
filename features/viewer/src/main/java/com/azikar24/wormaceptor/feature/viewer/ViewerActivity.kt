@@ -31,6 +31,7 @@ import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.TouchVisualizationEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
@@ -93,6 +94,7 @@ class ViewerActivity : ComponentActivity() {
     private val webSocketMonitorEngine: WebSocketMonitorEngine by inject()
     private val leakDetectionEngine: LeakDetectionEngine by inject()
     private val threadViolationEngine: ThreadViolationEngine by inject()
+    private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -379,6 +381,10 @@ class ViewerActivity : ComponentActivity() {
 
                         // Memory Monitor route
                         composable("memory") {
+                            // Enable memory metric in overlay if overlay is enabled
+                            LaunchedEffect(Unit) {
+                                performanceOverlayEngine.enableMetricForMonitorScreen(memory = true)
+                            }
                             MemoryMonitor(
                                 engine = memoryMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
@@ -387,6 +393,10 @@ class ViewerActivity : ComponentActivity() {
 
                         // FPS Monitor route
                         composable("fps") {
+                            // Enable FPS metric in overlay if overlay is enabled
+                            LaunchedEffect(Unit) {
+                                performanceOverlayEngine.enableMetricForMonitorScreen(fps = true)
+                            }
                             FpsMonitor(
                                 engine = fpsMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
@@ -411,6 +421,10 @@ class ViewerActivity : ComponentActivity() {
 
                         // CPU Monitor route
                         composable("cpu") {
+                            // Enable CPU metric in overlay if overlay is enabled
+                            LaunchedEffect(Unit) {
+                                performanceOverlayEngine.enableMetricForMonitorScreen(cpu = true)
+                            }
                             CpuMonitor(
                                 engine = cpuMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
@@ -609,9 +623,14 @@ class ViewerActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
+        // Clear activity references from engines to prevent memory leaks
+        // Note: Engines themselves are NOT stopped here - they persist across Activity
+        // lifecycle via Koin singleton scope. User controls monitoring via explicit start/stop.
+        // We only clear references to THIS activity to allow garbage collection.
+        performanceOverlayEngine.clearActivityReferences()
+        viewBordersEngine.disable() // Disable clears its activity reference
+
         super.onDestroy()
-        // Note: Engines are NOT stopped here - they persist across Activity lifecycle
-        // via Koin singleton scope. User controls monitoring via explicit start/stop.
     }
 
     /**

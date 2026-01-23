@@ -6,11 +6,24 @@ package com.azikar24.wormaceptor.feature.filebrowser.data
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.pdf.PdfRenderer
+import android.os.ParcelFileDescriptor
 import android.webkit.MimeTypeMap
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.domain.entities.FileInfo
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONTokener
 import java.io.File
+import java.io.StringReader
+import java.io.StringWriter
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
+import org.xml.sax.InputSource
 
 /**
  * Data source for file system operations using Java File API.
@@ -20,12 +33,14 @@ class FileSystemDataSource(private val context: Context) {
     companion object {
         private const val MAX_TEXT_FILE_SIZE = 1_048_576L // 1MB
         private const val MAX_BINARY_PREVIEW_SIZE = 5_242_880L // 5MB
-        private const val HEX_PREVIEW_BYTES = 256
 
         private val TEXT_EXTENSIONS = setOf(
-            "txt", "log", "xml", "json", "html", "css", "js", "kt", "java",
+            "txt", "log", "html", "css", "js", "kt", "java",
             "md", "gradle", "properties", "yml", "yaml", "sql", "csv",
         )
+
+        private const val JSON_EXTENSION = "json"
+        private const val XML_EXTENSION = "xml"
 
         private val IMAGE_EXTENSIONS = setOf(
             "png",
@@ -35,6 +50,8 @@ class FileSystemDataSource(private val context: Context) {
             "webp",
             "bmp",
         )
+
+        private const val PDF_EXTENSION = "pdf"
     }
 
     /**
@@ -130,8 +147,19 @@ class FileSystemDataSource(private val context: Context) {
             // Too large for any preview
             size > MAX_BINARY_PREVIEW_SIZE -> FileContent.TooLarge(size, MAX_BINARY_PREVIEW_SIZE)
 
+            // PDF files
+            extension == PDF_EXTENSION -> readPdfFile(file)
+
             // Image files
             extension in IMAGE_EXTENSIONS -> readImageFile(file)
+
+            // JSON files
+            extension == JSON_EXTENSION && size <= MAX_TEXT_FILE_SIZE -> readJsonFile(file)
+            extension == JSON_EXTENSION -> FileContent.TooLarge(size, MAX_TEXT_FILE_SIZE)
+
+            // XML files
+            extension == XML_EXTENSION && size <= MAX_TEXT_FILE_SIZE -> readXmlFile(file)
+            extension == XML_EXTENSION -> FileContent.TooLarge(size, MAX_TEXT_FILE_SIZE)
 
             // Text files
             extension in TEXT_EXTENSIONS && size <= MAX_TEXT_FILE_SIZE -> readTextFile(file)
@@ -214,15 +242,82 @@ class FileSystemDataSource(private val context: Context) {
         }
     }
 
+    private fun readJsonFile(file: File): FileContent {
+        return try {
+            val rawContent = file.readText(Charsets.UTF_8)
+            val (formattedContent, isValid) = formatJson(rawContent)
+            FileContent.Json(
+                rawContent = rawContent,
+                formattedContent = formattedContent,
+                isValid = isValid,
+            )
+        } catch (e: Exception) {
+            FileContent.Error("Failed to read JSON file: ${e.message}", e)
+        }
+    }
+
+    private fun formatJson(json: String): Pair<String, Boolean> {
+        return try {
+            val trimmed = json.trim()
+            val formatted = when {
+                trimmed.startsWith("{") -> JSONObject(trimmed).toString(2)
+                trimmed.startsWith("[") -> JSONArray(trimmed).toString(2)
+                else -> {
+                    // Try to parse anyway
+                    val token = JSONTokener(trimmed).nextValue()
+                    when (token) {
+                        is JSONObject -> token.toString(2)
+                        is JSONArray -> token.toString(2)
+                        else -> json
+                    }
+                }
+            }
+            Pair(formatted, true)
+        } catch (e: Exception) {
+            // Return original content if parsing fails
+            Pair(json, false)
+        }
+    }
+
+    private fun readXmlFile(file: File): FileContent {
+        return try {
+            val rawContent = file.readText(Charsets.UTF_8)
+            val (formattedContent, isValid) = formatXml(rawContent)
+            FileContent.Xml(
+                rawContent = rawContent,
+                formattedContent = formattedContent,
+                isValid = isValid,
+            )
+        } catch (e: Exception) {
+            FileContent.Error("Failed to read XML file: ${e.message}", e)
+        }
+    }
+
+    private fun formatXml(xml: String): Pair<String, Boolean> {
+        return try {
+            val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+            val document = documentBuilder.parse(InputSource(StringReader(xml)))
+
+            val transformer = TransformerFactory.newInstance().newTransformer()
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2")
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no")
+
+            val writer = StringWriter()
+            transformer.transform(DOMSource(document), StreamResult(writer))
+            Pair(writer.toString(), true)
+        } catch (e: Exception) {
+            // Return original content if parsing fails
+            Pair(xml, false)
+        }
+    }
+
     private fun readBinaryFile(file: File): FileContent {
         return try {
             val bytes = file.readBytes()
-            val previewBytes = bytes.take(HEX_PREVIEW_BYTES).toByteArray()
-            val hexPreview = previewBytes.joinToString(" ") { "%02X".format(it) }
 
             FileContent.Binary(
                 bytes = bytes,
-                previewHex = hexPreview,
                 displaySize = bytes.size,
             )
         } catch (e: Exception) {
@@ -246,6 +341,25 @@ class FileSystemDataSource(private val context: Context) {
             )
         } catch (e: Exception) {
             // If image decode fails, try as binary
+            readBinaryFile(file)
+        }
+    }
+
+    private fun readPdfFile(file: File): FileContent {
+        return try {
+            val parcelFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+            val pdfRenderer = PdfRenderer(parcelFileDescriptor)
+            val pageCount = pdfRenderer.pageCount
+            pdfRenderer.close()
+            parcelFileDescriptor.close()
+
+            FileContent.Pdf(
+                filePath = file.absolutePath,
+                pageCount = pageCount,
+                sizeBytes = file.length(),
+            )
+        } catch (e: Exception) {
+            // If PDF rendering fails, fall back to binary
             readBinaryFile(file)
         }
     }

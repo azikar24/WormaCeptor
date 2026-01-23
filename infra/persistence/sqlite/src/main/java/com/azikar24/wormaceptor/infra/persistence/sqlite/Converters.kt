@@ -43,4 +43,10 @@ class Converters {
 
     @TypeConverter
     fun toExtensions(value: String?): Map<String, String>? = value?.let { json.decodeFromString(it) }
+
+    @TypeConverter
+    fun fromStringList(list: List<String>?): String? = list?.let { json.encodeToString(it) }
+
+    @TypeConverter
+    fun toStringList(value: String?): List<String>? = value?.let { json.decodeFromString(it) }
 }

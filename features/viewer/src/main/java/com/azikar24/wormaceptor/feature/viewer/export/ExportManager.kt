@@ -3,16 +3,27 @@ package com.azikar24.wormaceptor.feature.viewer.export
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.ui.util.MAX_CLIPBOARD_SIZE
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ExportManager(private val context: Context) {
 
     suspend fun exportTransactions(transactions: List<NetworkTransaction>) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Preparing export...", Toast.LENGTH_SHORT).show()
+        }
+
         withContext(Dispatchers.IO) {
             try {
                 val jsonArray = JSONArray()
@@ -71,8 +82,14 @@ class ExportManager(private val context: Context) {
 
                 val jsonContent = jsonArray.toString(2)
 
-                withContext(Dispatchers.Main) {
-                    shareText(jsonContent)
+                if (jsonContent.length > MAX_CLIPBOARD_SIZE) {
+                    // Content too large for Intent - share as file
+                    shareAsFile(jsonContent)
+                } else {
+                    // Small enough - share as text
+                    withContext(Dispatchers.Main) {
+                        shareText(jsonContent)
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -85,7 +102,7 @@ class ExportManager(private val context: Context) {
     private fun shareText(content: String) {
         try {
             val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
+                type = "application/json"
                 putExtra(Intent.EXTRA_TEXT, content)
                 putExtra(Intent.EXTRA_SUBJECT, "WormaCeptor Transaction Export")
             }
@@ -93,6 +110,50 @@ class ExportManager(private val context: Context) {
             context.startActivity(Intent.createChooser(intent, "Export Transactions"))
         } catch (e: Exception) {
             Toast.makeText(context, "Failed to share: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private suspend fun shareAsFile(content: String) {
+        try {
+            // Create temp file with timestamp - file I/O stays on IO thread
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            val cacheDir = File(context.cacheDir, "shared_bodies")
+            cacheDir.mkdirs()
+            val file = File(cacheDir, "wormaceptor_export_$timestamp.json")
+
+            // Write content using buffered writer for efficiency
+            file.bufferedWriter().use { writer ->
+                writer.write(content)
+            }
+
+            // Get content URI via FileProvider
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.wormaceptor.fileprovider",
+                file,
+            )
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/json"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_SUBJECT, "WormaCeptor Transaction Export")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            // Only UI operations on Main thread
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    context,
+                    "Exporting as file (${formatBytes(content.length.toLong())})",
+                    Toast.LENGTH_SHORT,
+                ).show()
+
+                context.startActivity(Intent.createChooser(intent, "Export Transactions"))
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Failed to export file: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

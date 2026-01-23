@@ -5,6 +5,7 @@
 package com.azikar24.wormaceptor.core.engine.di
 
 import android.content.Context
+import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
@@ -46,6 +47,9 @@ object WormaCeptorKoin {
             ownKoinInstance = true
         }
         initialized = true
+
+        // Eagerly create LeakDetectionEngine to start monitoring immediately
+        GlobalContext.get().get<LeakDetectionEngine>()
     }
 
     /**

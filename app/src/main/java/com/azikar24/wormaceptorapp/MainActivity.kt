@@ -6,6 +6,7 @@ package com.azikar24.wormaceptorapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import java.io.File
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,8 @@ import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +49,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
@@ -57,6 +61,35 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        // Intentional memory leak for testing leak detection tools
+        // This list holds strong references to Activity instances, preventing GC
+        @Suppress("ObjectPropertyName")
+        private val _leakedActivities = mutableListOf<MainActivity>()
+    }
+
+    /**
+     * Intentionally leaks this Activity by storing it in a static list.
+     * Use this to test memory leak detection tools like LeakCanary.
+     */
+    fun triggerMemoryLeak() {
+        _leakedActivities.add(this)
+    }
+
+    /**
+     * Intentionally performs disk I/O on the main thread.
+     * Use this to test StrictMode thread violation detection.
+     */
+    @Suppress("BlockingMethodInNonBlockingContext")
+    fun triggerThreadViolation() {
+        // Perform disk I/O on main thread - this is a StrictMode violation
+        val file = File(cacheDir, "thread_violation_test.txt")
+        file.writeText("This write operation on the main thread triggers a StrictMode violation")
+        file.readText()
+        file.delete()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -125,6 +158,18 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onCrashClick = { showCrashDialog = true },
+                            onLeakClick = {
+                                triggerMemoryLeak()
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Memory leak triggered! Rotate device to detect.")
+                                }
+                            },
+                            onThreadViolationClick = {
+                                triggerThreadViolation()
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Thread violation triggered! Check StrictMode logs.")
+                                }
+                            },
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
                         Footer(onGitHubClick = { viewModel.goToGithub(this@MainActivity) })
@@ -270,7 +315,13 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Content(viewModel: MainActivityViewModel, onRunApiTestsClick: () -> Unit, onCrashClick: () -> Unit) {
+    private fun Content(
+        viewModel: MainActivityViewModel,
+        onRunApiTestsClick: () -> Unit,
+        onCrashClick: () -> Unit,
+        onLeakClick: () -> Unit,
+        onThreadViolationClick: () -> Unit,
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             modifier = Modifier
@@ -302,6 +353,26 @@ class MainActivity : ComponentActivity() {
                     icon = Icons.Default.BugReport,
                     title = stringResource(id = R.string.action_crash_title),
                     onClick = onCrashClick,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+
+            // Debug triggers row: Memory Leak + Thread Violation
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                WarningActionCard(
+                    icon = Icons.Default.Memory,
+                    title = "Trigger Leak",
+                    onClick = onLeakClick,
+                    modifier = Modifier.weight(1f),
+                )
+
+                WarningActionCard(
+                    icon = Icons.Default.Storage,
+                    title = "Thread Violation",
+                    onClick = onThreadViolationClick,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -454,6 +525,7 @@ class MainActivity : ComponentActivity() {
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onErrorContainer,
+                    textAlign = TextAlign.Center,
                 )
             }
         }

@@ -9,6 +9,7 @@ import android.app.Application
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
@@ -60,6 +61,10 @@ class LeakDetectionEngine(
 
     private val _isRunning = MutableStateFlow(false)
     val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
+
+    // Persistence and notification configuration
+    private var leakRepository: LeakRepository? = null
+    private var onLeakDetected: ((LeakInfo) -> Unit)? = null
 
     // Activity lifecycle callbacks
     private var application: Application? = null
@@ -119,6 +124,20 @@ class LeakDetectionEngine(
         application?.unregisterActivityLifecycleCallbacks(lifecycleCallbacks)
         application = null
         pendingChecks.clear()
+    }
+
+    /**
+     * Configures the leak detection engine with persistence and notification callbacks.
+     *
+     * @param repository Optional repository for persisting detected leaks
+     * @param onLeakCallback Optional callback invoked when a leak is detected (for notifications)
+     */
+    fun configure(
+        repository: LeakRepository? = null,
+        onLeakCallback: ((LeakInfo) -> Unit)? = null,
+    ) {
+        this.leakRepository = repository
+        this.onLeakDetected = onLeakCallback
     }
 
     /**
@@ -270,6 +289,16 @@ class LeakDetectionEngine(
             }
             updateStateFlows()
         }
+
+        // Persist to repository if configured
+        leakRepository?.let { repo ->
+            scope.launch {
+                repo.saveLeak(leakInfo)
+            }
+        }
+
+        // Invoke callback for notifications
+        onLeakDetected?.invoke(leakInfo)
     }
 
     /**
@@ -302,35 +331,45 @@ class LeakDetectionEngine(
     /**
      * Builds a simplified reference path for the leaked object.
      * Note: Full reference path analysis requires additional tooling.
+     *
+     * IMPORTANT: This method only uses class metadata (class name, field names, field types)
+     * and does NOT access field values via reflection. Accessing field values would cause
+     * the leaked object to be retained even longer, exacerbating the memory leak.
      */
     private fun buildReferencePath(obj: Any): List<String> {
         val path = mutableListOf<String>()
+
+        // Capture class info immediately to avoid holding the object reference
+        val objClassName = obj.javaClass.simpleName
+        val objClass = obj.javaClass
+        val isActivity = obj is Activity
 
         // Add the leaked object class
         path.add("GC Root")
 
         // Add context hierarchy for Activities
-        if (obj is Activity) {
+        if (isActivity) {
             path.add("Static reference or callback")
-            path.add("-> ${obj.javaClass.simpleName}")
+            path.add("-> $objClassName")
 
-            // Check for common leak patterns
-            obj.javaClass.declaredFields.forEach { field ->
-                field.isAccessible = true
+            // Check for common leak patterns using only class metadata (NOT instance values)
+            // This avoids retaining the activity through reflection access
+            objClass.declaredFields.forEach { field ->
                 try {
-                    val value = field.get(obj)
-                    if (value != null && isLikelyLeakSource(field.name)) {
-                        path.add("   .${field.name} (${value.javaClass.simpleName})")
+                    if (isLikelyLeakSource(field.name)) {
+                        // Only report field name and declared type, not actual value
+                        val fieldTypeName = field.type.simpleName
+                        path.add("   .${field.name} ($fieldTypeName)")
                     }
                 } catch (e: Exception) {
                     // Field access failed, skip
                 }
             }
         } else {
-            path.add("-> ${obj.javaClass.simpleName}")
+            path.add("-> $objClassName")
         }
 
-        path.add("Leaked ${obj.javaClass.simpleName} instance")
+        path.add("Leaked $objClassName instance")
 
         return path
     }

@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -62,6 +63,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -186,8 +189,16 @@ fun ThreadViolationScreen(
         }
 
         selectedViolation?.let { violation ->
-            ModalBottomSheet(onDismissRequest = onDismissDetail, sheetState = sheetState) {
-                ViolationDetailContent(violation = violation, colors = colors, modifier = Modifier.padding(16.dp))
+            ModalBottomSheet(
+                modifier = modifier.padding(top=40.dp),
+                onDismissRequest = onDismissDetail,
+                sheetState = sheetState,
+            ) {
+                ViolationDetailContent(
+                    violation = violation,
+                    colors = colors,
+                    modifier = Modifier.padding(16.dp),
+                )
             }
         }
     }
@@ -414,28 +425,42 @@ private fun ViolationDetailContent(
 
         if (violation.stackTrace.isNotEmpty()) {
             item {
+                val clipboardManager = LocalClipboardManager.current
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        "Stack Trace",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.labelSecondary,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            "Stack Trace",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.SemiBold,
+                            color = colors.labelSecondary,
+                        )
+                        IconButton(
+                            onClick = {
+                                clipboardManager.setText(
+                                    AnnotatedString(violation.stackTrace.joinToString("\n")),
+                                )
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ContentCopy,
+                                contentDescription = "Copy stack trace",
+                                tint = colors.labelSecondary,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
                     Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.detailBackground) {
                         Column(Modifier.padding(12.dp), Arrangement.spacedBy(2.dp)) {
-                            violation.stackTrace.take(20).forEach {
+                            violation.stackTrace.forEach {
                                 Text(
                                     it,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
                                     color = colors.valuePrimary,
-                                )
-                            }
-                            if (violation.stackTrace.size > 20) {
-                                Text(
-                                    "... ${violation.stackTrace.size - 20} more",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colors.labelSecondary,
                                 )
                             }
                         }
@@ -485,7 +510,7 @@ private fun EmptyState(
     colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier, Alignment.Center) {
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Icon(
                 Icons.Default.Warning,

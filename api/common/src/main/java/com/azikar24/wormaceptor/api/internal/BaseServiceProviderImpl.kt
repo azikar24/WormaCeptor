@@ -9,9 +9,14 @@ import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.CrashReporter
 import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
+import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
+import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.QueryEngine
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import org.koin.java.KoinJavaComponent.get
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
+import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,13 +36,17 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         val transactionRepository: TransactionRepository,
         val crashRepository: CrashRepository,
         val blobStorage: BlobStorage,
+        val leakRepository: LeakRepository,
     )
 
     protected abstract fun createDependencies(context: Context): StorageDependencies
     protected abstract fun getNotificationTitle(): String
 
-    override fun init(context: Context, logCrashes: Boolean) {
+    override fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean) {
         if (captureEngine != null) return
+
+        // Initialize Koin for engine dependencies (WebSocketMonitorEngine, etc.)
+        WormaCeptorKoin.init(context)
 
         val deps = createDependencies(context)
 
@@ -59,6 +68,50 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         }
 
         notificationHelper = WormaCeptorNotificationHelper(context, getNotificationTitle())
+
+        // Configure leak detection engine with persistence and notifications
+        configureLeakDetection(context, deps.leakRepository, leakNotifications)
+
+        // Configure thread violation engine with notifications
+        configureThreadViolation(context)
+    }
+
+    private fun configureLeakDetection(
+        context: Context,
+        leakRepository: LeakRepository,
+        leakNotifications: Boolean,
+    ) {
+        try {
+            val leakEngine: LeakDetectionEngine = get(LeakDetectionEngine::class.java)
+            val notificationHelper = if (leakNotifications) {
+                LeakNotificationHelper(context)
+            } else {
+                null
+            }
+
+            leakEngine.configure(
+                repository = leakRepository,
+                onLeakCallback = notificationHelper?.let { helper ->
+                    { leak -> helper.show(leak) }
+                },
+            )
+        } catch (e: Exception) {
+            // LeakDetectionEngine might not be available in Koin
+        }
+    }
+
+    private fun configureThreadViolation(context: Context) {
+        try {
+            val threadViolationEngine: ThreadViolationEngine = get(ThreadViolationEngine::class.java)
+            val notificationHelper = ThreadViolationNotificationHelper(context)
+
+            threadViolationEngine.configure(
+                hostPackage = context.packageName,
+                onViolationCallback = { violation -> notificationHelper.show(violation) },
+            )
+        } catch (e: Exception) {
+            // ThreadViolationEngine might not be available in Koin
+        }
     }
 
     override fun startTransaction(

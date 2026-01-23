@@ -32,7 +32,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Security
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
@@ -79,7 +78,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
-import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboardWithSizeCheck
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
@@ -893,12 +891,12 @@ private fun RequestTab(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     val blobId = transaction.request.bodyRef
     var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
-    var isSharing by remember { mutableStateOf(false) }
+    var copyRequested by remember { mutableStateOf(false) }
+    var isCopying by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
@@ -908,6 +906,11 @@ private fun RequestTab(
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
     val isScrolling = scrollState.value > 100
+
+    // Get content type for sharing
+    val requestContentType = transaction.request.headers.entries
+        .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+        ?.value?.firstOrNull()
 
     // 1. Body Loading
     LaunchedEffect(blobId) {
@@ -923,6 +926,33 @@ private fun RequestTab(
         } else {
             requestBody = null
             rawBody = null
+        }
+    }
+
+    // Handle copy request - copies if small, shares as file if large
+    LaunchedEffect(copyRequested) {
+        if (copyRequested) {
+            isCopying = true
+            try {
+                val bodyContent = if (isPrettyMode) (requestBody ?: rawBody) else (rawBody ?: requestBody)
+                if (bodyContent != null) {
+                    if (isContentTooLargeForClipboard(bodyContent)) {
+                        val (ext, mime) = getFileInfoForContentType(requestContentType)
+                        shareAsFile(
+                            context = context,
+                            content = bodyContent,
+                            fileName = "request_body.$ext",
+                            mimeType = mime,
+                            title = "Share Request Body",
+                        )
+                    } else {
+                        copyToClipboard(context, "Request Body", bodyContent)
+                    }
+                }
+            } finally {
+                isCopying = false
+                copyRequested = false
+            }
         }
     }
 
@@ -1003,48 +1033,17 @@ private fun RequestTab(
                         Text("Processing body...", style = MaterialTheme.typography.bodySmall)
                     }
                 } else if (requestBody != null || rawBody != null) {
-                    // Get request content type
-                    val requestContentType = transaction.request.headers.entries
-                        .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
-                        ?.value?.firstOrNull()
-
                     val detectedContentType = remember(rawBody, requestContentType) {
                         BodyParsingUtils.detectContentType(requestContentType, rawBody)
                     }
                     val colors = syntaxColors()
 
-                    val bodyContent = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
-                    val isLargeBody = isContentTooLargeForClipboard(bodyContent)
-
                     CollapsibleSection(
                         title = "Body",
                         isExpanded = bodyExpanded,
                         onToggle = { bodyExpanded = !bodyExpanded },
-                        onCopy = {
-                            copyToClipboardWithSizeCheck(context, "Request Body", bodyContent)
-                        },
-                        onShare = if (isLargeBody) {
-                            {
-                                scope.launch {
-                                    isSharing = true
-                                    try {
-                                        val (ext, mime) = getFileInfoForContentType(requestContentType)
-                                        shareAsFile(
-                                            context = context,
-                                            content = bodyContent,
-                                            fileName = "request_body.$ext",
-                                            mimeType = mime,
-                                            title = "Share Request Body",
-                                        )
-                                    } finally {
-                                        isSharing = false
-                                    }
-                                }
-                            }
-                        } else {
-                            null
-                        },
-                        isShareLoading = isSharing,
+                        onCopy = { copyRequested = true },
+                        isCopyLoading = isCopying,
                         trailingContent = {
                             BodyControlsRow(
                                 contentType = detectedContentType,
@@ -1177,13 +1176,13 @@ private fun ResponseTab(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     val blobId = transaction.response?.bodyRef
     var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
-    var isSharing by remember { mutableStateOf(false) }
+    var copyRequested by remember { mutableStateOf(false) }
+    var isCopying by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by remember { mutableStateOf(true) }
@@ -1200,6 +1199,33 @@ private fun ResponseTab(
         transaction.response?.headers?.entries
             ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
             ?.value?.firstOrNull()
+    }
+
+    // Handle copy request - copies if small, shares as file if large
+    LaunchedEffect(copyRequested) {
+        if (copyRequested) {
+            isCopying = true
+            try {
+                val bodyContent = if (isPrettyMode) (responseBody ?: rawBody) else (rawBody ?: responseBody)
+                if (bodyContent != null) {
+                    if (isContentTooLargeForClipboard(bodyContent)) {
+                        val (ext, mime) = getFileInfoForContentType(contentType)
+                        shareAsFile(
+                            context = context,
+                            content = bodyContent,
+                            fileName = "response_body.$ext",
+                            mimeType = mime,
+                            title = "Share Response Body",
+                        )
+                    } else {
+                        copyToClipboard(context, "Response Body", bodyContent)
+                    }
+                }
+            } finally {
+                isCopying = false
+                copyRequested = false
+            }
+        }
     }
 
     // Determine if content is an image
@@ -1379,38 +1405,12 @@ private fun ResponseTab(
                             BodyParsingUtils.detectContentType(contentType, rawBody)
                         }
 
-                        val responseBodyContent = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
-                        val isLargeResponseBody = isContentTooLargeForClipboard(responseBodyContent)
-
                         CollapsibleSection(
                             title = "Body",
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
-                            onCopy = {
-                                copyToClipboardWithSizeCheck(context, "Response Body", responseBodyContent)
-                            },
-                            onShare = if (isLargeResponseBody) {
-                                {
-                                    scope.launch {
-                                        isSharing = true
-                                        try {
-                                            val (ext, mime) = getFileInfoForContentType(contentType)
-                                            shareAsFile(
-                                                context = context,
-                                                content = responseBodyContent,
-                                                fileName = "response_body.$ext",
-                                                mimeType = mime,
-                                                title = "Share Response Body",
-                                            )
-                                        } finally {
-                                            isSharing = false
-                                        }
-                                    }
-                                }
-                            } else {
-                                null
-                            },
-                            isShareLoading = isSharing,
+                            onCopy = { copyRequested = true },
+                            isCopyLoading = isCopying,
                             trailingContent = {
                                 BodyControlsRow(
                                     contentType = detectedContentType,
@@ -1581,8 +1581,7 @@ private fun CollapsibleSection(
     isExpanded: Boolean,
     onToggle: () -> Unit,
     onCopy: (() -> Unit)? = null,
-    onShare: (() -> Unit)? = null,
-    isShareLoading: Boolean = false,
+    isCopyLoading: Boolean = false,
     trailingContent: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
@@ -1623,13 +1622,13 @@ private fun CollapsibleSection(
             ) {
                 trailingContent?.invoke()
 
-                if (onShare != null) {
+                if (onCopy != null) {
                     IconButton(
-                        onClick = onShare,
+                        onClick = onCopy,
                         modifier = Modifier.size(32.dp),
-                        enabled = !isShareLoading,
+                        enabled = !isCopyLoading,
                     ) {
-                        if (isShareLoading) {
+                        if (isCopyLoading) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(16.dp),
                                 strokeWidth = 2.dp,
@@ -1637,26 +1636,12 @@ private fun CollapsibleSection(
                             )
                         } else {
                             Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share as File",
+                                imageVector = Icons.Default.ContentCopy,
+                                contentDescription = "Copy",
                                 modifier = Modifier.size(16.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
-                    }
-                }
-
-                if (onCopy != null) {
-                    IconButton(
-                        onClick = onCopy,
-                        modifier = Modifier.size(32.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ContentCopy,
-                            contentDescription = "Copy",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
                     }
                 }
             }

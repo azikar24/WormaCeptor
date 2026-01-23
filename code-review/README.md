@@ -55,7 +55,6 @@ Comprehensive code review findings for the WormaCeptor Android project.
 | CoreHolder singleton | CoreHolder.kt | Testability |
 | `!!` null assertions | ViewerActivity, HomeScreen | Crash risk |
 | Thread safety | CoreHolder, ServiceImpl | Race conditions |
-| Missing @Stable annotations | KeyboardShortcuts.kt | Recomposition |
 | Missing contentDescription | 15+ icons | Screen reader |
 | Enable build optimizations | gradle.properties | Build time |
 

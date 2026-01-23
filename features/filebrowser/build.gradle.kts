@@ -37,5 +37,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.collections.immutable)
 
+    // Coil for image loading (animated GIF support)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
+
     debugImplementation(libs.androidx.ui.tooling)
 }

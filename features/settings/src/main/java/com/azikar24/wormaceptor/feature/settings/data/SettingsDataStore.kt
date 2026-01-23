@@ -14,22 +14,23 @@ import com.azikar24.wormaceptor.domain.contracts.FeatureConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// File-level DataStore delegate to ensure singleton behavior
+private val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "wormaceptor_feature_config",
+)
+
 /**
  * DataStore-based storage for feature configuration.
  * Provides type-safe access to feature toggle preferences.
  */
 class SettingsDataStore(private val context: Context) {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "wormaceptor_feature_config",
-    )
-
     /**
      * Observes the current feature configuration from DataStore.
      * Returns default config if no preferences are stored yet.
      */
     fun observeFeatureConfig(): Flow<FeatureConfig> {
-        return context.dataStore.data.map { preferences ->
+        return context.settingsDataStore.data.map { preferences ->
             FeatureConfig(
                 showNetworkTab = preferences[Keys.SHOW_NETWORK_TAB] ?: FeatureConfig.DEFAULT.showNetworkTab,
                 showCrashesTab = preferences[Keys.SHOW_CRASHES_TAB] ?: FeatureConfig.DEFAULT.showCrashesTab,
@@ -46,7 +47,7 @@ class SettingsDataStore(private val context: Context) {
      * Saves the feature configuration to DataStore.
      */
     suspend fun saveFeatureConfig(config: FeatureConfig) {
-        context.dataStore.edit { preferences ->
+        context.settingsDataStore.edit { preferences ->
             preferences[Keys.SHOW_NETWORK_TAB] = config.showNetworkTab
             preferences[Keys.SHOW_CRASHES_TAB] = config.showCrashesTab
             preferences[Keys.SHOW_PREFERENCES] = config.showPreferences
@@ -61,7 +62,7 @@ class SettingsDataStore(private val context: Context) {
      * Clears all feature configuration, reverting to defaults.
      */
     suspend fun clear() {
-        context.dataStore.edit { preferences ->
+        context.settingsDataStore.edit { preferences ->
             preferences.clear()
         }
     }

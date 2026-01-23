@@ -10,6 +10,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         WormaCeptorApi.init(
             context = this,
             logCrashes = true,
@@ -22,9 +23,8 @@ class App : Application() {
                 override val name = "TestExtension"
                 override fun extractExtensions(context: ExtensionContext): Map<String, String> {
                     return mapOf(
-                        "request_method" to context.request.method,
-                        "has_response" to (context.response != null).toString(),
-                        "custom_tag" to "test_value",
+                        "response_available" to (context.response != null).toString(),
+                        "custom_tag" to "TESTING",
                     )
                 }
             },

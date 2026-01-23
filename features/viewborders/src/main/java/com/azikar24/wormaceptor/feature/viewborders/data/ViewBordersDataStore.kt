@@ -16,22 +16,23 @@ import com.azikar24.wormaceptor.domain.entities.ViewBordersConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+// File-level DataStore delegate to ensure singleton behavior
+private val Context.viewBordersDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "wormaceptor_view_borders_config",
+)
+
 /**
  * DataStore-based storage for View Borders configuration.
  * Provides persistent storage for user preferences.
  */
 class ViewBordersDataStore(private val context: Context) {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "wormaceptor_view_borders_config",
-    )
-
     /**
      * Observes the current View Borders configuration from DataStore.
      * Returns default config if no preferences are stored yet.
      */
     fun observeConfig(): Flow<ViewBordersConfig> {
-        return context.dataStore.data.map { preferences ->
+        return context.viewBordersDataStore.data.map { preferences ->
             ViewBordersConfig(
                 enabled = preferences[Keys.ENABLED] ?: ViewBordersConfig.DEFAULT.enabled,
                 borderWidth = preferences[Keys.BORDER_WIDTH] ?: ViewBordersConfig.DEFAULT.borderWidth,
@@ -47,7 +48,7 @@ class ViewBordersDataStore(private val context: Context) {
      * Saves the View Borders configuration to DataStore.
      */
     suspend fun saveConfig(config: ViewBordersConfig) {
-        context.dataStore.edit { preferences ->
+        context.viewBordersDataStore.edit { preferences ->
             preferences[Keys.ENABLED] = config.enabled
             preferences[Keys.BORDER_WIDTH] = config.borderWidth
             preferences[Keys.MARGIN_COLOR] = config.marginColor
@@ -61,7 +62,7 @@ class ViewBordersDataStore(private val context: Context) {
      * Clears all View Borders configuration, reverting to defaults.
      */
     suspend fun clear() {
-        context.dataStore.edit { preferences ->
+        context.viewBordersDataStore.edit { preferences ->
             preferences.clear()
         }
     }

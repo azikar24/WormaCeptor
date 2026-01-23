@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.StrictMode
 import com.azikar24.wormaceptor.api.Feature
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,15 +11,24 @@ import kotlinx.coroutines.flow.asStateFlow
 /**
  * Repository for managing favorite tools stored in SharedPreferences.
  */
-class FavoritesRepository(context: Context) {
+class FavoritesRepository private constructor(context: Context) {
 
-    private val prefs: SharedPreferences = context.getSharedPreferences(
-        PREFS_NAME,
-        Context.MODE_PRIVATE,
-    )
+    private val prefs: SharedPreferences
+    private val _favorites: MutableStateFlow<Set<Feature>>
+    val favorites: StateFlow<Set<Feature>>
 
-    private val _favorites = MutableStateFlow<Set<Feature>>(loadFavorites())
-    val favorites: StateFlow<Set<Feature>> = _favorites.asStateFlow()
+    init {
+        // Suppress StrictMode for SharedPreferences initialization.
+        // This is a one-time fast read that's acceptable to do synchronously.
+        val oldPolicy = StrictMode.allowThreadDiskReads()
+        try {
+            prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            _favorites = MutableStateFlow(loadFavorites())
+            favorites = _favorites.asStateFlow()
+        } finally {
+            StrictMode.setThreadPolicy(oldPolicy)
+        }
+    }
 
     /**
      * Add a feature to favorites.

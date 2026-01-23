@@ -20,15 +20,16 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+// File-level DataStore delegate to ensure singleton behavior
+private val Context.pushTemplatesDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "wormaceptor_push_templates",
+)
+
 /**
  * DataStore-based storage for notification templates.
  * Uses JSON serialization to persist templates.
  */
 class PushSimulatorDataSource(private val context: Context) {
-
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "wormaceptor_push_templates",
-    )
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -39,7 +40,7 @@ class PushSimulatorDataSource(private val context: Context) {
      * Observes all saved notification templates.
      */
     fun observeTemplates(): Flow<List<NotificationTemplate>> {
-        return context.dataStore.data.map { preferences ->
+        return context.pushTemplatesDataStore.data.map { preferences ->
             val templatesJson = preferences[Keys.TEMPLATES] ?: "[]"
             try {
                 val storedTemplates = json.decodeFromString<List<StoredTemplate>>(templatesJson)
@@ -54,7 +55,7 @@ class PushSimulatorDataSource(private val context: Context) {
      * Saves a notification template.
      */
     suspend fun saveTemplate(template: NotificationTemplate) {
-        context.dataStore.edit { preferences ->
+        context.pushTemplatesDataStore.edit { preferences ->
             val currentJson = preferences[Keys.TEMPLATES] ?: "[]"
             val currentTemplates = try {
                 json.decodeFromString<MutableList<StoredTemplate>>(currentJson)
@@ -74,7 +75,7 @@ class PushSimulatorDataSource(private val context: Context) {
      * Deletes a template by ID.
      */
     suspend fun deleteTemplate(id: String) {
-        context.dataStore.edit { preferences ->
+        context.pushTemplatesDataStore.edit { preferences ->
             val currentJson = preferences[Keys.TEMPLATES] ?: "[]"
             val currentTemplates = try {
                 json.decodeFromString<MutableList<StoredTemplate>>(currentJson)
@@ -91,7 +92,7 @@ class PushSimulatorDataSource(private val context: Context) {
      * Initializes with preset templates if none exist.
      */
     suspend fun initializePresets() {
-        context.dataStore.edit { preferences ->
+        context.pushTemplatesDataStore.edit { preferences ->
             if (!preferences.contains(Keys.TEMPLATES)) {
                 val presets = getPresetTemplates().map { StoredTemplate.fromNotificationTemplate(it) }
                 preferences[Keys.TEMPLATES] = json.encodeToString(presets)
@@ -103,7 +104,7 @@ class PushSimulatorDataSource(private val context: Context) {
      * Clears all stored templates.
      */
     suspend fun clearAll() {
-        context.dataStore.edit { preferences ->
+        context.pushTemplatesDataStore.edit { preferences ->
             preferences.remove(Keys.TEMPLATES)
         }
     }

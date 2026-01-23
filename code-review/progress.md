@@ -27,8 +27,6 @@ Last updated: 2026-01-20
 | 2026-01-20 | Thread Safety | ServiceProviderImpl TOCTOU race condition fixed (imdb + persistence) | 02-BAD-PRACTICES.md |
 | 2026-01-20 | Bad Practices | `!!` null assertions replaced with requireNotNull in ViewerActivity | 02-BAD-PRACTICES.md |
 | 2026-01-20 | Duplicate Code | WormaCeptorDesignSystem deduplicated (app module now uses viewer's) | 01-DUPLICATE-CODE.md |
-| 2026-01-20 | Compose Stability | Added @Immutable to ShortcutKey, ComposeSyntaxColors | 05-COMPOSE-STABILITY.md |
-| 2026-01-20 | Compose Stability | Added @Stable to KeyboardShortcutCallbacks | 05-COMPOSE-STABILITY.md |
 | 2026-01-20 | Performance | O(n^2) search highlighting replaced with Regex.findAll O(n) | 03-CODE-QUALITY-ISSUES.md |
 | 2026-01-20 | Accessibility | contentDescription added to high priority icons (8 files) | 06-ACCESSIBILITY.md |
 | 2026-01-20 | Accessibility | Checkbox semantics added to SelectableTransactionItem | 06-ACCESSIBILITY.md |

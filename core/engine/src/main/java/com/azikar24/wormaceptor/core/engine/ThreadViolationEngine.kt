@@ -63,6 +63,41 @@ class ThreadViolationEngine(
     // Store original policy to restore on disable
     private var originalPolicy: StrictMode.ThreadPolicy? = null
 
+    // Notification callback
+    private var onViolationDetected: ((ThreadViolation) -> Unit)? = null
+
+    // Package filter for violations
+    private var hostPackageName: String? = null
+
+    // System packages to exclude from violation tracking
+    private val systemPackagePrefixes = listOf(
+        "android.",
+        "com.android.",
+        "com.google.android.",
+        "androidx.",
+        "dalvik.",
+        "java.",
+        "javax.",
+        "kotlin.",
+        "kotlinx.",
+        "sun.",
+        "libcore.",
+    )
+
+    /**
+     * Configures the thread violation engine with notification callback and package filter.
+     *
+     * @param hostPackage The host app's package name to filter violations
+     * @param onViolationCallback Optional callback invoked when a violation is detected (for notifications)
+     */
+    fun configure(
+        hostPackage: String? = null,
+        onViolationCallback: ((ThreadViolation) -> Unit)? = null,
+    ) {
+        this.hostPackageName = hostPackage
+        this.onViolationDetected = onViolationCallback
+    }
+
     /**
      * Enables thread violation monitoring.
      * Sets up StrictMode.ThreadPolicy to detect and report violations.
@@ -233,8 +268,14 @@ class ThreadViolationEngine(
 
     /**
      * Adds a violation to the buffer and updates statistics.
+     * Filters out violations that don't originate from the host app or WormaCeptor.
      */
     private fun addViolation(violation: ThreadViolation) {
+        // Filter out system-only violations
+        if (!isRelevantViolation(violation)) {
+            return
+        }
+
         synchronized(bufferLock) {
             if (violationBuffer.size >= historySize) {
                 violationBuffer.removeFirst()
@@ -243,6 +284,41 @@ class ThreadViolationEngine(
             _violations.value = violationBuffer.toList().reversed() // Most recent first
         }
         updateStats()
+
+        // Invoke callback for notifications
+        onViolationDetected?.invoke(violation)
+    }
+
+    /**
+     * Checks if a violation is relevant based on its stack trace.
+     * Returns true if the stack trace contains frames from the host app or WormaCeptor.
+     */
+    private fun isRelevantViolation(violation: ThreadViolation): Boolean {
+        val wormaCeptorPrefix = "com.azikar24.wormaceptor"
+
+        for (frame in violation.stackTrace) {
+            // Skip system package frames
+            val isSystemFrame = systemPackagePrefixes.any { prefix ->
+                frame.contains(prefix)
+            }
+            if (isSystemFrame) continue
+
+            // Check if it's a WormaCeptor frame
+            if (frame.contains(wormaCeptorPrefix)) {
+                return true
+            }
+
+            // Check if it's a host app frame
+            hostPackageName?.let { hostPkg ->
+                if (frame.contains(hostPkg)) {
+                    return true
+                }
+            }
+        }
+
+        // If no host package is set, accept any non-system violation
+        // Otherwise, reject if we didn't find a relevant frame
+        return hostPackageName == null
     }
 
     /**

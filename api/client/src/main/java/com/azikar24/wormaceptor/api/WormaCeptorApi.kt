@@ -27,8 +27,14 @@ object WormaCeptorApi {
      * @param context Application context
      * @param logCrashes Whether to capture uncaught exceptions
      * @param features Set of features to enable (defaults to all features)
+     * @param leakNotifications Whether to show notifications when memory leaks are detected
      */
-    fun init(context: Context, logCrashes: Boolean = true, features: Set<Feature> = Feature.DEFAULT) {
+    fun init(
+        context: Context,
+        logCrashes: Boolean = true,
+        features: Set<Feature> = Feature.DEFAULT,
+        leakNotifications: Boolean = true,
+    ) {
         if (provider != null) return
 
         enabledFeatures = features
@@ -43,7 +49,7 @@ object WormaCeptorApi {
         val instance = implClass?.getDeclaredConstructor()?.newInstance() as? ServiceProvider
         provider = instance ?: NoOpProvider()
 
-        provider?.init(context, logCrashes)
+        provider?.init(context, logCrashes, leakNotifications)
     }
 
     /**
@@ -271,7 +277,7 @@ object WormaCeptorApi {
     }
 
     private class NoOpProvider : ServiceProvider {
-        override fun init(context: Context, logCrashes: Boolean) {}
+        override fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean) {}
         override fun startTransaction(
             url: String,
             method: String,

@@ -37,7 +37,7 @@ data class TransactionDetailDto(
  * Internal interface to be implemented by WormaCeptor implementation modules (persistence, no-op, etc.)
  */
 interface ServiceProvider {
-    fun init(context: Context, logCrashes: Boolean)
+    fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean = true)
 
     fun startTransaction(
         url: String,

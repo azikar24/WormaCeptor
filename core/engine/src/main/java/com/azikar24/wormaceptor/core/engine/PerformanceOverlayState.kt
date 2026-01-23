@@ -4,18 +4,23 @@
 
 package com.azikar24.wormaceptor.core.engine
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Offset
 
 /**
  * Represents the complete state of the performance overlay.
  *
- * This state is used to render the floating performance badge and its expanded view.
+ * This state is used to render the floating performance badge.
  * Position values are stored as percentages (0.0-1.0) of screen dimensions to handle
  * orientation changes gracefully.
  *
- * @property isExpanded Whether the overlay is expanded to show sparkline charts
+ * @property isOverlayEnabled Master toggle for showing/hiding the overlay
  * @property positionPercent Position as percentage of screen (0.0-1.0) for rotation handling
  * @property isDragging Whether the user is currently dragging the overlay
+ * @property fpsEnabled Whether FPS metric is enabled and should be displayed
+ * @property memoryEnabled Whether memory metric is enabled and should be displayed
+ * @property cpuEnabled Whether CPU metric is enabled and should be displayed
  * @property fpsValue Current frames per second
  * @property fpsHistory History of FPS values for sparkline (last 30 data points)
  * @property memoryPercent Current memory usage percentage
@@ -23,10 +28,14 @@ import androidx.compose.ui.geometry.Offset
  * @property cpuPercent Current CPU usage percentage
  * @property cpuHistory History of CPU percentage values for sparkline
  */
+@Stable
 data class PerformanceOverlayState(
-    val isExpanded: Boolean = false,
+    val isOverlayEnabled: Boolean = false,
     val positionPercent: Offset = DEFAULT_POSITION_PERCENT,
     val isDragging: Boolean = false,
+    val fpsEnabled: Boolean = false,
+    val memoryEnabled: Boolean = false,
+    val cpuEnabled: Boolean = false,
     val fpsValue: Int = 0,
     val fpsHistory: List<Float> = emptyList(),
     val memoryPercent: Int = 0,
@@ -53,6 +62,16 @@ data class PerformanceOverlayState(
          */
         val EMPTY = PerformanceOverlayState()
     }
+
+    /**
+     * Returns true if at least one metric is enabled.
+     */
+    fun hasAnyMetricEnabled(): Boolean = fpsEnabled || memoryEnabled || cpuEnabled
+
+    /**
+     * Returns the count of enabled metrics.
+     */
+    fun enabledMetricCount(): Int = listOf(fpsEnabled, memoryEnabled, cpuEnabled).count { it }
 }
 
 /**
@@ -126,6 +145,7 @@ enum class MetricStatus {
  * @property showMemory Whether to show memory metric
  * @property showCpu Whether to show CPU metric
  */
+@Immutable
 data class PerformanceOverlaySettings(
     val enabled: Boolean = false,
     val positionXPercent: Float = PerformanceOverlayState.DEFAULT_POSITION_PERCENT.x,

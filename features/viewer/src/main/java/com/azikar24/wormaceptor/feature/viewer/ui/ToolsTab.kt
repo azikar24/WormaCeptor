@@ -52,12 +52,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -65,6 +64,9 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -134,16 +136,12 @@ fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
 
-    LaunchedEffect(true) { favoritesRepository.setDefaultsIfNeeded() }
+    LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
     val favorites by favoritesRepository.favorites.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
-
-    // Performance overlay state
-    val performanceOverlayEngine = remember { get<PerformanceOverlayEngine>(PerformanceOverlayEngine::class.java) }
-    val isOverlayVisible by performanceOverlayEngine.isVisible.collectAsState()
 
     val filteredCategories = remember(enabledFeatures) {
         ToolCategories.allCategories.map { category ->
@@ -194,24 +192,6 @@ fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
                 ),
         )
 
-        // Performance Overlay Toggle
-        PerformanceOverlayToggle(
-            isEnabled = isOverlayVisible,
-            onToggle = { enabled ->
-                if (enabled) {
-                    (context as? ComponentActivity)?.let { activity ->
-                        performanceOverlayEngine.show(activity)
-                    }
-                } else {
-                    performanceOverlayEngine.hide()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                .padding(bottom = WormaCeptorDesignSystem.Spacing.md),
-        )
-
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.xxl),
@@ -256,6 +236,17 @@ fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
                         }
                     },
                     favorites = favorites,
+                    headerContent = if (category.name == "Performance") {
+                        {
+                            PerformanceOverlayToggle(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                            )
+                        }
+                    } else {
+                        null
+                    },
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
                         vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -473,6 +464,7 @@ private fun ToolCategorySection(
     onToolClick: (String) -> Unit,
     onToolLongClick: (ToolItem) -> Unit,
     favorites: Set<Feature>,
+    headerContent: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val rotationAngle by animateFloatAsState(
@@ -580,21 +572,25 @@ private fun ToolCategorySection(
             enter = expandVertically(animationSpec = tween(250)) + fadeIn(animationSpec = tween(200)),
             exit = shrinkVertically(animationSpec = tween(200)) + fadeOut(animationSpec = tween(150)),
         ) {
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                tools.forEach { tool ->
-                    ToolTile(
-                        tool = tool,
-                        isFavorite = tool.feature in favorites,
-                        categoryColor = categoryColor,
-                        onClick = { onToolClick(tool.route) },
-                        onLongClick = { onToolLongClick(tool) },
-                    )
+            Column {
+                headerContent?.invoke()
+
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                ) {
+                    tools.forEach { tool ->
+                        ToolTile(
+                            tool = tool,
+                            isFavorite = tool.feature in favorites,
+                            categoryColor = categoryColor,
+                            onClick = { onToolClick(tool.route) },
+                            onLongClick = { onToolLongClick(tool) },
+                        )
+                    }
                 }
             }
         }
@@ -732,43 +728,55 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
 }
 
 /**
- * Toggle card for enabling/disabling the performance overlay.
+ * Performance overlay controls with metric visibility buttons.
  */
 @Composable
-private fun PerformanceOverlayToggle(isEnabled: Boolean, onToggle: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+private fun PerformanceOverlayToggle(
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
-    val canDrawOverlays = remember { WormaCeptorApi.canShowFloatingButton(context) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var canDrawOverlays by remember { mutableStateOf(WormaCeptorApi.canShowFloatingButton(context)) }
+
+    val performanceOverlayEngine = remember { get<PerformanceOverlayEngine>(PerformanceOverlayEngine::class.java) }
+    val overlayState by performanceOverlayEngine.state.collectAsState()
+
+    // Load saved metric states on first composition
+    LaunchedEffect(Unit) {
+        performanceOverlayEngine.loadSavedMetricStates()
+    }
+
+    // Re-check permission when returning from settings
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                canDrawOverlays = WormaCeptorApi.canShowFloatingButton(context)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        color = if (isEnabled) {
-            CategoryColors.performance.copy(alpha = 0.1f)
-        } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        },
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            if (isEnabled) {
-                CategoryColors.performance.copy(alpha = 0.3f)
-            } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
-            },
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
         ),
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
-                ),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+                .padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
@@ -787,7 +795,7 @@ private fun PerformanceOverlayToggle(isEnabled: Boolean, onToggle: (Boolean) -> 
                     )
                 }
 
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "Performance Overlay",
                         style = MaterialTheme.typography.titleSmall,
@@ -795,44 +803,126 @@ private fun PerformanceOverlayToggle(isEnabled: Boolean, onToggle: (Boolean) -> 
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
-                        text = if (isEnabled) "Showing FPS, Memory, CPU" else "Tap to enable floating metrics",
+                        text = "Tap metrics to show/hide in overlay",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-            }
 
-            if (canDrawOverlays) {
-                Switch(
-                    checked = isEnabled,
-                    onCheckedChange = onToggle,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = CategoryColors.performance,
-                        checkedTrackColor = CategoryColors.performance.copy(alpha = 0.5f),
-                    ),
-                )
-            } else {
-                // Show permission required badge
-                Surface(
-                    onClick = {
-                        WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
-                            context.startActivity(intent)
-                        }
-                    },
-                    shape = RoundedCornerShape(6.dp),
-                    color = MaterialTheme.colorScheme.errorContainer,
-                ) {
-                    Text(
-                        text = "Grant Permission",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                        modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xs,
-                        ),
-                    )
+                if (!canDrawOverlays) {
+                    Surface(
+                        onClick = {
+                            WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
+                                context.startActivity(intent)
+                            }
+                        },
+                        shape = RoundedCornerShape(6.dp),
+                        color = MaterialTheme.colorScheme.errorContainer,
+                    ) {
+                        Text(
+                            text = "Grant",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                            ),
+                        )
+                    }
                 }
             }
+
+            // Metric visibility buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
+                MetricToggleChip(
+                    label = "CPU",
+                    isEnabled = overlayState.cpuEnabled,
+                    enabled = canDrawOverlays,
+                    onClick = {
+                        (context as? ComponentActivity)?.let { activity ->
+                            performanceOverlayEngine.toggleCpu(activity)
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+                MetricToggleChip(
+                    label = "Memory",
+                    isEnabled = overlayState.memoryEnabled,
+                    enabled = canDrawOverlays,
+                    onClick = {
+                        (context as? ComponentActivity)?.let { activity ->
+                            performanceOverlayEngine.toggleMemory(activity)
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+                MetricToggleChip(
+                    label = "FPS",
+                    isEnabled = overlayState.fpsEnabled,
+                    enabled = canDrawOverlays,
+                    onClick = {
+                        (context as? ComponentActivity)?.let { activity ->
+                            performanceOverlayEngine.toggleFps(activity)
+                        }
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MetricToggleChip(
+    label: String,
+    isEnabled: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val backgroundColor = when {
+        !enabled -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        isEnabled -> CategoryColors.performance.copy(alpha = 0.15f)
+        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    }
+    val borderColor = when {
+        !enabled -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+        isEnabled -> CategoryColors.performance.copy(alpha = 0.4f)
+        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+    }
+    val contentColor = when {
+        !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+        isEnabled -> CategoryColors.performance
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    Surface(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = backgroundColor,
+        border = androidx.compose.foundation.BorderStroke(1.dp, borderColor),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = if (isEnabled && enabled) FontWeight.SemiBold else FontWeight.Normal,
+                color = contentColor,
+            )
         }
     }
 }

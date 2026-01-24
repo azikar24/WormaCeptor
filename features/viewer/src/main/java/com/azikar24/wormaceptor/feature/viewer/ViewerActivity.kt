@@ -215,6 +215,7 @@ class ViewerActivity : ComponentActivity() {
                                     scope.launch {
                                         val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                             this@ViewerActivity,
+                                            onMessage = viewModel::showMessage,
                                         )
                                         val allTransactionsForExport = requireNotNull(CoreHolder.queryEngine) {
                                             "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
@@ -223,11 +224,14 @@ class ViewerActivity : ComponentActivity() {
                                     }
                                 },
                                 onExportCrashes = {
-                                    val allCrashes = crashes
-                                    com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(
-                                        this@ViewerActivity,
-                                        allCrashes,
-                                    )
+                                    scope.launch {
+                                        val allCrashes = crashes
+                                        com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(
+                                            this@ViewerActivity,
+                                            allCrashes,
+                                            onMessage = viewModel::showMessage,
+                                        )
+                                    }
                                 },
                                 selectedTabIndex = selectedTabIndex,
                                 onTabSelected = viewModel::updateSelectedTab,
@@ -251,6 +255,7 @@ class ViewerActivity : ComponentActivity() {
                                         val selected = viewModel.getSelectedTransactions()
                                         val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                             this@ViewerActivity,
+                                            onMessage = viewModel::showMessage,
                                         )
                                         val fullTransactions = selected.mapNotNull { summary ->
                                             CoreHolder.queryEngine?.getDetails(summary.id)
@@ -263,12 +268,14 @@ class ViewerActivity : ComponentActivity() {
                                 onDelete = { transaction ->
                                     scope.launch { viewModel.deleteTransaction(transaction.id) }
                                 },
-                                onCopyAsCurl = { transaction -> copyAsCurl(transaction) },
+                                onCopyAsCurl = { transaction -> copyAsCurl(transaction, viewModel) },
                                 // Quick access navigation in overflow menu
                                 onNavigateToLogs = { navController.navigate("logs") },
                                 onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
                                 // Generic tool navigation for Tools tab
                                 onToolNavigate = { route -> navController.navigate(route) },
+                                // Snackbar message flow
+                                snackbarMessage = viewModel.snackbarMessage,
                             )
                         }
 
@@ -605,20 +612,17 @@ class ViewerActivity : ComponentActivity() {
         shareText(this, text, "Share ${transactions.size} Transactions")
     }
 
-    private fun copyAsCurl(transaction: TransactionSummary) {
+    private fun copyAsCurl(transaction: TransactionSummary, viewModel: ViewerViewModel) {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
-                android.widget.Toast.makeText(
-                    this@ViewerActivity,
-                    "Failed to load transaction details",
-                    android.widget.Toast.LENGTH_SHORT,
-                ).show()
+                viewModel.showMessage("Failed to load transaction details")
                 return@launch
             }
 
             val curl = buildCurlCommand(fullTransaction)
-            copyToClipboard(this@ViewerActivity, "cURL", curl)
+            val message = copyToClipboard(this@ViewerActivity, "cURL", curl)
+            viewModel.showMessage(message)
         }
     }
 

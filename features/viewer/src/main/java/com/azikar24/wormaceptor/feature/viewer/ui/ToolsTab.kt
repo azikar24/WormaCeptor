@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -129,10 +128,14 @@ private object CategoryColors {
  * Tools tab composable that displays all available tools organized by category.
  * Features a refined developer console aesthetic with search, favorites strip,
  * and collapsible category sections.
+ *
+ * @param onNavigate Callback when a tool is selected
+ * @param onShowMessage Callback to show a snackbar message
+ * @param modifier Modifier for this composable
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
 
@@ -228,11 +231,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, modifier: Modifier = Modifier) {
                     onToolLongClick = { tool ->
                         val added = favoritesRepository.toggleFavorite(tool.feature)
                         if (!added && favorites.size >= FavoritesRepository.MAX_FAVORITES) {
-                            Toast.makeText(
-                                context,
-                                "Maximum ${FavoritesRepository.MAX_FAVORITES} favorites allowed",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            onShowMessage("Maximum ${FavoritesRepository.MAX_FAVORITES} favorites allowed")
                         }
                     },
                     favorites = favorites,

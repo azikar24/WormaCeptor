@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.content.Context
 import android.view.HapticFeedbackConstants
-import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -33,8 +32,28 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -246,6 +265,7 @@ private fun TransactionDetailContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tabs = listOf("Overview", "Request", "Response")
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // Tab pager state for content swipe
     val tabPagerState = rememberPagerState(
@@ -304,6 +324,7 @@ private fun TransactionDetailContent(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             Column {
                 // Swipeable TopAppBar for transaction navigation
@@ -489,6 +510,9 @@ private fun TransactionDetailContent(
                         currentMatchIndex = currentMatchIndex,
                         onMatchCountChanged = { matchCount = it },
                         isSearchActive = showSearch,
+                        onShowMessage = { message ->
+                            scope.launch { snackbarHostState.showSnackbar(message) }
+                        },
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
@@ -1173,6 +1197,7 @@ private fun ResponseTab(
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
     isSearchActive: Boolean,
+    onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -1373,11 +1398,12 @@ private fun ResponseTab(
                                 onFullscreen = { showImageViewer = true },
                                 onDownload = {
                                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                                    saveImageToGallery(context, rawBodyBytes!!, format)
+                                    val message = saveImageToGallery(context, rawBodyBytes!!, format)
+                                    onShowMessage(message)
                                 },
                                 onShare = {
                                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                                    shareImage(context, rawBodyBytes!!, format)
+                                    shareImage(context, rawBodyBytes!!, format)?.let { onShowMessage(it) }
                                 },
                             )
                         }
@@ -1394,9 +1420,10 @@ private fun ResponseTab(
                                 contentType = contentType,
                                 onFullscreen = { showPdfViewer = true },
                                 onDownload = {
-                                    // Save PDF to downloads
-                                    savePdfToDownloads(context, rawBodyBytes!!)
+                                    val message = savePdfToDownloads(context, rawBodyBytes!!)
+                                    onShowMessage(message)
                                 },
+                                onShowMessage = onShowMessage,
                             )
                         }
                     } else if (responseBody != null || rawBody != null) {
@@ -1553,11 +1580,12 @@ private fun ResponseTab(
                 onDismiss = { showImageViewer = false },
                 onDownload = {
                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                    saveImageToGallery(context, rawBodyBytes!!, format)
+                    val message = saveImageToGallery(context, rawBodyBytes!!, format)
+                    onShowMessage(message)
                 },
                 onShare = {
                     val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                    shareImage(context, rawBodyBytes!!, format)
+                    shareImage(context, rawBodyBytes!!, format)?.let { onShowMessage(it) }
                 },
             )
         }
@@ -1568,7 +1596,8 @@ private fun ResponseTab(
                 pdfData = rawBodyBytes!!,
                 onDismiss = { showPdfViewer = false },
                 onDownload = {
-                    savePdfToDownloads(context, rawBodyBytes!!)
+                    val message = savePdfToDownloads(context, rawBodyBytes!!)
+                    onShowMessage(message)
                 },
             )
         }
@@ -1971,9 +2000,11 @@ private fun formatJson(json: String): String {
 
 /**
  * Saves PDF data to the device's Downloads directory.
+ *
+ * @return Message describing the result of the operation
  */
-private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
-    try {
+private fun savePdfToDownloads(context: Context, pdfData: ByteArray): String {
+    return try {
         val fileName = "wormaceptor_${System.currentTimeMillis()}.pdf"
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -1989,18 +2020,18 @@ private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
                 contentValues,
             )
 
-            uri?.let { downloadUri ->
-                context.contentResolver.openOutputStream(downloadUri)?.use { outputStream ->
+            if (uri != null) {
+                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                     outputStream.write(pdfData)
                 }
 
                 contentValues.clear()
                 contentValues.put(android.provider.MediaStore.Downloads.IS_PENDING, 0)
-                context.contentResolver.update(downloadUri, contentValues, null, null)
+                context.contentResolver.update(uri, contentValues, null, null)
 
-                Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_SHORT).show()
-            } ?: run {
-                Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show()
+                "PDF saved to Downloads"
+            } else {
+                "Failed to save PDF"
             }
         } else {
             // Legacy approach for older Android versions
@@ -2010,9 +2041,9 @@ private fun savePdfToDownloads(context: Context, pdfData: ByteArray) {
             )
             val file = java.io.File(downloadsDir, fileName)
             java.io.FileOutputStream(file).use { it.write(pdfData) }
-            Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_SHORT).show()
+            "PDF saved to Downloads"
         }
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to save PDF: ${e.message}", Toast.LENGTH_SHORT).show()
+        "Failed to save PDF: ${e.message}"
     }
 }

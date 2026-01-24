@@ -8,7 +8,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -57,6 +56,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -66,6 +67,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,6 +88,7 @@ import com.azikar24.wormaceptor.domain.entities.OsDetails
 import com.azikar24.wormaceptor.domain.entities.ScreenDetails
 import com.azikar24.wormaceptor.domain.entities.StorageDetails
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -131,9 +134,11 @@ private object DeviceInfoDesignSystem {
 @Composable
 fun DeviceInfoScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var deviceInfo by remember { mutableStateOf<DeviceInfo?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var refreshKey by remember { mutableStateOf(0) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // Collect device info
     LaunchedEffect(refreshKey) {
@@ -145,6 +150,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text("Device Information") },
@@ -158,7 +164,10 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                 },
                 actions = {
                     deviceInfo?.let { info ->
-                        IconButton(onClick = { copyAllToClipboard(context, info) }) {
+                        IconButton(onClick = {
+                            val message = copyAllToClipboard(context, info)
+                            scope.launch { snackbarHostState.showSnackbar(message) }
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = "Copy All",
@@ -199,26 +208,30 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                             .padding(DeviceInfoDesignSystem.Spacing.lg),
                         verticalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.lg),
                     ) {
+                        val showMessage: (String) -> Unit = { message ->
+                            scope.launch { snackbarHostState.showSnackbar(message) }
+                        }
+
                         // Device Section
-                        DeviceSection(info.device)
+                        DeviceSection(info.device, showMessage)
 
                         // OS Section
-                        OsSection(info.os)
+                        OsSection(info.os, showMessage)
 
                         // Screen Section
-                        ScreenSection(info.screen)
+                        ScreenSection(info.screen, showMessage)
 
                         // Memory Section
-                        MemorySection(info.memory)
+                        MemorySection(info.memory, showMessage)
 
                         // Storage Section
-                        StorageSection(info.storage)
+                        StorageSection(info.storage, showMessage)
 
                         // App Section
-                        AppSection(info.app)
+                        AppSection(info.app, showMessage)
 
                         // Network Section
-                        NetworkSection(info.network)
+                        NetworkSection(info.network, showMessage)
 
                         // Timestamp footer
                         Text(
@@ -237,13 +250,16 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 }
 
 @Composable
-private fun DeviceSection(device: DeviceDetails) {
+private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Device",
         icon = Icons.Default.PhoneAndroid,
         iconTint = MaterialTheme.colorScheme.primary,
-        onCopy = { copyToClipboard(context, "Device Info", formatDeviceDetails(device)) },
+        onCopy = {
+            val message = copyToClipboard(context, "Device Info", formatDeviceDetails(device))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Manufacturer", device.manufacturer)
         InfoRow("Model", device.model)
@@ -257,13 +273,16 @@ private fun DeviceSection(device: DeviceDetails) {
 }
 
 @Composable
-private fun OsSection(os: OsDetails) {
+private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Operating System",
         icon = Icons.Default.SystemUpdate,
         iconTint = Color(0xFF4CAF50),
-        onCopy = { copyToClipboard(context, "OS Info", formatOsDetails(os)) },
+        onCopy = {
+            val message = copyToClipboard(context, "OS Info", formatOsDetails(os))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Android Version", os.androidVersion)
         InfoRow("SDK Level", os.sdkLevel.toString())
@@ -276,13 +295,16 @@ private fun OsSection(os: OsDetails) {
 }
 
 @Composable
-private fun ScreenSection(screen: ScreenDetails) {
+private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Display",
         icon = Icons.Default.ScreenRotation,
         iconTint = Color(0xFF2196F3),
-        onCopy = { copyToClipboard(context, "Screen Info", formatScreenDetails(screen)) },
+        onCopy = {
+            val message = copyToClipboard(context, "Screen Info", formatScreenDetails(screen))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Resolution", "${screen.widthPixels} x ${screen.heightPixels}")
         InfoRow("Density DPI", screen.densityDpi.toString())
@@ -295,13 +317,16 @@ private fun ScreenSection(screen: ScreenDetails) {
 }
 
 @Composable
-private fun MemorySection(memory: MemoryDetails) {
+private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Memory",
         icon = Icons.Default.Memory,
         iconTint = Color(0xFFFF9800),
-        onCopy = { copyToClipboard(context, "Memory Info", formatMemoryDetails(memory)) },
+        onCopy = {
+            val message = copyToClipboard(context, "Memory Info", formatMemoryDetails(memory))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Total RAM", formatBytes(memory.totalRam))
         InfoRow("Available RAM", formatBytes(memory.availableRam))
@@ -345,13 +370,16 @@ private fun MemorySection(memory: MemoryDetails) {
 }
 
 @Composable
-private fun StorageSection(storage: StorageDetails) {
+private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Storage",
         icon = Icons.Default.Storage,
         iconTint = Color(0xFF9C27B0),
-        onCopy = { copyToClipboard(context, "Storage Info", formatStorageDetails(storage)) },
+        onCopy = {
+            val message = copyToClipboard(context, "Storage Info", formatStorageDetails(storage))
+            onShowMessage(message)
+        },
     ) {
         // Internal Storage
         Text(
@@ -425,13 +453,16 @@ private fun StorageSection(storage: StorageDetails) {
 }
 
 @Composable
-private fun AppSection(app: AppDetails) {
+private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Application",
         icon = Icons.Default.Apps,
         iconTint = Color(0xFF00BCD4),
-        onCopy = { copyToClipboard(context, "App Info", formatAppDetails(app)) },
+        onCopy = {
+            val message = copyToClipboard(context, "App Info", formatAppDetails(app))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Package Name", app.packageName)
         InfoRow("Version Name", app.versionName)
@@ -445,13 +476,16 @@ private fun AppSection(app: AppDetails) {
 }
 
 @Composable
-private fun NetworkSection(network: NetworkDetails) {
+private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     InfoCard(
         title = "Network",
         icon = Icons.Default.NetworkCheck,
         iconTint = if (network.isConnected) Color(0xFF4CAF50) else Color(0xFFF44336),
-        onCopy = { copyToClipboard(context, "Network Info", formatNetworkDetails(network)) },
+        onCopy = {
+            val message = copyToClipboard(context, "Network Info", formatNetworkDetails(network))
+            onShowMessage(message)
+        },
     ) {
         InfoRow("Connection Type", network.connectionType)
         InfoRow("Connected", if (network.isConnected) "Yes" else "No")
@@ -658,16 +692,16 @@ private fun formatTimestamp(millis: Long): String {
     return dateFormat.format(Date(millis))
 }
 
-private fun copyToClipboard(context: Context, label: String, text: String) {
+private fun copyToClipboard(context: Context, label: String, text: String): String {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
+    return "$label copied to clipboard"
 }
 
-private fun copyAllToClipboard(context: Context, info: DeviceInfo) {
+private fun copyAllToClipboard(context: Context, info: DeviceInfo): String {
     val text = generateCompactReport(info)
-    copyToClipboard(context, "Device Information", text)
+    return copyToClipboard(context, "Device Information", text)
 }
 
 private fun shareDeviceInfo(context: Context, info: DeviceInfo) {

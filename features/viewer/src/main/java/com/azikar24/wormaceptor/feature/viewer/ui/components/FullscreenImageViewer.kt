@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -597,9 +596,11 @@ private fun formatFileSize(bytes: Long): String {
 }
 
 /**
- * Saves image data to the device gallery
+ * Saves image data to the device gallery.
+ *
+ * @return Result message to display to the user
  */
-fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): Boolean {
+fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): String {
     return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {
@@ -635,8 +636,7 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
                 context.contentResolver.update(uri, contentValues, null, null)
             }
 
-            Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
-            true
+            "Image saved to gallery"
         } else {
             // Legacy approach for older Android versions
             @Suppress("DEPRECATION")
@@ -654,20 +654,20 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
             intent.data = android.net.Uri.fromFile(file)
             context.sendBroadcast(intent)
 
-            Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
-            true
+            "Image saved to gallery"
         }
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to save image: ${e.message}", Toast.LENGTH_SHORT).show()
-        false
+        "Failed to save image: ${e.message}"
     }
 }
 
 /**
- * Shares image data using Android's share sheet
+ * Shares image data using Android's share sheet.
+ *
+ * @return Error message if sharing failed, null on success (share sheet handles success)
  */
-fun shareImage(context: Context, imageData: ByteArray, format: String) {
-    try {
+fun shareImage(context: Context, imageData: ByteArray, format: String): String? {
+    return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {
             "PNG" -> "image/png"
@@ -696,7 +696,8 @@ fun shareImage(context: Context, imageData: ByteArray, format: String) {
         }
 
         context.startActivity(Intent.createChooser(intent, "Share Image"))
+        null // Success - share sheet will handle it
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to share image: ${e.message}", Toast.LENGTH_SHORT).show()
+        "Failed to share image: ${e.message}"
     }
 }

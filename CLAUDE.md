@@ -419,3 +419,8 @@ Modifier
 ### Dimension Resources
 - Prefer design system tokens over dimension resources
 - Use `WormaCeptorDesignSystem.Spacing.*` instead of `@dimen/`
+
+## Code Review and Plans
+
+- Save code reviews and plans to `.claude/` folder with descriptive names
+- Examples: `.claude/review-toast-migration.md`, `.claude/plan-auth-refactor.md`

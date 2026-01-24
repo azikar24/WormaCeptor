@@ -84,3 +84,143 @@ debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:VERSION")    
 2. Depend only on `core:engine` and `domain:*`
 3. Never access infra modules directly
 4. Add to `settings.gradle.kts`
+
+## Naming Conventions
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Core classes | `WormaCeptor` prefix | `WormaCeptorCollector`, `WormaCeptorInterceptor` |
+| Engines | `Engine` suffix | `TransactionEngine`, `CrashEngine` |
+| ViewModels | `ViewModel` suffix | `TransactionListViewModel` |
+| Repositories | `Repository` suffix | `TransactionRepository` |
+| Feature singletons | Object with `Feature` suffix | `TransactionFeature` |
+| Packages | `com.azikar24.wormaceptor.feature.{name}` | `com.azikar24.wormaceptor.feature.transactions` |
+
+## Feature Module Structure
+
+```
+features/{name}/
+├── {Name}Feature.kt          # Entry point singleton
+├── data/
+│   ├── {Name}DataSource.kt
+│   └── {Name}RepositoryImpl.kt
+├── ui/
+│   ├── {Name}Screen.kt
+│   └── theme/{Name}DesignSystem.kt
+└── vm/
+    └── {Name}ViewModel.kt
+```
+
+## Compose UI Patterns
+
+### Parameter Ordering
+```kotlin
+@Composable
+fun MyComponent(
+    state: MyState,              // State first
+    onAction: (Action) -> Unit,  // Callbacks second
+    modifier: Modifier = Modifier // Modifier last
+)
+```
+
+### Collections
+Use `ImmutableList`/`ImmutableSet` from `kotlinx.collections.immutable` for Compose state to prevent unnecessary recompositions.
+
+### Design System Objects
+```kotlin
+object MyFeatureDesignSystem {
+    object Spacing {
+        val Small = 4.dp
+        val Medium = 8.dp
+        val Large = 16.dp
+    }
+    object Colors { ... }
+    object CornerRadius { ... }
+}
+```
+
+## ViewModel Patterns
+
+```kotlin
+class MyViewModel(
+    private val repository: MyRepository
+) : ViewModel() {
+
+    // Private mutable state with underscore prefix
+    private val _searchQuery = MutableStateFlow("")
+
+    // Public immutable state
+    val items: StateFlow<List<Item>> = combine(
+        repository.items,
+        _searchQuery
+    ) { items, query ->
+        items.filter { it.matches(query) }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    // Factory for DI
+    class Factory(private val repository: MyRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return MyViewModel(repository) as T
+        }
+    }
+}
+```
+
+## Anti-Patterns to Avoid
+
+| Anti-Pattern | Why | Do Instead |
+|--------------|-----|------------|
+| `runBlocking` | Causes ANR on main thread | Use `suspend` functions or `viewModelScope.launch` |
+| `!!` chains | Crashes at runtime | Use `?.let {}`, `?:`, or require non-null at boundaries |
+| Global mutable singletons | Race conditions, testing nightmare | Use Koin scoped instances |
+| Bare `try { } catch (e: Exception)` | Hides bugs, catches cancellation | Catch specific exceptions |
+| Manual resource management | Leaks | Use `.use {}` for Closeable |
+| `Thread.sleep()` | Blocks thread | Use `delay()` in coroutines |
+
+## Detekt Rules Summary
+
+Key thresholds from `config/detekt/detekt.yml`:
+
+- **Max method length**: 60 lines
+- **Max function parameters**: 6 (8 for constructors)
+- **Max nested depth**: 4 blocks
+- **Magic numbers**: Only -1, 0, 1, 2 allowed without constants
+- **Forbidden comments**: No FIXME/STOPSHIP/TODO in commits
+
+Run `./gradlew detekt` before committing.
+
+## Koin DI Pattern
+
+```kotlin
+// In engineModule
+val engineModule = module {
+    single { TransactionEngine(get(), get()) }
+    single { CrashEngine(get()) }
+}
+
+// WormaCeptorKoin handles dual-instance strategy:
+// - Uses host app's Koin if available
+// - Falls back to own Koin instance if not
+```
+
+Engines are registered as singletons. Features use `koinViewModel()` for ViewModels.
+
+## Deep Links
+
+| Route | Destination |
+|-------|-------------|
+| `wormaceptor://tools` | Tools screen |
+| `wormaceptor://tools/{feature}` | Specific tool |
+| `wormaceptor://crashes` | Crash list |
+| `wormaceptor://transactions` | Network transactions |
+
+## Further Reading
+
+- `docs/architecture/` - Detailed architecture decisions
+- `docs/reference/` - Feature inventory and API docs
+- `config/detekt/detekt.yml` - Full static analysis rules

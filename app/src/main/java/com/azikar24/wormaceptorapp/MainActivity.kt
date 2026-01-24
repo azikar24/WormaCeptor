@@ -6,7 +6,6 @@ package com.azikar24.wormaceptorapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import java.io.File
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,8 +27,8 @@ import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -59,6 +58,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MainActivity : ComponentActivity() {
 

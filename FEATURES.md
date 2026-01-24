@@ -9,13 +9,6 @@ Track Compose recomposition counts and identify excessive recompositions.
 ---
 
 ## Data & Storage Inspection
-### SharedPreferences Inspector
-Browse and edit SharedPreferences.
-- [ ] Navigate to Tools > Preferences
-- [ ] Verify prefs files are listed
-- [ ] Tap to view key-values
-- [ ] Edit a value and verify it persists
-
 ### Database Browser
 - [ ] fix the search bar vertical spacing
 

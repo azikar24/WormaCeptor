@@ -132,10 +132,7 @@ class LeakDetectionEngine(
      * @param repository Optional repository for persisting detected leaks
      * @param onLeakCallback Optional callback invoked when a leak is detected (for notifications)
      */
-    fun configure(
-        repository: LeakRepository? = null,
-        onLeakCallback: ((LeakInfo) -> Unit)? = null,
-    ) {
+    fun configure(repository: LeakRepository? = null, onLeakCallback: ((LeakInfo) -> Unit)? = null) {
         this.leakRepository = repository
         this.onLeakDetected = onLeakCallback
     }

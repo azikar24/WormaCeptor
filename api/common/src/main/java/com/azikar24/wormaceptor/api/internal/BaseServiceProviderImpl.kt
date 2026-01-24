@@ -10,10 +10,9 @@ import com.azikar24.wormaceptor.core.engine.CrashReporter
 import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
-import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.QueryEngine
+import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
-import org.koin.java.KoinJavaComponent.get
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
@@ -22,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.java.KoinJavaComponent.get
 import java.io.InputStream
 import java.util.UUID
 
@@ -76,11 +76,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         configureThreadViolation(context)
     }
 
-    private fun configureLeakDetection(
-        context: Context,
-        leakRepository: LeakRepository,
-        leakNotifications: Boolean,
-    ) {
+    private fun configureLeakDetection(context: Context, leakRepository: LeakRepository, leakNotifications: Boolean) {
         try {
             val leakEngine: LeakDetectionEngine = get(LeakDetectionEngine::class.java)
             val notificationHelper = if (leakNotifications) {

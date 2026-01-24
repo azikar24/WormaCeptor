@@ -5,7 +5,6 @@
 package com.azikar24.wormaceptor.feature.filebrowser
 
 import android.content.Context
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +22,7 @@ import com.azikar24.wormaceptor.feature.filebrowser.ui.FileBrowserScreen
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileInfoSheet
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileViewerScreen
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Entry point for the File Browser feature.

@@ -90,10 +90,7 @@ class ThreadViolationEngine(
      * @param hostPackage The host app's package name to filter violations
      * @param onViolationCallback Optional callback invoked when a violation is detected (for notifications)
      */
-    fun configure(
-        hostPackage: String? = null,
-        onViolationCallback: ((ThreadViolation) -> Unit)? = null,
-    ) {
+    fun configure(hostPackage: String? = null, onViolationCallback: ((ThreadViolation) -> Unit)? = null) {
         this.hostPackageName = hostPackage
         this.onViolationDetected = onViolationCallback
     }

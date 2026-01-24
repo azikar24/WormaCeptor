@@ -338,7 +338,7 @@ class DependenciesInspectorEngine(
             "$packageName.BuildConfig" to "VERSION",
             "$packageName.BuildConfig" to "VERSION_NAME",
             "$packageName.Version" to "VERSION",
-            "${packageName}.internal.Version" to "userAgent",
+            "$packageName.internal.Version" to "userAgent",
         )
 
         for ((className, fieldName) in versionPatterns) {
@@ -468,7 +468,7 @@ class DependenciesInspectorEngine(
             "$packageBase.BuildConfig" to "VERSION_NAME",
             "$packageBase.Version" to "VERSION",
             "$packageBase.Version" to "version",
-            "${packageBase}.internal.Version" to "userAgent",
+            "$packageBase.internal.Version" to "userAgent",
         )
 
         for ((className, fieldName) in patterns) {

@@ -190,7 +190,7 @@ fun ThreadViolationScreen(
 
         selectedViolation?.let { violation ->
             ModalBottomSheet(
-                modifier = modifier.padding(top=40.dp),
+                modifier = modifier.padding(top = 40.dp),
                 onDismissRequest = onDismissDetail,
                 sheetState = sheetState,
             ) {

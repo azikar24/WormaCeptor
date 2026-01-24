@@ -65,11 +65,7 @@ import java.util.*
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashDetailPagerScreen(
-    crashes: List<Crash>,
-    initialCrashIndex: Int,
-    onBack: () -> Unit,
-) {
+fun CrashDetailPagerScreen(crashes: List<Crash>, initialCrashIndex: Int, onBack: () -> Unit) {
     val view = LocalView.current
 
     // Current crash index state with direction tracking

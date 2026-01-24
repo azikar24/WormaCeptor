@@ -52,7 +52,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,6 +66,7 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.domain.entities.CookieInfo
 import com.azikar24.wormaceptor.feature.cookies.ui.theme.CookiesDesignSystem
 import com.azikar24.wormaceptor.feature.cookies.ui.theme.asSubtleBackground
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

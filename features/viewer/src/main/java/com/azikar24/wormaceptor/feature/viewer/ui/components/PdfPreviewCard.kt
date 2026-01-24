@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -79,6 +78,7 @@ fun PdfPreviewCard(
     contentType: String?,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
+    onShowMessage: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -183,6 +183,7 @@ fun PdfPreviewCard(
                 tempFile = tempFile,
                 onFullscreen = onFullscreen,
                 onDownload = onDownload,
+                onShowMessage = onShowMessage,
             )
             is PdfLoadState.Error -> ErrorContent(message = state.message)
             is PdfLoadState.PasswordProtected -> PasswordProtectedContent(
@@ -190,6 +191,7 @@ fun PdfPreviewCard(
                 pdfData = pdfData,
                 tempFile = tempFile,
                 onDownload = onDownload,
+                onShowMessage = onShowMessage,
             )
         }
     }
@@ -229,6 +231,7 @@ private fun SuccessContent(
     tempFile: File?,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
+    onShowMessage: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -417,7 +420,7 @@ private fun SuccessContent(
 
                 // Share button
                 OutlinedButton(
-                    onClick = { sharePdf(context, pdfData, tempFile) },
+                    onClick = { sharePdf(context, pdfData, tempFile)?.let { onShowMessage(it) } },
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
@@ -499,6 +502,7 @@ private fun PasswordProtectedContent(
     pdfData: ByteArray,
     tempFile: File?,
     onDownload: () -> Unit,
+    onShowMessage: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -567,7 +571,7 @@ private fun PasswordProtectedContent(
             }
 
             OutlinedButton(
-                onClick = { sharePdf(context, pdfData, tempFile) },
+                onClick = { sharePdf(context, pdfData, tempFile)?.let { onShowMessage(it) } },
                 shape = WormaCeptorDesignSystem.Shapes.button,
             ) {
                 Icon(
@@ -614,8 +618,8 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?) {
-    try {
+private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+    return try {
         // Use existing file or create new one
         val file = existingFile ?: run {
             val newFile = File(context.cacheDir, "WormaCeptor_${System.currentTimeMillis()}.pdf")
@@ -637,8 +641,9 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?) 
         }
 
         context.startActivity(Intent.createChooser(intent, "Share PDF"))
+        null // Success - share sheet handles it
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to share PDF: ${e.message}", Toast.LENGTH_SHORT).show()
+        "Failed to share PDF: ${e.message}"
     }
 }
 

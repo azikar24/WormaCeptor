@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
@@ -64,6 +63,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -115,6 +117,7 @@ import java.io.FileOutputStream
 fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> Unit, onDownload: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // PDF rendering state
     var pages by remember { mutableStateOf<List<Bitmap>>(emptyList()) }
@@ -277,7 +280,11 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                             onClose = onDismiss,
                             onPageJump = { showPageJumpDialog = true },
                             onDownload = onDownload,
-                            onShare = { sharePdfFromViewer(context, pdfData, tempFile) },
+                            onShare = {
+                            sharePdfFromViewer(context, pdfData, tempFile)?.let { message ->
+                                scope.launch { snackbarHostState.showSnackbar(message) }
+                            }
+                        },
                         )
                     }
 
@@ -345,6 +352,18 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                         }
                         showPageJumpDialog = false
                     },
+                )
+            }
+
+            // Snackbar host for messages
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter),
+            ) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = Color.White.copy(alpha = 0.9f),
+                    contentColor = Color.Black,
                 )
             }
         }
@@ -864,8 +883,8 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFile: File?) {
-    try {
+private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+    return try {
         // Use existing file or create new one
         val file = existingFile ?: run {
             val newFile = File(context.cacheDir, "WormaCeptor_${System.currentTimeMillis()}.pdf")
@@ -887,7 +906,8 @@ private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFil
         }
 
         context.startActivity(Intent.createChooser(intent, "Share PDF"))
+        null // Success - share sheet handles it
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to share PDF: ${e.message}", Toast.LENGTH_SHORT).show()
+        "Failed to share PDF: ${e.message}"
     }
 }

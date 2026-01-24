@@ -5,11 +5,15 @@
 package com.azikar24.wormaceptor.feature.filebrowser
 
 import android.content.Context
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,6 +72,8 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
     val repository = remember { FileBrowserFeature.createRepository(context) }
     val factory = remember { FileBrowserFeature.createViewModelFactory(repository) }
     val viewModel: FileBrowserViewModel = viewModel(factory = factory)
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val currentPath by viewModel.currentPath.collectAsState()
     val navigationStack by viewModel.navigationStack.collectAsState()
@@ -121,6 +127,9 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
             fileInfo = info,
             onDismiss = viewModel::hideFileInfo,
             onDelete = viewModel::deleteFile,
+            onShowMessage = { message ->
+                scope.launch { snackbarHostState.showSnackbar(message) }
+            },
         )
     }
 }

@@ -8,7 +8,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,17 +51,18 @@ fun formatBytes(bytes: Long): String {
 const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB
 
 /**
- * Copies text to the system clipboard and shows a toast confirmation.
+ * Copies text to the system clipboard.
  *
  * @param context Android context for clipboard service access
  * @param label Label for the clipboard data (shown in some Android versions)
  * @param text The text to copy
+ * @return Confirmation message to display to the user
  */
-fun copyToClipboard(context: Context, label: String, text: String) {
+fun copyToClipboard(context: Context, label: String, text: String): String {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
+    return "$label copied to clipboard"
 }
 
 /**
@@ -76,24 +76,29 @@ fun isContentTooLargeForClipboard(text: String): Boolean {
 }
 
 /**
- * Copies text to clipboard if small enough, otherwise shows a warning toast.
+ * Result of a clipboard copy operation with size check.
+ */
+sealed class ClipboardResult {
+    data class Success(val message: String) : ClipboardResult()
+    data class TooLarge(val message: String) : ClipboardResult()
+}
+
+/**
+ * Copies text to clipboard if small enough, otherwise returns a warning.
  *
  * @param context Android context
  * @param label Label for the clipboard data
  * @param text The text to copy
- * @return true if copied successfully, false if too large
+ * @return ClipboardResult indicating success or too-large warning
  */
-fun copyToClipboardWithSizeCheck(context: Context, label: String, text: String): Boolean {
+fun copyToClipboardWithSizeCheck(context: Context, label: String, text: String): ClipboardResult {
     return if (isContentTooLargeForClipboard(text)) {
-        Toast.makeText(
-            context,
+        ClipboardResult.TooLarge(
             "Content too large (${formatBytes(text.length.toLong())}). Use 'Share as File' instead.",
-            Toast.LENGTH_LONG,
-        ).show()
-        false
+        )
     } else {
-        copyToClipboard(context, label, text)
-        true
+        val message = copyToClipboard(context, label, text)
+        ClipboardResult.Success(message)
     }
 }
 
@@ -128,6 +133,7 @@ fun shareText(context: Context, text: String, title: String = "Share", subject: 
  * @param fileName The name for the shared file (e.g., "response.json")
  * @param mimeType The MIME type of the content (e.g., "application/json", "text/plain")
  * @param title Optional title for the share chooser dialog
+ * @param onMessage Callback for status messages (preparing, error)
  */
 suspend fun shareAsFile(
     context: Context,
@@ -135,10 +141,11 @@ suspend fun shareAsFile(
     fileName: String,
     mimeType: String = "text/plain",
     title: String = "Share File",
+    onMessage: (String) -> Unit = {},
 ) {
     // Show immediate feedback
     withContext(Dispatchers.Main) {
-        Toast.makeText(context, "Preparing file (${formatBytes(content.length.toLong())})...", Toast.LENGTH_SHORT).show()
+        onMessage("Preparing file (${formatBytes(content.length.toLong())})...")
     }
 
     try {
@@ -171,7 +178,7 @@ suspend fun shareAsFile(
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Failed to share file: ${e.message}", Toast.LENGTH_LONG).show()
+            onMessage("Failed to share file: ${e.message}")
         }
     }
 }

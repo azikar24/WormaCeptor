@@ -7,7 +7,6 @@ package com.azikar24.wormaceptor.feature.cookies.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +39,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,7 +50,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -75,9 +78,12 @@ import java.util.Locale
 @Composable
 fun CookieDetailScreen(cookie: CookieInfo, onBack: () -> Unit, onDelete: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var showDeleteDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -137,7 +143,8 @@ fun CookieDetailScreen(cookie: CookieInfo, onBack: () -> Unit, onDelete: () -> U
                 ValueCard(
                     value = cookie.value,
                     onCopy = {
-                        copyToClipboard(context, "Cookie Value", cookie.value)
+                        val message = copyToClipboard(context, "Cookie Value", cookie.value)
+                        scope.launch { snackbarHostState.showSnackbar(message) }
                     },
                 )
             }
@@ -587,11 +594,11 @@ private fun SecurityAttribute(label: String, isEnabled: Boolean, description: St
     }
 }
 
-private fun copyToClipboard(context: Context, label: String, text: String) {
+private fun copyToClipboard(context: Context, label: String, text: String): String {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+    return "Copied to clipboard"
 }
 
 private fun formatRemainingTime(millis: Long): String {

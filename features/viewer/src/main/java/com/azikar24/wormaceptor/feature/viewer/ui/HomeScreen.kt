@@ -43,6 +43,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -159,6 +161,7 @@ fun HomeScreen(
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     var showDeleteSelectedDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // Pager state for swipe between tabs - defined here so TabRow can access it
     val pagerState = rememberPagerState(
@@ -186,6 +189,7 @@ fun HomeScreen(
     }
 
     Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 Column {
                     // Show bulk action bar when in selection mode
@@ -546,6 +550,11 @@ fun HomeScreen(
                         2 -> if (showToolsTab) {
                             ToolsTab(
                                 onNavigate = onToolNavigate,
+                                onShowMessage = { message ->
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(message)
+                                    }
+                                },
                                 modifier = Modifier.fillMaxSize(),
                             )
                         }

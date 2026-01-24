@@ -7,7 +7,6 @@ package com.azikar24.wormaceptor.feature.filebrowser.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +48,7 @@ fun FileInfoSheet(
     fileInfo: FileInfo,
     onDismiss: () -> Unit,
     onDelete: (String) -> Unit,
+    onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -95,7 +95,8 @@ fun FileInfoSheet(
                 }
                 IconButton(
                     onClick = {
-                        copyToClipboard(context, "File Path", fileInfo.path)
+                        val message = copyToClipboard(context, "File Path", fileInfo.path)
+                        onShowMessage(message)
                     },
                 ) {
                     Icon(
@@ -211,9 +212,9 @@ private fun formatTimestamp(millis: Long): String {
     return dateFormat.format(Date(millis))
 }
 
-private fun copyToClipboard(context: Context, label: String, text: String) {
+private fun copyToClipboard(context: Context, label: String, text: String): String {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
-    Toast.makeText(context, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
+    return "$label copied to clipboard"
 }

@@ -79,6 +79,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -131,6 +132,8 @@ fun HomeScreen(
     onNavigateToDeviceInfo: () -> Unit = {},
     // Generic tool navigation for Tools tab
     onToolNavigate: (String) -> Unit = {},
+    // Snackbar message flow from ViewModel
+    snackbarMessage: SharedFlow<String>? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -162,6 +165,13 @@ fun HomeScreen(
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     var showDeleteSelectedDialog by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
+
+    // Observe snackbar messages from ViewModel
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.collect { message ->
+            snackbarHostState.showSnackbar(message)
+        }
+    }
 
     // Pager state for swipe between tabs - defined here so TabRow can access it
     val pagerState = rememberPagerState(

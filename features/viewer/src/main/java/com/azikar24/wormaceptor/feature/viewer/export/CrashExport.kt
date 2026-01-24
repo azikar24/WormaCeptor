@@ -2,14 +2,13 @@ package com.azikar24.wormaceptor.feature.viewer.export
 
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import com.azikar24.wormaceptor.domain.entities.Crash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 
-suspend fun exportCrashes(context: Context, crashes: List<Crash>) {
+suspend fun exportCrashes(context: Context, crashes: List<Crash>, onMessage: (String) -> Unit = {}) {
     withContext(Dispatchers.IO) {
         try {
             val jsonArray = JSONArray()
@@ -27,17 +26,17 @@ suspend fun exportCrashes(context: Context, crashes: List<Crash>) {
             val jsonContent = jsonArray.toString(2)
 
             withContext(Dispatchers.Main) {
-                shareText(context, jsonContent, "WormaCeptor Crash Export")
+                shareText(context, jsonContent, "WormaCeptor Crash Export", onMessage)
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+                onMessage("Export failed: ${e.message}")
             }
         }
     }
 }
 
-private fun shareText(context: Context, content: String, subject: String) {
+private fun shareText(context: Context, content: String, subject: String, onMessage: (String) -> Unit) {
     try {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
@@ -47,6 +46,6 @@ private fun shareText(context: Context, content: String, subject: String) {
 
         context.startActivity(Intent.createChooser(intent, "Export"))
     } catch (e: Exception) {
-        Toast.makeText(context, "Failed to share: ${e.message}", Toast.LENGTH_LONG).show()
+        onMessage("Failed to share: ${e.message}")
     }
 }

@@ -17,11 +17,7 @@ Browse and edit SharedPreferences.
 - [ ] Edit a value and verify it persists
 
 ### Database Browser
-SQLite database inspection with query execution.
-- [ ] Navigate to Tools > Databases
-- [ ] Select a database
-- [ ] Browse tables
-- [ ] Run custom SQL query
+- [ ] fix the search bar vertical spacing
 
 ### File Browser
 Navigate app file system with file viewing.

@@ -3,5 +3,8 @@
     "allow": [
       "Bash(./gradlew :core:engine:compileDebugKotlin:*)"
     ]
+  },
+  "enabledPlugins": {
+    "everything-claude-code@everything-claude-code": true
   }
 }

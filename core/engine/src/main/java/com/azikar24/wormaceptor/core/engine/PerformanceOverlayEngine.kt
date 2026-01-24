@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.ref.WeakReference
@@ -270,11 +271,12 @@ class PerformanceOverlayEngine(
 
     /**
      * Loads the saved position from SharedPreferences.
+     * This is a suspend function to avoid blocking the main thread during disk I/O.
      */
-    private fun loadSavedPosition(): Offset {
+    private suspend fun loadSavedPosition(): Offset = withContext(Dispatchers.IO) {
         val x = prefs.getFloat(PREF_POSITION_X, PerformanceOverlayState.DEFAULT_POSITION_PERCENT.x)
         val y = prefs.getFloat(PREF_POSITION_Y, PerformanceOverlayState.DEFAULT_POSITION_PERCENT.y)
-        return Offset(x, y)
+        Offset(x, y)
     }
 
     /**
@@ -404,12 +406,17 @@ class PerformanceOverlayEngine(
 
     /**
      * Loads and applies saved metric enabled states from SharedPreferences.
+     * This is a suspend function to avoid blocking the main thread during disk I/O.
      */
-    fun loadSavedMetricStates() {
-        val overlayEnabled = prefs.getBoolean(PREF_OVERLAY_ENABLED, false)
-        val fpsEnabled = prefs.getBoolean(PREF_FPS_ENABLED, false)
-        val memoryEnabled = prefs.getBoolean(PREF_MEMORY_ENABLED, false)
-        val cpuEnabled = prefs.getBoolean(PREF_CPU_ENABLED, false)
+    suspend fun loadSavedMetricStates() {
+        val (overlayEnabled, fpsEnabled, memoryEnabled, cpuEnabled) = withContext(Dispatchers.IO) {
+            PrefsState(
+                overlayEnabled = prefs.getBoolean(PREF_OVERLAY_ENABLED, false),
+                fpsEnabled = prefs.getBoolean(PREF_FPS_ENABLED, false),
+                memoryEnabled = prefs.getBoolean(PREF_MEMORY_ENABLED, false),
+                cpuEnabled = prefs.getBoolean(PREF_CPU_ENABLED, false),
+            )
+        }
 
         _state.value = _state.value.copy(
             isOverlayEnabled = overlayEnabled,
@@ -418,6 +425,13 @@ class PerformanceOverlayEngine(
             cpuEnabled = cpuEnabled,
         )
     }
+
+    private data class PrefsState(
+        val overlayEnabled: Boolean,
+        val fpsEnabled: Boolean,
+        val memoryEnabled: Boolean,
+        val cpuEnabled: Boolean,
+    )
 
     /**
      * Toggles the master overlay enabled state.
@@ -534,12 +548,14 @@ class PerformanceOverlayEngine(
     private fun startMetricsCollection() {
         scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-        // Load saved position
-        val savedPosition = loadSavedPosition()
-        _state.value = _state.value.copy(positionPercent = savedPosition)
-
         // Combine all metric flows into unified state
         scope?.launch {
+            // Load saved position on IO thread
+            val savedPosition = loadSavedPosition()
+            _state.value = _state.value.copy(positionPercent = savedPosition)
+            // Update window position after loading saved position
+            updateWindowPosition()
+
             combine(
                 fpsMonitorEngine.currentFpsInfo,
                 fpsMonitorEngine.fpsHistory,
@@ -637,11 +653,12 @@ class PerformanceOverlayEngine(
         }
 
         // Calculate initial position in pixels
+        // Use position from state (may be default, will update when loadSavedPosition completes)
         val displayMetrics = activity.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         val screenHeight = displayMetrics.heightPixels
 
-        val savedPosition = loadSavedPosition()
+        val savedPosition = _state.value.positionPercent
         val overlayWidthPx = (OVERLAY_WIDTH_DP * displayMetrics.density).toInt()
 
         // Determine position direction based on saved position

@@ -105,6 +105,7 @@ enum class MetricStatus {
     GOOD,
     WARNING,
     CRITICAL,
+
     /** Metric is not being actively monitored (paused). */
     INACTIVE,
     ;

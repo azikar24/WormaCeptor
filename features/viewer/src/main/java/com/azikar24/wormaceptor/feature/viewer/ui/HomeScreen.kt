@@ -199,513 +199,513 @@ fun HomeScreen(
     }
 
     Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = {
-                Column {
-                    // Show bulk action bar when in selection mode
-                    BulkActionBar(
-                        selectedCount = selectedIds.size,
-                        totalCount = transactions.size,
-                        onShare = onShareSelected,
-                        onDelete = { showDeleteSelectedDialog = true },
-                        onExport = onExportSelected,
-                        onSelectAll = onSelectAll,
-                        onDeselectAll = onClearSelection,
-                        onCancel = onClearSelection,
-                    )
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            Column {
+                // Show bulk action bar when in selection mode
+                BulkActionBar(
+                    selectedCount = selectedIds.size,
+                    totalCount = transactions.size,
+                    onShare = onShareSelected,
+                    onDelete = { showDeleteSelectedDialog = true },
+                    onExport = onExportSelected,
+                    onSelectAll = onSelectAll,
+                    onDeselectAll = onClearSelection,
+                    onCancel = onClearSelection,
+                )
 
-                    // Regular top bar when not in selection mode
-                    AnimatedVisibility(
-                        visible = !isSelectionMode,
-                        enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut(),
-                    ) {
-                        TopAppBar(
-                            title = { Text("WormaCeptor V2") },
-                            navigationIcon = {
-                                IconButton(onClick = { (context as? Activity)?.finish() }) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Back",
-                                    )
-                                }
-                            },
-                            actions = {
-                                if (pagerState.currentPage == 0) {
-                                    val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
-                                    val filterCount = listOfNotNull(
-                                        filterMethod,
-                                        filterStatusRange,
-                                        searchQuery.takeIf { it.isNotBlank() },
-                                    ).size
+                // Regular top bar when not in selection mode
+                AnimatedVisibility(
+                    visible = !isSelectionMode,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    TopAppBar(
+                        title = { Text("WormaCeptor V2") },
+                        navigationIcon = {
+                            IconButton(onClick = { (context as? Activity)?.finish() }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Back",
+                                )
+                            }
+                        },
+                        actions = {
+                            if (pagerState.currentPage == 0) {
+                                val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+                                val filterCount = listOfNotNull(
+                                    filterMethod,
+                                    filterStatusRange,
+                                    searchQuery.takeIf { it.isNotBlank() },
+                                ).size
 
-                                    BadgedBox(
-                                        badge = {
-                                            if (isFiltering) {
-                                                Badge(
-                                                    containerColor = MaterialTheme.colorScheme.primary,
-                                                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                                                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs),
-                                                ) {
-                                                    Text(
-                                                        text = filterCount.toString(),
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        fontWeight = FontWeight.Bold,
-                                                    )
-                                                }
+                                BadgedBox(
+                                    badge = {
+                                        if (isFiltering) {
+                                            Badge(
+                                                containerColor = MaterialTheme.colorScheme.primary,
+                                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs),
+                                            ) {
+                                                Text(
+                                                    text = filterCount.toString(),
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                )
                                             }
-                                        },
-                                    ) {
-                                        IconButton(onClick = { showFilterSheet = true }) {
-                                            val iconScale by animateFloatAsState(
-                                                targetValue = if (isFiltering) 1.1f else 1f,
-                                                animationSpec = tween(
-                                                    durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast,
-                                                ),
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Default.FilterList,
-                                                contentDescription = "Filter",
-                                                tint = if (isFiltering) {
-                                                    MaterialTheme.colorScheme.primary
-                                                } else {
-                                                    MaterialTheme.colorScheme.onSurface
-                                                },
-                                                modifier = Modifier.scale(iconScale),
-                                            )
                                         }
+                                    },
+                                ) {
+                                    IconButton(onClick = { showFilterSheet = true }) {
+                                        val iconScale by animateFloatAsState(
+                                            targetValue = if (isFiltering) 1.1f else 1f,
+                                            animationSpec = tween(
+                                                durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast,
+                                            ),
+                                        )
+                                        Icon(
+                                            imageVector = Icons.Default.FilterList,
+                                            contentDescription = "Filter",
+                                            tint = if (isFiltering) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else {
+                                                MaterialTheme.colorScheme.onSurface
+                                            },
+                                            modifier = Modifier.scale(iconScale),
+                                        )
                                     }
                                 }
+                            }
 
-                                // Overflow Menu
-                                IconButton(onClick = { showOverflowMenu = true }) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "More options",
+                            // Overflow Menu
+                            IconButton(onClick = { showOverflowMenu = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = "More options",
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = showOverflowMenu,
+                                onDismissRequest = { showOverflowMenu = false },
+                                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+                            ) {
+                                when (pagerState.currentPage) {
+                                    0 -> {
+                                        // Transactions tab menu
+                                        DropdownMenuItem(
+                                            text = { Text("Export Transactions") },
+                                            leadingIcon = { Icon(Icons.Default.Share, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                scope.launch { onExportTransactions() }
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("Clear All Transactions") },
+                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                showClearTransactionsDialog = true
+                                            },
+                                        )
+                                    }
+                                    1 -> {
+                                        // Crashes tab menu
+                                        DropdownMenuItem(
+                                            text = { Text("Export Crashes") },
+                                            leadingIcon = { Icon(Icons.Default.Share, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                scope.launch { onExportCrashes() }
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("Clear All Crashes") },
+                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                            onClick = {
+                                                showOverflowMenu = false
+                                                showClearCrashesDialog = true
+                                            },
+                                        )
+                                    }
+                                    // No menu items for Tools tab
+                                }
+                                // Quick access tools - only shown when NOT on Tools tab
+                                val toolsTabIndex = if (showToolsTab) 2 else -1
+                                if (pagerState.currentPage != toolsTabIndex) {
+                                    androidx.compose.material3.HorizontalDivider(
+                                        modifier = Modifier.padding(vertical = 4.dp),
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Console Logs") },
+                                        leadingIcon = { Icon(Icons.Default.Terminal, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToLogs()
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Device Info") },
+                                        leadingIcon = { Icon(Icons.Default.Info, null) },
+                                        onClick = {
+                                            showOverflowMenu = false
+                                            onNavigateToDeviceInfo()
+                                        },
                                     )
                                 }
+                            }
+                        },
+                    )
+                }
 
-                                DropdownMenu(
-                                    expanded = showOverflowMenu,
-                                    onDismissRequest = { showOverflowMenu = false },
-                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
-                                ) {
-                                    when (pagerState.currentPage) {
-                                        0 -> {
-                                            // Transactions tab menu
-                                            DropdownMenuItem(
-                                                text = { Text("Export Transactions") },
-                                                leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    scope.launch { onExportTransactions() }
-                                                },
-                                            )
-                                            DropdownMenuItem(
-                                                text = { Text("Clear All Transactions") },
-                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    showClearTransactionsDialog = true
-                                                },
-                                            )
-                                        }
-                                        1 -> {
-                                            // Crashes tab menu
-                                            DropdownMenuItem(
-                                                text = { Text("Export Crashes") },
-                                                leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    scope.launch { onExportCrashes() }
-                                                },
-                                            )
-                                            DropdownMenuItem(
-                                                text = { Text("Clear All Crashes") },
-                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    showClearCrashesDialog = true
-                                                },
-                                            )
-                                        }
-                                        // No menu items for Tools tab
-                                    }
-                                    // Quick access tools - only shown when NOT on Tools tab
-                                    val toolsTabIndex = if (showToolsTab) 2 else -1
-                                    if (pagerState.currentPage != toolsTabIndex) {
-                                        androidx.compose.material3.HorizontalDivider(
-                                            modifier = Modifier.padding(vertical = 4.dp),
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Console Logs") },
-                                            leadingIcon = { Icon(Icons.Default.Terminal, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                onNavigateToLogs()
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Device Info") },
-                                            leadingIcon = { Icon(Icons.Default.Info, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                onNavigateToDeviceInfo()
-                                            },
-                                        )
-                                    }
-                                }
+                TabRow(selectedTabIndex = pagerState.currentPage) {
+                    titles.forEachIndexed { index, title ->
+                        Tab(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                if (isSelectionMode) onClearSelection()
+                                scope.launch { pagerState.animateScrollToPage(index) }
                             },
+                            text = { Text(title) },
                         )
                     }
-
-                    TabRow(selectedTabIndex = pagerState.currentPage) {
-                        titles.forEachIndexed { index, title ->
-                            Tab(
-                                selected = pagerState.currentPage == index,
-                                onClick = {
-                                    if (isSelectionMode) onClearSelection()
-                                    scope.launch { pagerState.animateScrollToPage(index) }
-                                },
-                                text = { Text(title) },
-                            )
-                        }
-                    }
                 }
-            },
-        ) { padding ->
-            Column(modifier = Modifier.padding(padding)) {
-                // Active Filters Banner
-                if (pagerState.currentPage == 0 && !isSelectionMode) {
-                    val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
-                    AnimatedVisibility(
-                        visible = hasActiveFilters,
-                        enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut(),
+            }
+        },
+    ) { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            // Active Filters Banner
+            if (pagerState.currentPage == 0 && !isSelectionMode) {
+                val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+                AnimatedVisibility(
+                    visible = hasActiveFilters,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                        tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
                     ) {
-                        Surface(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-                            tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                                ),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                                    ),
-                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                                verticalAlignment = Alignment.CenterVertically,
+                            Text(
+                                text = "Active filters:",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontWeight = FontWeight.Medium,
+                            )
+
+                            FlowRow(
+                                modifier = Modifier.weight(1f),
+                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                             ) {
-                                Text(
-                                    text = "Active filters:",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    fontWeight = FontWeight.Medium,
-                                )
-
-                                FlowRow(
-                                    modifier = Modifier.weight(1f),
-                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                                ) {
-                                    if (searchQuery.isNotBlank()) {
-                                        AssistChip(
-                                            onClick = { onSearchChanged("") },
-                                            label = {
-                                                Text(
-                                                    text = "\"$searchQuery\"",
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                )
-                                            },
-                                            leadingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Search,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.size(16.dp),
-                                                )
-                                            },
-                                            trailingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Close,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.size(16.dp),
-                                                )
-                                            },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip,
-                                            modifier = Modifier.semantics {
-                                                role = Role.Button
-                                                selected = true
-                                                contentDescription = "Search filter: $searchQuery, selected. Double tap to remove"
-                                            },
-                                        )
-                                    }
-
-                                    filterMethod?.let { method ->
-                                        AssistChip(
-                                            onClick = { onMethodFilterChanged(null) },
-                                            label = {
-                                                Text(
-                                                    text = method,
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                )
-                                            },
-                                            trailingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Close,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.size(16.dp),
-                                                )
-                                            },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip,
-                                            modifier = Modifier.semantics {
-                                                role = Role.Button
-                                                selected = true
-                                                contentDescription = "HTTP method filter: $method, selected. Double tap to remove"
-                                            },
-                                        )
-                                    }
-
-                                    filterStatusRange?.let { range ->
-                                        val statusLabel = when {
-                                            range == (200..299) -> "2xx"
-                                            range == (300..399) -> "3xx"
-                                            range == (400..499) -> "4xx"
-                                            range == (500..599) -> "5xx"
-                                            else -> "Status"
-                                        }
-                                        AssistChip(
-                                            onClick = { onStatusFilterChanged(null) },
-                                            label = {
-                                                Text(
-                                                    text = statusLabel,
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                )
-                                            },
-                                            trailingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Close,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.size(16.dp),
-                                                )
-                                            },
-                                            shape = WormaCeptorDesignSystem.Shapes.chip,
-                                            modifier = Modifier.semantics {
-                                                role = Role.Button
-                                                selected = true
-                                                contentDescription = "Status code filter: $statusLabel, selected. Double tap to remove"
-                                            },
-                                        )
-                                    }
-                                }
-
-                                IconButton(
-                                    onClick = {
-                                        onClearFilters()
-                                        onSearchChanged("")
-                                    },
-                                    modifier = Modifier.size(48.dp),
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = "Clear all filters",
-                                        modifier = Modifier.size(20.dp),
+                                if (searchQuery.isNotBlank()) {
+                                    AssistChip(
+                                        onClick = { onSearchChanged("") },
+                                        label = {
+                                            Text(
+                                                text = "\"$searchQuery\"",
+                                                style = MaterialTheme.typography.labelSmall,
+                                            )
+                                        },
+                                        leadingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Search,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        },
+                                        shape = WormaCeptorDesignSystem.Shapes.chip,
+                                        modifier = Modifier.semantics {
+                                            role = Role.Button
+                                            selected = true
+                                            contentDescription = "Search filter: $searchQuery, selected. Double tap to remove"
+                                        },
                                     )
                                 }
+
+                                filterMethod?.let { method ->
+                                    AssistChip(
+                                        onClick = { onMethodFilterChanged(null) },
+                                        label = {
+                                            Text(
+                                                text = method,
+                                                style = MaterialTheme.typography.labelSmall,
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        },
+                                        shape = WormaCeptorDesignSystem.Shapes.chip,
+                                        modifier = Modifier.semantics {
+                                            role = Role.Button
+                                            selected = true
+                                            contentDescription = "HTTP method filter: $method, selected. Double tap to remove"
+                                        },
+                                    )
+                                }
+
+                                filterStatusRange?.let { range ->
+                                    val statusLabel = when {
+                                        range == (200..299) -> "2xx"
+                                        range == (300..399) -> "3xx"
+                                        range == (400..499) -> "4xx"
+                                        range == (500..599) -> "5xx"
+                                        else -> "Status"
+                                    }
+                                    AssistChip(
+                                        onClick = { onStatusFilterChanged(null) },
+                                        label = {
+                                            Text(
+                                                text = statusLabel,
+                                                style = MaterialTheme.typography.labelSmall,
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Close,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(16.dp),
+                                            )
+                                        },
+                                        shape = WormaCeptorDesignSystem.Shapes.chip,
+                                        modifier = Modifier.semantics {
+                                            role = Role.Button
+                                            selected = true
+                                            contentDescription = "Status code filter: $statusLabel, selected. Double tap to remove"
+                                        },
+                                    )
+                                }
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    onClearFilters()
+                                    onSearchChanged("")
+                                },
+                                modifier = Modifier.size(48.dp),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Clear all filters",
+                                    modifier = Modifier.size(20.dp),
+                                )
                             }
                         }
                     }
                 }
+            }
 
-                // HorizontalPager for swipe between Transactions and Crashes
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    beyondViewportPageCount = 1,
-                ) { page ->
-                    when (page) {
-                        0 -> SelectableTransactionListScreen(
-                            transactions = transactions,
-                            onItemClick = onTransactionClick,
-                            hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
-                            onClearFilters = {
-                                onClearFilters()
-                                onSearchChanged("")
-                            },
-                            isRefreshing = isRefreshingTransactions,
-                            onRefresh = onRefreshTransactions,
-                            selectedIds = selectedIds,
-                            isSelectionMode = isSelectionMode,
-                            onSelectionToggle = onSelectionToggle,
-                            onLongClick = { id ->
-                                if (!isSelectionMode) {
-                                    onSelectionToggle(id)
+            // HorizontalPager for swipe between Transactions and Crashes
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                beyondViewportPageCount = 1,
+            ) { page ->
+                when (page) {
+                    0 -> SelectableTransactionListScreen(
+                        transactions = transactions,
+                        onItemClick = onTransactionClick,
+                        hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
+                        onClearFilters = {
+                            onClearFilters()
+                            onSearchChanged("")
+                        },
+                        isRefreshing = isRefreshingTransactions,
+                        onRefresh = onRefreshTransactions,
+                        selectedIds = selectedIds,
+                        isSelectionMode = isSelectionMode,
+                        onSelectionToggle = onSelectionToggle,
+                        onLongClick = { id ->
+                            if (!isSelectionMode) {
+                                onSelectionToggle(id)
+                            }
+                        },
+                        onCopyUrl = onCopyUrl,
+                        onShare = onShare,
+                        onDelete = onDelete,
+                        onCopyAsCurl = onCopyAsCurl,
+                        modifier = Modifier.fillMaxSize(),
+                        header = { MetricsCard(transactions = transactions) },
+                    )
+                    1 -> CrashListScreen(
+                        crashes = crashes,
+                        onCrashClick = onCrashClick,
+                        isRefreshing = isRefreshingCrashes,
+                        onRefresh = onRefreshCrashes,
+                    )
+                    2 -> if (showToolsTab) {
+                        ToolsTab(
+                            onNavigate = onToolNavigate,
+                            onShowMessage = { message ->
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(message)
                                 }
                             },
-                            onCopyUrl = onCopyUrl,
-                            onShare = onShare,
-                            onDelete = onDelete,
-                            onCopyAsCurl = onCopyAsCurl,
                             modifier = Modifier.fillMaxSize(),
-                            header = { MetricsCard(transactions = transactions) },
                         )
-                        1 -> CrashListScreen(
-                            crashes = crashes,
-                            onCrashClick = onCrashClick,
-                            isRefreshing = isRefreshingCrashes,
-                            onRefresh = onRefreshCrashes,
-                        )
-                        2 -> if (showToolsTab) {
-                            ToolsTab(
-                                onNavigate = onToolNavigate,
-                                onShowMessage = { message ->
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(message)
-                                    }
-                                },
-                                modifier = Modifier.fillMaxSize(),
-                            )
-                        }
                     }
                 }
             }
+        }
 
-            // Filter bottom sheet (SelectableHomeScreen)
-            if (showFilterSheet) {
-                val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-                val focusManager = LocalFocusManager.current
+        // Filter bottom sheet (SelectableHomeScreen)
+        if (showFilterSheet) {
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            val focusManager = LocalFocusManager.current
 
-                val methodCounts = remember(allTransactions) {
-                    allTransactions.groupBy { it.method }.mapValues { it.value.size }.toImmutableMap()
-                }
-                val statusCounts = remember(allTransactions) {
-                    mapOf(
-                        200..299 to allTransactions.count { (it.code ?: 0) in 200..299 },
-                        300..399 to allTransactions.count { (it.code ?: 0) in 300..399 },
-                        400..499 to allTransactions.count { (it.code ?: 0) in 400..499 },
-                        500..599 to allTransactions.count { (it.code ?: 0) in 500..599 },
-                    ).toImmutableMap()
-                }
+            val methodCounts = remember(allTransactions) {
+                allTransactions.groupBy { it.method }.mapValues { it.value.size }.toImmutableMap()
+            }
+            val statusCounts = remember(allTransactions) {
+                mapOf(
+                    200..299 to allTransactions.count { (it.code ?: 0) in 200..299 },
+                    300..399 to allTransactions.count { (it.code ?: 0) in 300..399 },
+                    400..499 to allTransactions.count { (it.code ?: 0) in 400..499 },
+                    500..599 to allTransactions.count { (it.code ?: 0) in 500..599 },
+                ).toImmutableMap()
+            }
 
-                ModalBottomSheet(
-                    modifier = Modifier.imePadding(),
-                    onDismissRequest = {
+            ModalBottomSheet(
+                modifier = Modifier.imePadding(),
+                onDismissRequest = {
+                    focusManager.clearFocus()
+                    showFilterSheet = false
+                },
+                sheetState = sheetState,
+                shape = WormaCeptorDesignSystem.Shapes.sheet,
+            ) {
+                FilterBottomSheetContent(
+                    searchQuery = searchQuery,
+                    onSearchChanged = onSearchChanged,
+                    filterMethod = filterMethod,
+                    filterStatusRange = filterStatusRange,
+                    onMethodFilterChanged = onMethodFilterChanged,
+                    onStatusFilterChanged = onStatusFilterChanged,
+                    onClearFilters = onClearFilters,
+                    onApply = {
                         focusManager.clearFocus()
                         showFilterSheet = false
                     },
-                    sheetState = sheetState,
-                    shape = WormaCeptorDesignSystem.Shapes.sheet,
-                ) {
-                    FilterBottomSheetContent(
-                        searchQuery = searchQuery,
-                        onSearchChanged = onSearchChanged,
-                        filterMethod = filterMethod,
-                        filterStatusRange = filterStatusRange,
-                        onMethodFilterChanged = onMethodFilterChanged,
-                        onStatusFilterChanged = onStatusFilterChanged,
-                        onClearFilters = onClearFilters,
-                        onApply = {
-                            focusManager.clearFocus()
-                            showFilterSheet = false
-                        },
-                        filteredCount = transactions.size,
-                        totalCount = allTransactions.size,
-                        methodCounts = methodCounts,
-                        statusCounts = statusCounts,
-                    )
-                }
-            }
-
-            // Clear Transactions Confirmation Dialog (SelectableHomeScreen)
-            if (showClearTransactionsDialog) {
-                AlertDialog(
-                    onDismissRequest = { showClearTransactionsDialog = false },
-                    title = { Text("Clear All Transactions?") },
-                    text = {
-                        Text(
-                            "This will permanently delete all captured network transactions. This action cannot be undone.",
-                        )
-                    },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                scope.launch {
-                                    onClearTransactions()
-                                    showClearTransactionsDialog = false
-                                }
-                            },
-                        ) {
-                            Text("Clear")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showClearTransactionsDialog = false }) {
-                            Text("Cancel")
-                        }
-                    },
-                )
-            }
-
-            // Clear Crashes Confirmation Dialog (SelectableHomeScreen)
-            if (showClearCrashesDialog) {
-                AlertDialog(
-                    onDismissRequest = { showClearCrashesDialog = false },
-                    title = { Text("Clear All Crashes?") },
-                    text = {
-                        Text(
-                            "This will permanently delete all captured crash reports. This action cannot be undone.",
-                        )
-                    },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                scope.launch {
-                                    onClearCrashes()
-                                    showClearCrashesDialog = false
-                                }
-                            },
-                        ) {
-                            Text("Clear")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showClearCrashesDialog = false }) {
-                            Text("Cancel")
-                        }
-                    },
-                )
-            }
-
-            // Delete Selected Confirmation Dialog
-            if (showDeleteSelectedDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDeleteSelectedDialog = false },
-                    title = { Text("Delete ${selectedIds.size} Transactions?") },
-                    text = {
-                        Text(
-                            "This will permanently delete the selected transactions. This action cannot be undone.",
-                        )
-                    },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                scope.launch {
-                                    onDeleteSelected()
-                                    showDeleteSelectedDialog = false
-                                }
-                            },
-                        ) {
-                            Text("Delete", color = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showDeleteSelectedDialog = false }) {
-                            Text("Cancel")
-                        }
-                    },
+                    filteredCount = transactions.size,
+                    totalCount = allTransactions.size,
+                    methodCounts = methodCounts,
+                    statusCounts = statusCounts,
                 )
             }
         }
+
+        // Clear Transactions Confirmation Dialog (SelectableHomeScreen)
+        if (showClearTransactionsDialog) {
+            AlertDialog(
+                onDismissRequest = { showClearTransactionsDialog = false },
+                title = { Text("Clear All Transactions?") },
+                text = {
+                    Text(
+                        "This will permanently delete all captured network transactions. This action cannot be undone.",
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                onClearTransactions()
+                                showClearTransactionsDialog = false
+                            }
+                        },
+                    ) {
+                        Text("Clear")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showClearTransactionsDialog = false }) {
+                        Text("Cancel")
+                    }
+                },
+            )
+        }
+
+        // Clear Crashes Confirmation Dialog (SelectableHomeScreen)
+        if (showClearCrashesDialog) {
+            AlertDialog(
+                onDismissRequest = { showClearCrashesDialog = false },
+                title = { Text("Clear All Crashes?") },
+                text = {
+                    Text(
+                        "This will permanently delete all captured crash reports. This action cannot be undone.",
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                onClearCrashes()
+                                showClearCrashesDialog = false
+                            }
+                        },
+                    ) {
+                        Text("Clear")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showClearCrashesDialog = false }) {
+                        Text("Cancel")
+                    }
+                },
+            )
+        }
+
+        // Delete Selected Confirmation Dialog
+        if (showDeleteSelectedDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteSelectedDialog = false },
+                title = { Text("Delete ${selectedIds.size} Transactions?") },
+                text = {
+                    Text(
+                        "This will permanently delete the selected transactions. This action cannot be undone.",
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            scope.launch {
+                                onDeleteSelected()
+                                showDeleteSelectedDialog = false
+                            }
+                        },
+                    ) {
+                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteSelectedDialog = false }) {
+                        Text("Cancel")
+                    }
+                },
+            )
+        }
+    }
 }

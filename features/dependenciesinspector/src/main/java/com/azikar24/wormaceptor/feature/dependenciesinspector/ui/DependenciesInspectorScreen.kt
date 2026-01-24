@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -227,11 +225,7 @@ private fun SearchBar(
 }
 
 @Composable
-private fun SummarySection(
-    summary: DependencySummary,
-    colors: DependenciesInspectorColors,
-    modifier: Modifier,
-) {
+private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
     Row(modifier, Arrangement.spacedBy(8.dp)) {
         SummaryCard("Detected", summary.totalDetected, colors.primary, colors, Modifier.weight(1f))
         SummaryCard("Versioned", summary.withVersion, colors.versionDetected, colors, Modifier.weight(1f))
@@ -320,11 +314,7 @@ private fun FilterSection(
 }
 
 @Composable
-private fun DependencyCard(
-    dependency: DependencyInfo,
-    onClick: () -> Unit,
-    colors: DependenciesInspectorColors,
-) {
+private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colors: DependenciesInspectorColors) {
     val categoryColor = colors.colorForCategory(dependency.category)
     val hasVersion = dependency.version != null
 
@@ -528,11 +518,7 @@ private fun DependencyDetailContent(
 }
 
 @Composable
-private fun DetailSection(
-    title: String,
-    items: List<Pair<String, String>>,
-    colors: DependenciesInspectorColors,
-) {
+private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: DependenciesInspectorColors) {
     if (items.isEmpty()) return
 
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
@@ -561,10 +547,7 @@ private fun DetailSection(
 }
 
 @Composable
-private fun EmptyState(
-    colors: DependenciesInspectorColors,
-    modifier: Modifier,
-) {
+private fun EmptyState(colors: DependenciesInspectorColors, modifier: Modifier) {
     Box(modifier, Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

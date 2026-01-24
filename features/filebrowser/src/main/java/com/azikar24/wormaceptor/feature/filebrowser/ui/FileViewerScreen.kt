@@ -4,7 +4,7 @@
 
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
-import android.graphics.Bitmap
+import android.annotation.SuppressLint
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
 import android.os.ParcelFileDescriptor
@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -61,6 +60,7 @@ import coil.request.ImageRequest
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.io.File
+import androidx.core.graphics.createBitmap
 
 /**
  * Screen for viewing file content.
@@ -236,16 +236,16 @@ private fun XmlFileContent(content: FileContent.Xml) {
 }
 
 // Syntax highlighting colors
-private val JsonKeyColor = Color(0xFF9C27B0)      // Purple for keys
-private val JsonStringColor = Color(0xFF4CAF50)   // Green for string values
-private val JsonNumberColor = Color(0xFF2196F3)   // Blue for numbers
+private val JsonKeyColor = Color(0xFF9C27B0) // Purple for keys
+private val JsonStringColor = Color(0xFF4CAF50) // Green for string values
+private val JsonNumberColor = Color(0xFF2196F3) // Blue for numbers
 private val JsonBoolNullColor = Color(0xFFFF5722) // Orange for booleans/null
-private val JsonBracketColor = Color(0xFF757575)  // Gray for brackets
+private val JsonBracketColor = Color(0xFF757575) // Gray for brackets
 
-private val XmlTagColor = Color(0xFF2196F3)       // Blue for tags
-private val XmlAttrNameColor = Color(0xFF9C27B0)  // Purple for attribute names
+private val XmlTagColor = Color(0xFF2196F3) // Blue for tags
+private val XmlAttrNameColor = Color(0xFF9C27B0) // Purple for attribute names
 private val XmlAttrValueColor = Color(0xFF4CAF50) // Green for attribute values
-private val XmlContentColor = Color(0xFF212121)   // Dark for content
+private val XmlContentColor = Color(0xFF212121) // Dark for content
 
 @Composable
 private fun highlightJson(json: String): AnnotatedString {
@@ -622,11 +622,7 @@ private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
     val bitmap = remember(pageIndex) {
         val page = renderer.openPage(pageIndex)
         val scale = 2f // Render at 2x for better quality
-        val bitmap = Bitmap.createBitmap(
-            (page.width * scale).toInt(),
-            (page.height * scale).toInt(),
-            Bitmap.Config.ARGB_8888,
-        )
+        val bitmap = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
         bitmap.eraseColor(android.graphics.Color.WHITE)
         page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
         page.close()
@@ -678,6 +674,7 @@ private fun ErrorContent(message: String) {
     }
 }
 
+@SuppressLint("DefaultLocale")
 private fun formatBytes(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     return when {

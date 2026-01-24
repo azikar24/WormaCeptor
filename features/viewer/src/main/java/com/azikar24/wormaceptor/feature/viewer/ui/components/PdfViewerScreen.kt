@@ -281,10 +281,10 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                             onPageJump = { showPageJumpDialog = true },
                             onDownload = onDownload,
                             onShare = {
-                            sharePdfFromViewer(context, pdfData, tempFile)?.let { message ->
-                                scope.launch { snackbarHostState.showSnackbar(message) }
-                            }
-                        },
+                                sharePdfFromViewer(context, pdfData, tempFile)?.let { message ->
+                                    scope.launch { snackbarHostState.showSnackbar(message) }
+                                }
+                            },
                         )
                     }
 

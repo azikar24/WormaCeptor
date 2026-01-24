@@ -99,10 +99,10 @@ import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONArray

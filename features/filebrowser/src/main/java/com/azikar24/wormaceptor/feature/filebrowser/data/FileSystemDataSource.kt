@@ -15,6 +15,7 @@ import com.azikar24.wormaceptor.domain.entities.FileInfo
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import org.xml.sax.InputSource
 import java.io.File
 import java.io.StringReader
 import java.io.StringWriter
@@ -23,7 +24,6 @@ import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
-import org.xml.sax.InputSource
 
 /**
  * Data source for file system operations using Java File API.

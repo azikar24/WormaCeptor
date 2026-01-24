@@ -816,7 +816,9 @@ class PerformanceOverlayEngine(
      * Direction for positioning the overlay to avoid screen clipping.
      */
     private enum class PositionDirection {
-        LEFT, RIGHT, CENTER
+        LEFT,
+        RIGHT,
+        CENTER,
     }
 
     // Deep link handlers to open specific screens

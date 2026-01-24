@@ -54,10 +54,12 @@ class RedactionConfig {
             """"${Regex.escape(key)}"\s*:\s*("(?:[^"\\]|\\.)*"|[^,}\]\s]+)""",
             RegexOption.IGNORE_CASE,
         )
-        bodyRedactions.add(BodyRedaction(pattern) { match, replacement ->
-            val keyPart = match.value.substringBefore(match.groupValues[1])
-            """$keyPart"$replacement""""
-        })
+        bodyRedactions.add(
+            BodyRedaction(pattern) { match, replacement ->
+                val keyPart = match.value.substringBefore(match.groupValues[1])
+                """$keyPart"$replacement""""
+            },
+        )
         return this
     }
 
@@ -74,9 +76,11 @@ class RedactionConfig {
             """(<${Regex.escape(tag)}>)(.*?)(</\s*${Regex.escape(tag)}>)""",
             setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL),
         )
-        bodyRedactions.add(BodyRedaction(pattern) { match, replacement ->
-            "${match.groupValues[1]}$replacement${match.groupValues[3]}"
-        })
+        bodyRedactions.add(
+            BodyRedaction(pattern) { match, replacement ->
+                "${match.groupValues[1]}$replacement${match.groupValues[3]}"
+            },
+        )
         return this
     }
 

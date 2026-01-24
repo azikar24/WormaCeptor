@@ -44,6 +44,7 @@ import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.crypto.CryptoTool
 import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
+import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
 import com.azikar24.wormaceptor.feature.fps.FpsMonitor
@@ -51,7 +52,6 @@ import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
 import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
 import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
 import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
-import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel

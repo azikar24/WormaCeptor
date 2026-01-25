@@ -30,11 +30,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountTree
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Layers
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material3.Card
@@ -47,8 +45,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -63,6 +59,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.domain.entities.ViewNode
 import com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.viewHierarchyColors
 import java.text.SimpleDateFormat
@@ -166,13 +163,13 @@ fun ViewHierarchyScreen(
                 .padding(paddingValues),
         ) {
             // Search bar
-            SearchBar(
+            WormaCeptorSearchBar(
                 query = searchQuery,
-                onQueryChanged = onSearchQueryChanged,
-                colors = colors,
+                onQueryChange = onSearchQueryChanged,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = "Search views by name, ID, or class...",
             )
 
             // Statistics card
@@ -234,56 +231,6 @@ fun ViewHierarchyScreen(
             }
         }
     }
-}
-
-@Composable
-private fun SearchBar(
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.ViewHierarchyColors,
-    modifier: Modifier = Modifier,
-) {
-    TextField(
-        value = query,
-        onValueChange = onQueryChanged,
-        modifier = modifier,
-        placeholder = {
-            Text(
-                text = "Search views by name, ID, or class...",
-                color = colors.labelSecondary,
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null,
-                tint = colors.labelSecondary,
-            )
-        },
-        trailingIcon = {
-            AnimatedVisibility(
-                visible = query.isNotBlank(),
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                IconButton(onClick = { onQueryChanged("") }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Clear search",
-                        tint = colors.labelSecondary,
-                    )
-                }
-            }
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = colors.searchBackground,
-            unfocusedContainerColor = colors.searchBackground,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-    )
 }
 
 @Composable

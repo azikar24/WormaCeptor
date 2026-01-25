@@ -4,9 +4,6 @@
 
 package com.azikar24.wormaceptor.feature.loadedlibraries.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,12 +25,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,8 +43,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -62,6 +55,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary.LibraryType
@@ -121,11 +115,11 @@ fun LoadedLibrariesScreen(
         },
     ) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
-            SearchBar(
-                searchQuery,
-                onSearchQueryChanged,
-                colors,
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+            WormaCeptorSearchBar(
+                query = searchQuery,
+                onQueryChange = onSearchQueryChanged,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = "Search libraries...",
             )
             SummarySection(summary, colors, Modifier.fillMaxWidth().padding(horizontal = 16.dp))
             Spacer(Modifier.height(8.dp))
@@ -179,37 +173,6 @@ fun LoadedLibrariesScreen(
             }
         }
     }
-}
-
-@Composable
-private fun SearchBar(
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
-) {
-    TextField(
-        value = query,
-        onValueChange = onQueryChanged,
-        modifier = modifier,
-        placeholder = { Text("Search libraries...", color = colors.labelSecondary) },
-        leadingIcon = { Icon(Icons.Default.Search, null, tint = colors.labelSecondary) },
-        trailingIcon = {
-            AnimatedVisibility(query.isNotBlank(), enter = fadeIn(), exit = fadeOut()) {
-                IconButton(
-                    onClick = { onQueryChanged("") },
-                ) { Icon(Icons.Default.Close, "Clear", tint = colors.labelSecondary) }
-            }
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = colors.searchBackground,
-            unfocusedContainerColor = colors.searchBackground,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
-    )
 }
 
 @Composable

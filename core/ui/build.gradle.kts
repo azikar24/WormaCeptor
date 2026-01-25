@@ -1,3 +1,7 @@
+/*
+ * Copyright AziKar24 2025.
+ */
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.azikar24.wormaceptor.feature.websocket"
+    namespace = "com.azikar24.wormaceptor.core.ui"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -24,18 +28,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:engine"))
-    implementation(project(":core:ui"))
-    implementation(project(":domain:entities"))
-
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.kotlinx.collections.immutable)
     debugImplementation(libs.androidx.ui.tooling)
 }

@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.createBitmap
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.GifDecoder
@@ -60,7 +61,6 @@ import coil.request.ImageRequest
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.io.File
-import androidx.core.graphics.createBitmap
 
 /**
  * Screen for viewing file content.

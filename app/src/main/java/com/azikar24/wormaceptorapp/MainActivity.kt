@@ -10,62 +10,55 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Launch
-import androidx.compose.material.icons.filled.BugReport
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Cookie
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Security
-import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptorapp.wormaceptorui.components.SegmentedControl
+import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
+import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 import kotlinx.coroutines.launch
 import java.io.File
+
+private const val TAB_CROSSFADE_DURATION_MS = 200
 
 class MainActivity : ComponentActivity() {
 
@@ -114,6 +107,9 @@ class MainActivity : ComponentActivity() {
         var showCrashDialog by remember { mutableStateOf(false) }
         var isGlitchEffectActive by remember { mutableStateOf(false) }
         var glitchProgress by remember { mutableFloatStateOf(0f) }
+        var selectedTab by remember { mutableIntStateOf(0) }
+
+        val tabSegments = listOf("Showcase", "Test Tools")
 
         LaunchedEffect(isGlitchEffectActive) {
             if (isGlitchEffectActive) {
@@ -147,65 +143,90 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.Center,
+                            .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
                     ) {
-                        Header()
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                        InfoBanner()
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                        Content(
-                            viewModel = viewModel,
-                            onRunApiTestsClick = {
-                                viewModel.doHttpActivity(baseContext)
-                                viewModel.doContentTypeTests()
-                                viewModel.doWebSocketTest()
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Running API tests...")
-                                }
-                            },
-                            onCrashClick = { showCrashDialog = true },
-                            onLeakClick = {
-                                triggerMemoryLeak()
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Memory leak triggered! Rotate device to detect.")
-                                }
-                            },
-                            onThreadViolationClick = {
-                                triggerThreadViolation()
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Thread violation triggered! Check StrictMode logs.")
-                                }
-                            },
-                            onLocationSimulatorClick = {
-                                startActivity(
-                                    Intent(this@MainActivity, LocationTestActivity::class.java),
-                                )
-                            },
-                            onCookiesClick = {
-                                startActivity(
-                                    Intent(this@MainActivity, CookiesTestActivity::class.java),
-                                )
-                            },
-                            onWebViewMonitorClick = {
-                                startActivity(
-                                    Intent(this@MainActivity, WebViewTestActivity::class.java),
-                                )
-                            },
-                            onSecureStorageClick = {
-                                startActivity(
-                                    Intent(this@MainActivity, SecureStorageTestActivity::class.java),
-                                )
-                            },
-                            onComposeRenderClick = {
-                                startActivity(
-                                    Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
-                                )
-                            },
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+
+                        // Segmented Control at top
+                        SegmentedControl(
+                            segments = tabSegments,
+                            selectedIndex = selectedTab,
+                            onSelectedChange = { selectedTab = it },
+                            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-                        Footer(onGitHubClick = { viewModel.goToGithub(this@MainActivity) })
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+
+                        // Tab content with crossfade animation
+                        Crossfade(
+                            targetState = selectedTab,
+                            animationSpec = tween(TAB_CROSSFADE_DURATION_MS),
+                            label = "tab_crossfade",
+                            modifier = Modifier.weight(1f),
+                        ) { tabIndex ->
+                            when (tabIndex) {
+                                0 -> ShowcaseTab(
+                                    onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
+                                    onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
+                                )
+
+                                1 -> TestToolsTab(
+                                    onRunApiTests = {
+                                        viewModel.doHttpActivity(baseContext)
+                                        viewModel.doContentTypeTests()
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Running API tests...")
+                                        }
+                                    },
+                                    onWebSocketTest = {
+                                        viewModel.doWebSocketTest()
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Running WebSocket test...")
+                                        }
+                                    },
+                                    onTriggerCrash = { showCrashDialog = true },
+                                    onTriggerLeak = {
+                                        triggerMemoryLeak()
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                "Memory leak triggered! Rotate device to detect.",
+                                            )
+                                        }
+                                    },
+                                    onThreadViolation = {
+                                        triggerThreadViolation()
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                "Thread violation triggered! Check StrictMode logs.",
+                                            )
+                                        }
+                                    },
+                                    onLocationClick = {
+                                        startActivity(
+                                            Intent(this@MainActivity, LocationTestActivity::class.java),
+                                        )
+                                    },
+                                    onCookiesClick = {
+                                        startActivity(
+                                            Intent(this@MainActivity, CookiesTestActivity::class.java),
+                                        )
+                                    },
+                                    onWebViewClick = {
+                                        startActivity(
+                                            Intent(this@MainActivity, WebViewTestActivity::class.java),
+                                        )
+                                    },
+                                    onSecureStorageClick = {
+                                        startActivity(
+                                            Intent(this@MainActivity, SecureStorageTestActivity::class.java),
+                                        )
+                                    },
+                                    onComposeRenderClick = {
+                                        startActivity(
+                                            Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
+                                        )
+                                    },
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -267,514 +288,5 @@ class MainActivity : ComponentActivity() {
                 }
             },
         )
-    }
-
-    @Composable
-    private fun Header() {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
-                .padding(top = WormaCeptorDesignSystem.Spacing.xxl),
-        ) {
-            Image(
-                imageVector = WormaceptorLogo(), // MyIconPack.icIconFull(),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier
-                    .width(100.dp),
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-            Text(
-                text = stringResource(id = R.string.app_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            )
-        }
-    }
-
-    @Composable
-    private fun InfoBanner() {
-        Surface(
-            shape = WormaCeptorDesignSystem.Shapes.card,
-            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp),
-                )
-
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(id = R.string.info_shake_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
-
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-
-                    Text(
-                        text = stringResource(id = R.string.info_shake_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                    )
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun Content(
-        viewModel: MainActivityViewModel,
-        onRunApiTestsClick: () -> Unit,
-        onCrashClick: () -> Unit,
-        onLeakClick: () -> Unit,
-        onThreadViolationClick: () -> Unit,
-        onLocationSimulatorClick: () -> Unit,
-        onCookiesClick: () -> Unit,
-        onWebViewMonitorClick: () -> Unit,
-        onSecureStorageClick: () -> Unit,
-        onComposeRenderClick: () -> Unit,
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Navigation card (full width with chevron) - Launch Inspector first
-            ActionCard(
-                icon = Icons.AutoMirrored.Filled.Launch,
-                title = stringResource(id = R.string.action_launch_title),
-                description = stringResource(id = R.string.action_launch_description),
-                onClick = { viewModel.startWormaCeptor(this@MainActivity) },
-                showChevron = true,
-            )
-
-            // Action buttons in a row: Run API Tests + Trigger Crash
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                CompactActionCard(
-                    icon = Icons.Default.PlayArrow,
-                    title = stringResource(id = R.string.action_http_title),
-                    onClick = onRunApiTestsClick,
-                    modifier = Modifier.weight(1f),
-                )
-
-                WarningActionCard(
-                    icon = Icons.Default.BugReport,
-                    title = stringResource(id = R.string.action_crash_title),
-                    onClick = onCrashClick,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
-            // Debug triggers row: Memory Leak + Thread Violation
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                WarningActionCard(
-                    icon = Icons.Default.Memory,
-                    title = "Trigger Leak",
-                    onClick = onLeakClick,
-                    modifier = Modifier.weight(1f),
-                )
-
-                WarningActionCard(
-                    icon = Icons.Default.Storage,
-                    title = "Thread Violation",
-                    onClick = onThreadViolationClick,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
-            // Section header for feature tests
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-            Text(
-                text = "Feature Tests",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            )
-
-            // Feature test buttons row 1: Location + Cookies + WebView
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                FeatureActionCard(
-                    icon = Icons.Default.LocationOn,
-                    title = "Location",
-                    color = Color(0xFF4CAF50),
-                    onClick = onLocationSimulatorClick,
-                    modifier = Modifier.weight(1f),
-                )
-
-                FeatureActionCard(
-                    icon = Icons.Default.Cookie,
-                    title = "Cookies",
-                    color = Color(0xFFFF9800),
-                    onClick = onCookiesClick,
-                    modifier = Modifier.weight(1f),
-                )
-
-                FeatureActionCard(
-                    icon = Icons.Default.Language,
-                    title = "WebView",
-                    color = Color(0xFF2196F3),
-                    onClick = onWebViewMonitorClick,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
-            // Feature test buttons row 2: Secure Storage + Compose Render
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                FeatureActionCard(
-                    icon = Icons.Default.Security,
-                    title = "Secure Storage",
-                    color = Color(0xFF9C27B0),
-                    onClick = onSecureStorageClick,
-                    modifier = Modifier.weight(1f),
-                )
-
-                FeatureActionCard(
-                    icon = Icons.Default.Speed,
-                    title = "Compose Render",
-                    color = Color(0xFFE91E63),
-                    onClick = onComposeRenderClick,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun Footer(onGitHubClick: () -> Unit) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onGitHubClick)
-                .padding(vertical = WormaCeptorDesignSystem.Spacing.xl),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = IcGithubBuilder.build(),
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-            )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Text(
-                text = stringResource(id = R.string.view_on_github),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-            )
-        }
-    }
-
-    @Composable
-    private fun CompactActionCard(
-        icon: ImageVector,
-        title: String,
-        onClick: () -> Unit,
-        modifier: Modifier = Modifier,
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        val isPressed by interactionSource.collectIsPressedAsState()
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.96f else 1f,
-            label = "compact_scale",
-        )
-
-        Surface(
-            shape = WormaCeptorDesignSystem.Shapes.card,
-            color = MaterialTheme.colorScheme.surface,
-            modifier = modifier
-                .scale(scale)
-                .border(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = WormaCeptorDesignSystem.Shapes.card,
-                )
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick,
-                ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
-            ) {
-                Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-                    modifier = Modifier.size(48.dp),
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun WarningActionCard(
-        icon: ImageVector,
-        title: String,
-        onClick: () -> Unit,
-        modifier: Modifier = Modifier,
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        val isPressed by interactionSource.collectIsPressedAsState()
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.96f else 1f,
-            label = "warning_compact_scale",
-        )
-
-        Surface(
-            shape = WormaCeptorDesignSystem.Shapes.card,
-            color = MaterialTheme.colorScheme.errorContainer,
-            modifier = modifier
-                .scale(scale)
-                .border(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
-                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
-                    shape = WormaCeptorDesignSystem.Shapes.card,
-                )
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick,
-                ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
-            ) {
-                Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
-                    modifier = Modifier.size(48.dp),
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun FeatureActionCard(
-        icon: ImageVector,
-        title: String,
-        color: Color,
-        onClick: () -> Unit,
-        modifier: Modifier = Modifier,
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        val isPressed by interactionSource.collectIsPressedAsState()
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.96f else 1f,
-            label = "feature_compact_scale",
-        )
-
-        Surface(
-            shape = WormaCeptorDesignSystem.Shapes.card,
-            color = color.copy(alpha = 0.1f),
-            modifier = modifier
-                .scale(scale)
-                .border(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
-                    color = color.copy(alpha = 0.3f),
-                    shape = WormaCeptorDesignSystem.Shapes.card,
-                )
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick,
-                ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
-            ) {
-                Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = color.copy(alpha = 0.2f),
-                    modifier = Modifier.size(40.dp),
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = color,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = color,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun ActionCard(
-        icon: ImageVector,
-        title: String,
-        description: String,
-        onClick: () -> Unit,
-        showChevron: Boolean = false,
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        val isPressed by interactionSource.collectIsPressedAsState()
-        val scale by animateFloatAsState(
-            targetValue = if (isPressed) 0.98f else 1f,
-            label = "scale",
-        )
-
-        Surface(
-            shape = WormaCeptorDesignSystem.Shapes.card,
-            color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .scale(scale)
-                .border(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = WormaCeptorDesignSystem.Shapes.card,
-                )
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    onClick = onClick,
-                ),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            ) {
-                Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-                    modifier = Modifier.size(48.dp),
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.lg))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
-
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                    )
-                }
-
-                if (showChevron) {
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-                    Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            }
-        }
     }
 }

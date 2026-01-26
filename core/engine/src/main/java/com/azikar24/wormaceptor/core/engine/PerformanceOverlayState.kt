@@ -64,6 +64,11 @@ data class PerformanceOverlayState(
         const val HISTORY_SIZE = 30
 
         /**
+         * Y position threshold for dismiss zone (bottom 15% of screen).
+         */
+        const val DISMISS_ZONE_THRESHOLD = 0.85f
+
+        /**
          * Empty state with no data.
          */
         val EMPTY = PerformanceOverlayState()
@@ -78,6 +83,11 @@ data class PerformanceOverlayState(
      * Returns the count of enabled metrics.
      */
     fun enabledMetricCount(): Int = listOf(fpsEnabled, memoryEnabled, cpuEnabled).count { it }
+
+    /**
+     * Returns true if the overlay is currently in the dismiss zone (bottom of screen).
+     */
+    fun isInDismissZone(): Boolean = positionPercent.y >= DISMISS_ZONE_THRESHOLD
 }
 
 /**

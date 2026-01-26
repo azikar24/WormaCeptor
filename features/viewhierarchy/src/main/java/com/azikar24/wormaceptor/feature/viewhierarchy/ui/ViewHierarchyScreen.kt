@@ -60,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ViewNode
 import com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.viewHierarchyColors
 import java.text.SimpleDateFormat
@@ -108,7 +109,7 @@ fun ViewHierarchyScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.AccountTree,
@@ -168,7 +169,10 @@ fun ViewHierarchyScreen(
                 onQueryChange = onSearchQueryChanged,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
                 placeholder = "Search views by name, ID, or class...",
             )
 
@@ -181,10 +185,10 @@ fun ViewHierarchyScreen(
                     colors = colors,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
             }
 
             // Tree view
@@ -192,9 +196,9 @@ fun ViewHierarchyScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp,
+                        start = WormaCeptorDesignSystem.Spacing.lg,
+                        end = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorDesignSystem.Spacing.lg,
                     ),
                 ) {
                     item {
@@ -226,7 +230,7 @@ fun ViewHierarchyScreen(
                 NodeDetailContent(
                     node = node,
                     colors = colors,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                 )
             }
         }
@@ -243,7 +247,7 @@ private fun StatisticsCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
@@ -251,7 +255,7 @@ private fun StatisticsCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             StatItem(
@@ -294,14 +298,14 @@ private fun StatItem(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             icon?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null,
                     tint = color,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                 )
             }
             Text(
@@ -345,7 +349,7 @@ private fun TreeNode(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                 .background(
                     if (matchesSearch && searchQuery.isNotBlank()) {
                         colors.selectedNode
@@ -354,7 +358,7 @@ private fun TreeNode(
                     },
                 )
                 .clickable { onNodeClick(node) }
-                .padding(vertical = 4.dp),
+                .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Indentation
@@ -368,7 +372,7 @@ private fun TreeNode(
                 )
                 IconButton(
                     onClick = { onToggleExpand(node.id) },
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
@@ -378,18 +382,18 @@ private fun TreeNode(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.width(24.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xl))
             }
 
             // Type color indicator
             Box(
                 modifier = Modifier
-                    .size(8.dp)
+                    .size(WormaCeptorDesignSystem.Spacing.sm)
                     .clip(CircleShape)
                     .background(typeColor),
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
             // Node info
             Column(modifier = Modifier.weight(1f)) {
@@ -414,12 +418,12 @@ private fun TreeNode(
             // Child count badge
             if (hasChildren) {
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
-                    color = typeColor.copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 ) {
                     Text(
                         text = node.children.size.toString(),
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = WormaCeptorDesignSystem.Spacing.xxs),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = typeColor,
@@ -461,24 +465,24 @@ private fun NodeDetailContent(
 
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Header
         item {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(typeColor.copy(alpha = 0.15f)),
+                        .size(WormaCeptorDesignSystem.Spacing.xxxl)
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
+                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(16.dp)
+                            .size(WormaCeptorDesignSystem.Spacing.lg)
                             .clip(CircleShape)
                             .background(typeColor),
                     )
@@ -560,7 +564,7 @@ private fun NodeDetailContent(
         }
 
         item {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
         }
     }
 }
@@ -574,7 +578,7 @@ private fun DetailSection(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         Text(
             text = title,
@@ -584,12 +588,12 @@ private fun DetailSection(
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             color = colors.searchBackground,
         ) {
             Column(
-                modifier = Modifier.padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 items.forEach { (label, value) ->
                     Row(
@@ -625,13 +629,13 @@ private fun EmptyState(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Icon(
                 imageVector = Icons.Default.AccountTree,
                 contentDescription = null,
                 tint = colors.labelSecondary,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
                 text = "No hierarchy captured",

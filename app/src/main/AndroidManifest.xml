@@ -7,6 +7,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"
+        tools:ignore="MockLocation,ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".App"
@@ -28,6 +32,32 @@
             </intent-filter>
 
         </activity>
+
+        <!-- Feature test activities -->
+        <activity
+            android:name=".LocationTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WormaCeptor" />
+
+        <activity
+            android:name=".CookiesTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WormaCeptor" />
+
+        <activity
+            android:name=".WebViewTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WormaCeptor" />
+
+        <activity
+            android:name=".SecureStorageTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WormaCeptor" />
+
+        <activity
+            android:name=".ComposeRenderTestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WormaCeptor" />
     </application>
 
 </manifest>

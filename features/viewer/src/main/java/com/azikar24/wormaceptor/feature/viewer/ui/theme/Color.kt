@@ -73,6 +73,47 @@ object WormaCeptorColors {
     val StatusGrey = Color(0xFF9E9E9E)
 
     // Content type colors for filter chips
-    val ContentPurple = Color(0xFF6B5778) // Matches tertiary for JSON/data types
-    val ContentCyan = Color(0xFF00838F) // For media/image content
+    @Deprecated("Use ContentTypeColors.Xml or another appropriate color")
+    val ContentPurple = Color(0xFF6B5778)
+
+    @Deprecated("Use ContentTypeColors.Image")
+    val ContentCyan = Color(0xFF00838F)
+
+    // Tool category colors (from ToolsTab)
+    object CategoryColors {
+        val Inspection = Color(0xFF6366F1) // Indigo
+        val Performance = Color(0xFFF59E0B) // Amber
+        val Network = Color(0xFF10B981) // Emerald
+        val Simulation = Color(0xFF8B5CF6) // Purple
+        val VisualDebug = Color(0xFFEC4899) // Pink
+        val Core = Color(0xFF3B82F6) // Blue
+        val Favorites = Color(0xFFF59E0B) // Amber (same as Performance)
+        val Fallback = Color(0xFF6B7280) // Gray
+    }
+
+    // Content type colors (for ContentTypeChip and similar)
+    object ContentTypeColors {
+        val Json = Color(0xFFF59E0B) // Amber
+        val Xml = Color(0xFF8B5CF6) // Purple
+        val Html = Color(0xFFEC4899) // Pink
+        val Protobuf = Color(0xFF10B981) // Emerald
+        val FormData = Color(0xFF3B82F6) // Blue
+        val Multipart = Color(0xFF6366F1) // Indigo
+        val PlainText = Color(0xFF6B7280) // Gray
+        val Binary = Color(0xFFEF4444) // Red
+        val Pdf = Color(0xFFDC2626) // Red-600
+        val Image = Color(0xFF14B8A6) // Teal
+        val Unknown = Color(0xFF9CA3AF) // Gray-400
+    }
+
+    // HTTP method colors
+    object HttpMethodColors {
+        val Get = Color(0xFF3B82F6) // Blue
+        val Post = Color(0xFF10B981) // Green
+        val Put = Color(0xFFF59E0B) // Amber
+        val Patch = Color(0xFF9C27B0) // Purple
+        val Delete = Color(0xFFEF4444) // Red
+        val Head = Color(0xFF6B7280) // Gray
+        val Options = Color(0xFF8B5CF6) // Violet
+    }
 }

@@ -13,10 +13,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,18 +61,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.CookieDomain
 import com.azikar24.wormaceptor.domain.entities.CookieInfo
 import com.azikar24.wormaceptor.feature.cookies.ui.theme.CookiesDesignSystem
-import com.azikar24.wormaceptor.feature.cookies.ui.theme.asSubtleBackground
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 
@@ -214,9 +211,9 @@ fun CookiesListScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(CookiesDesignSystem.Spacing.md),
+                    .padding(WormaCeptorDesignSystem.Spacing.md),
                 singleLine = true,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -232,10 +229,10 @@ fun CookiesListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        horizontal = CookiesDesignSystem.Spacing.md,
-                        vertical = CookiesDesignSystem.Spacing.xs,
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(CookiesDesignSystem.Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(domains, key = { it.domain }) { domain ->
                         DomainSection(
@@ -323,79 +320,72 @@ private fun DomainSection(
 
     Column(modifier = modifier) {
         // Domain header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-                .border(
-                    width = CookiesDesignSystem.BorderWidth.regular,
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                    shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-                )
-                .background(
-                    color = CookiesDesignSystem.CookieColors.domain.asSubtleBackground(),
-                    shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-                )
-                .clickable(onClick = onToggle)
-                .padding(CookiesDesignSystem.Spacing.md),
-            verticalAlignment = Alignment.CenterVertically,
+        WormaCeptorContainer(
+            onClick = onToggle,
+            style = ContainerStyle.Outlined,
+            backgroundColor = CookiesDesignSystem.CookieColors.domain.asSubtleBackground(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            // Domain icon
-            Surface(
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm),
-                color = CookiesDesignSystem.CookieColors.domain.copy(alpha = 0.15f),
-                modifier = Modifier.size(40.dp),
+            Row(
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
+                // Domain icon
+                Surface(
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                    color = CookiesDesignSystem.CookieColors.domain.copy(alpha = 0.15f),
+                    modifier = Modifier.size(40.dp),
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Language,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = CookiesDesignSystem.CookieColors.domain,
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Language,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = CookiesDesignSystem.CookieColors.domain,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = domain.domain,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                    Text(
+                        text = "${domain.cookieCount} ${if (domain.cookieCount == 1) "cookie" else "cookies"}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.md))
+                IconButton(
+                    onClick = onDeleteDomain,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete all cookies for this domain",
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.error,
+                    )
+                }
 
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = domain.domain,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.xxs))
-                Text(
-                    text = "${domain.cookieCount} ${if (domain.cookieCount == 1) "cookie" else "cookies"}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            IconButton(
-                onClick = onDeleteDomain,
-                modifier = Modifier.size(32.dp),
-            ) {
                 Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete all cookies for this domain",
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.error,
+                    imageVector = Icons.Default.ExpandMore,
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    modifier = Modifier.rotate(rotationAngle),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-
-            Icon(
-                imageVector = Icons.Default.ExpandMore,
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
-                modifier = Modifier.rotate(rotationAngle),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
 
         // Expanded cookies list
@@ -406,9 +396,9 @@ private fun DomainSection(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(start = CookiesDesignSystem.Spacing.xl)
-                    .padding(top = CookiesDesignSystem.Spacing.xs),
-                verticalArrangement = Arrangement.spacedBy(CookiesDesignSystem.Spacing.xs),
+                    .padding(start = WormaCeptorDesignSystem.Spacing.xl)
+                    .padding(top = WormaCeptorDesignSystem.Spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 domain.cookies.forEach { cookie ->
                     CookieItem(
@@ -423,131 +413,110 @@ private fun DomainSection(
 
 @Composable
 private fun CookieItem(cookie: CookieInfo, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "cookieItemScale",
-    )
-
     val statusColor = CookiesDesignSystem.CookieColors.forExpirationStatus(cookie.expirationStatus)
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .scale(scale)
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.thin,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm),
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(CookiesDesignSystem.Spacing.sm),
-        verticalAlignment = Alignment.CenterVertically,
+    WormaCeptorContainer(
+        onClick = onClick,
+        style = ContainerStyle.Outlined,
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        // Status indicator
-        Box(
-            modifier = Modifier
-                .width(CookiesDesignSystem.BorderWidth.thick)
-                .height(32.dp)
-                .background(
-                    statusColor,
-                    shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.xs),
-                ),
-        )
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.sm))
-
-        // Cookie icon
-        Icon(
-            imageVector = Icons.Default.Cookie,
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.sm))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = cookie.name,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = FontFamily.Monospace,
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = cookie.value,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace,
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.sm))
-
-        // Attribute badges
-        Row(horizontalArrangement = Arrangement.spacedBy(CookiesDesignSystem.Spacing.xxs)) {
-            if (cookie.isSecure) {
-                AttributeBadge(
-                    text = "S",
-                    color = CookiesDesignSystem.CookieColors.secure,
-                )
-            }
-            if (cookie.isHttpOnly) {
-                AttributeBadge(
-                    text = "H",
-                    color = CookiesDesignSystem.CookieColors.httpOnly,
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.xs))
-
-        // Status badge
-        Surface(
-            color = statusColor.copy(alpha = 0.15f),
-            contentColor = statusColor,
-            shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.xs),
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
+            // Status indicator
+            Box(
+                modifier = Modifier
+                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
+                    .height(32.dp)
+                    .background(
+                        statusColor,
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                    ),
+            )
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+
+            // Cookie icon
+            Icon(
+                imageVector = Icons.Default.Cookie,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = cookie.name,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = FontFamily.Monospace,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = cookie.value,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontFamily = FontFamily.Monospace,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+
+            // Attribute badges
+            Row(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs)) {
+                if (cookie.isSecure) {
+                    AttributeBadge(
+                        text = "S",
+                        color = CookiesDesignSystem.CookieColors.secure,
+                    )
+                }
+                if (cookie.isHttpOnly) {
+                    AttributeBadge(
+                        text = "H",
+                        color = CookiesDesignSystem.CookieColors.httpOnly,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
+
+            // Status badge
+            Surface(
+                color = statusColor.copy(alpha = 0.15f),
+                contentColor = statusColor,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+            ) {
+                Text(
+                    text = cookie.expirationStatus,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
+                )
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
+
+            // Chevron
             Text(
-                text = cookie.expirationStatus,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(
-                    horizontal = CookiesDesignSystem.Spacing.sm,
-                    vertical = CookiesDesignSystem.Spacing.xxs,
-                ),
+                text = ">",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
             )
         }
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.xs))
-
-        // Chevron
-        Text(
-            text = ">",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-        )
     }
 }
 
@@ -556,7 +525,7 @@ private fun AttributeBadge(text: String, color: androidx.compose.ui.graphics.Col
     Surface(
         color = color.copy(alpha = 0.15f),
         contentColor = color,
-        shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.xs),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
         modifier = modifier.size(20.dp),
     ) {
         Box(contentAlignment = Alignment.Center) {
@@ -577,7 +546,7 @@ private fun EmptyCookiesState(hasSearchQuery: Boolean, modifier: Modifier = Modi
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.lg),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -594,7 +563,7 @@ private fun EmptyCookiesState(hasSearchQuery: Boolean, modifier: Modifier = Modi
             }
         }
 
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
             text = if (hasSearchQuery) "No matches found" else "No cookies",
@@ -603,7 +572,7 @@ private fun EmptyCookiesState(hasSearchQuery: Boolean, modifier: Modifier = Modi
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Text(
             text = if (hasSearchQuery) {

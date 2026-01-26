@@ -306,7 +306,7 @@ Reference: `features/viewer/ui/theme/DesignSystem.kt` - `WormaCeptorDesignSystem
 |-------|-------|-------|
 | `subtle` | 0.08f | Barely visible overlays |
 | `light` | 0.12f | Light tints |
-| `medium` | 0.24f | Medium overlays |
+| `medium` | 0.20f | Medium overlays |
 | `strong` | 0.40f | Strong overlays |
 | `intense` | 0.60f | Heavy overlays |
 

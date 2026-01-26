@@ -51,9 +51,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
@@ -121,11 +121,11 @@ internal fun WebSocketDetailScreen(
                             val stateColor = colors.forState(connection.state)
                             Box(
                                 modifier = Modifier
-                                    .size(12.dp)
+                                    .size(WormaCeptorDesignSystem.Spacing.md)
                                     .clip(CircleShape)
                                     .background(stateColor),
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         }
 
                         // Clear messages
@@ -150,7 +150,10 @@ internal fun WebSocketDetailScreen(
                     onQueryChange = onSearchQueryChanged,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        ),
                     placeholder = "Search messages...",
                 )
 
@@ -161,7 +164,7 @@ internal fun WebSocketDetailScreen(
                     onDirectionToggle = onDirectionFilterToggle,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
                 )
 
                 // Stats bar
@@ -170,7 +173,10 @@ internal fun WebSocketDetailScreen(
                     filteredCount = messages.size,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
                 )
             }
         },
@@ -208,8 +214,8 @@ private fun DirectionFilterChips(
     Row(
         modifier = modifier
             .horizontalScroll(scrollState)
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         WebSocketMessageDirection.entries.forEach { direction ->
             val isSelected = selectedDirection == direction
@@ -226,12 +232,12 @@ private fun DirectionFilterChips(
                 label = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
+                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                         )
                         Text(
                             text = direction.name,
@@ -242,21 +248,29 @@ private fun DirectionFilterChips(
                                 text = if (count > 999) "999+" else count.toString(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                    )
                                 } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                    )
                                 },
                             )
                         }
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = directionColor.copy(alpha = 0.15f),
+                    selectedContainerColor = directionColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                     selectedLabelColor = directionColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = directionColor.copy(alpha = 0.3f),
-                    selectedBorderColor = directionColor.copy(alpha = 0.5f),
+                    borderColor = directionColor.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+                    ),
+                    selectedBorderColor = directionColor.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                    ),
                     enabled = true,
                     selected = isSelected,
                 ),
@@ -299,7 +313,7 @@ private fun MessageList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.sm),
     ) {
         items(
             items = messages,
@@ -341,12 +355,17 @@ private fun MessageItem(
         modifier = modifier
             .clickable(onClick = onClick)
             .animateContentSize(),
-        color = backgroundColor.copy(alpha = 0.3f),
+        color = backgroundColor.copy(
+            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+        ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.md,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -357,26 +376,29 @@ private fun MessageItem(
                     imageVector = directionIcon,
                     contentDescription = message.direction.name,
                     tint = directionColor,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
                 // Type badge
                 Surface(
-                    shape = RoundedCornerShape(4.dp),
-                    color = typeColor.copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 ) {
                     Text(
                         text = message.type.name,
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = typeColor,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
                     )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
                 // Size
                 Text(
@@ -392,28 +414,32 @@ private fun MessageItem(
                     text = formattedTime,
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                    ),
                 )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
 
                 // Expand indicator
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                    ),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
                 )
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs))
 
             // Payload preview or full content
             Text(
                 text = if (isExpanded) message.payload else message.payloadPreview(150),
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
+                color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 18.sp,
                 maxLines = if (isExpanded) Int.MAX_VALUE else 3,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
@@ -430,9 +456,11 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(64.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            ),
+            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -442,20 +470,24 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.CallMade,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.strong,
+                        ),
                     )
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.CallReceived,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.intense,
+                        ),
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
             text = if (hasFilters) "No matching messages" else "No messages yet",
@@ -464,7 +496,7 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
             text = if (hasFilters) {
@@ -473,7 +505,9 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
                 "Messages will appear as they are sent or received"
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+            ),
         )
     }
 }

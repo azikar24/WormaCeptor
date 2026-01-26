@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
@@ -176,15 +177,15 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = DatabaseDesignSystem.Spacing.lg,
-                        vertical = DatabaseDesignSystem.Spacing.md,
+                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                        vertical = WormaCeptorDesignSystem.Spacing.md,
                     ),
-                horizontalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.xs),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
@@ -202,7 +203,7 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
                         }
                     }
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = column.type,
@@ -236,13 +237,13 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
             Row(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(vertical = DatabaseDesignSystem.Spacing.xs),
+                    .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 result.columns.forEach { column ->
                     Box(
                         modifier = Modifier
                             .widthIn(min = 100.dp, max = 200.dp)
-                            .padding(horizontal = DatabaseDesignSystem.Spacing.sm),
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = column,
@@ -263,13 +264,13 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
             key = { it.hashCode() },
         ) { row ->
             Row(
-                modifier = Modifier.padding(vertical = DatabaseDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 row.forEach { cell ->
                     Box(
                         modifier = Modifier
                             .widthIn(min = 100.dp, max = 200.dp)
-                            .padding(horizontal = DatabaseDesignSystem.Spacing.sm),
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = cell?.toString() ?: "NULL",
@@ -295,7 +296,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(DatabaseDesignSystem.Spacing.xl),
+                        .padding(WormaCeptorDesignSystem.Spacing.xl),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(

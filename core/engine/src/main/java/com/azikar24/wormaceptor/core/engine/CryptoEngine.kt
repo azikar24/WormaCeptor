@@ -356,19 +356,19 @@ class CryptoEngine {
     /**
      * Generates a random key for the current algorithm.
      *
-     * @return The generated key as a Base64 string
+     * @return The generated key in the current key format
      */
     fun generateKey(): String {
         val keyLengthBytes = _config.value.algorithm.keyLengthBits / 8
         val keyBytes = ByteArray(keyLengthBytes)
         SecureRandom().nextBytes(keyBytes)
-        return Base64.encodeToString(keyBytes, Base64.NO_WRAP)
+        return formatBytes(keyBytes, _config.value.keyFormat)
     }
 
     /**
      * Generates a random IV for the current mode.
      *
-     * @return The generated IV as a Base64 string
+     * @return The generated IV in the current key format
      */
     fun generateIv(): String {
         val ivLengthBytes = when (_config.value.mode) {
@@ -377,7 +377,18 @@ class CryptoEngine {
         }
         val ivBytes = ByteArray(ivLengthBytes)
         SecureRandom().nextBytes(ivBytes)
-        return Base64.encodeToString(ivBytes, Base64.NO_WRAP)
+        return formatBytes(ivBytes, _config.value.keyFormat)
+    }
+
+    /**
+     * Formats bytes to string based on the key format.
+     */
+    private fun formatBytes(bytes: ByteArray, format: KeyFormat): String {
+        return when (format) {
+            KeyFormat.BASE64 -> Base64.encodeToString(bytes, Base64.NO_WRAP)
+            KeyFormat.HEX -> bytes.joinToString("") { "%02x".format(it) }
+            KeyFormat.UTF8 -> String(bytes, Charsets.UTF_8)
+        }
     }
 
     /**

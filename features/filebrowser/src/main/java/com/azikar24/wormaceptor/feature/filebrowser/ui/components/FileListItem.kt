@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.text.SimpleDateFormat
@@ -41,10 +42,10 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
                 onLongClick = onLongClick,
             )
             .padding(
-                horizontal = FileBrowserDesignSystem.Spacing.lg,
-                vertical = FileBrowserDesignSystem.Spacing.md,
+                horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                vertical = WormaCeptorDesignSystem.Spacing.md,
             ),
-        horizontalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.md),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // File icon
@@ -58,7 +59,7 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
         // File info
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.xxs),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
         ) {
             // File name
             Text(
@@ -72,7 +73,7 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
 
             // File details
             Row(
-                horizontalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 if (!file.isDirectory) {
                     Text(

@@ -79,10 +79,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
-import com.azikar24.wormaceptor.feature.location.ui.theme.LocationDesignSystem
-import com.azikar24.wormaceptor.feature.location.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -147,7 +148,7 @@ fun LocationScreen(
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
-                            tint = LocationDesignSystem.LocationColors.enabled,
+                            tint = LocationColors.enabled,
                         )
                         Text(
                             text = "Location Simulator",
@@ -156,14 +157,14 @@ fun LocationScreen(
                         if (isMockEnabled) {
                             Surface(
                                 shape = RoundedCornerShape(4.dp),
-                                color = LocationDesignSystem.LocationColors.enabled.copy(alpha = 0.15f),
+                                color = LocationColors.enabled.copy(alpha = 0.15f),
                             ) {
                                 Text(
                                     text = "ACTIVE",
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
-                                    color = LocationDesignSystem.LocationColors.enabled,
+                                    color = LocationColors.enabled,
                                 )
                             }
                         }
@@ -189,8 +190,8 @@ fun LocationScreen(
         Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(LocationDesignSystem.Spacing.lg),
-                verticalArrangement = Arrangement.spacedBy(LocationDesignSystem.Spacing.lg),
+                contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 // Warning banner if mock locations not available
                 if (!isMockLocationAvailable) {
@@ -264,7 +265,7 @@ fun LocationScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                         colors = OutlinedTextFieldDefaults.colors(
                             unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -327,23 +328,23 @@ private fun MockLocationWarningBanner() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = LocationDesignSystem.LocationColors.warning.asSubtleBackground(),
+            containerColor = LocationColors.warning.asSubtleBackground(),
         ),
-        shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(LocationDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = Icons.Default.Warning,
                 contentDescription = null,
-                tint = LocationDesignSystem.LocationColors.warning,
+                tint = LocationColors.warning,
                 modifier = Modifier.size(24.dp),
             )
-            Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = "Mock Locations Not Enabled",
@@ -351,7 +352,7 @@ private fun MockLocationWarningBanner() {
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.xxs))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
                     text = "To use location simulation, enable Developer Options, then set this app as the mock location app.",
                     style = MaterialTheme.typography.bodySmall,
@@ -373,17 +374,17 @@ private fun MockLocationStatusCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (isMockEnabled) {
-                LocationDesignSystem.LocationColors.enabled.asSubtleBackground()
+                LocationColors.enabled.asSubtleBackground()
             } else {
                 MaterialTheme.colorScheme.surface
             },
         ),
-        shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.lg),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         border = if (isMockEnabled) {
             null
         } else {
             androidx.compose.foundation.BorderStroke(
-                LocationDesignSystem.BorderWidth.regular,
+                WormaCeptorDesignSystem.BorderWidth.regular,
                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
         },
@@ -391,14 +392,14 @@ private fun MockLocationStatusCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(LocationDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Status icon
             Surface(
                 shape = CircleShape,
                 color = if (isMockEnabled) {
-                    LocationDesignSystem.LocationColors.enabled
+                    LocationColors.enabled
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
                 },
@@ -421,7 +422,7 @@ private fun MockLocationStatusCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.lg))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -431,11 +432,11 @@ private fun MockLocationStatusCard(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 if (currentMockLocation != null && isMockEnabled) {
-                    Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.xxs))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                     Text(
                         text = currentMockLocation.formatCoordinates(),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = LocationDesignSystem.LocationColors.coordinate,
+                        color = LocationColors.coordinate,
                         fontWeight = FontWeight.Medium,
                     )
                     currentMockLocation.name?.let { name ->
@@ -454,7 +455,7 @@ private fun MockLocationStatusCard(
                 enabled = isEnabled,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                    checkedTrackColor = LocationDesignSystem.LocationColors.enabled,
+                    checkedTrackColor = LocationColors.enabled,
                 ),
             )
         }
@@ -480,16 +481,16 @@ private fun CoordinateInputCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
-        shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.lg),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         border = androidx.compose.foundation.BorderStroke(
-            LocationDesignSystem.BorderWidth.regular,
+            WormaCeptorDesignSystem.BorderWidth.regular,
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
         ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(LocationDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
                 text = "Set Custom Location",
@@ -498,7 +499,7 @@ private fun CoordinateInputCard(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // Latitude input
             OutlinedTextField(
@@ -509,14 +510,14 @@ private fun CoordinateInputCard(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 supportingText = {
                     Text("Range: -90 to 90")
                 },
                 isError = latitudeInput.isNotBlank() && latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true,
             )
 
-            Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             // Longitude input
             OutlinedTextField(
@@ -527,19 +528,19 @@ private fun CoordinateInputCard(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 supportingText = {
                     Text("Range: -180 to 180")
                 },
                 isError = longitudeInput.isNotBlank() && longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true,
             )
 
-            Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // Action buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(LocationDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 // Get current location button
                 OutlinedButton(
@@ -552,7 +553,7 @@ private fun CoordinateInputCard(
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
                     )
-                    Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     Text("Current")
                 }
 
@@ -567,12 +568,12 @@ private fun CoordinateInputCard(
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
                     )
-                    Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     Text("Save")
                 }
             }
 
-            Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // Set mock location button
             Button(
@@ -580,7 +581,7 @@ private fun CoordinateInputCard(
                 enabled = isMockLocationAvailable && isInputValid && !isLoading && !isMockEnabled,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = LocationDesignSystem.LocationColors.enabled,
+                    containerColor = LocationColors.enabled,
                 ),
             ) {
                 Icon(
@@ -588,7 +589,7 @@ private fun CoordinateInputCard(
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )
-                Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text("Set Mock Location")
             }
         }
@@ -618,39 +619,39 @@ private fun PresetItem(
         modifier = modifier
             .fillMaxWidth()
             .scale(scale)
-            .clip(RoundedCornerShape(LocationDesignSystem.CornerRadius.md))
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .border(
-                width = if (isSelected) LocationDesignSystem.BorderWidth.thick else LocationDesignSystem.BorderWidth.regular,
+                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
                 color = if (isSelected) {
-                    LocationDesignSystem.LocationColors.enabled
+                    LocationColors.enabled
                 } else {
                     MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
                 },
-                shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
             .background(
                 color = if (isSelected) {
-                    LocationDesignSystem.LocationColors.enabled.asSubtleBackground()
+                    LocationColors.enabled.asSubtleBackground()
                 } else {
                     MaterialTheme.colorScheme.surface
                 },
-                shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = onClick,
             )
-            .padding(LocationDesignSystem.Spacing.lg),
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Location icon
         Surface(
-            shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.sm),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
             color = if (preset.isBuiltIn) {
-                LocationDesignSystem.LocationColors.builtIn.asSubtleBackground()
+                LocationColors.builtIn.asSubtleBackground()
             } else {
-                LocationDesignSystem.LocationColors.userPreset.asSubtleBackground()
+                LocationColors.userPreset.asSubtleBackground()
             },
             modifier = Modifier.size(40.dp),
         ) {
@@ -663,15 +664,15 @@ private fun PresetItem(
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
                     tint = if (preset.isBuiltIn) {
-                        LocationDesignSystem.LocationColors.builtIn
+                        LocationColors.builtIn
                     } else {
-                        LocationDesignSystem.LocationColors.userPreset
+                        LocationColors.userPreset
                     },
                 )
             }
         }
 
-        Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
         Column(modifier = Modifier.weight(1f)) {
             Row(
@@ -687,20 +688,20 @@ private fun PresetItem(
                     modifier = Modifier.weight(1f, fill = false),
                 )
                 if (isSelected) {
-                    Spacer(modifier = Modifier.width(LocationDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = "Selected",
                         modifier = Modifier.size(16.dp),
-                        tint = LocationDesignSystem.LocationColors.enabled,
+                        tint = LocationColors.enabled,
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.xxs))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
                 text = preset.location.formatCoordinates(),
                 style = MaterialTheme.typography.bodySmall,
-                color = LocationDesignSystem.LocationColors.coordinate,
+                color = LocationColors.coordinate,
             )
         }
 
@@ -708,7 +709,6 @@ private fun PresetItem(
         if (onDelete != null) {
             IconButton(
                 onClick = onDelete,
-                modifier = Modifier.size(32.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
@@ -726,11 +726,11 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = LocationDesignSystem.Spacing.xxl),
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Surface(
-            shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.lg),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -747,7 +747,7 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
             }
         }
 
-        Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
             text = if (hasSearchQuery) "No matches found" else "No presets saved",
@@ -756,7 +756,7 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(LocationDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Text(
             text = if (hasSearchQuery) {
@@ -785,7 +785,7 @@ private fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
                 placeholder = { Text("e.g., Office, Home, Gym") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(LocationDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
         },
         confirmButton = {

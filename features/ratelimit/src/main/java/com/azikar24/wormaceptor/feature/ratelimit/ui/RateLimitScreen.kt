@@ -61,6 +61,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
@@ -102,7 +103,7 @@ fun RateLimitScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = "Network Rate Limiter",
@@ -145,8 +146,8 @@ fun RateLimitScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Enable toggle card
             EnableToggleCard(
@@ -198,7 +199,7 @@ private fun EnableToggleCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
@@ -206,26 +207,26 @@ private fun EnableToggleCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(statusColor.copy(alpha = 0.15f)),
+                        .size(WormaCeptorDesignSystem.Spacing.xxxl)
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
+                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         imageVector = Icons.Default.Speed,
                         contentDescription = null,
                         tint = statusColor,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
                 }
 
@@ -249,7 +250,7 @@ private fun EnableToggleCard(
                 onCheckedChange = { onToggle() },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colors.enabled,
-                    checkedTrackColor = colors.enabled.copy(alpha = 0.3f),
+                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
                 ),
             )
         }
@@ -267,14 +268,14 @@ private fun NetworkPresetsCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
                 text = "Network Presets",
@@ -284,8 +285,8 @@ private fun NetworkPresetsCard(
             )
 
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 NetworkPreset.entries.forEach { preset ->
                     PresetChip(
@@ -301,13 +302,13 @@ private fun NetworkPresetsCard(
             // Preset info
             selectedPreset?.let { preset ->
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = colors.primary.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
+                            .padding(WormaCeptorDesignSystem.Spacing.md),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         PresetInfoItem(
@@ -381,11 +382,11 @@ private fun PresetChip(
             Icon(
                 imageVector = presetIcon,
                 contentDescription = null,
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(18.dp), // Material spec for chip icons
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = presetColor.copy(alpha = 0.2f),
+            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
             selectedLabelColor = presetColor,
             selectedLeadingIconColor = presetColor,
         ),
@@ -409,7 +410,7 @@ private fun PresetInfoItem(
             imageVector = icon,
             contentDescription = null,
             tint = color,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
         )
         Text(
             text = label,
@@ -439,14 +440,14 @@ private fun ConfigurationCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
                 text = "Custom Configuration",
@@ -530,7 +531,7 @@ private fun ConfigSlider(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -539,13 +540,13 @@ private fun ConfigSlider(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = if (enabled) color else colors.disabled,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp), // Material spec for list icon
                 )
                 Text(
                     text = label,
@@ -587,14 +588,14 @@ private fun StatisticsCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -611,7 +612,7 @@ private fun StatisticsCard(
                     imageVector = Icons.Default.NetworkCheck,
                     contentDescription = null,
                     tint = colors.primary,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp), // Material spec for list icon
                 )
             }
 
@@ -663,7 +664,7 @@ private fun StatItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(

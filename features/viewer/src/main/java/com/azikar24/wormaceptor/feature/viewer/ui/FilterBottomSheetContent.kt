@@ -63,8 +63,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import kotlinx.collections.immutable.ImmutableMap
 
 /**

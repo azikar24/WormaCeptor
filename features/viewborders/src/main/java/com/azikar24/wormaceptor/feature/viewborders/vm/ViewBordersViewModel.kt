@@ -7,6 +7,7 @@ package com.azikar24.wormaceptor.feature.viewborders.vm
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.core.engine.ToolOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
 import com.azikar24.wormaceptor.domain.entities.ViewBordersConfig
 import com.azikar24.wormaceptor.feature.viewborders.data.ViewBordersDataStore
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 class ViewBordersViewModel(
     private val dataStore: ViewBordersDataStore,
     private val engine: ViewBordersEngine,
+    private val toolOverlayEngine: ToolOverlayEngine,
 ) : ViewModel() {
 
     /**
@@ -60,6 +62,9 @@ class ViewBordersViewModel(
             val newConfig = currentConfig.copy(enabled = newEnabled)
             dataStore.saveConfig(newConfig)
             engine.updateConfig(newConfig)
+
+            // Notify ToolOverlayEngine to show/hide the floating toolbar
+            toolOverlayEngine.onViewBordersStateChanged(newEnabled, activity)
         }
     }
 
@@ -80,6 +85,9 @@ class ViewBordersViewModel(
             val newConfig = config.value.copy(enabled = enabled)
             dataStore.saveConfig(newConfig)
             engine.updateConfig(newConfig)
+
+            // Notify ToolOverlayEngine to show/hide the floating toolbar
+            toolOverlayEngine.onViewBordersStateChanged(enabled, activity)
         }
     }
 

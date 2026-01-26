@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,6 +61,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
@@ -107,7 +109,7 @@ fun SecureStorageScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Security,
@@ -162,7 +164,10 @@ fun SecureStorageScreen(
                 onQueryChange = onSearchQueryChanged,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
                 placeholder = "Search keys and values...",
             )
 
@@ -172,10 +177,10 @@ fun SecureStorageScreen(
                 colors = colors,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // Type filter chips
             TypeFilterChips(
@@ -184,23 +189,23 @@ fun SecureStorageScreen(
                 colors = colors,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // Error message
             error?.let { errorMessage ->
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(8.dp),
+                        .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                    shape = WormaCeptorDesignSystem.Shapes.card,
                     color = MaterialTheme.colorScheme.errorContainer,
                 ) {
                     Text(
                         text = errorMessage,
-                        modifier = Modifier.padding(12.dp),
+                        modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -217,11 +222,11 @@ fun SecureStorageScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp,
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    contentPadding = PaddingValues(
+                        start = WormaCeptorDesignSystem.Spacing.lg,
+                        end = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorDesignSystem.Spacing.lg,
                     ),
                 ) {
                     items(entries, key = { it.key }) { entry ->
@@ -244,7 +249,7 @@ fun SecureStorageScreen(
                 EntryDetailContent(
                     entry = entry,
                     colors = colors,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                 )
             }
         }
@@ -259,7 +264,7 @@ private fun SummarySection(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         SummaryCard(
             count = summary.encryptedPrefsCount,
@@ -299,7 +304,7 @@ private fun SummaryCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
@@ -307,7 +312,7 @@ private fun SummaryCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
@@ -316,7 +321,7 @@ private fun SummaryCard(
                 tint = color,
                 modifier = Modifier.size(20.dp),
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = count.toString(),
                 style = MaterialTheme.typography.titleLarge,
@@ -342,7 +347,7 @@ private fun TypeFilterChips(
 ) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         FilterChip(
             selected = selectedType == null,
@@ -374,7 +379,7 @@ private fun TypeFilterChips(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = 0.2f),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -400,7 +405,7 @@ private fun EntryCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
@@ -408,15 +413,15 @@ private fun EntryCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Type indicator
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(typeColor.copy(alpha = 0.15f)),
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -427,7 +432,7 @@ private fun EntryCard(
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             Column(
                 modifier = Modifier.weight(1f),
@@ -459,8 +464,8 @@ private fun EntryCard(
 
             // Type badge
             Surface(
-                shape = RoundedCornerShape(4.dp),
-                color = typeColor.copy(alpha = 0.15f),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
             ) {
                 Text(
                     text = when (entry.storageType) {
@@ -468,7 +473,10 @@ private fun EntryCard(
                         StorageType.KEYSTORE -> "Key"
                         StorageType.DATASTORE -> "DS"
                     },
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.xs + WormaCeptorDesignSystem.Spacing.xxs,
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = typeColor,
@@ -492,18 +500,18 @@ private fun EntryDetailContent(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Header
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(typeColor.copy(alpha = 0.15f)),
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -529,7 +537,7 @@ private fun EntryDetailContent(
                     color = colors.labelPrimary,
                 )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
@@ -570,7 +578,7 @@ private fun EntryDetailContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
     }
 }
 
@@ -583,7 +591,7 @@ private fun DetailSection(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Text(
             text = label,
@@ -593,12 +601,12 @@ private fun DetailSection(
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = WormaCeptorDesignSystem.Shapes.card,
             color = colors.searchBackground,
         ) {
             Text(
                 text = value,
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = FontFamily.Monospace,
                 color = colors.valuePrimary,
@@ -619,7 +627,7 @@ private fun EmptyState(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Icon(
                 imageVector = Icons.Default.Storage,

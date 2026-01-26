@@ -5,6 +5,7 @@
 package com.azikar24.wormaceptor.core.engine
 
 import android.app.Activity
+import android.app.Application
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PixelFormat
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
+import android.os.Bundle
 import com.azikar24.wormaceptor.domain.entities.ViewBordersConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +43,35 @@ class ViewBordersEngine {
     private var activityRef: WeakReference<Activity>? = null
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
+    // Activity lifecycle observer - keeps overlay visible across activities
+    private var applicationRef: WeakReference<Application>? = null
+    private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+        override fun onActivityStarted(activity: Activity) {}
+        override fun onActivityResumed(activity: Activity) {
+            // When a new activity resumes and we're enabled, re-attach to it
+            if (_isEnabled.value && overlayView == null) {
+                reattachToActivity(activity)
+            } else if (_isEnabled.value) {
+                // Update activity reference for refreshOverlay to work on current activity
+                activityRef = WeakReference(activity)
+                setupLayoutListener(activity)
+                refreshOverlay()
+            }
+        }
+        override fun onActivityPaused(activity: Activity) {
+            // Remove layout listener from paused activity to avoid stale references
+            val currentActivity = activityRef?.get()
+            if (currentActivity === activity) {
+                removeLayoutListener()
+            }
+        }
+        override fun onActivityStopped(activity: Activity) {}
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+        override fun onActivityDestroyed(activity: Activity) {}
+    }
+    private var isLifecycleCallbacksRegistered = false
+
     private val _config = MutableStateFlow(ViewBordersConfig.DEFAULT)
     val config: StateFlow<ViewBordersConfig> = _config.asStateFlow()
 
@@ -65,11 +96,24 @@ class ViewBordersEngine {
      * @param activity The activity to attach the overlay to
      */
     fun enable(activity: Activity) {
-        if (_isEnabled.value) return
+        // If already enabled on a different activity, clean up first
+        if (_isEnabled.value) {
+            val currentActivity = activityRef?.get()
+            if (currentActivity != null && currentActivity !== activity) {
+                // Switching to a new activity - clean up old overlay first
+                removeOverlayView()
+                removeLayoutListener()
+            } else if (currentActivity === activity) {
+                // Already enabled on the same activity
+                return
+            }
+        }
 
         activityRef = WeakReference(activity)
-        windowManager = activity.getSystemService(Activity.WINDOW_SERVICE) as WindowManager
+        // Use application context for WindowManager so overlay survives activity changes
+        windowManager = activity.applicationContext.getSystemService(android.content.Context.WINDOW_SERVICE) as WindowManager
 
+        registerActivityLifecycleCallbacks(activity)
         createOverlayView(activity)
         setupLayoutListener(activity)
 
@@ -84,11 +128,28 @@ class ViewBordersEngine {
 
         removeOverlayView()
         removeLayoutListener()
+        unregisterActivityLifecycleCallbacks()
 
         activityRef = null
         windowManager = null
 
         _isEnabled.value = false
+    }
+
+    /**
+     * Detaches from the current activity without changing enabled state or removing the overlay.
+     * The overlay uses application context so it survives activity destruction.
+     * Call this when the activity is being destroyed but you want the overlay to persist.
+     *
+     * Note: This method intentionally does nothing because:
+     * 1. onActivityPaused already removes the layout listener for the destroyed activity
+     * 2. onActivityResumed already updates activityRef to the new activity
+     * 3. The overlay persists using application context
+     */
+    fun detachFromActivity() {
+        // Intentionally empty - lifecycle callbacks handle everything
+        // Don't remove overlay, windowManager, or activityRef - the lifecycle
+        // callbacks will refresh the overlay for the new activity when it resumes.
     }
 
     /**
@@ -114,14 +175,23 @@ class ViewBordersEngine {
     }
 
     private fun createOverlayView(activity: Activity) {
-        overlayView = BordersOverlayView(activity).apply {
+        // Use application context so the overlay survives activity changes
+        overlayView = BordersOverlayView(activity.applicationContext).apply {
             updateConfig(_config.value)
+        }
+
+        // Use TYPE_APPLICATION_OVERLAY for cross-activity persistence
+        val windowType = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            @Suppress("DEPRECATION")
+            WindowManager.LayoutParams.TYPE_PHONE
         }
 
         val params = WindowManager.LayoutParams().apply {
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.MATCH_PARENT
-            type = WindowManager.LayoutParams.TYPE_APPLICATION
+            type = windowType
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
@@ -131,7 +201,7 @@ class ViewBordersEngine {
         try {
             windowManager?.addView(overlayView, params)
         } catch (e: Exception) {
-            // Failed to add overlay view
+            // Failed to add overlay view - likely missing SYSTEM_ALERT_WINDOW permission
             overlayView = null
         }
     }
@@ -148,6 +218,11 @@ class ViewBordersEngine {
     }
 
     private fun setupLayoutListener(activity: Activity) {
+        // Remove existing listener first to avoid duplicates
+        if (globalLayoutListener != null) {
+            removeLayoutListener()
+        }
+
         val decorView = activity.window?.decorView ?: return
 
         globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
@@ -160,13 +235,43 @@ class ViewBordersEngine {
     }
 
     private fun removeLayoutListener() {
+        val listener = globalLayoutListener ?: return
+        globalLayoutListener = null
+
         val activity = activityRef?.get() ?: return
         val decorView = activity.window?.decorView ?: return
 
-        globalLayoutListener?.let { listener ->
-            decorView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
-        }
-        globalLayoutListener = null
+        decorView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+    }
+
+    private fun registerActivityLifecycleCallbacks(activity: Activity) {
+        if (isLifecycleCallbacksRegistered) return
+
+        val application = activity.application
+        applicationRef = WeakReference(application)
+        application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        isLifecycleCallbacksRegistered = true
+    }
+
+    private fun unregisterActivityLifecycleCallbacks() {
+        if (!isLifecycleCallbacksRegistered) return
+
+        applicationRef?.get()?.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        applicationRef = null
+        isLifecycleCallbacksRegistered = false
+    }
+
+    /**
+     * Re-attaches the overlay to a new activity.
+     * Called when an activity resumes while we're enabled but detached.
+     */
+    private fun reattachToActivity(activity: Activity) {
+        activityRef = WeakReference(activity)
+        windowManager = activity.applicationContext.getSystemService(android.content.Context.WINDOW_SERVICE) as WindowManager
+
+        createOverlayView(activity)
+        setupLayoutListener(activity)
+        refreshOverlay()
     }
 
     private fun traverseViewHierarchy(rootView: View): List<ViewBounds> {
@@ -252,7 +357,7 @@ class ViewBordersEngine {
     /**
      * Custom View that draws the border overlays.
      */
-    private class BordersOverlayView(activity: Activity) : View(activity) {
+    private class BordersOverlayView(context: android.content.Context) : View(context) {
 
         private var viewBoundsList: List<ViewBounds> = emptyList()
         private var currentConfig: ViewBordersConfig = ViewBordersConfig.DEFAULT

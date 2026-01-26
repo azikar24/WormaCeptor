@@ -67,6 +67,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
@@ -107,7 +108,7 @@ fun CpuScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = "CPU Monitor",
@@ -168,8 +169,8 @@ fun CpuScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Status bar
             StatusBar(
@@ -214,7 +215,7 @@ private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifie
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             // Monitoring indicator
             val indicatorColor by animateColorAsState(
@@ -229,7 +230,7 @@ private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifie
 
             Box(
                 modifier = Modifier
-                    .size(8.dp)
+                    .size(WormaCeptorDesignSystem.Spacing.sm)
                     .clip(CircleShape)
                     .background(indicatorColor),
             )
@@ -269,14 +270,14 @@ private fun CpuUsageGaugeCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -285,13 +286,13 @@ private fun CpuUsageGaugeCard(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Memory,
                         contentDescription = null,
                         tint = statusColor,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
                     Text(
                         text = "Overall CPU Usage",
@@ -304,19 +305,22 @@ private fun CpuUsageGaugeCard(
                 // Warning indicator
                 if (isWarning) {
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = colors.critical.copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                     ) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Warning,
                                 contentDescription = null,
                                 tint = colors.critical,
-                                modifier = Modifier.size(16.dp),
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
                             Text(
                                 text = "HIGH",
@@ -367,7 +371,7 @@ private fun CpuUsageGaugeCard(
 @Composable
 private fun CpuGauge(progress: Float, statusColor: Color, colors: CpuColors, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
-        val strokeWidth = 16.dp.toPx()
+        val strokeWidth = WormaCeptorDesignSystem.Spacing.lg.toPx()
         val radius = (size.minDimension - strokeWidth) / 2
         val center = Offset(size.width / 2, size.height / 2)
 
@@ -399,14 +403,14 @@ private fun CpuGauge(progress: Float, statusColor: Color, colors: CpuColors, mod
 private fun PerCoreUsageCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
                 text = "Per-Core Usage",
@@ -452,7 +456,7 @@ private fun CoreUsageBar(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         // Core label
         Text(
@@ -467,8 +471,8 @@ private fun CoreUsageBar(
             progress = { animatedProgress.coerceIn(0f, 1f) },
             modifier = Modifier
                 .weight(1f)
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .height(WormaCeptorDesignSystem.Spacing.sm)
+                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
             color = color,
             trackColor = colors.chartBackground,
         )
@@ -488,14 +492,14 @@ private fun CoreUsageBar(
 private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
                 text = "CPU Usage Over Time",
@@ -510,7 +514,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(180.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                         .background(colors.chartBackground),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -533,7 +537,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
             // Legend
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 ChartLegendItem(
                     label = "CPU Usage",
@@ -550,12 +554,12 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
 
     Canvas(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .background(colors.chartBackground),
     ) {
         val width = size.width
         val height = size.height
-        val padding = 16.dp.toPx()
+        val padding = WormaCeptorDesignSystem.Spacing.lg.toPx()
         val chartWidth = width - padding * 2
         val chartHeight = height - padding * 2
 
@@ -646,11 +650,11 @@ private fun ChartLegendItem(label: String, color: Color, modifier: Modifier = Mo
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Box(
             modifier = Modifier
-                .size(12.dp)
+                .size(WormaCeptorDesignSystem.Spacing.md)
                 .clip(CircleShape)
                 .background(color),
         )
@@ -666,14 +670,14 @@ private fun ChartLegendItem(label: String, color: Color, modifier: Modifier = Mo
 private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
                 text = "System Info",
@@ -755,13 +759,13 @@ private fun SystemInfoItem(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = iconTint,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
         )
         Text(
             text = label,
@@ -801,8 +805,8 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
             contentDescription = "CPU warning",
             tint = MaterialTheme.colorScheme.onError,
             modifier = Modifier
-                .padding(4.dp)
-                .size(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.xs)
+                .size(WormaCeptorDesignSystem.Spacing.lg),
         )
     }
 }

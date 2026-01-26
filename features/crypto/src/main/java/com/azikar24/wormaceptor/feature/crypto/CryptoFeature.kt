@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -47,8 +48,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -84,6 +83,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
@@ -192,12 +194,20 @@ class CryptoViewModelFactory(
 
 /**
  * Main composable for the Response Encryption/Decryption feature.
+ *
+ * @param engine Optional CryptoEngine instance. If provided, allows sharing state with
+ *               CryptoHistoryScreen. If null, creates its own engine instance.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { CryptoFeature.createEngine() }
-    val factory = remember { CryptoFeature.createViewModelFactory(engine) }
+fun CryptoTool(
+    modifier: Modifier = Modifier,
+    engine: CryptoEngine? = null,
+    onNavigateBack: (() -> Unit)? = null,
+    onNavigateToHistory: (() -> Unit)? = null,
+) {
+    val cryptoEngine = engine ?: remember { CryptoFeature.createEngine() }
+    val factory = remember(cryptoEngine) { CryptoFeature.createViewModelFactory(cryptoEngine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
 
     val config by viewModel.config.collectAsState()
@@ -209,7 +219,6 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    var showHistory by remember { mutableStateOf(false) }
     var showKeyPassword by remember { mutableStateOf(false) }
     var showIvPassword by remember { mutableStateOf(false) }
 
@@ -235,12 +244,14 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                     }
                 },
                 actions = {
-                    IconButton(onClick = { showHistory = !showHistory }) {
-                        Icon(
-                            Icons.Default.History,
-                            "History",
-                            tint = if (showHistory) Color(0xFF673AB7) else MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    if (history.isNotEmpty() && onNavigateToHistory != null) {
+                        IconButton(onClick = onNavigateToHistory) {
+                            Icon(
+                                Icons.Default.History,
+                                "History",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
                     }
                 },
             )
@@ -250,25 +261,24 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .imePadding()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Presets
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            WormaCeptorContainer(
+                style = ContainerStyle.Outlined,
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text("Presets", fontWeight = FontWeight.SemiBold)
                     Row(
                         modifier = Modifier.horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         CryptoPreset.entries.forEach { preset ->
                             FilterChip(
@@ -283,20 +293,18 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
             }
 
             // Algorithm & Mode Selection
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            WormaCeptorContainer(
+                style = ContainerStyle.Outlined,
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text("Algorithm", fontWeight = FontWeight.SemiBold)
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         CryptoAlgorithm.entries.filter { it != CryptoAlgorithm.RSA }.forEach { algorithm ->
                             FilterChip(
@@ -307,11 +315,11 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text("Mode", fontWeight = FontWeight.SemiBold)
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         CipherMode.entries.forEach { mode ->
                             FilterChip(
@@ -322,11 +330,11 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text("Padding", fontWeight = FontWeight.SemiBold)
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         PaddingScheme.entries.forEach { padding ->
                             FilterChip(
@@ -340,30 +348,25 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
             }
 
             // Key & IV Input
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            WormaCeptorContainer(
+                style = ContainerStyle.Outlined,
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                    Text("Key Format", fontWeight = FontWeight.SemiBold)
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Text("Key Format", fontWeight = FontWeight.SemiBold)
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            KeyFormat.entries.forEach { format ->
-                                FilterChip(
-                                    selected = config.keyFormat == format,
-                                    onClick = { viewModel.setKeyFormat(format) },
-                                    label = { Text(format.displayName) },
-                                )
-                            }
+                        KeyFormat.entries.forEach { format ->
+                            FilterChip(
+                                selected = config.keyFormat == format,
+                                onClick = { viewModel.setKeyFormat(format) },
+                                label = { Text(format.displayName) },
+                            )
                         }
                     }
 
@@ -433,15 +436,13 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
             }
 
             // Input Text Area
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            WormaCeptorContainer(
+                style = ContainerStyle.Outlined,
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text("Input", fontWeight = FontWeight.SemiBold)
                     OutlinedTextField(
@@ -457,7 +458,7 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                     // Action buttons
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         Button(
                             onClick = { viewModel.encrypt() },
@@ -474,7 +475,7 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                             } else {
                                 Icon(Icons.Default.Lock, null, modifier = Modifier.size(18.dp))
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                             Text("Encrypt")
                         }
 
@@ -493,7 +494,7 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                             } else {
                                 Icon(Icons.Default.LockOpen, null, modifier = Modifier.size(18.dp))
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                             Text("Decrypt")
                         }
                     }
@@ -530,25 +531,6 @@ fun CryptoTool(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = nu
                     )
                 }
             }
-
-            // History Section
-            AnimatedVisibility(
-                visible = showHistory && history.isNotEmpty(),
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                HistorySection(
-                    history = history,
-                    onLoadResult = { result ->
-                        viewModel.loadFromHistory(result)
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Loaded from history")
-                        }
-                    },
-                    onRemoveResult = { id -> viewModel.removeFromHistory(id) },
-                    onClearHistory = { viewModel.clearHistory() },
-                )
-            }
         }
     }
 }
@@ -567,15 +549,15 @@ private fun ResultCard(
         Color(0xFFF44336)
     }
 
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = accentColor.copy(alpha = 0.1f)),
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = accentColor.copy(alpha = 0.1f),
+        borderColor = accentColor.copy(alpha = 0.3f),
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -584,7 +566,7 @@ private fun ResultCard(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Icon(
                         if (isSuccess) Icons.Default.Check else Icons.Default.Error,
@@ -612,9 +594,9 @@ private fun ResultCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(12.dp),
+                        .padding(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text(
                         outputText,
@@ -626,14 +608,14 @@ private fun ResultCard(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     OutlinedButton(
                         onClick = { onCopy(outputText) },
                         modifier = Modifier.weight(1f),
                     ) {
                         Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                         Text("Copy")
                     }
                     OutlinedButton(
@@ -641,7 +623,7 @@ private fun ResultCard(
                         modifier = Modifier.weight(1f),
                     ) {
                         Icon(Icons.Default.Refresh, null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                         Text("Use as Input")
                     }
                 }
@@ -664,79 +646,32 @@ private fun ResultCard(
 
 @Composable
 private fun ErrorCard(message: String, onDismiss: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF44336).copy(alpha = 0.1f)),
+    val errorColor = Color(0xFFF44336)
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = errorColor.copy(alpha = 0.1f),
+        borderColor = errorColor.copy(alpha = 0.3f),
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 modifier = Modifier.weight(1f),
             ) {
-                Icon(Icons.Default.Error, null, tint = Color(0xFFF44336))
+                Icon(Icons.Default.Error, null, tint = errorColor)
                 Text(
                     message,
-                    color = Color(0xFFF44336),
+                    color = errorColor,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
             IconButton(onClick = onDismiss) {
                 Icon(Icons.Default.Delete, "Dismiss", tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-    }
-}
-
-@Composable
-private fun HistorySection(
-    history: List<CryptoResult>,
-    onLoadResult: (CryptoResult) -> Unit,
-    onRemoveResult: (String) -> Unit,
-    onClearHistory: () -> Unit,
-) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Icon(Icons.Default.History, null, tint = Color(0xFF673AB7))
-                    Text("Recent Operations", fontWeight = FontWeight.SemiBold)
-                }
-                OutlinedButton(onClick = onClearHistory) {
-                    Text("Clear All")
-                }
-            }
-
-            history.take(10).forEach { result ->
-                HistoryItem(
-                    result = result,
-                    onLoad = { onLoadResult(result) },
-                    onRemove = { onRemoveResult(result.id) },
-                )
-                if (result != history.take(10).last()) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                }
             }
         }
     }
@@ -755,14 +690,14 @@ private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onLoad() }
-            .padding(vertical = 8.dp),
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(
                     if (result.operation == CryptoOperation.ENCRYPT) Icons.Default.Lock else Icons.Default.LockOpen,
@@ -800,4 +735,112 @@ private fun copyToClipboard(context: Context, text: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText("Crypto Output", text)
     clipboard.setPrimaryClip(clip)
+}
+
+/**
+ * History screen for viewing past crypto operations.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CryptoHistoryScreen(
+    engine: CryptoEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    onLoadResult: (CryptoResult) -> Unit,
+) {
+    val factory = remember { CryptoFeature.createViewModelFactory(engine) }
+    val viewModel: CryptoViewModel = viewModel(factory = factory)
+    val history by viewModel.history.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        modifier = modifier,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            TopAppBar(
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Icon(Icons.Default.History, null, tint = Color(0xFF673AB7))
+                        Text("Crypto History", fontWeight = FontWeight.SemiBold)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                },
+                actions = {
+                    if (history.isNotEmpty()) {
+                        IconButton(onClick = { viewModel.clearHistory() }) {
+                            Icon(
+                                Icons.Default.Delete,
+                                "Clear all",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                },
+            )
+        },
+    ) { padding ->
+        if (history.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center,
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                ) {
+                    Icon(
+                        Icons.Default.History,
+                        null,
+                        modifier = Modifier.size(48.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    )
+                    Text(
+                        "No history yet",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        "Your encryption and decryption operations will appear here",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    )
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
+                history.forEachIndexed { index, result ->
+                    HistoryItem(
+                        result = result,
+                        onLoad = {
+                            onLoadResult(result)
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Loaded to crypto tool")
+                            }
+                        },
+                        onRemove = { viewModel.removeFromHistory(result.id) },
+                    )
+                    if (index < history.lastIndex) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    }
+                }
+            }
+        }
+    }
 }

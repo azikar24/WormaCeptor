@@ -48,8 +48,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.Crash
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import java.text.SimpleDateFormat
@@ -369,7 +369,6 @@ private fun MessageCard(message: String, context: Context) {
                 )
                 IconButton(
                     onClick = { copyToClipboard(context, "Message", message) },
-                    modifier = Modifier.size(32.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
@@ -418,7 +417,6 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                 )
                 IconButton(
                     onClick = { copyToClipboard(context, "Stack Trace", fullStackTrace) },
-                    modifier = Modifier.size(32.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,

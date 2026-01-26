@@ -6,19 +6,6 @@ Track Compose recomposition counts and identify excessive recompositions.
 - [ ] Interact with Compose UI in host app
 - [ ] Check recomposition stats are recorded
 
----
-
-## Data & Storage Inspection
-### Database Browser
-- [ ] fix the search bar vertical spacing
-
-### File Browser
-Navigate app file system with file viewing.
-- [ ] Navigate to Tools > File Browser
-- [ ] Navigate through directories
-- [ ] Open a text file
-- [ ] Open an image file
-
 ### Secure Storage Inspector
 View encrypted SharedPreferences.
 - [ ] Navigate to Tools > Secure Storage
@@ -135,8 +122,4 @@ Detect Java/Kotlin libraries with version detection.
 
 ### Crypto Tool
 Encrypt/decrypt with multiple algorithms (AES, RSA).
-- [ ] Navigate to Tools > Crypto
-- [ ] Select AES algorithm
-- [ ] Input text and encrypt
-- [ ] Decrypt and verify original text
-- [ ] Repeat with RSA algorithm
+- fix design

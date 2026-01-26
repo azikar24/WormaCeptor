@@ -3,10 +3,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,8 +17,6 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +24,10 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
@@ -38,8 +36,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.LoadingMoreIndicato
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ScrollToTopFab
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TransactionListSkeleton
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
@@ -252,102 +248,80 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
 private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val statusColor = getStatusColor(transaction.status, transaction.code)
 
-    // Press interaction for scale animation
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "itemScale",
-    )
-
-    Row(
+    WormaCeptorContainer(
+        onClick = onClick,
+        style = ContainerStyle.Outlined,
+        backgroundColor = statusColor.asSubtleBackground(),
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs,
-            )
-            .scale(scale)
-            .clip(WormaCeptorDesignSystem.Shapes.card)
-            .border(
-                width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                shape = WormaCeptorDesignSystem.Shapes.card,
-            )
-            .background(
-                color = statusColor.asSubtleBackground(),
-                shape = WormaCeptorDesignSystem.Shapes.card,
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically,
+            ),
     ) {
-        // 2dp left border as status indicator
-        Box(
-            modifier = Modifier
-                .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                .height(48.dp)
-                .background(
-                    statusColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                ),
-        )
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                MethodBadge(transaction.method)
-                Text(
-                    text = transaction.path,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1,
-                    modifier = Modifier.weight(1f, fill = false),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-            HostChip(transaction.host)
-        }
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-        Column(horizontalAlignment = Alignment.End) {
-            Surface(
-                color = statusColor.asSubtleBackground(),
-                contentColor = statusColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-            ) {
-                Text(
-                    text = transaction.code?.toString() ?: "?",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // 2dp left border as status indicator
+            Box(
+                modifier = Modifier
+                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
+                    .height(48.dp)
+                    .background(
+                        statusColor,
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                     ),
+            )
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                ) {
+                    MethodBadge(transaction.method)
+                    Text(
+                        text = transaction.path,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        modifier = Modifier.weight(1f, fill = false),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+
+                HostChip(transaction.host)
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+
+            Column(horizontalAlignment = Alignment.End) {
+                Surface(
+                    color = statusColor.asSubtleBackground(),
+                    contentColor = statusColor,
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                ) {
+                    Text(
+                        text = transaction.code?.toString() ?: "?",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
+                    )
+                }
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Text(
+                    text = formatDuration(transaction.tookMs),
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-            Text(
-                text = formatDuration(transaction.tookMs),
-                fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            )
         }
     }
 }

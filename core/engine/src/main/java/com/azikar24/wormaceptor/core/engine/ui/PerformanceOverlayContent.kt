@@ -4,9 +4,11 @@
 
 package com.azikar24.wormaceptor.core.engine.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -35,6 +37,7 @@ import com.azikar24.wormaceptor.core.engine.PerformanceOverlayState
 
 // Colors
 private val PillBackground = Color(0xFF1C1C1E)
+private val DismissBackground = Color(0xFFFF3B30) // Red when in dismiss zone
 private val GoodColor = Color(0xFF32D74B)
 private val WarningColor = Color(0xFFFF9F0A)
 private val CriticalColor = Color(0xFFFF453A)
@@ -53,14 +56,27 @@ fun PerformanceOverlayContent(
     callbacks: PerformanceOverlayEngine.OverlayCallbacks,
     modifier: Modifier = Modifier,
 ) {
-    // Drag scale animation
+    val isInDismissZone = state.isDragging && state.isInDismissZone()
+
+    // Drag scale animation - larger when in dismiss zone
     val dragScale by animateFloatAsState(
-        targetValue = if (state.isDragging) 1.05f else 1f,
+        targetValue = when {
+            isInDismissZone -> 1.12f
+            state.isDragging -> 1.05f
+            else -> 1f
+        },
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow,
         ),
         label = "dragScale",
+    )
+
+    // Background color animation - red when in dismiss zone
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isInDismissZone) DismissBackground else PillBackground,
+        animationSpec = tween(durationMillis = 150),
+        label = "backgroundColor",
     )
 
     Row(
@@ -70,7 +86,7 @@ fun PerformanceOverlayContent(
                 scaleY = dragScale
             }
             .clip(RoundedCornerShape(24.dp))
-            .background(PillBackground)
+            .background(backgroundColor)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { callbacks.onDragStart() },

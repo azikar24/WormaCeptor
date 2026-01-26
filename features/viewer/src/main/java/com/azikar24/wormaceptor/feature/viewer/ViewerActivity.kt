@@ -33,6 +33,7 @@ import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
+import com.azikar24.wormaceptor.core.engine.ToolOverlayEngine
 import com.azikar24.wormaceptor.core.engine.TouchVisualizationEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
@@ -42,6 +43,8 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
 import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
+import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
+import com.azikar24.wormaceptor.feature.crypto.CryptoHistoryScreen
 import com.azikar24.wormaceptor.feature.crypto.CryptoTool
 import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
 import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
@@ -96,6 +99,7 @@ class ViewerActivity : ComponentActivity() {
     private val leakDetectionEngine: LeakDetectionEngine by inject()
     private val threadViolationEngine: ThreadViolationEngine by inject()
     private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
+    private val toolOverlayEngine: ToolOverlayEngine by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -504,11 +508,25 @@ class ViewerActivity : ComponentActivity() {
                             )
                         }
 
-                        // Crypto Tool route
-                        composable("crypto") {
-                            CryptoTool(
-                                onNavigateBack = { navController.popBackStack() },
-                            )
+                        // Crypto routes with shared engine
+                        composable("crypto") { backStackEntry ->
+                            // Use backStackEntry as key to preserve engine during history navigation
+                            val cryptoEngine = remember { CryptoFeature.createEngine() }
+                            var showHistory by remember { mutableStateOf(false) }
+
+                            if (showHistory) {
+                                CryptoHistoryScreen(
+                                    engine = cryptoEngine,
+                                    onNavigateBack = { showHistory = false },
+                                    onLoadResult = { showHistory = false },
+                                )
+                            } else {
+                                CryptoTool(
+                                    engine = cryptoEngine,
+                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateToHistory = { showHistory = true },
+                                )
+                            }
                         }
 
                         // Grid Overlay route
@@ -641,7 +659,8 @@ class ViewerActivity : ComponentActivity() {
         // lifecycle via Koin singleton scope. User controls monitoring via explicit start/stop.
         // We only clear references to THIS activity to allow garbage collection.
         performanceOverlayEngine.clearActivityReferences()
-        viewBordersEngine.disable() // Disable clears its activity reference
+        toolOverlayEngine.clearActivityReferences()
+        viewBordersEngine.detachFromActivity() // Detach keeps enabled state, just clears activity reference
 
         super.onDestroy()
     }

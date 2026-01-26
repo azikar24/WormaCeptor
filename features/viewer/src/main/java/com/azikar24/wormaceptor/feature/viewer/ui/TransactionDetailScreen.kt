@@ -71,6 +71,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
@@ -93,8 +95,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
 import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
@@ -1654,7 +1654,6 @@ private fun CollapsibleSection(
                 if (onCopy != null) {
                     IconButton(
                         onClick = onCopy,
-                        modifier = Modifier.size(32.dp),
                         enabled = !isCopyLoading,
                     ) {
                         if (isCopyLoading) {

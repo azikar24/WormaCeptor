@@ -69,6 +69,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
@@ -107,7 +108,7 @@ fun ThreadViolationScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Warning,
@@ -156,8 +157,8 @@ fun ThreadViolationScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Summary cards
             SummarySection(stats = stats, colors = colors)
@@ -175,7 +176,7 @@ fun ThreadViolationScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(violations, key = { it.id }) { violation ->
                         ViolationCard(
@@ -190,14 +191,15 @@ fun ThreadViolationScreen(
 
         selectedViolation?.let { violation ->
             ModalBottomSheet(
-                modifier = modifier.padding(top = 40.dp),
+                modifier = modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxxl),
                 onDismissRequest = onDismissDetail,
                 sheetState = sheetState,
+                shape = WormaCeptorDesignSystem.Shapes.sheet,
             ) {
                 ViolationDetailContent(
                     violation = violation,
                     colors = colors,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                 )
             }
         }
@@ -211,7 +213,7 @@ private fun MonitoringIndicator(
 ) {
     val color by animateColorAsState(
         targetValue = if (isMonitoring) colors.monitoring else colors.idle,
-        animationSpec = tween(300),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.slow),
         label = "monitoring",
     )
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
@@ -224,7 +226,7 @@ private fun MonitoringIndicator(
 
     Box(
         modifier = Modifier
-            .size(8.dp)
+            .size(WormaCeptorDesignSystem.Spacing.sm)
             .clip(CircleShape)
             .background(color.copy(alpha = if (isMonitoring) alpha else 1f)),
     )
@@ -237,7 +239,7 @@ private fun SummarySection(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         SummaryCard("Disk R", stats.diskReadCount, colors.diskRead, Modifier.weight(1f))
         SummaryCard("Disk W", stats.diskWriteCount, colors.diskWrite, Modifier.weight(1f))
@@ -251,11 +253,11 @@ private fun SummaryCard(label: String, count: Int, color: Color, modifier: Modif
     val colors = threadViolationColors()
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(containerColor = colors.cardBackground),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -278,7 +280,7 @@ private fun TypeFilterChips(
 ) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         FilterChip(selected = selectedType == null, onClick = { onTypeSelected(null) }, label = { Text("All") })
         ViolationType.entries.forEach { type ->
@@ -295,7 +297,7 @@ private fun TypeFilterChips(
                 label = { Text(label) },
                 leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = 0.2f),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -321,23 +323,23 @@ private fun ViolationCard(
 
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(containerColor = colors.cardBackground),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(typeColor.copy(alpha = 0.15f)),
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(icon, null, tint = typeColor, modifier = Modifier.size(20.dp))
             }
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
             Column(Modifier.weight(1f)) {
                 Text(
                     text = violation.description,
@@ -347,7 +349,7 @@ private fun ViolationCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
                     Text(
                         formatTime(violation.timestamp),
                         style = MaterialTheme.typography.labelSmall,
@@ -363,10 +365,16 @@ private fun ViolationCard(
                     }
                 }
             }
-            Surface(shape = RoundedCornerShape(4.dp), color = typeColor.copy(alpha = 0.15f)) {
+            Surface(
+                shape = WormaCeptorDesignSystem.Shapes.chip,
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            ) {
                 Text(
                     text = violation.violationType.name.take(1),
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = typeColor,
@@ -384,16 +392,28 @@ private fun ViolationDetailContent(
 ) {
     val typeColor = colors.colorForType(violation.violationType)
 
-    LazyColumn(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+    ) {
         item {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+            ) {
                 Box(
-                    modifier = Modifier.size(
-                        48.dp,
-                    ).clip(RoundedCornerShape(12.dp)).background(typeColor.copy(alpha = 0.15f)),
+                    modifier = Modifier
+                        .size(WormaCeptorDesignSystem.Spacing.xxxl)
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
+                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(Icons.Default.Warning, null, tint = typeColor, modifier = Modifier.size(24.dp))
+                    Icon(
+                        Icons.Default.Warning,
+                        null,
+                        tint = typeColor,
+                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
+                    )
                 }
                 Column {
                     Text(
@@ -426,7 +446,7 @@ private fun ViolationDetailContent(
         if (violation.stackTrace.isNotEmpty()) {
             item {
                 val clipboardManager = LocalClipboardManager.current
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -453,8 +473,15 @@ private fun ViolationDetailContent(
                             )
                         }
                     }
-                    Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.detailBackground) {
-                        Column(Modifier.padding(12.dp), Arrangement.spacedBy(2.dp)) {
+                    Surface(
+                        Modifier.fillMaxWidth(),
+                        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                        colors.detailBackground,
+                    ) {
+                        Column(
+                            Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                            Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
+                        ) {
                             violation.stackTrace.forEach {
                                 Text(
                                     it,
@@ -469,7 +496,7 @@ private fun ViolationDetailContent(
             }
         }
 
-        item { Spacer(Modifier.height(16.dp)) }
+        item { Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.lg)) }
     }
 }
 
@@ -479,15 +506,22 @@ private fun DetailSection(
     items: List<Pair<String, String>>,
     colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
 ) {
-    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
             title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
         )
-        Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.detailBackground) {
-            Column(Modifier.padding(12.dp), Arrangement.spacedBy(8.dp)) {
+        Surface(
+            Modifier.fillMaxWidth(),
+            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+            colors.detailBackground,
+        ) {
+            Column(
+                Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
                 items.forEach { (label, value) ->
                     Column {
                         Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
@@ -511,12 +545,15 @@ private fun EmptyState(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        ) {
             Icon(
                 Icons.Default.Warning,
                 null,
                 tint = if (isMonitoring) colors.monitoring else colors.labelSecondary,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
                 if (isMonitoring) "Monitoring..." else "No violations",

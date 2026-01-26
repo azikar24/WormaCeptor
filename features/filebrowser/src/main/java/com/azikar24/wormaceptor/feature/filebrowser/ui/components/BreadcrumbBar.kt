@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 import java.io.File
 
@@ -41,10 +41,10 @@ fun BreadcrumbBar(
         modifier = modifier
             .horizontalScroll(scrollState)
             .padding(
-                horizontal = FileBrowserDesignSystem.Spacing.lg,
-                vertical = FileBrowserDesignSystem.Spacing.sm,
+                horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                vertical = WormaCeptorDesignSystem.Spacing.sm,
             ),
-        horizontalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Root/Home icon
@@ -58,7 +58,7 @@ fun BreadcrumbBar(
             },
             modifier = Modifier
                 .clickable { onBreadcrumbClick(-1) }
-                .padding(FileBrowserDesignSystem.Spacing.xs),
+                .padding(WormaCeptorDesignSystem.Spacing.xs),
         )
 
         // Path segments
@@ -67,7 +67,7 @@ fun BreadcrumbBar(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = FileBrowserDesignSystem.Spacing.xxs),
+                modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xxs),
             )
 
             val fileName = File(path).name
@@ -86,7 +86,7 @@ fun BreadcrumbBar(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .clickable { onBreadcrumbClick(index) }
-                    .padding(FileBrowserDesignSystem.Spacing.xs),
+                    .padding(WormaCeptorDesignSystem.Spacing.xs),
             )
         }
     }

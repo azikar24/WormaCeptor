@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.core.engine.ToolOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.feature.viewborders.data.ViewBordersDataStore
 import com.azikar24.wormaceptor.feature.viewborders.ui.ViewBordersScreen
 import com.azikar24.wormaceptor.feature.viewborders.vm.ViewBordersViewModel
@@ -68,13 +70,15 @@ object ViewBordersFeature {
      *
      * @param dataStore DataStore for persistence
      * @param engine Engine for rendering the overlay
+     * @param toolOverlayEngine Engine for the floating toolbar
      * @return A ViewModelProvider.Factory for creating ViewBordersViewModel
      */
     fun createViewModelFactory(
         dataStore: ViewBordersDataStore,
         engine: ViewBordersEngine,
+        toolOverlayEngine: ToolOverlayEngine,
     ): ViewBordersViewModelFactory {
-        return ViewBordersViewModelFactory(dataStore, engine)
+        return ViewBordersViewModelFactory(dataStore, engine, toolOverlayEngine)
     }
 }
 
@@ -84,11 +88,12 @@ object ViewBordersFeature {
 class ViewBordersViewModelFactory(
     private val dataStore: ViewBordersDataStore,
     private val engine: ViewBordersEngine,
+    private val toolOverlayEngine: ToolOverlayEngine,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ViewBordersViewModel::class.java)) {
-            return ViewBordersViewModel(dataStore, engine) as T
+            return ViewBordersViewModel(dataStore, engine, toolOverlayEngine) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
@@ -103,7 +108,7 @@ class ViewBordersViewModelFactory(
  * @param activity The activity to attach the overlay to
  * @param modifier Modifier for the root composable
  * @param onNavigateBack Optional callback for back navigation
- * @param engine Optional pre-created engine instance. If null, a new one is created.
+ * @param engine Optional pre-created engine instance. If null, uses Koin singleton.
  */
 @Composable
 fun ViewBorders(
@@ -113,9 +118,10 @@ fun ViewBorders(
     engine: ViewBordersEngine? = null,
 ) {
     val context = activity.applicationContext
-    val bordersEngine = remember { engine ?: ViewBordersFeature.createEngine() }
+    val bordersEngine = remember { engine ?: WormaCeptorKoin.getKoin().get<ViewBordersEngine>() }
+    val toolOverlayEngine = remember { WormaCeptorKoin.getKoin().get<ToolOverlayEngine>() }
     val dataStore = remember { ViewBordersFeature.createDataStore(context) }
-    val factory = remember { ViewBordersFeature.createViewModelFactory(dataStore, bordersEngine) }
+    val factory = remember { ViewBordersFeature.createViewModelFactory(dataStore, bordersEngine, toolOverlayEngine) }
     val viewModel: ViewBordersViewModel = viewModel(factory = factory)
 
     ViewBordersScreen(

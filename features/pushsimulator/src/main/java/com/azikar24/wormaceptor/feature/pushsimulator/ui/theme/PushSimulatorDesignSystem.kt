@@ -4,39 +4,13 @@
 
 package com.azikar24.wormaceptor.feature.pushsimulator.ui.theme
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
 /**
- * Design system for the Push Notification Simulator feature.
+ * Feature-specific design tokens for the Push Notification Simulator.
+ * Common tokens (Spacing, CornerRadius, Shapes, etc.) are provided by WormaCeptorDesignSystem.
  */
 object PushSimulatorDesignSystem {
-
-    object Spacing {
-        val xxs = 2.dp
-        val xs = 4.dp
-        val sm = 8.dp
-        val md = 12.dp
-        val lg = 16.dp
-        val xl = 24.dp
-        val xxl = 32.dp
-    }
-
-    object CornerRadius {
-        val xs = 4.dp
-        val sm = 6.dp
-        val md = 8.dp
-        val lg = 12.dp
-        val xl = 16.dp
-    }
-
-    object Shapes {
-        val card = RoundedCornerShape(CornerRadius.md)
-        val chip = RoundedCornerShape(CornerRadius.xl)
-        val button = RoundedCornerShape(CornerRadius.sm)
-        val textField = RoundedCornerShape(CornerRadius.sm)
-    }
 
     /**
      * Colors for notification priorities.

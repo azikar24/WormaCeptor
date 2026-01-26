@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
 import kotlinx.collections.immutable.ImmutableList
@@ -80,7 +81,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg, vertical = WormaCeptorDesignSystem.Spacing.sm),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
         ),
@@ -97,7 +98,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
                     indication = null,
                 ) { isExpanded = !isExpanded }
-                .padding(20.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.xl),
         ) {
             // Header
             Row(
@@ -119,7 +120,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
             // Always visible summary with enhanced visuals
             Row(
@@ -167,19 +168,19 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                     HorizontalDivider(
                         thickness = 1.dp,
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                     )
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
                     // Response Time Distribution
                     SectionHeader(
                         icon = Icons.Outlined.Speed,
                         title = "Response Time Distribution",
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                     DistributionBar(
                         label = "Fast (<100ms)",
@@ -187,7 +188,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         total = totalRequests,
                         color = Color(0xFF10B981),
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                     DistributionBar(
                         label = "Medium (100-500ms)",
@@ -195,7 +196,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         total = totalRequests,
                         color = Color(0xFFF59E0B),
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                     DistributionBar(
                         label = "Slow (>500ms)",
@@ -204,14 +205,14 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         color = Color(0xFFEF4444),
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
                     // Status Code Breakdown
                     SectionHeader(
                         icon = Icons.Outlined.DataUsage,
                         title = "Status Code Breakdown",
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                     if (status2xx > 0) {
                         StatusCodeBar(
@@ -220,7 +221,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             total = totalRequests,
                             color = Color(0xFF10B981),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
 
                     if (status3xx > 0) {
@@ -230,7 +231,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             total = totalRequests,
                             color = Color(0xFF3B82F6),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
 
                     if (status4xx > 0) {
@@ -240,7 +241,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             total = totalRequests,
                             color = Color(0xFFF59E0B),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
 
                     if (status5xx > 0) {
@@ -250,11 +251,11 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             total = totalRequests,
                             color = Color(0xFFEF4444),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
 
                     if (methodBreakdown.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
                         Text(
                             text = "Requests by Method",
@@ -262,7 +263,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                         methodBreakdown.forEach { (method, count) ->
                             Row(
@@ -467,14 +468,14 @@ private fun DistributionBar(label: String, count: Int, total: Int, color: Color)
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(animatedPercentage / 100f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
@@ -531,14 +532,14 @@ private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(animatedPercentage / 100f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(4.dp))
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(

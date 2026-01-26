@@ -554,7 +554,6 @@ private fun InfoCard(
                     }
                     IconButton(
                         onClick = onCopy,
-                        modifier = Modifier.size(32.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.ContentCopy,

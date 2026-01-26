@@ -7,8 +7,6 @@ package com.azikar24.wormaceptor.feature.cookies.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +52,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -63,9 +60,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.CookieInfo
 import com.azikar24.wormaceptor.feature.cookies.ui.theme.CookiesDesignSystem
-import com.azikar24.wormaceptor.feature.cookies.ui.theme.asSubtleBackground
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -130,8 +130,8 @@ fun CookieDetailScreen(cookie: CookieInfo, onBack: () -> Unit, onDelete: () -> U
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentPadding = PaddingValues(CookiesDesignSystem.Spacing.md),
-            verticalArrangement = Arrangement.spacedBy(CookiesDesignSystem.Spacing.md),
+            contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Status card
             item {
@@ -195,177 +195,201 @@ fun CookieDetailScreen(cookie: CookieInfo, onBack: () -> Unit, onDelete: () -> U
 private fun StatusCard(cookie: CookieInfo, modifier: Modifier = Modifier) {
     val statusColor = CookiesDesignSystem.CookieColors.forExpirationStatus(cookie.expirationStatus)
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = statusColor.asSubtleBackground(),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .padding(CookiesDesignSystem.Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = statusColor.asSubtleBackground(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Surface(
-            shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm),
-            color = statusColor.copy(alpha = 0.15f),
-            modifier = Modifier.size(48.dp),
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
+            Surface(
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                color = statusColor.copy(alpha = 0.15f),
+                modifier = Modifier.size(48.dp),
             ) {
-                Icon(
-                    imageVector = Icons.Default.Cookie,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = statusColor,
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Cookie,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = statusColor,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.lg))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = cookie.expirationStatus,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = statusColor,
+                )
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Text(
+                    text = when (cookie.expirationStatus) {
+                        "Session" -> "Cookie will be deleted when browser closes"
+                        "Expired" -> "Cookie has expired and may be deleted"
+                        "Valid" -> "Cookie is active and valid"
+                        else -> ""
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-        }
-
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.lg))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = cookie.expirationStatus,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = statusColor,
-            )
-            Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.xxs))
-            Text(
-                text = when (cookie.expirationStatus) {
-                    "Session" -> "Cookie will be deleted when browser closes"
-                    "Expired" -> "Cookie has expired and may be deleted"
-                    "Valid" -> "Cookie is active and valid"
-                    else -> ""
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
 
 @Composable
 private fun ValueCard(value: String, onCopy: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .padding(CookiesDesignSystem.Spacing.lg),
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            Text(
-                text = "Value",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            IconButton(
-                onClick = onCopy,
-                modifier = Modifier.size(32.dp),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Default.ContentCopy,
-                    contentDescription = "Copy value",
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.primary,
+                Text(
+                    text = "Value",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                IconButton(
+                    onClick = onCopy,
+                    modifier = Modifier.size(32.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "Copy value",
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = value.ifEmpty { "(empty)" },
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontFamily = FontFamily.Monospace,
+                    ),
+                    color = if (value.isEmpty()) {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                 )
             }
-        }
-
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.sm))
-
-        Surface(
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.sm),
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = value.ifEmpty { "(empty)" },
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontFamily = FontFamily.Monospace,
-                ),
-                color = if (value.isEmpty()) {
-                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                modifier = Modifier.padding(CookiesDesignSystem.Spacing.md),
-            )
         }
     }
 }
 
 @Composable
 private fun AttributesSection(cookie: CookieInfo, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .padding(CookiesDesignSystem.Spacing.lg),
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        SectionHeader(
-            icon = Icons.Default.Info,
-            title = "Attributes",
-        )
+        Column(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            SectionHeader(
+                icon = Icons.Default.Info,
+                title = "Attributes",
+            )
 
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.md))
-
-        AttributeRow(
-            icon = Icons.Default.Language,
-            label = "Domain",
-            value = cookie.domain,
-        )
-
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.sm))
-
-        AttributeRow(
-            icon = Icons.Default.Info,
-            label = "Path",
-            value = cookie.path,
-        )
-
-        cookie.sameSite?.let { sameSite ->
-            Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             AttributeRow(
-                icon = Icons.Default.Security,
-                label = "SameSite",
-                value = sameSite.name.lowercase().replaceFirstChar { it.uppercase() },
-                valueColor = when (sameSite) {
-                    CookieInfo.SameSite.STRICT -> CookiesDesignSystem.CookieColors.sameSiteStrict
-                    CookieInfo.SameSite.LAX -> CookiesDesignSystem.CookieColors.sameSiteLax
-                    CookieInfo.SameSite.NONE -> CookiesDesignSystem.CookieColors.sameSiteNone
+                icon = Icons.Default.Language,
+                label = "Domain",
+                value = cookie.domain,
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+            AttributeRow(
+                icon = Icons.Default.Info,
+                label = "Path",
+                value = cookie.path,
+            )
+
+            cookie.sameSite?.let { sameSite ->
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+                AttributeRow(
+                    icon = Icons.Default.Security,
+                    label = "SameSite",
+                    value = sameSite.name.lowercase().replaceFirstChar { it.uppercase() },
+                    valueColor = when (sameSite) {
+                        CookieInfo.SameSite.STRICT -> CookiesDesignSystem.CookieColors.sameSiteStrict
+                        CookieInfo.SameSite.LAX -> CookiesDesignSystem.CookieColors.sameSiteLax
+                        CookieInfo.SameSite.NONE -> CookiesDesignSystem.CookieColors.sameSiteNone
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SecuritySection(cookie: CookieInfo, modifier: Modifier = Modifier) {
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            SectionHeader(
+                icon = Icons.Default.Lock,
+                title = "Security",
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            SecurityAttribute(
+                label = "Secure",
+                isEnabled = cookie.isSecure,
+                description = if (cookie.isSecure) {
+                    "Only sent over HTTPS connections"
+                } else {
+                    "Sent over both HTTP and HTTPS"
+                },
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            SecurityAttribute(
+                label = "HttpOnly",
+                isEnabled = cookie.isHttpOnly,
+                description = if (cookie.isHttpOnly) {
+                    "Not accessible via JavaScript"
+                } else {
+                    "Accessible via JavaScript"
                 },
             )
         }
@@ -373,117 +397,63 @@ private fun AttributesSection(cookie: CookieInfo, modifier: Modifier = Modifier)
 }
 
 @Composable
-private fun SecuritySection(cookie: CookieInfo, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .padding(CookiesDesignSystem.Spacing.lg),
-    ) {
-        SectionHeader(
-            icon = Icons.Default.Lock,
-            title = "Security",
-        )
-
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.md))
-
-        SecurityAttribute(
-            label = "Secure",
-            isEnabled = cookie.isSecure,
-            description = if (cookie.isSecure) {
-                "Only sent over HTTPS connections"
-            } else {
-                "Sent over both HTTP and HTTPS"
-            },
-        )
-
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.md))
-
-        SecurityAttribute(
-            label = "HttpOnly",
-            isEnabled = cookie.isHttpOnly,
-            description = if (cookie.isHttpOnly) {
-                "Not accessible via JavaScript"
-            } else {
-                "Accessible via JavaScript"
-            },
-        )
-    }
-}
-
-@Composable
 private fun ExpirationSection(cookie: CookieInfo, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(CookiesDesignSystem.CornerRadius.md))
-            .border(
-                width = CookiesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.md),
-            )
-            .padding(CookiesDesignSystem.Spacing.lg),
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        SectionHeader(
-            icon = Icons.Default.Schedule,
-            title = "Expiration",
-        )
-
-        Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.md))
-
-        if (cookie.isSessionCookie) {
-            Text(
-                text = "Session Cookie",
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-                color = CookiesDesignSystem.CookieColors.session,
-            )
-            Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.xxs))
-            Text(
-                text = "This cookie will be deleted when you close your browser",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        } else {
-            val dateFormat = remember { SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.getDefault()) }
-            val expiresDate = cookie.expiresAt?.let { Date(it) }
-
-            AttributeRow(
+        Column(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            SectionHeader(
                 icon = Icons.Default.Schedule,
-                label = "Expires",
-                value = expiresDate?.let { dateFormat.format(it) } ?: "Unknown",
-                valueColor = if (cookie.isExpired) {
-                    CookiesDesignSystem.CookieColors.expired
-                } else {
-                    null
-                },
+                title = "Expiration",
             )
 
-            val expiresAt = cookie.expiresAt
-            if (!cookie.isExpired && expiresAt != null) {
-                Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
-                val remainingTime = expiresAt - System.currentTimeMillis()
-                val remainingText = formatRemainingTime(remainingTime)
-
+            if (cookie.isSessionCookie) {
                 Text(
-                    text = "Expires in $remainingText",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = CookiesDesignSystem.CookieColors.valid,
+                    text = "Session Cookie",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = CookiesDesignSystem.CookieColors.session,
                 )
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Text(
+                    text = "This cookie will be deleted when you close your browser",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else {
+                val dateFormat = remember { SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.getDefault()) }
+                val expiresDate = cookie.expiresAt?.let { Date(it) }
+
+                AttributeRow(
+                    icon = Icons.Default.Schedule,
+                    label = "Expires",
+                    value = expiresDate?.let { dateFormat.format(it) } ?: "Unknown",
+                    valueColor = if (cookie.isExpired) {
+                        CookiesDesignSystem.CookieColors.expired
+                    } else {
+                        null
+                    },
+                )
+
+                val expiresAt = cookie.expiresAt
+                if (!cookie.isExpired && expiresAt != null) {
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+                    val remainingTime = expiresAt - System.currentTimeMillis()
+                    val remainingText = formatRemainingTime(remainingTime)
+
+                    Text(
+                        text = "Expires in $remainingText",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = CookiesDesignSystem.CookieColors.valid,
+                    )
+                }
             }
         }
     }
@@ -501,7 +471,7 @@ private fun SectionHeader(icon: ImageVector, title: String, modifier: Modifier =
             modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.primary,
         )
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
@@ -529,7 +499,7 @@ private fun AttributeRow(
             modifier = Modifier.size(16.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
@@ -562,20 +532,20 @@ private fun SecurityAttribute(label: String, isEnabled: Boolean, description: St
         Surface(
             color = color.copy(alpha = 0.15f),
             contentColor = color,
-            shape = RoundedCornerShape(CookiesDesignSystem.CornerRadius.xs),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
         ) {
             Text(
                 text = if (isEnabled) "Yes" else "No",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(
-                    horizontal = CookiesDesignSystem.Spacing.sm,
-                    vertical = CookiesDesignSystem.Spacing.xxs,
+                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
                 ),
             )
         }
 
-        Spacer(modifier = Modifier.width(CookiesDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
         Column {
             Text(
@@ -584,7 +554,7 @@ private fun SecurityAttribute(label: String, isEnabled: Boolean, description: St
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            Spacer(modifier = Modifier.height(CookiesDesignSystem.Spacing.xxs))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,

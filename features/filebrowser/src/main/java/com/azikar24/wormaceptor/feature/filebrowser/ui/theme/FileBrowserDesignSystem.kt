@@ -4,7 +4,6 @@
 
 package com.azikar24.wormaceptor.feature.filebrowser.ui.theme
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Folder
@@ -13,35 +12,14 @@ import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 
 /**
- * Design system for the File Browser feature.
+ * Feature-specific design tokens for the File Browser feature.
+ *
+ * For common design tokens (Spacing, CornerRadius, BorderWidth, Alpha, etc.),
+ * use [com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem].
  */
 object FileBrowserDesignSystem {
-
-    object Spacing {
-        val xxs = 2.dp
-        val xs = 4.dp
-        val sm = 8.dp
-        val md = 12.dp
-        val lg = 16.dp
-        val xl = 24.dp
-        val xxl = 32.dp
-    }
-
-    object CornerRadius {
-        val xs = 4.dp
-        val sm = 6.dp
-        val md = 8.dp
-        val lg = 12.dp
-        val xl = 16.dp
-    }
-
-    object Shapes {
-        val card = RoundedCornerShape(CornerRadius.md)
-        val chip = RoundedCornerShape(CornerRadius.xs)
-    }
 
     /**
      * File type colors and icons.

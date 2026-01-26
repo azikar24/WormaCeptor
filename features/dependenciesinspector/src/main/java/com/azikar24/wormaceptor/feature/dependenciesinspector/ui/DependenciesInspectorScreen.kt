@@ -60,6 +60,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
@@ -98,7 +99,7 @@ fun DependenciesInspectorScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.Extension, null, tint = colors.primary)
                         Text("Dependencies", fontWeight = FontWeight.SemiBold)
@@ -128,13 +129,20 @@ fun DependenciesInspectorScreen(
             WormaCeptorSearchBar(
                 query = searchQuery,
                 onQueryChange = onSearchQueryChanged,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
                 placeholder = "Search dependencies...",
             )
 
-            SummarySection(summary, colors, Modifier.fillMaxWidth().padding(horizontal = 16.dp))
+            SummarySection(
+                summary,
+                colors,
+                Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+            )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             FilterSection(
                 selectedCategory,
@@ -143,20 +151,20 @@ fun DependenciesInspectorScreen(
                 onCategorySelected,
                 onShowVersionedOnlyChanged,
                 colors,
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
             )
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             error?.let {
                 Surface(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                    RoundedCornerShape(8.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                     MaterialTheme.colorScheme.errorContainer,
                 ) {
                     Text(
                         it,
-                        Modifier.padding(12.dp),
+                        Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                         MaterialTheme.colorScheme.onErrorContainer,
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -168,8 +176,12 @@ fun DependenciesInspectorScreen(
             } else {
                 LazyColumn(
                     Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    contentPadding = PaddingValues(
+                        start = WormaCeptorDesignSystem.Spacing.lg,
+                        end = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorDesignSystem.Spacing.lg,
+                    ),
                 ) {
                     items(dependencies.size) { index ->
                         val dep = dependencies[index]
@@ -181,7 +193,7 @@ fun DependenciesInspectorScreen(
 
         selectedDependency?.let { dep ->
             ModalBottomSheet(onDismissRequest = onDismissDetail, sheetState = sheetState) {
-                DependencyDetailContent(dep, colors, Modifier.padding(16.dp))
+                DependencyDetailContent(dep, colors, Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
             }
         }
     }
@@ -189,7 +201,7 @@ fun DependenciesInspectorScreen(
 
 @Composable
 private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
-    Row(modifier, Arrangement.spacedBy(8.dp)) {
+    Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         SummaryCard("Detected", summary.totalDetected, colors.primary, colors, Modifier.weight(1f))
         SummaryCard("Versioned", summary.withVersion, colors.versionDetected, colors, Modifier.weight(1f))
         SummaryCard("Unknown", summary.withoutVersion, colors.versionUnknown, colors, Modifier.weight(1f))
@@ -204,9 +216,13 @@ private fun SummaryCard(
     colors: DependenciesInspectorColors,
     modifier: Modifier,
 ) {
-    Card(modifier, RoundedCornerShape(12.dp), CardDefaults.cardColors(colors.cardBackground)) {
+    Card(
+        modifier,
+        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+        CardDefaults.cardColors(colors.cardBackground),
+    ) {
         Column(
-            Modifier.fillMaxWidth().padding(12.dp),
+            Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -231,11 +247,11 @@ private fun FilterSection(
     colors: DependenciesInspectorColors,
     modifier: Modifier,
 ) {
-    Column(modifier, Arrangement.spacedBy(8.dp)) {
+    Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         // Category filter chips - scrollable horizontally
         Row(
             Modifier.horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             FilterChip(
                 selected = selectedCategory == null,
@@ -283,19 +299,26 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
 
     Card(
         Modifier.fillMaxWidth().clickable(onClick = onClick),
-        RoundedCornerShape(12.dp),
+        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         CardDefaults.cardColors(colors.cardBackground),
     ) {
-        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             // Category icon
             Box(
-                Modifier.size(40.dp).clip(RoundedCornerShape(8.dp)).background(categoryColor.copy(0.15f)),
+                Modifier.size(
+                    40.dp,
+                ).clip(
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                ).background(categoryColor.copy(0.15f)),
                 Alignment.Center,
             ) {
                 Icon(Icons.Default.Code, null, tint = categoryColor, modifier = Modifier.size(20.dp))
             }
 
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             // Info
             Column(Modifier.weight(1f)) {
@@ -310,7 +333,7 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
                     )
 
                     if (hasVersion) {
-                        Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         Icon(
                             Icons.Default.CheckCircle,
                             "Version detected",
@@ -329,16 +352,19 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
                     // Version badge
                     if (hasVersion) {
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                             color = colors.versionDetected.copy(0.15f),
                         ) {
                             Text(
                                 "v${dependency.version}",
-                                Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                Modifier.padding(
+                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = FontFamily.Monospace,
@@ -357,10 +383,16 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
             }
 
             // Category badge
-            Surface(shape = RoundedCornerShape(4.dp), color = categoryColor.copy(0.15f)) {
+            Surface(
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                color = categoryColor.copy(0.15f),
+            ) {
                 Text(
                     dependency.category.shortLabel(),
-                    Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                    Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = categoryColor,
@@ -379,14 +411,18 @@ private fun DependencyDetailContent(
     val categoryColor = colors.colorForCategory(dependency.category)
     val uriHandler = LocalUriHandler.current
 
-    Column(modifier.fillMaxWidth(), Arrangement.spacedBy(16.dp)) {
+    Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)) {
         // Header
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Box(
-                Modifier.size(48.dp).clip(RoundedCornerShape(12.dp)).background(categoryColor.copy(0.15f)),
+                Modifier.size(
+                    48.dp,
+                ).clip(
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+                ).background(categoryColor.copy(0.15f)),
                 Alignment.Center,
             ) {
                 Icon(Icons.Default.Code, null, tint = categoryColor, modifier = Modifier.size(24.dp))
@@ -400,14 +436,17 @@ private fun DependencyDetailContent(
                         color = colors.labelPrimary,
                     )
                     if (dependency.version != null) {
-                        Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                             color = colors.versionDetected.copy(0.2f),
                         ) {
                             Text(
                                 "v${dependency.version}",
-                                Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                Modifier.padding(
+                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                ),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = FontFamily.Monospace,
@@ -460,9 +499,9 @@ private fun DependencyDetailContent(
                 Modifier
                     .fillMaxWidth()
                     .clickable { uriHandler.openUri(url) }
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(Icons.Default.Language, null, tint = colors.link, modifier = Modifier.size(20.dp))
                 Text(
@@ -476,7 +515,7 @@ private fun DependencyDetailContent(
             }
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
     }
 }
 
@@ -484,15 +523,22 @@ private fun DependencyDetailContent(
 private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: DependenciesInspectorColors) {
     if (items.isEmpty()) return
 
-    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
             title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
         )
-        Surface(Modifier.fillMaxWidth(), RoundedCornerShape(8.dp), colors.searchBackground) {
-            Column(Modifier.padding(12.dp), Arrangement.spacedBy(8.dp)) {
+        Surface(
+            Modifier.fillMaxWidth(),
+            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+            colors.searchBackground,
+        ) {
+            Column(
+                Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
                 items.forEach { (label, value) ->
                     Column {
                         Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
@@ -514,7 +560,7 @@ private fun EmptyState(colors: DependenciesInspectorColors, modifier: Modifier) 
     Box(modifier, Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Icon(
                 Icons.Default.HelpOutline,

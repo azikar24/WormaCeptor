@@ -303,10 +303,12 @@ fun getStatusColorValue(status: TransactionStatus, code: Int?): Color {
  * @return The appropriate Color for the method
  */
 fun getMethodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> WormaCeptorColors.StatusGreen
-    "POST" -> WormaCeptorColors.StatusBlue
-    "PUT" -> WormaCeptorColors.StatusAmber
-    "DELETE" -> WormaCeptorColors.StatusRed
-    "PATCH" -> Color(0xFF9C27B0)
+    "GET" -> WormaCeptorColors.HttpMethodColors.Get
+    "POST" -> WormaCeptorColors.HttpMethodColors.Post
+    "PUT" -> WormaCeptorColors.HttpMethodColors.Put
+    "DELETE" -> WormaCeptorColors.HttpMethodColors.Delete
+    "PATCH" -> WormaCeptorColors.HttpMethodColors.Patch
+    "HEAD" -> WormaCeptorColors.HttpMethodColors.Head
+    "OPTIONS" -> WormaCeptorColors.HttpMethodColors.Options
     else -> WormaCeptorColors.StatusGrey
 }

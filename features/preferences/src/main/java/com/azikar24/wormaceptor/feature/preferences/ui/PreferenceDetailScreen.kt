@@ -5,18 +5,11 @@
 package com.azikar24.wormaceptor.feature.preferences.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -73,14 +66,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.asSubtleBackground
@@ -216,11 +210,11 @@ fun PreferenceDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = PreferencesDesignSystem.Spacing.md,
-                        vertical = PreferencesDesignSystem.Spacing.sm,
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 singleLine = true,
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -236,9 +230,9 @@ fun PreferenceDetailScreen(
                 FlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = PreferencesDesignSystem.Spacing.md)
-                        .padding(bottom = PreferencesDesignSystem.Spacing.sm),
-                    horizontalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.xs),
+                        .padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
+                        .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     FilterChip(
                         selected = typeFilter == null,
@@ -272,10 +266,10 @@ fun PreferenceDetailScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        horizontal = PreferencesDesignSystem.Spacing.md,
-                        vertical = PreferencesDesignSystem.Spacing.xs,
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(items, key = { it.key }) { item ->
                         SwipeablePreferenceItem(
@@ -390,7 +384,7 @@ private fun SwipeablePreferenceItem(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color, RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md))
+                    .background(color, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                     .padding(horizontal = 20.dp),
                 contentAlignment = alignment,
             ) {
@@ -416,105 +410,83 @@ private fun SwipeablePreferenceItem(
 private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val typeColor = PreferencesDesignSystem.TypeColors.forTypeName(item.value.typeName)
 
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "itemScale",
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .scale(scale)
-            .clip(RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md))
-            .border(
-                width = PreferencesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = typeColor.asSubtleBackground(),
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(PreferencesDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically,
+    WormaCeptorContainer(
+        onClick = onClick,
+        style = ContainerStyle.Outlined,
+        backgroundColor = typeColor.asSubtleBackground(),
+        modifier = modifier.fillMaxWidth(),
     ) {
-        // Type indicator
-        Box(
-            modifier = Modifier
-                .width(PreferencesDesignSystem.BorderWidth.thick)
-                .height(48.dp)
-                .background(
-                    typeColor,
-                    shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.xs),
-                ),
-        )
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Type indicator
+            Box(
+                modifier = Modifier
+                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
+                    .height(48.dp)
+                    .background(
+                        typeColor,
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                    ),
+            )
 
-        Spacer(modifier = Modifier.width(PreferencesDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Key,
-                    contentDescription = null,
-                    modifier = Modifier.size(14.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Key,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        text = item.key,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = FontFamily.Monospace,
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+
                 Text(
-                    text = item.key,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
+                    text = item.value.displayValue,
+                    style = MaterialTheme.typography.bodySmall.copy(
                         fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
 
-            Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.xs))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
-            Text(
-                text = item.value.displayValue,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontFamily = FontFamily.Monospace,
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-
-        Spacer(modifier = Modifier.width(PreferencesDesignSystem.Spacing.sm))
-
-        // Type badge
-        Surface(
-            color = typeColor.copy(alpha = 0.15f),
-            contentColor = typeColor,
-            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.xs),
-        ) {
-            Text(
-                text = item.value.typeName,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(
-                    horizontal = PreferencesDesignSystem.Spacing.sm,
-                    vertical = PreferencesDesignSystem.Spacing.xxs,
-                ),
-            )
+            // Type badge
+            Surface(
+                color = typeColor.copy(alpha = 0.15f),
+                contentColor = typeColor,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+            ) {
+                Text(
+                    text = item.value.typeName,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
+                )
+            }
         }
     }
 }
@@ -527,7 +499,7 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.lg),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -544,7 +516,7 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
             }
         }
 
-        Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
             text = if (hasFilters) "No matches found" else "No preferences",
@@ -553,7 +525,7 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Text(
             text = if (hasFilters) {

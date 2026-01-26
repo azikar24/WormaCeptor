@@ -5,6 +5,7 @@
 package com.azikar24.wormaceptorapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,9 +27,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -45,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +59,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
@@ -169,6 +176,31 @@ class MainActivity : ComponentActivity() {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Thread violation triggered! Check StrictMode logs.")
                                 }
+                            },
+                            onLocationSimulatorClick = {
+                                startActivity(
+                                    Intent(this@MainActivity, LocationTestActivity::class.java),
+                                )
+                            },
+                            onCookiesClick = {
+                                startActivity(
+                                    Intent(this@MainActivity, CookiesTestActivity::class.java),
+                                )
+                            },
+                            onWebViewMonitorClick = {
+                                startActivity(
+                                    Intent(this@MainActivity, WebViewTestActivity::class.java),
+                                )
+                            },
+                            onSecureStorageClick = {
+                                startActivity(
+                                    Intent(this@MainActivity, SecureStorageTestActivity::class.java),
+                                )
+                            },
+                            onComposeRenderClick = {
+                                startActivity(
+                                    Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
+                                )
                             },
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -321,6 +353,11 @@ class MainActivity : ComponentActivity() {
         onCrashClick: () -> Unit,
         onLeakClick: () -> Unit,
         onThreadViolationClick: () -> Unit,
+        onLocationSimulatorClick: () -> Unit,
+        onCookiesClick: () -> Unit,
+        onWebViewMonitorClick: () -> Unit,
+        onSecureStorageClick: () -> Unit,
+        onComposeRenderClick: () -> Unit,
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
@@ -373,6 +410,67 @@ class MainActivity : ComponentActivity() {
                     icon = Icons.Default.Storage,
                     title = "Thread Violation",
                     onClick = onThreadViolationClick,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+
+            // Section header for feature tests
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            Text(
+                text = "Feature Tests",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            )
+
+            // Feature test buttons row 1: Location + Cookies + WebView
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                FeatureActionCard(
+                    icon = Icons.Default.LocationOn,
+                    title = "Location",
+                    color = Color(0xFF4CAF50),
+                    onClick = onLocationSimulatorClick,
+                    modifier = Modifier.weight(1f),
+                )
+
+                FeatureActionCard(
+                    icon = Icons.Default.Cookie,
+                    title = "Cookies",
+                    color = Color(0xFFFF9800),
+                    onClick = onCookiesClick,
+                    modifier = Modifier.weight(1f),
+                )
+
+                FeatureActionCard(
+                    icon = Icons.Default.Language,
+                    title = "WebView",
+                    color = Color(0xFF2196F3),
+                    onClick = onWebViewMonitorClick,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+
+            // Feature test buttons row 2: Secure Storage + Compose Render
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                FeatureActionCard(
+                    icon = Icons.Default.Security,
+                    title = "Secure Storage",
+                    color = Color(0xFF9C27B0),
+                    onClick = onSecureStorageClick,
+                    modifier = Modifier.weight(1f),
+                )
+
+                FeatureActionCard(
+                    icon = Icons.Default.Speed,
+                    title = "Compose Render",
+                    color = Color(0xFFE91E63),
+                    onClick = onComposeRenderClick,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -525,6 +623,71 @@ class MainActivity : ComponentActivity() {
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onErrorContainer,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun FeatureActionCard(
+        icon: ImageVector,
+        title: String,
+        color: Color,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier,
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        val isPressed by interactionSource.collectIsPressedAsState()
+        val scale by animateFloatAsState(
+            targetValue = if (isPressed) 0.96f else 1f,
+            label = "feature_compact_scale",
+        )
+
+        Surface(
+            shape = WormaCeptorDesignSystem.Shapes.card,
+            color = color.copy(alpha = 0.1f),
+            modifier = modifier
+                .scale(scale)
+                .border(
+                    width = WormaCeptorDesignSystem.BorderWidth.regular,
+                    color = color.copy(alpha = 0.3f),
+                    shape = WormaCeptorDesignSystem.Shapes.card,
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClick,
+                ),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(WormaCeptorDesignSystem.Spacing.md),
+            ) {
+                Surface(
+                    shape = WormaCeptorDesignSystem.Shapes.button,
+                    color = color.copy(alpha = 0.2f),
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = color,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = color,
                     textAlign = TextAlign.Center,
                 )
             }

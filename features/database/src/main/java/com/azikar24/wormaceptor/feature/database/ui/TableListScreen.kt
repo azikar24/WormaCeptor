@@ -29,7 +29,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -41,8 +40,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TableInfo
-import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -103,30 +103,16 @@ fun TableListScreen(
                 )
 
                 if (searchActive) {
-                    SearchBar(
+                    WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
+                        placeholder = "Search tables...",
                         onSearch = { searchActive = false },
-                        active = false,
-                        onActiveChange = { },
-                        placeholder = { Text("Search tables...") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Search, contentDescription = null)
-                        },
-                        trailingIcon = if (searchQuery.isNotEmpty()) {
-                            {
-                                IconButton(onClick = { onSearchQueryChanged("") }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear")
-                                }
-                            }
-                        } else {
-                            null
-                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = DatabaseDesignSystem.Spacing.lg)
-                            .padding(bottom = DatabaseDesignSystem.Spacing.sm),
-                    ) {}
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                            .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                    )
                 }
             }
         },
@@ -168,7 +154,7 @@ fun TableListScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.TableChart,
@@ -220,7 +206,7 @@ private fun TableListItem(table: TableInfo, onClick: () -> Unit, modifier: Modif
         },
         supportingContent = {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
                     text = "${table.rowCount} rows",

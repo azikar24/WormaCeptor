@@ -34,8 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.contracts.ContentType
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 
 /**
  * A chip that displays the detected content type with appropriate styling.
@@ -124,47 +125,47 @@ fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo {
         ContentType.JSON -> ContentTypeChipInfo(
             displayName = "JSON",
             icon = Icons.Default.DataObject,
-            color = Color(0xFFF59E0B), // Amber
+            color = WormaCeptorColors.ContentTypeColors.Json,
         )
         ContentType.XML -> ContentTypeChipInfo(
             displayName = "XML",
             icon = Icons.Default.Code,
-            color = Color(0xFF8B5CF6), // Purple
+            color = WormaCeptorColors.ContentTypeColors.Xml,
         )
         ContentType.HTML -> ContentTypeChipInfo(
             displayName = "HTML",
             icon = Icons.Default.Web,
-            color = Color(0xFFEC4899), // Pink
+            color = WormaCeptorColors.ContentTypeColors.Html,
         )
         ContentType.PROTOBUF -> ContentTypeChipInfo(
             displayName = "Protobuf",
             icon = Icons.Default.DataArray,
-            color = Color(0xFF10B981), // Emerald
+            color = WormaCeptorColors.ContentTypeColors.Protobuf,
         )
         ContentType.FORM_DATA -> ContentTypeChipInfo(
             displayName = "Form Data",
             icon = Icons.Default.ViewList,
-            color = Color(0xFF3B82F6), // Blue
+            color = WormaCeptorColors.ContentTypeColors.FormData,
         )
         ContentType.MULTIPART -> ContentTypeChipInfo(
             displayName = "Multipart",
             icon = Icons.Default.Description,
-            color = Color(0xFF6366F1), // Indigo
+            color = WormaCeptorColors.ContentTypeColors.Multipart,
         )
         ContentType.PLAIN_TEXT -> ContentTypeChipInfo(
             displayName = "Plain Text",
             icon = Icons.Default.TextFields,
-            color = Color(0xFF6B7280), // Gray
+            color = WormaCeptorColors.ContentTypeColors.PlainText,
         )
         ContentType.BINARY -> ContentTypeChipInfo(
             displayName = "Binary",
             icon = Icons.Default.DataArray,
-            color = Color(0xFFEF4444), // Red
+            color = WormaCeptorColors.ContentTypeColors.Binary,
         )
         ContentType.PDF -> ContentTypeChipInfo(
             displayName = "PDF",
             icon = Icons.Default.PictureAsPdf,
-            color = Color(0xFFDC2626), // Red-600
+            color = WormaCeptorColors.ContentTypeColors.Pdf,
         )
         ContentType.IMAGE_PNG,
         ContentType.IMAGE_JPEG,
@@ -177,12 +178,12 @@ fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo {
         -> ContentTypeChipInfo(
             displayName = "Image",
             icon = Icons.Default.Image,
-            color = Color(0xFF14B8A6), // Teal
+            color = WormaCeptorColors.ContentTypeColors.Image,
         )
         ContentType.UNKNOWN -> ContentTypeChipInfo(
             displayName = "Unknown",
             icon = Icons.Default.QuestionMark,
-            color = Color(0xFF9CA3AF), // Gray-400
+            color = WormaCeptorColors.ContentTypeColors.Unknown,
         )
     }
 }

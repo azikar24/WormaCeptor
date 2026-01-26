@@ -62,6 +62,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
@@ -107,7 +108,7 @@ fun LeakDetectionScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.BugReport,
@@ -159,8 +160,8 @@ fun LeakDetectionScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Summary cards
             SummarySection(
@@ -187,7 +188,7 @@ fun LeakDetectionScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(leaks, key = { "${it.timestamp}_${it.objectClass}" }) { leak ->
                         LeakCard(
@@ -209,7 +210,7 @@ fun LeakDetectionScreen(
                 LeakDetailContent(
                     leak = leak,
                     colors = colors,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                 )
             }
         }
@@ -224,7 +225,7 @@ private fun MonitoringIndicator(
 ) {
     val color by animateColorAsState(
         targetValue = if (isRunning) colors.monitoring else colors.idle,
-        animationSpec = tween(300),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.slow),
         label = "monitoring",
     )
 
@@ -241,7 +242,7 @@ private fun MonitoringIndicator(
 
     Box(
         modifier = modifier
-            .size(8.dp)
+            .size(WormaCeptorDesignSystem.Spacing.sm)
             .clip(CircleShape)
             .background(color.copy(alpha = if (isRunning) alpha else 1f)),
     )
@@ -255,7 +256,7 @@ private fun SummarySection(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         SummaryCard(
             count = summary.criticalCount,
@@ -303,7 +304,7 @@ private fun SummaryCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
         ),
@@ -311,7 +312,7 @@ private fun SummaryCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -323,7 +324,7 @@ private fun SummaryCard(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = color.copy(alpha = 0.8f),
+                color = color.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
             )
         }
     }
@@ -339,7 +340,7 @@ private fun SeverityFilterChips(
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         FilterChip(
             selected = selectedSeverity == null,
@@ -353,7 +354,7 @@ private fun SeverityFilterChips(
                 onClick = { onSeveritySelected(if (selectedSeverity == severity) null else severity) },
                 label = { Text(severity.name) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = 0.2f),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                     selectedLabelColor = color,
                 ),
             )
@@ -375,7 +376,7 @@ private fun LeakCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,
         ),
@@ -383,14 +384,14 @@ private fun LeakCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Severity indicator
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                     .background(severityBackground),
                 contentAlignment = Alignment.Center,
             ) {
@@ -402,7 +403,7 @@ private fun LeakCard(
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -421,7 +422,7 @@ private fun LeakCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
@@ -440,12 +441,15 @@ private fun LeakCard(
 
             // Severity badge
             Surface(
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                 color = severityBackground,
             ) {
                 Text(
                     text = leak.severity.name.take(1),
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = severityColor,
@@ -466,18 +470,18 @@ private fun LeakDetailContent(
 
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Header
         item {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
                         .background(severityBackground),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -496,16 +500,19 @@ private fun LeakDetailContent(
                         color = colors.labelPrimary,
                     )
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                             color = severityBackground,
                         ) {
                             Text(
                                 text = leak.severity.name,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                modifier = Modifier.padding(
+                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = severityColor,
@@ -540,7 +547,7 @@ private fun LeakDetailContent(
         if (leak.referencePath.isNotEmpty()) {
             item {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Text(
                         text = "Reference Path",
@@ -550,12 +557,12 @@ private fun LeakDetailContent(
                     )
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                         color = colors.detailBackground,
                     ) {
                         Column(
-                            modifier = Modifier.padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                         ) {
                             leak.referencePath.forEach { step ->
                                 Text(
@@ -572,7 +579,7 @@ private fun LeakDetailContent(
         }
 
         item {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
         }
     }
 }
@@ -586,7 +593,7 @@ private fun DetailSection(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         Text(
             text = title,
@@ -596,12 +603,12 @@ private fun DetailSection(
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             color = colors.detailBackground,
         ) {
             Column(
-                modifier = Modifier.padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 items.forEach { (label, value) ->
                     Column {
@@ -635,7 +642,7 @@ private fun EmptyState(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Icon(
                 imageVector = Icons.Default.BugReport,

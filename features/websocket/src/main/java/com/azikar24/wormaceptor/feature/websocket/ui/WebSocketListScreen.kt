@@ -43,8 +43,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
@@ -113,7 +113,10 @@ internal fun WebSocketListScreen(
                     onQueryChange = onSearchQueryChanged,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        ),
                     placeholder = "Search by URL...",
                 )
 
@@ -123,7 +126,10 @@ internal fun WebSocketListScreen(
                     filteredCount = connections.size,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
                 )
             }
         },
@@ -182,7 +188,7 @@ private fun ConnectionList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.sm),
     ) {
         items(
             items = connections,
@@ -220,23 +226,28 @@ private fun ConnectionItem(
 
     Surface(
         modifier = modifier.clickable(onClick = onClick),
-        color = backgroundColor.copy(alpha = 0.3f),
+        color = backgroundColor.copy(
+            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+        ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                    vertical = WormaCeptorDesignSystem.Spacing.md,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // State indicator dot
             Box(
                 modifier = Modifier
-                    .size(12.dp)
+                    .size(WormaCeptorDesignSystem.Spacing.md)
                     .clip(CircleShape)
                     .background(stateColor),
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
                 // URL
@@ -249,24 +260,27 @@ private fun ConnectionItem(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
                 // Stats row
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // State badge
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = stateColor.copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                     ) {
                         Text(
                             text = connection.state.name,
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = stateColor,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            ),
                         )
                     }
 
@@ -287,14 +301,16 @@ private fun ConnectionItem(
                 }
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
             // Time
             Text(
                 text = formattedTime,
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                ),
             )
         }
     }
@@ -308,9 +324,11 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(64.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            ),
+            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -319,13 +337,15 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
                 Icon(
                     imageVector = Icons.Default.Sync,
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
             text = if (hasSearchQuery) "No matching connections" else "No WebSocket connections",
@@ -334,7 +354,7 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
             text = if (hasSearchQuery) {
@@ -343,7 +363,9 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
                 "WebSocket connections will appear here"
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+            ),
         )
     }
 }

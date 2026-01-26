@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.MeasurementEngine
+import com.azikar24.wormaceptor.core.engine.ToolOverlayEngine
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.MeasurementConfig
 import com.azikar24.wormaceptor.domain.entities.MeasurementMode
 import com.azikar24.wormaceptor.domain.entities.MeasurementResult
@@ -31,11 +33,16 @@ import com.azikar24.wormaceptor.domain.entities.ViewMeasurement
 import kotlinx.coroutines.flow.StateFlow
 
 object MeasurementFeature {
-    fun createEngine() = MeasurementEngine()
-    fun createViewModelFactory(engine: MeasurementEngine) = MeasurementViewModelFactory(engine)
+    fun createEngine() = WormaCeptorKoin.getKoin().get<MeasurementEngine>()
+    fun createToolOverlayEngine() = WormaCeptorKoin.getKoin().get<ToolOverlayEngine>()
+    fun createViewModelFactory(engine: MeasurementEngine, toolOverlayEngine: ToolOverlayEngine) =
+        MeasurementViewModelFactory(engine, toolOverlayEngine)
 }
 
-class MeasurementViewModel(private val engine: MeasurementEngine) : ViewModel() {
+class MeasurementViewModel(
+    private val engine: MeasurementEngine,
+    private val toolOverlayEngine: ToolOverlayEngine,
+) : ViewModel() {
     val isEnabled: StateFlow<Boolean> = engine.isEnabled
     val mode: StateFlow<MeasurementMode> = engine.mode
     val currentMeasurement: StateFlow<MeasurementResult?> = engine.currentMeasurement
@@ -47,7 +54,14 @@ class MeasurementViewModel(private val engine: MeasurementEngine) : ViewModel() 
         this.activity = activity
     }
     fun toggleEnabled() {
-        if (engine.isEnabled.value) engine.disable() else activity?.let { engine.enable(it) }
+        val newEnabled = !engine.isEnabled.value
+        if (newEnabled) {
+            activity?.let { engine.enable(it) }
+        } else {
+            engine.disable()
+        }
+        // Notify ToolOverlayEngine to show/hide the floating toolbar
+        activity?.let { toolOverlayEngine.onMeasurementStateChanged(newEnabled, it) }
     }
     fun setMode(mode: MeasurementMode) = engine.setMode(mode)
     fun clear() = engine.clear()
@@ -56,16 +70,20 @@ class MeasurementViewModel(private val engine: MeasurementEngine) : ViewModel() 
         engine.updateConfig(engine.config.value.copy(showGuidelines = !engine.config.value.showGuidelines))
 }
 
-class MeasurementViewModelFactory(private val engine: MeasurementEngine) : ViewModelProvider.Factory {
+class MeasurementViewModelFactory(
+    private val engine: MeasurementEngine,
+    private val toolOverlayEngine: ToolOverlayEngine,
+) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = MeasurementViewModel(engine) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = MeasurementViewModel(engine, toolOverlayEngine) as T
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeasurementTool(activity: Activity, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val engine = remember { MeasurementFeature.createEngine() }
-    val factory = remember { MeasurementFeature.createViewModelFactory(engine) }
+    val toolOverlayEngine = remember { MeasurementFeature.createToolOverlayEngine() }
+    val factory = remember { MeasurementFeature.createViewModelFactory(engine, toolOverlayEngine) }
     val viewModel: MeasurementViewModel = viewModel(factory = factory)
 
     LaunchedEffect(activity) { viewModel.setActivity(activity) }

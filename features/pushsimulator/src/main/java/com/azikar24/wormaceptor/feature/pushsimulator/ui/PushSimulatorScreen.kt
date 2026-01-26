@@ -76,6 +76,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
@@ -176,8 +177,8 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentPadding = PaddingValues(PushSimulatorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.lg),
+            contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Notification Form
             item {
@@ -283,13 +284,13 @@ private fun NotificationFormCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = PushSimulatorDesignSystem.Shapes.card,
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(PushSimulatorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.md),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Preview Header
             NotificationPreview(
@@ -297,7 +298,7 @@ private fun NotificationFormCard(
                 body = uiState.body.ifBlank { "Notification message will appear here" },
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = PushSimulatorDesignSystem.Spacing.sm))
+            HorizontalDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
 
             // Title Input
             OutlinedTextField(
@@ -307,7 +308,7 @@ private fun NotificationFormCard(
                 placeholder = { Text("Enter notification title") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
-                shape = PushSimulatorDesignSystem.Shapes.textField,
+                shape = WormaCeptorDesignSystem.Shapes.button,
             )
 
             // Body Input
@@ -319,7 +320,7 @@ private fun NotificationFormCard(
                 minLines = 2,
                 maxLines = 4,
                 modifier = Modifier.fillMaxWidth(),
-                shape = PushSimulatorDesignSystem.Shapes.textField,
+                shape = WormaCeptorDesignSystem.Shapes.button,
             )
 
             // Channel Selector
@@ -358,7 +359,7 @@ private fun NotificationPreview(title: String, body: String) {
                 .size(40.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = PushSimulatorDesignSystem.Shapes.card,
+                    shape = WormaCeptorDesignSystem.Shapes.card,
                 ),
             contentAlignment = Alignment.Center,
         ) {
@@ -369,7 +370,7 @@ private fun NotificationPreview(title: String, body: String) {
             )
         }
 
-        Spacer(modifier = Modifier.width(PushSimulatorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -406,18 +407,18 @@ private fun ChannelSelector(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Box {
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expanded = true },
-                shape = PushSimulatorDesignSystem.Shapes.textField,
+                shape = WormaCeptorDesignSystem.Shapes.button,
             ) {
                 Text(
                     text = selectedChannel?.name ?: "Select channel",
-                    modifier = Modifier.padding(PushSimulatorDesignSystem.Spacing.md),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
@@ -467,10 +468,10 @@ private fun PrioritySelector(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             NotificationPriority.entries.forEach { priority ->
                 FilterChip(
@@ -499,13 +500,13 @@ private fun ActionButtonsSection(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         // Current actions
         if (actions.isNotEmpty()) {
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.sm),
-                modifier = Modifier.padding(bottom = PushSimulatorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 actions.forEach { action ->
                     InputChip(
@@ -530,7 +531,7 @@ private fun ActionButtonsSection(
         if (actions.size < 3) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 OutlinedTextField(
                     value = newActionTitle,
@@ -538,7 +539,7 @@ private fun ActionButtonsSection(
                     placeholder = { Text("Action title") },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
-                    shape = PushSimulatorDesignSystem.Shapes.textField,
+                    shape = WormaCeptorDesignSystem.Shapes.button,
                 )
 
                 IconButton(
@@ -562,7 +563,7 @@ private fun ActionButtonsSection(
 private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(PushSimulatorDesignSystem.Spacing.md),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
     ) {
         OutlinedButton(
             onClick = onSaveClick,
@@ -573,7 +574,7 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit) {
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
             )
-            Spacer(modifier = Modifier.width(PushSimulatorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text("Save Template")
         }
 
@@ -586,7 +587,7 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit) {
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
             )
-            Spacer(modifier = Modifier.width(PushSimulatorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text("Send")
         }
     }
@@ -598,7 +599,7 @@ private fun SectionHeader(text: String) {
         text = text,
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(vertical = PushSimulatorDesignSystem.Spacing.sm),
+        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
     )
 }
 
@@ -606,13 +607,13 @@ private fun SectionHeader(text: String) {
 private fun EmptyTemplatesCard() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = PushSimulatorDesignSystem.Shapes.card,
+        shape = WormaCeptorDesignSystem.Shapes.card,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(PushSimulatorDesignSystem.Spacing.xl),
+                .padding(WormaCeptorDesignSystem.Spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
@@ -621,7 +622,7 @@ private fun EmptyTemplatesCard() {
                 modifier = Modifier.size(48.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
             Text(
                 text = "No templates saved",
                 style = MaterialTheme.typography.bodyMedium,
@@ -647,7 +648,7 @@ private fun TemplateCard(
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = PushSimulatorDesignSystem.Shapes.card,
+        shape = WormaCeptorDesignSystem.Shapes.card,
         border = BorderStroke(
             width = 1.dp,
             color = if (isPreset) {
@@ -660,7 +661,7 @@ private fun TemplateCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(PushSimulatorDesignSystem.Spacing.md),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -684,7 +685,7 @@ private fun TemplateCard(
 
                 if (isPreset) {
                     Surface(
-                        shape = PushSimulatorDesignSystem.Shapes.chip,
+                        shape = WormaCeptorDesignSystem.Shapes.searchBar,
                         color = PushSimulatorDesignSystem.TemplateColors.preset.copy(alpha = 0.2f),
                     ) {
                         Text(
@@ -692,8 +693,8 @@ private fun TemplateCard(
                             style = MaterialTheme.typography.labelSmall,
                             color = PushSimulatorDesignSystem.TemplateColors.preset,
                             modifier = Modifier.padding(
-                                horizontal = PushSimulatorDesignSystem.Spacing.sm,
-                                vertical = PushSimulatorDesignSystem.Spacing.xs,
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xs,
                             ),
                         )
                     }
@@ -701,7 +702,7 @@ private fun TemplateCard(
             }
 
             if (template.notification.body.isNotBlank()) {
-                Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.xs))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
                 Text(
                     text = template.notification.body,
                     style = MaterialTheme.typography.bodySmall,
@@ -711,7 +712,7 @@ private fun TemplateCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(PushSimulatorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -734,8 +735,8 @@ private fun TemplateCard(
                 Button(
                     onClick = onSend,
                     contentPadding = PaddingValues(
-                        horizontal = PushSimulatorDesignSystem.Spacing.md,
-                        vertical = PushSimulatorDesignSystem.Spacing.sm,
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 ) {
                     Icon(
@@ -743,7 +744,7 @@ private fun TemplateCard(
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
                     )
-                    Spacer(modifier = Modifier.width(PushSimulatorDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     Text("Send")
                 }
             }

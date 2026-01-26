@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
@@ -141,11 +142,11 @@ val DarkWebSocketColors = WebSocketColors(
     binaryMessage = Color(0xFFBA68C8), // Purple 300
     pingPong = Color(0xFF4DD0E1), // Cyan 300
     // Backgrounds (dark tints)
-    sentBackground = Color(0xFF0D47A1).copy(alpha = 0.2f), // Blue with alpha
-    receivedBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
-    connectingBackground = Color(0xFFE65100).copy(alpha = 0.2f), // Orange with alpha
-    openBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
-    closingBackground = Color(0xFFBF360C).copy(alpha = 0.2f), // Deep Orange with alpha
+    sentBackground = Color(0xFF0D47A1).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Blue with alpha
+    receivedBackground = Color(0xFF1B5E20).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Green with alpha
+    connectingBackground = Color(0xFFE65100).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Orange with alpha
+    openBackground = Color(0xFF1B5E20).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Green with alpha
+    closingBackground = Color(0xFFBF360C).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Deep Orange with alpha
     closedBackground = Color(0xFF212121), // Gray 900
 )
 

@@ -12,7 +12,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +35,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Explore
@@ -48,12 +46,9 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -68,7 +63,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -86,31 +80,25 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import org.koin.java.KoinJavaComponent.get
 
 /**
- * Category accent colors for visual differentiation.
+ * Category helper for icons and color access.
  */
-private object CategoryColors {
-    val inspection = Color(0xFF6366F1) // Indigo
-    val performance = Color(0xFFF59E0B) // Amber
-    val network = Color(0xFF10B981) // Emerald
-    val simulation = Color(0xFF8B5CF6) // Violet
-    val visualDebug = Color(0xFFEC4899) // Pink
-    val core = Color(0xFF3B82F6) // Blue
-    val favorites = Color(0xFFF59E0B) // Gold
-
+private object CategoryHelper {
     fun forCategory(name: String): Color = when (name.lowercase()) {
-        "inspection" -> inspection
-        "performance" -> performance
-        "network" -> network
-        "simulation" -> simulation
-        "visual debug" -> visualDebug
-        "core" -> core
-        "favorites" -> favorites
-        else -> Color(0xFF6B7280)
+        "inspection" -> WormaCeptorColors.CategoryColors.Inspection
+        "performance" -> WormaCeptorColors.CategoryColors.Performance
+        "network" -> WormaCeptorColors.CategoryColors.Network
+        "simulation" -> WormaCeptorColors.CategoryColors.Simulation
+        "visual debug" -> WormaCeptorColors.CategoryColors.VisualDebug
+        "core" -> WormaCeptorColors.CategoryColors.Core
+        "favorites" -> WormaCeptorColors.CategoryColors.Favorites
+        else -> WormaCeptorColors.CategoryColors.Fallback
     }
 
     fun iconForCategory(name: String): ImageVector = when (name.lowercase()) {
@@ -184,9 +172,10 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
             .background(MaterialTheme.colorScheme.background),
     ) {
         // Search Bar
-        ToolsSearchBar(
+        WormaCeptorSearchBar(
             query = searchQuery,
             onQueryChange = { searchQuery = it },
+            placeholder = "Search tools...",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -220,8 +209,8 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
             ) { category ->
                 ToolCategorySection(
                     categoryName = category.name,
-                    categoryColor = CategoryColors.forCategory(category.name),
-                    categoryIcon = CategoryColors.iconForCategory(category.name),
+                    categoryColor = CategoryHelper.forCategory(category.name),
+                    categoryIcon = CategoryHelper.iconForCategory(category.name),
                     tools = category.tools,
                     isCollapsed = collapsedCategories[category.name] == true,
                     onToggleCollapse = {
@@ -269,72 +258,6 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
 }
 
 @Composable
-private fun ToolsSearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
-    val surfaceColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-    val borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
-
-    Surface(
-        modifier = modifier
-            .shadow(
-                elevation = 2.dp,
-                shape = RoundedCornerShape(14.dp),
-                ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
-                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
-            )
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(14.dp),
-            ),
-        shape = RoundedCornerShape(14.dp),
-        color = surfaceColor,
-    ) {
-        TextField(
-            value = query,
-            onValueChange = onQueryChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(
-                    text = "Search tools...",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = Modifier.size(22.dp),
-                )
-            },
-            trailingIcon = {
-                if (query.isNotEmpty()) {
-                    IconButton(
-                        onClick = { onQueryChange("") },
-                        modifier = Modifier.size(36.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Clear search",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
-                }
-            },
-            singleLine = true,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = MaterialTheme.colorScheme.primary,
-            ),
-        )
-    }
-}
-
-@Composable
 private fun FavoritesStrip(
     favorites: List<ToolItem>,
     onToolClick: (String) -> Unit,
@@ -352,7 +275,7 @@ private fun FavoritesStrip(
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
-                tint = CategoryColors.favorites,
+                tint = WormaCeptorColors.CategoryColors.Favorites,
                 modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -679,7 +602,7 @@ private fun ToolTile(
                         .align(Alignment.TopEnd)
                         .padding(6.dp)
                         .size(12.dp),
-                    tint = CategoryColors.favorites,
+                    tint = WormaCeptorColors.CategoryColors.Favorites,
                 )
             }
         }
@@ -779,7 +702,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .size(36.dp)
                         .background(
-                            color = CategoryColors.performance.copy(alpha = 0.15f),
+                            color = WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.15f),
                             shape = RoundedCornerShape(8.dp),
                         ),
                     contentAlignment = Alignment.Center,
@@ -788,7 +711,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                         imageVector = Icons.Default.Speed,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = CategoryColors.performance,
+                        tint = WormaCeptorColors.CategoryColors.Performance,
                     )
                 }
 
@@ -882,17 +805,17 @@ private fun MetricToggleChip(
 ) {
     val backgroundColor = when {
         !enabled -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-        isEnabled -> CategoryColors.performance.copy(alpha = 0.15f)
+        isEnabled -> WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.15f)
         else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     }
     val borderColor = when {
         !enabled -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        isEnabled -> CategoryColors.performance.copy(alpha = 0.4f)
+        isEnabled -> WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.4f)
         else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
     }
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-        isEnabled -> CategoryColors.performance
+        isEnabled -> WormaCeptorColors.CategoryColors.Performance
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 

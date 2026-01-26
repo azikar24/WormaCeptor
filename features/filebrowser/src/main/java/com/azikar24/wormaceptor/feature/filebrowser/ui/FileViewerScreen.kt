@@ -58,8 +58,8 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileContent
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.io.File
 
 /**
@@ -130,7 +130,7 @@ private fun TextFileContent(content: FileContent.Text) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .horizontalScroll(rememberScrollState())
-            .padding(FileBrowserDesignSystem.Spacing.lg),
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         Text(
             text = content.content,
@@ -148,7 +148,7 @@ private fun JsonFileContent(content: FileContent.Json) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(FileBrowserDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -167,7 +167,7 @@ private fun JsonFileContent(content: FileContent.Json) {
                 text = if (content.isValid) "Valid" else "Invalid",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
-                modifier = Modifier.padding(start = FileBrowserDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
             )
         }
 
@@ -177,7 +177,7 @@ private fun JsonFileContent(content: FileContent.Json) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = FileBrowserDesignSystem.Spacing.lg),
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
                 text = highlightJson(content.formattedContent),
@@ -195,7 +195,7 @@ private fun XmlFileContent(content: FileContent.Xml) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(FileBrowserDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -214,7 +214,7 @@ private fun XmlFileContent(content: FileContent.Xml) {
                 text = if (content.isValid) "Valid" else "Invalid",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
-                modifier = Modifier.padding(start = FileBrowserDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
             )
         }
 
@@ -224,7 +224,7 @@ private fun XmlFileContent(content: FileContent.Xml) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = FileBrowserDesignSystem.Spacing.lg),
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
                 text = highlightXml(content.formattedContent),
@@ -439,20 +439,20 @@ private fun BinaryFileContent(content: FileContent.Binary) {
             text = "Binary file (${formatBytes(content.displaySize.toLong())})",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(FileBrowserDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         )
 
         // Hex dump using LazyColumn for efficient scrolling
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = FileBrowserDesignSystem.Spacing.md),
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
         ) {
             items(lineCount) { lineIndex ->
                 HexDumpLine(bytes, lineIndex)
             }
             item {
-                Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.lg))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
             }
         }
     }
@@ -540,14 +540,14 @@ private fun ImageFileContent(content: FileContent.Image) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(FileBrowserDesignSystem.Spacing.lg),
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "${content.width} x ${content.height}${if (isAnimated) " (animated)" else ""}",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = FileBrowserDesignSystem.Spacing.md),
+            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
         )
 
         AsyncImage(
@@ -592,21 +592,21 @@ private fun PdfFileContent(content: FileContent.Pdf) {
                     text = "PDF: ${content.pageCount} pages (${formatBytes(content.sizeBytes)})",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(FileBrowserDesignSystem.Spacing.lg),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                 )
 
                 // PDF pages
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = FileBrowserDesignSystem.Spacing.md),
-                    verticalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.md),
+                        .padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     itemsIndexed(List(pdfState.renderer.pageCount) { it }) { index, _ ->
                         PdfPageCard(pdfState.renderer, index)
                     }
                     item {
-                        Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.lg))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
                     }
                 }
             }
@@ -637,14 +637,14 @@ private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Column(
-            modifier = Modifier.padding(FileBrowserDesignSystem.Spacing.sm),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "Page ${pageIndex + 1}",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = FileBrowserDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
             )
             Image(
                 bitmap = bitmap.asImageBitmap(),

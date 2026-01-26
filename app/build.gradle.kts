@@ -57,7 +57,15 @@ dependencies {
     implementation(project(":api:client"))
     debugImplementation(project(":api:impl:persistence"))
     debugImplementation(project(":core:engine"))
+    debugImplementation(project(":core:ui"))
     debugImplementation(libs.koin.android)
+
+    // Feature modules for testing
+    debugImplementation(project(":features:location"))
+    debugImplementation(project(":features:cookies"))
+    debugImplementation(project(":features:webviewmonitor"))
+    debugImplementation(project(":features:securestorage"))
+    debugImplementation(project(":features:composerender"))
 //    debugImplementation(project(":api:impl:no-op"))
 //    debugImplementation(project(":api:impl:imdb"))
 
@@ -71,4 +79,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.core.splashscreen)
+
+    // Security crypto for EncryptedSharedPreferences testing
+    debugImplementation(libs.androidx.security.crypto)
 }

@@ -4,14 +4,6 @@
 
 package com.azikar24.wormaceptor.feature.preferences.ui
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,16 +35,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
-import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -101,9 +91,9 @@ fun PreferencesListScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(PreferencesDesignSystem.Spacing.md),
+                    .padding(WormaCeptorDesignSystem.Spacing.md),
                 singleLine = true,
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -119,10 +109,10 @@ fun PreferencesListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        horizontal = PreferencesDesignSystem.Spacing.md,
-                        vertical = PreferencesDesignSystem.Spacing.xs,
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(files, key = { it.name }) { file ->
                         PreferenceFileItem(
@@ -139,81 +129,59 @@ fun PreferencesListScreen(
 
 @Composable
 private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "fileItemScale",
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .scale(scale)
-            .clip(RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md))
-            .border(
-                width = PreferencesDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.md),
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(PreferencesDesignSystem.Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
+    WormaCeptorContainer(
+        onClick = onClick,
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        // File icon
-        Surface(
-            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
-            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
-            modifier = Modifier.size(40.dp),
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
+            // File icon
+            Surface(
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                modifier = Modifier.size(40.dp),
             ) {
-                Icon(
-                    imageVector = Icons.Default.Folder,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.primary,
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Folder,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = file.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Text(
+                    text = "${file.itemCount} ${if (file.itemCount == 1) "item" else "items"}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-        }
 
-        Spacer(modifier = Modifier.width(PreferencesDesignSystem.Spacing.md))
-
-        Column(modifier = Modifier.weight(1f)) {
+            // Chevron indicator
             Text(
-                text = file.name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.xxs))
-            Text(
-                text = "${file.itemCount} ${if (file.itemCount == 1) "item" else "items"}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = ">",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
             )
         }
-
-        // Chevron indicator
-        Text(
-            text = ">",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-        )
     }
 }
 
@@ -225,7 +193,7 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.lg),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -242,7 +210,7 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
             }
         }
 
-        Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
             text = if (hasSearchQuery) "No matches found" else "No preferences files",
@@ -251,7 +219,7 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(PreferencesDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Text(
             text = if (hasSearchQuery) {

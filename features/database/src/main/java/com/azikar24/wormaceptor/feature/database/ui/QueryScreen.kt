@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
@@ -119,7 +120,7 @@ fun QueryScreen(
                     .fillMaxWidth()
                     .heightIn(min = 100.dp, max = 200.dp)
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                    .padding(DatabaseDesignSystem.Spacing.md),
+                    .padding(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 if (sqlQuery.isEmpty()) {
                     Text(
@@ -173,7 +174,7 @@ fun QueryScreen(
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(DatabaseDesignSystem.Spacing.sm),
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
                             Text(
                                 text = "Enter a SQL query and press Execute",
@@ -199,7 +200,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
 
     if (result.error != null) {
         Box(
-            modifier = modifier.padding(DatabaseDesignSystem.Spacing.lg),
+            modifier = modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
             contentAlignment = Alignment.TopStart,
         ) {
             Text(
@@ -214,7 +215,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                 text = "${result.rowCount} rows returned",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(DatabaseDesignSystem.Spacing.md),
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
             )
 
             LazyColumn(
@@ -227,13 +228,13 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                     Row(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(vertical = DatabaseDesignSystem.Spacing.xs),
+                            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         result.columns.forEach { column ->
                             Box(
                                 modifier = Modifier
                                     .widthIn(min = 100.dp, max = 200.dp)
-                                    .padding(horizontal = DatabaseDesignSystem.Spacing.sm),
+                                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                             ) {
                                 Text(
                                     text = column,
@@ -254,13 +255,13 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                     key = { it.hashCode() },
                 ) { row ->
                     Row(
-                        modifier = Modifier.padding(vertical = DatabaseDesignSystem.Spacing.xs),
+                        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         row.forEach { cell ->
                             Box(
                                 modifier = Modifier
                                     .widthIn(min = 100.dp, max = 200.dp)
-                                    .padding(horizontal = DatabaseDesignSystem.Spacing.sm),
+                                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                             ) {
                                 Text(
                                     text = cell?.toString() ?: "NULL",
@@ -296,7 +297,7 @@ private fun QueryHistoryView(
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(DatabaseDesignSystem.Spacing.md),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
         )
 
         LazyColumn {

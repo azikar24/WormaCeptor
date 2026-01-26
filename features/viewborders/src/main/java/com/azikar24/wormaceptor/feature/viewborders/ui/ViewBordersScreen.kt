@@ -59,6 +59,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ViewBordersConfig
 import com.azikar24.wormaceptor.feature.viewborders.ui.theme.ViewBordersColors
 import com.azikar24.wormaceptor.feature.viewborders.ui.theme.toArgbLong
@@ -96,7 +97,7 @@ fun ViewBordersScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = "View Borders",
@@ -104,14 +105,17 @@ fun ViewBordersScreen(
                         )
                         if (config.enabled) {
                             Surface(
-                                shape = RoundedCornerShape(4.dp),
+                                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                                 color = MaterialTheme.colorScheme.primaryContainer,
                             ) {
                                 Text(
                                     text = "ACTIVE",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    modifier = Modifier.padding(
+                                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                    ),
                                 )
                             }
                         }
@@ -153,17 +157,17 @@ fun ViewBordersScreen(
                 onToggle = { viewModel.toggleEnabled(activity) },
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
 
             // Visual Legend
             ColorLegendCard(
                 colors = colors,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // Settings Section
             SectionHeader(text = "Settings")
@@ -201,7 +205,7 @@ fun ViewBordersScreen(
                 },
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
 
             // Color Customization Section
             SectionHeader(text = "Colors")
@@ -230,7 +234,7 @@ fun ViewBordersScreen(
                 onColorSelected = { viewModel.setContentColor(it.copy(alpha = 0.3f).toArgbLong()) },
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
         }
     }
 }
@@ -250,26 +254,26 @@ private fun EnableToggleSection(enabled: Boolean, onToggle: () -> Unit, modifier
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        shape = RoundedCornerShape(16.dp),
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         color = backgroundColor,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onToggle() }
-                .padding(20.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.xl),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     imageVector = Icons.Default.BorderOuter,
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
                     tint = if (enabled) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
@@ -320,23 +324,23 @@ private fun EnableToggleSection(enabled: Boolean, onToggle: () -> Unit, modifier
 private fun ColorLegendCard(colors: ViewBordersColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(
                     imageVector = Icons.Default.Visibility,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                 )
                 Text(
                     text = "Color Legend",
@@ -345,34 +349,46 @@ private fun ColorLegendCard(colors: ViewBordersColors, modifier: Modifier = Modi
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             // Visual diagram showing nested boxes
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                     .background(colors.marginBackground)
-                    .border(2.dp, colors.margin, RoundedCornerShape(8.dp))
-                    .padding(12.dp),
+                    .border(
+                        WormaCeptorDesignSystem.BorderWidth.thick,
+                        colors.margin,
+                        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                    )
+                    .padding(WormaCeptorDesignSystem.Spacing.md),
                 contentAlignment = Alignment.Center,
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(6.dp))
+                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
                         .background(colors.paddingBackground)
-                        .border(2.dp, colors.padding, RoundedCornerShape(6.dp))
-                        .padding(12.dp),
+                        .border(
+                            WormaCeptorDesignSystem.BorderWidth.thick,
+                            colors.padding,
+                            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                        )
+                        .padding(WormaCeptorDesignSystem.Spacing.md),
                     contentAlignment = Alignment.Center,
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .clip(RoundedCornerShape(4.dp))
+                            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                             .background(colors.contentBackground)
-                            .border(2.dp, colors.content, RoundedCornerShape(4.dp)),
+                            .border(
+                                WormaCeptorDesignSystem.BorderWidth.thick,
+                                colors.content,
+                                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                            ),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
@@ -384,7 +400,7 @@ private fun ColorLegendCard(colors: ViewBordersColors, modifier: Modifier = Modi
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             // Legend items
             Row(
@@ -404,11 +420,11 @@ private fun LegendItem(color: Color, label: String, modifier: Modifier = Modifie
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         Box(
             modifier = Modifier
-                .size(12.dp)
+                .size(WormaCeptorDesignSystem.Spacing.md)
                 .clip(CircleShape)
                 .background(color),
         )
@@ -429,7 +445,7 @@ private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg, vertical = WormaCeptorDesignSystem.Spacing.md),
     )
 }
 
@@ -438,7 +454,7 @@ private fun BorderWidthSlider(borderWidth: Int, onWidthChange: (Int) -> Unit, mo
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -450,19 +466,22 @@ private fun BorderWidthSlider(borderWidth: Int, onWidthChange: (Int) -> Unit, mo
                 style = MaterialTheme.typography.bodyLarge,
             )
             Surface(
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                 color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Text(
                     text = "${borderWidth}dp",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    ),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Slider(
             value = borderWidth.toFloat(),
@@ -519,10 +538,14 @@ private fun ColorPickerItem(
             leadingContent = {
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(CircleShape)
                         .background(currentColor)
-                        .border(2.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                        .border(
+                            WormaCeptorDesignSystem.BorderWidth.thick,
+                            MaterialTheme.colorScheme.outline,
+                            CircleShape,
+                        ),
                 )
             },
             trailingContent = {
@@ -545,7 +568,10 @@ private fun ColorPickerItem(
                     onColorSelected(it)
                     expanded = false
                 },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ),
             )
         }
     }
@@ -591,19 +617,19 @@ private fun ColorPalette(
     )
 
     Surface(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Color grid
             val chunkedColors = colorOptions.chunked(6)
             chunkedColors.forEach { rowColors ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     rowColors.forEach { color ->
                         ColorSwatch(
@@ -615,10 +641,10 @@ private fun ColorPalette(
                     }
                     // Fill remaining space if row is incomplete
                     repeat(6 - rowColors.size) {
-                        Spacer(modifier = Modifier.width(32.dp))
+                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xxl))
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
             }
         }
     }
@@ -628,11 +654,11 @@ private fun ColorPalette(
 private fun ColorSwatch(color: Color, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .size(32.dp)
+            .size(WormaCeptorDesignSystem.Spacing.xxl)
             .clip(CircleShape)
             .background(color)
             .border(
-                width = if (isSelected) 3.dp else 1.dp,
+                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primary
                 } else {
@@ -648,7 +674,7 @@ private fun ColorSwatch(color: Color, isSelected: Boolean, onClick: () -> Unit, 
                 imageVector = Icons.Default.Check,
                 contentDescription = "Selected",
                 tint = Color.White,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
             )
         }
     }

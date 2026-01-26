@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -42,10 +42,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.BreadcrumbBar
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.FileListItem
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
 import kotlinx.collections.immutable.ImmutableList
 
@@ -74,6 +75,13 @@ fun FileBrowserScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var showSortMenu by remember { mutableStateOf(false) }
     var searchActive by remember { mutableStateOf(false) }
+
+    // Handle system back button: navigate up directory or exit if at home
+    BackHandler {
+        if (!onNavigateBack()) {
+            onExitBrowser()
+        }
+    }
 
     // Show error as snackbar
     LaunchedEffect(error) {
@@ -150,30 +158,16 @@ fun FileBrowserScreen(
 
                 // Search bar
                 if (searchActive) {
-                    SearchBar(
+                    WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
+                        placeholder = "Search files...",
                         onSearch = { searchActive = false },
-                        active = false,
-                        onActiveChange = { },
-                        placeholder = { Text("Search files...") },
-                        leadingIcon = {
-                            Icon(Icons.Default.Search, contentDescription = null)
-                        },
-                        trailingIcon = if (searchQuery.isNotEmpty()) {
-                            {
-                                IconButton(onClick = { onSearchQueryChanged("") }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear")
-                                }
-                            }
-                        } else {
-                            null
-                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = FileBrowserDesignSystem.Spacing.lg)
-                            .padding(bottom = FileBrowserDesignSystem.Spacing.sm),
-                    ) {}
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                            .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                    )
                 }
 
                 // Breadcrumb navigation
@@ -210,7 +204,7 @@ fun FileBrowserScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Folder,

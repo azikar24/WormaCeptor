@@ -287,6 +287,20 @@ class PerformanceOverlayEngine(
     }
 
     /**
+     * Handles drag end - dismisses overlay if in dismiss zone, otherwise saves position.
+     */
+    private fun handleDragEnd() {
+        setDragging(false)
+
+        if (_state.value.isInDismissZone()) {
+            // User dropped in dismiss zone - hide overlay and disable
+            setOverlayEnabled(false)
+        } else {
+            savePosition()
+        }
+    }
+
+    /**
      * Returns whether FPS metric is enabled.
      */
     fun isFpsEnabled(): Boolean = _state.value.fpsEnabled
@@ -633,10 +647,7 @@ class PerformanceOverlayEngine(
                 val callbacks = OverlayCallbacks(
                     onDragStart = { setDragging(true) },
                     onDrag = { offset -> handleDrag(offset) },
-                    onDragEnd = {
-                        setDragging(false)
-                        savePosition()
-                    },
+                    onDragEnd = { handleDragEnd() },
                     onHideOverlay = { setOverlayEnabled(false) },
                     onOpenWormaCeptor = { openWormaCeptor() },
                     onOpenFpsDetail = { openFpsDetail() },

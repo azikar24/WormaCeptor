@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,12 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Alpha
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.CornerRadius
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Spacing
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Alpha
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.BorderWidth
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.CornerRadius
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem.Spacing
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -166,106 +165,97 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md))
+            .clip(WormaCeptorDesignSystem.Shapes.card)
             .clickable(onClick = onClick)
             .alpha(alpha),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md),
+        shape = WormaCeptorDesignSystem.Shapes.card,
         color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.subtle),
-        tonalElevation = 0.dp,
+        tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
     ) {
-        Box(
+        Row(
             modifier = Modifier
-                .border(
-                    width = BorderWidth.thin,
-                    color = WormaCeptorColors.StatusRed.copy(alpha = 0.15f),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.md),
-                ),
+                .fillMaxWidth()
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalAlignment = Alignment.Top,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Spacing.md),
-                verticalAlignment = Alignment.Top,
+            // Icon badge
+            Surface(
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
+                color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.light),
+                contentColor = WormaCeptorColors.StatusRed,
+                modifier = Modifier.size(32.dp),
             ) {
-                // Icon badge
-                Surface(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                    color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.light),
-                    contentColor = WormaCeptorColors.StatusRed,
-                    modifier = Modifier.size(32.dp),
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        Icon(
-                            imageVector = if (isSevere) Icons.Default.BugReport else Icons.Default.Warning,
-                            contentDescription = if (isSevere) "Critical crash" else "Warning",
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
+                    Icon(
+                        imageVector = if (isSevere) Icons.Default.BugReport else Icons.Default.Warning,
+                        contentDescription = if (isSevere) "Critical crash" else "Warning",
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(Spacing.md))
+
+            Column(modifier = Modifier.weight(1f)) {
+                // Exception type - prominent
+                Text(
+                    text = crash.exceptionType,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.error,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    letterSpacing = (-0.2).sp,
+                )
+
+                Spacer(modifier = Modifier.height(Spacing.xs))
+
+                // Error message
+                val message = crash.message
+                if (message != null && message.isNotBlank()) {
+                    Text(
+                        text = message,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 18.sp,
+                    )
+
+                    Spacer(modifier = Modifier.height(Spacing.sm))
                 }
 
-                Spacer(modifier = Modifier.width(Spacing.md))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    // Exception type - prominent
-                    Text(
-                        text = crash.exceptionType,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
-                        color = MaterialTheme.colorScheme.error,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        letterSpacing = (-0.2).sp,
-                    )
+                // Stack trace location in monospace
+                if (location != null) {
+                    Surface(
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    ) {
+                        Text(
+                            text = location,
+                            fontSize = 11.sp,
+                            fontFamily = FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(Spacing.xs))
-
-                    // Error message
-                    val message = crash.message
-                    if (message != null && message.isNotBlank()) {
-                        Text(
-                            text = message,
-                            fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = 18.sp,
-                        )
-
-                        Spacer(modifier = Modifier.height(Spacing.sm))
-                    }
-
-                    // Stack trace location in monospace
-                    if (location != null) {
-                        Surface(
-                            shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                        ) {
-                            Text(
-                                text = location,
-                                fontSize = 11.sp,
-                                fontFamily = FontFamily.Monospace,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(Spacing.xs))
-                    }
-
-                    // Relative timestamp with better typography
-                    Text(
-                        text = relativeTime,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                        letterSpacing = 0.2.sp,
-                    )
                 }
+
+                // Relative timestamp with better typography
+                Text(
+                    text = relativeTime,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    letterSpacing = 0.2.sp,
+                )
             }
         }
     }

@@ -42,9 +42,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 
 // ============================================================================
@@ -92,82 +94,78 @@ fun rememberShimmerBrush(): Brush {
 fun TransactionItemSkeleton(modifier: Modifier = Modifier) {
     val shimmerBrush = rememberShimmerBrush()
 
-    Row(
+    WormaCeptorContainer(
+        style = ContainerStyle.Outlined,
+        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f),
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs,
-            )
-            .clip(WormaCeptorDesignSystem.Shapes.card)
-            .border(
-                width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
-                shape = WormaCeptorDesignSystem.Shapes.card,
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f),
-                shape = WormaCeptorDesignSystem.Shapes.card,
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically,
+            ),
     ) {
-        // Status indicator skeleton
-        Box(
-            modifier = Modifier
-                .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                .height(48.dp)
-                .background(shimmerBrush, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
-        )
+        Row(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Status indicator skeleton
+            Box(
+                modifier = Modifier
+                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
+                    .height(48.dp)
+                    .background(shimmerBrush, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
+            )
 
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                // Method badge skeleton
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                ) {
+                    // Method badge skeleton
+                    SkeletonBox(
+                        width = 36.dp,
+                        height = 16.dp,
+                        brush = shimmerBrush,
+                    )
+                    // Path skeleton
+                    SkeletonBox(
+                        modifier = Modifier.weight(1f),
+                        height = 18.dp,
+                        brush = shimmerBrush,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+
+                // Host chip skeleton
                 SkeletonBox(
-                    width = 36.dp,
-                    height = 16.dp,
+                    width = 120.dp,
+                    height = 20.dp,
                     brush = shimmerBrush,
-                )
-                // Path skeleton
-                SkeletonBox(
-                    modifier = Modifier.weight(1f),
-                    height = 18.dp,
-                    brush = shimmerBrush,
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
-            // Host chip skeleton
-            SkeletonBox(
-                width = 120.dp,
-                height = 20.dp,
-                brush = shimmerBrush,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-            )
-        }
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-        Column(horizontalAlignment = Alignment.End) {
-            // Status code skeleton
-            SkeletonBox(
-                width = 40.dp,
-                height = 24.dp,
-                brush = shimmerBrush,
-            )
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-            // Duration skeleton
-            SkeletonBox(
-                width = 32.dp,
-                height = 14.dp,
-                brush = shimmerBrush,
-            )
+            Column(horizontalAlignment = Alignment.End) {
+                // Status code skeleton
+                SkeletonBox(
+                    width = 40.dp,
+                    height = 24.dp,
+                    brush = shimmerBrush,
+                )
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                // Duration skeleton
+                SkeletonBox(
+                    width = 32.dp,
+                    height = 14.dp,
+                    brush = shimmerBrush,
+                )
+            }
         }
     }
 }

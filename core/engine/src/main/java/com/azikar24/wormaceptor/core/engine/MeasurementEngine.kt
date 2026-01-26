@@ -67,10 +67,21 @@ class MeasurementEngine {
      * @param activity The activity to attach the overlay to
      */
     fun enable(activity: Activity) {
-        if (_isEnabled.value) return
+        // If already enabled on a different activity, clean up first
+        if (_isEnabled.value) {
+            val currentActivity = activityRef?.get()
+            if (currentActivity != null && currentActivity !== activity) {
+                // Switching to a new activity - clean up old overlay first
+                removeOverlayView()
+            } else if (currentActivity === activity) {
+                // Already enabled on the same activity
+                return
+            }
+        }
 
         activityRef = WeakReference(activity)
-        windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        // Use application context for WindowManager so overlay survives activity changes
+        windowManager = activity.applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         density = activity.resources.displayMetrics.density
 
         createOverlayView(activity)
@@ -93,6 +104,16 @@ class MeasurementEngine {
         _isEnabled.value = false
         _currentMeasurement.value = null
         _selectedView.value = null
+    }
+
+    /**
+     * Detaches the overlay from the current activity without changing enabled state.
+     * Call this when the activity is being destroyed but you want to re-attach on a new activity.
+     */
+    fun detachFromActivity() {
+        removeOverlayView()
+        windowManager = null
+        // Keep activityRef and _isEnabled as-is so we can re-attach
     }
 
     /**
@@ -144,14 +165,23 @@ class MeasurementEngine {
     }
 
     private fun createOverlayView(activity: Activity) {
-        overlayView = MeasurementInterceptorView(activity) { event ->
+        // Use application context so the overlay survives activity changes
+        overlayView = MeasurementInterceptorView(activity.applicationContext) { event ->
             processTouchEvent(event)
+        }
+
+        // Use TYPE_APPLICATION_OVERLAY for cross-activity persistence
+        val windowType = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            @Suppress("DEPRECATION")
+            WindowManager.LayoutParams.TYPE_PHONE
         }
 
         val params = WindowManager.LayoutParams().apply {
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.MATCH_PARENT
-            type = WindowManager.LayoutParams.TYPE_APPLICATION
+            type = windowType
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
             format = PixelFormat.TRANSLUCENT
@@ -161,6 +191,7 @@ class MeasurementEngine {
         try {
             windowManager?.addView(overlayView, params)
         } catch (e: Exception) {
+            // Failed to add overlay view - likely missing SYSTEM_ALERT_WINDOW permission
             overlayView = null
             _isEnabled.value = false
         }

@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
@@ -134,7 +135,7 @@ fun PreferenceEditDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(PreferencesDesignSystem.Spacing.md),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 // Key input
                 OutlinedTextField(
@@ -156,7 +157,7 @@ fun PreferenceEditDialog(
                         fontFamily = FontFamily.Monospace,
                     ),
                     isError = key.isBlank() && key.isNotEmpty(),
-                    shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                 )
 
                 // Type selector
@@ -178,7 +179,7 @@ fun PreferenceEditDialog(
                             .fillMaxWidth()
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         enabled = isCreating,
-                        shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                     )
                     if (isCreating) {
                         ExposedDropdownMenu(
@@ -227,7 +228,7 @@ fun PreferenceEditDialog(
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                             minLines = 2,
                             maxLines = 5,
                         )
@@ -249,7 +250,7 @@ fun PreferenceEditDialog(
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                             singleLine = true,
                         )
                     }
@@ -270,7 +271,7 @@ fun PreferenceEditDialog(
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                             singleLine = true,
                         )
                     }
@@ -291,7 +292,7 @@ fun PreferenceEditDialog(
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                             singleLine = true,
                         )
                     }
@@ -387,7 +388,7 @@ fun PreferenceEditDialog(
                                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                                         fontFamily = FontFamily.Monospace,
                                     ),
-                                    shape = RoundedCornerShape(PreferencesDesignSystem.CornerRadius.sm),
+                                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                                 )
 
                                 Spacer(modifier = Modifier.width(8.dp))

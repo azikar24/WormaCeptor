@@ -4,53 +4,13 @@
 
 package com.azikar24.wormaceptor.feature.cookies.ui.theme
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
 /**
- * Design system for the Cookies Manager feature.
- * Aligned with WormaCeptorDesignSystem from viewer module.
+ * Feature-specific design tokens for the Cookies Manager feature.
+ * Uses WormaCeptorDesignSystem from core:ui for shared tokens (Spacing, CornerRadius, BorderWidth, Alpha).
  */
 object CookiesDesignSystem {
-
-    object Spacing {
-        val xxs = 2.dp
-        val xs = 4.dp
-        val sm = 8.dp
-        val md = 12.dp
-        val lg = 16.dp
-        val xl = 24.dp
-        val xxl = 32.dp
-    }
-
-    object CornerRadius {
-        val xs = 4.dp
-        val sm = 6.dp
-        val md = 8.dp
-        val lg = 12.dp
-        val xl = 16.dp
-        val pill = 999.dp
-    }
-
-    object BorderWidth {
-        val thin = 0.5.dp
-        val regular = 1.dp
-        val thick = 2.dp
-    }
-
-    object Alpha {
-        const val subtle = 0.08f
-        const val light = 0.12f
-        const val medium = 0.20f
-        const val strong = 0.40f
-    }
-
-    object Shapes {
-        val card = RoundedCornerShape(CornerRadius.md)
-        val chip = RoundedCornerShape(CornerRadius.xs)
-        val button = RoundedCornerShape(CornerRadius.sm)
-    }
 
     /**
      * Colors for cookie attributes and states.
@@ -74,5 +34,3 @@ object CookiesDesignSystem {
         }
     }
 }
-
-fun Color.asSubtleBackground(): Color = this.copy(alpha = CookiesDesignSystem.Alpha.subtle)

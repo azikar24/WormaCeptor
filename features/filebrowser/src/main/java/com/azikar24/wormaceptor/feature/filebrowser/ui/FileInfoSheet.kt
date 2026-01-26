@@ -33,8 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileInfo
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,7 +60,7 @@ fun FileInfoSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(FileBrowserDesignSystem.Spacing.lg),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Title
             Text(
@@ -70,7 +70,7 @@ fun FileInfoSheet(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // File name
             InfoRow("Name", fileInfo.name)
@@ -106,7 +106,7 @@ fun FileInfoSheet(
                 }
             }
 
-            Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // File size
             InfoRow("Size", formatBytes(fileInfo.sizeBytes))
@@ -135,14 +135,14 @@ fun FileInfoSheet(
             }
             InfoRow("Permissions", permissions)
 
-            Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
             HorizontalDivider()
-            Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.lg))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // Actions
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(FileBrowserDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 TextButton(
                     onClick = onDismiss,
@@ -166,13 +166,13 @@ fun FileInfoSheet(
                             imageVector = Icons.Default.Delete,
                             contentDescription = null,
                         )
-                        Spacer(modifier = Modifier.width(FileBrowserDesignSystem.Spacing.xs))
+                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                         Text("Delete")
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(FileBrowserDesignSystem.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
         }
     }
 }
@@ -182,7 +182,7 @@ private fun InfoRow(label: String, value: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = FileBrowserDesignSystem.Spacing.xs),
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Text(
             text = label,

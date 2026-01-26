@@ -30,4 +30,7 @@
     <string name="crash_dialog_message">This will intentionally crash the app to test WormaCeptor\'s crash reporting. The app will close immediately.</string>
     <string name="crash_dialog_confirm">Crash App</string>
     <string name="crash_dialog_cancel">Cancel</string>
+
+    <!-- Showcase Tab -->
+    <string name="app_version">v1.0.2</string>
 </resources>

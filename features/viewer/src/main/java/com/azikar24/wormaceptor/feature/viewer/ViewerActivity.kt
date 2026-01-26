@@ -33,9 +33,6 @@ import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
-import com.azikar24.wormaceptor.core.engine.ToolOverlayEngine
-import com.azikar24.wormaceptor.core.engine.TouchVisualizationEngine
-import com.azikar24.wormaceptor.core.engine.ViewBordersEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
@@ -51,14 +48,12 @@ import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspec
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
 import com.azikar24.wormaceptor.feature.fps.FpsMonitor
-import com.azikar24.wormaceptor.feature.gridoverlay.GridOverlayControl
 import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
 import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
 import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
-import com.azikar24.wormaceptor.feature.measurement.MeasurementTool
 import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
 import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
 import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
@@ -66,8 +61,6 @@ import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
 import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
 import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
 import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
-import com.azikar24.wormaceptor.feature.touchvisualization.TouchVisualization
-import com.azikar24.wormaceptor.feature.viewborders.ViewBorders
 import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
@@ -92,14 +85,11 @@ class ViewerActivity : ComponentActivity() {
     private val memoryMonitorEngine: MemoryMonitorEngine by inject()
     private val fpsMonitorEngine: FpsMonitorEngine by inject()
     private val cpuMonitorEngine: CpuMonitorEngine by inject()
-    private val touchVisualizationEngine: TouchVisualizationEngine by inject()
-    private val viewBordersEngine: ViewBordersEngine by inject()
     private val logCaptureEngine: LogCaptureEngine by inject()
     private val webSocketMonitorEngine: WebSocketMonitorEngine by inject()
     private val leakDetectionEngine: LeakDetectionEngine by inject()
     private val threadViolationEngine: ThreadViolationEngine by inject()
     private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
-    private val toolOverlayEngine: ToolOverlayEngine by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -443,23 +433,6 @@ class ViewerActivity : ComponentActivity() {
                             )
                         }
 
-                        // Touch Visualization route
-                        composable("touchviz") {
-                            TouchVisualization(
-                                engine = touchVisualizationEngine,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
-                        // View Borders route
-                        composable("viewborders") {
-                            ViewBorders(
-                                activity = this@ViewerActivity,
-                                engine = viewBordersEngine,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
                         // Location Simulator route
                         composable("location") {
                             LocationSimulator(
@@ -527,22 +500,6 @@ class ViewerActivity : ComponentActivity() {
                                     onNavigateToHistory = { showHistory = true },
                                 )
                             }
-                        }
-
-                        // Grid Overlay route
-                        composable("gridoverlay") {
-                            GridOverlayControl(
-                                activity = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
-                        // Measurement Tool route
-                        composable("measurement") {
-                            MeasurementTool(
-                                activity = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
                         }
 
                         // Secure Storage Viewer route
@@ -659,8 +616,6 @@ class ViewerActivity : ComponentActivity() {
         // lifecycle via Koin singleton scope. User controls monitoring via explicit start/stop.
         // We only clear references to THIS activity to allow garbage collection.
         performanceOverlayEngine.clearActivityReferences()
-        toolOverlayEngine.clearActivityReferences()
-        viewBordersEngine.detachFromActivity() // Detach keeps enabled state, just clears activity reference
 
         super.onDestroy()
     }

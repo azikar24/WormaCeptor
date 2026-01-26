@@ -85,7 +85,6 @@ object WormaCeptorColors {
         val Performance = Color(0xFFF59E0B) // Amber
         val Network = Color(0xFF10B981) // Emerald
         val Simulation = Color(0xFF8B5CF6) // Purple
-        val VisualDebug = Color(0xFFEC4899) // Pink
         val Core = Color(0xFF3B82F6) // Blue
         val Favorites = Color(0xFFF59E0B) // Amber (same as Performance)
         val Fallback = Color(0xFF6B7280) // Gray

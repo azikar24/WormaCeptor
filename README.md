@@ -63,10 +63,6 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 
 ### UI Debugging Tools
 - **View Hierarchy Inspector**: Navigate and inspect view trees
-- **View Borders**: Highlight view boundaries with customizable borders
-- **Grid Overlay**: Configurable alignment grid (8dp, 16dp, 24dp)
-- **Measurement Tool**: Measure distances and view dimensions in dp/px
-- **Touch Visualization**: Display touch points with ripple effects
 - **Compose Render Tracker**: Track recomposition counts
 
 ### System Inspection
@@ -229,7 +225,7 @@ Some features require additional permissions:
 
 | Permission | Features |
 |------------|----------|
-| `SYSTEM_ALERT_WINDOW` | Performance Overlay, View Borders, Grid Overlay, Touch Visualization, Measurement |
+| `SYSTEM_ALERT_WINDOW` | Performance Overlay |
 | `READ_EXTERNAL_STORAGE` | File Browser |
 | `QUERY_ALL_PACKAGES` | Loaded Libraries |
 

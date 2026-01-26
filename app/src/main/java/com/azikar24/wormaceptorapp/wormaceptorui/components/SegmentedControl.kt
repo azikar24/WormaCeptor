@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.collections.immutable.ImmutableList
 
 private val SegmentedControlHeight = 40.dp
 private val SegmentedControlCornerRadius = 8.dp
@@ -54,14 +53,14 @@ private val SelectedBackgroundDark = Color(0xFF1F1F1F)
 /**
  * A segmented control component with smooth slide animation.
  *
- * @param segments Immutable list of segment labels to display
+ * @param segments List of segment labels to display
  * @param selectedIndex Currently selected segment index (0-based)
  * @param onSelectedChange Callback invoked when selection changes
  * @param modifier Modifier to apply to the control
  */
 @Composable
 fun SegmentedControl(
-    segments: ImmutableList<String>,
+    segments: List<String>,
     selectedIndex: Int,
     onSelectedChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -121,7 +120,8 @@ fun SegmentedControl(
                 .fillMaxSize()
                 .padding(SegmentedControlPadding),
         ) {
-            segments.forEachIndexed { index, label ->
+            for (index in segments.indices) {
+                val label = segments[index]
                 SegmentButton(
                     label = label,
                     isSelected = index == selectedIndex,

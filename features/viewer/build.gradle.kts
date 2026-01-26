@@ -40,8 +40,6 @@ dependencies {
     implementation(project(":features:websocket"))
     implementation(project(":features:cookies"))
     implementation(project(":features:cpu"))
-    implementation(project(":features:touchvisualization"))
-    implementation(project(":features:viewborders"))
     implementation(project(":features:location"))
     implementation(project(":features:pushsimulator"))
     // Phase 5 features
@@ -50,8 +48,6 @@ dependencies {
     implementation(project(":features:threadviolation"))
     implementation(project(":features:webviewmonitor"))
     implementation(project(":features:crypto"))
-    implementation(project(":features:gridoverlay"))
-    implementation(project(":features:measurement"))
     implementation(project(":features:securestorage"))
     implementation(project(":features:composerender"))
     implementation(project(":features:ratelimit"))

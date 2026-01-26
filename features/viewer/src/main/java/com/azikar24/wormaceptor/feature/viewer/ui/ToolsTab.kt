@@ -42,7 +42,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -95,7 +94,6 @@ private object CategoryHelper {
         "performance" -> WormaCeptorColors.CategoryColors.Performance
         "network" -> WormaCeptorColors.CategoryColors.Network
         "simulation" -> WormaCeptorColors.CategoryColors.Simulation
-        "visual debug" -> WormaCeptorColors.CategoryColors.VisualDebug
         "core" -> WormaCeptorColors.CategoryColors.Core
         "favorites" -> WormaCeptorColors.CategoryColors.Favorites
         else -> WormaCeptorColors.CategoryColors.Fallback
@@ -106,7 +104,6 @@ private object CategoryHelper {
         "performance" -> Icons.Default.Speed
         "network" -> Icons.Default.Cable
         "simulation" -> Icons.Default.LocationOn
-        "visual debug" -> Icons.Default.Visibility
         "core" -> Icons.Default.Code
         else -> Icons.Default.BugReport
     }

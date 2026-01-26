@@ -35,12 +35,6 @@ enum class Feature {
     PUSH_TOKEN_MANAGER,
     CRYPTO_TOOL,
 
-    // Visual Debug
-    TOUCH_VISUALIZATION,
-    VIEW_BORDERS,
-    GRID_OVERLAY,
-    MEASUREMENT_TOOL,
-
     // Core (always shown in overflow menu, also available in Tools tab)
     CONSOLE_LOGS,
     DEVICE_INFO,

@@ -70,35 +70,6 @@ Create rules to block, mock, delay, or modify requests/responses.
 
 ---
 
-## Visual Debugging
-
-### Touch Visualization
-Display touch points with ripple effects.
-- [ ] Navigate to Tools > Touch Visualization
-- [ ] Enable touch visualization
-- [ ] Tap screen in various places
-- [ ] Verify touch indicators appear with ripple
-
-### View Borders
-Highlight view boundaries with colored borders.
-- [ ] Navigate to Tools > View Borders
-- [ ] Enable view borders
-- [ ] Verify all views show border outlines
-
-### Grid Overlay
-Display configurable grid for layout alignment.
-- [ ] Navigate to Tools > Grid Overlay
-- [ ] Enable grid
-- [ ] Adjust grid size
-- [ ] Adjust grid opacity
-
-### Measurement Tool
-Measure distances in dp/px with angle display.
-- [ ] Navigate to Tools > Measurement
-- [ ] Draw line between two elements
-- [ ] Verify distance is shown in dp and px
-- [ ] Verify angle is displayed
-
 ### View Hierarchy Inspector
 Navigate and inspect view tree.
 - [ ] Navigate to Tools > View Hierarchy

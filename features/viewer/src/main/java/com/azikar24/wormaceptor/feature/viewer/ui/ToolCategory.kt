@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
-import androidx.compose.material.icons.filled.BorderStyle
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.Cookie
@@ -10,7 +9,6 @@ import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.GridOn
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Language
@@ -25,9 +23,7 @@ import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.azikar24.wormaceptor.api.Feature
@@ -89,13 +85,6 @@ object ToolCategories {
         ToolItem(Feature.CRYPTO_TOOL, "Crypto Tool", Icons.Default.Lock, "crypto"),
     )
 
-    val visualDebugTools = listOf(
-        ToolItem(Feature.TOUCH_VISUALIZATION, "Touch Visualization", Icons.Default.TouchApp, "touchviz"),
-        ToolItem(Feature.VIEW_BORDERS, "View Borders", Icons.Default.BorderStyle, "viewborders"),
-        ToolItem(Feature.GRID_OVERLAY, "Grid Overlay", Icons.Default.GridOn, "gridoverlay"),
-        ToolItem(Feature.MEASUREMENT_TOOL, "Measurement Tool", Icons.Default.Straighten, "measurement"),
-    )
-
     val coreTools = listOf(
         ToolItem(Feature.CONSOLE_LOGS, "Console Logs", Icons.Default.Terminal, "logs"),
         ToolItem(Feature.DEVICE_INFO, "Device Info", Icons.Default.Info, "deviceinfo"),
@@ -106,7 +95,6 @@ object ToolCategories {
         ToolCategory("Performance", performanceTools),
         ToolCategory("Network", networkTools),
         ToolCategory("Simulation", simulationTools),
-        ToolCategory("Visual Debug", visualDebugTools),
         ToolCategory("Core", coreTools),
     )
 

@@ -10,35 +10,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,16 +44,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptorapp.wormaceptorui.components.SegmentedControl
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import kotlinx.coroutines.launch
 import java.io.File
-
-private const val TAB_CROSSFADE_DURATION_MS = 200
 
 class MainActivity : ComponentActivity() {
 
@@ -100,6 +91,7 @@ class MainActivity : ComponentActivity() {
         WormaCeptorApi.startActivityOnShake(this)
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -107,9 +99,8 @@ class MainActivity : ComponentActivity() {
         var showCrashDialog by remember { mutableStateOf(false) }
         var isGlitchEffectActive by remember { mutableStateOf(false) }
         var glitchProgress by remember { mutableFloatStateOf(0f) }
-        var selectedTab by remember { mutableIntStateOf(0) }
-
-        val tabSegments = listOf("Showcase", "Test Tools")
+        var showTestToolsSheet by remember { mutableStateOf(false) }
+        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
         LaunchedEffect(isGlitchEffectActive) {
             if (isGlitchEffectActive) {
@@ -140,94 +131,83 @@ class MainActivity : ComponentActivity() {
                     snackbarHost = { SnackbarHost(snackbarHostState) },
                     containerColor = MaterialTheme.colorScheme.background,
                 ) { _ ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
-                    ) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                    ShowcaseTab(
+                        onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
+                        onTestToolsClick = { showTestToolsSheet = true },
+                        onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
 
-                        // Segmented Control at top
-                        SegmentedControl(
-                            segments = tabSegments,
-                            selectedIndex = selectedTab,
-                            onSelectedChange = { selectedTab = it },
-                            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-                        )
-
-                        // Tab content with crossfade animation
-                        Crossfade(
-                            targetState = selectedTab,
-                            animationSpec = tween(TAB_CROSSFADE_DURATION_MS),
-                            label = "tab_crossfade",
-                            modifier = Modifier.weight(1f),
-                        ) { tabIndex ->
-                            when (tabIndex) {
-                                0 -> ShowcaseTab(
-                                    onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
-                                    onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
-                                )
-
-                                1 -> TestToolsTab(
-                                    onRunApiTests = {
-                                        viewModel.doHttpActivity(baseContext)
-                                        viewModel.doContentTypeTests()
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar("Running API tests...")
-                                        }
-                                    },
-                                    onWebSocketTest = {
-                                        viewModel.doWebSocketTest()
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar("Running WebSocket test...")
-                                        }
-                                    },
-                                    onTriggerCrash = { showCrashDialog = true },
-                                    onTriggerLeak = {
-                                        triggerMemoryLeak()
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar(
-                                                "Memory leak triggered! Rotate device to detect.",
-                                            )
-                                        }
-                                    },
-                                    onThreadViolation = {
-                                        triggerThreadViolation()
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar(
-                                                "Thread violation triggered! Check StrictMode logs.",
-                                            )
-                                        }
-                                    },
-                                    onLocationClick = {
-                                        startActivity(
-                                            Intent(this@MainActivity, LocationTestActivity::class.java),
-                                        )
-                                    },
-                                    onCookiesClick = {
-                                        startActivity(
-                                            Intent(this@MainActivity, CookiesTestActivity::class.java),
-                                        )
-                                    },
-                                    onWebViewClick = {
-                                        startActivity(
-                                            Intent(this@MainActivity, WebViewTestActivity::class.java),
-                                        )
-                                    },
-                                    onSecureStorageClick = {
-                                        startActivity(
-                                            Intent(this@MainActivity, SecureStorageTestActivity::class.java),
-                                        )
-                                    },
-                                    onComposeRenderClick = {
-                                        startActivity(
-                                            Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
-                                        )
-                                    },
+            // Test Tools Bottom Sheet
+            if (showTestToolsSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showTestToolsSheet = false },
+                    sheetState = sheetState,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ) {
+                    TestToolsTab(
+                        onRunApiTests = {
+                            viewModel.doHttpActivity(baseContext)
+                            viewModel.doContentTypeTests()
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Running API tests...")
+                            }
+                        },
+                        onWebSocketTest = {
+                            viewModel.doWebSocketTest()
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Running WebSocket test...")
+                            }
+                        },
+                        onTriggerCrash = {
+                            showTestToolsSheet = false
+                            showCrashDialog = true
+                        },
+                        onTriggerLeak = {
+                            triggerMemoryLeak()
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    "Memory leak triggered! Rotate device to detect.",
                                 )
                             }
-                        }
-                    }
+                        },
+                        onThreadViolation = {
+                            triggerThreadViolation()
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    "Thread violation triggered! Check StrictMode logs.",
+                                )
+                            }
+                        },
+                        onLocationClick = {
+                            startActivity(
+                                Intent(this@MainActivity, LocationTestActivity::class.java),
+                            )
+                        },
+                        onCookiesClick = {
+                            startActivity(
+                                Intent(this@MainActivity, CookiesTestActivity::class.java),
+                            )
+                        },
+                        onWebViewClick = {
+                            startActivity(
+                                Intent(this@MainActivity, WebViewTestActivity::class.java),
+                            )
+                        },
+                        onSecureStorageClick = {
+                            startActivity(
+                                Intent(this@MainActivity, SecureStorageTestActivity::class.java),
+                            )
+                        },
+                        onComposeRenderClick = {
+                            startActivity(
+                                Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
+                            )
+                        },
+                        modifier = Modifier.padding(bottom = 16.dp),
+                    )
                 }
             }
 

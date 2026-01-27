@@ -14,6 +14,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -56,7 +57,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         // Intentional memory leak for testing leak detection tools
         // This list holds strong references to Activity instances, preventing GC
-        @Suppress("ObjectPropertyName")
         private val _leakedActivities = mutableListOf<MainActivity>()
     }
 
@@ -72,7 +72,6 @@ class MainActivity : ComponentActivity() {
      * Intentionally performs disk I/O on the main thread.
      * Use this to test StrictMode thread violation detection.
      */
-    @Suppress("BlockingMethodInNonBlockingContext")
     fun triggerThreadViolation() {
         // Perform disk I/O on main thread - this is a StrictMode violation
         val file = File(cacheDir, "thread_violation_test.txt")
@@ -143,6 +142,7 @@ class MainActivity : ComponentActivity() {
             // Test Tools Bottom Sheet
             if (showTestToolsSheet) {
                 ModalBottomSheet(
+                    modifier = Modifier.imePadding(),
                     onDismissRequest = { showTestToolsSheet = false },
                     sheetState = sheetState,
                     containerColor = MaterialTheme.colorScheme.surface,

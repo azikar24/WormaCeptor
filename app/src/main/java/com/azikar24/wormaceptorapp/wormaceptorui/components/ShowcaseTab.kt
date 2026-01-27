@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Wifi
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -58,6 +59,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 @Composable
 fun ShowcaseTab(
     onLaunchClick: () -> Unit,
+    onTestToolsClick: () -> Unit,
     onGitHubClick: () -> Unit,
     modifier: Modifier = Modifier,
     onFeatureClick: ((ShowcaseFeature) -> Unit)? = null,
@@ -83,6 +85,11 @@ fun ShowcaseTab(
 
         // Primary CTA
         LaunchInspectorButton(onClick = onLaunchClick)
+
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+        // Secondary - Test Tools
+        TestToolsButton(onClick = onTestToolsClick)
 
         Spacer(modifier = Modifier.weight(1f))
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
@@ -212,6 +219,26 @@ private fun LaunchInspectorButton(onClick: () -> Unit) {
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.lg,
                 vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
+        )
+    }
+}
+
+@Composable
+private fun TestToolsButton(onClick: () -> Unit) {
+    OutlinedButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+        ),
+    ) {
+        Text(
+            text = "Test Tools",
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            modifier = Modifier.padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.md,
             ),
         )
     }

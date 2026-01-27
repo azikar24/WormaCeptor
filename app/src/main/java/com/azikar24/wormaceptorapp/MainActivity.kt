@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.azikar24.wormaceptor.api.WormaCeptorApi
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
@@ -142,7 +144,7 @@ class MainActivity : ComponentActivity() {
             // Test Tools Bottom Sheet
             if (showTestToolsSheet) {
                 ModalBottomSheet(
-                    modifier = Modifier.imePadding(),
+                    modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxxl),
                     onDismissRequest = { showTestToolsSheet = false },
                     sheetState = sheetState,
                     containerColor = MaterialTheme.colorScheme.surface,

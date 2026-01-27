@@ -14,10 +14,8 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
@@ -27,8 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -49,8 +45,10 @@ import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
+import com.azikar24.wormaceptorapp.wormaceptorui.components.ToolStatus
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -60,6 +58,10 @@ class MainActivity : ComponentActivity() {
         // Intentional memory leak for testing leak detection tools
         // This list holds strong references to Activity instances, preventing GC
         private val _leakedActivities = mutableListOf<MainActivity>()
+
+        // Inline status feedback durations
+        private const val STATUS_RUNNING_DURATION = 800L
+        private const val STATUS_DONE_DURATION = 1500L
     }
 
     /**
@@ -95,13 +97,18 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
-        val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         var showCrashDialog by remember { mutableStateOf(false) }
         var isGlitchEffectActive by remember { mutableStateOf(false) }
         var glitchProgress by remember { mutableFloatStateOf(0f) }
         var showTestToolsSheet by remember { mutableStateOf(false) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+        // Tool status states for inline feedback
+        var apiTestStatus by remember { mutableStateOf(ToolStatus.Idle) }
+        var webSocketStatus by remember { mutableStateOf(ToolStatus.Idle) }
+        var leakStatus by remember { mutableStateOf(ToolStatus.Idle) }
+        var threadViolationStatus by remember { mutableStateOf(ToolStatus.Idle) }
 
         LaunchedEffect(isGlitchEffectActive) {
             if (isGlitchEffectActive) {
@@ -129,7 +136,6 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
             ) {
                 Scaffold(
-                    snackbarHost = { SnackbarHost(snackbarHostState) },
                     containerColor = MaterialTheme.colorScheme.background,
                 ) { _ ->
                     ShowcaseTab(
@@ -154,13 +160,21 @@ class MainActivity : ComponentActivity() {
                             viewModel.doHttpActivity(baseContext)
                             viewModel.doContentTypeTests()
                             scope.launch {
-                                snackbarHostState.showSnackbar("Running API tests...")
+                                apiTestStatus = ToolStatus.Running
+                                delay(STATUS_RUNNING_DURATION)
+                                apiTestStatus = ToolStatus.Done
+                                delay(STATUS_DONE_DURATION)
+                                apiTestStatus = ToolStatus.Idle
                             }
                         },
                         onWebSocketTest = {
                             viewModel.doWebSocketTest()
                             scope.launch {
-                                snackbarHostState.showSnackbar("Running WebSocket test...")
+                                webSocketStatus = ToolStatus.Running
+                                delay(STATUS_RUNNING_DURATION)
+                                webSocketStatus = ToolStatus.Done
+                                delay(STATUS_DONE_DURATION)
+                                webSocketStatus = ToolStatus.Idle
                             }
                         },
                         onTriggerCrash = {
@@ -170,17 +184,17 @@ class MainActivity : ComponentActivity() {
                         onTriggerLeak = {
                             triggerMemoryLeak()
                             scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    "Memory leak triggered! Rotate device to detect.",
-                                )
+                                leakStatus = ToolStatus.Done
+                                delay(STATUS_DONE_DURATION)
+                                leakStatus = ToolStatus.Idle
                             }
                         },
                         onThreadViolation = {
                             triggerThreadViolation()
                             scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    "Thread violation triggered! Check StrictMode logs.",
-                                )
+                                threadViolationStatus = ToolStatus.Done
+                                delay(STATUS_DONE_DURATION)
+                                threadViolationStatus = ToolStatus.Idle
                             }
                         },
                         onLocationClick = {
@@ -200,15 +214,25 @@ class MainActivity : ComponentActivity() {
                         },
                         onSecureStorageClick = {
                             startActivity(
-                                Intent(this@MainActivity, SecureStorageTestActivity::class.java),
+                                Intent(
+                                    this@MainActivity,
+                                    SecureStorageTestActivity::class.java,
+                                ),
                             )
                         },
                         onComposeRenderClick = {
                             startActivity(
-                                Intent(this@MainActivity, ComposeRenderTestActivity::class.java),
+                                Intent(
+                                    this@MainActivity,
+                                    ComposeRenderTestActivity::class.java,
+                                ),
                             )
                         },
                         modifier = Modifier.padding(bottom = 16.dp),
+                        apiTestStatus = apiTestStatus,
+                        webSocketStatus = webSocketStatus,
+                        leakStatus = leakStatus,
+                        threadViolationStatus = threadViolationStatus,
                     )
                 }
             }

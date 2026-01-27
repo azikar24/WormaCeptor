@@ -6,6 +6,7 @@ package com.azikar24.wormaceptor.feature.location
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.azikar24.wormaceptor.feature.location.data.LocationDataSource
 import com.azikar24.wormaceptor.feature.location.data.LocationRepositoryImpl
 import com.azikar24.wormaceptor.feature.location.ui.LocationScreen
 import com.azikar24.wormaceptor.feature.location.vm.LocationViewModel
+import org.osmdroid.util.GeoPoint
 
 /**
  * Entry point for the Location Simulation feature.
@@ -94,6 +96,20 @@ fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigat
     val isLoading by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val successMessage by viewModel.successMessage.collectAsState()
+    val realDeviceLocation by viewModel.realDeviceLocation.collectAsState()
+
+    // Start/stop real location updates based on composable lifecycle
+    DisposableEffect(Unit) {
+        viewModel.startRealLocationUpdates()
+        onDispose {
+            viewModel.stopRealLocationUpdates()
+        }
+    }
+
+    // Convert real device location to GeoPoint for the map
+    val realGeoPoint = realDeviceLocation?.let {
+        GeoPoint(it.latitude, it.longitude)
+    }
 
     LocationScreen(
         latitudeInput = latitudeInput,
@@ -107,6 +123,7 @@ fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigat
         isLoading = isLoading,
         errorMessage = errorMessage,
         successMessage = successMessage,
+        realDeviceLocation = realGeoPoint,
         onLatitudeChanged = viewModel::onLatitudeChanged,
         onLongitudeChanged = viewModel::onLongitudeChanged,
         onSearchQueryChanged = viewModel::onSearchQueryChanged,
@@ -118,6 +135,9 @@ fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigat
         onSavePreset = viewModel::saveCurrentAsPreset,
         onClearError = viewModel::clearError,
         onClearSuccessMessage = viewModel::clearSuccessMessage,
+        onMapTap = { geoPoint ->
+            viewModel.setMockLocationFromCoordinates(geoPoint.latitude, geoPoint.longitude)
+        },
         onBack = onNavigateBack,
         modifier = modifier,
     )

@@ -82,4 +82,10 @@ dependencies {
 
     // Security crypto for EncryptedSharedPreferences testing
     debugImplementation(libs.androidx.security.crypto)
+
+    // Preferences for osmdroid configuration
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // osmdroid for location map
+    debugImplementation(libs.osmdroid.android)
 }

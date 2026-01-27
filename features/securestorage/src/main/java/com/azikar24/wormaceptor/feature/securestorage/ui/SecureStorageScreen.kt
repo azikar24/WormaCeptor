@@ -25,8 +25,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DataObject
 import androidx.compose.material.icons.filled.EnhancedEncryption
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
@@ -90,6 +92,9 @@ fun SecureStorageScreen(
     selectedType: StorageType?,
     searchQuery: String,
     selectedEntry: SecureStorageEntry?,
+    keystoreAccessible: Boolean,
+    encryptedPrefsAccessible: Boolean,
+    lastRefreshTime: Long?,
     onTypeSelected: (StorageType?) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
     onEntrySelected: (SecureStorageEntry) -> Unit,
@@ -171,9 +176,12 @@ fun SecureStorageScreen(
                 placeholder = "Search keys and values...",
             )
 
-            // Summary cards
+            // Summary cards with integrated status
             SummarySection(
                 summary = summary,
+                keystoreAccessible = keystoreAccessible,
+                encryptedPrefsAccessible = encryptedPrefsAccessible,
+                lastRefreshTime = lastRefreshTime,
                 colors = colors,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -259,37 +267,58 @@ fun SecureStorageScreen(
 @Composable
 private fun SummarySection(
     summary: SecureStorageSummary,
+    keystoreAccessible: Boolean,
+    encryptedPrefsAccessible: Boolean,
+    lastRefreshTime: Long?,
     colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Column(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        SummaryCard(
-            count = summary.encryptedPrefsCount,
-            label = "Prefs",
-            icon = Icons.Default.EnhancedEncryption,
-            color = colors.encryptedPrefs,
-            colors = colors,
-            modifier = Modifier.weight(1f),
-        )
-        SummaryCard(
-            count = summary.keystoreAliasCount,
-            label = "KeyStore",
-            icon = Icons.Default.Key,
-            color = colors.keystore,
-            colors = colors,
-            modifier = Modifier.weight(1f),
-        )
-        SummaryCard(
-            count = summary.dataStoreFileCount,
-            label = "DataStore",
-            icon = Icons.Default.DataObject,
-            color = colors.datastore,
-            colors = colors,
-            modifier = Modifier.weight(1f),
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        ) {
+            SummaryCard(
+                count = summary.encryptedPrefsCount,
+                label = "Prefs",
+                icon = Icons.Default.EnhancedEncryption,
+                color = colors.encryptedPrefs,
+                isAccessible = encryptedPrefsAccessible,
+                colors = colors,
+                modifier = Modifier.weight(1f),
+            )
+            SummaryCard(
+                count = summary.keystoreAliasCount,
+                label = "KeyStore",
+                icon = Icons.Default.Key,
+                color = colors.keystore,
+                isAccessible = keystoreAccessible,
+                colors = colors,
+                modifier = Modifier.weight(1f),
+            )
+            SummaryCard(
+                count = summary.dataStoreFileCount,
+                label = "DataStore",
+                icon = Icons.Default.DataObject,
+                color = colors.datastore,
+                isAccessible = true, // DataStore is always accessible if files exist
+                colors = colors,
+                modifier = Modifier.weight(1f),
+            )
+        }
+
+        // Last refresh time
+        lastRefreshTime?.let { time ->
+            Text(
+                text = "Last scanned: ${formatTimestamp(time)}",
+                style = MaterialTheme.typography.labelSmall,
+                color = colors.labelSecondary,
+                modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
+            )
+        }
     }
 }
 
@@ -299,6 +328,7 @@ private fun SummaryCard(
     label: String,
     icon: ImageVector,
     color: Color,
+    isAccessible: Boolean,
     colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
@@ -315,12 +345,24 @@ private fun SummaryCard(
                 .padding(WormaCeptorDesignSystem.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = color,
-                modifier = Modifier.size(20.dp),
-            )
+            // Icon with status indicator
+            Box {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(20.dp),
+                )
+                // Small status dot in corner
+                Icon(
+                    imageVector = if (isAccessible) Icons.Default.CheckCircle else Icons.Default.Error,
+                    contentDescription = if (isAccessible) "Accessible" else "Not accessible",
+                    tint = if (isAccessible) colors.encrypted else colors.unencrypted,
+                    modifier = Modifier
+                        .size(10.dp)
+                        .align(Alignment.TopEnd),
+                )
+            }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
                 text = count.toString(),

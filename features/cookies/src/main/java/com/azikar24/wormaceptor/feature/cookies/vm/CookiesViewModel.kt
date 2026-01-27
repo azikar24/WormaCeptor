@@ -10,10 +10,13 @@ import com.azikar24.wormaceptor.domain.contracts.CookiesRepository
 import com.azikar24.wormaceptor.domain.entities.CookieDomain
 import com.azikar24.wormaceptor.domain.entities.CookieInfo
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,12 +24,31 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+/**
+ * Represents a change to a cookie.
+ */
+enum class CookieChangeType {
+    ADDED,
+    MODIFIED,
+    REMOVED,
+}
+
+/**
+ * Tracks a cookie change with timestamp.
+ */
+data class CookieChange(
+    val type: CookieChangeType,
+    val cookieKey: String, // domain:name
+    val timestamp: Long,
+)
 
 /**
  * ViewModel for the Cookies Manager feature.
@@ -36,6 +58,28 @@ import kotlinx.coroutines.launch
 class CookiesViewModel(
     private val repository: CookiesRepository,
 ) : ViewModel() {
+
+    // Change tracking - maps cookie key (domain:name) to change info
+    private val _cookieChanges = MutableStateFlow<ImmutableMap<String, CookieChange>>(persistentMapOf())
+    val cookieChanges: StateFlow<ImmutableMap<String, CookieChange>> = _cookieChanges.asStateFlow()
+
+    // Change counts for UI summary banner
+    val newCookiesCount: StateFlow<Int> = _cookieChanges
+        .map { changes ->
+            val thirtySecondsAgo = System.currentTimeMillis() - 30_000
+            changes.values.count { it.type == CookieChangeType.ADDED && it.timestamp > thirtySecondsAgo }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val modifiedCookiesCount: StateFlow<Int> = _cookieChanges
+        .map { changes ->
+            val thirtySecondsAgo = System.currentTimeMillis() - 30_000
+            changes.values.count { it.type == CookieChangeType.MODIFIED && it.timestamp > thirtySecondsAgo }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    // Store previous cookie state for change detection
+    private var previousCookies: Map<String, String> = emptyMap() // key -> value
 
     // Search query for filtering cookies
     private val _searchQuery = MutableStateFlow("")
@@ -58,6 +102,9 @@ class CookiesViewModel(
         repository.getAllCookies(),
         _searchQuery.debounce(150),
     ) { cookies, query ->
+        // Detect changes
+        detectCookieChanges(cookies)
+
         val filteredCookies = if (query.isBlank()) {
             cookies
         } else {
@@ -168,5 +215,70 @@ class CookiesViewModel(
                 _isLoading.value = false
             }
         }
+    }
+
+    /**
+     * Gets the change type for a specific cookie.
+     *
+     * @param domain Cookie domain
+     * @param name Cookie name
+     * @return The change type, or null if no recent change
+     */
+    fun getChangeType(domain: String, name: String): CookieChangeType? {
+        val key = "$domain:$name"
+        val change = _cookieChanges.value[key] ?: return null
+
+        // Only show changes from the last 30 seconds
+        val thirtySecondsAgo = System.currentTimeMillis() - 30_000
+        return if (change.timestamp > thirtySecondsAgo) change.type else null
+    }
+
+    /**
+     * Clears all tracked changes.
+     */
+    fun clearChanges() {
+        _cookieChanges.value = persistentMapOf()
+    }
+
+    private fun detectCookieChanges(currentCookies: List<CookieInfo>) {
+        val currentMap = currentCookies.associate { "${it.domain}:${it.name}" to it.value }
+        val now = System.currentTimeMillis()
+        val changes = mutableMapOf<String, CookieChange>()
+
+        // Copy existing changes that are still recent (within 30 seconds)
+        val thirtySecondsAgo = now - 30_000
+        _cookieChanges.value.forEach { (key, change) ->
+            if (change.timestamp > thirtySecondsAgo) {
+                changes[key] = change
+            }
+        }
+
+        // Detect new and modified cookies
+        currentMap.forEach { (key, value) ->
+            val previousValue = previousCookies[key]
+            when {
+                previousValue == null -> {
+                    // New cookie (only if we had previous state)
+                    if (previousCookies.isNotEmpty()) {
+                        changes[key] = CookieChange(CookieChangeType.ADDED, key, now)
+                    }
+                }
+                previousValue != value -> {
+                    // Modified cookie
+                    changes[key] = CookieChange(CookieChangeType.MODIFIED, key, now)
+                }
+            }
+        }
+
+        // Detect removed cookies
+        previousCookies.keys.forEach { key ->
+            if (key !in currentMap) {
+                changes[key] = CookieChange(CookieChangeType.REMOVED, key, now)
+            }
+        }
+
+        // Update state
+        previousCookies = currentMap
+        _cookieChanges.value = changes.toImmutableMap()
     }
 }

@@ -44,6 +44,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     // Coroutines support for Play Services Tasks
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    // OpenStreetMap for map visualization
+    implementation(libs.osmdroid.android)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

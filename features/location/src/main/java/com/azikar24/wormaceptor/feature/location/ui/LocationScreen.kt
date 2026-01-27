@@ -8,8 +8,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,7 +39,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
@@ -83,8 +88,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
+import com.azikar24.wormaceptor.feature.location.ui.components.LocationMapCard
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
+import org.osmdroid.util.GeoPoint
 
 /**
  * Main screen for the Location Simulation feature.
@@ -103,6 +110,7 @@ fun LocationScreen(
     isLoading: Boolean,
     errorMessage: String?,
     successMessage: String?,
+    realDeviceLocation: GeoPoint?,
     onLatitudeChanged: (String) -> Unit,
     onLongitudeChanged: (String) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
@@ -114,6 +122,7 @@ fun LocationScreen(
     onSavePreset: (String) -> Unit,
     onClearError: () -> Unit,
     onClearSuccessMessage: () -> Unit,
+    onMapTap: (GeoPoint) -> Unit,
     onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -135,6 +144,8 @@ fun LocationScreen(
             onClearSuccessMessage()
         }
     }
+
+    var isMapExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -209,6 +220,20 @@ fun LocationScreen(
                             if (isMockEnabled) onClearMockLocation() else onSetMockLocation()
                         },
                         isEnabled = isMockLocationAvailable && (isMockEnabled || isInputValid),
+                    )
+                }
+
+                // Collapsible map visualization
+                item {
+                    CollapsibleMapSection(
+                        isExpanded = isMapExpanded,
+                        onToggle = { isMapExpanded = !isMapExpanded },
+                        realLocation = realDeviceLocation,
+                        mockLocation = currentMockLocation?.let {
+                            GeoPoint(it.latitude, it.longitude)
+                        },
+                        isMockActive = isMockEnabled,
+                        onMapTap = onMapTap,
                     )
                 }
 
@@ -716,6 +741,103 @@ private fun PresetItem(
                     modifier = Modifier.size(18.dp),
                     tint = MaterialTheme.colorScheme.error,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CollapsibleMapSection(
+    isExpanded: Boolean,
+    onToggle: () -> Unit,
+    realLocation: GeoPoint?,
+    mockLocation: GeoPoint?,
+    isMockActive: Boolean,
+    onMapTap: (GeoPoint) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+        border = androidx.compose.foundation.BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.regular,
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+        ),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            // Toggle header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onToggle)
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Map,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Text(
+                        text = "Map Preview",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    if (isMockActive) {
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = LocationColors.enabled.copy(alpha = 0.15f),
+                        ) {
+                            Text(
+                                text = "LIVE",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = LocationColors.enabled,
+                            )
+                        }
+                    }
+                }
+
+                Icon(
+                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            // Collapsible map content
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = WormaCeptorDesignSystem.Spacing.lg,
+                            end = WormaCeptorDesignSystem.Spacing.lg,
+                            bottom = WormaCeptorDesignSystem.Spacing.lg,
+                        ),
+                ) {
+                    LocationMapCard(
+                        realLocation = realLocation,
+                        mockLocation = mockLocation,
+                        isMockActive = isMockActive,
+                        onMapTap = onMapTap,
+                    )
+                }
             }
         }
     }

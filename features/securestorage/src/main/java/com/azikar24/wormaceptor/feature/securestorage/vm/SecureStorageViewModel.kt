@@ -48,6 +48,11 @@ class SecureStorageViewModel(
     // Error state
     val error: StateFlow<String?> = engine.error
 
+    // Accessibility status
+    val keystoreAccessible: StateFlow<Boolean> = engine.keystoreAccessible
+    val encryptedPrefsAccessible: StateFlow<Boolean> = engine.encryptedPrefsAccessible
+    val lastRefreshTime: StateFlow<Long?> = engine.lastRefreshTime
+
     // Summary
     val summary: StateFlow<SecureStorageSummary> = engine.summary
         .stateIn(

@@ -80,6 +80,9 @@ fun SecureStorageViewer(context: Context, modifier: Modifier = Modifier, onNavig
     val selectedType by viewModel.selectedType.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedEntry by viewModel.selectedEntry.collectAsState()
+    val keystoreAccessible by viewModel.keystoreAccessible.collectAsState()
+    val encryptedPrefsAccessible by viewModel.encryptedPrefsAccessible.collectAsState()
+    val lastRefreshTime by viewModel.lastRefreshTime.collectAsState()
 
     SecureStorageScreen(
         entries = entries,
@@ -89,6 +92,9 @@ fun SecureStorageViewer(context: Context, modifier: Modifier = Modifier, onNavig
         selectedType = selectedType,
         searchQuery = searchQuery,
         selectedEntry = selectedEntry,
+        keystoreAccessible = keystoreAccessible,
+        encryptedPrefsAccessible = encryptedPrefsAccessible,
+        lastRefreshTime = lastRefreshTime,
         onTypeSelected = viewModel::setSelectedType,
         onSearchQueryChanged = viewModel::setSearchQuery,
         onEntrySelected = viewModel::selectEntry,

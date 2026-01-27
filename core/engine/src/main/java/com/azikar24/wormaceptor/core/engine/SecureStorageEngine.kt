@@ -50,6 +50,16 @@ class SecureStorageEngine(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    // Accessibility status
+    private val _keystoreAccessible = MutableStateFlow(false)
+    val keystoreAccessible: StateFlow<Boolean> = _keystoreAccessible.asStateFlow()
+
+    private val _encryptedPrefsAccessible = MutableStateFlow(false)
+    val encryptedPrefsAccessible: StateFlow<Boolean> = _encryptedPrefsAccessible.asStateFlow()
+
+    private val _lastRefreshTime = MutableStateFlow<Long?>(null)
+    val lastRefreshTime: StateFlow<Long?> = _lastRefreshTime.asStateFlow()
+
     init {
         refresh()
     }
@@ -66,12 +76,14 @@ class SecureStorageEngine(
                 val allEntries = mutableListOf<SecureStorageEntry>()
 
                 // Scan EncryptedSharedPreferences
-                val encryptedPrefsEntries = scanEncryptedSharedPreferences()
-                allEntries.addAll(encryptedPrefsEntries)
+                val encryptedPrefsResult = runCatching { scanEncryptedSharedPreferences() }
+                _encryptedPrefsAccessible.value = encryptedPrefsResult.isSuccess
+                encryptedPrefsResult.getOrNull()?.let { allEntries.addAll(it) }
 
                 // Scan KeyStore
-                val keystoreEntries = scanKeyStore()
-                allEntries.addAll(keystoreEntries)
+                val keystoreResult = runCatching { scanKeyStore() }
+                _keystoreAccessible.value = keystoreResult.isSuccess
+                keystoreResult.getOrNull()?.let { allEntries.addAll(it) }
 
                 // Scan DataStore
                 val dataStoreEntries = scanDataStore()
@@ -79,10 +91,11 @@ class SecureStorageEngine(
 
                 _entries.value = allEntries.sortedBy { it.key.lowercase() }
                 _summary.value = SecureStorageSummary(
-                    encryptedPrefsCount = encryptedPrefsEntries.size,
-                    keystoreAliasCount = keystoreEntries.size,
+                    encryptedPrefsCount = encryptedPrefsResult.getOrNull()?.size ?: 0,
+                    keystoreAliasCount = keystoreResult.getOrNull()?.size ?: 0,
                     dataStoreFileCount = dataStoreEntries.size,
                 )
+                _lastRefreshTime.value = System.currentTimeMillis()
             } catch (e: Exception) {
                 _error.value = "Failed to scan secure storage: ${e.message}"
             } finally {

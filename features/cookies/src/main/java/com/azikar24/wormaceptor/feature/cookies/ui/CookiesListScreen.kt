@@ -31,10 +31,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.FiberNew
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.UnfoldLess
@@ -88,6 +90,8 @@ fun CookiesListScreen(
     searchQuery: String,
     totalCookieCount: Int,
     totalDomainCount: Int,
+    newCookiesCount: Int,
+    modifiedCookiesCount: Int,
     onSearchQueryChanged: (String) -> Unit,
     onToggleDomain: (String) -> Unit,
     onExpandAll: () -> Unit,
@@ -95,6 +99,7 @@ fun CookiesListScreen(
     onCookieClick: (CookieInfo) -> Unit,
     onDeleteDomain: (String) -> Unit,
     onClearAll: () -> Unit,
+    onClearChanges: () -> Unit,
     onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -190,6 +195,19 @@ fun CookiesListScreen(
                 .fillMaxSize()
                 .padding(padding),
         ) {
+            // Changes summary banner (dismissible)
+            AnimatedVisibility(
+                visible = newCookiesCount > 0 || modifiedCookiesCount > 0,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
+                ChangesSummaryBanner(
+                    newCount = newCookiesCount,
+                    modifiedCount = modifiedCookiesCount,
+                    onDismiss = onClearChanges,
+                )
+            }
+
             // Search bar
             OutlinedTextField(
                 value = searchQuery,
@@ -534,6 +552,68 @@ private fun AttributeBadge(text: String, color: androidx.compose.ui.graphics.Col
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
             )
+        }
+    }
+}
+
+@Composable
+private fun ChangesSummaryBanner(
+    newCount: Int,
+    modifiedCount: Int,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.md,
+                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            ),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+        color = CookiesDesignSystem.CookieColors.domain.copy(alpha = 0.1f),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = WormaCeptorDesignSystem.Spacing.md,
+                    end = WormaCeptorDesignSystem.Spacing.xs,
+                    top = WormaCeptorDesignSystem.Spacing.sm,
+                    bottom = WormaCeptorDesignSystem.Spacing.sm,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = Icons.Default.FiberNew,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = CookiesDesignSystem.CookieColors.domain,
+            )
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+            Text(
+                text = buildString {
+                    val parts = mutableListOf<String>()
+                    if (newCount > 0) parts.add("$newCount new")
+                    if (modifiedCount > 0) parts.add("$modifiedCount modified")
+                    append(parts.joinToString(", "))
+                    append(" since last view")
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(
+                onClick = onDismiss,
+                modifier = Modifier.size(32.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Dismiss",
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }

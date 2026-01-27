@@ -97,6 +97,8 @@ private fun CookiesNavHost(
     val selectedCookie by viewModel.selectedCookie.collectAsState()
     val totalCookieCount by viewModel.totalCookieCount.collectAsState()
     val totalDomainCount by viewModel.totalDomainCount.collectAsState()
+    val newCookiesCount by viewModel.newCookiesCount.collectAsState()
+    val modifiedCookiesCount by viewModel.modifiedCookiesCount.collectAsState()
 
     NavHost(
         navController = navController,
@@ -134,6 +136,8 @@ private fun CookiesNavHost(
                 searchQuery = searchQuery,
                 totalCookieCount = totalCookieCount,
                 totalDomainCount = totalDomainCount,
+                newCookiesCount = newCookiesCount,
+                modifiedCookiesCount = modifiedCookiesCount,
                 onSearchQueryChanged = viewModel::onSearchQueryChanged,
                 onToggleDomain = viewModel::toggleDomainExpanded,
                 onExpandAll = viewModel::expandAllDomains,
@@ -144,6 +148,7 @@ private fun CookiesNavHost(
                 },
                 onDeleteDomain = viewModel::deleteAllCookiesForDomain,
                 onClearAll = viewModel::clearAllCookies,
+                onClearChanges = viewModel::clearChanges,
                 onBack = onNavigateBack,
             )
         }

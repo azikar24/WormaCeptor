@@ -6,6 +6,8 @@ package com.azikar24.wormaceptor.feature.location.vm
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
+import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
@@ -13,6 +15,9 @@ import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -43,6 +48,13 @@ class LocationViewModel(
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
+
+    // Real device location tracking
+    private val _realDeviceLocation = MutableStateFlow<Location?>(null)
+    val realDeviceLocation: StateFlow<Location?> = _realDeviceLocation.asStateFlow()
+
+    private var locationCallback: LocationCallback? = null
+    private var isTrackingLocation = false
 
     // Coordinate input fields
     private val _latitudeInput = MutableStateFlow("")
@@ -288,5 +300,67 @@ class LocationViewModel(
      */
     fun clearSuccessMessage() {
         _successMessage.value = null
+    }
+
+    /**
+     * Starts continuous real location updates for map display.
+     * Call this when the map becomes visible.
+     */
+    @SuppressLint("MissingPermission")
+    fun startRealLocationUpdates() {
+        if (isTrackingLocation) return
+        isTrackingLocation = true
+
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY,
+            5000L, // Update every 5 seconds
+        ).setMinUpdateIntervalMillis(2000L)
+            .build()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(result: LocationResult) {
+                result.lastLocation?.let { location ->
+                    _realDeviceLocation.value = location
+                }
+            }
+        }
+
+        try {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback!!,
+                Looper.getMainLooper(),
+            )
+        } catch (e: SecurityException) {
+            _errorMessage.value = "Location permission not granted"
+            isTrackingLocation = false
+        }
+    }
+
+    /**
+     * Stops continuous real location updates.
+     * Call this when the map is no longer visible.
+     */
+    fun stopRealLocationUpdates() {
+        if (!isTrackingLocation) return
+        isTrackingLocation = false
+
+        locationCallback?.let {
+            fusedLocationClient.removeLocationUpdates(it)
+        }
+        locationCallback = null
+    }
+
+    /**
+     * Updates the mock location from map tap coordinates.
+     */
+    fun setMockLocationFromCoordinates(latitude: Double, longitude: Double) {
+        _latitudeInput.value = "%.6f".format(latitude)
+        _longitudeInput.value = "%.6f".format(longitude)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopRealLocationUpdates()
     }
 }

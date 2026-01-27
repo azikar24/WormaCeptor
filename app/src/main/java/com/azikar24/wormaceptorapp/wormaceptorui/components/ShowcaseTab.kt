@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -83,13 +84,23 @@ fun ShowcaseTab(
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
 
-        // Primary CTA
-        LaunchInspectorButton(onClick = onLaunchClick)
+        // Action Buttons (same width)
+        Column(
+            modifier = Modifier.width(IntrinsicSize.Max),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            LaunchInspectorButton(
+                onClick = onLaunchClick,
+                modifier = Modifier.fillMaxWidth(),
+            )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
-        // Secondary - Test Tools
-        TestToolsButton(onClick = onTestToolsClick)
+            TestToolsButton(
+                onClick = onTestToolsClick,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
@@ -195,7 +206,7 @@ private fun FeatureItem(feature: ShowcaseFeature, onClick: (() -> Unit)?) {
 }
 
 @Composable
-private fun LaunchInspectorButton(onClick: () -> Unit) {
+private fun LaunchInspectorButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -205,7 +216,7 @@ private fun LaunchInspectorButton(onClick: () -> Unit) {
 
     Button(
         onClick = onClick,
-        modifier = Modifier.scale(scale),
+        modifier = modifier.scale(scale),
         interactionSource = interactionSource,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
         colors = ButtonDefaults.buttonColors(
@@ -225,9 +236,10 @@ private fun LaunchInspectorButton(onClick: () -> Unit) {
 }
 
 @Composable
-private fun TestToolsButton(onClick: () -> Unit) {
+private fun TestToolsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     OutlinedButton(
         onClick = onClick,
+        modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),

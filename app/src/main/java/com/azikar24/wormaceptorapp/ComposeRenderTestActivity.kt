@@ -19,25 +19,33 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,12 +59,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.engine.ComposeRenderEngine
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
+import com.azikar24.wormaceptor.domain.entities.ComposeRenderInfo
+import com.azikar24.wormaceptor.domain.entities.ComposeRenderStats
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
+
+private val PurpleAccent = Color(0xFF9C27B0)
 
 /**
  * Test activity for the Compose Render Tracker feature.
- * Provides test composables that trigger recompositions.
+ * Provides test composables that trigger recompositions with inline tracking stats.
  */
 class ComposeRenderTestActivity : ComponentActivity() {
 
@@ -65,12 +76,17 @@ class ComposeRenderTestActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Start tracking
-        ComposeRenderEngine.getInstance().startTracking()
+        // Start tracking with fresh data
+        ComposeRenderEngine.getInstance().apply {
+            clearStats()
+            startTracking()
+        }
 
         setContent {
             WormaCeptorMainTheme {
-                var showTracker by remember { mutableStateOf(false) }
+                val engine = remember { ComposeRenderEngine.getInstance() }
+                val stats by engine.stats.collectAsState()
+                val composables by engine.composables.collectAsState()
 
                 Scaffold(
                     topBar = {
@@ -83,12 +99,21 @@ class ComposeRenderTestActivity : ComponentActivity() {
                                     Icon(
                                         imageVector = Icons.Default.Speed,
                                         contentDescription = null,
-                                        tint = Color(0xFF9C27B0),
+                                        tint = PurpleAccent,
                                     )
-                                    Text(
-                                        text = if (showTracker) "Compose Tracker" else "Compose Test",
-                                        fontWeight = FontWeight.SemiBold,
-                                    )
+                                    Column {
+                                        Text(
+                                            text = "Compose Render Test",
+                                            fontWeight = FontWeight.SemiBold,
+                                        )
+                                        if (stats.totalRecompositions > 0) {
+                                            Text(
+                                                text = "${stats.totalRecompositions} recomposition${if (stats.totalRecompositions != 1) "s" else ""}",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = PurpleAccent,
+                                            )
+                                        }
+                                    }
                                 }
                             },
                             navigationIcon = {
@@ -97,10 +122,11 @@ class ComposeRenderTestActivity : ComponentActivity() {
                                 }
                             },
                             actions = {
-                                OutlinedButton(
-                                    onClick = { showTracker = !showTracker },
+                                IconButton(
+                                    onClick = { engine.clearStats() },
+                                    enabled = stats.totalRecompositions > 0,
                                 ) {
-                                    Text(if (showTracker) "Test UI" else "Tracker")
+                                    Icon(Icons.Default.Clear, "Clear stats")
                                 }
                             },
                             colors = TopAppBarDefaults.topAppBarColors(
@@ -109,20 +135,14 @@ class ComposeRenderTestActivity : ComponentActivity() {
                         )
                     },
                 ) { padding ->
-                    if (showTracker) {
-                        ComposeRenderTracker(
-                            onNavigateBack = { showTracker = false },
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(padding),
-                        )
-                    } else {
-                        RecompositionTestContent(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(padding),
-                        )
-                    }
+                    RecompositionTestContent(
+                        engine = engine,
+                        stats = stats,
+                        composables = composables,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                    )
                 }
             }
         }
@@ -138,23 +158,28 @@ class ComposeRenderTestActivity : ComponentActivity() {
  * Test content with various composables that trigger recompositions.
  */
 @Composable
-private fun RecompositionTestContent(modifier: Modifier = Modifier) {
-    val engine = remember { ComposeRenderEngine.getInstance() }
-
+private fun RecompositionTestContent(
+    engine: ComposeRenderEngine,
+    stats: ComposeRenderStats,
+    composables: List<ComposeRenderInfo>,
+    modifier: Modifier = Modifier,
+) {
     var counter by remember { mutableIntStateOf(0) }
     var isAnimating by remember { mutableStateOf(false) }
 
     Column(
-        modifier = modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(WormaCeptorDesignSystem.Spacing.lg),
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         Text(
-            text = "Trigger recompositions to see them tracked",
+            text = "Trigger recompositions to see them tracked below",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         // Counter section - triggers recomposition
         engine.trackRecomposition("CounterSection")
@@ -162,81 +187,117 @@ private fun RecompositionTestContent(modifier: Modifier = Modifier) {
             count = counter,
             onIncrement = { counter++ },
             onDecrement = { counter-- },
+            recomposeCount = composables.find { it.composableName == "CounterSection.Content" }?.recomposeCount ?: 0,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         // Animation section - triggers many recompositions
         engine.trackRecomposition("AnimationSection")
         AnimationSection(
             isAnimating = isAnimating,
             onToggle = { isAnimating = !isAnimating },
+            recomposeCount = composables.find { it.composableName == "AnimationSection.Content" }?.recomposeCount ?: 0,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         // Color section - triggers recomposition on color change
         engine.trackRecomposition("ColorSection")
-        ColorSection(count = counter)
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-        // Info text
-        Text(
-            text = "Tap 'Tracker' in the top right to see tracked recompositions",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-        )
-    }
-}
-
-@Composable
-private fun CounterSection(count: Int, onIncrement: () -> Unit, onDecrement: () -> Unit) {
-    val engine = remember { ComposeRenderEngine.getInstance() }
-    engine.trackRecomposition("CounterSection.Content", listOf("count=$count"))
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant,
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
-    ) {
-        Text(
-            text = "Counter",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+        ColorSection(
+            count = counter,
+            recomposeCount = composables.find { it.composableName == "ColorSection.Content" }?.recomposeCount ?: 0,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconButton(onClick = onDecrement) {
-                Icon(Icons.Default.Remove, "Decrement")
-            }
+        // Stats summary card
+        TrackingStatsCard(stats = stats)
 
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+        // Composable tracking details
+        if (composables.isNotEmpty()) {
             Text(
-                text = count.toString(),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                text = "Tracked Composables",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
-            IconButton(onClick = onIncrement) {
-                Icon(Icons.Default.Add, "Increment")
+            composables.forEach { info ->
+                ComposableInfoRow(info = info)
             }
         }
     }
 }
 
 @Composable
-private fun AnimationSection(isAnimating: Boolean, onToggle: () -> Unit) {
+private fun CounterSection(
+    count: Int,
+    onIncrement: () -> Unit,
+    onDecrement: () -> Unit,
+    recomposeCount: Int,
+) {
+    val engine = remember { ComposeRenderEngine.getInstance() }
+    engine.trackRecomposition("CounterSection.Content", listOf("count=$count"))
+
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                )
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            Text(
+                text = "Counter",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IconButton(onClick = onDecrement) {
+                    Icon(Icons.Default.Remove, "Decrement")
+                }
+
+                Text(
+                    text = count.toString(),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+
+                IconButton(onClick = onIncrement) {
+                    Icon(Icons.Default.Add, "Increment")
+                }
+            }
+        }
+
+        // Recomposition badge
+        RecompositionBadge(
+            count = recomposeCount,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = 8.dp, y = (-8).dp),
+        )
+    }
+}
+
+@Composable
+private fun AnimationSection(
+    isAnimating: Boolean,
+    onToggle: () -> Unit,
+    recomposeCount: Int,
+) {
     val engine = remember { ComposeRenderEngine.getInstance() }
     engine.trackRecomposition("AnimationSection.Content", listOf("isAnimating=$isAnimating"))
 
@@ -245,47 +306,57 @@ private fun AnimationSection(isAnimating: Boolean, onToggle: () -> Unit) {
         label = "scale",
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant,
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
-    ) {
-        Text(
-            text = "Animation",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                )
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .scale(scale)
-                    .background(
-                        MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                    ),
+            Text(
+                text = "Animation",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
             )
 
-            Button(onClick = onToggle) {
-                Text(if (isAnimating) "Stop" else "Animate")
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .scale(scale)
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                        ),
+                )
+
+                Button(onClick = onToggle) {
+                    Text(if (isAnimating) "Stop" else "Animate")
+                }
             }
         }
+
+        // Recomposition badge
+        RecompositionBadge(
+            count = recomposeCount,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = 8.dp, y = (-8).dp),
+        )
     }
 }
 
 @Composable
-private fun ColorSection(count: Int) {
+private fun ColorSection(count: Int, recomposeCount: Int) {
     val engine = remember { ComposeRenderEngine.getInstance() }
     engine.trackRecomposition("ColorSection.Content", listOf("count=$count"))
 
@@ -301,51 +372,228 @@ private fun ColorSection(count: Int) {
     val targetColor = colors[count.mod(colors.size)]
     val animatedColor by animateColorAsState(targetColor, label = "color")
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant,
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant,
+                    RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                )
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            Text(
+                text = "Color Change",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
             )
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            Text(
+                text = "Change counter to see color animate",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
+                colors.forEachIndexed { index, color ->
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .background(
+                                if (index == count.mod(colors.size)) {
+                                    animatedColor
+                                } else {
+                                    color.copy(alpha = 0.3f)
+                                },
+                                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                            ),
+                    )
+                }
+            }
+        }
+
+        // Recomposition badge
+        RecompositionBadge(
+            count = recomposeCount,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = 8.dp, y = (-8).dp),
+        )
+    }
+}
+
+@Composable
+private fun RecompositionBadge(count: Int, modifier: Modifier = Modifier) {
+    if (count > 0) {
+        Surface(
+            modifier = modifier.size(28.dp),
+            shape = CircleShape,
+            color = PurpleAccent,
+            shadowElevation = 2.dp,
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Text(
+                    text = if (count > 99) "99+" else count.toString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TrackingStatsCard(stats: ComposeRenderStats, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = PurpleAccent.copy(alpha = 0.1f),
+        ),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+        ) {
+            Text(
+                text = "Tracking Summary",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                StatItem(
+                    label = "Composables",
+                    value = stats.totalComposables.toString(),
+                )
+                StatItem(
+                    label = "Recompositions",
+                    value = stats.totalRecompositions.toString(),
+                )
+                StatItem(
+                    label = "Avg Ratio",
+                    value = "%.1f".format(stats.averageRecomposeRatio),
+                )
+            }
+
+            if (stats.mostRecomposed != null) {
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                Text(
+                    text = "Most recomposed: ${stats.mostRecomposed}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatItem(label: String, value: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Color Change",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = PurpleAccent,
         )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
         Text(
-            text = "Change counter to see color animate",
-            style = MaterialTheme.typography.bodySmall,
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
+@Composable
+private fun ComposableInfoRow(info: ComposeRenderInfo, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WormaCeptorDesignSystem.Spacing.md),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            colors.forEachIndexed { index, color ->
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(40.dp)
-                        .background(
-                            if (index == count.mod(colors.size)) {
-                                animatedColor
-                            } else {
-                                color.copy(
-                                    alpha = 0.3f,
-                                )
-                            },
-                            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                        ),
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = info.composableName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
+                if (info.parameters.isNotEmpty()) {
+                    Text(
+                        text = info.parameters.joinToString(", "),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = "${info.recomposeCount}",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = PurpleAccent,
+                    )
+                    Text(
+                        text = "recomps",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                if (info.averageRenderTimeNs > 0) {
+                    Column(horizontalAlignment = Alignment.End) {
+                        Text(
+                            text = "%.2f".format(info.averageRenderTimeNs / 1_000_000.0),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Text(
+                            text = "ms avg",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
             }
         }
     }

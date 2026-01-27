@@ -4,6 +4,11 @@
 
 package com.azikar24.wormaceptorapp.wormaceptorui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Cookie
 import androidx.compose.material.icons.outlined.Language
@@ -30,6 +36,7 @@ import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,6 +51,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+
+/**
+ * Status for tool list items that show feedback.
+ */
+enum class ToolStatus {
+    Idle,
+    Running,
+    Done,
+}
 
 /**
  * Test Tools tab content for the demo app.
@@ -67,6 +83,10 @@ fun TestToolsTab(
     onSecureStorageClick: () -> Unit,
     onComposeRenderClick: () -> Unit,
     modifier: Modifier = Modifier,
+    apiTestStatus: ToolStatus = ToolStatus.Idle,
+    webSocketStatus: ToolStatus = ToolStatus.Idle,
+    leakStatus: ToolStatus = ToolStatus.Idle,
+    threadViolationStatus: ToolStatus = ToolStatus.Idle,
 ) {
     Column(
         modifier = modifier
@@ -82,12 +102,14 @@ fun TestToolsTab(
             icon = Icons.Outlined.PlayArrow,
             label = "Run API Tests",
             onClick = onRunApiTests,
+            status = apiTestStatus,
         )
 
         ToolListItem(
             icon = Icons.Outlined.Sync,
             label = "WebSocket Test",
             onClick = onWebSocketTest,
+            status = webSocketStatus,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
@@ -107,6 +129,7 @@ fun TestToolsTab(
             label = "Trigger Memory Leak",
             onClick = onTriggerLeak,
             isDestructive = true,
+            status = leakStatus,
         )
 
         ToolListItem(
@@ -114,6 +137,7 @@ fun TestToolsTab(
             label = "Thread Violation",
             onClick = onThreadViolation,
             isDestructive = true,
+            status = threadViolationStatus,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
@@ -188,6 +212,7 @@ private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
  * @param onClick Action when tapped
  * @param isDestructive If true, uses error color for text
  * @param showChevron If true, shows a chevron arrow indicating navigation
+ * @param status The current status to show inline feedback
  */
 @Composable
 private fun ToolListItem(
@@ -197,6 +222,7 @@ private fun ToolListItem(
     modifier: Modifier = Modifier,
     isDestructive: Boolean = false,
     showChevron: Boolean = false,
+    status: ToolStatus = ToolStatus.Idle,
 ) {
     val textColor = if (isDestructive) {
         MaterialTheme.colorScheme.error
@@ -243,14 +269,42 @@ private fun ToolListItem(
             modifier = Modifier.weight(1f),
         )
 
-        // Optional chevron
-        if (showChevron) {
-            Icon(
-                imageVector = Icons.Outlined.ChevronRight,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            )
+        // Status indicator or chevron
+        AnimatedContent(
+            targetState = status,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(150)) togetherWith fadeOut(animationSpec = tween(150))
+            },
+            label = "status",
+        ) { currentStatus ->
+            when {
+                currentStatus == ToolStatus.Running -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                currentStatus == ToolStatus.Done -> {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "Done",
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                showChevron -> {
+                    Icon(
+                        imageVector = Icons.Outlined.ChevronRight,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    )
+                }
+                else -> {
+                    Spacer(modifier = Modifier.size(20.dp))
+                }
+            }
         }
     }
 }

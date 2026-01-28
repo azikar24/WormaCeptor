@@ -26,11 +26,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
@@ -127,9 +125,6 @@ fun HomeScreen(
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
-    // Tools navigation - quick access in overflow menu
-    onNavigateToLogs: () -> Unit = {},
-    onNavigateToDeviceInfo: () -> Unit = {},
     // Generic tool navigation for Tools tab
     onToolNavigate: (String) -> Unit = {},
     // Snackbar message flow from ViewModel
@@ -277,82 +272,60 @@ fun HomeScreen(
                                 }
                             }
 
-                            // Overflow Menu
-                            IconButton(onClick = { showOverflowMenu = true }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = "More options",
-                                )
-                            }
-
-                            DropdownMenu(
-                                expanded = showOverflowMenu,
-                                onDismissRequest = { showOverflowMenu = false },
-                                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
-                            ) {
-                                when (pagerState.currentPage) {
-                                    0 -> {
-                                        // Transactions tab menu
-                                        DropdownMenuItem(
-                                            text = { Text("Export Transactions") },
-                                            leadingIcon = { Icon(Icons.Default.Share, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                scope.launch { onExportTransactions() }
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Clear All Transactions") },
-                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                showClearTransactionsDialog = true
-                                            },
-                                        )
-                                    }
-                                    1 -> {
-                                        // Crashes tab menu
-                                        DropdownMenuItem(
-                                            text = { Text("Export Crashes") },
-                                            leadingIcon = { Icon(Icons.Default.Share, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                scope.launch { onExportCrashes() }
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text("Clear All Crashes") },
-                                            leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                            onClick = {
-                                                showOverflowMenu = false
-                                                showClearCrashesDialog = true
-                                            },
-                                        )
-                                    }
-                                    // No menu items for Tools tab
+                            // Overflow Menu - only show on Transactions and Crashes tabs
+                            if (pagerState.currentPage < 2) {
+                                IconButton(onClick = { showOverflowMenu = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = "More options",
+                                    )
                                 }
-                                // Quick access tools - only shown when NOT on Tools tab
-                                val toolsTabIndex = if (showToolsTab) 2 else -1
-                                if (pagerState.currentPage != toolsTabIndex) {
-                                    androidx.compose.material3.HorizontalDivider(
-                                        modifier = Modifier.padding(vertical = 4.dp),
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Console Logs") },
-                                        leadingIcon = { Icon(Icons.Default.Terminal, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToLogs()
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Device Info") },
-                                        leadingIcon = { Icon(Icons.Default.Info, null) },
-                                        onClick = {
-                                            showOverflowMenu = false
-                                            onNavigateToDeviceInfo()
-                                        },
-                                    )
+
+                                DropdownMenu(
+                                    expanded = showOverflowMenu,
+                                    onDismissRequest = { showOverflowMenu = false },
+                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+                                ) {
+                                    when (pagerState.currentPage) {
+                                        0 -> {
+                                            // Transactions tab menu
+                                            DropdownMenuItem(
+                                                text = { Text("Export Transactions") },
+                                                leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    scope.launch { onExportTransactions() }
+                                                },
+                                            )
+                                            DropdownMenuItem(
+                                                text = { Text("Clear All Transactions") },
+                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    showClearTransactionsDialog = true
+                                                },
+                                            )
+                                        }
+                                        1 -> {
+                                            // Crashes tab menu
+                                            DropdownMenuItem(
+                                                text = { Text("Export Crashes") },
+                                                leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    scope.launch { onExportCrashes() }
+                                                },
+                                            )
+                                            DropdownMenuItem(
+                                                text = { Text("Clear All Crashes") },
+                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                onClick = {
+                                                    showOverflowMenu = false
+                                                    showClearCrashesDialog = true
+                                                },
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         },

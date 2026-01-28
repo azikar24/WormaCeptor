@@ -61,6 +61,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -75,7 +77,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import android.view.HapticFeedbackConstants
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -88,6 +92,7 @@ import com.azikar24.wormaceptor.domain.entities.OsDetails
 import com.azikar24.wormaceptor.domain.entities.ScreenDetails
 import com.azikar24.wormaceptor.domain.entities.StorageDetails
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -134,19 +139,39 @@ private object DeviceInfoDesignSystem {
 @Composable
 fun DeviceInfoScreen(onBack: () -> Unit) {
     val context = LocalContext.current
+    val view = LocalView.current
     val scope = rememberCoroutineScope()
     var deviceInfo by remember { mutableStateOf<DeviceInfo?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
-    var refreshKey by remember { mutableStateOf(0) }
+    var isInitialLoading by remember { mutableStateOf(true) }
+    var isRefreshing by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
+    val pullToRefreshState = rememberPullToRefreshState()
+    var hasTriggeredHaptic by remember { mutableStateOf(false) }
 
-    // Collect device info
-    LaunchedEffect(refreshKey) {
-        isLoading = true
+    // Initial load
+    LaunchedEffect(Unit) {
+        isInitialLoading = true
         deviceInfo = withContext(Dispatchers.IO) {
             GetDeviceInfoUseCase(context).execute()
         }
-        isLoading = false
+        isInitialLoading = false
+    }
+
+    // Trigger haptic feedback when pull threshold is reached
+    LaunchedEffect(pullToRefreshState.distanceFraction) {
+        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            hasTriggeredHaptic = true
+        } else if (pullToRefreshState.distanceFraction < 1f) {
+            hasTriggeredHaptic = false
+        }
+    }
+
+    // Reset haptic state when refreshing ends
+    LaunchedEffect(isRefreshing) {
+        if (!isRefreshing) {
+            hasTriggeredHaptic = false
+        }
     }
 
     Scaffold(
@@ -184,27 +209,50 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
             )
         },
     ) { padding ->
-        PullToRefreshBox(
-            isRefreshing = isLoading,
-            onRefresh = { refreshKey++ },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-        ) {
-            if (isLoading && deviceInfo == null) {
-                // Initial loading state - show centered spinner
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else {
+        val scrollState = rememberScrollState()
+
+        if (isInitialLoading && deviceInfo == null) {
+            // Initial loading state - show centered spinner
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    isRefreshing = true
+                    scope.launch {
+                        delay(200)
+                        deviceInfo = withContext(Dispatchers.IO) {
+                            GetDeviceInfoUseCase(context).execute()
+                        }
+                        isRefreshing = false
+                    }
+                },
+                state = pullToRefreshState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                indicator = {
+                    Indicator(
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        isRefreshing = isRefreshing,
+                        state = pullToRefreshState,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                },
+            ) {
                 deviceInfo?.let { info ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
+                            .verticalScroll(scrollState)
                             .padding(DeviceInfoDesignSystem.Spacing.lg),
                         verticalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.lg),
                     ) {

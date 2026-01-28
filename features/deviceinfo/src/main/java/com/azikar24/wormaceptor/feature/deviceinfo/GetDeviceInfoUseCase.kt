@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.feature.deviceinfo
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -243,6 +244,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
         )
     }
 
+    @SuppressLint("MissingPermission")
     private fun getNetworkDetails(): NetworkDetails {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

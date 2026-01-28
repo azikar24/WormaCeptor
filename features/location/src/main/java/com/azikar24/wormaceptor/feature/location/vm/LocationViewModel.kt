@@ -80,7 +80,8 @@ class LocationViewModel(
     val successMessage: StateFlow<String?> = _successMessage.asStateFlow()
 
     // Mock location availability
-    val isMockLocationAvailable: StateFlow<Boolean> = MutableStateFlow(engine.isMockLocationAvailable())
+    private val _isMockLocationAvailable = MutableStateFlow(engine.isMockLocationAvailable())
+    val isMockLocationAvailable: StateFlow<Boolean> = _isMockLocationAvailable.asStateFlow()
 
     // Current mock location state
     val currentMockLocation: StateFlow<MockLocation?> = repository.getCurrentMockLocation()
@@ -300,6 +301,14 @@ class LocationViewModel(
      */
     fun clearSuccessMessage() {
         _successMessage.value = null
+    }
+
+    /**
+     * Refreshes the mock location availability state.
+     * Call this when returning from settings to check if mock locations were enabled.
+     */
+    fun refreshMockLocationAvailability() {
+        _isMockLocationAvailable.value = engine.isMockLocationAvailable()
     }
 
     /**

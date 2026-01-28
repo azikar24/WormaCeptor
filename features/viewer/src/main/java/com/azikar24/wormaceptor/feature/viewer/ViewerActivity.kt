@@ -263,9 +263,6 @@ class ViewerActivity : ComponentActivity() {
                                     scope.launch { viewModel.deleteTransaction(transaction.id) }
                                 },
                                 onCopyAsCurl = { transaction -> copyAsCurl(transaction, viewModel) },
-                                // Quick access navigation in overflow menu
-                                onNavigateToLogs = { navController.navigate("logs") },
-                                onNavigateToDeviceInfo = { navController.navigate("deviceinfo") },
                                 // Generic tool navigation for Tools tab
                                 onToolNavigate = { route -> navController.navigate(route) },
                                 // Snackbar message flow

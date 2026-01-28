@@ -11,6 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -98,10 +101,24 @@ fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigat
     val successMessage by viewModel.successMessage.collectAsState()
     val realDeviceLocation by viewModel.realDeviceLocation.collectAsState()
 
-    // Start/stop real location updates based on composable lifecycle
-    DisposableEffect(Unit) {
-        viewModel.startRealLocationUpdates()
+    // Observe lifecycle to refresh mock location availability and manage location updates
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> {
+                    viewModel.refreshMockLocationAvailability()
+                    viewModel.startRealLocationUpdates()
+                }
+                Lifecycle.Event.ON_PAUSE -> {
+                    viewModel.stopRealLocationUpdates()
+                }
+                else -> {}
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
             viewModel.stopRealLocationUpdates()
         }
     }

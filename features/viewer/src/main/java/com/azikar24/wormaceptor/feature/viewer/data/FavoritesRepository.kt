@@ -123,7 +123,7 @@ class FavoritesRepository private constructor(context: Context) {
         private const val KEY_FAVORITES = "favorite_tools"
 
         /** Maximum number of favorite tools allowed */
-        const val MAX_FAVORITES = 8
+        const val MAX_FAVORITES = 80 // TODO Revert
 
         /** Default favorites for new users */
         val DEFAULT_FAVORITES: Set<Feature> = setOf(

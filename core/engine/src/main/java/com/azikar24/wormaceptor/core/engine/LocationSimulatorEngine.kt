@@ -12,9 +12,16 @@ import android.location.provider.ProviderProperties
 import android.os.Build
 import android.os.SystemClock
 import com.azikar24.wormaceptor.domain.entities.MockLocation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 /**
  * Engine that manages mock location simulation using Android's mock location provider API.
@@ -26,12 +33,18 @@ import kotlinx.coroutines.flow.asStateFlow
  *
  * This engine sets mock locations for both GPS_PROVIDER and NETWORK_PROVIDER
  * to ensure consistent behavior across apps using different location providers.
+ *
+ * The engine continuously pushes the mock location at regular intervals to prevent
+ * Android from resetting to real location.
  */
 class LocationSimulatorEngine(private val context: Context) {
 
     private val locationManager: LocationManager by lazy {
         context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private var updateJob: Job? = null
 
     private val _currentMockLocation = MutableStateFlow<MockLocation?>(null)
     val currentMockLocation: StateFlow<MockLocation?> = _currentMockLocation.asStateFlow()
@@ -46,11 +59,13 @@ class LocationSimulatorEngine(private val context: Context) {
 
     /**
      * Sets a mock location for both GPS and Network providers.
+     * Starts continuous location updates to maintain the mock.
      *
      * @param mockLocation The mock location to set
      * @return true if successful, false if mock locations are not enabled or permission denied
      */
     @SuppressLint("MissingPermission")
+    @Synchronized
     fun setLocation(mockLocation: MockLocation): Boolean {
         if (!mockLocation.isValid()) {
             _lastError.value = "Invalid location coordinates"
@@ -63,24 +78,28 @@ class LocationSimulatorEngine(private val context: Context) {
                 addTestProviders()
             }
 
-            // Create Android Location from MockLocation
-            val gpsLocation = createAndroidLocation(mockLocation, LocationManager.GPS_PROVIDER)
-            val networkLocation = createAndroidLocation(mockLocation, LocationManager.NETWORK_PROVIDER)
-
-            // Set mock location for GPS provider
-            locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, gpsLocation)
-
-            // Set mock location for Network provider
-            locationManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, networkLocation)
+            // Push the location once immediately
+            pushLocation(mockLocation)
 
             _currentMockLocation.value = mockLocation
             _isEnabled.value = true
             _lastError.value = null
+
+            // Start continuous updates
+            startContinuousUpdates()
+
             true
         } catch (e: SecurityException) {
+            // Reset state if we failed
+            stopContinuousUpdates()
+            isProviderAdded = false
+            _isEnabled.value = false
             _lastError.value = "Mock locations not enabled. Enable in Developer Options and select this app as mock location app."
             false
         } catch (e: IllegalArgumentException) {
+            // Try to recover by re-adding providers
+            stopContinuousUpdates()
+            isProviderAdded = false
             _lastError.value = "Failed to set mock location: ${e.message}"
             false
         } catch (e: Exception) {
@@ -90,25 +109,85 @@ class LocationSimulatorEngine(private val context: Context) {
     }
 
     /**
+     * Pushes the location to both providers without managing state.
+     */
+    @SuppressLint("MissingPermission")
+    private fun pushLocation(mockLocation: MockLocation) {
+        // Create Android Location from MockLocation with fresh timestamps
+        val gpsLocation = createAndroidLocation(mockLocation, LocationManager.GPS_PROVIDER)
+        val networkLocation = createAndroidLocation(mockLocation, LocationManager.NETWORK_PROVIDER)
+
+        // Set mock location for GPS provider
+        locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, gpsLocation)
+
+        // Set mock location for Network provider
+        locationManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, networkLocation)
+    }
+
+    /**
+     * Starts continuous location updates to maintain the mock location.
+     */
+    private fun startContinuousUpdates() {
+        // Cancel any existing job
+        updateJob?.cancel()
+
+        updateJob = scope.launch {
+            while (isActive && _isEnabled.value) {
+                val location = _currentMockLocation.value
+                if (location != null && isProviderAdded) {
+                    try {
+                        pushLocation(location)
+                    } catch (e: Exception) {
+                        // If pushing fails, try to recover
+                        if (e is SecurityException) {
+                            // Mock locations were disabled, stop
+                            clearMockLocation()
+                            break
+                        }
+                    }
+                }
+                // Push every 500ms to ensure stability
+                delay(LOCATION_UPDATE_INTERVAL_MS)
+            }
+        }
+    }
+
+    /**
+     * Stops continuous location updates.
+     */
+    private fun stopContinuousUpdates() {
+        updateJob?.cancel()
+        updateJob = null
+    }
+
+    /**
      * Clears the mock location and restores normal location behavior.
      */
     @SuppressLint("MissingPermission")
+    @Synchronized
     fun clearMockLocation() {
+        // Stop continuous updates first
+        stopContinuousUpdates()
+
         try {
             if (isProviderAdded) {
                 removeTestProviders()
             }
+        } catch (e: Exception) {
+            // Log but don't fail - we still want to clear the state
+        } finally {
+            // Always reset state even if provider removal fails
             _currentMockLocation.value = null
             _isEnabled.value = false
             _lastError.value = null
-        } catch (e: Exception) {
-            _lastError.value = "Failed to clear mock location: ${e.message}"
+            isProviderAdded = false
         }
     }
 
     /**
      * Toggles mock location on or off with the given location.
      */
+    @Synchronized
     fun toggle(mockLocation: MockLocation?): Boolean {
         return if (_isEnabled.value) {
             clearMockLocation()
@@ -180,36 +259,36 @@ class LocationSimulatorEngine(private val context: Context) {
     }
 
     private fun addTestProvider(provider: String) {
+        // First try to remove any existing test provider
         try {
-            locationManager.addTestProvider(
-                provider,
-                false, // requiresNetwork
-                false, // requiresSatellite
-                false, // requiresCell
-                false, // hasMonetaryCost
-                true, // supportsAltitude
-                true, // supportsSpeed
-                true, // supportsBearing
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ProviderProperties.POWER_USAGE_LOW
-                } else {
-                    @Suppress("DEPRECATION")
-                    android.location.Criteria.POWER_LOW
-                },
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ProviderProperties.ACCURACY_FINE
-                } else {
-                    @Suppress("DEPRECATION")
-                    android.location.Criteria.ACCURACY_FINE
-                },
-            )
-        } catch (e: IllegalArgumentException) {
-            // Provider might already exist, remove and re-add
-            try {
-                locationManager.removeTestProvider(provider)
-                addTestProvider(provider)
-            } catch (_: Exception) { }
+            locationManager.removeTestProvider(provider)
+        } catch (_: Exception) {
+            // Provider didn't exist, which is fine
         }
+
+        // Now add the test provider
+        locationManager.addTestProvider(
+            provider,
+            false, // requiresNetwork
+            false, // requiresSatellite
+            false, // requiresCell
+            false, // hasMonetaryCost
+            true, // supportsAltitude
+            true, // supportsSpeed
+            true, // supportsBearing
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ProviderProperties.POWER_USAGE_LOW
+            } else {
+                @Suppress("DEPRECATION")
+                android.location.Criteria.POWER_LOW
+            },
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ProviderProperties.ACCURACY_FINE
+            } else {
+                @Suppress("DEPRECATION")
+                android.location.Criteria.ACCURACY_FINE
+            },
+        )
     }
 
     @SuppressLint("MissingPermission")
@@ -235,7 +314,7 @@ class LocationSimulatorEngine(private val context: Context) {
             accuracy = mockLocation.accuracy
             speed = mockLocation.speed
             bearing = mockLocation.bearing
-            time = mockLocation.timestamp
+            time = System.currentTimeMillis()
             elapsedRealtimeNanos = SystemClock.elapsedRealtimeNanos()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -252,5 +331,6 @@ class LocationSimulatorEngine(private val context: Context) {
 
     companion object {
         private const val TEST_PROVIDER_CHECK = "wormaceptor_test_check"
+        private const val LOCATION_UPDATE_INTERVAL_MS = 500L
     }
 }

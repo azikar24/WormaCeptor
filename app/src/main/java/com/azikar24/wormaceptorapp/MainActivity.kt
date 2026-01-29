@@ -51,9 +51,9 @@ import com.azikar24.wormaceptorapp.screens.CookiesTestScreen
 import com.azikar24.wormaceptorapp.screens.LocationTestScreen
 import com.azikar24.wormaceptorapp.screens.SecureStorageTestScreen
 import com.azikar24.wormaceptorapp.screens.WebViewTestScreen
-import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ToolStatus
+import com.azikar24.wormaceptorapp.wormaceptorui.components.WelcomeScreen
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import kotlinx.coroutines.delay
@@ -152,7 +152,7 @@ class MainActivity : ComponentActivity() {
                         Scaffold(
                             containerColor = MaterialTheme.colorScheme.background,
                         ) { _ ->
-                            ShowcaseTab(
+                            WelcomeScreen(
                                 onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
                                 onTestToolsClick = { showTestToolsSheet = true },
                                 onGitHubClick = { viewModel.goToGithub(this@MainActivity) },

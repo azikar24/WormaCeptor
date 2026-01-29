@@ -6,6 +6,12 @@ package com.azikar24.wormaceptorapp.screens
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,10 +33,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.VpnKey
@@ -39,12 +45,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -61,6 +68,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -104,6 +112,7 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
     var keyStoreEntries by remember { mutableStateOf<List<KeyStoreEntry>>(emptyList()) }
     var showAddDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isFabExpanded by remember { mutableStateOf(false) }
 
     val pagerState = rememberPagerState(pageCount = { 2 })
 
@@ -252,27 +261,17 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Security,
-                            contentDescription = null,
-                            tint = SecureGreen,
+                    Column {
+                        Text(
+                            text = "Secure Storage Test",
+                            fontWeight = FontWeight.SemiBold,
                         )
-                        Column {
+                        if (totalEntries > 0) {
                             Text(
-                                text = "Secure Storage Test",
-                                fontWeight = FontWeight.SemiBold,
+                                text = "$totalEntries entr${if (totalEntries != 1) "ies" else "y"}",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = SecureGreen,
                             )
-                            if (totalEntries > 0) {
-                                Text(
-                                    text = "$totalEntries entr${if (totalEntries != 1) "ies" else "y"}",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = SecureGreen,
-                                )
-                            }
                         }
                     }
                 },
@@ -281,17 +280,23 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 },
-                actions = {
-                    IconButton(onClick = {
-                        refreshEncryptedPrefs()
-                        refreshKeyStore()
-                    }) {
-                        Icon(Icons.Default.Refresh, "Refresh")
-                    }
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
+            )
+        },
+        floatingActionButton = {
+            SpeedDialFab(
+                expanded = isFabExpanded,
+                onExpandedChange = { isFabExpanded = it },
+                onAddTestData = {
+                    setupTestData()
+                    isFabExpanded = false
+                },
+                onAddEntry = {
+                    showAddDialog = true
+                    isFabExpanded = false
+                },
             )
         },
     ) { padding ->
@@ -300,40 +305,6 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(padding),
         ) {
-            // Action buttons
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                Button(
-                    onClick = { setupTestData() },
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text("Add Test Data")
-                }
-
-                OutlinedButton(
-                    onClick = { showAddDialog = true },
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.VpnKey,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text("Add Entry")
-                }
-            }
-
             // Error message
             errorMessage?.let { error ->
                 Card(
@@ -698,6 +669,87 @@ private fun EmptyState(icon: ImageVector, title: String, subtitle: String, modif
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+        }
+    }
+}
+
+@Composable
+private fun SpeedDialFab(
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    onAddTestData: () -> Unit,
+    onAddEntry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 45f else 0f,
+        label = "fab_rotation",
+    )
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+    ) {
+        SpeedDialItem(
+            visible = expanded,
+            label = "Add Test Data",
+            icon = Icons.Default.Science,
+            onClick = onAddTestData,
+        )
+        SpeedDialItem(
+            visible = expanded,
+            label = "Add Entry",
+            icon = Icons.Default.VpnKey,
+            onClick = onAddEntry,
+        )
+        FloatingActionButton(onClick = { onExpandedChange(!expanded) }) {
+            Icon(
+                imageVector = if (expanded) Icons.Default.Close else Icons.Default.Add,
+                contentDescription = if (expanded) "Close" else "Add",
+                modifier = Modifier.rotate(rotation),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SpeedDialItem(
+    visible: Boolean,
+    label: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = scaleIn() + fadeIn(),
+        exit = scaleOut() + fadeOut(),
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        ) {
+            Surface(
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+            ) {
+                Text(
+                    text = label,
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    ),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+            SmallFloatingActionButton(
+                onClick = onClick,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ) {
+                Icon(icon, contentDescription = label)
+            }
         }
     }
 }

@@ -77,3 +77,9 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+# -------------------- Google Tink / Security Crypto --------------------
+# Missing annotations from Tink crypto library
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn javax.annotation.**
+-dontwarn com.google.crypto.tink.**

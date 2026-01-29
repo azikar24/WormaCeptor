@@ -5,45 +5,32 @@
 package com.azikar24.wormaceptor.feature.database.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 
 /**
- * Feature-specific design tokens for the Database Browser feature.
- * Common tokens (Spacing, CornerRadius, etc.) are provided by WormaCeptorDesignSystem.
+ * Database feature colors - delegates to centralized colors.
+ * @see WormaCeptorColors.Database
  */
 object DatabaseDesignSystem {
 
-    /**
-     * Colors for different data types.
-     */
     object DataTypeColors {
-        val integer = Color(0xFF4FC3F7) // Light Blue
-        val real = Color(0xFF81C784) // Light Green
-        val text = Color(0xFFFFB74D) // Orange
-        val blob = Color(0xFFBA68C8) // Purple
-        val nullValue = Color(0xFF90A4AE) // Blue Grey
-        val primaryKey = Color(0xFFFFD54F) // Amber
+        val integer = WormaCeptorColors.Database.Integer
+        val real = WormaCeptorColors.Database.Real
+        val text = WormaCeptorColors.Database.Text
+        val blob = WormaCeptorColors.Database.Blob
+        val nullValue = WormaCeptorColors.Database.NullValue
+        val primaryKey = WormaCeptorColors.Database.PrimaryKey
 
-        fun forType(type: String): Color {
-            return when (type.uppercase()) {
-                "INTEGER", "INT", "BIGINT", "SMALLINT", "TINYINT" -> integer
-                "REAL", "FLOAT", "DOUBLE", "DECIMAL", "NUMERIC" -> real
-                "TEXT", "VARCHAR", "CHAR", "CLOB" -> text
-                "BLOB", "BINARY", "VARBINARY" -> blob
-                else -> text
-            }
-        }
+        fun forType(type: String): Color = WormaCeptorColors.Database.forDataType(type)
     }
 
-    /**
-     * Syntax highlighting colors for SQL.
-     */
     object SqlSyntaxColors {
-        val keyword = Color(0xFF569CD6) // Blue
-        val string = Color(0xFFCE9178) // Orange
-        val number = Color(0xFFB5CEA8) // Green
-        val function = Color(0xFFDCDCAA) // Yellow
-        val operator = Color(0xFFD4D4D4) // Light Grey
-        val comment = Color(0xFF6A9955) // Green
-        val table = Color(0xFF4EC9B0) // Cyan
+        val keyword = WormaCeptorColors.Database.SqlKeyword
+        val string = WormaCeptorColors.Database.SqlString
+        val number = WormaCeptorColors.Database.SqlNumber
+        val function = WormaCeptorColors.Database.SqlFunction
+        val operator = WormaCeptorColors.Database.SqlOperator
+        val comment = WormaCeptorColors.Database.SqlComment
+        val table = WormaCeptorColors.Database.SqlTable
     }
 }

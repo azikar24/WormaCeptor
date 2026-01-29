@@ -1,0 +1,153 @@
+public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeature;
+	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)Lcom/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeatureKt {
+	public static final fun FileBrowser (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/data/FileSystemDataSource {
+	public static final field $stable I
+	public static final field Companion Lcom/azikar24/wormaceptor/feature/filebrowser/data/FileSystemDataSource$Companion;
+	public fun <init> (Landroid/content/Context;)V
+	public final fun deleteFile (Ljava/lang/String;)Z
+	public final fun getFileInfo (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/FileInfo;
+	public final fun getRootDirectories ()Ljava/util/List;
+	public final fun listFiles (Ljava/lang/String;)Ljava/util/List;
+	public final fun readFile (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/FileContent;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/data/FileSystemDataSource$Companion {
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/data/FileSystemRepositoryImpl : com/azikar24/wormaceptor/domain/contracts/FileSystemRepository {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/feature/filebrowser/data/FileSystemDataSource;)V
+	public fun deleteFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getFileInfo (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getRootDirectories (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun listFiles (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun readFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileBrowserScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileBrowserScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileInfoSheetKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileInfoSheetKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
+	public static field lambda-3 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-3$filebrowser_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileViewerScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileViewerScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
+	public static field lambda-3 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-3$filebrowser_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/FileBrowserScreenKt {
+	public static final fun FileBrowserScreen (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/FileInfoSheetKt {
+	public static final fun FileInfoSheet (Lcom/azikar24/wormaceptor/domain/entities/FileInfo;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/FileViewerScreenKt {
+	public static final fun FileViewerScreen (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/FileContent;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/BreadcrumbBarKt {
+	public static final fun BreadcrumbBar (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/FileListItemKt {
+	public static final fun FileListItem (Lcom/azikar24/wormaceptor/domain/entities/FileEntry;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem;
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$FileTypes {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$FileTypes;
+	public final fun getColor-WaAFU9c (Ljava/lang/String;Z)J
+	public final fun getDatabaseColor-0d7_KjU ()J
+	public final fun getDefaultColor-0d7_KjU ()J
+	public final fun getFolderColor-0d7_KjU ()J
+	public final fun getIcon (Ljava/lang/String;Z)Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getImageColor-0d7_KjU ()J
+	public final fun getTextColor-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)V
+	public final fun clearError ()V
+	public final fun closeFileViewer ()V
+	public final fun deleteFile (Ljava/lang/String;)V
+	public final fun getCurrentPath ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getError ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFileContent ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFileInfo ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFilteredFiles ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getNavigationStack ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedFile ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSortMode ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun hideFileInfo ()V
+	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun loadRootDirectories ()V
+	public final fun navigateBack ()Z
+	public final fun navigateToBreadcrumb (I)V
+	public final fun navigateToDirectory (Ljava/lang/String;)V
+	public final fun onSearchQueryChanged (Ljava/lang/String;)V
+	public final fun openFile (Ljava/lang/String;)V
+	public final fun setSortMode (Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;)V
+	public final fun showFileInfo (Ljava/lang/String;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode : java/lang/Enum {
+	public static final field DATE Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;
+	public static final field NAME Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;
+	public static final field SIZE Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;
+	public static fun values ()[Lcom/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel$SortMode;
+}
+

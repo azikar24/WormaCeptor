@@ -37,6 +37,7 @@ import javax.crypto.spec.SecretKeySpec
  * 3. Call encrypt() or decrypt() with your data
  * 4. Access results via currentResult or history
  */
+@Suppress("TooManyFunctions")
 class CryptoEngine {
 
     // Current configuration

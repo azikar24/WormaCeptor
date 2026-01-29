@@ -1,0 +1,174 @@
+public final class com/azikar24/wormaceptor/feature/database/DatabaseFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/DatabaseFeature;
+	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)Lcom/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/DatabaseFeatureKt {
+	public static final fun DatabaseBrowser (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/data/DatabaseDataSource {
+	public static final field $stable I
+	public fun <init> (Landroid/content/Context;)V
+	public final fun executeQuery (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public final fun findDatabases ()Ljava/util/List;
+	public final fun getTableSchema (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+	public final fun getTables (Ljava/lang/String;)Ljava/util/List;
+	public final fun queryTable (Ljava/lang/String;Ljava/lang/String;II)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/data/DatabaseRepositoryImpl : com/azikar24/wormaceptor/domain/contracts/DatabaseRepository {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/feature/database/data/DatabaseDataSource;)V
+	public fun executeQuery (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public fun getDatabases ()Ljava/util/List;
+	public fun getTableSchema (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+	public fun getTables (Ljava/lang/String;)Ljava/util/List;
+	public fun queryTable (Ljava/lang/String;Ljava/lang/String;II)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$DatabaseListScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$DatabaseListScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$QueryScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$QueryScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/DatabaseListScreenKt {
+	public static final fun DatabaseListScreen (Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/QueryScreenKt {
+	public static final fun QueryScreen (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;Lkotlinx/collections/immutable/ImmutableList;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/TableDataScreenKt {
+	public static final fun TableDataScreen (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;Lkotlinx/collections/immutable/ImmutableList;ZIZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/TableListScreenKt {
+	public static final fun TableListScreen (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$DataTypeColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$DataTypeColors;
+	public final fun forType-vNxB06k (Ljava/lang/String;)J
+	public final fun getBlob-0d7_KjU ()J
+	public final fun getInteger-0d7_KjU ()J
+	public final fun getNullValue-0d7_KjU ()J
+	public final fun getPrimaryKey-0d7_KjU ()J
+	public final fun getReal-0d7_KjU ()J
+	public final fun getText-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$SqlSyntaxColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$SqlSyntaxColors;
+	public final fun getComment-0d7_KjU ()J
+	public final fun getFunction-0d7_KjU ()J
+	public final fun getKeyword-0d7_KjU ()J
+	public final fun getNumber-0d7_KjU ()J
+	public final fun getOperator-0d7_KjU ()J
+	public final fun getString-0d7_KjU ()J
+	public final fun getTable-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)V
+	public final fun clearDatabaseSelection ()V
+	public final fun clearQuery ()V
+	public final fun clearTableSelection ()V
+	public final fun executeQuery ()V
+	public final fun getCurrentPage ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getDatabaseSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getDatabases ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getDatabasesError ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getQueryExecutionResult ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getQueryHistory ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getQueryResult ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedDatabaseName ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedTableName ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getShowSchema ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSqlQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTableSchema ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTableSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTables ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTablesError ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isDataLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isDatabasesLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isQueryExecuting ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isTablesLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun loadDatabases ()V
+	public final fun loadTableData ()V
+	public final fun loadTableSchema ()V
+	public final fun loadTables ()V
+	public final fun nextPage ()V
+	public final fun onDatabaseSearchQueryChanged (Ljava/lang/String;)V
+	public final fun onSqlQueryChanged (Ljava/lang/String;)V
+	public final fun onTableSearchQueryChanged (Ljava/lang/String;)V
+	public final fun previousPage ()V
+	public final fun selectDatabase (Ljava/lang/String;)V
+	public final fun selectQueryFromHistory (Ljava/lang/String;)V
+	public final fun selectTable (Ljava/lang/String;)V
+	public final fun setPrefilledQuery (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun toggleSchema ()V
+}
+

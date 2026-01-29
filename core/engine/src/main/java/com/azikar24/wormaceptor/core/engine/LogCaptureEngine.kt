@@ -4,6 +4,7 @@
 
 package com.azikar24.wormaceptor.core.engine
 
+import android.util.Log
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import kotlinx.coroutines.CoroutineScope
@@ -126,8 +127,7 @@ class LogCaptureEngine(
                 }
             }
         } catch (e: Exception) {
-            // Log capture stopped or error occurred
-            e.printStackTrace()
+            Log.w(TAG, "Log capture stopped or error occurred", e)
         } finally {
             process?.destroy()
             process = null
@@ -180,6 +180,7 @@ class LogCaptureEngine(
     }
 
     companion object {
+        private const val TAG = "LogCaptureEngine"
         const val DEFAULT_BUFFER_SIZE = 1000
     }
 }

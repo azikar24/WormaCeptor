@@ -1,0 +1,43 @@
+public final class com/azikar24/wormaceptor/feature/composerender/ComposableSingletons$ComposeRenderFeatureKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/composerender/ComposableSingletons$ComposeRenderFeatureKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function3;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$composerender_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$composerender_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$composerender_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-4$composerender_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$composerender_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/composerender/ComposeRenderFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/composerender/ComposeRenderFeature;
+	public final fun createEngine ()Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;)Lcom/azikar24/wormaceptor/feature/composerender/ComposeRenderViewModelFactory;
+	public final fun getGlobalEngine ()Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;
+}
+
+public final class com/azikar24/wormaceptor/feature/composerender/ComposeRenderFeatureKt {
+	public static final fun ComposeRenderTracker (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/composerender/ComposeRenderViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;)V
+	public final fun clearStats ()V
+	public final fun getComposables ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isTracking ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun toggleTracking ()V
+}
+
+public final class com/azikar24/wormaceptor/feature/composerender/ComposeRenderViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+

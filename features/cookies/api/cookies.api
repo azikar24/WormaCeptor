@@ -1,0 +1,179 @@
+public final class com/azikar24/wormaceptor/feature/cookies/CookiesFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cookies/CookiesFeature;
+	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/CookiesRepository;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/CookiesRepository;)Lcom/azikar24/wormaceptor/feature/cookies/CookiesViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/CookiesFeatureKt {
+	public static final fun CookiesInspector (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/CookiesViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/CookiesRepository;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/data/CookiesDataSource {
+	public static final field $stable I
+	public fun <init> (Landroid/content/Context;)V
+	public final fun clearAllCookies ()V
+	public final fun deleteAllCookiesForDomain (Ljava/lang/String;)V
+	public final fun deleteCookie (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getAllCookies ()Ljava/util/List;
+	public final fun getAllDomains ()Ljava/util/List;
+	public final fun getCookiesForDomain (Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/data/CookiesRepositoryImpl : com/azikar24/wormaceptor/domain/contracts/CookiesRepository {
+	public static final field $stable I
+	public static final field Companion Lcom/azikar24/wormaceptor/feature/cookies/data/CookiesRepositoryImpl$Companion;
+	public fun <init> (Lcom/azikar24/wormaceptor/feature/cookies/data/CookiesDataSource;)V
+	public fun clearAllCookies (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteAllCookiesForDomain (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteCookie (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAllCookies ()Lkotlinx/coroutines/flow/Flow;
+	public fun getCookiesForDomain (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun refresh (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/data/CookiesRepositoryImpl$Companion {
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/ComposableSingletons$CookieDetailScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cookies/ui/ComposableSingletons$CookieDetailScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function3;
+	public static field lambda-4 Lkotlin/jvm/functions/Function3;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$cookies_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-4$cookies_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-5$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$cookies_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/ComposableSingletons$CookiesListScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cookies/ui/ComposableSingletons$CookiesListScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-10 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function3;
+	public static field lambda-12 Lkotlin/jvm/functions/Function3;
+	public static field lambda-13 Lkotlin/jvm/functions/Function2;
+	public static field lambda-14 Lkotlin/jvm/functions/Function2;
+	public static field lambda-15 Lkotlin/jvm/functions/Function2;
+	public static field lambda-16 Lkotlin/jvm/functions/Function2;
+	public static field lambda-17 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public static field lambda-7 Lkotlin/jvm/functions/Function2;
+	public static field lambda-8 Lkotlin/jvm/functions/Function3;
+	public static field lambda-9 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-10$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$cookies_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-12$cookies_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-13$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-14$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-15$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-16$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-17$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-7$cookies_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-8$cookies_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-9$cookies_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/CookieDetailScreenKt {
+	public static final fun CookieDetailScreen (Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/CookiesListScreenKt {
+	public static final fun CookiesListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableSet;Ljava/lang/String;IIIILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/theme/CookiesDesignSystem {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cookies/ui/theme/CookiesDesignSystem;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/ui/theme/CookiesDesignSystem$CookieColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cookies/ui/theme/CookiesDesignSystem$CookieColors;
+	public final fun forExpirationStatus-vNxB06k (Ljava/lang/String;)J
+	public final fun getDomain-0d7_KjU ()J
+	public final fun getExpired-0d7_KjU ()J
+	public final fun getHttpOnly-0d7_KjU ()J
+	public final fun getSameSiteLax-0d7_KjU ()J
+	public final fun getSameSiteNone-0d7_KjU ()J
+	public final fun getSameSiteStrict-0d7_KjU ()J
+	public final fun getSecure-0d7_KjU ()J
+	public final fun getSession-0d7_KjU ()J
+	public final fun getValid-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/vm/CookieChange {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;Ljava/lang/String;J)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()J
+	public final fun copy (Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;Ljava/lang/String;J)Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChange;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChange;Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;Ljava/lang/String;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCookieKey ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType : java/lang/Enum {
+	public static final field ADDED Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public static final field MODIFIED Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public static final field REMOVED Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+}
+
+public final class com/azikar24/wormaceptor/feature/cookies/vm/CookiesViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/CookiesRepository;)V
+	public final fun clearAllCookies ()V
+	public final fun clearChanges ()V
+	public final fun clearCookieSelection ()V
+	public final fun collapseAllDomains ()V
+	public final fun deleteAllCookiesForDomain (Ljava/lang/String;)V
+	public final fun deleteCookie (Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;)V
+	public final fun expandAllDomains ()V
+	public final fun getChangeType (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/cookies/vm/CookieChangeType;
+	public final fun getCookieChanges ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getCookieDomains ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getExpandedDomains ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getModifiedCookiesCount ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getNewCookiesCount ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedCookie ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTotalCookieCount ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getTotalDomainCount ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun onSearchQueryChanged (Ljava/lang/String;)V
+	public final fun refresh ()V
+	public final fun selectCookie (Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;)V
+	public final fun toggleDomainExpanded (Ljava/lang/String;)V
+}
+

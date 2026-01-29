@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.platform.android.ShakeDetector
+
+private const val TAG = "WormaCeptorApi"
 
 object WormaCeptorApi {
 
@@ -119,14 +122,13 @@ object WormaCeptorApi {
             val serviceClass = Class.forName(
                 "com.azikar24.wormaceptor.platform.android.FloatingButtonService",
             )
-            val startMethod = serviceClass.getDeclaredMethod("start", Context::class.java)
             val companion = serviceClass.getDeclaredField("Companion").get(null)
             val companionClass = companion.javaClass
             val companionStartMethod = companionClass.getMethod("start", Context::class.java)
             companionStartMethod.invoke(companion, context)
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: ReflectiveOperationException) {
+            Log.w(TAG, "Failed to show floating button", e)
             false
         }
     }
@@ -146,8 +148,8 @@ object WormaCeptorApi {
             val companionClass = companion.javaClass
             val companionStopMethod = companionClass.getMethod("stop", Context::class.java)
             companionStopMethod.invoke(companion, context)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: ReflectiveOperationException) {
+            Log.w(TAG, "Failed to hide floating button", e)
         }
     }
 
@@ -198,8 +200,8 @@ object WormaCeptorApi {
             val showMethod = engineClass.getMethod("show", ComponentActivity::class.java.superclass)
             showMethod.invoke(engine, activity)
             true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: ReflectiveOperationException) {
+            Log.w(TAG, "Failed to show performance overlay", e)
             false
         }
     }
@@ -217,8 +219,8 @@ object WormaCeptorApi {
             val engine = getMethod.invoke(null, engineClass)
             val hideMethod = engineClass.getMethod("hide")
             hideMethod.invoke(engine)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: ReflectiveOperationException) {
+            Log.w(TAG, "Failed to hide performance overlay", e)
         }
     }
 

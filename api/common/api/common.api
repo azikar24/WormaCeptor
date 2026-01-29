@@ -1,0 +1,69 @@
+public abstract class com/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl : com/azikar24/wormaceptor/api/ServiceProvider {
+	public fun <init> ()V
+	public fun cleanup (J)V
+	public fun clearTransactions ()V
+	public fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	protected abstract fun createDependencies (Landroid/content/Context;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
+	public fun getAllTransactions ()Ljava/util/List;
+	protected final fun getCaptureEngine ()Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;
+	protected final fun getExtensionRegistry ()Lcom/azikar24/wormaceptor/core/engine/ExtensionRegistry;
+	public fun getLaunchIntent (Landroid/content/Context;)Landroid/content/Intent;
+	protected final fun getNotificationHelper ()Lcom/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper;
+	protected abstract fun getNotificationTitle ()Ljava/lang/String;
+	protected final fun getQueryEngine ()Lcom/azikar24/wormaceptor/core/engine/QueryEngine;
+	public fun getTransaction (Ljava/lang/String;)Ljava/lang/Object;
+	public fun getTransactionCount ()I
+	public fun getTransactionDetail (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/TransactionDetailDto;
+	public fun init (Landroid/content/Context;ZZ)V
+	protected final fun setCaptureEngine (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;)V
+	protected final fun setExtensionRegistry (Lcom/azikar24/wormaceptor/core/engine/ExtensionRegistry;)V
+	protected final fun setNotificationHelper (Lcom/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper;)V
+	protected final fun setQueryEngine (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;)V
+	public fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;J)Ljava/util/UUID;
+}
+
+protected final class com/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies {
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlobStorage ()Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;
+	public final fun getCrashRepository ()Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;
+	public final fun getLeakRepository ()Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;
+	public final fun getTransactionRepository ()Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/api/internal/LeakNotificationHelper {
+	public static final field Companion Lcom/azikar24/wormaceptor/api/internal/LeakNotificationHelper$Companion;
+	public fun <init> (Landroid/content/Context;)V
+	public final fun show (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
+}
+
+public final class com/azikar24/wormaceptor/api/internal/LeakNotificationHelper$Companion {
+}
+
+public final class com/azikar24/wormaceptor/api/internal/ThreadViolationNotificationHelper {
+	public static final field Companion Lcom/azikar24/wormaceptor/api/internal/ThreadViolationNotificationHelper$Companion;
+	public fun <init> (Landroid/content/Context;)V
+	public final fun show (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)V
+}
+
+public final class com/azikar24/wormaceptor/api/internal/ThreadViolationNotificationHelper$Companion {
+}
+
+public final class com/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper {
+	public static final field Companion Lcom/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper$Companion;
+	public fun <init> (Landroid/content/Context;Ljava/lang/String;)V
+	public synthetic fun <init> (Landroid/content/Context;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun show (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;)V
+}
+
+public final class com/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper$Companion {
+}
+

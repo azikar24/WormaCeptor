@@ -1,0 +1,86 @@
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageFormat : java/lang/Enum {
+	public static final field BMP Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat$Companion;
+	public static final field GIF Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field ICO Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field JPEG Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field PNG Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field SVG Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static final field WEBP Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public final fun getContentType ()Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getMimeTypes ()Ljava/util/List;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public static fun values ()[Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageFormat$Companion {
+	public final fun fromMimeType (Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public final fun getAllMimeTypes ()Ljava/util/List;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageMetadata {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata$Companion;
+	public fun <init> (IILjava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;J)V
+	public synthetic fun <init> (IILjava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Z
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()J
+	public final fun copy (IILjava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;J)Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;IILjava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBitDepth ()Ljava/lang/Integer;
+	public final fun getColorSpace ()Ljava/lang/String;
+	public final fun getDimensionsString ()Ljava/lang/String;
+	public final fun getFileSize ()J
+	public final fun getFileSizeString ()Ljava/lang/String;
+	public final fun getFormat ()Ljava/lang/String;
+	public final fun getHasAlpha ()Z
+	public final fun getHeight ()I
+	public final fun getWidth ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageMetadata$Companion {
+	public final fun unknown (J)Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageMetadataExtractor {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadataExtractor;
+	public final fun extract ([BLcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/image/ImageParser$Companion;
+	public fun <init> ()V
+	public fun canParse (Ljava/lang/String;[B)Z
+	public final fun detectContentType ([B)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public final fun detectFormat ([B)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public fun getPriority ()I
+	public fun getSupportedContentTypes ()Ljava/util/List;
+	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public final fun parseMetadata ([B)Lcom/azikar24/wormaceptor/infra/parser/image/ImageMetadata;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/ImageParser$Companion {
+	public final fun isImageMimeType (Ljava/lang/String;)Z
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/image/MagicByteDetector {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/infra/parser/image/MagicByteDetector;
+	public final fun detect ([B)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
+	public final fun isBmp ([B)Z
+	public final fun isGif ([B)Z
+	public final fun isIco ([B)Z
+	public final fun isJpeg ([B)Z
+	public final fun isPng ([B)Z
+	public final fun isSvg ([B)Z
+	public final fun isWebP ([B)Z
+}
+

@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.okhttp)
+    implementation(libs.androidx.security.crypto)
     // DI
     api(libs.koin.android)
     // Compose for Performance Overlay UI

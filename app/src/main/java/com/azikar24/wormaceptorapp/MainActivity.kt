@@ -12,6 +12,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -70,6 +76,10 @@ class MainActivity : ComponentActivity() {
         // Inline status feedback durations
         private const val STATUS_RUNNING_DURATION = 800L
         private const val STATUS_DONE_DURATION = 1500L
+
+        // Navigation transition durations
+        private const val NAV_TRANSITION_DURATION = 200
+        private const val SHEET_DISMISS_DELAY = 100L
     }
 
     /**
@@ -138,48 +148,138 @@ class MainActivity : ComponentActivity() {
         }
 
         WormaCeptorMainTheme {
-            NavHost(
-                navController = navController,
-                startDestination = TestToolsRoutes.HOME,
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
             ) {
-                composable(TestToolsRoutes.HOME) {
-                    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-                    GlitchMeltdownEffect(
-                        isActive = isGlitchEffectActive,
-                        progress = glitchProgress,
-                        modifier = Modifier.fillMaxSize(),
+                NavHost(
+                    navController = navController,
+                    startDestination = TestToolsRoutes.HOME,
+                ) {
+                    composable(
+                        route = TestToolsRoutes.HOME,
+                        exitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { -it / 4 },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            ) + fadeOut(animationSpec = tween(NAV_TRANSITION_DURATION))
+                        },
+                        popEnterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { -it / 4 },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            ) + fadeIn(animationSpec = tween(NAV_TRANSITION_DURATION))
+                        },
                     ) {
-                        Scaffold(
-                            containerColor = MaterialTheme.colorScheme.background,
-                        ) { _ ->
-                            WelcomeScreen(
-                                onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
-                                onTestToolsClick = { showTestToolsSheet = true },
-                                onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
-                                modifier = Modifier.fillMaxSize(),
-                            )
+                        @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+                        GlitchMeltdownEffect(
+                            isActive = isGlitchEffectActive,
+                            progress = glitchProgress,
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            Scaffold(
+                                containerColor = MaterialTheme.colorScheme.background,
+                            ) { _ ->
+                                WelcomeScreen(
+                                    onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
+                                    onTestToolsClick = { showTestToolsSheet = true },
+                                    onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
                         }
                     }
-                }
 
-                composable(TestToolsRoutes.LOCATION) {
-                    LocationTestScreen(onBack = { navController.popBackStack() })
-                }
+                    composable(
+                        route = TestToolsRoutes.LOCATION,
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        LocationTestScreen(onBack = { navController.popBackStack() })
+                    }
 
-                composable(TestToolsRoutes.COOKIES) {
-                    CookiesTestScreen(onBack = { navController.popBackStack() })
-                }
+                    composable(
+                        route = TestToolsRoutes.COOKIES,
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        CookiesTestScreen(onBack = { navController.popBackStack() })
+                    }
 
-                composable(TestToolsRoutes.WEBVIEW) {
-                    WebViewTestScreen(onBack = { navController.popBackStack() })
-                }
+                    composable(
+                        route = TestToolsRoutes.WEBVIEW,
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        WebViewTestScreen(onBack = { navController.popBackStack() })
+                    }
 
-                composable(TestToolsRoutes.SECURE_STORAGE) {
-                    SecureStorageTestScreen(onBack = { navController.popBackStack() })
-                }
+                    composable(
+                        route = TestToolsRoutes.SECURE_STORAGE,
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        SecureStorageTestScreen(onBack = { navController.popBackStack() })
+                    }
 
-                composable(TestToolsRoutes.COMPOSE_RENDER) {
-                    ComposeRenderTestScreen(onBack = { navController.popBackStack() })
+                    composable(
+                        route = TestToolsRoutes.COMPOSE_RENDER,
+                        enterTransition = {
+                            slideInHorizontally(
+                                initialOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                        popExitTransition = {
+                            slideOutHorizontally(
+                                targetOffsetX = { it },
+                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
+                            )
+                        },
+                    ) {
+                        ComposeRenderTestScreen(onBack = { navController.popBackStack() })
+                    }
                 }
             }
 
@@ -234,24 +334,54 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         onLocationClick = {
-                            showTestToolsSheet = false
-                            navController.navigate(TestToolsRoutes.LOCATION)
+                            scope.launch {
+                                sheetState.hide()
+                                showTestToolsSheet = false
+                            }
+                            scope.launch {
+                                delay(SHEET_DISMISS_DELAY)
+                                navController.navigate(TestToolsRoutes.LOCATION)
+                            }
                         },
                         onCookiesClick = {
-                            showTestToolsSheet = false
-                            navController.navigate(TestToolsRoutes.COOKIES)
+                            scope.launch {
+                                sheetState.hide()
+                                showTestToolsSheet = false
+                            }
+                            scope.launch {
+                                delay(SHEET_DISMISS_DELAY)
+                                navController.navigate(TestToolsRoutes.COOKIES)
+                            }
                         },
                         onWebViewClick = {
-                            showTestToolsSheet = false
-                            navController.navigate(TestToolsRoutes.WEBVIEW)
+                            scope.launch {
+                                sheetState.hide()
+                                showTestToolsSheet = false
+                            }
+                            scope.launch {
+                                delay(SHEET_DISMISS_DELAY)
+                                navController.navigate(TestToolsRoutes.WEBVIEW)
+                            }
                         },
                         onSecureStorageClick = {
-                            showTestToolsSheet = false
-                            navController.navigate(TestToolsRoutes.SECURE_STORAGE)
+                            scope.launch {
+                                sheetState.hide()
+                                showTestToolsSheet = false
+                            }
+                            scope.launch {
+                                delay(SHEET_DISMISS_DELAY)
+                                navController.navigate(TestToolsRoutes.SECURE_STORAGE)
+                            }
                         },
                         onComposeRenderClick = {
-                            showTestToolsSheet = false
-                            navController.navigate(TestToolsRoutes.COMPOSE_RENDER)
+                            scope.launch {
+                                sheetState.hide()
+                                showTestToolsSheet = false
+                            }
+                            scope.launch {
+                                delay(SHEET_DISMISS_DELAY)
+                                navController.navigate(TestToolsRoutes.COMPOSE_RENDER)
+                            }
                         },
                         apiTestStatus = apiTestStatus,
                         webSocketStatus = webSocketStatus,

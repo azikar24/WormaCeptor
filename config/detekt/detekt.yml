@@ -304,7 +304,7 @@ comments:
   active: true
   UndocumentedPublicClass:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**']
+    excludes: ['**/test/**', '**/androidTest/**', '**/app/**']
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
@@ -312,11 +312,11 @@ comments:
     searchInProtectedClass: false
   UndocumentedPublicFunction:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**']
+    excludes: ['**/test/**', '**/androidTest/**', '**/app/**']
     searchProtectedFunction: false
   UndocumentedPublicProperty:
     active: true
-    excludes: ['**/test/**', '**/androidTest/**']
+    excludes: ['**/test/**', '**/androidTest/**', '**/app/**']
     searchProtectedProperty: false
   AbsentOrWrongFileLicense:
     active: false # Enable if you want license headers

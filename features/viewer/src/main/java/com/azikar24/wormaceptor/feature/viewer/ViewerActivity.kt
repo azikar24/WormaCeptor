@@ -38,7 +38,6 @@ import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.composerender.ComposeRenderTracker
 import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
@@ -49,7 +48,6 @@ import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspec
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
 import com.azikar24.wormaceptor.feature.fps.FpsMonitor
-import com.azikar24.wormaceptor.feature.interception.InterceptionFramework
 import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
 import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
@@ -72,7 +70,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
-import com.azikar24.wormaceptor.feature.viewhierarchy.ViewHierarchyInspector
 import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -450,13 +447,6 @@ class ViewerActivity : ComponentActivity() {
 
                         // Phase 5 Routes
 
-                        // View Hierarchy Inspector route
-                        composable("viewhierarchy") {
-                            ViewHierarchyInspector(
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
                         // Leak Detection route
                         composable("leakdetection") {
                             LeakDetector(
@@ -509,13 +499,6 @@ class ViewerActivity : ComponentActivity() {
                             )
                         }
 
-                        // Compose Render Tracker route
-                        composable("composerender") {
-                            ComposeRenderTracker(
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
                         // Rate Limiter route
                         composable("ratelimit") {
                             RateLimiter(
@@ -544,13 +527,6 @@ class ViewerActivity : ComponentActivity() {
                         composable("dependencies") {
                             DependenciesInspector(
                                 context = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
-                        // Interception Framework route
-                        composable("interception") {
-                            InterceptionFramework(
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }

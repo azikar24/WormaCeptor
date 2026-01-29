@@ -71,7 +71,6 @@
     <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val valuePrimary: Color</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewModel.kt$RateLimitViewModel$// Current configuration val config: StateFlow&lt;RateLimitConfig&gt; = engine.config .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), RateLimitConfig.default(), )</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewModel.kt$RateLimitViewModel$// Throttle statistics val stats: StateFlow&lt;ThrottleStats&gt; = engine.stats .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), ThrottleStats.empty(), )</ID>
-    <ID>UndocumentedPublicProperty:RateLimitViewModel.kt$RateLimitViewModel$val selectedPreset: StateFlow&lt;NetworkPreset?&gt; = _selectedPreset.asStateFlow()</ID>
     <ID>UseIfInsteadOfWhen:RateLimitScreen.kt$when { kbps &gt;= 1000 -&gt; String.format("%.1f Mbps", kbps / 1000.0) else -&gt; "$kbps Kbps" }</ID>
     <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
   </CurrentIssues>

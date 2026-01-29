@@ -103,6 +103,7 @@
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$* Common Shapes</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$ Safe area padding for edge-to-edge layouts </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$* Spacing Scale - 4px baseline grid for consistent spacing</ID>
+    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$* Theme Colors - Shared color palette for consistent theming across host app and library</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$* Touch Target - Minimum touch target sizes for accessibility</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Body - Main content text </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Caption - Small descriptive text </ID>
@@ -262,6 +263,32 @@
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFFF57C00</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$0.2f</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$0.4f</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x120D9488</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x152DD4BF</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF0A0A0A</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF0D9488</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF141414</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF16A34A</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF1F1F1F</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2563EB</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2A2A2A</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2DD4BF</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF3A3A3A</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF4ADE80</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF525252</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF60A5FA</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF6B6B6B</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF8A8A8A</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF9CA3AF</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFD4D4D4</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFD97706</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFDC2626</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFE5E5E5</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF0F0F0</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFBBF24</ID>
+    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Accent</ID>
@@ -455,6 +482,34 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$val xxl = 32.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$val xxs = 2.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$val xxxl = 48.dp</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$// Accent Colors - Teal val AccentLight = Color(0xFF0D9488)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$// Dark Theme val DarkBackground = Color(0xFF0A0A0A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$// Light Theme val LightBackground = Color(0xFFFFFFFF)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$// Semantic Colors val Error = Color(0xFFDC2626)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentDark = Color(0xFF2DD4BF)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentSubtleDark = Color(0x152DD4BF)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentSubtleLight = Color(0x120D9488)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkOutline = Color(0xFF2A2A2A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkOutlineVariant = Color(0xFF3A3A3A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkSurface = Color(0xFF141414)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkSurfaceVariant = Color(0xFF1F1F1F)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextPrimary = Color(0xFFFAFAFA)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextSecondary = Color(0xFF8A8A8A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextTertiary = Color(0xFF525252)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val ErrorDark = Color(0xFFF87171)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Info = Color(0xFF2563EB)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val InfoDark = Color(0xFF60A5FA)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightOutline = Color(0xFFE5E5E5)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightOutlineVariant = Color(0xFFD4D4D4)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightSurface = Color(0xFFFAFAFA)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightSurfaceVariant = Color(0xFFF0F0F0)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextPrimary = Color(0xFF0A0A0A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextSecondary = Color(0xFF6B6B6B)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextTertiary = Color(0xFF9CA3AF)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Success = Color(0xFF16A34A)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val SuccessDark = Color(0xFF4ADE80)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Warning = Color(0xFFD97706)</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val WarningDark = Color(0xFFFBBF24)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val comfortable = 48.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val large = 56.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val minimum = 44.dp</ID>

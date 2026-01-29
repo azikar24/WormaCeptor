@@ -41,9 +41,11 @@
     <ID>SwallowedException:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: NoSuchFieldException</ID>
+    <ID>SwallowedException:WormaCeptorWebSocket.kt$WormaCeptorWebSocket$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorWebSocket.kt$WormaCeptorWebSocket$e: Exception</ID>
     <ID>TooManyFunctions:WormaCeptorApi.kt$WormaCeptorApi</ID>
     <ID>UndocumentedPublicClass:WormaCeptorApi.kt$WormaCeptorApi</ID>
     <ID>UndocumentedPublicClass:WormaCeptorInterceptor.kt$WormaCeptorInterceptor : Interceptor</ID>

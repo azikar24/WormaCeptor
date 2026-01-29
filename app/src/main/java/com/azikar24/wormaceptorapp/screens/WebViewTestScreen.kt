@@ -60,10 +60,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
+import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorFeature
+import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorViewModel
 
 /**
  * Test screen for the WebView Monitor feature.
@@ -72,13 +74,18 @@ import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
-    val engine = remember { WebViewMonitorEngine() }
-    val requests by engine.requests.collectAsState()
-    val stats by engine.stats.collectAsState()
+    val factory = remember { WebViewMonitorFeature.createViewModelFactory() }
+    val viewModel: WebViewMonitorViewModel = viewModel(factory = factory)
+
+    val isEnabled by viewModel.isEnabled.collectAsState()
+    val requests by viewModel.requests.collectAsState()
+    val stats by viewModel.stats.collectAsState()
 
     // Enable/disable engine with lifecycle
     DisposableEffect(Unit) {
-        engine.enable()
+        if (!isEnabled) {
+            viewModel.toggleEnabled()
+        }
         onDispose {
             // Engine cleanup is handled internally
         }
@@ -120,7 +127,7 @@ fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                 },
                 actions = {
                     IconButton(
-                        onClick = { engine.clearRequests() },
+                        onClick = { viewModel.clearRequests() },
                         enabled = requests.isNotEmpty(),
                     ) {
                         Icon(Icons.Default.Clear, "Clear requests")
@@ -133,7 +140,7 @@ fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
         },
     ) { padding ->
         WebViewTestContent(
-            engine = engine,
+            viewModel = viewModel,
             requests = requests,
             stats = stats,
             modifier = Modifier
@@ -146,7 +153,7 @@ fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 private fun WebViewTestContent(
-    engine: WebViewMonitorEngine,
+    viewModel: WebViewMonitorViewModel,
     requests: List<WebViewRequest>,
     stats: WebViewRequestStats,
     modifier: Modifier = Modifier,
@@ -218,7 +225,7 @@ private fun WebViewTestContent(
                 WebView(context).apply {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
-                    webViewClient = engine.createMonitoringClient(
+                    webViewClient = viewModel.createMonitoringClient(
                         webViewId = "test_webview",
                         delegate = WebViewClient(),
                     )

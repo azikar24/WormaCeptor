@@ -120,6 +120,19 @@ object WebViewMonitorFeature {
     fun createViewModelFactory(engine: WebViewMonitorEngine): WebViewMonitorViewModelFactory {
         return WebViewMonitorViewModelFactory(engine)
     }
+
+    /**
+     * Creates a ViewModelProvider.Factory with a new engine instance.
+     * Use this when you don't need to share the engine with other components.
+     *
+     * @param maxRequests Maximum number of requests to store
+     * @return A ViewModelProvider.Factory for creating WebViewMonitorViewModel
+     */
+    fun createViewModelFactory(
+        maxRequests: Int = WebViewMonitorEngine.DEFAULT_MAX_REQUESTS,
+    ): ViewModelProvider.Factory {
+        return WebViewMonitorViewModelFactory(createEngine(maxRequests))
+    }
 }
 
 /**
@@ -191,6 +204,20 @@ class WebViewMonitorViewModel(private val engine: WebViewMonitorEngine) : ViewMo
 
     fun toggleFilters() {
         _showFilters.update { !it }
+    }
+
+    /**
+     * Creates a WebViewClient that monitors network requests.
+     *
+     * @param webViewId Unique identifier for the WebView being monitored
+     * @param delegate Optional delegate WebViewClient to forward calls to
+     * @return A WebViewClient that intercepts and logs requests
+     */
+    fun createMonitoringClient(
+        webViewId: String,
+        delegate: android.webkit.WebViewClient? = null,
+    ): android.webkit.WebViewClient {
+        return engine.createMonitoringClient(webViewId, delegate)
     }
 }
 

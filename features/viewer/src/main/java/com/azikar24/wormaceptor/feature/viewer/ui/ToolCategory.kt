@@ -1,13 +1,11 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountTree
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.Extension
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
@@ -18,7 +16,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.NetworkCheck
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Speed
@@ -53,7 +50,6 @@ object ToolCategories {
 
     val inspectionTools = listOf(
         ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"),
-        ToolItem(Feature.VIEW_HIERARCHY, "View Hierarchy", Icons.Default.AccountTree, "viewhierarchy"),
         ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"),
         ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"),
         ToolItem(Feature.LOADED_LIBRARIES, "Loaded Libraries", Icons.Default.LibraryBooks, "loadedlibraries"),
@@ -67,7 +63,6 @@ object ToolCategories {
         ToolItem(Feature.MEMORY_MONITOR, "Memory Monitor", Icons.Default.Memory, "memory"),
         ToolItem(Feature.FPS_MONITOR, "FPS Monitor", Icons.Default.Speed, "fps"),
         ToolItem(Feature.CPU_MONITOR, "CPU Monitor", Icons.Default.DeveloperBoard, "cpu"),
-        ToolItem(Feature.COMPOSE_RENDER, "Compose Render", Icons.Default.Refresh, "composerender"),
         ToolItem(Feature.LEAK_DETECTION, "Leak Detection", Icons.Default.BugReport, "leakdetection"),
         ToolItem(Feature.THREAD_VIOLATIONS, "Thread Violations", Icons.Default.Warning, "threadviolation"),
     )
@@ -75,7 +70,6 @@ object ToolCategories {
     val networkTools = listOf(
         ToolItem(Feature.WEBSOCKET_MONITOR, "WebSocket Monitor", Icons.Default.Cable, "websocket"),
         ToolItem(Feature.RATE_LIMITER, "Rate Limiter", Icons.Default.NetworkCheck, "ratelimit"),
-        ToolItem(Feature.INTERCEPTION, "Interception", Icons.Default.FilterList, "interception"),
     )
 
     val simulationTools = listOf(

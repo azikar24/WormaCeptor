@@ -6,13 +6,12 @@ package com.azikar24.wormaceptorapp.sampleservice
 
 import android.util.Log
 import com.azikar24.wormaceptor.api.WormaCeptorInterceptor
-import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
+import com.azikar24.wormaceptor.api.WormaCeptorWebSocket
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import org.koin.java.KoinJavaComponent.get
 
 /**
  * Sample WebSocket service for testing WormaCeptor's WebSocket monitoring.
@@ -24,7 +23,7 @@ object SampleWebSocketService {
     private const val ECHO_SERVER_URL = "wss://ws.postman-echo.com/raw"
 
     private var webSocket: WebSocket? = null
-    private var monitoringListener: WebSocketMonitorEngine.MonitoringWebSocketListener? = null
+    private var monitor: WormaCeptorWebSocket? = null
 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -64,7 +63,7 @@ object SampleWebSocketService {
 
     private fun sendAndRecord(message: String) {
         webSocket?.send(message)
-        monitoringListener?.recordSentMessage(message)
+        monitor?.recordSentMessage(message)
     }
 
     fun connect() {
@@ -72,11 +71,10 @@ object SampleWebSocketService {
             .url(ECHO_SERVER_URL)
             .build()
 
-        // Wrap the listener with WebSocketMonitorEngine for monitoring
-        val engine: WebSocketMonitorEngine = get(WebSocketMonitorEngine::class.java)
-        monitoringListener = engine.wrap(listener, ECHO_SERVER_URL)
+        // Use the public API to wrap the listener for monitoring
+        monitor = WormaCeptorWebSocket.wrap(listener, ECHO_SERVER_URL)
 
-        webSocket = client.newWebSocket(request, monitoringListener!!)
+        webSocket = client.newWebSocket(request, monitor!!.listener)
     }
 
     fun sendMessage(message: String) {
@@ -86,6 +84,6 @@ object SampleWebSocketService {
     fun disconnect() {
         webSocket?.close(1000, "User requested disconnect")
         webSocket = null
-        monitoringListener = null
+        monitor = null
     }
 }

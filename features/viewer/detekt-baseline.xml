@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues />
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(MatchInfo(globalPosition = index, lineIndex = 0))</ID>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(globalPosition = index, lineIndex = 0)</ID>
@@ -170,42 +170,6 @@
     <ID>LongParameterList:TransactionDetailScreen.kt$( transaction: NetworkTransaction, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LoopWithTooManyJumpStatements:XmlTreeView.kt$while</ID>
     <ID>MagicNumber:Color.kt$0xFF000000</ID>
-    <ID>MagicNumber:Color.kt$0xFF001D36</ID>
-    <ID>MagicNumber:Color.kt$0xFF003258</ID>
-    <ID>MagicNumber:Color.kt$0xFF00497D</ID>
-    <ID>MagicNumber:Color.kt$0xFF0061A4</ID>
-    <ID>MagicNumber:Color.kt$0xFF101C2B</ID>
-    <ID>MagicNumber:Color.kt$0xFF111318</ID>
-    <ID>MagicNumber:Color.kt$0xFF1A1C1E</ID>
-    <ID>MagicNumber:Color.kt$0xFF251431</ID>
-    <ID>MagicNumber:Color.kt$0xFF253140</ID>
-    <ID>MagicNumber:Color.kt$0xFF2F3033</ID>
-    <ID>MagicNumber:Color.kt$0xFF3B2948</ID>
-    <ID>MagicNumber:Color.kt$0xFF3B4858</ID>
-    <ID>MagicNumber:Color.kt$0xFF410002</ID>
-    <ID>MagicNumber:Color.kt$0xFF43474E</ID>
-    <ID>MagicNumber:Color.kt$0xFF523F5F</ID>
-    <ID>MagicNumber:Color.kt$0xFF535F70</ID>
-    <ID>MagicNumber:Color.kt$0xFF690005</ID>
-    <ID>MagicNumber:Color.kt$0xFF6B5778</ID>
-    <ID>MagicNumber:Color.kt$0xFF73777F</ID>
-    <ID>MagicNumber:Color.kt$0xFF8D9199</ID>
-    <ID>MagicNumber:Color.kt$0xFF93000A</ID>
-    <ID>MagicNumber:Color.kt$0xFF9ECAFF</ID>
-    <ID>MagicNumber:Color.kt$0xFFBA1A1A</ID>
-    <ID>MagicNumber:Color.kt$0xFFBBC7DB</ID>
-    <ID>MagicNumber:Color.kt$0xFFC3C7CF</ID>
-    <ID>MagicNumber:Color.kt$0xFFD1E4FF</ID>
-    <ID>MagicNumber:Color.kt$0xFFD7BEE4</ID>
-    <ID>MagicNumber:Color.kt$0xFFD7E3F7</ID>
-    <ID>MagicNumber:Color.kt$0xFFE3E3E8</ID>
-    <ID>MagicNumber:Color.kt$0xFFE7E9ED</ID>
-    <ID>MagicNumber:Color.kt$0xFFF1F3F7</ID>
-    <ID>MagicNumber:Color.kt$0xFFF2DAFF</ID>
-    <ID>MagicNumber:Color.kt$0xFFFAFAFC</ID>
-    <ID>MagicNumber:Color.kt$0xFFFFB4AB</ID>
-    <ID>MagicNumber:Color.kt$0xFFFFDAD6</ID>
-    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
     <ID>MagicNumber:CommonUtils.kt$1024</ID>
     <ID>MagicNumber:CommonUtils.kt$1024.0</ID>
     <ID>MagicNumber:CommonUtils.kt$200</ID>
@@ -429,7 +393,6 @@
     <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:CrashListScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:CrashListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:CrashListScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>NoWildcardImports:LoadingStates.kt$import androidx.compose.animation.core.*</ID>
@@ -452,7 +415,6 @@
     <ID>NoWildcardImports:TransactionDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:TransactionDetailScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.animation.core.*</ID>
-    <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>OutdatedDocumentation:TransactionPager.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun TransactionPager( transactionIds: List&lt;UUID&gt;, initialTransactionId: UUID, onTransactionChanged: (UUID) -&gt; Unit, modifier: Modifier = Modifier, showPositionIndicator: Boolean = true, content: @Composable (transactionId: UUID, pageIndex: Int) -&gt; Unit, )</ID>
@@ -482,64 +444,64 @@
     <ID>TooGenericExceptionCaught:TransactionDetailScreen.kt$e: Exception</ID>
     <ID>TooManyFunctions:LoadingStates.kt$com.azikar24.wormaceptor.feature.viewer.ui.components.LoadingStates.kt</ID>
     <ID>TooManyFunctions:TransactionDetailScreen.kt$com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen.kt</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_background = Color(0xFF111318) // Deeper, more comfortable dark</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_error = Color(0xFFFFB4AB)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_errorContainer = Color(0xFF93000A)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inverseOnSurface = Color(0xFF111318)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inversePrimary = Color(0xFF0061A4)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inverseSurface = Color(0xFFE3E3E8)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onBackground = Color(0xFFE3E3E8)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onError = Color(0xFF690005)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onPrimary = Color(0xFF003258)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onPrimaryContainer = Color(0xFFD1E4FF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSecondary = Color(0xFF253140)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSecondaryContainer = Color(0xFFD7E3F7)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSurface = Color(0xFFE3E3E8)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSurfaceVariant = Color(0xFFC3C7CF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onTertiary = Color(0xFF3B2948)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onTertiaryContainer = Color(0xFFF2DAFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_outline = Color(0xFF8D9199)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_outlineVariant = Color(0xFF43474E)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_primary = Color(0xFF9ECAFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_primaryContainer = Color(0xFF00497D)</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_background = ThemeColors.DarkBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_error = ThemeColors.ErrorDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inverseOnSurface = ThemeColors.DarkSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inversePrimary = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_inverseSurface = ThemeColors.LightSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onBackground = ThemeColors.DarkTextPrimary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onError = ThemeColors.DarkBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onErrorContainer = ThemeColors.ErrorDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onPrimary = ThemeColors.DarkBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onPrimaryContainer = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSecondary = ThemeColors.DarkBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSecondaryContainer = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSurface = ThemeColors.DarkTextPrimary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onSurfaceVariant = ThemeColors.DarkTextSecondary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onTertiary = ThemeColors.DarkBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_onTertiaryContainer = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_outline = ThemeColors.DarkTextTertiary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_outlineVariant = ThemeColors.DarkTextTertiary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_primary = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_primaryContainer = ThemeColors.AccentSubtleDark</ID>
     <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_scrim = Color(0xFF000000)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_secondary = Color(0xFFBBC7DB)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_secondaryContainer = Color(0xFF3B4858)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surface = Color(0xFF111318)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surfaceTint = Color(0xFF9ECAFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surfaceVariant = Color(0xFF43474E)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_tertiary = Color(0xFFD7BEE4)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_tertiaryContainer = Color(0xFF523F5F)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_background = Color(0xFFFAFAFC) // Slightly cooler white</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_error = Color(0xFFBA1A1A)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_errorContainer = Color(0xFFFFDAD6)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inverseOnSurface = Color(0xFFF1F3F7)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inversePrimary = Color(0xFF9ECAFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inverseSurface = Color(0xFF2F3033)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onBackground = Color(0xFF1A1C1E)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onError = Color(0xFFFFFFFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onErrorContainer = Color(0xFF410002)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onPrimary = Color(0xFFFFFFFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onPrimaryContainer = Color(0xFF001D36)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSecondary = Color(0xFFFFFFFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSecondaryContainer = Color(0xFF101C2B)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSurface = Color(0xFF1A1C1E)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSurfaceVariant = Color(0xFF43474E)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onTertiary = Color(0xFFFFFFFF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onTertiaryContainer = Color(0xFF251431)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_outline = Color(0xFF73777F)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_outlineVariant = Color(0xFFC3C7CF)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_primary = Color(0xFF0061A4)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_primaryContainer = Color(0xFFD1E4FF)</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_secondary = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_secondaryContainer = ThemeColors.AccentSubtleDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surface = ThemeColors.DarkSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surfaceTint = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_surfaceVariant = ThemeColors.DarkSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_tertiary = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_dark_tertiaryContainer = ThemeColors.AccentSubtleDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_background = ThemeColors.LightBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_error = ThemeColors.Error</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inverseOnSurface = ThemeColors.LightSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inversePrimary = ThemeColors.AccentDark</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_inverseSurface = ThemeColors.DarkSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onBackground = ThemeColors.LightTextPrimary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onError = ThemeColors.LightBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onErrorContainer = ThemeColors.Error</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onPrimary = ThemeColors.LightBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onPrimaryContainer = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSecondary = ThemeColors.LightBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSecondaryContainer = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSurface = ThemeColors.LightTextPrimary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onSurfaceVariant = ThemeColors.LightTextSecondary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onTertiary = ThemeColors.LightBackground</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_onTertiaryContainer = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_outline = ThemeColors.LightTextTertiary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_outlineVariant = ThemeColors.LightTextTertiary</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_primary = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_primaryContainer = ThemeColors.AccentSubtleLight</ID>
     <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_scrim = Color(0xFF000000)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_secondary = Color(0xFF535F70)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_secondaryContainer = Color(0xFFD7E3F7)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surface = Color(0xFFFAFAFC)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surfaceTint = Color(0xFF0061A4)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surfaceVariant = Color(0xFFE7E9ED)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiary = Color(0xFF6B5778)</ID>
-    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiaryContainer = Color(0xFFF2DAFF)</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_secondary = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_secondaryContainer = ThemeColors.AccentSubtleLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surface = ThemeColors.LightSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surfaceTint = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_surfaceVariant = ThemeColors.LightSurface</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiary = ThemeColors.AccentLight</ID>
+    <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiaryContainer = ThemeColors.AccentSubtleLight</ID>
     <ID>TopLevelPropertyNaming:CommonUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$/** * Minimum and maximum zoom levels */ private const val MIN_ZOOM = 0.5f</ID>
     <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$private const val DEFAULT_ZOOM = 1f</ID>
@@ -572,7 +534,7 @@
     <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun reset(initialContent: String)</ID>
     <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun updateError(message: String)</ID>
     <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun updateLoading(loading: Boolean)</ID>
-    <ID>UndocumentedPublicFunction:Theme.kt$@Composable fun WormaCeptorTheme( darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = true, content: @Composable () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:Theme.kt$@Composable fun WormaCeptorTheme( darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = false, content: @Composable () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:ViewerViewModel.kt$ViewerViewModel$fun clearFilters()</ID>
     <ID>UndocumentedPublicFunction:ViewerViewModel.kt$ViewerViewModel$fun clearQuickFilters()</ID>
     <ID>UndocumentedPublicFunction:ViewerViewModel.kt$ViewerViewModel$fun clearSelection()</ID>
@@ -613,64 +575,64 @@
     <ID>UndocumentedPublicProperty:Color.kt$ViewerColors.HttpMethodColors$val Patch = CoreColors.HttpMethod.Patch</ID>
     <ID>UndocumentedPublicProperty:Color.kt$ViewerColors.HttpMethodColors$val Post = CoreColors.HttpMethod.Post</ID>
     <ID>UndocumentedPublicProperty:Color.kt$ViewerColors.HttpMethodColors$val Put = CoreColors.HttpMethod.Put</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_background = Color(0xFF111318) // Deeper, more comfortable dark</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_error = Color(0xFFFFB4AB)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_errorContainer = Color(0xFF93000A)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inverseOnSurface = Color(0xFF111318)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inversePrimary = Color(0xFF0061A4)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inverseSurface = Color(0xFFE3E3E8)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onBackground = Color(0xFFE3E3E8)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onError = Color(0xFF690005)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onPrimary = Color(0xFF003258)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onPrimaryContainer = Color(0xFFD1E4FF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSecondary = Color(0xFF253140)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSecondaryContainer = Color(0xFFD7E3F7)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSurface = Color(0xFFE3E3E8)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSurfaceVariant = Color(0xFFC3C7CF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onTertiary = Color(0xFF3B2948)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onTertiaryContainer = Color(0xFFF2DAFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_outline = Color(0xFF8D9199)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_outlineVariant = Color(0xFF43474E)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_primary = Color(0xFF9ECAFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_primaryContainer = Color(0xFF00497D)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_background = ThemeColors.DarkBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_error = ThemeColors.ErrorDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inverseOnSurface = ThemeColors.DarkSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inversePrimary = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_inverseSurface = ThemeColors.LightSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onBackground = ThemeColors.DarkTextPrimary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onError = ThemeColors.DarkBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onErrorContainer = ThemeColors.ErrorDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onPrimary = ThemeColors.DarkBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onPrimaryContainer = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSecondary = ThemeColors.DarkBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSecondaryContainer = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSurface = ThemeColors.DarkTextPrimary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onSurfaceVariant = ThemeColors.DarkTextSecondary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onTertiary = ThemeColors.DarkBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_onTertiaryContainer = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_outline = ThemeColors.DarkTextTertiary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_outlineVariant = ThemeColors.DarkTextTertiary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_primary = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_primaryContainer = ThemeColors.AccentSubtleDark</ID>
     <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_scrim = Color(0xFF000000)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_secondary = Color(0xFFBBC7DB)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_secondaryContainer = Color(0xFF3B4858)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surface = Color(0xFF111318)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surfaceTint = Color(0xFF9ECAFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surfaceVariant = Color(0xFF43474E)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_tertiary = Color(0xFFD7BEE4)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_tertiaryContainer = Color(0xFF523F5F)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_background = Color(0xFFFAFAFC) // Slightly cooler white</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_error = Color(0xFFBA1A1A)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_errorContainer = Color(0xFFFFDAD6)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inverseOnSurface = Color(0xFFF1F3F7)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inversePrimary = Color(0xFF9ECAFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inverseSurface = Color(0xFF2F3033)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onBackground = Color(0xFF1A1C1E)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onError = Color(0xFFFFFFFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onErrorContainer = Color(0xFF410002)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onPrimary = Color(0xFFFFFFFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onPrimaryContainer = Color(0xFF001D36)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSecondary = Color(0xFFFFFFFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSecondaryContainer = Color(0xFF101C2B)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSurface = Color(0xFF1A1C1E)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSurfaceVariant = Color(0xFF43474E)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onTertiary = Color(0xFFFFFFFF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onTertiaryContainer = Color(0xFF251431)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_outline = Color(0xFF73777F)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_outlineVariant = Color(0xFFC3C7CF)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_primary = Color(0xFF0061A4)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_primaryContainer = Color(0xFFD1E4FF)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_secondary = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_secondaryContainer = ThemeColors.AccentSubtleDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surface = ThemeColors.DarkSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surfaceTint = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_surfaceVariant = ThemeColors.DarkSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_tertiary = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_dark_tertiaryContainer = ThemeColors.AccentSubtleDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_background = ThemeColors.LightBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_error = ThemeColors.Error</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inverseOnSurface = ThemeColors.LightSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inversePrimary = ThemeColors.AccentDark</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_inverseSurface = ThemeColors.DarkSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onBackground = ThemeColors.LightTextPrimary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onError = ThemeColors.LightBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onErrorContainer = ThemeColors.Error</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onPrimary = ThemeColors.LightBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onPrimaryContainer = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSecondary = ThemeColors.LightBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSecondaryContainer = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSurface = ThemeColors.LightTextPrimary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onSurfaceVariant = ThemeColors.LightTextSecondary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onTertiary = ThemeColors.LightBackground</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_onTertiaryContainer = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_outline = ThemeColors.LightTextTertiary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_outlineVariant = ThemeColors.LightTextTertiary</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_primary = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_primaryContainer = ThemeColors.AccentSubtleLight</ID>
     <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_scrim = Color(0xFF000000)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_secondary = Color(0xFF535F70)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_secondaryContainer = Color(0xFFD7E3F7)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surface = Color(0xFFFAFAFC)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surfaceTint = Color(0xFF0061A4)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surfaceVariant = Color(0xFFE7E9ED)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_tertiary = Color(0xFF6B5778)</ID>
-    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_tertiaryContainer = Color(0xFFF2DAFF)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_secondary = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_secondaryContainer = ThemeColors.AccentSubtleLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surface = ThemeColors.LightSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surfaceTint = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_surfaceVariant = ThemeColors.LightSurface</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_tertiary = ThemeColors.AccentLight</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val md_theme_light_tertiaryContainer = ThemeColors.AccentSubtleLight</ID>
     <ID>UndocumentedPublicProperty:CommonUtils.kt$ClipboardResult.Success$val message: String</ID>
     <ID>UndocumentedPublicProperty:CommonUtils.kt$ClipboardResult.TooLarge$val message: String</ID>
     <ID>UndocumentedPublicProperty:ContentTypeChip.kt$ContentTypeChipInfo$val color: Color</ID>
@@ -793,9 +755,9 @@
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val allCategories = listOf( ToolCategory("Inspection", inspectionTools), ToolCategory("Performance", performanceTools), ToolCategory("Network", networkTools), ToolCategory("Simulation", simulationTools), ToolCategory("Core", coreTools), )</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val allTools: List&lt;ToolItem&gt; = allCategories.flatMap { it.tools }</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val coreTools = listOf( ToolItem(Feature.CONSOLE_LOGS, "Console Logs", Icons.Default.Terminal, "logs"), ToolItem(Feature.DEVICE_INFO, "Device Info", Icons.Default.Info, "deviceinfo"), )</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val inspectionTools = listOf( ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"), ToolItem(Feature.VIEW_HIERARCHY, "View Hierarchy", Icons.Default.AccountTree, "viewhierarchy"), ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"), ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"), ToolItem(Feature.LOADED_LIBRARIES, "Loaded Libraries", Icons.Default.LibraryBooks, "loadedlibraries"), ToolItem(Feature.DEPENDENCIES_INSPECTOR, "Dependencies", Icons.Default.Extension, "dependencies"), ToolItem(Feature.SECURE_STORAGE, "Secure Storage", Icons.Default.Security, "securestorage"), ToolItem(Feature.COOKIES_MANAGER, "Cookies Manager", Icons.Default.Cookie, "cookies"), ToolItem(Feature.WEBVIEW_MONITOR, "WebView Monitor", Icons.Default.Language, "webviewmonitor"), )</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val networkTools = listOf( ToolItem(Feature.WEBSOCKET_MONITOR, "WebSocket Monitor", Icons.Default.Cable, "websocket"), ToolItem(Feature.RATE_LIMITER, "Rate Limiter", Icons.Default.NetworkCheck, "ratelimit"), ToolItem(Feature.INTERCEPTION, "Interception", Icons.Default.FilterList, "interception"), )</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val performanceTools = listOf( ToolItem(Feature.MEMORY_MONITOR, "Memory Monitor", Icons.Default.Memory, "memory"), ToolItem(Feature.FPS_MONITOR, "FPS Monitor", Icons.Default.Speed, "fps"), ToolItem(Feature.CPU_MONITOR, "CPU Monitor", Icons.Default.DeveloperBoard, "cpu"), ToolItem(Feature.COMPOSE_RENDER, "Compose Render", Icons.Default.Refresh, "composerender"), ToolItem(Feature.LEAK_DETECTION, "Leak Detection", Icons.Default.BugReport, "leakdetection"), ToolItem(Feature.THREAD_VIOLATIONS, "Thread Violations", Icons.Default.Warning, "threadviolation"), )</ID>
+    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val inspectionTools = listOf( ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"), ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"), ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"), ToolItem(Feature.LOADED_LIBRARIES, "Loaded Libraries", Icons.Default.LibraryBooks, "loadedlibraries"), ToolItem(Feature.DEPENDENCIES_INSPECTOR, "Dependencies", Icons.Default.Extension, "dependencies"), ToolItem(Feature.SECURE_STORAGE, "Secure Storage", Icons.Default.Security, "securestorage"), ToolItem(Feature.COOKIES_MANAGER, "Cookies Manager", Icons.Default.Cookie, "cookies"), ToolItem(Feature.WEBVIEW_MONITOR, "WebView Monitor", Icons.Default.Language, "webviewmonitor"), )</ID>
+    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val networkTools = listOf( ToolItem(Feature.WEBSOCKET_MONITOR, "WebSocket Monitor", Icons.Default.Cable, "websocket"), ToolItem(Feature.RATE_LIMITER, "Rate Limiter", Icons.Default.NetworkCheck, "ratelimit"), )</ID>
+    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val performanceTools = listOf( ToolItem(Feature.MEMORY_MONITOR, "Memory Monitor", Icons.Default.Memory, "memory"), ToolItem(Feature.FPS_MONITOR, "FPS Monitor", Icons.Default.Speed, "fps"), ToolItem(Feature.CPU_MONITOR, "CPU Monitor", Icons.Default.DeveloperBoard, "cpu"), ToolItem(Feature.LEAK_DETECTION, "Leak Detection", Icons.Default.BugReport, "leakdetection"), ToolItem(Feature.THREAD_VIOLATIONS, "Thread Violations", Icons.Default.Warning, "threadviolation"), )</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategories$val simulationTools = listOf( ToolItem(Feature.LOCATION_SIMULATOR, "Location Simulator", Icons.Default.LocationOn, "location"), ToolItem(Feature.PUSH_SIMULATOR, "Push Simulator", Icons.Default.Notifications, "pushsimulator"), ToolItem(Feature.PUSH_TOKEN_MANAGER, "Push Token", Icons.Default.Key, "pushtoken"), ToolItem(Feature.CRYPTO_TOOL, "Crypto Tool", Icons.Default.Lock, "crypto"), )</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategory$val name: String</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategory$val tools: List&lt;ToolItem&gt;</ID>
@@ -894,7 +856,6 @@
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:CrashListScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CrashListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:CrashListScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:LoadingStates.kt$import androidx.compose.animation.core.*</ID>
@@ -917,7 +878,6 @@
     <ID>WildcardImport:TransactionDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:TransactionDetailScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:TransactionListScreen.kt$import androidx.compose.animation.core.*</ID>
-    <ID>WildcardImport:TransactionListScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:TransactionListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:TransactionListScreen.kt$import androidx.compose.runtime.*</ID>
   </CurrentIssues>

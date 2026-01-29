@@ -11,9 +11,6 @@
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
     <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
-    <ID>LongMethod:ComposeRenderTestScreen.kt$@Composable private fun ColorSection(count: Int, recomposeCount: Int)</ID>
-    <ID>LongMethod:ComposeRenderTestScreen.kt$@Composable private fun ComposableInfoRow(info: ComposeRenderInfo, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:ComposeRenderTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ComposeRenderTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun AddCookieDialog( onDismiss: () -&gt; Unit, onAdd: (domain: String, name: String, value: String, isSecure: Boolean) -&gt; Unit, )</ID>
     <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun CookieDetailSheet(cookie: ParsedCookie, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:CookiesTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
@@ -23,33 +20,12 @@
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, onComposeRenderClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>LongMethod:WebViewTestScreen.kt$@Composable private fun CapturedRequestItem(request: WebViewRequest, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:WebViewTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WebViewTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:WebViewTestScreen.kt$@SuppressLint("SetJavaScriptEnabled") @Composable private fun WebViewTestContent( engine: WebViewMonitorEngine, requests: List&lt;WebViewRequest&gt;, stats: WebViewRequestStats, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:WebViewTestScreen.kt$@SuppressLint("SetJavaScriptEnabled") @Composable private fun WebViewTestContent( viewModel: WebViewMonitorViewModel, requests: List&lt;WebViewRequest&gt;, stats: WebViewRequestStats, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
-    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, onComposeRenderClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
-    <ID>MagicNumber:Color.kt$0x127C3AED</ID>
-    <ID>MagicNumber:Color.kt$0x15A78BFA</ID>
-    <ID>MagicNumber:Color.kt$0xFF0A0A0A</ID>
-    <ID>MagicNumber:Color.kt$0xFF141414</ID>
-    <ID>MagicNumber:Color.kt$0xFF525252</ID>
-    <ID>MagicNumber:Color.kt$0xFF6B6B6B</ID>
-    <ID>MagicNumber:Color.kt$0xFF7C3AED</ID>
-    <ID>MagicNumber:Color.kt$0xFF8A8A8A</ID>
-    <ID>MagicNumber:Color.kt$0xFF9CA3AF</ID>
-    <ID>MagicNumber:Color.kt$0xFFA78BFA</ID>
-    <ID>MagicNumber:Color.kt$0xFFDC2626</ID>
-    <ID>MagicNumber:Color.kt$0xFFF87171</ID>
-    <ID>MagicNumber:Color.kt$0xFFFAFAFA</ID>
-    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF3F51B5</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFFE91E63</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:ComposeRenderTestScreen.kt$1_000_000.0</ID>
+    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>MagicNumber:CookiesTestScreen.kt$0xFF2196F3</ID>
     <ID>MagicNumber:CookiesTestScreen.kt$0xFF4CAF50</ID>
     <ID>MagicNumber:CookiesTestScreen.kt$0xFFFF9800</ID>
@@ -390,10 +366,8 @@
     <ID>MagicNumber:WormaceptorLogo.kt$96.65f</ID>
     <ID>MatchingDeclarationName:TestToolsNavigation.kt$TestToolsRoutes</ID>
     <ID>MatchingDeclarationName:TestToolsTab.kt$ToolStatus</ID>
-    <ID>MaxLineLength:ComposeRenderTestScreen.kt$text = "${stats.totalRecompositions} recomposition${if (stats.totalRecompositions != 1) "s" else ""}"</ID>
     <ID>MaxLineLength:CookiesTestScreen.kt$text = "$totalCookies cookie${if (totalCookies != 1) "s" else ""} in ${domainCookies.size} domain${if (domainCookies.size != 1) "s" else ""}"</ID>
     <ID>MaxLineLength:LocationTestScreen.kt$color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant</ID>
-    <ID>MaximumLineLength:ComposeRenderTestScreen.kt$ </ID>
     <ID>MaximumLineLength:CookiesTestScreen.kt$ </ID>
     <ID>MaximumLineLength:LocationTestScreen.kt$ </ID>
     <ID>ModifierReused:GlitchEffect.kt$Box( modifier = modifier.graphicsLayer { shader.setFloatUniform("resolution", screenWidthPx, screenHeightPx) shader.setFloatUniform("progress", progress) shader.setFloatUniform("time", time) renderEffect = RenderEffect .createRuntimeShaderEffect(shader, "content") .asComposeRenderEffect() }, ) { content() }</ID>
@@ -411,12 +385,12 @@
     <ID>UnnecessaryParentheses:GlitchEffect.kt$(i.toFloat() / scanLineCount)</ID>
     <ID>UnnecessaryParentheses:GlitchEffect.kt$(progress * 0.05f * shakeOffset)</ID>
     <ID>UnnecessaryParentheses:GlitchEffect.kt$(size.width / pixelSize)</ID>
-    <ID>UnstableCollections:ComposeRenderTestScreen.kt$List&lt;ComposeRenderInfo&gt;</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
     <ID>UnstableCollections:WebViewTestScreen.kt$List&lt;WebViewRequest&gt;</ID>
     <ID>UnusedParameter:MainActivityViewModel.kt$MainActivityViewModel$context: Context</ID>
     <ID>UnusedPrivateProperty:VeryLargeData.kt$VeryLargeData$i</ID>
+    <ID>ViewModelInjection:WebViewTestScreen.kt$viewModel</ID>
     <ID>WildcardImport:HttpBinApi.kt$import retrofit2.http.*</ID>
   </CurrentIssues>
 </SmellBaseline>

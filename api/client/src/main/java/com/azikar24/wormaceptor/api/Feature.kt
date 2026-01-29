@@ -7,7 +7,6 @@ package com.azikar24.wormaceptor.api
 enum class Feature {
     // Inspection
     SHARED_PREFERENCES,
-    VIEW_HIERARCHY,
     DATABASE_BROWSER,
     FILE_BROWSER,
     LOADED_LIBRARIES,
@@ -20,14 +19,12 @@ enum class Feature {
     MEMORY_MONITOR,
     FPS_MONITOR,
     CPU_MONITOR,
-    COMPOSE_RENDER,
     LEAK_DETECTION,
     THREAD_VIOLATIONS,
 
     // Network
     WEBSOCKET_MONITOR,
     RATE_LIMITER,
-    INTERCEPTION,
 
     // Simulation
     LOCATION_SIMULATOR,

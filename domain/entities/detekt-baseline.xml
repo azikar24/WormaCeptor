@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:ComposeRenderInfo.kt$ComposeRenderInfo.Companion$fun empty()</ID>
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.BUILD_CONFIG$ Version found via BuildConfig class </ID>
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.CLASS_PRESENCE_ONLY$ Library detected but version could not be determined </ID>
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.JAR_MANIFEST$ Version extracted from JAR manifest </ID>
@@ -10,18 +9,6 @@
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.PACKAGE_ANNOTATION$ Version found via package annotation </ID>
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.USER_AGENT$ Version found via user-agent or other runtime string </ID>
     <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.VERSION_FIELD$ Version found via static VERSION field </ID>
-    <ID>EndOfSentenceFormat:InterceptionConfig.kt$InterceptionConfig.Companion$ Default configuration with no rules </ID>
-    <ID>EndOfSentenceFormat:InterceptionConfig.kt$InterceptionConfig.Companion$ Default maximum number of events to keep in the log </ID>
-    <ID>EndOfSentenceFormat:InterceptionConfig.kt$InterceptionConfig.Companion$ Maximum event log size </ID>
-    <ID>EndOfSentenceFormat:InterceptionConfig.kt$InterceptionConfig.Companion$ Minimum event log size </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionAction.BLOCK$ Block the event entirely </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionAction.DELAY$ Delay the event processing </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionAction.LOG_ONLY$ Log the event without modification </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionAction.MOCK$ Replace with mock data </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionAction.MODIFY$ Modify the event according to rule parameters </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionType.LOCATION$ Intercept location requests to mock or offset coordinates </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionType.TOUCH$ Intercept touch events to block, modify coordinates, or delay </ID>
-    <ID>EndOfSentenceFormat:InterceptionRule.kt$InterceptionType.VIEW$ Intercept view operations by ID, class, or content description </ID>
     <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.CRITICAL$ Critical severity - severe leak, requires immediate attention </ID>
     <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.HIGH$ High severity - significant leak, should be fixed soon </ID>
     <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.LOW$ Low severity - minor leak, minimal impact </ID>
@@ -35,25 +22,12 @@
     <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.DISK_WRITE$ File write operation on main thread </ID>
     <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.NETWORK$ Network operation on main thread </ID>
     <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.SLOW_CALL$ Slow method call on main thread </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.BUTTON$ Buttons and clickable elements </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.IMAGE$ ImageViews </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.INPUT$ Checkboxes, switches, radio buttons </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.LAYOUT$ ViewGroups and layout containers </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.LIST$ Lists, RecyclerViews, ScrollViews </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.OTHER$ Any other view type </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.SURFACE$ SurfaceViews, TextureViews </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.TEXT$ TextViews and EditTexts </ID>
-    <ID>EndOfSentenceFormat:ViewNode.kt$ViewType.WEB$ WebViews </ID>
     <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, input: String, output: String, algorithm: CryptoAlgorithm, mode: CipherMode, durationMs: Long, )</ID>
     <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, operation: CryptoOperation, input: String, algorithm: CryptoAlgorithm, mode: CipherMode, errorMessage: String, durationMs: Long, )</ID>
-    <ID>LongParameterList:InterceptionEvent.kt$InterceptionEvent.Companion$( ruleId: String?, ruleName: String?, provider: String, latitude: Double, longitude: Double, altitude: Double?, accuracy: Float?, action: InterceptionAction, mockLatitude: Double? = null, mockLongitude: Double? = null, )</ID>
-    <ID>LongParameterList:InterceptionEvent.kt$InterceptionEvent.Companion$( ruleId: String?, ruleName: String?, viewId: String?, viewClass: String, contentDesc: String?, action: InterceptionAction, blocked: Boolean = false, )</ID>
-    <ID>LongParameterList:InterceptionEvent.kt$InterceptionEvent.Companion$( ruleId: String?, ruleName: String?, x: Float, y: Float, touchAction: Int, action: InterceptionAction, modifiedX: Float? = null, modifiedY: Float? = null, )</ID>
     <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$16</ID>
     <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$24</ID>
     <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$32</ID>
     <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$8</ID>
-    <ID>MagicNumber:InterceptionEvent.kt$InterceptionEvent$20</ID>
     <ID>MagicNumber:MockLocation.kt$MockLocation$180.0</ID>
     <ID>MagicNumber:MockLocation.kt$MockLocation$360f</ID>
     <ID>MagicNumber:MockLocation.kt$MockLocation$90.0</ID>
@@ -66,7 +40,6 @@
     <ID>SwallowedException:WebViewRequest.kt$WebViewRequest$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CryptoConfig.kt$CryptoConfig$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WebViewRequest.kt$WebViewRequest$e: Exception</ID>
-    <ID>UnderscoresInNumericLiterals:InterceptionConfig.kt$InterceptionConfig.Companion$10000</ID>
     <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$20000</ID>
     <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$50000</ID>
     <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.NetworkPreset.WIFI$20000</ID>
@@ -84,7 +57,6 @@
     <ID>UndocumentedPublicClass:Response.kt$Response</ID>
     <ID>UndocumentedPublicClass:SecureStorageEntry.kt$SecureStorageEntry$StorageType</ID>
     <ID>UndocumentedPublicClass:TransactionSummary.kt$TransactionSummary</ID>
-    <ID>UndocumentedPublicFunction:ComposeRenderInfo.kt$ComposeRenderInfo.Companion$fun empty()</ID>
     <ID>UndocumentedPublicFunction:CookieInfo.kt$CookieInfo.SameSite.Companion$fun fromString(value: String?): SameSite?</ID>
     <ID>UndocumentedPublicFunction:DependencyInfo.kt$DependencyCategory$fun displayName(): String</ID>
     <ID>UndocumentedPublicFunction:DependencyInfo.kt$DependencySummary.Companion$fun empty()</ID>
@@ -95,14 +67,12 @@
     <ID>UndocumentedPublicFunction:SecureStorageEntry.kt$SecureStorageEntry.Companion$fun empty()</ID>
     <ID>UndocumentedPublicFunction:SecureStorageEntry.kt$SecureStorageSummary.Companion$fun empty()</ID>
     <ID>UndocumentedPublicFunction:SimulatedNotification.kt$SimulatedNotification.Companion$fun empty()</ID>
-    <ID>UndocumentedPublicFunction:ViewNode.kt$ViewBounds.Companion$fun empty(): ViewBounds</ID>
     <ID>UndocumentedPublicFunction:WebViewRequest.kt$WebViewRequestStats.Companion$fun empty()</ID>
     <ID>UndocumentedPublicFunction:WebViewRequest.kt$WebViewRequestStats.Companion$fun from(requests: List&lt;WebViewRequest&gt;): WebViewRequestStats</ID>
     <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val isNullable: Boolean</ID>
     <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val isPrimaryKey: Boolean</ID>
     <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val name: String</ID>
     <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val type: String</ID>
-    <ID>UndocumentedPublicProperty:ComposeRenderInfo.kt$ComposeRenderStats.Companion$val EMPTY = ComposeRenderStats( totalComposables = 0, totalRecompositions = 0, averageRecomposeRatio = 0f, slowestComposable = null, mostRecomposed = null, )</ID>
     <ID>UndocumentedPublicProperty:CookieInfo.kt$CookieDomain$val cookieCount: Int get() = cookies.size</ID>
     <ID>UndocumentedPublicProperty:CookieInfo.kt$CookieDomain$val cookies: List&lt;CookieInfo&gt;</ID>
     <ID>UndocumentedPublicProperty:CookieInfo.kt$CookieDomain$val domain: String</ID>
@@ -229,39 +199,6 @@
     <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val parentPath: String?</ID>
     <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val path: String</ID>
     <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val sizeBytes: Long</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$// Detail keys for LOCATION events const val DETAIL_LOCATION_PROVIDER = "location_provider"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$// Detail keys for TOUCH events const val DETAIL_TOUCH_X = "touch_x"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$// Detail keys for VIEW events const val DETAIL_VIEW_ID = "view_id"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_ACCURACY = "location_accuracy"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_ALTITUDE = "location_altitude"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_LAT = "location_lat"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_LNG = "location_lng"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_MOCK_LAT = "location_mock_lat"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_LOCATION_MOCK_LNG = "location_mock_lng"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_TOUCH_ACTION = "touch_action"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_TOUCH_MODIFIED_X = "touch_modified_x"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_TOUCH_MODIFIED_Y = "touch_modified_y"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_TOUCH_POINTER_ID = "touch_pointer_id"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_TOUCH_Y = "touch_y"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_VIEW_ACTION = "view_action"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_VIEW_CLASS = "view_class"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionEvent.kt$InterceptionEvent.Companion$const val DETAIL_VIEW_CONTENT_DESC = "view_content_desc"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$// Parameter keys for LOCATION interception const val PARAM_MOCK_LATITUDE = "mock_latitude"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$// Parameter keys for TOUCH interception const val PARAM_TOUCH_OFFSET_X = "touch_offset_x"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$// Parameter keys for VIEW interception const val PARAM_VIEW_ID_PATTERN = "view_id_pattern"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_CONTENT_DESC_PATTERN = "content_desc_pattern"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_LOCATION_OFFSET_LAT = "location_offset_lat"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_LOCATION_OFFSET_LNG = "location_offset_lng"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_MOCK_ACCURACY = "mock_accuracy"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_MOCK_ALTITUDE = "mock_altitude"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_MOCK_LONGITUDE = "mock_longitude"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_AREA_BOTTOM = "touch_area_bottom"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_AREA_LEFT = "touch_area_left"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_AREA_RIGHT = "touch_area_right"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_AREA_TOP = "touch_area_top"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_DELAY_MS = "touch_delay_ms"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_TOUCH_OFFSET_Y = "touch_offset_y"</ID>
-    <ID>UndocumentedPublicProperty:InterceptionRule.kt$InterceptionRule.Companion$const val PARAM_VIEW_CLASS_PATTERN = "view_class_pattern"</ID>
     <ID>UndocumentedPublicProperty:LogEntry.kt$LogLevel$val priority: Int</ID>
     <ID>UndocumentedPublicProperty:LogEntry.kt$LogLevel$val tag: String</ID>
     <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val durationMs: Long? = null</ID>
@@ -336,12 +273,6 @@
     <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val status: TransactionStatus</ID>
     <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val timestamp: EpochMillis</ID>
     <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val tookMs: Long?</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val bottom: Int</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val height: Int get() = bottom - top</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val left: Int</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val right: Int</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val top: Int</ID>
-    <ID>UndocumentedPublicProperty:ViewNode.kt$ViewBounds$val width: Int get() = right - left</ID>
     <ID>UndocumentedPublicProperty:WebViewRequest.kt$WebViewResourceType$val description: String</ID>
     <ID>UndocumentedPublicProperty:WebViewRequest.kt$WebViewResourceType$val displayName: String</ID>
     <ID>UnnecessaryParentheses:WebViewRequest.kt$WebViewRequest$(statusCode != null &amp;&amp; statusCode !in 200..399)</ID>

@@ -33,6 +33,7 @@ import java.util.Enumeration
  *
  * @param context Application context
  */
+@Suppress("TooManyFunctions")
 class DependenciesInspectorEngine(
     @Suppress("unused") private val context: Context,
 ) {

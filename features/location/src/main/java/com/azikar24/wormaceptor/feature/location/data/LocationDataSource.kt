@@ -5,6 +5,7 @@
 package com.azikar24.wormaceptor.feature.location.data
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -15,7 +16,10 @@ import com.azikar24.wormaceptor.domain.entities.MockLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+
+private const val TAG = "LocationDataSource"
 
 private val Context.locationDataStore: DataStore<Preferences> by preferencesDataStore(
     name = "wormaceptor_location_presets",
@@ -174,7 +178,8 @@ class LocationDataSource(private val context: Context) {
                     isBuiltIn = false,
                 )
             }
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
+            Log.d(TAG, "Failed to parse user presets JSON", e)
             emptyList()
         }
     }
@@ -205,7 +210,8 @@ class LocationDataSource(private val context: Context) {
                 timestamp = obj.optLong("timestamp", System.currentTimeMillis()),
                 name = obj.optString("name", null),
             )
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
+            Log.d(TAG, "Failed to parse mock location JSON", e)
             null
         }
     }

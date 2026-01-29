@@ -62,6 +62,7 @@ import java.lang.ref.WeakReference
  * engine.hide()
  * ```
  */
+@Suppress("TooManyFunctions")
 class PerformanceOverlayEngine(
     private val context: Context,
 ) : KoinComponent, LifecycleOwner, SavedStateRegistryOwner {
@@ -79,16 +80,16 @@ class PerformanceOverlayEngine(
     // Activity lifecycle observer - keeps overlay visible across activities
     private var applicationRef: WeakReference<Application>? = null
     private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-        override fun onActivityStarted(activity: Activity) {}
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityStarted(activity: Activity) = Unit
         override fun onActivityResumed(activity: Activity) {
             // Update activity reference to the currently resumed activity
             activityRef = WeakReference(activity)
         }
-        override fun onActivityPaused(activity: Activity) {}
-        override fun onActivityStopped(activity: Activity) {}
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-        override fun onActivityDestroyed(activity: Activity) {}
+        override fun onActivityPaused(activity: Activity) = Unit
+        override fun onActivityStopped(activity: Activity) = Unit
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivityDestroyed(activity: Activity) = Unit
     }
     private var isLifecycleCallbacksRegistered = false
 

@@ -80,9 +80,9 @@ import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import org.koin.java.KoinJavaComponent.get
 
 /**
@@ -90,13 +90,13 @@ import org.koin.java.KoinJavaComponent.get
  */
 private object CategoryHelper {
     fun forCategory(name: String): Color = when (name.lowercase()) {
-        "inspection" -> WormaCeptorColors.CategoryColors.Inspection
-        "performance" -> WormaCeptorColors.CategoryColors.Performance
-        "network" -> WormaCeptorColors.CategoryColors.Network
-        "simulation" -> WormaCeptorColors.CategoryColors.Simulation
-        "core" -> WormaCeptorColors.CategoryColors.Core
-        "favorites" -> WormaCeptorColors.CategoryColors.Favorites
-        else -> WormaCeptorColors.CategoryColors.Fallback
+        "inspection" -> WormaCeptorColors.Category.Inspection
+        "performance" -> WormaCeptorColors.Category.Performance
+        "network" -> WormaCeptorColors.Category.Network
+        "simulation" -> WormaCeptorColors.Category.Simulation
+        "core" -> WormaCeptorColors.Category.Core
+        "favorites" -> WormaCeptorColors.Category.Favorites
+        else -> WormaCeptorColors.Category.Fallback
     }
 
     fun iconForCategory(name: String): ImageVector = when (name.lowercase()) {
@@ -272,7 +272,7 @@ private fun FavoritesStrip(
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
-                tint = WormaCeptorColors.CategoryColors.Favorites,
+                tint = WormaCeptorColors.Category.Favorites,
                 modifier = Modifier.size(16.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -599,7 +599,7 @@ private fun ToolTile(
                         .align(Alignment.TopEnd)
                         .padding(6.dp)
                         .size(12.dp),
-                    tint = WormaCeptorColors.CategoryColors.Favorites,
+                    tint = WormaCeptorColors.Category.Favorites,
                 )
             }
         }
@@ -699,7 +699,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .size(36.dp)
                         .background(
-                            color = WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.15f),
+                            color = WormaCeptorColors.Category.Performance.copy(alpha = 0.15f),
                             shape = RoundedCornerShape(8.dp),
                         ),
                     contentAlignment = Alignment.Center,
@@ -708,7 +708,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                         imageVector = Icons.Default.Speed,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = WormaCeptorColors.CategoryColors.Performance,
+                        tint = WormaCeptorColors.Category.Performance,
                     )
                 }
 
@@ -802,17 +802,17 @@ private fun MetricToggleChip(
 ) {
     val backgroundColor = when {
         !enabled -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-        isEnabled -> WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.15f)
+        isEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
         else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     }
     val borderColor = when {
         !enabled -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        isEnabled -> WormaCeptorColors.CategoryColors.Performance.copy(alpha = 0.4f)
+        isEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.4f)
         else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
     }
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-        isEnabled -> WormaCeptorColors.CategoryColors.Performance
+        isEnabled -> WormaCeptorColors.Category.Performance
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 

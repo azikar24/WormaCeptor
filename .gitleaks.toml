@@ -1,0 +1,86 @@
+# =============================================================================
+# Gitleaks Configuration for WormaCeptor
+# =============================================================================
+# This file configures secret detection for the repository.
+# Gitleaks scans for accidentally committed secrets like API keys, passwords,
+# and tokens.
+#
+# Documentation: https://github.com/gitleaks/gitleaks#configuration
+# =============================================================================
+
+title = "WormaCeptor Gitleaks Configuration"
+
+# Use the default rules as a base
+[extend]
+useDefault = true
+
+# =============================================================================
+# Allowlist - Files/paths that should be ignored
+# =============================================================================
+[allowlist]
+  description = "Allowlisted files and patterns"
+
+  # Paths to ignore (regex)
+  paths = [
+    # Test files with mock/fake credentials
+    '''(?i).*test.*''',
+    '''(?i).*androidTest.*''',
+
+    # Generated files
+    '''.*\.generated\..*''',
+    '''.*/build/.*''',
+
+    # Documentation with example credentials
+    '''.*\.md$''',
+
+    # Gradle files (version catalogs, build configs)
+    '''.*\.toml$''',
+
+    # Lock files
+    '''.*\.lock$''',
+
+    # This config file itself
+    '''\.gitleaks\.toml$''',
+  ]
+
+  # Specific commits to ignore (if needed)
+  # commits = [
+  #   "commit-sha-here",
+  # ]
+
+  # Regex patterns to ignore
+  regexes = [
+    # Example placeholder values
+    '''(?i)example|placeholder|your[-_]?key|insert[-_]?here''',
+
+    # Common false positives in Android projects
+    '''(?i)signing[-_]?key[-_]?alias''',
+
+    # Base64-encoded placeholder images
+    '''data:image/[a-z]+;base64,''',
+  ]
+
+# =============================================================================
+# Custom Rules (if needed)
+# =============================================================================
+# Add custom detection rules here
+
+# Example: Detect custom API key format
+# [[rules]]
+#   id = "custom-api-key"
+#   description = "Custom API Key"
+#   regex = '''CUSTOM_[A-Z0-9]{32}'''
+#   secretGroup = 0
+#   keywords = ["custom"]
+
+# =============================================================================
+# Rule Overrides
+# =============================================================================
+# Disable specific default rules if needed
+
+# Example: Disable a noisy rule
+# [[rules]]
+#   id = "generic-api-key"
+#   description = "Generic API Key (disabled)"
+#   regex = '''(?i)disabled'''
+#   allowlist.regexes = ['.*']

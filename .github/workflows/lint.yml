@@ -1,4 +1,4 @@
-name: Lint
+name: Code Quality
 
 on:
   pull_request:
@@ -7,34 +7,31 @@ on:
     branches: [master, main]
 
 concurrency:
-  group: lint-${{ github.ref }}
+  group: code-quality-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  detekt:
+  # ==========================================================================
+  # Secret Scanning - Runs first to catch leaked credentials immediately
+  # ==========================================================================
+  secret-scan:
+    name: Secret Scanning
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          fetch-depth: 0 # Full history for comprehensive scan
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Scan for secrets with Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Detekt
-        run: ./gradlew detekt
-
-      - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: build/reports/detekt/detekt.sarif
-
+  # ==========================================================================
+  # Code Formatting Check
+  # ==========================================================================
   spotless:
+    name: Formatting (Spotless)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +48,45 @@ jobs:
       - name: Check Formatting
         run: ./gradlew spotlessCheck
 
+  # ==========================================================================
+  # Static Analysis
+  # ==========================================================================
+  detekt:
+    name: Static Analysis (Detekt)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run Detekt
+        run: ./gradlew detekt
+
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: build/reports/detekt/detekt.sarif
+
+      - name: Upload Detekt Report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: detekt-report
+          path: build/reports/detekt/
+
+  # ==========================================================================
+  # Android Lint
+  # ==========================================================================
   android-lint:
+    name: Android Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -74,3 +109,215 @@ jobs:
         with:
           name: lint-results
           path: '**/build/reports/lint-results*.html'
+
+  # ==========================================================================
+  # Dependency Vulnerability Scanning
+  # ==========================================================================
+  dependency-check:
+    name: Dependency Security (OWASP)
+    runs-on: ubuntu-latest
+    # Run on main branch and PRs, but don't block PRs (informational)
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Cache OWASP NVD Database
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/dependency-check-data
+          key: owasp-nvd-${{ runner.os }}-${{ hashFiles('**/libs.versions.toml') }}
+          restore-keys: |
+            owasp-nvd-${{ runner.os }}-
+
+      - name: Run OWASP Dependency Check
+        run: ./gradlew dependencyCheckAnalyze
+        env:
+          # Optional: NVD API key for faster updates (get from https://nvd.nist.gov/developers/request-an-api-key)
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+      - name: Upload OWASP Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: owasp-dependency-check
+          path: build/reports/dependency-check/
+
+      - name: Upload SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: build/reports/dependency-check/dependency-check-report.sarif
+
+  # ==========================================================================
+  # Dependency Analysis (Unused/Misused Dependencies)
+  # ==========================================================================
+  dependency-analysis:
+    name: Dependency Analysis
+    runs-on: ubuntu-latest
+    continue-on-error: true # Informational, don't block PRs
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Analyze Dependencies
+        run: ./gradlew buildHealth
+
+      - name: Upload Dependency Analysis Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-analysis
+          path: build/reports/dependency-analysis/
+
+  # ==========================================================================
+  # API Compatibility Check (for library modules)
+  # ==========================================================================
+  api-compatibility:
+    name: API Compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Check API Compatibility
+        run: ./gradlew apiCheck
+
+  # ==========================================================================
+  # Code Coverage
+  # ==========================================================================
+  coverage:
+    name: Code Coverage (Kover)
+    runs-on: ubuntu-latest
+    continue-on-error: true # Don't block PRs initially
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run Tests with Coverage
+        run: ./gradlew koverXmlReport
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: build/reports/kover/
+
+      # Optional: Upload to Codecov
+      # - name: Upload to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     files: build/reports/kover/report.xml
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ==========================================================================
+  # Architecture Tests
+  # ==========================================================================
+  architecture:
+    name: Architecture Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run Architecture Tests
+        run: ./gradlew :test:architecture:test
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: architecture-test-results
+          path: test/architecture/build/reports/tests/
+
+  # ==========================================================================
+  # Summary Job - Requires all critical checks to pass
+  # ==========================================================================
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    needs:
+      - secret-scan
+      - spotless
+      - detekt
+      - android-lint
+      - api-compatibility
+      - architecture
+    if: always()
+    steps:
+      - name: Check all required jobs
+        run: |
+          echo "Checking job results..."
+
+          if [[ "${{ needs.secret-scan.result }}" != "success" ]]; then
+            echo "Secret scanning failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.spotless.result }}" != "success" ]]; then
+            echo "Formatting check failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.detekt.result }}" != "success" ]]; then
+            echo "Static analysis failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.android-lint.result }}" != "success" ]]; then
+            echo "Android Lint failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.api-compatibility.result }}" != "success" ]]; then
+            echo "API compatibility check failed!"
+            exit 1
+          fi
+
+          if [[ "${{ needs.architecture.result }}" != "success" ]]; then
+            echo "Architecture tests failed!"
+            exit 1
+          fi
+
+          echo "All quality checks passed!"

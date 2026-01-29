@@ -32,32 +32,6 @@
             </intent-filter>
 
         </activity>
-
-        <!-- Feature test activities -->
-        <activity
-            android:name=".LocationTestActivity"
-            android:exported="false"
-            android:theme="@style/Theme.WormaCeptor" />
-
-        <activity
-            android:name=".CookiesTestActivity"
-            android:exported="false"
-            android:theme="@style/Theme.WormaCeptor" />
-
-        <activity
-            android:name=".WebViewTestActivity"
-            android:exported="false"
-            android:theme="@style/Theme.WormaCeptor" />
-
-        <activity
-            android:name=".SecureStorageTestActivity"
-            android:exported="false"
-            android:theme="@style/Theme.WormaCeptor" />
-
-        <activity
-            android:name=".ComposeRenderTestActivity"
-            android:exported="false"
-            android:theme="@style/Theme.WormaCeptor" />
     </application>
 
 </manifest>

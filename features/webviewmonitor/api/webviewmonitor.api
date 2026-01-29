@@ -1,0 +1,59 @@
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ComposableSingletons$WebViewMonitorFeatureKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ComposableSingletons$WebViewMonitorFeatureKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public static field lambda-7 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-7$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;
+	public final fun createEngine (I)Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;
+	public static synthetic fun createEngine$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeatureKt {
+	public static final fun WebViewMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WebViewMonitor (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)V
+	public final fun clearFilters ()V
+	public final fun clearRequests ()V
+	public final fun clearSelection ()V
+	public final fun getFilteredRequests ()Ljava/util/List;
+	public final fun getRequests ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getResourceTypeFilter ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedRequest ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getShowFilters ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isEnabled ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun selectRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;)V
+	public final fun setSearchQuery (Ljava/lang/String;)V
+	public final fun toggleEnabled ()V
+	public final fun toggleFilters ()V
+	public final fun toggleResourceTypeFilter (Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+

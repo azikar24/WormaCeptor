@@ -10,15 +10,34 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +50,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
@@ -186,7 +206,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         label = "Fast (<100ms)",
                         count = fastCount,
                         total = totalRequests,
-                        color = Color(0xFF10B981),
+                        color = WormaCeptorColors.Chart.Fast,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
@@ -194,7 +214,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         label = "Medium (100-500ms)",
                         count = mediumCount,
                         total = totalRequests,
-                        color = Color(0xFFF59E0B),
+                        color = WormaCeptorColors.Chart.Medium,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
@@ -202,7 +222,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         label = "Slow (>500ms)",
                         count = slowCount,
                         total = totalRequests,
-                        color = Color(0xFFEF4444),
+                        color = WormaCeptorColors.Chart.Slow,
                     )
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
@@ -219,7 +239,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             label = "2xx Success",
                             count = status2xx,
                             total = totalRequests,
-                            color = Color(0xFF10B981),
+                            color = WormaCeptorColors.Chart.Success2xx,
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
@@ -229,7 +249,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             label = "3xx Redirect",
                             count = status3xx,
                             total = totalRequests,
-                            color = Color(0xFF3B82F6),
+                            color = WormaCeptorColors.Chart.Redirect3xx,
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
@@ -239,7 +259,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             label = "4xx Client Error",
                             count = status4xx,
                             total = totalRequests,
-                            color = Color(0xFFF59E0B),
+                            color = WormaCeptorColors.Chart.ClientError4xx,
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
@@ -249,7 +269,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             label = "5xx Server Error",
                             count = status5xx,
                             total = totalRequests,
-                            color = Color(0xFFEF4444),
+                            color = WormaCeptorColors.Chart.ServerError5xx,
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
@@ -369,11 +389,11 @@ private fun CircularSuccessMetric(label: String, percentage: Float) {
                 )
             }
 
-            // Progress circle
+            // Progress circle - use semantic colors
             val color = when {
-                animatedPercentage >= 90 -> Color(0xFF10B981)
-                animatedPercentage >= 70 -> Color(0xFFF59E0B)
-                else -> Color(0xFFEF4444)
+                animatedPercentage >= 90 -> WormaCeptorColors.Chart.Fast
+                animatedPercentage >= 70 -> WormaCeptorColors.Chart.Medium
+                else -> WormaCeptorColors.Chart.Slow
             }
 
             Canvas(modifier = Modifier.size(64.dp)) {

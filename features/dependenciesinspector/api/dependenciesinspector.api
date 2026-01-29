@@ -1,0 +1,131 @@
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeature;
+	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)Lcom/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeatureKt {
+	public static final fun DependenciesInspector (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/ComposableSingletons$DependenciesInspectorScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/ComposableSingletons$DependenciesInspectorScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/DependenciesInspectorScreenKt {
+	public static final fun DependenciesInspectorScreen (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/DependencySummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyInfo;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun colorForCategory-vNxB06k (Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;)J
+	public final fun colorForConfidence-vNxB06k (Ljava/lang/String;)J
+	public final fun component1-0d7_KjU ()J
+	public final fun component10-0d7_KjU ()J
+	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component13-0d7_KjU ()J
+	public final fun component14-0d7_KjU ()J
+	public final fun component15-0d7_KjU ()J
+	public final fun component16-0d7_KjU ()J
+	public final fun component17-0d7_KjU ()J
+	public final fun component18-0d7_KjU ()J
+	public final fun component19-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component20-0d7_KjU ()J
+	public final fun component21-0d7_KjU ()J
+	public final fun component22-0d7_KjU ()J
+	public final fun component23-0d7_KjU ()J
+	public final fun component24-0d7_KjU ()J
+	public final fun component25-0d7_KjU ()J
+	public final fun component26-0d7_KjU ()J
+	public final fun component27-0d7_KjU ()J
+	public final fun component28-0d7_KjU ()J
+	public final fun component29-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component30-0d7_KjU ()J
+	public final fun component31-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy-Y2hkOno (JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;
+	public static synthetic fun copy-Y2hkOno$default (Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnalytics-0d7_KjU ()J
+	public final fun getAndroidx-0d7_KjU ()J
+	public final fun getCardBackground-0d7_KjU ()J
+	public final fun getChipBackground-0d7_KjU ()J
+	public final fun getDatabase-0d7_KjU ()J
+	public final fun getDependencyInjection-0d7_KjU ()J
+	public final fun getDivider-0d7_KjU ()J
+	public final fun getHighConfidence-0d7_KjU ()J
+	public final fun getImageLoading-0d7_KjU ()J
+	public final fun getKotlin-0d7_KjU ()J
+	public final fun getLabelPrimary-0d7_KjU ()J
+	public final fun getLabelSecondary-0d7_KjU ()J
+	public final fun getLink-0d7_KjU ()J
+	public final fun getLogging-0d7_KjU ()J
+	public final fun getLowConfidence-0d7_KjU ()J
+	public final fun getMediumConfidence-0d7_KjU ()J
+	public final fun getNetworking-0d7_KjU ()J
+	public final fun getOther-0d7_KjU ()J
+	public final fun getPrimary-0d7_KjU ()J
+	public final fun getReactive-0d7_KjU ()J
+	public final fun getSearchBackground-0d7_KjU ()J
+	public final fun getSecurity-0d7_KjU ()J
+	public final fun getSelectedChipBackground-0d7_KjU ()J
+	public final fun getSerialization-0d7_KjU ()J
+	public final fun getTesting-0d7_KjU ()J
+	public final fun getUiFramework-0d7_KjU ()J
+	public final fun getUtility-0d7_KjU ()J
+	public final fun getValuePrimary-0d7_KjU ()J
+	public final fun getVersionDetected-0d7_KjU ()J
+	public final fun getVersionText-0d7_KjU ()J
+	public final fun getVersionUnknown-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColorsKt {
+	public static final fun dependenciesInspectorColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;
+	public static final fun getDarkDependenciesInspectorColors ()Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;
+	public static final fun getLightDependenciesInspectorColors ()Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/theme/DependenciesInspectorColors;
+	public static final fun shortLabel (Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;)Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/vm/DependenciesInspectorViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)V
+	public final fun dismissDetail ()V
+	public final fun exportAsText ()Ljava/lang/String;
+	public final fun getError ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFilteredDependencies ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedCategory ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedDependency ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getShowVersionedOnly ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSummary ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun refresh ()V
+	public final fun selectDependency (Lcom/azikar24/wormaceptor/domain/entities/DependencyInfo;)V
+	public final fun setSearchQuery (Ljava/lang/String;)V
+	public final fun setSelectedCategory (Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;)V
+	public final fun setShowVersionedOnly (Z)V
+}
+

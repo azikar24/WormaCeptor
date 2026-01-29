@@ -55,9 +55,9 @@ dependencies {
     implementation(libs.androidx.multidex)
 
     implementation(project(":api:client"))
+    implementation(project(":core:ui")) // Used in main source set
+    implementation(project(":core:engine")) // Used in main source set for sample services
     debugImplementation(project(":api:impl:persistence"))
-    debugImplementation(project(":core:engine"))
-    debugImplementation(project(":core:ui"))
     debugImplementation(libs.koin.android)
 
     // Feature modules for testing
@@ -79,13 +79,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.navigation.compose)
 
     // Security crypto for EncryptedSharedPreferences testing
-    debugImplementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.security.crypto)
 
     // Preferences for osmdroid configuration
     implementation("androidx.preference:preference-ktx:1.2.1")
 
     // osmdroid for location map
-    debugImplementation(libs.osmdroid.android)
+    implementation(libs.osmdroid.android)
 }

@@ -1,0 +1,29 @@
+public final class com/azikar24/wormaceptor/infra/parser/protobuf/ProtobufBodyParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/protobuf/ProtobufBodyParser$Companion;
+	public fun <init> ()V
+	public fun canParse (Ljava/lang/String;[B)Z
+	public fun getPriority ()I
+	public fun getSupportedContentTypes ()Ljava/util/List;
+	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/protobuf/ProtobufBodyParser$Companion {
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/protobuf/ProtobufField {
+	public fun <init> (IILjava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (IILjava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/parser/protobuf/ProtobufField;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/parser/protobuf/ProtobufField;IILjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/parser/protobuf/ProtobufField;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFieldNumber ()I
+	public final fun getValue ()Ljava/lang/String;
+	public final fun getWireType ()I
+	public final fun getWireTypeName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

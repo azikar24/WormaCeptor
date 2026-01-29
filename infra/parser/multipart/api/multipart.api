@@ -1,0 +1,30 @@
+public final class com/azikar24/wormaceptor/infra/parser/multipart/MultipartBodyParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public fun <init> ()V
+	public fun canParse (Ljava/lang/String;[B)Z
+	public fun getPriority ()I
+	public fun getSupportedContentTypes ()Ljava/util/List;
+	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public final fun parseWithContentType (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+}
+
+public final class com/azikar24/wormaceptor/infra/parser/multipart/MultipartPart {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Z)Lcom/azikar24/wormaceptor/infra/parser/multipart/MultipartPart;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/parser/multipart/MultipartPart;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/parser/multipart/MultipartPart;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getContentType ()Ljava/lang/String;
+	public final fun getFilename ()Ljava/lang/String;
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isBinary ()Z
+	public fun toString ()Ljava/lang/String;
+}
+

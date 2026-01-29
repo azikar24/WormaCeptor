@@ -5,7 +5,6 @@
 package com.azikar24.wormaceptorapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,8 +40,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
+import com.azikar24.wormaceptorapp.screens.ComposeRenderTestScreen
+import com.azikar24.wormaceptorapp.screens.CookiesTestScreen
+import com.azikar24.wormaceptorapp.screens.LocationTestScreen
+import com.azikar24.wormaceptorapp.screens.SecureStorageTestScreen
+import com.azikar24.wormaceptorapp.screens.WebViewTestScreen
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ShowcaseTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ToolStatus
@@ -98,6 +106,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel()) {
         val scope = rememberCoroutineScope()
+        val navController = rememberNavController()
         var showCrashDialog by remember { mutableStateOf(false) }
         var isGlitchEffectActive by remember { mutableStateOf(false) }
         var glitchProgress by remember { mutableFloatStateOf(0f) }
@@ -128,22 +137,49 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         WormaCeptorMainTheme {
-            GlitchMeltdownEffect(
-                isActive = isGlitchEffectActive,
-                progress = glitchProgress,
-                modifier = Modifier.fillMaxSize(),
+            NavHost(
+                navController = navController,
+                startDestination = TestToolsRoutes.HOME,
             ) {
-                Scaffold(
-                    containerColor = MaterialTheme.colorScheme.background,
-                ) { _ ->
-                    ShowcaseTab(
-                        onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
-                        onTestToolsClick = { showTestToolsSheet = true },
-                        onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
+                composable(TestToolsRoutes.HOME) {
+                    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+                    GlitchMeltdownEffect(
+                        isActive = isGlitchEffectActive,
+                        progress = glitchProgress,
                         modifier = Modifier.fillMaxSize(),
-                    )
+                    ) {
+                        Scaffold(
+                            containerColor = MaterialTheme.colorScheme.background,
+                        ) { _ ->
+                            ShowcaseTab(
+                                onLaunchClick = { viewModel.startWormaCeptor(this@MainActivity) },
+                                onTestToolsClick = { showTestToolsSheet = true },
+                                onGitHubClick = { viewModel.goToGithub(this@MainActivity) },
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
+                    }
+                }
+
+                composable(TestToolsRoutes.LOCATION) {
+                    LocationTestScreen(onBack = { navController.popBackStack() })
+                }
+
+                composable(TestToolsRoutes.COOKIES) {
+                    CookiesTestScreen(onBack = { navController.popBackStack() })
+                }
+
+                composable(TestToolsRoutes.WEBVIEW) {
+                    WebViewTestScreen(onBack = { navController.popBackStack() })
+                }
+
+                composable(TestToolsRoutes.SECURE_STORAGE) {
+                    SecureStorageTestScreen(onBack = { navController.popBackStack() })
+                }
+
+                composable(TestToolsRoutes.COMPOSE_RENDER) {
+                    ComposeRenderTestScreen(onBack = { navController.popBackStack() })
                 }
             }
 
@@ -198,41 +234,30 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         onLocationClick = {
-                            startActivity(
-                                Intent(this@MainActivity, LocationTestActivity::class.java),
-                            )
+                            showTestToolsSheet = false
+                            navController.navigate(TestToolsRoutes.LOCATION)
                         },
                         onCookiesClick = {
-                            startActivity(
-                                Intent(this@MainActivity, CookiesTestActivity::class.java),
-                            )
+                            showTestToolsSheet = false
+                            navController.navigate(TestToolsRoutes.COOKIES)
                         },
                         onWebViewClick = {
-                            startActivity(
-                                Intent(this@MainActivity, WebViewTestActivity::class.java),
-                            )
+                            showTestToolsSheet = false
+                            navController.navigate(TestToolsRoutes.WEBVIEW)
                         },
                         onSecureStorageClick = {
-                            startActivity(
-                                Intent(
-                                    this@MainActivity,
-                                    SecureStorageTestActivity::class.java,
-                                ),
-                            )
+                            showTestToolsSheet = false
+                            navController.navigate(TestToolsRoutes.SECURE_STORAGE)
                         },
                         onComposeRenderClick = {
-                            startActivity(
-                                Intent(
-                                    this@MainActivity,
-                                    ComposeRenderTestActivity::class.java,
-                                ),
-                            )
+                            showTestToolsSheet = false
+                            navController.navigate(TestToolsRoutes.COMPOSE_RENDER)
                         },
-                        modifier = Modifier.padding(bottom = 16.dp),
                         apiTestStatus = apiTestStatus,
                         webSocketStatus = webSocketStatus,
                         leakStatus = leakStatus,
                         threadViolationStatus = threadViolationStatus,
+                        modifier = Modifier.padding(bottom = 16.dp),
                     )
                 }
             }

@@ -4,31 +4,89 @@
   <CurrentIssues>
     <ID>ClassOrdering:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$Companion</ID>
     <ID>CyclomaticComplexMethod:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private fun addTransactionToCursor(cursor: MatrixCursor, item: Any)</ID>
-    <ID>CyclomaticComplexMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$private fun isBinaryByMagicBytes(data: ByteArray): Boolean</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${ }</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${}</ID>
+    <ID>EndOfSentenceFormat:Feature.kt$Feature.Companion$ All available features </ID>
+    <ID>EndOfSentenceFormat:Feature.kt$Feature.Companion$ Core features that are always available in overflow menu </ID>
+    <ID>EndOfSentenceFormat:Feature.kt$Feature.Companion$ Default enabled features (all features enabled by default) </ID>
+    <ID>EndOfSentenceFormat:ServiceProvider.kt$ServiceProvider$* Internal interface to be implemented by WormaCeptor implementation modules (persistence, no-op, etc.)</ID>
     <ID>LateinitUsage:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private lateinit var uriMatcher: UriMatcher</ID>
     <ID>LongMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
     <ID>LongParameterList:ServiceProvider.kt$ServiceProvider$( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long, protocol: String?, tlsVersion: String?, error: String?, )</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$10</ID>
+    <ID>MagicNumber:RedactionConfig.kt$RedactionConfig$3</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x03</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x04</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x25</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x38</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x42</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x44</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x45</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x46</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x47</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x49</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4B</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4D</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4E</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x50</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x52</ID>
+    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x57</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$1000L</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$11</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$12</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$24</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$250_000L</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$3</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$30</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$60</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$7</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$8</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$9</ID>
-    <ID>NestedBlockDepth:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
-    <ID>PrintStackTrace:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e</ID>
     <ID>SwallowedException:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: NoSuchFieldException</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e: Exception</ID>
+    <ID>TooManyFunctions:WormaCeptorApi.kt$WormaCeptorApi</ID>
+    <ID>UndocumentedPublicClass:WormaCeptorApi.kt$WormaCeptorApi</ID>
+    <ID>UndocumentedPublicClass:WormaCeptorInterceptor.kt$WormaCeptorInterceptor : Interceptor</ID>
+    <ID>UndocumentedPublicClass:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$Period</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun cleanup(threshold: Long)</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun clearTransactions()</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun completeTransaction( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long, protocol: String?, tlsVersion: String?, error: String?, )</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun getAllTransactions(): List&lt;Any&gt;</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun getLaunchIntent(context: Context): Intent</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun getTransaction(id: String): Any?</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun getTransactionCount(): Int</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean = true)</ID>
+    <ID>UndocumentedPublicFunction:ServiceProvider.kt$ServiceProvider$fun startTransaction( url: String, method: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long, ): UUID?</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorApi.kt$WormaCeptorApi$fun getLaunchIntent(context: Context): Intent</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorApi.kt$WormaCeptorApi$fun startActivityOnShake(activity: ComponentActivity)</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun maxContentLength(length: Long): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun redactBody(pattern: String): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun redactHeader(name: String): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun redactJsonValue(key: String): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun redactXmlValue(tag: String): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun retainDataFor(period: Period): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$fun showNotification(show: Boolean): WormaCeptorInterceptor</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val code: Int?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val contentType: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val duration: Long?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val error: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val extensions: Map&lt;String, String&gt; = emptyMap()</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val host: String</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val id: String</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val method: String</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val path: String</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val protocol: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val requestBody: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val requestHeaders: Map&lt;String, List&lt;String&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val requestSize: Long</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val responseBody: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val responseHeaders: Map&lt;String, List&lt;String&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val responseMessage: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val responseSize: Long</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val status: String</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val tlsVersion: String?</ID>
+    <ID>UndocumentedPublicProperty:ServiceProvider.kt$TransactionDetailDto$val url: String</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorApi.kt$WormaCeptorApi$val redactionConfig = RedactionConfig()</ID>
   </CurrentIssues>
 </SmellBaseline>

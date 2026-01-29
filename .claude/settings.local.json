@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(./gradlew :core:engine:compileDebugKotlin:*)"
+      "Bash(./gradlew :core:engine:compileDebugKotlin:*)",
+      "Bash(./gradlew:*)"
     ]
   },
   "enabledPlugins": {

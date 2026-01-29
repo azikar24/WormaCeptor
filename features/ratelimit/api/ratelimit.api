@@ -1,0 +1,104 @@
+public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/RateLimitFeature;
+	public final fun createEngine ()Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)Lcom/azikar24/wormaceptor/feature/ratelimit/RateLimitViewModelFactory;
+	public final fun getInterceptor (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)Lokhttp3/Interceptor;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitFeatureKt {
+	public static final fun RateLimiter (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun RateLimiter (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingletons$RateLimitScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingletons$RateLimitScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$ratelimit_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/ui/RateLimitScreenKt {
+	public static final fun RateLimitScreen (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component10-0d7_KjU ()J
+	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component13-0d7_KjU ()J
+	public final fun component14-0d7_KjU ()J
+	public final fun component15-0d7_KjU ()J
+	public final fun component16-0d7_KjU ()J
+	public final fun component17-0d7_KjU ()J
+	public final fun component18-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy-58FyvDQ (JJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+	public static synthetic fun copy-58FyvDQ$default (Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;JJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCardBackground-0d7_KjU ()J
+	public final fun getDisabled-0d7_KjU ()J
+	public final fun getDownload-0d7_KjU ()J
+	public final fun getEnabled-0d7_KjU ()J
+	public final fun getLabelPrimary-0d7_KjU ()J
+	public final fun getLabelSecondary-0d7_KjU ()J
+	public final fun getLatency-0d7_KjU ()J
+	public final fun getPacketLoss-0d7_KjU ()J
+	public final fun getPreset2G-0d7_KjU ()J
+	public final fun getPreset3G-0d7_KjU ()J
+	public final fun getPresetEdge-0d7_KjU ()J
+	public final fun getPresetOffline-0d7_KjU ()J
+	public final fun getPresetWifi-0d7_KjU ()J
+	public final fun getPrimary-0d7_KjU ()J
+	public final fun getSliderThumb-0d7_KjU ()J
+	public final fun getSliderTrack-0d7_KjU ()J
+	public final fun getUpload-0d7_KjU ()J
+	public final fun getValuePrimary-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColorsKt {
+	public static final fun getDarkRateLimitColors ()Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+	public static final fun getLightRateLimitColors ()Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+	public static final fun rateLimitColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)V
+	public final fun clearStats ()V
+	public final fun getConfig ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedPreset ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun resetToDefaults ()V
+	public final fun selectPreset (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
+	public final fun setDownloadSpeed (J)V
+	public final fun setLatency (J)V
+	public final fun setPacketLoss (F)V
+	public final fun setUploadSpeed (J)V
+	public final fun toggleEnabled ()V
+}
+

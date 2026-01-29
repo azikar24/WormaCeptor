@@ -1,0 +1,7 @@
+public final class com/azikar24/wormaceptor/infra/syntax/json/JsonHighlighter : com/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getLanguage ()Ljava/lang/String;
+	public fun highlight (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;)Landroidx/compose/ui/text/AnnotatedString;
+}
+

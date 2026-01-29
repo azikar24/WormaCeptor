@@ -81,6 +81,9 @@
     <ID>TooGenericExceptionCaught:ImageMetadataExtractor.kt$ImageMetadataExtractor$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ImageParser.kt$ImageParser$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MagicByteDetector.kt$MagicByteDetector$e: Exception</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val contentType: ContentType</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val displayName: String</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val mimeTypes: List&lt;String&gt;</ID>
     <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((bits shr 28) and 1)</ID>
     <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[7].toInt() and 0xFF) shl 8)</ID>
     <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[9].toInt() and 0xFF) shl 8)</ID>

@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyCard(dependency: DependencyInfo, onClick: () -&gt; Unit, colors: DependenciesInspectorColors)</ID>
+    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyDetailContent( dependency: DependencyInfo, colors: DependenciesInspectorColors, modifier: Modifier, )</ID>
+    <ID>LongMethod:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:DependenciesInspectorScreen.kt$( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:DependenciesInspectorScreen.kt$( selectedCategory: DependencyCategory?, summary: DependencySummary, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, colors: DependenciesInspectorColors, modifier: Modifier, )</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF009688</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF00BCD4</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF03A9F4</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1976D2</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1B5E20</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1E1E1E</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF212121</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF2D2D2D</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF3F51B5</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF424242</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4DB6AC</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4DD0E1</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4FC3F7</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF607D8B</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF6200EE</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF64B5F6</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF757575</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF795548</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF7986CB</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF7C4DFF</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF81C784</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF90A4AE</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF9E9E9E</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFA1887F</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFA5D6A7</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFB388FF</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBA68C8</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBB86FC</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBDBDBD</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE0E0E0</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE57373</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF06292</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF44336</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF5F5F5</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFAFAFA</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFB74D</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFC107</ID>
+    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFD54F</ID>
+    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.15f</ID>
+    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.1f</ID>
+    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
+    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.3f</ID>
+    <ID>MagicNumber:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$5000</ID>
+    <ID>ModifierWithoutDefault:DependenciesInspectorScreen.kt$modifier</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun dismissDetail()</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun exportAsText(): String</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun refresh()</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun selectDependency(dependency: DependencyInfo)</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun setSearchQuery(query: String)</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun setSelectedCategory(category: DependencyCategory?)</ID>
+    <ID>UndocumentedPublicFunction:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$fun setShowVersionedOnly(show: Boolean)</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val analytics: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val androidx: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val cardBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val chipBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val database: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val dependencyInjection: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val divider: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val highConfidence: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val imageLoading: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val kotlin: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val labelPrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val labelSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val link: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val logging: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val lowConfidence: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val mediumConfidence: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val networking: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val other: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val primary: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val reactive: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val searchBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val security: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val selectedChipBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val serialization: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val testing: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val uiFramework: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val utility: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val valuePrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val versionDetected: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val versionText: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorColors.kt$DependenciesInspectorColors$val versionUnknown: Color</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$// Error state val error: StateFlow&lt;String?&gt; = engine.error</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$// Filtered dependencies (WormaCeptor's internal deps are already excluded by the engine) val filteredDependencies: StateFlow&lt;ImmutableList&lt;DependencyInfo&gt;&gt; = combine( engine.dependencies, _selectedCategory, _searchQuery, _showVersionedOnly, ) { deps, category, query, versionedOnly -&gt; var filtered = deps // Filter by category if (category != null) { filtered = filtered.filter { it.category == category } } // Filter by version presence if (versionedOnly) { filtered = filtered.filter { it.version != null } } // Filter by search query if (query.isNotBlank()) { val lowerQuery = query.lowercase() filtered = filtered.filter { it.name.lowercase().contains(lowerQuery) || it.packageName.lowercase().contains(lowerQuery) || it.groupId?.lowercase()?.contains(lowerQuery) == true || it.artifactId?.lowercase()?.contains(lowerQuery) == true } } filtered.toImmutableList() }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$// Loading state val isLoading: StateFlow&lt;Boolean&gt; = engine.isLoading</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$// Summary val summary: StateFlow&lt;DependencySummary&gt; = engine.summary .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DependencySummary.empty())</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val selectedCategory: StateFlow&lt;DependencyCategory?&gt; = _selectedCategory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val selectedDependency: StateFlow&lt;DependencyInfo?&gt; = _selectedDependency.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val showVersionedOnly: StateFlow&lt;Boolean&gt; = _showVersionedOnly.asStateFlow()</ID>
+    <ID>UnstableCollections:DependenciesInspectorScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
+    <ID>ViewModelInjection:DependenciesInspectorFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

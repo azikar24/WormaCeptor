@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$Companion</ID>
+    <ID>ComposableParamOrder:PreferencesListScreen.kt$PreferencesListScreen</ID>
+    <ID>CyclomaticComplexMethod:PreferenceEditDialog.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceEditDialog( item: PreferenceItem?, onDismiss: () -&gt; Unit, onSave: (String, PreferenceValue) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:PreferenceDetailScreen.kt$@Composable private fun PreferenceItemContent(item: PreferenceItem, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun PreferenceDetailScreen( fileName: String, items: ImmutableList&lt;PreferenceItem&gt;, totalCount: Int, searchQuery: String, typeFilter: String?, availableTypes: ImmutableList&lt;String&gt;, onSearchQueryChanged: (String) -&gt; Unit, onTypeFilterChanged: (String?) -&gt; Unit, onBack: () -&gt; Unit, onEditItem: (PreferenceItem) -&gt; Unit, onDeleteItem: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onCreateItem: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:PreferenceEditDialog.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceEditDialog( item: PreferenceItem?, onDismiss: () -&gt; Unit, onSave: (String, PreferenceValue) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:PreferencesFeature.kt$@Composable private fun PreferencesNavHost( navController: NavHostController, viewModel: PreferencesViewModel, onNavigateBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:PreferencesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferencesListScreen( files: ImmutableList&lt;PreferenceFile&gt;, searchQuery: String, onSearchQueryChanged: (String) -&gt; Unit, onFileClick: (PreferenceFile) -&gt; Unit, onNavigateBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:PreferenceDetailScreen.kt$( fileName: String, items: ImmutableList&lt;PreferenceItem&gt;, totalCount: Int, searchQuery: String, typeFilter: String?, availableTypes: ImmutableList&lt;String&gt;, onSearchQueryChanged: (String) -&gt; Unit, onTypeFilterChanged: (String?) -&gt; Unit, onBack: () -&gt; Unit, onEditItem: (PreferenceItem) -&gt; Unit, onDeleteItem: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onCreateItem: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF00BCD4</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF2196F3</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF3F51B5</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF4CAF50</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF9C27B0</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFFFF9800</ID>
+    <ID>MagicNumber:PreferencesFeature.kt$300</ID>
+    <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$150</ID>
+    <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$5000</ID>
+    <ID>UndocumentedPublicFunction:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$fun forTypeName(typeName: String): Color</ID>
+    <ID>UndocumentedPublicFunction:PreferencesDesignSystem.kt$fun Color.asSubtleBackground(): Color</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearCurrentFile()</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearFileSelection()</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearFilters()</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun deletePreference(key: String)</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun onFileSearchQueryChanged(query: String)</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun onItemSearchQueryChanged(query: String)</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun selectFile(fileName: String)</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun setPreference(key: String, value: PreferenceValue)</ID>
+    <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun setTypeFilter(typeName: String?)</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val boolean = Color(0xFFFF9800) // Orange</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val float = Color(0xFF9C27B0) // Purple</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val int = Color(0xFF2196F3) // Blue</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val long = Color(0xFF3F51B5) // Indigo</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val string = Color(0xFF4CAF50) // Green</ID>
+    <ID>UndocumentedPublicProperty:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$val stringSet = Color(0xFF00BCD4) // Cyan</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$// All preference files val preferenceFiles: StateFlow&lt;ImmutableList&lt;PreferenceFile&gt;&gt; = combine( repository.observePreferenceFiles(), _fileSearchQuery.debounce(150), ) { files, query -&gt; files.filter { file -&gt; query.isBlank() || file.name.contains(query, ignoreCase = true) }.sortedBy { it.name.lowercase() }.toImmutableList() }.flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$// Available type filters based on current items val availableTypes: StateFlow&lt;ImmutableList&lt;String&gt;&gt; = _selectedFileName .flatMapLatest { fileName -&gt; if (fileName == null) { flowOf(emptyList()) } else { repository.observePreferenceItems(fileName).map { items -&gt; items.map { it.value.typeName }.distinct().sorted() } } } .map { it.toImmutableList() } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$// Items for the selected file val preferenceItems: StateFlow&lt;ImmutableList&lt;PreferenceItem&gt;&gt; = _selectedFileName .flatMapLatest { fileName -&gt; if (fileName == null) { flowOf(emptyList()) } else { combine( repository.observePreferenceItems(fileName), _itemSearchQuery.debounce(150), _typeFilter, ) { items, query, typeFilter -&gt; items.filter { item -&gt; val matchesQuery = query.isBlank() || item.key.contains(query, ignoreCase = true) || item.value.displayValue.contains(query, ignoreCase = true) val matchesType = typeFilter == null || item.value.typeName == typeFilter matchesQuery &amp;&amp; matchesType } } } } .map { it.toImmutableList() } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$// Total item count for selected file (unfiltered) val totalItemCount: StateFlow&lt;Int&gt; = _selectedFileName .flatMapLatest { fileName -&gt; if (fileName == null) { flowOf(0) } else { repository.observePreferenceItems(fileName).map { it.size } } } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val fileSearchQuery: StateFlow&lt;String&gt; = _fileSearchQuery</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val itemSearchQuery: StateFlow&lt;String&gt; = _itemSearchQuery</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val selectedFileName: StateFlow&lt;String?&gt; = _selectedFileName</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val typeFilter: StateFlow&lt;String?&gt; = _typeFilter</ID>
+    <ID>UseIfInsteadOfWhen:PreferenceDetailScreen.kt$when (direction) { SwipeToDismissBoxValue.EndToStart -&gt; Alignment.CenterEnd else -&gt; Alignment.CenterStart }</ID>
+    <ID>UseIfInsteadOfWhen:PreferenceDetailScreen.kt$when (direction) { SwipeToDismissBoxValue.EndToStart -&gt; MaterialTheme.colorScheme.onErrorContainer else -&gt; MaterialTheme.colorScheme.onPrimaryContainer }</ID>
+    <ID>ViewModelInjection:PreferencesFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

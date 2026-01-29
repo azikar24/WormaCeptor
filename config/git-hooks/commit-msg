@@ -1,0 +1,118 @@
+#!/bin/bash
+# =============================================================================
+# Commit Message Hook for WormaCeptor
+# =============================================================================
+# This hook enforces Conventional Commits format.
+# Format: <type>(<scope>): <description>
+#
+# Types:
+#   feat     - New feature
+#   fix      - Bug fix
+#   docs     - Documentation only
+#   style    - Code style (formatting, no logic change)
+#   refactor - Code refactoring (no feature/fix)
+#   perf     - Performance improvement
+#   test     - Adding/fixing tests
+#   build    - Build system or dependencies
+#   ci       - CI configuration
+#   chore    - Maintenance tasks
+#   revert   - Revert a commit
+#
+# Scope (optional): Module or area affected
+# Description: Imperative mood, no period at end
+#
+# Examples:
+#   feat(viewer): add JSON syntax highlighting
+#   fix(engine): prevent crash on null response
+#   docs: update installation instructions
+#   refactor(core): extract transaction parsing logic
+#
+# To skip this hook (not recommended), use: git commit --no-verify
+# =============================================================================
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Read the commit message
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip merge commits
+if echo "$COMMIT_MSG" | grep -qE "^Merge "; then
+    exit 0
+fi
+
+# Skip revert commits (auto-generated)
+if echo "$COMMIT_MSG" | grep -qE "^Revert \""; then
+    exit 0
+fi
+
+# Conventional Commits regex
+# Format: type(scope): description
+# - type: required, lowercase
+# - scope: optional, in parentheses
+# - description: required, starts with lowercase or number
+COMMIT_REGEX='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9_-]+\))?: .{1,72}$'
+
+# Check first line only
+FIRST_LINE=$(echo "$COMMIT_MSG" | head -n 1)
+
+if ! echo "$FIRST_LINE" | grep -qE "$COMMIT_REGEX"; then
+    echo ""
+    echo -e "${RED}========================================${NC}"
+    echo -e "${RED}Invalid commit message format!${NC}"
+    echo -e "${RED}========================================${NC}"
+    echo ""
+    echo -e "${YELLOW}Your message:${NC}"
+    echo "  $FIRST_LINE"
+    echo ""
+    echo -e "${CYAN}Expected format:${NC}"
+    echo "  <type>(<scope>): <description>"
+    echo ""
+    echo -e "${CYAN}Valid types:${NC}"
+    echo "  feat     - New feature"
+    echo "  fix      - Bug fix"
+    echo "  docs     - Documentation only"
+    echo "  style    - Code style (formatting)"
+    echo "  refactor - Code refactoring"
+    echo "  perf     - Performance improvement"
+    echo "  test     - Adding/fixing tests"
+    echo "  build    - Build system changes"
+    echo "  ci       - CI configuration"
+    echo "  chore    - Maintenance tasks"
+    echo "  revert   - Revert a commit"
+    echo ""
+    echo -e "${CYAN}Examples:${NC}"
+    echo "  feat(viewer): add JSON syntax highlighting"
+    echo "  fix(engine): prevent crash on null response"
+    echo "  docs: update README with new API"
+    echo "  refactor(core): extract parsing logic"
+    echo ""
+    echo -e "${CYAN}Rules:${NC}"
+    echo "  - First line max 72 characters"
+    echo "  - Type must be lowercase"
+    echo "  - Scope is optional but recommended"
+    echo "  - Description should be imperative mood"
+    echo ""
+    exit 1
+fi
+
+# Check description length (first line should be <= 72 chars)
+if [ ${#FIRST_LINE} -gt 72 ]; then
+    echo ""
+    echo -e "${RED}========================================${NC}"
+    echo -e "${RED}Commit message too long!${NC}"
+    echo -e "${RED}========================================${NC}"
+    echo ""
+    echo "First line is ${#FIRST_LINE} characters (max 72)."
+    echo "Move details to the commit body (after a blank line)."
+    echo ""
+    exit 1
+fi
+
+echo -e "${GREEN}Commit message format valid.${NC}"
+exit 0

@@ -297,5 +297,50 @@ style:
       - 'java.util.*'
       - 'kotlinx.android.synthetic.*'
 
+# =============================================================================
+# Comments/Documentation Rules
+# =============================================================================
+comments:
+  active: true
+  UndocumentedPublicClass:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**']
+    searchInNestedClass: true
+    searchInInnerClass: true
+    searchInInnerObject: true
+    searchInInnerInterface: true
+    searchInProtectedClass: false
+  UndocumentedPublicFunction:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**']
+    searchProtectedFunction: false
+  UndocumentedPublicProperty:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**']
+    searchProtectedProperty: false
+  AbsentOrWrongFileLicense:
+    active: false # Enable if you want license headers
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  DeprecatedBlockTag:
+    active: true
+  EndOfSentenceFormat:
+    active: true
+    endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
+  KDocReferencesNonPublicProperty:
+    active: true
+  OutdatedDocumentation:
+    active: true
+    matchTypeParameters: true
+    matchDeclarationsOrder: true
+    allowParamOnConstructorProperties: true
+
+# =============================================================================
+# Additional Style Rules
+# =============================================================================
+# (These complement the existing style section)
+
 # Compose-specific rules (from compose-rules detekt plugin)
 # These rules help enforce best practices for Jetpack Compose code

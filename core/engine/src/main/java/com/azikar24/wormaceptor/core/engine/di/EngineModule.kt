@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import org.koin.android.ext.koin.androidContext
@@ -43,4 +44,7 @@ val engineModule = module {
             enable()
         }
     }
+
+    // Network engines
+    single { RateLimitEngine() }
 }

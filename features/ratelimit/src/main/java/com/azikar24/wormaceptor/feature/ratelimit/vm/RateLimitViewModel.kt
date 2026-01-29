@@ -10,10 +10,9 @@ import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 /**
@@ -42,9 +41,14 @@ class RateLimitViewModel(
             ThrottleStats.empty(),
         )
 
-    // Currently selected preset (null if custom)
-    private val _selectedPreset = MutableStateFlow<NetworkPreset?>(null)
-    val selectedPreset: StateFlow<NetworkPreset?> = _selectedPreset.asStateFlow()
+    /** Currently selected preset, derived from engine config to survive navigation. */
+    val selectedPreset: StateFlow<NetworkPreset?> = engine.config
+        .map { it.preset }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            null,
+        )
 
     /**
      * Toggles rate limiting on/off.
@@ -64,9 +68,12 @@ class RateLimitViewModel(
      * @param preset The preset to apply, or null to clear preset
      */
     fun selectPreset(preset: NetworkPreset?) {
-        _selectedPreset.value = preset
         if (preset != null) {
             engine.applyPreset(preset)
+        } else {
+            // Clear preset but keep current values
+            val current = config.value
+            engine.setConfig(current.copy(preset = null))
         }
     }
 
@@ -86,7 +93,6 @@ class RateLimitViewModel(
                 preset = null,
             ),
         )
-        _selectedPreset.value = null
     }
 
     /**
@@ -105,7 +111,6 @@ class RateLimitViewModel(
                 preset = null,
             ),
         )
-        _selectedPreset.value = null
     }
 
     /**
@@ -124,7 +129,6 @@ class RateLimitViewModel(
                 preset = null,
             ),
         )
-        _selectedPreset.value = null
     }
 
     /**
@@ -143,7 +147,6 @@ class RateLimitViewModel(
                 preset = null,
             ),
         )
-        _selectedPreset.value = null
     }
 
     /**
@@ -158,6 +161,5 @@ class RateLimitViewModel(
      */
     fun resetToDefaults() {
         engine.setConfig(RateLimitConfig.default())
-        _selectedPreset.value = null
     }
 }

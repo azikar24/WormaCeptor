@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues />
   <CurrentIssues>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(MatchInfo(globalPosition = index, lineIndex = 0))</ID>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(globalPosition = index, lineIndex = 0)</ID>
@@ -140,8 +140,6 @@
     <ID>LongMethod:SwipeBackContainer.kt$@Composable fun SwipeBackContainer( onBack: () -&gt; Unit, enabled: Boolean = true, edgeWidth: Float = 48f, thresholdFraction: Float = 0.35f, content: @Composable BoxScope.() -&gt; Unit, )</ID>
     <ID>LongMethod:ToolsTab.kt$@Composable private fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:ToolsTab.kt$@OptIn(ExperimentalFoundationApi::class) @Composable private fun ToolTile( tool: ToolItem, isFavorite: Boolean, categoryColor: Color, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:ToolsTab.kt$@OptIn(ExperimentalLayoutApi::class) @Composable fun ToolsTab(onNavigate: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:ToolsTab.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ToolCategorySection( categoryName: String, categoryColor: Color, categoryIcon: ImageVector, tools: List&lt;ToolItem&gt;, isCollapsed: Boolean, onToggleCollapse: () -&gt; Unit, onToolClick: (String) -&gt; Unit, onToolLongClick: (ToolItem) -&gt; Unit, favorites: Set&lt;Feature&gt;, headerContent: (@Composable () -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TransactionContextMenu.kt$@Composable fun TransactionContextMenu( transaction: TransactionSummary, expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun CollapsibleSection( title: String, isExpanded: Boolean, onToggle: () -&gt; Unit, onCopy: (() -&gt; Unit)? = null, isCopyLoading: Boolean = false, trailingContent: @Composable (() -&gt; Unit)? = null, content: @Composable () -&gt; Unit, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Modifier)</ID>

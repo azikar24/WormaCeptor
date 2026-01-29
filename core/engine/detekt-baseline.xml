@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues />
   <CurrentIssues>
     <ID>ClassOrdering:PerformanceOverlayState.kt$PerformanceOverlayState$Companion</ID>
     <ID>ClassOrdering:PushSimulatorEngine.kt$PushSimulatorEngine$Companion</ID>
@@ -109,9 +109,6 @@
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_024.0</ID>
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576</ID>
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576.0</ID>
-    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$20</ID>
-    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$4</ID>
-    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$8</ID>
     <ID>MaxLineLength:CryptoEngine.kt$CryptoEngine$"Invalid key length: expected $expectedKeyLength bytes for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"</ID>
     <ID>MaxLineLength:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$website = "https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/"</ID>
     <ID>MaxLineLength:InterceptionEngine.kt$InterceptionEngine$val bottom = rule.parameters[InterceptionRule.PARAM_TOUCH_AREA_BOTTOM]?.toFloatOrNull() ?: Float.MAX_VALUE</ID>

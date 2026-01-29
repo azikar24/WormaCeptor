@@ -130,7 +130,6 @@ class FavoritesRepository private constructor(context: Context) {
             Feature.CONSOLE_LOGS,
             Feature.SHARED_PREFERENCES,
             Feature.MEMORY_MONITOR,
-            Feature.VIEW_HIERARCHY,
         )
 
         @Volatile

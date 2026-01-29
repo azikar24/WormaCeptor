@@ -34,7 +34,6 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Security
-import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material3.CircularProgressIndicator
@@ -85,7 +84,6 @@ fun TestToolsTab(
     onCookiesClick: () -> Unit,
     onWebViewClick: () -> Unit,
     onSecureStorageClick: () -> Unit,
-    onComposeRenderClick: () -> Unit,
     modifier: Modifier = Modifier,
     apiTestStatus: ToolStatus = ToolStatus.Idle,
     webSocketStatus: ToolStatus = ToolStatus.Idle,
@@ -175,13 +173,6 @@ fun TestToolsTab(
             icon = Icons.Outlined.Security,
             label = "Secure Storage",
             onClick = onSecureStorageClick,
-            showChevron = true,
-        )
-
-        ToolListItem(
-            icon = Icons.Outlined.Speed,
-            label = "Compose Render",
-            onClick = onComposeRenderClick,
             showChevron = true,
         )
 

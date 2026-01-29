@@ -3,7 +3,21 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -69,6 +83,7 @@ fun TransactionListScreen(
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     var hasTriggeredHaptic by remember { mutableStateOf(false) }
 
     // Trigger haptic feedback when pull threshold is reached
@@ -139,7 +154,10 @@ fun TransactionListScreen(
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                    contentPadding = PaddingValues(
+                        top = WormaCeptorDesignSystem.Spacing.xs,
+                        bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+                    ),
                 ) {
                     if (header != null) {
                         item {
@@ -158,7 +176,10 @@ fun TransactionListScreen(
         } else {
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                contentPadding = PaddingValues(
+                    top = WormaCeptorDesignSystem.Spacing.xs,
+                    bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+                ),
             ) {
                 if (header != null) {
                     item {
@@ -392,6 +413,7 @@ fun PagedTransactionListScreen(
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     // Show scroll-to-top FAB when scrolled down
     val showScrollToTop by remember {
@@ -427,7 +449,10 @@ fun PagedTransactionListScreen(
                     LazyColumn(
                         state = listState,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                        contentPadding = PaddingValues(
+                            top = WormaCeptorDesignSystem.Spacing.xs,
+                            bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+                        ),
                     ) {
                         // Optional header
                         if (header != null) {
@@ -519,6 +544,7 @@ fun PagedTransactionListScreenWithRefresh(
     val pullToRefreshState = rememberPullToRefreshState()
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     var hasTriggeredHaptic by remember { mutableStateOf(false) }
 
     // Show scroll-to-top FAB when scrolled down
@@ -593,7 +619,10 @@ fun PagedTransactionListScreenWithRefresh(
                         LazyColumn(
                             state = listState,
                             modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                            contentPadding = PaddingValues(
+                                top = WormaCeptorDesignSystem.Spacing.xs,
+                                bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+                            ),
                         ) {
                             // Optional header
                             if (header != null) {
@@ -704,6 +733,7 @@ fun SelectableTransactionListScreen(
 ) {
     val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     var hasTriggeredHaptic by remember { mutableStateOf(false) }
 
     // Trigger haptic feedback when pull threshold is reached
@@ -726,7 +756,10 @@ fun SelectableTransactionListScreen(
     val listContent: @Composable () -> Unit = {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.xs),
+            contentPadding = PaddingValues(
+                top = WormaCeptorDesignSystem.Spacing.xs,
+                bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+            ),
         ) {
             // Optional header (e.g., MetricsCard)
             if (header != null) {

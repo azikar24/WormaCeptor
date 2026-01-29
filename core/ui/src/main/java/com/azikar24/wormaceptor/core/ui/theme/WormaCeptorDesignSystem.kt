@@ -29,6 +29,47 @@ import androidx.compose.ui.unit.sp
 object WormaCeptorDesignSystem {
 
     /**
+     * Theme Colors - Shared color palette for consistent theming across host app and library
+     */
+    object ThemeColors {
+        // Light Theme
+        val LightBackground = Color(0xFFFFFFFF)
+        val LightSurface = Color(0xFFFAFAFA)
+        val LightSurfaceVariant = Color(0xFFF0F0F0)
+        val LightTextPrimary = Color(0xFF0A0A0A)
+        val LightTextSecondary = Color(0xFF6B6B6B)
+        val LightTextTertiary = Color(0xFF9CA3AF)
+        val LightOutline = Color(0xFFE5E5E5)
+        val LightOutlineVariant = Color(0xFFD4D4D4)
+
+        // Dark Theme
+        val DarkBackground = Color(0xFF0A0A0A)
+        val DarkSurface = Color(0xFF141414)
+        val DarkSurfaceVariant = Color(0xFF1F1F1F)
+        val DarkTextPrimary = Color(0xFFFAFAFA)
+        val DarkTextSecondary = Color(0xFF8A8A8A)
+        val DarkTextTertiary = Color(0xFF525252)
+        val DarkOutline = Color(0xFF2A2A2A)
+        val DarkOutlineVariant = Color(0xFF3A3A3A)
+
+        // Accent Colors - Teal
+        val AccentLight = Color(0xFF0D9488)
+        val AccentDark = Color(0xFF2DD4BF)
+        val AccentSubtleLight = Color(0x120D9488)
+        val AccentSubtleDark = Color(0x152DD4BF)
+
+        // Semantic Colors
+        val Error = Color(0xFFDC2626)
+        val ErrorDark = Color(0xFFF87171)
+        val Success = Color(0xFF16A34A)
+        val SuccessDark = Color(0xFF4ADE80)
+        val Warning = Color(0xFFD97706)
+        val WarningDark = Color(0xFFFBBF24)
+        val Info = Color(0xFF2563EB)
+        val InfoDark = Color(0xFF60A5FA)
+    }
+
+    /**
      * Spacing Scale - 4px baseline grid for consistent spacing
      */
     object Spacing {

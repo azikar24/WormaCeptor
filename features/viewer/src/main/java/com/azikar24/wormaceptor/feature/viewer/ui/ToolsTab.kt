@@ -19,9 +19,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -123,6 +126,7 @@ private object CategoryHelper {
 fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
+    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
@@ -183,7 +187,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.xxl),
+            contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.xxl + navigationBarPadding),
         ) {
             // Favorites horizontal strip
             if (filteredFavorites.isNotEmpty()) {

@@ -56,7 +56,6 @@ dependencies {
 
     implementation(project(":api:client"))
     implementation(project(":core:ui")) // Used in main source set
-    implementation(project(":core:engine")) // Used in main source set for sample services
     debugImplementation(project(":api:impl:persistence"))
     debugImplementation(libs.koin.android)
 
@@ -65,7 +64,6 @@ dependencies {
     debugImplementation(project(":features:cookies"))
     debugImplementation(project(":features:webviewmonitor"))
     debugImplementation(project(":features:securestorage"))
-    debugImplementation(project(":features:composerender"))
 //    debugImplementation(project(":api:impl:no-op"))
 //    debugImplementation(project(":api:impl:imdb"))
 

@@ -52,7 +52,6 @@ import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
-import com.azikar24.wormaceptorapp.screens.ComposeRenderTestScreen
 import com.azikar24.wormaceptorapp.screens.CookiesTestScreen
 import com.azikar24.wormaceptorapp.screens.LocationTestScreen
 import com.azikar24.wormaceptorapp.screens.SecureStorageTestScreen
@@ -287,24 +286,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         SecureStorageTestScreen(onBack = { navController.popBackStack() })
                     }
-
-                    composable(
-                        route = TestToolsRoutes.COMPOSE_RENDER,
-                        enterTransition = {
-                            slideInHorizontally(
-                                initialOffsetX = { it },
-                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
-                            )
-                        },
-                        popExitTransition = {
-                            slideOutHorizontally(
-                                targetOffsetX = { it },
-                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
-                            )
-                        },
-                    ) {
-                        ComposeRenderTestScreen(onBack = { navController.popBackStack() })
-                    }
                 }
             }
 
@@ -392,16 +373,6 @@ class MainActivity : ComponentActivity() {
                             scope.launch {
                                 delay(SHEET_DISMISS_DELAY)
                                 navController.navigate(TestToolsRoutes.SECURE_STORAGE)
-                            }
-                        },
-                        onComposeRenderClick = {
-                            scope.launch {
-                                sheetState.hide()
-                                showTestToolsSheet = false
-                            }
-                            scope.launch {
-                                delay(SHEET_DISMISS_DELAY)
-                                navController.navigate(TestToolsRoutes.COMPOSE_RENDER)
                             }
                         },
                         apiTestStatus = apiTestStatus,

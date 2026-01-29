@@ -61,10 +61,6 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 - **CPU Monitor**: Per-core and overall usage tracking
 - **Performance Overlay**: Draggable floating badge showing live metrics with mini sparklines
 
-### UI Debugging Tools
-- **View Hierarchy Inspector**: Navigate and inspect view trees
-- **Compose Render Tracker**: Track recomposition counts
-
 ### System Inspection
 - **SQLite Browser**: Browse tables and execute custom queries
 - **SharedPreferences Inspector**: View and edit preferences
@@ -81,7 +77,6 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 
 ### Network Simulation
 - **Rate Limiter**: Throttle network with presets (2G, 3G, 4G, WiFi) or custom speeds
-- **Interception Framework**: Create rules to intercept/modify View, Touch, Location events
 - **WebSocket Monitor**: Real-time WebSocket frame inspection
 - **WebView Monitor**: Track WebView activity and JS bridges
 
@@ -180,6 +175,34 @@ WormaCeptorInterceptor()
     .redactHeader("Cookie")
     .redactBody("password\":\".*?\"") // Mask JSON fields via regex
 ```
+
+### WebSocket Monitoring
+
+OkHttp interceptors don't capture WebSocket traffic. Use `WormaCeptorWebSocket` to monitor WebSocket connections:
+
+```kotlin
+val listener = object : WebSocketListener() {
+    override fun onMessage(webSocket: WebSocket, text: String) {
+        // Handle received message
+    }
+}
+
+// Wrap your listener for monitoring
+val monitor = WormaCeptorWebSocket.wrap(listener, "wss://example.com/ws")
+
+// Use the wrapped listener with OkHttp
+val webSocket = client.newWebSocket(request, monitor.listener)
+
+// Record sent messages (OkHttp doesn't notify listeners of outgoing messages)
+webSocket.send(message)
+monitor.recordSentMessage(message)
+```
+
+**Available methods**:
+- `recordSentMessage(text: String)` - Record outgoing text messages
+- `recordSentMessage(bytes: ByteString)` - Record outgoing binary messages
+- `recordPing(payload: ByteString)` - Record ping frames
+- `recordPong(payload: ByteString)` - Record pong frames
 
 ### Launch UI Manually
 
@@ -289,7 +312,6 @@ Some features require additional permissions:
 | Release Safety | ProGuard rules | Physical dependency separation |
 | Crash Reporting | Separate library | Integrated and correlated |
 | Performance Monitoring | Not included | FPS, Memory, CPU with overlay |
-| UI Debugging | Not included | View hierarchy, borders, grid, measurement |
 | System Inspection | Limited | SQLite, SharedPrefs, Files, Cookies |
 
 ---
@@ -300,7 +322,6 @@ Some features require additional permissions:
 - Network interception with full HTTP inspection
 - Performance monitoring (FPS, Memory, CPU)
 - Performance overlay with deep linking
-- UI debugging tools (view hierarchy, borders, grid, measurement)
 - System inspection (SQLite, SharedPrefs, Files)
 - Feature toggle system
 - Leak detection and thread violation detection

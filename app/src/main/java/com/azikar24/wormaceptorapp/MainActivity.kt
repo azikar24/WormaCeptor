@@ -60,7 +60,7 @@ import com.azikar24.wormaceptorapp.screens.WebViewTestScreen
 import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.ToolStatus
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WelcomeScreen
-import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchMeltdownEffect
+import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -198,7 +198,7 @@ class MainActivity : ComponentActivity() {
                         },
                     ) {
                         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-                        GlitchMeltdownEffect(
+                        GlitchEffect(
                             isActive = isGlitchEffectActive,
                             progress = glitchProgress,
                             modifier = Modifier.fillMaxSize(),

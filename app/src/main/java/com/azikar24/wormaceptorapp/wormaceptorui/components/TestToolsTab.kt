@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -59,6 +60,9 @@ enum class ToolStatus {
     Idle,
     Running,
     Done,
+
+    /** Waiting for user action such as rotating the screen. Shows hint message. */
+    WaitingForAction,
 }
 
 /**
@@ -127,6 +131,7 @@ fun TestToolsTab(
         ToolListItem(
             icon = Icons.Outlined.Memory,
             label = "Trigger Memory Leak",
+            description = "Rotate screen to detect",
             onClick = onTriggerLeak,
             isDestructive = true,
             status = leakStatus,
@@ -206,13 +211,6 @@ private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
 
 /**
  * Tool list item with icon, label, and optional chevron.
- *
- * @param icon The leading icon
- * @param label The item label text
- * @param onClick Action when tapped
- * @param isDestructive If true, uses error color for text
- * @param showChevron If true, shows a chevron arrow indicating navigation
- * @param status The current status to show inline feedback
  */
 @Composable
 private fun ToolListItem(
@@ -220,6 +218,7 @@ private fun ToolListItem(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    description: String? = null,
     isDestructive: Boolean = false,
     showChevron: Boolean = false,
     status: ToolStatus = ToolStatus.Idle,
@@ -236,10 +235,12 @@ private fun ToolListItem(
         MaterialTheme.colorScheme.onSurfaceVariant
     }
 
+    val showDescription = description != null && status == ToolStatus.WaitingForAction
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .heightIn(min = if (showDescription) 56.dp else 48.dp)
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
@@ -250,60 +251,74 @@ private fun ToolListItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
     ) {
-        // Leading icon
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(20.dp),
             tint = iconTint,
         )
-
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+        ToolListItemLabel(label, description, textColor, showDescription, Modifier.weight(1f))
+        ToolListItemTrailing(status, showChevron)
+    }
+}
 
-        // Label
+@Composable
+private fun ToolListItemLabel(
+    label: String,
+    description: String?,
+    textColor: androidx.compose.ui.graphics.Color,
+    showDescription: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
         Text(
             text = label,
             fontSize = 15.sp,
             fontWeight = FontWeight.Normal,
             color = textColor,
-            modifier = Modifier.weight(1f),
         )
+        if (showDescription && description != null) {
+            Text(
+                text = description,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            )
+        }
+    }
+}
 
-        // Status indicator or chevron
-        AnimatedContent(
-            targetState = status,
-            transitionSpec = {
-                fadeIn(animationSpec = tween(150)) togetherWith fadeOut(animationSpec = tween(150))
-            },
-            label = "status",
-        ) { currentStatus ->
-            when {
-                currentStatus == ToolStatus.Running -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                currentStatus == ToolStatus.Done -> {
-                    Icon(
-                        imageVector = Icons.Outlined.Check,
-                        contentDescription = "Done",
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                showChevron -> {
-                    Icon(
-                        imageVector = Icons.Outlined.ChevronRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    )
-                }
-                else -> {
-                    Spacer(modifier = Modifier.size(20.dp))
-                }
+@Composable
+private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
+    AnimatedContent(
+        targetState = status,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(150)) togetherWith fadeOut(animationSpec = tween(150))
+        },
+        label = "status",
+    ) { currentStatus ->
+        when (currentStatus) {
+            ToolStatus.Running -> CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            ToolStatus.Done -> Icon(
+                imageVector = Icons.Outlined.Check,
+                contentDescription = "Done",
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            else -> if (showChevron) {
+                Icon(
+                    imageVector = Icons.Outlined.ChevronRight,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                )
+            } else {
+                Spacer(modifier = Modifier.size(20.dp))
             }
         }
     }

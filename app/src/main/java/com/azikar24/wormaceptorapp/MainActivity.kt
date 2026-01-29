@@ -73,6 +73,9 @@ class MainActivity : ComponentActivity() {
         // This list holds strong references to Activity instances, preventing GC
         private val _leakedActivities = mutableListOf<MainActivity>()
 
+        // Flag to detect rotation after leak was triggered
+        private var _leakAwaitingRotation = false
+
         // Inline status feedback durations
         private const val STATUS_RUNNING_DURATION = 800L
         private const val STATUS_DONE_DURATION = 1500L
@@ -80,14 +83,27 @@ class MainActivity : ComponentActivity() {
         // Navigation transition durations
         private const val NAV_TRANSITION_DURATION = 200
         private const val SHEET_DISMISS_DELAY = 100L
+
+        /**
+         * Check if a leak was triggered and rotation occurred.
+         * Clears the flag after checking.
+         */
+        fun checkLeakRotationDetected(): Boolean {
+            val detected = _leakAwaitingRotation
+            _leakAwaitingRotation = false
+            return detected
+        }
     }
 
     /**
      * Intentionally leaks this Activity by storing it in a static list.
      * Use this to test memory leak detection tools like LeakCanary.
+     * @return true to indicate leak was triggered and waiting for rotation
      */
-    fun triggerMemoryLeak() {
+    fun triggerMemoryLeak(): Boolean {
         _leakedActivities.add(this)
+        _leakAwaitingRotation = true
+        return true
     }
 
     /**
@@ -128,6 +144,15 @@ class MainActivity : ComponentActivity() {
         var webSocketStatus by remember { mutableStateOf(ToolStatus.Idle) }
         var leakStatus by remember { mutableStateOf(ToolStatus.Idle) }
         var threadViolationStatus by remember { mutableStateOf(ToolStatus.Idle) }
+
+        // Check if leak was triggered and rotation occurred (Activity recreated)
+        LaunchedEffect(Unit) {
+            if (checkLeakRotationDetected()) {
+                leakStatus = ToolStatus.Done
+                delay(STATUS_DONE_DURATION)
+                leakStatus = ToolStatus.Idle
+            }
+        }
 
         LaunchedEffect(isGlitchEffectActive) {
             if (isGlitchEffectActive) {
@@ -319,11 +344,7 @@ class MainActivity : ComponentActivity() {
                         },
                         onTriggerLeak = {
                             triggerMemoryLeak()
-                            scope.launch {
-                                leakStatus = ToolStatus.Done
-                                delay(STATUS_DONE_DURATION)
-                                leakStatus = ToolStatus.Idle
-                            }
+                            leakStatus = ToolStatus.WaitingForAction
                         },
                         onThreadViolation = {
                             triggerThreadViolation()

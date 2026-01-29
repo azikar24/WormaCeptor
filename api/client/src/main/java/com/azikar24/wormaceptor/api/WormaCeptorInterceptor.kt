@@ -48,6 +48,23 @@ class WormaCeptorInterceptor : Interceptor {
     private var showNotification = true
     private var maxContentLength = 250_000L
 
+    // Lazy-loaded rate limit interceptor from Koin via reflection
+    private val rateLimitInterceptor: Interceptor? by lazy {
+        try {
+            val engineClass = Class.forName(
+                "com.azikar24.wormaceptor.core.engine.RateLimitEngine",
+            )
+            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val getMethod = koinClass.getMethod("get", Class::class.java)
+            val engine = getMethod.invoke(null, engineClass)
+            val getInterceptorMethod = engineClass.getMethod("getInterceptor")
+            getInterceptorMethod.invoke(engine) as Interceptor
+        } catch (e: Exception) {
+            Log.d(TAG, "Rate limit interceptor not available: ${e.message}")
+            null
+        }
+    }
+
     /**
      * Content types that should be treated as binary and stored without text conversion.
      * Converting binary data to UTF-8 string corrupts the data.
@@ -151,10 +168,11 @@ class WormaCeptorInterceptor : Interceptor {
             Log.w(TAG, "Failed to capture request for ${request.url}", e)
         }
 
-        // 2. Network Call
+        // 2. Network Call (with rate limiting if enabled)
         val response: Response
         try {
-            response = chain.proceed(request)
+            // Apply rate limiting before proceeding with the actual network call
+            response = rateLimitInterceptor?.intercept(chain) ?: chain.proceed(request)
         } catch (e: Exception) {
             if (transactionId != null) {
                 provider.completeTransaction(

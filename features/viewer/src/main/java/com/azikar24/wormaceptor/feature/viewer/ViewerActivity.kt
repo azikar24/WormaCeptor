@@ -32,6 +32,7 @@ import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
@@ -90,6 +91,7 @@ class ViewerActivity : ComponentActivity() {
     private val leakDetectionEngine: LeakDetectionEngine by inject()
     private val threadViolationEngine: ThreadViolationEngine by inject()
     private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
+    private val rateLimitEngine: RateLimitEngine by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -517,6 +519,7 @@ class ViewerActivity : ComponentActivity() {
                         // Rate Limiter route
                         composable("ratelimit") {
                             RateLimiter(
+                                engine = rateLimitEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }

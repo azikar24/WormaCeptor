@@ -40,118 +40,105 @@ private const val GLITCH_SHADER = """
     uniform float progress;
     uniform float time;
 
-    // Pseudo-random function
-    float hash(float n) {
-        return fract(sin(n) * 43758.5453123);
+    // Saturate/clamp helper
+    float sat(float t) {
+        return clamp(t, 0.0, 1.0);
     }
 
-    float hash2(float2 p) {
-        return fract(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453);
+    float2 sat2(float2 t) {
+        return clamp(t, float2(0.0), float2(1.0));
     }
 
-    // Noise function
-    float noise(float2 p) {
-        float2 i = floor(p);
-        float2 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
+    // Remaps interval [a;b] to [0;1]
+    float remap(float t, float a, float b) {
+        return sat((t - a) / (b - a));
+    }
 
-        float a = hash2(i);
-        float b = hash2(i + float2(1.0, 0.0));
-        float c = hash2(i + float2(0.0, 1.0));
-        float d = hash2(i + float2(1.0, 1.0));
+    // Triangle wave: t=[0;0.5;1], y=[0;1;0]
+    float linterp(float t) {
+        return sat(1.0 - abs(2.0 * t - 1.0));
+    }
 
-        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+    // Chromatic spectrum offset
+    float3 spectrum_offset(float t) {
+        float lo = step(t, 0.5);
+        float hi = 1.0 - lo;
+        float w = linterp(remap(t, 1.0 / 6.0, 5.0 / 6.0));
+        float neg_w = 1.0 - w;
+        float3 ret = float3(lo, 1.0, hi) * float3(neg_w, w, neg_w);
+        return pow(ret, float3(1.0 / 2.2));
+    }
+
+    // Pseudo-random [0;1]
+    float rand(float2 n) {
+        return fract(sin(dot(n, float2(12.9898, 78.233))) * 43758.5453);
+    }
+
+    // Pseudo-random [-1;1]
+    float srand(float2 n) {
+        return rand(n) * 2.0 - 1.0;
+    }
+
+    // Truncate to discrete levels
+    float mytrunc(float x, float num_levels) {
+        return floor(x * num_levels) / num_levels;
+    }
+
+    float2 mytrunc2(float2 x, float num_levels) {
+        return floor(x * num_levels) / num_levels;
     }
 
     half4 main(float2 coord) {
         float2 uv = coord / resolution;
-        float intensity = progress;
 
-        // RGB split / chromatic aberration (increases with progress)
-        float rgbSplit = intensity * 0.03;
-        float2 redOffset = float2(rgbSplit * sin(time * 10.0 + uv.y * 20.0), 0.0);
-        float2 blueOffset = float2(-rgbSplit * cos(time * 8.0 + uv.y * 15.0), rgbSplit * 0.5);
+        float modTime = mod(time * 100.0, 32.0) / 110.0;
+        float GLITCH = clamp(progress, 0.0, 1.0);
 
-        // Screen tearing - horizontal block shifts
-        float tearStrength = intensity * intensity * 0.1;
-        float blockY = floor(uv.y * (10.0 + intensity * 20.0));
-        float tearOffset = 0.0;
-        if (hash(blockY + floor(time * 30.0)) > (1.0 - intensity * 0.5)) {
-            tearOffset = (hash(blockY * 2.0 + time) - 0.5) * tearStrength;
-        }
+        float gnm = sat(GLITCH);
+        float rnd0 = rand(mytrunc2(float2(modTime, modTime), 6.0));
+        float r0 = sat((1.0 - gnm) * 0.7 + rnd0);
+        float rnd1 = rand(float2(mytrunc(uv.x, 10.0 * r0), modTime));
+        float r1 = 0.5 - 0.5 * gnm + rnd1;
+        r1 = 1.0 - max(0.0, (r1 < 1.0) ? r1 : 0.9999999);
+        float rnd2 = rand(float2(mytrunc(uv.y, 40.0 * r1), modTime));
+        float r2 = sat(rnd2);
+        float rnd3 = rand(float2(mytrunc(uv.y, 10.0 * r0), modTime));
+        float r3 = (1.0 - sat(rnd3 + 0.8)) - 0.1;
+        float pxrnd = rand(uv + modTime);
 
-        // Melt/drip effect (increases dramatically in later stages)
-        float meltAmount = intensity * intensity * 0.15;
-        float meltNoise = noise(float2(uv.x * 10.0, time * 2.0));
-        float meltOffset = meltAmount * meltNoise * (1.0 - uv.y);
+        float ofs = 0.05 * r2 * GLITCH * (rnd0 > 0.5 ? 1.0 : -1.0);
+        ofs += 0.5 * pxrnd * ofs;
 
-        // Apply distortions to UV
         float2 distortedUV = uv;
-        distortedUV.x += tearOffset;
-        distortedUV.y += meltOffset;
+        distortedUV.y += 0.1 * r3 * GLITCH;
 
-        // Clamp UVs
-        distortedUV = clamp(distortedUV, float2(0.0), float2(1.0));
-        float2 redUV = clamp(distortedUV + redOffset, float2(0.0), float2(1.0));
-        float2 blueUV = clamp(distortedUV + blueOffset, float2(0.0), float2(1.0));
+        const int NUM_SAMPLES = 20;
+        const float RCP_NUM_SAMPLES_F = 1.0 / float(NUM_SAMPLES);
 
-        // Sample content with RGB separation
-        half4 colR = content.eval(redUV * resolution);
-        half4 colG = content.eval(distortedUV * resolution);
-        half4 colB = content.eval(blueUV * resolution);
+        float4 sum = float4(0.0);
+        float3 wsum = float3(0.0);
 
-        half4 color = half4(colR.r, colG.g, colB.b, colG.a);
+        for (int i = 0; i < NUM_SAMPLES; ++i) {
+            float t = float(i) * RCP_NUM_SAMPLES_F;
+            float2 sampleUV = distortedUV;
+            sampleUV.x = sat(sampleUV.x + ofs * t);
 
-        // Static noise overlay
-        float noiseVal = hash2(uv * resolution + float2(time * 100.0, time * 50.0));
-        float noiseIntensity = intensity * 0.3;
-        color.rgb = mix(color.rgb, half3(noiseVal), noiseIntensity * step(0.7, noiseVal + intensity * 0.3));
-
-        // Scan lines
-        float scanLine = sin(coord.y * 2.0 + time * 50.0) * 0.5 + 0.5;
-        scanLine = pow(scanLine, 2.0);
-        float scanIntensity = intensity * 0.15;
-        color.rgb *= (1.0 - scanIntensity * scanLine);
-
-        // Color corruption - desaturate and darken
-        float darkShift = intensity * 0.4;
-        float luminance = dot(color.rgb, half3(0.299, 0.587, 0.114));
-        color.rgb = mix(color.rgb, half3(luminance), darkShift);
-        color.rgb *= (1.0 - darkShift * 0.3);
-
-        // Block glitches
-        float blockSize = 20.0 + intensity * 30.0;
-        float2 blockCoord = floor(coord / blockSize);
-        float blockRand = hash2(blockCoord + floor(time * 20.0));
-        if (blockRand > (1.0 - intensity * 0.15) && intensity > 0.4) {
-            float glitchType = hash(blockRand * 100.0);
-            if (glitchType < 0.33) {
-                color.rgb = half3(0.0, 0.0, 0.0);
-            } else if (glitchType < 0.66) {
-                color.rgb = 1.0 - color.rgb;
-            } else {
-                color.rgb = half3(noiseVal);
-            }
+            half4 sampleCol = content.eval(sampleUV * resolution);
+            float3 s = spectrum_offset(t);
+            sum.rgb += float3(sampleCol.rgb) * s;
+            sum.a += float(sampleCol.a);
+            wsum += s;
         }
 
-        // Final flash at the end (progress > 0.9)
-        if (intensity > 0.9) {
-            float flashIntensity = (intensity - 0.9) / 0.1;
-            half3 flashColor = mix(half3(0.0, 0.0, 0.0), half3(1.0, 1.0, 1.0), flashIntensity);
-            color.rgb = mix(color.rgb, flashColor, flashIntensity * flashIntensity);
-        }
+        sum.rgb /= wsum;
+        sum.a *= RCP_NUM_SAMPLES_F;
 
-        return color;
+        return half4(half3(sum.rgb), half(sum.a));
     }
 """
 
 @Composable
-fun GlitchMeltdownEffect(
-    isActive: Boolean,
-    progress: Float,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
+fun GlitchEffect(isActive: Boolean, progress: Float, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     if (!isActive) {
         Box(modifier = modifier) {
             content()

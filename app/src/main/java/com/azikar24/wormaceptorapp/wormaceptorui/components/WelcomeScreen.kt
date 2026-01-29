@@ -217,41 +217,48 @@ private fun FeatureCard(feature: WelcomeFeature, onClick: (() -> Unit)?) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            // Icon container with accent background
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(feature.accentColor.copy(alpha = 0.12f)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = feature.icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(22.dp),
-                    tint = feature.accentColor,
-                )
-            }
-
-            // Text content
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-            ) {
-                Text(
-                    text = feature.title,
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.SemiBold,
-                    ),
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-                Text(
-                    text = feature.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                )
-            }
+            FeatureIcon(feature = feature)
+            FeatureTextContent(feature = feature, modifier = Modifier.weight(1f))
         }
+    }
+}
+
+@Composable
+private fun FeatureIcon(feature: WelcomeFeature) {
+    Box(
+        modifier = Modifier
+            .size(44.dp)
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+            .background(feature.accentColor.copy(alpha = 0.12f)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = feature.icon,
+            contentDescription = null,
+            modifier = Modifier.size(22.dp),
+            tint = feature.accentColor,
+        )
+    }
+}
+
+@Composable
+private fun FeatureTextContent(feature: WelcomeFeature, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Text(
+            text = feature.title,
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.SemiBold,
+            ),
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Text(
+            text = feature.description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+        )
     }
 }
 
@@ -434,25 +441,3 @@ enum class WelcomeFeature(
         accentColor = Color(0xFF8B5CF6), // Purple
     ),
 }
-
-// Backward compatibility alias
-@Deprecated(
-    message = "Use WelcomeScreen instead",
-    replaceWith = ReplaceWith(
-        "WelcomeScreen(onLaunchClick, onTestToolsClick, onGitHubClick, modifier, onFeatureClick)",
-    ),
-)
-@Composable
-fun ShowcaseTab(
-    onLaunchClick: () -> Unit,
-    onTestToolsClick: () -> Unit,
-    onGitHubClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    onFeatureClick: ((WelcomeFeature) -> Unit)? = null,
-) = WelcomeScreen(onLaunchClick, onTestToolsClick, onGitHubClick, modifier, onFeatureClick)
-
-@Deprecated(
-    message = "Use WelcomeFeature instead",
-    replaceWith = ReplaceWith("WelcomeFeature"),
-)
-typealias ShowcaseFeature = WelcomeFeature

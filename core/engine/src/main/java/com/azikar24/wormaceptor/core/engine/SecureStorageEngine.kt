@@ -234,11 +234,7 @@ class SecureStorageEngine(
     /**
      * Reads regular SharedPreferences.
      */
-    private fun readRegularPrefs(
-        prefsName: String,
-        file: File,
-        entries: MutableList<SecureStorageEntry>,
-    ) {
+    private fun readRegularPrefs(prefsName: String, file: File, entries: MutableList<SecureStorageEntry>) {
         try {
             val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             addPrefsEntries(prefs, prefsName, file, isEncrypted = false, entries)

@@ -420,6 +420,11 @@ Modifier
 - Prefer design system tokens over dimension resources
 - Use `WormaCeptorDesignSystem.Spacing.*` instead of `@dimen/`
 
+## Git Workflow
+- Never push code unless explicitly requested - ask first if pushing seems necessary
+- Create feature branches for all changes
+- Never merge to main/master without explicit approval
+
 ## Code Review and Plans
 
 - Save code reviews and plans to `.claude/` folder with descriptive names

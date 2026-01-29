@@ -5,6 +5,9 @@
 package com.azikar24.wormaceptor.core.engine
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
@@ -126,7 +129,7 @@ class SecureStorageEngine(
 
     /**
      * Scans for EncryptedSharedPreferences files.
-     * These are typically named with "__androidx_security_crypto_encrypted_prefs__" prefix.
+     * Attempts to decrypt using the standard MasterKey with AES256_GCM scheme.
      */
     private fun scanEncryptedSharedPreferences(): List<SecureStorageEntry> {
         val entries = mutableListOf<SecureStorageEntry>()
@@ -136,42 +139,36 @@ class SecureStorageEngine(
             return entries
         }
 
+        // Create MasterKey for decryption attempts
+        val masterKey = try {
+            MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+        } catch (e: Exception) {
+            null
+        }
+
         try {
             prefsDir.listFiles()?.forEach { file ->
                 if (file.isFile && file.name.endsWith(".xml")) {
                     val prefsName = file.name.removeSuffix(".xml")
 
-                    // Check if this looks like an encrypted prefs file
-                    val isEncrypted = prefsName.contains("encrypted", ignoreCase = true) ||
-                        prefsName.contains("crypto", ignoreCase = true) ||
-                        prefsName.contains("secure", ignoreCase = true)
+                    // Skip internal metadata files
+                    if (prefsName.startsWith("__androidx_security_crypto") ||
+                        prefsName.startsWith("_androidx_security") ||
+                        prefsName.endsWith("__keysets__")
+                    ) {
+                        return@forEach
+                    }
 
-                    try {
-                        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-                        val allEntries = prefs.all
-
-                        allEntries.forEach { (key, value) ->
-                            entries.add(
-                                SecureStorageEntry(
-                                    key = "$prefsName/$key",
-                                    value = maskSensitiveValue(value?.toString() ?: "null", isEncrypted),
-                                    storageType = StorageType.ENCRYPTED_SHARED_PREFS,
-                                    isEncrypted = isEncrypted,
-                                    lastModified = file.lastModified(),
-                                ),
-                            )
+                    // Try encrypted first if MasterKey is available, then fall back to regular
+                    if (masterKey != null) {
+                        val encryptedSuccess = tryReadEncryptedPrefs(prefsName, masterKey, file, entries)
+                        if (!encryptedSuccess) {
+                            readRegularPrefs(prefsName, file, entries)
                         }
-                    } catch (e: Exception) {
-                        // Skip files that cannot be read as SharedPreferences
-                        entries.add(
-                            SecureStorageEntry(
-                                key = prefsName,
-                                value = "[Unable to read: ${e.message}]",
-                                storageType = StorageType.ENCRYPTED_SHARED_PREFS,
-                                isEncrypted = true,
-                                lastModified = file.lastModified(),
-                            ),
-                        )
+                    } else {
+                        readRegularPrefs(prefsName, file, entries)
                     }
                 }
             }
@@ -180,6 +177,132 @@ class SecureStorageEngine(
         }
 
         return entries
+    }
+
+    /**
+     * Attempts to read EncryptedSharedPreferences using the provided MasterKey.
+     * Returns true if successfully read as encrypted prefs, false otherwise.
+     */
+    private fun tryReadEncryptedPrefs(
+        prefsName: String,
+        masterKey: MasterKey,
+        file: File,
+        entries: MutableList<SecureStorageEntry>,
+    ): Boolean {
+        return try {
+            val prefs = EncryptedSharedPreferences.create(
+                context,
+                prefsName,
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+            )
+
+            // Verify we can actually read from it - this will throw if not encrypted prefs
+            val allEntries = prefs.all
+
+            // If we got here and have entries, it's encrypted prefs
+            if (allEntries.isNotEmpty()) {
+                addPrefsEntries(prefs, prefsName, file, isEncrypted = true, entries)
+                true
+            } else {
+                // Empty prefs - could be either encrypted or regular
+                // Check if file contains encrypted markers
+                val fileContent = file.readText()
+                val isEncrypted = fileContent.contains("__androidx_security_crypto")
+                if (isEncrypted) {
+                    entries.add(
+                        SecureStorageEntry(
+                            key = prefsName,
+                            value = "[Empty - encrypted]",
+                            storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                            isEncrypted = true,
+                            lastModified = file.lastModified(),
+                        ),
+                    )
+                    true
+                } else {
+                    false // Let regular prefs handler deal with it
+                }
+            }
+        } catch (e: Exception) {
+            // Not an encrypted prefs file or different encryption scheme
+            false
+        }
+    }
+
+    /**
+     * Reads regular SharedPreferences.
+     */
+    private fun readRegularPrefs(
+        prefsName: String,
+        file: File,
+        entries: MutableList<SecureStorageEntry>,
+    ) {
+        try {
+            val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+            addPrefsEntries(prefs, prefsName, file, isEncrypted = false, entries)
+        } catch (e: Exception) {
+            entries.add(
+                SecureStorageEntry(
+                    key = prefsName,
+                    value = "[Unable to read: ${e.message}]",
+                    storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                    isEncrypted = false,
+                    lastModified = file.lastModified(),
+                ),
+            )
+        }
+    }
+
+    /**
+     * Adds entries from a SharedPreferences instance to the list.
+     * Note: Values are shown unmasked since this is a debug tool.
+     */
+    private fun addPrefsEntries(
+        prefs: SharedPreferences,
+        prefsName: String,
+        file: File,
+        isEncrypted: Boolean,
+        entries: MutableList<SecureStorageEntry>,
+    ) {
+        val allEntries = prefs.all
+
+        if (allEntries.isEmpty()) {
+            entries.add(
+                SecureStorageEntry(
+                    key = prefsName,
+                    value = "[Empty${if (isEncrypted) " - encrypted" else ""}]",
+                    storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                    isEncrypted = isEncrypted,
+                    lastModified = file.lastModified(),
+                ),
+            )
+            return
+        }
+
+        allEntries.forEach { (key, value) ->
+            entries.add(
+                SecureStorageEntry(
+                    key = "$prefsName/$key",
+                    value = formatPrefValue(value),
+                    storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                    isEncrypted = isEncrypted,
+                    lastModified = file.lastModified(),
+                ),
+            )
+        }
+    }
+
+    /**
+     * Formats a SharedPreferences value for display.
+     */
+    private fun formatPrefValue(value: Any?): String {
+        return when (value) {
+            null -> "null"
+            is Set<*> -> value.joinToString(", ", "[", "]")
+            else -> value.toString()
+        }
     }
 
     /**
@@ -330,40 +453,6 @@ class SecureStorageEngine(
         info.append("\nSize: ${formatFileSize(file.length())}")
         info.append("\nPath: ${file.name}")
         return info.toString()
-    }
-
-    /**
-     * Masks potentially sensitive values for display.
-     */
-    private fun maskSensitiveValue(value: String, isEncrypted: Boolean): String {
-        if (value.length <= 4) return value
-
-        // Check for common sensitive patterns
-        val sensitivePatterns = listOf(
-            "password",
-            "secret",
-            "token",
-            "key",
-            "auth",
-            "credential",
-            "api_key",
-        )
-
-        val lowerValue = value.lowercase()
-        val isSensitive = sensitivePatterns.any { pattern ->
-            lowerValue.contains(pattern)
-        }
-
-        // For encrypted prefs or sensitive-looking values, show partial mask
-        return if (isEncrypted || isSensitive) {
-            if (value.length > 8) {
-                "${value.take(4)}${"*".repeat(minOf(value.length - 8, 20))}${value.takeLast(4)}"
-            } else {
-                "${value.first()}${"*".repeat(value.length - 2)}${value.last()}"
-            }
-        } else {
-            value
-        }
     }
 
     /**

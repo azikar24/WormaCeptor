@@ -16,8 +16,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -68,7 +66,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
@@ -84,6 +82,8 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
 import org.koin.java.KoinJavaComponent.get
+
+private const val GridColumns = 3
 
 /**
  * Category helper for icons and color access.
@@ -118,7 +118,7 @@ private object CategoryHelper {
  * @param onShowMessage Callback to show a snackbar message
  * @param modifier Modifier for this composable
  */
-@OptIn(ExperimentalLayoutApi::class)
+@Suppress("LongMethod")
 @Composable
 fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -371,7 +371,7 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@Suppress("LongMethod")
 @Composable
 private fun ToolCategorySection(
     categoryName: String,
@@ -492,23 +492,39 @@ private fun ToolCategorySection(
             exit = shrinkVertically(animationSpec = tween(200)) + fadeOut(animationSpec = tween(150)),
         ) {
             Column {
-                headerContent?.invoke()
+                if (headerContent != null) {
+                    headerContent()
+                }
 
-                FlowRow(
+                val spacing = WormaCeptorDesignSystem.Spacing.sm
+                val columns = GridColumns
+
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = WormaCeptorDesignSystem.Spacing.sm),
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(spacing),
                 ) {
-                    tools.forEach { tool ->
-                        ToolTile(
-                            tool = tool,
-                            isFavorite = tool.feature in favorites,
-                            categoryColor = categoryColor,
-                            onClick = { onToolClick(tool.route) },
-                            onLongClick = { onToolLongClick(tool) },
-                        )
+                    tools.chunked(columns).forEach { rowTools ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(spacing),
+                        ) {
+                            rowTools.forEach { tool ->
+                                ToolTile(
+                                    tool = tool,
+                                    isFavorite = tool.feature in favorites,
+                                    categoryColor = categoryColor,
+                                    onClick = { onToolClick(tool.route) },
+                                    onLongClick = { onToolLongClick(tool) },
+                                    modifier = Modifier.weight(1f),
+                                )
+                            }
+                            // Fill empty slots in last row
+                            repeat(columns - rowTools.size) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
                     }
                 }
             }
@@ -532,7 +548,6 @@ private fun ToolTile(
 
     Card(
         modifier = modifier
-            .width(104.dp)
             .height(116.dp)
             .clip(RoundedCornerShape(12.dp))
             .combinedClickable(

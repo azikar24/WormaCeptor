@@ -1,0 +1,106 @@
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeature;
+	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;)Lcom/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeatureKt {
+	public static final fun LoadedLibrariesInspector (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/ComposableSingletons$LoadedLibrariesScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/ComposableSingletons$LoadedLibrariesScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/LoadedLibrariesScreenKt {
+	public static final fun LoadedLibrariesScreen (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun colorForSource-vNxB06k (Z)J
+	public final fun colorForType-vNxB06k (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;)J
+	public final fun component1-0d7_KjU ()J
+	public final fun component10-0d7_KjU ()J
+	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component13-0d7_KjU ()J
+	public final fun component14-0d7_KjU ()J
+	public final fun component15-0d7_KjU ()J
+	public final fun component16-0d7_KjU ()J
+	public final fun component17-0d7_KjU ()J
+	public final fun component18-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy-58FyvDQ (JJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;
+	public static synthetic fun copy-58FyvDQ$default (Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;JJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAarResource-0d7_KjU ()J
+	public final fun getAppLibrary-0d7_KjU ()J
+	public final fun getCardBackground-0d7_KjU ()J
+	public final fun getChipBackground-0d7_KjU ()J
+	public final fun getDex-0d7_KjU ()J
+	public final fun getDivider-0d7_KjU ()J
+	public final fun getJar-0d7_KjU ()J
+	public final fun getLabelPrimary-0d7_KjU ()J
+	public final fun getLabelSecondary-0d7_KjU ()J
+	public final fun getNativeSo-0d7_KjU ()J
+	public final fun getPathText-0d7_KjU ()J
+	public final fun getPrimary-0d7_KjU ()J
+	public final fun getSearchBackground-0d7_KjU ()J
+	public final fun getSearchHighlight-0d7_KjU ()J
+	public final fun getSelectedChipBackground-0d7_KjU ()J
+	public final fun getSystemBadge-0d7_KjU ()J
+	public final fun getSystemLibrary-0d7_KjU ()J
+	public final fun getValuePrimary-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColorsKt {
+	public static final fun badgeLabel (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;)Ljava/lang/String;
+	public static final fun displayLabel (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;)Ljava/lang/String;
+	public static final fun getDarkLoadedLibrariesColors ()Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;
+	public static final fun getLightLoadedLibrariesColors ()Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;
+	public static final fun loadedLibrariesColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/theme/LoadedLibrariesColors;
+}
+
+public final class com/azikar24/wormaceptor/feature/loadedlibraries/vm/LoadedLibrariesViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;)V
+	public final fun dismissDetail ()V
+	public final fun exportAsText ()Ljava/lang/String;
+	public final fun getError ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFilteredLibraries ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedLibrary ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSelectedType ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getShowSystemLibs ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getSummary ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun refresh ()V
+	public final fun selectLibrary (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;)V
+	public final fun setSearchQuery (Ljava/lang/String;)V
+	public final fun setSelectedType (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;)V
+	public final fun setShowSystemLibs (Z)V
+}
+

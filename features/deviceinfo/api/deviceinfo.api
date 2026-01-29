@@ -1,0 +1,23 @@
+public final class com/azikar24/wormaceptor/feature/deviceinfo/ComposableSingletons$DeviceInfoScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/deviceinfo/ComposableSingletons$DeviceInfoScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreenKt {
+	public static final fun DeviceInfoScreen (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/azikar24/wormaceptor/feature/deviceinfo/GetDeviceInfoUseCase {
+	public static final field $stable I
+	public fun <init> (Landroid/content/Context;)V
+	public final fun execute ()Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;
+}
+

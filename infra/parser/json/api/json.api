@@ -1,0 +1,10 @@
+public final class com/azikar24/wormaceptor/infra/parser/json/JsonBodyParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun canParse (Ljava/lang/String;[B)Z
+	public fun getPriority ()I
+	public fun getSupportedContentTypes ()Ljava/util/List;
+	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+}
+

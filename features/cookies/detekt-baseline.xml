@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:CookiesRepositoryImpl.kt$CookiesRepositoryImpl$Companion</ID>
+    <ID>ComplexCondition:CookiesDataSource.kt$CookiesDataSource$name.equals("path", ignoreCase = true) || name.equals("domain", ignoreCase = true) || name.equals("expires", ignoreCase = true) || name.equals("max-age", ignoreCase = true) || name.equals("secure", ignoreCase = true) || name.equals("httponly", ignoreCase = true) || name.equals("samesite", ignoreCase = true)</ID>
+    <ID>ComposableParamOrder:CookiesListScreen.kt$CookiesListScreen</ID>
+    <ID>LongMethod:CookieDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookieDetailScreen(cookie: CookieInfo, onBack: () -&gt; Unit, onDelete: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CookiesFeature.kt$@Composable private fun CookiesNavHost( navController: NavHostController, viewModel: CookiesViewModel, onNavigateBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CookiesListScreen.kt$@Composable private fun CookieItem(cookie: CookieInfo, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CookiesListScreen.kt$@Composable private fun DomainSection( domain: CookieDomain, isExpanded: Boolean, onToggle: () -&gt; Unit, onCookieClick: (CookieInfo) -&gt; Unit, onDeleteDomain: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CookiesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesListScreen( domains: ImmutableList&lt;CookieDomain&gt;, expandedDomains: ImmutableSet&lt;String&gt;, searchQuery: String, totalCookieCount: Int, totalDomainCount: Int, newCookiesCount: Int, modifiedCookiesCount: Int, onSearchQueryChanged: (String) -&gt; Unit, onToggleDomain: (String) -&gt; Unit, onExpandAll: () -&gt; Unit, onCollapseAll: () -&gt; Unit, onCookieClick: (CookieInfo) -&gt; Unit, onDeleteDomain: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onClearChanges: () -&gt; Unit, onBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:CookiesListScreen.kt$( domains: ImmutableList&lt;CookieDomain&gt;, expandedDomains: ImmutableSet&lt;String&gt;, searchQuery: String, totalCookieCount: Int, totalDomainCount: Int, newCookiesCount: Int, modifiedCookiesCount: Int, onSearchQueryChanged: (String) -&gt; Unit, onToggleDomain: (String) -&gt; Unit, onExpandAll: () -&gt; Unit, onCollapseAll: () -&gt; Unit, onCookieClick: (CookieInfo) -&gt; Unit, onDeleteDomain: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onClearChanges: () -&gt; Unit, onBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:CookieDetailScreen.kt$1000</ID>
+    <ID>MagicNumber:CookieDetailScreen.kt$24</ID>
+    <ID>MagicNumber:CookieDetailScreen.kt$60</ID>
+    <ID>MagicNumber:CookiesDataSource.kt$CookiesDataSource$1000</ID>
+    <ID>MagicNumber:CookiesFeature.kt$300</ID>
+    <ID>MagicNumber:CookiesViewModel.kt$CookiesViewModel$150</ID>
+    <ID>MagicNumber:CookiesViewModel.kt$CookiesViewModel$30_000</ID>
+    <ID>MagicNumber:CookiesViewModel.kt$CookiesViewModel$5000</ID>
+    <ID>MaxLineLength:CookiesListScreen.kt$"Are you sure you want to delete all $totalCookieCount cookies from $totalDomainCount domains? This action cannot be undone."</ID>
+    <ID>MaximumLineLength:CookiesListScreen.kt$ </ID>
+    <ID>UndocumentedPublicClass:CookiesDesignSystem.kt$CookiesDesignSystem$CookieColors</ID>
+    <ID>UndocumentedPublicFunction:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$fun forExpirationStatus(status: String): Color</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun clearAllCookies()</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun clearCookieSelection()</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun collapseAllDomains()</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun deleteAllCookiesForDomain(domain: String)</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun deleteCookie(cookie: CookieInfo)</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun expandAllDomains()</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun onSearchQueryChanged(query: String)</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun refresh()</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun selectCookie(cookie: CookieInfo)</ID>
+    <ID>UndocumentedPublicFunction:CookiesViewModel.kt$CookiesViewModel$fun toggleDomainExpanded(domain: String)</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val domain = WormaCeptorColors.Cookies.Domain</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val expired = WormaCeptorColors.Cookies.Expired</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val httpOnly = WormaCeptorColors.Cookies.HttpOnly</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val sameSiteLax = WormaCeptorColors.Cookies.SameSiteLax</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val sameSiteNone = WormaCeptorColors.Cookies.SameSiteNone</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val sameSiteStrict = WormaCeptorColors.Cookies.SameSiteStrict</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val secure = WormaCeptorColors.Cookies.Secure</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val session = WormaCeptorColors.Cookies.Session</ID>
+    <ID>UndocumentedPublicProperty:CookiesDesignSystem.kt$CookiesDesignSystem.CookieColors$val valid = WormaCeptorColors.Cookies.Valid</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookieChange$val cookieKey: String</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookieChange$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookieChange$val type: CookieChangeType</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$// All cookies grouped by domain val cookieDomains: StateFlow&lt;ImmutableList&lt;CookieDomain&gt;&gt; = combine( repository.getAllCookies(), _searchQuery.debounce(150), ) { cookies, query -&gt; // Detect changes detectCookieChanges(cookies) val filteredCookies = if (query.isBlank()) { cookies } else { cookies.filter { cookie -&gt; cookie.name.contains(query, ignoreCase = true) || cookie.value.contains(query, ignoreCase = true) || cookie.domain.contains(query, ignoreCase = true) } } // Group by domain filteredCookies .groupBy { it.domain } .map { (domain, domainCookies) -&gt; CookieDomain( domain = domain, cookies = domainCookies.sortedBy { it.name.lowercase() }, ) } .sortedBy { it.domain.lowercase() } .toImmutableList() }.flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$// Change counts for UI summary banner val newCookiesCount: StateFlow&lt;Int&gt; = _cookieChanges .map { changes -&gt; val thirtySecondsAgo = System.currentTimeMillis() - 30_000 changes.values.count { it.type == CookieChangeType.ADDED &amp;&amp; it.timestamp &gt; thirtySecondsAgo } } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$// Total cookie count val totalCookieCount: StateFlow&lt;Int&gt; = repository.getAllCookies() .map { it.size } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$// Total domain count val totalDomainCount: StateFlow&lt;Int&gt; = cookieDomains .map { it.size } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val cookieChanges: StateFlow&lt;ImmutableMap&lt;String, CookieChange&gt;&gt; = _cookieChanges.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val expandedDomains: StateFlow&lt;ImmutableSet&lt;String&gt;&gt; = _expandedDomains</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val modifiedCookiesCount: StateFlow&lt;Int&gt; = _cookieChanges .map { changes -&gt; val thirtySecondsAgo = System.currentTimeMillis() - 30_000 changes.values.count { it.type == CookieChangeType.MODIFIED &amp;&amp; it.timestamp &gt; thirtySecondsAgo } } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery</ID>
+    <ID>UndocumentedPublicProperty:CookiesViewModel.kt$CookiesViewModel$val selectedCookie: StateFlow&lt;CookieInfo?&gt; = _selectedCookie</ID>
+    <ID>UnnecessaryParentheses:CookiesDataSource.kt$CookiesDataSource$(httpCookie.maxAge * 1000)</ID>
+    <ID>UnusedPrivateProperty:CookiesDataSource.kt$CookiesDataSource$private val context: Context</ID>
+    <ID>ViewModelInjection:CookiesFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

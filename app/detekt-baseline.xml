@@ -2,14 +2,62 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>ClassOrdering:MainActivity.kt$MainActivity$Companion</ID>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
+    <ID>ComposableParamOrder:CookiesTestScreen.kt$DetailItem</ID>
+    <ID>ComposableParamOrder:WebViewTestScreen.kt$DetailRow</ID>
+    <ID>CyclomaticComplexMethod:CookiesTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
+    <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
+    <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
+    <ID>LongMethod:ComposeRenderTestScreen.kt$@Composable private fun ColorSection(count: Int, recomposeCount: Int)</ID>
+    <ID>LongMethod:ComposeRenderTestScreen.kt$@Composable private fun ComposableInfoRow(info: ComposeRenderInfo, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:ComposeRenderTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ComposeRenderTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun AddCookieDialog( onDismiss: () -&gt; Unit, onAdd: (domain: String, name: String, value: String, isSecure: Boolean) -&gt; Unit, )</ID>
+    <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun CookieDetailSheet(cookie: ParsedCookie, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CookiesTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:GlitchMeltdownEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$@Composable private fun ActionCard( icon: ImageVector, title: String, description: String, onClick: () -&gt; Unit, showChevron: Boolean = false, )</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$@Composable private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel())</ID>
+    <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:MainActivity.kt$MainActivity$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel())</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, onComposeRenderClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongMethod:TestToolsTab.kt$@Composable private fun ToolListItem( icon: ImageVector, label: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, isDestructive: Boolean = false, showChevron: Boolean = false, status: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongMethod:WebViewTestScreen.kt$@Composable private fun CapturedRequestItem(request: WebViewRequest, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:WebViewTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WebViewTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:WebViewTestScreen.kt$@SuppressLint("SetJavaScriptEnabled") @Composable private fun WebViewTestContent( engine: WebViewMonitorEngine, requests: List&lt;WebViewRequest&gt;, stats: WebViewRequestStats, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
-    <ID>MagicNumber:Color.kt$0xFF560BAD</ID>
-    <ID>MagicNumber:Color.kt$0xFFB5179E</ID>
+    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, onComposeRenderClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>MagicNumber:Color.kt$0x127C3AED</ID>
+    <ID>MagicNumber:Color.kt$0x15A78BFA</ID>
+    <ID>MagicNumber:Color.kt$0xFF0A0A0A</ID>
+    <ID>MagicNumber:Color.kt$0xFF141414</ID>
+    <ID>MagicNumber:Color.kt$0xFF525252</ID>
+    <ID>MagicNumber:Color.kt$0xFF6B6B6B</ID>
+    <ID>MagicNumber:Color.kt$0xFF7C3AED</ID>
+    <ID>MagicNumber:Color.kt$0xFF8A8A8A</ID>
+    <ID>MagicNumber:Color.kt$0xFF9CA3AF</ID>
+    <ID>MagicNumber:Color.kt$0xFFA78BFA</ID>
+    <ID>MagicNumber:Color.kt$0xFFDC2626</ID>
+    <ID>MagicNumber:Color.kt$0xFFF87171</ID>
+    <ID>MagicNumber:Color.kt$0xFFFAFAFA</ID>
     <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF3F51B5</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:ComposeRenderTestScreen.kt$1_000_000.0</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$3600</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$40</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$60</ID>
+    <ID>MagicNumber:CookiesTestScreen.kt$86400</ID>
     <ID>MagicNumber:Data.kt$Data$10</ID>
     <ID>MagicNumber:GlitchMeltdownEffect.kt$0.02f</ID>
     <ID>MagicNumber:GlitchMeltdownEffect.kt$0.05f</ID>
@@ -129,6 +177,13 @@
     <ID>MagicNumber:IcGithub.kt$9.466f</ID>
     <ID>MagicNumber:IcGithub.kt$9.81f</ID>
     <ID>MagicNumber:IcGithub.kt$9.954f</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$1000L</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$15.0</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$19.0</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$20.0</ID>
+    <ID>MagicNumber:LocationTestScreen.kt$4.0</ID>
     <ID>MagicNumber:MainActivity.kt$MainActivity$0.96f</ID>
     <ID>MagicNumber:MainActivity.kt$MainActivity$1500</ID>
     <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$1234</ID>
@@ -147,8 +202,39 @@
     <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$9</ID>
     <ID>MagicNumber:SampleApiService.kt$SampleApiService$250000L</ID>
     <ID>MagicNumber:SampleContentService.kt$SampleContentService$500000L</ID>
+    <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService$1000</ID>
+    <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService$250000L</ID>
+    <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService.&lt;no name provided&gt;$1000</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF00BCD4</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF757575</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFF44336</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$256</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$4</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$42</ID>
+    <ID>MagicNumber:SecureStorageTestScreen.kt$8</ID>
+    <ID>MagicNumber:TestToolsTab.kt$150</ID>
     <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$1000000</ID>
-    <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$9999</ID>
+    <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$999</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFF757575</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFFF44336</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$1024</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$1024.0</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$200</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$299</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$300</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$399</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$400</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$499</ID>
+    <ID>MagicNumber:WebViewTestScreen.kt$500</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$0xFF000000</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$0xFFFFFFFF</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$100.98f</ID>
@@ -303,30 +389,123 @@
     <ID>MagicNumber:WormaceptorLogo.kt$9.5f</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$93.04f</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$96.65f</ID>
-    <ID>MatchingDeclarationName:DesignSystem.kt$WormaCeptorDesignSystem</ID>
-    <ID>MaxLineLength:VeryLargeData.kt$VeryLargeData$"\"authorization\":\"TEST\"The quick brown fox jumps over the lazy dog over and over again many times,100 word sentence formed."</ID>
-    <ID>MaximumLineLength:VeryLargeData.kt$VeryLargeData$ </ID>
+    <ID>MatchingDeclarationName:TestToolsNavigation.kt$TestToolsRoutes</ID>
+    <ID>MatchingDeclarationName:TestToolsTab.kt$ToolStatus</ID>
+    <ID>MaxLineLength:ComposeRenderTestScreen.kt$text = "${stats.totalRecompositions} recomposition${if (stats.totalRecompositions != 1) "s" else ""}"</ID>
+    <ID>MaxLineLength:CookiesTestScreen.kt$text = "$totalCookies cookie${if (totalCookies != 1) "s" else ""} in ${domainCookies.size} domain${if (domainCookies.size != 1) "s" else ""}"</ID>
+    <ID>MaxLineLength:LocationTestScreen.kt$color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant</ID>
+    <ID>MaximumLineLength:ComposeRenderTestScreen.kt$ </ID>
+    <ID>MaximumLineLength:CookiesTestScreen.kt$ </ID>
+    <ID>MaximumLineLength:LocationTestScreen.kt$ </ID>
     <ID>ModifierReused:GlitchMeltdownEffect.kt$Box( modifier = modifier.graphicsLayer { shader.setFloatUniform("resolution", screenWidthPx, screenHeightPx) shader.setFloatUniform("progress", progress) shader.setFloatUniform("time", time) renderEffect = RenderEffect .createRuntimeShaderEffect(shader, "content") .asComposeRenderEffect() }, ) { content() }</ID>
     <ID>ModifierReused:GlitchMeltdownEffect.kt$Box(modifier = modifier) { content() }</ID>
-    <ID>NoWildcardImports:DesignSystem.kt$import androidx.compose.animation.core.*</ID>
     <ID>NoWildcardImports:HttpBinApi.kt$import retrofit2.http.*</ID>
-    <ID>NoWildcardImports:MainActivity.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:MainActivity.kt$import androidx.compose.material3.*</ID>
+    <ID>OutdatedDocumentation:TestToolsTab.kt$@Composable private fun ToolListItem( icon: ImageVector, label: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, isDestructive: Boolean = false, showChevron: Boolean = false, status: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>TooGenericExceptionCaught:SecureStorageTestScreen.kt$e: Exception</ID>
     <ID>TooManyFunctions:HttpBinApi.kt$HttpBinApi</ID>
     <ID>TopLevelPropertyNaming:GlitchMeltdownEffect.kt$private const val GLITCH_SHADER = """ uniform shader content; uniform float2 resolution; uniform float progress; uniform float time; // Pseudo-random function float hash(float n) { return fract(sin(n) * 43758.5453123); } float hash2(float2 p) { return fract(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453); } // Noise function float noise(float2 p) { float2 i = floor(p); float2 f = fract(p); f = f * f * (3.0 - 2.0 * f); float a = hash2(i); float b = hash2(i + float2(1.0, 0.0)); float c = hash2(i + float2(0.0, 1.0)); float d = hash2(i + float2(1.0, 1.0)); return mix(mix(a, b, f.x), mix(c, d, f.x), f.y); } half4 main(float2 coord) { float2 uv = coord / resolution; float intensity = progress; // RGB split / chromatic aberration (increases with progress) float rgbSplit = intensity * 0.03; float2 redOffset = float2(rgbSplit * sin(time * 10.0 + uv.y * 20.0), 0.0); float2 blueOffset = float2(-rgbSplit * cos(time * 8.0 + uv.y * 15.0), rgbSplit * 0.5); // Screen tearing - horizontal block shifts float tearStrength = intensity * intensity * 0.1; float blockY = floor(uv.y * (10.0 + intensity * 20.0)); float tearOffset = 0.0; if (hash(blockY + floor(time * 30.0)) &gt; (1.0 - intensity * 0.5)) { tearOffset = (hash(blockY * 2.0 + time) - 0.5) * tearStrength; } // Melt/drip effect (increases dramatically in later stages) float meltAmount = intensity * intensity * 0.15; float meltNoise = noise(float2(uv.x * 10.0, time * 2.0)); float meltOffset = meltAmount * meltNoise * (1.0 - uv.y); // Apply distortions to UV float2 distortedUV = uv; distortedUV.x += tearOffset; distortedUV.y += meltOffset; // Clamp UVs distortedUV = clamp(distortedUV, float2(0.0), float2(1.0)); float2 redUV = clamp(distortedUV + redOffset, float2(0.0), float2(1.0)); float2 blueUV = clamp(distortedUV + blueOffset, float2(0.0), float2(1.0)); // Sample content with RGB separation half4 colR = content.eval(redUV * resolution); half4 colG = content.eval(distortedUV * resolution); half4 colB = content.eval(blueUV * resolution); half4 color = half4(colR.r, colG.g, colB.b, colG.a); // Static noise overlay float noiseVal = hash2(uv * resolution + float2(time * 100.0, time * 50.0)); float noiseIntensity = intensity * 0.3; color.rgb = mix(color.rgb, half3(noiseVal), noiseIntensity * step(0.7, noiseVal + intensity * 0.3)); // Scan lines float scanLine = sin(coord.y * 2.0 + time * 50.0) * 0.5 + 0.5; scanLine = pow(scanLine, 2.0); float scanIntensity = intensity * 0.15; color.rgb *= (1.0 - scanIntensity * scanLine); // Color corruption - desaturate and darken float darkShift = intensity * 0.4; float luminance = dot(color.rgb, half3(0.299, 0.587, 0.114)); color.rgb = mix(color.rgb, half3(luminance), darkShift); color.rgb *= (1.0 - darkShift * 0.3); // Block glitches float blockSize = 20.0 + intensity * 30.0; float2 blockCoord = floor(coord / blockSize); float blockRand = hash2(blockCoord + floor(time * 20.0)); if (blockRand &gt; (1.0 - intensity * 0.15) &amp;&amp; intensity &gt; 0.4) { float glitchType = hash(blockRand * 100.0); if (glitchType &lt; 0.33) { color.rgb = half3(0.0, 0.0, 0.0); } else if (glitchType &lt; 0.66) { color.rgb = 1.0 - color.rgb; } else { color.rgb = half3(noiseVal); } } // Final flash at the end (progress &gt; 0.9) if (intensity &gt; 0.9) { float flashIntensity = (intensity - 0.9) / 0.1; half3 flashColor = mix(half3(0.0, 0.0, 0.0), half3(1.0, 1.0, 1.0), flashIntensity); color.rgb = mix(color.rgb, flashColor, flashIntensity * flashIntensity); } return color; } """</ID>
+    <ID>UnderscoresInNumericLiterals:CookiesTestScreen.kt$86400</ID>
     <ID>UnderscoresInNumericLiterals:GlitchMeltdownEffect.kt$10000</ID>
     <ID>UnderscoresInNumericLiterals:SampleApiService.kt$SampleApiService$250000L</ID>
     <ID>UnderscoresInNumericLiterals:SampleContentService.kt$SampleContentService$500000L</ID>
+    <ID>UnderscoresInNumericLiterals:SampleWebSocketService.kt$SampleWebSocketService$250000L</ID>
     <ID>UnderscoresInNumericLiterals:VeryLargeData.kt$VeryLargeData$1000000</ID>
+    <ID>UndocumentedPublicClass:App.kt$App : Application</ID>
+    <ID>UndocumentedPublicClass:Data.kt$Data</ID>
+    <ID>UndocumentedPublicClass:HttpBinApi.kt$HttpBinApi</ID>
+    <ID>UndocumentedPublicClass:MainActivity.kt$MainActivity : ComponentActivity</ID>
+    <ID>UndocumentedPublicClass:MainActivityViewModel.kt$MainActivityViewModel : ViewModel</ID>
+    <ID>UndocumentedPublicClass:SampleApiService.kt$SampleApiService</ID>
+    <ID>UndocumentedPublicClass:SampleContentService.kt$SampleContentService</ID>
+    <ID>UndocumentedPublicClass:VeryLargeData.kt$VeryLargeData</ID>
+    <ID>UndocumentedPublicFunction:GlitchMeltdownEffect.kt$@Composable fun GlitchMeltdownEffect( isActive: Boolean, progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@DELETE("/delete") fun delete(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/absolute-redirect/{times}") fun redirectAbsolute(@Path("times") times: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/basic-auth/{user}/{passwd}") fun basicAuth(@Path("user") user: String?, @Path("passwd") passwd: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/bearer") fun bearer(@Header("Authorization") token: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/cache") fun cache(@Header("If-Modified-Since") ifModifiedSince: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/cache/{seconds}") fun cache(@Path("seconds") seconds: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/cookies/set") fun cookieSet(@Query("k1") value: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/deflate") fun deflate(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/delay/{seconds}") fun delay(@Path("seconds") seconds: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/deny") fun deny(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/drip") fun drip( @Query("numbytes") bytes: Int, @Query("duration") seconds: Int, @Query("delay") delay: Int, @Query("code") code: Int, ): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/encoding/utf8") fun utf8(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/get") fun get(): Call&lt;Void?&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/gzip") fun gzip(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/image") fun image(@Header("Accept") accept: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/redirect-to") fun redirectTo(@Query("url") url: String?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/redirect/{times}") fun redirect(@Path("times") times: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/relative-redirect/{times}") fun redirectRelative(@Path("times") times: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/status/{code}") fun status(@Path("code") code: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/stream-bytes/{bytes}") fun streamBytes(@Path("bytes") bytes: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/stream/{lines}") fun stream(@Path("lines") lines: Int): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@GET("/xml") fun xml(): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@PATCH("/patch") fun patch(@Body body: Data?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@POST("/post") @FormUrlEncoded @Headers("ContentType: application/x-www-form-urlencoded") fun postForm( @Field("param_string") string: String?, @Field("param_string_null") stringNil: String?, @Field("param_double") param2: Double, @Field("param_int") param3: Int, @Field("param_bool") param4: Boolean, ): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@POST("/post") fun login(@Body body: LoginData): Call&lt;Void?&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@POST("/post") fun post(@Body body: Data?): Call&lt;Void?&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@POST("/post") fun post(@Body body: VeryLargeData?): Call&lt;Void?&gt;</ID>
+    <ID>UndocumentedPublicFunction:HttpBinApi.kt$HttpBinApi$@PUT("/put") @Headers("Cache-Control: max-age=640000", "Library: WormaCeptor", "Client: Sample", "X-Foo: Bar", "X-Ping: Pong") fun put(@Body body: Data?): Call&lt;Void&gt;</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun doContentTypeTests()</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun doHttpActivity(context: Context)</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun doWebSocketTest()</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun goToGithub(context: Context)</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun simulateCrash()</ID>
+    <ID>UndocumentedPublicFunction:MainActivityViewModel.kt$MainActivityViewModel$fun startWormaCeptor(context: Context)</ID>
+    <ID>UndocumentedPublicFunction:SampleApiService.kt$SampleApiService$fun getInstance(): HttpBinApi</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun html(@Url url: String = "https://example.com"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun image(@Url url: String = "https://picsum.photos/400/300"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun imageGif(@Url url: String = "https://media.giphy.com/media/3o7TKsQ8MgBdI7tD3y/giphy.gif"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun imagePng(@Url url: String = "https://placehold.co/400x300/png"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun imageWebp(@Url url: String = "https://www.gstatic.com/webp/gallery/1.webp"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun json(@Url url: String = "https://jsonplaceholder.typicode.com/posts/1"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun pdf(@Url url: String = "https://www.stata.com/manuals/dsample.pdf"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentApi.kt$SampleContentApi$@GET fun xml(@Url url: String = "https://www.w3schools.com/xml/note.xml"): Call&lt;ResponseBody&gt;</ID>
+    <ID>UndocumentedPublicFunction:SampleContentService.kt$SampleContentService$fun getInstance(): SampleContentApi</ID>
+    <ID>UndocumentedPublicFunction:SampleWebSocketService.kt$SampleWebSocketService$fun connect()</ID>
+    <ID>UndocumentedPublicFunction:SampleWebSocketService.kt$SampleWebSocketService$fun disconnect()</ID>
+    <ID>UndocumentedPublicFunction:SampleWebSocketService.kt$SampleWebSocketService$fun sendMessage(message: String)</ID>
+    <ID>UndocumentedPublicFunction:Theme.kt$@Composable fun WormaCeptorMainTheme( darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = false, content: @Composable () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$// Dark Theme Colors val DarkBackground = Color(0xFF0A0A0A)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$// Light Theme Colors val LightBackground = Color(0xFFFFFFFF)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkAccent = Color(0xFFA78BFA)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkAccentSubtle = Color(0x15A78BFA)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkDestructive = Color(0xFFF87171)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkSurface = Color(0xFF141414)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkTextPrimary = Color(0xFFFAFAFA)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkTextSecondary = Color(0xFF8A8A8A)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val DarkTextTertiary = Color(0xFF525252)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightAccent = Color(0xFF7C3AED)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightAccentSubtle = Color(0x127C3AED)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightDestructive = Color(0xFFDC2626)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightSurface = Color(0xFFFAFAFA)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightTextPrimary = Color(0xFF0A0A0A)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightTextSecondary = Color(0xFF6B6B6B)</ID>
+    <ID>UndocumentedPublicProperty:Color.kt$val LightTextTertiary = Color(0xFF9CA3AF)</ID>
+    <ID>UndocumentedPublicProperty:IcGithub.kt$val IcGithubBuilder: Builder get() = Builder( name = "IcGithub", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp, viewportWidth = 24.0f, viewportHeight = 24.0f, ).apply { path( fill = SolidColor(Color(0xFFFFFFFF)), stroke = null, strokeLineWidth = 0.0f, strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f, pathFillType = NonZero, ) { moveTo(12.0f, 0.0f) curveTo(5.374f, 0.0f, 0.0f, 5.373f, 0.0f, 12.0f) curveTo(0.0f, 17.302f, 3.438f, 21.8f, 8.207f, 23.387f) curveTo(8.806f, 23.498f, 9.0f, 23.126f, 9.0f, 22.81f) lineTo(9.0f, 20.576f) curveTo(5.662f, 21.302f, 4.967f, 19.16f, 4.967f, 19.16f) curveTo(4.421f, 17.773f, 3.634f, 17.404f, 3.634f, 17.404f) curveTo(2.545f, 16.659f, 3.717f, 16.675f, 3.717f, 16.675f) curveTo(4.922f, 16.759f, 5.556f, 17.912f, 5.556f, 17.912f) curveTo(6.626f, 19.746f, 8.363f, 19.216f, 9.048f, 18.909f) curveTo(9.155f, 18.134f, 9.466f, 17.604f, 9.81f, 17.305f) curveTo(7.145f, 17.0f, 4.343f, 15.971f, 4.343f, 11.374f) curveTo(4.343f, 10.063f, 4.812f, 8.993f, 5.579f, 8.153f) curveTo(5.455f, 7.85f, 5.044f, 6.629f, 5.696f, 4.977f) curveTo(5.696f, 4.977f, 6.704f, 4.655f, 8.997f, 6.207f) curveTo(9.954f, 5.941f, 10.98f, 5.808f, 12.0f, 5.803f) curveTo(13.02f, 5.808f, 14.047f, 5.941f, 15.006f, 6.207f) curveTo(17.297f, 4.655f, 18.303f, 4.977f, 18.303f, 4.977f) curveTo(18.956f, 6.63f, 18.545f, 7.851f, 18.421f, 8.153f) curveTo(19.191f, 8.993f, 19.656f, 10.064f, 19.656f, 11.374f) curveTo(19.656f, 15.983f, 16.849f, 16.998f, 14.177f, 17.295f) curveTo(14.607f, 17.667f, 15.0f, 18.397f, 15.0f, 19.517f) lineTo(15.0f, 22.81f) curveTo(15.0f, 23.129f, 15.192f, 23.504f, 15.801f, 23.386f) curveTo(20.566f, 21.797f, 24.0f, 17.3f, 24.0f, 12.0f) curveTo(24.0f, 5.373f, 18.627f, 0.0f, 12.0f, 0.0f) close() } }</ID>
+    <ID>UndocumentedPublicProperty:LoginData.kt$LoginData$val password: String</ID>
+    <ID>UndocumentedPublicProperty:LoginData.kt$LoginData$val rememberMe: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:LoginData.kt$LoginData$val username: String</ID>
+    <ID>UndocumentedPublicProperty:ShowcaseTab.kt$ShowcaseFeature$val icon: ImageVector</ID>
+    <ID>UndocumentedPublicProperty:ShowcaseTab.kt$ShowcaseFeature$val label: String</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val COMPOSE_RENDER = "tools/compose_render"</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val COOKIES = "tools/cookies"</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val HOME = "home"</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val LOCATION = "tools/location"</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val SECURE_STORAGE = "tools/secure_storage"</ID>
+    <ID>UndocumentedPublicProperty:TestToolsNavigation.kt$TestToolsRoutes$const val WEBVIEW = "tools/webview"</ID>
+    <ID>UndocumentedPublicProperty:Type.kt$val Typography = Typography( bodyLarge = TextStyle( fontFamily = FontFamily.Default, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 24.sp, letterSpacing = 0.5.sp, ), )</ID>
     <ID>UnnecessaryParentheses:GlitchMeltdownEffect.kt$(i.toFloat() / scanLineCount)</ID>
     <ID>UnnecessaryParentheses:GlitchMeltdownEffect.kt$(progress * 0.05f * shakeOffset)</ID>
     <ID>UnnecessaryParentheses:GlitchMeltdownEffect.kt$(size.width / pixelSize)</ID>
+    <ID>UnstableCollections:ComposeRenderTestScreen.kt$List&lt;ComposeRenderInfo&gt;</ID>
+    <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
+    <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
+    <ID>UnstableCollections:WebViewTestScreen.kt$List&lt;WebViewRequest&gt;</ID>
     <ID>UnusedParameter:MainActivityViewModel.kt$MainActivityViewModel$context: Context</ID>
     <ID>UnusedPrivateProperty:VeryLargeData.kt$VeryLargeData$i</ID>
-    <ID>ViewModelForwarding:MainActivity.kt$MainActivity$Content( viewModel = viewModel, onRunApiTestsClick = { viewModel.doHttpActivity(baseContext) viewModel.doContentTypeTests() scope.launch { snackbarHostState.showSnackbar("Running API tests...") } }, onCrashClick = { showCrashDialog = true }, )</ID>
-    <ID>WildcardImport:DesignSystem.kt$import androidx.compose.animation.core.*</ID>
     <ID>WildcardImport:HttpBinApi.kt$import retrofit2.http.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:MainActivity.kt$import androidx.compose.material3.*</ID>
   </CurrentIssues>
 </SmellBaseline>

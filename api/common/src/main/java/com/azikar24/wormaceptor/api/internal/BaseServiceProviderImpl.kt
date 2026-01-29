@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.azikar24.wormaceptor.api.ServiceProvider
 import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.core.engine.CaptureEngine
@@ -26,6 +27,10 @@ import java.io.InputStream
 import java.util.UUID
 
 abstract class BaseServiceProviderImpl : ServiceProvider {
+
+    private companion object {
+        private const val TAG = "BaseServiceProvider"
+    }
 
     protected var captureEngine: CaptureEngine? = null
     protected var queryEngine: QueryEngine? = null
@@ -91,8 +96,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
                     { leak -> helper.show(leak) }
                 },
             )
-        } catch (e: Exception) {
-            // LeakDetectionEngine might not be available in Koin
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "LeakDetectionEngine not available in Koin", e)
         }
     }
 
@@ -105,8 +110,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
                 hostPackage = context.packageName,
                 onViolationCallback = { violation -> notificationHelper.show(violation) },
             )
-        } catch (e: Exception) {
-            // ThreadViolationEngine might not be available in Koin
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "ThreadViolationEngine not available in Koin", e)
         }
     }
 

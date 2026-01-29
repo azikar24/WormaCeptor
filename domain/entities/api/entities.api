@@ -1,0 +1,2155 @@
+public final class com/azikar24/wormaceptor/domain/entities/AppDetails {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;JIIJJZ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()J
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()J
+	public final fun component7 ()J
+	public final fun component8 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;JIIJJZ)Lcom/azikar24/wormaceptor/domain/entities/AppDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/AppDetails;Ljava/lang/String;Ljava/lang/String;JIIJJZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/AppDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirstInstallTime ()J
+	public final fun getLastUpdateTime ()J
+	public final fun getMinSdk ()I
+	public final fun getPackageName ()Ljava/lang/String;
+	public final fun getTargetSdk ()I
+	public final fun getVersionCode ()J
+	public final fun getVersionName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isDebuggable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CipherMode : java/lang/Enum {
+	public static final field CBC Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static final field CFB Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static final field CTR Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static final field ECB Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static final field GCM Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static final field OFB Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getModeName ()Ljava/lang/String;
+	public final fun getRequiresIv ()Z
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ColumnInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZZ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZZ)Lcom/azikar24/wormaceptor/domain/entities/ColumnInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ColumnInfo;Ljava/lang/String;Ljava/lang/String;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ColumnInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isNullable ()Z
+	public final fun isPrimaryKey ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ComposeRenderInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderInfo$Companion;
+	public static final field EXCESSIVE_RECOMPOSE_RATIO F
+	public static final field SLOW_RENDER_THRESHOLD_NS J
+	public fun <init> (Ljava/lang/String;IIJJLjava/util/List;IJ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()J
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()I
+	public final fun component8 ()J
+	public final fun copy (Ljava/lang/String;IIJJLjava/util/List;IJ)Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderInfo;Ljava/lang/String;IIJJLjava/util/List;IJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAverageRenderTimeNs ()J
+	public final fun getComposableName ()Ljava/lang/String;
+	public final fun getDepth ()I
+	public final fun getLastRenderTimeNs ()J
+	public final fun getParameters ()Ljava/util/List;
+	public final fun getRecomposeCount ()I
+	public final fun getRecomposeRatio ()F
+	public final fun getSkipCount ()I
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ComposeRenderInfo$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ComposeRenderStats {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderStats$Companion;
+	public fun <init> (IIFLjava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()F
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (IIFLjava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderStats;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderStats;IIFLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderStats;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAverageRecomposeRatio ()F
+	public final fun getMostRecomposed ()Ljava/lang/String;
+	public final fun getSlowestComposable ()Ljava/lang/String;
+	public final fun getTotalComposables ()I
+	public final fun getTotalRecompositions ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ComposeRenderStats$Companion {
+	public final fun getEMPTY ()Lcom/azikar24/wormaceptor/domain/entities/ComposeRenderStats;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CookieDomain {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;)Lcom/azikar24/wormaceptor/domain/entities/CookieDomain;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/CookieDomain;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/CookieDomain;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCookieCount ()I
+	public final fun getCookies ()Ljava/util/List;
+	public final fun getDomain ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CookieInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;)Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/CookieInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getExpirationStatus ()Ljava/lang/String;
+	public final fun getExpiresAt ()Ljava/lang/Long;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getSameSite ()Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isExpired ()Z
+	public final fun isHttpOnly ()Z
+	public final fun isSecure ()Z
+	public final fun isSessionCookie ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite : java/lang/Enum {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite$Companion;
+	public static final field LAX Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public static final field NONE Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public static final field STRICT Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite$Companion {
+	public final fun fromString (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CookieInfo$SameSite;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CpuInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/CpuInfo$Companion;
+	public fun <init> (JFLjava/util/List;IJLjava/lang/Float;J)V
+	public synthetic fun <init> (JFLjava/util/List;IJLjava/lang/Float;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()F
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()I
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/lang/Float;
+	public final fun component7 ()J
+	public final fun copy (JFLjava/util/List;IJLjava/lang/Float;J)Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;JFLjava/util/List;IJLjava/lang/Float;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCoreCount ()I
+	public final fun getCpuFrequencyMHz ()J
+	public final fun getCpuTemperature ()Ljava/lang/Float;
+	public final fun getOverallUsagePercent ()F
+	public final fun getPerCoreUsage ()Ljava/util/List;
+	public final fun getTimestamp ()J
+	public final fun getUptime ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CpuInfo$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/Crash {
+	public fun <init> (JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/Crash;JJLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExceptionType ()Ljava/lang/String;
+	public final fun getId ()J
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getStackTrace ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoAlgorithm : java/lang/Enum {
+	public static final field AES_128 Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public static final field AES_256 Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public static final field DES Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public static final field RSA Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public static final field TRIPLE_DES Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public final fun getAlgorithmName ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getKeyLengthBits ()I
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoConfig {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig$Companion;
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;)Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlgorithm ()Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public final fun getIv ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getKeyFormat ()Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public final fun getMode ()Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public final fun getPadding ()Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public final fun getTransformation ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoConfig$Companion {
+	public final fun aes128Cbc ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+	public final fun aes256Gcm ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+	public final fun default ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoOperation : java/lang/Enum {
+	public static final field DECRYPT Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+	public static final field ENCRYPT Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoPreset : java/lang/Enum {
+	public static final field AES_128_CBC Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+	public static final field AES_256_CBC Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+	public static final field AES_256_GCM Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+	public static final field TRIPLE_DES_CBC Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+	public final fun getConfig ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/CryptoPreset;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoResult {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/CryptoResult$Companion;
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;ZLjava/lang/String;JJ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()J
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public final fun component7 ()Z
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()J
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;ZLjava/lang/String;JJ)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;ZLjava/lang/String;JJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlgorithm ()Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;
+	public final fun getDurationMs ()J
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getInput ()Ljava/lang/String;
+	public final fun getMode ()Lcom/azikar24/wormaceptor/domain/entities/CipherMode;
+	public final fun getOperation ()Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;
+	public final fun getOutput ()Ljava/lang/String;
+	public final fun getSuccess ()Z
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/CryptoResult$Companion {
+	public final fun decryptSuccess (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;J)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
+	public final fun encryptSuccess (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;J)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
+	public final fun failure (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoOperation;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoAlgorithm;Lcom/azikar24/wormaceptor/domain/entities/CipherMode;Ljava/lang/String;J)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DatabaseInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;JI)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()J
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;JI)Lcom/azikar24/wormaceptor/domain/entities/DatabaseInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/DatabaseInfo;Ljava/lang/String;Ljava/lang/String;JIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/DatabaseInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getSizeBytes ()J
+	public final fun getTableCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DependencyCategory : java/lang/Enum {
+	public static final field ANALYTICS Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field ANDROIDX Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field DATABASE Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field DEPENDENCY_INJECTION Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field IMAGE_LOADING Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field KOTLIN Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field LOGGING Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field NETWORKING Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field OTHER Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field REACTIVE Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field SECURITY Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field SERIALIZATION Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field TESTING Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field UI_FRAMEWORK Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static final field UTILITY Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public final fun displayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DependencyInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Z
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Z
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)Lcom/azikar24/wormaceptor/domain/entities/DependencyInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/DependencyInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/DependencyInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArtifactId ()Ljava/lang/String;
+	public final fun getCategory ()Lcom/azikar24/wormaceptor/domain/entities/DependencyCategory;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDetectionMethod ()Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public final fun getGroupId ()Ljava/lang/String;
+	public final fun getMavenCoordinate ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPackageName ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public final fun getWebsite ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isDetected ()Z
+	public final fun isInternalDependency ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DependencySummary {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/DependencySummary$Companion;
+	public fun <init> (IIILjava/util/Map;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/util/Map;
+	public final fun copy (IIILjava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/DependencySummary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/DependencySummary;IIILjava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/DependencySummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getByCategory ()Ljava/util/Map;
+	public final fun getTotalDetected ()I
+	public final fun getWithVersion ()I
+	public final fun getWithoutVersion ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DependencySummary$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/DependencySummary;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DetectionMethod : java/lang/Enum {
+	public static final field BUILD_CONFIG Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field CLASS_PRESENCE_ONLY Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field JAR_MANIFEST Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field MANIFEST_METADATA Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field PACKAGE_ANNOTATION Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field USER_AGENT Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static final field VERSION_FIELD Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public final fun confidence ()Ljava/lang/String;
+	public final fun displayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/DetectionMethod;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DeviceDetails {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBoard ()Ljava/lang/String;
+	public final fun getBrand ()Ljava/lang/String;
+	public final fun getDevice ()Ljava/lang/String;
+	public final fun getHardware ()Ljava/lang/String;
+	public final fun getManufacturer ()Ljava/lang/String;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getProduct ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isEmulator ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/DeviceInfo {
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;Lcom/azikar24/wormaceptor/domain/entities/OsDetails;Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;Lcom/azikar24/wormaceptor/domain/entities/AppDetails;Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;J)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;Lcom/azikar24/wormaceptor/domain/entities/OsDetails;Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;Lcom/azikar24/wormaceptor/domain/entities/AppDetails;Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/OsDetails;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/AppDetails;
+	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;
+	public final fun component8 ()J
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;Lcom/azikar24/wormaceptor/domain/entities/OsDetails;Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;Lcom/azikar24/wormaceptor/domain/entities/AppDetails;Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;J)Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;Lcom/azikar24/wormaceptor/domain/entities/OsDetails;Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;Lcom/azikar24/wormaceptor/domain/entities/AppDetails;Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApp ()Lcom/azikar24/wormaceptor/domain/entities/AppDetails;
+	public final fun getDevice ()Lcom/azikar24/wormaceptor/domain/entities/DeviceDetails;
+	public final fun getMemory ()Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;
+	public final fun getNetwork ()Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;
+	public final fun getOs ()Lcom/azikar24/wormaceptor/domain/entities/OsDetails;
+	public final fun getScreen ()Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;
+	public final fun getStorage ()Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/domain/entities/FileContent {
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Binary : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> ([BI)V
+	public synthetic fun <init> ([BIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()[B
+	public final fun component2 ()I
+	public final fun copy ([BI)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Binary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Binary;[BIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Binary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytes ()[B
+	public final fun getDisplaySize ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Error : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Throwable;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Error;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Error;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Image : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> ([BIILjava/lang/String;)V
+	public final fun component1 ()[B
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy ([BIILjava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Image;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Image;[BIILjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Image;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytes ()[B
+	public final fun getHeight ()I
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getWidth ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Json : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZI)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZI)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Json;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Json;Ljava/lang/String;Ljava/lang/String;ZIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Json;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFormattedContent ()Ljava/lang/String;
+	public final fun getLineCount ()I
+	public final fun getRawContent ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Pdf : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (Ljava/lang/String;IJ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()J
+	public final fun copy (Ljava/lang/String;IJ)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Pdf;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Pdf;Ljava/lang/String;IJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Pdf;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFilePath ()Ljava/lang/String;
+	public final fun getPageCount ()I
+	public final fun getSizeBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Text : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;I)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;I)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Text;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Text;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Text;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getEncoding ()Ljava/lang/String;
+	public final fun getLineCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$TooLarge : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (JJ)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun copy (JJ)Lcom/azikar24/wormaceptor/domain/entities/FileContent$TooLarge;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$TooLarge;JJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$TooLarge;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxSize ()J
+	public final fun getSizeBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileContent$Xml : com/azikar24/wormaceptor/domain/entities/FileContent {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZI)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZI)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Xml;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileContent$Xml;Ljava/lang/String;Ljava/lang/String;ZIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileContent$Xml;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFormattedContent ()Ljava/lang/String;
+	public final fun getLineCount ()I
+	public final fun getRawContent ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileEntry {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZJJLjava/lang/String;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ZJJLjava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()J
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZJJLjava/lang/String;ZZ)Lcom/azikar24/wormaceptor/domain/entities/FileEntry;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileEntry;Ljava/lang/String;Ljava/lang/String;ZJJLjava/lang/String;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLastModified ()J
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getPermissions ()Ljava/lang/String;
+	public final fun getSizeBytes ()J
+	public fun hashCode ()I
+	public final fun isDirectory ()Z
+	public final fun isReadable ()Z
+	public final fun isWritable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FileInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;JJLjava/lang/String;ZZLjava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()J
+	public final fun component4 ()J
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;JJLjava/lang/String;ZZLjava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/FileInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FileInfo;Ljava/lang/String;Ljava/lang/String;JJLjava/lang/String;ZZLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FileInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExtension ()Ljava/lang/String;
+	public final fun getLastModified ()J
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParentPath ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getSizeBytes ()J
+	public fun hashCode ()I
+	public final fun isReadable ()Z
+	public final fun isWritable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FpsInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/FpsInfo$Companion;
+	public static final field JANK_THRESHOLD_NS J
+	public static final field TARGET_FRAME_TIME_NS J
+	public fun <init> (FFFFIIJ)V
+	public final fun component1 ()F
+	public final fun component2 ()F
+	public final fun component3 ()F
+	public final fun component4 ()F
+	public final fun component5 ()I
+	public final fun component6 ()I
+	public final fun component7 ()J
+	public final fun copy (FFFFIIJ)Lcom/azikar24/wormaceptor/domain/entities/FpsInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/FpsInfo;FFFFIIJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/FpsInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAverageFps ()F
+	public final fun getCurrentFps ()F
+	public final fun getDroppedFrames ()I
+	public final fun getJankFrames ()I
+	public final fun getMaxFps ()F
+	public final fun getMinFps ()F
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/FpsInfo$Companion {
+	public final fun getEMPTY ()Lcom/azikar24/wormaceptor/domain/entities/FpsInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionAction : java/lang/Enum {
+	public static final field BLOCK Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static final field DELAY Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static final field LOG_ONLY Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static final field MOCK Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static final field MODIFY Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionConfig {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig$Companion;
+	public static final field DEFAULT_MAX_EVENT_LOG_SIZE I
+	public static final field MAX_EVENT_LOG_SIZE I
+	public static final field MIN_EVENT_LOG_SIZE I
+	public fun <init> ()V
+	public fun <init> (ZZLjava/util/List;IZZZ)V
+	public synthetic fun <init> (ZZLjava/util/List;IZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun activeRulesByType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)Ljava/util/List;
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()I
+	public final fun component5 ()Z
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun copy (ZZLjava/util/List;IZZZ)Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig;ZZLjava/util/List;IZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig;
+	public final fun enabledRuleCountByType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveRules ()Ljava/util/List;
+	public final fun getGlobalEnabled ()Z
+	public final fun getLocationInterceptionEnabled ()Z
+	public final fun getLogEvents ()Z
+	public final fun getMaxEventLogSize ()I
+	public final fun getRules ()Ljava/util/List;
+	public final fun getTouchInterceptionEnabled ()Z
+	public final fun getViewInterceptionEnabled ()Z
+	public fun hashCode ()I
+	public final fun isTypeEnabled (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)Z
+	public final fun ruleCountByType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)I
+	public final fun rulesByType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionConfig$Companion {
+	public final fun getDEFAULT ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionConfig$Companion$Templates {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig$Companion$Templates;
+	public final fun getAllTemplates ()Ljava/util/Map;
+	public final fun getBlockStatusBarTouch ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getLogAllLocationRequests ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getLogAllTouches ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getLogButtonClicks ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getLogRecyclerViewInteractions ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getMockLocationLondon ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getMockLocationNYC ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getMockLocationSanFrancisco ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getMockLocationTokyo ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun getTouchDelay100ms ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun templatesForType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)Ljava/util/List;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionEvent {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent$Companion;
+	public static final field DETAIL_LOCATION_ACCURACY Ljava/lang/String;
+	public static final field DETAIL_LOCATION_ALTITUDE Ljava/lang/String;
+	public static final field DETAIL_LOCATION_LAT Ljava/lang/String;
+	public static final field DETAIL_LOCATION_LNG Ljava/lang/String;
+	public static final field DETAIL_LOCATION_MOCK_LAT Ljava/lang/String;
+	public static final field DETAIL_LOCATION_MOCK_LNG Ljava/lang/String;
+	public static final field DETAIL_LOCATION_PROVIDER Ljava/lang/String;
+	public static final field DETAIL_TOUCH_ACTION Ljava/lang/String;
+	public static final field DETAIL_TOUCH_MODIFIED_X Ljava/lang/String;
+	public static final field DETAIL_TOUCH_MODIFIED_Y Ljava/lang/String;
+	public static final field DETAIL_TOUCH_POINTER_ID Ljava/lang/String;
+	public static final field DETAIL_TOUCH_X Ljava/lang/String;
+	public static final field DETAIL_TOUCH_Y Ljava/lang/String;
+	public static final field DETAIL_VIEW_ACTION Ljava/lang/String;
+	public static final field DETAIL_VIEW_CLASS Ljava/lang/String;
+	public static final field DETAIL_VIEW_CONTENT_DESC Ljava/lang/String;
+	public static final field DETAIL_VIEW_ID Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAction ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public final fun getDetails ()Ljava/util/Map;
+	public final fun getFormattedTimestamp ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getInterceptedValue ()Ljava/lang/String;
+	public final fun getOriginalValue ()Ljava/lang/String;
+	public final fun getRuleId ()Ljava/lang/String;
+	public final fun getRuleName ()Ljava/lang/String;
+	public final fun getShortDescription ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public final fun getWasModified ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionEvent$Companion {
+	public final fun locationEvent (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLjava/lang/Double;Ljava/lang/Float;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/lang/Double;Ljava/lang/Double;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public static synthetic fun locationEvent$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent$Companion;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLjava/lang/Double;Ljava/lang/Float;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/lang/Double;Ljava/lang/Double;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public final fun touchEvent (Ljava/lang/String;Ljava/lang/String;FFILcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/lang/Float;Ljava/lang/Float;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public static synthetic fun touchEvent$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent$Companion;Ljava/lang/String;Ljava/lang/String;FFILcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Ljava/lang/Float;Ljava/lang/Float;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public final fun viewEvent (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;Z)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+	public static synthetic fun viewEvent$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent$Companion;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionEvent;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionRule {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule$Companion;
+	public static final field PARAM_CONTENT_DESC_PATTERN Ljava/lang/String;
+	public static final field PARAM_LOCATION_OFFSET_LAT Ljava/lang/String;
+	public static final field PARAM_LOCATION_OFFSET_LNG Ljava/lang/String;
+	public static final field PARAM_MOCK_ACCURACY Ljava/lang/String;
+	public static final field PARAM_MOCK_ALTITUDE Ljava/lang/String;
+	public static final field PARAM_MOCK_LATITUDE Ljava/lang/String;
+	public static final field PARAM_MOCK_LONGITUDE Ljava/lang/String;
+	public static final field PARAM_TOUCH_AREA_BOTTOM Ljava/lang/String;
+	public static final field PARAM_TOUCH_AREA_LEFT Ljava/lang/String;
+	public static final field PARAM_TOUCH_AREA_RIGHT Ljava/lang/String;
+	public static final field PARAM_TOUCH_AREA_TOP Ljava/lang/String;
+	public static final field PARAM_TOUCH_DELAY_MS Ljava/lang/String;
+	public static final field PARAM_TOUCH_OFFSET_X Ljava/lang/String;
+	public static final field PARAM_TOUCH_OFFSET_Y Ljava/lang/String;
+	public static final field PARAM_VIEW_CLASS_PATTERN Ljava/lang/String;
+	public static final field PARAM_VIEW_ID_PATTERN Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;ZLjava/util/Map;IJ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;ZLjava/util/Map;IJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public final fun component6 ()Z
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()I
+	public final fun component9 ()J
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;ZLjava/util/Map;IJ)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;ZLjava/util/Map;IJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAction ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionAction;
+	public final fun getCreatedAt ()J
+	public final fun getEnabled ()Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/util/Map;
+	public final fun getPriority ()I
+	public final fun getTargetPattern ()Ljava/lang/String;
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionRule$Companion {
+	public final fun blockTouchInArea (Ljava/lang/String;IIII)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun blockViewById (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun delayTouch (Ljava/lang/String;J)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun logViewByClass (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun mockLocation (Ljava/lang/String;DDDF)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public static synthetic fun mockLocation$default (Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule$Companion;Ljava/lang/String;DDDFILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun offsetLocation (Ljava/lang/String;DD)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+	public final fun offsetTouch (Ljava/lang/String;FF)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/InterceptionType : java/lang/Enum {
+	public static final field LOCATION Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public static final field TOUCH Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public static final field VIEW Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/KeyFormat : java/lang/Enum {
+	public static final field BASE64 Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public static final field HEX Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public static final field UTF8 Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/KeyFormat;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LeakInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$Companion;
+	public fun <init> (JLjava/lang/String;Ljava/lang/String;JLjava/util/List;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()J
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun copy (JLjava/lang/String;Ljava/lang/String;JLjava/util/List;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;)Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;JLjava/lang/String;Ljava/lang/String;JLjava/util/List;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLeakDescription ()Ljava/lang/String;
+	public final fun getObjectClass ()Ljava/lang/String;
+	public final fun getReferencePath ()Ljava/util/List;
+	public final fun getRetainedSize ()J
+	public final fun getSeverity ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LeakInfo$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity : java/lang/Enum {
+	public static final field CRITICAL Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public static final field HIGH Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public static final field LOW Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public static final field MEDIUM Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LeakSummary {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/LeakSummary$Companion;
+	public fun <init> (IIIIIJ)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()J
+	public final fun copy (IIIIIJ)Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;IIIIIJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCriticalCount ()I
+	public final fun getHighCount ()I
+	public final fun getLowCount ()I
+	public final fun getMediumCount ()I
+	public final fun getTotalLeaks ()I
+	public final fun getTotalRetainedBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LeakSummary$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LibrarySummary {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary$Companion;
+	public fun <init> (IIIIJII)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()J
+	public final fun component6 ()I
+	public final fun component7 ()I
+	public final fun copy (IIIIJII)Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary;IIIIJIIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAppLibraryCount ()I
+	public final fun getDexCount ()I
+	public final fun getJarCount ()I
+	public final fun getNativeSoCount ()I
+	public final fun getSystemLibraryCount ()I
+	public final fun getTotalLibraries ()I
+	public final fun getTotalSizeBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LibrarySummary$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/LibrarySummary;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LoadedLibrary {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Z)Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLoadAddress ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getSize ()Ljava/lang/Long;
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isSystemLibrary ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LoadedLibrary$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType : java/lang/Enum {
+	public static final field AAR_RESOURCE Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public static final field DEX Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public static final field JAR Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public static final field NATIVE_SO Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/LoadedLibrary$LibraryType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LocationPreset {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Z)Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLocation ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isBuiltIn ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LogEntry {
+	public fun <init> (JJLcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/lang/String;IILjava/lang/String;)V
+	public synthetic fun <init> (JJLcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/lang/String;IILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()I
+	public final fun component6 ()I
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (JJLcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/lang/String;IILjava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/LogEntry;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/LogEntry;JJLcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/lang/String;IILjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/LogEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()J
+	public final fun getLevel ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getPid ()I
+	public final fun getTag ()Ljava/lang/String;
+	public final fun getTid ()I
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LogLevel : java/lang/Enum {
+	public static final field ASSERT Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/LogLevel$Companion;
+	public static final field DEBUG Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static final field ERROR Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static final field INFO Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static final field VERBOSE Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static final field WARN Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getPriority ()I
+	public final fun getTag ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/LogLevel$Companion {
+	public final fun fromPriority (I)Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun fromTag (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/MemoryDetails {
+	public fun <init> (JJJZJF)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()J
+	public final fun component4 ()Z
+	public final fun component5 ()J
+	public final fun component6 ()F
+	public final fun copy (JJJZJF)Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;JJJZJFILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/MemoryDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAvailableRam ()J
+	public final fun getLowMemoryThreshold ()J
+	public final fun getTotalRam ()J
+	public final fun getUsagePercentage ()F
+	public final fun getUsedRam ()J
+	public fun hashCode ()I
+	public final fun isLowMemory ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/MemoryInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo$Companion;
+	public fun <init> (JJJJJFJJJJ)V
+	public synthetic fun <init> (JJJJJFJJJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component10 ()J
+	public final fun component2 ()J
+	public final fun component3 ()J
+	public final fun component4 ()J
+	public final fun component5 ()J
+	public final fun component6 ()F
+	public final fun component7 ()J
+	public final fun component8 ()J
+	public final fun component9 ()J
+	public final fun copy (JJJJJFJJJJ)Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;JJJJJFJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFreeMemory ()J
+	public final fun getGcCount ()J
+	public final fun getHeapUsagePercent ()F
+	public final fun getMaxMemory ()J
+	public final fun getNativeHeapAllocated ()J
+	public final fun getNativeHeapFree ()J
+	public final fun getNativeHeapSize ()J
+	public final fun getTimestamp ()J
+	public final fun getTotalMemory ()J
+	public final fun getUsedMemory ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/MemoryInfo$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/MockLocation {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/MockLocation$Companion;
+	public fun <init> (DDDFFFJLjava/lang/String;)V
+	public synthetic fun <init> (DDDFFFJLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()D
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()F
+	public final fun component5 ()F
+	public final fun component6 ()F
+	public final fun component7 ()J
+	public final fun component8 ()Ljava/lang/String;
+	public final fun copy (DDDFFFJLjava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;DDDFFFJLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun formatCoordinates ()Ljava/lang/String;
+	public final fun getAccuracy ()F
+	public final fun getAltitude ()D
+	public final fun getBearing ()F
+	public final fun getLatitude ()D
+	public final fun getLongitude ()D
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSpeed ()F
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/MockLocation$Companion {
+	public final fun from (DDLjava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public static synthetic fun from$default (Lcom/azikar24/wormaceptor/domain/entities/MockLocation$Companion;DDLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NetworkDetails {
+	public fun <init> (Ljava/lang/String;ZZZZLjava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;ZZZZLjava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;Ljava/lang/String;ZZZZLjava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/NetworkDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCellularNetworkType ()Ljava/lang/String;
+	public final fun getConnectionType ()Ljava/lang/String;
+	public final fun getWifiSsid ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isCellularConnected ()Z
+	public final fun isConnected ()Z
+	public final fun isMetered ()Z
+	public final fun isWifiConnected ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NetworkTransaction {
+	public fun <init> (Ljava/util/UUID;JLjava/lang/Long;Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/Long;Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/UUID;JLjava/lang/Long;Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Ljava/util/UUID;JLjava/lang/Long;Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDurationMs ()Ljava/lang/Long;
+	public final fun getExtensions ()Ljava/util/Map;
+	public final fun getId ()Ljava/util/UUID;
+	public final fun getRequest ()Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public final fun getResponse ()Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public final fun getStatus ()Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NotificationAction {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/NotificationAction;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/NotificationAction;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/NotificationAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionId ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NotificationChannelInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lcom/azikar24/wormaceptor/domain/entities/NotificationChannelInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/NotificationChannelInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/NotificationChannelInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getImportance ()I
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NotificationPriority : java/lang/Enum {
+	public static final field DEFAULT Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public static final field HIGH Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public static final field LOW Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public static final field MAX Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getValue ()I
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/NotificationTemplate {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;)Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNotification ()Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/OsDetails {
+	public fun <init> (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/OsDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/OsDetails;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/OsDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAndroidVersion ()Ljava/lang/String;
+	public final fun getBootloader ()Ljava/lang/String;
+	public final fun getBuildId ()Ljava/lang/String;
+	public final fun getFingerprint ()Ljava/lang/String;
+	public final fun getIncremental ()Ljava/lang/String;
+	public final fun getSdkLevel ()I
+	public final fun getSecurityPatch ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PaddingScheme : java/lang/Enum {
+	public static final field ISO10126 Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public static final field NO_PADDING Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public static final field PKCS5 Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public static final field PKCS7 Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getPaddingName ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/PaddingScheme;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceFile {
+	public fun <init> (Ljava/lang/String;I)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun copy (Ljava/lang/String;I)Lcom/azikar24/wormaceptor/domain/entities/PreferenceFile;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceFile;Ljava/lang/String;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getItemCount ()I
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceItem {
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getValue ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$Companion;
+	public abstract fun getDisplayValue ()Ljava/lang/String;
+	public abstract fun getTypeName ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$BooleanValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$BooleanValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$BooleanValue;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$BooleanValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$Companion {
+	public final fun fromAny (Ljava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$FloatValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (F)V
+	public final fun component1 ()F
+	public final fun copy (F)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$FloatValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$FloatValue;FILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$FloatValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$IntValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$IntValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$IntValue;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$IntValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$LongValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$LongValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$LongValue;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$LongValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$StringSetValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (Ljava/util/Set;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun copy (Ljava/util/Set;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringSetValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringSetValue;Ljava/util/Set;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringSetValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PreferenceValue$StringValue : com/azikar24/wormaceptor/domain/entities/PreferenceValue {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringValue;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringValue;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue$StringValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDisplayValue ()Ljava/lang/String;
+	public fun getTypeName ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PushTokenInfo {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$Companion;
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;JJZLjava/lang/String;Ljava/util/Map;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public final fun component3 ()J
+	public final fun component4 ()J
+	public final fun component5 ()Z
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;JJZLjava/lang/String;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;JJZLjava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssociatedUserId ()Ljava/lang/String;
+	public final fun getCreatedAt ()J
+	public final fun getLastRefreshed ()J
+	public final fun getMetadata ()Ljava/util/Map;
+	public final fun getProvider ()Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public final fun getToken ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PushTokenInfo$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider : java/lang/Enum {
+	public static final field FCM Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static final field HUAWEI_HMS Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static final field ONESIGNAL Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static final field UNKNOWN Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static final field XIAOMI_MIPUSH Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/PushTokenInfo$PushProvider;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/QueryResult {
+	public fun <init> (Ljava/util/List;Ljava/util/List;ILjava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/util/List;ILjava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/QueryResult;Ljava/util/List;Ljava/util/List;ILjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumns ()Ljava/util/List;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getRowCount ()I
+	public final fun getRows ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun isSuccess ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/RateLimitConfig {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$Companion;
+	public fun <init> (ZJJJFLcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
+	public final fun component1 ()Z
+	public final fun component2 ()J
+	public final fun component3 ()J
+	public final fun component4 ()J
+	public final fun component5 ()F
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun copy (ZJJJFLcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;ZJJJFLcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDownloadSpeedKbps ()J
+	public final fun getEnabled ()Z
+	public final fun getLatencyMs ()J
+	public final fun getPacketLossPercent ()F
+	public final fun getPreset ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun getUploadSpeedKbps ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/RateLimitConfig$Companion {
+	public final fun default ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public final fun fromPreset (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset : java/lang/Enum {
+	public static final field EDGE Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field GOOD_2G Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field GOOD_3G Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field OFFLINE Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field REGULAR_3G Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field SLOW_2G Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field SLOW_3G Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static final field WIFI Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getDownloadKbps ()J
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getLatencyMs ()J
+	public final fun getPacketLoss ()F
+	public final fun getUploadKbps ()J
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/Request {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;J)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()J
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;J)Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/Request;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBodyRef ()Ljava/lang/String;
+	public final fun getBodySize ()J
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/Response {
+	public fun <init> (ILjava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()J
+	public final fun copy (ILjava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/Response;ILjava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBodyRef ()Ljava/lang/String;
+	public final fun getBodySize ()J
+	public final fun getCode ()I
+	public final fun getError ()Ljava/lang/String;
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getProtocol ()Ljava/lang/String;
+	public final fun getTlsVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ScreenDetails {
+	public fun <init> (IIIFFLjava/lang/String;Ljava/lang/String;F)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()F
+	public final fun component5 ()F
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()F
+	public final fun copy (IIIFFLjava/lang/String;Ljava/lang/String;F)Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;IIIFFLjava/lang/String;Ljava/lang/String;FILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ScreenDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDensity ()F
+	public final fun getDensityDpi ()I
+	public final fun getHeightPixels ()I
+	public final fun getOrientation ()Ljava/lang/String;
+	public final fun getRefreshRate ()F
+	public final fun getScaledDensity ()F
+	public final fun getSizeCategory ()Ljava/lang/String;
+	public final fun getWidthPixels ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SecureStorageEntry {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;ZLjava/lang/Long;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;ZLjava/lang/Long;)Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;ZLjava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getLastModified ()Ljava/lang/Long;
+	public final fun getStorageType ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isEncrypted ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SecureStorageEntry$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType : java/lang/Enum {
+	public static final field DATASTORE Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public static final field ENCRYPTED_SHARED_PREFS Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public static final field KEYSTORE Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SecureStorageSummary {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary$Companion;
+	public fun <init> (III)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun copy (III)Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;IIIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDataStoreFileCount ()I
+	public final fun getEncryptedPrefsCount ()I
+	public final fun getKeystoreAliasCount ()I
+	public final fun getTotalCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SecureStorageSummary$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SimulatedNotification {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/util/Map;J)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/util/Map;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()J
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()I
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/util/Map;J)Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/util/Map;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActions ()Ljava/util/List;
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getChannelId ()Ljava/lang/String;
+	public final fun getExtras ()Ljava/util/Map;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLargeIconUri ()Ljava/lang/String;
+	public final fun getPriority ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public final fun getSmallIconRes ()I
+	public final fun getTimestamp ()J
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/SimulatedNotification$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/SimulatedNotification;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/StorageDetails {
+	public fun <init> (JJJLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Z)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()J
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun component6 ()Ljava/lang/Long;
+	public final fun component7 ()Z
+	public final fun copy (JJJLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;Z)Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;JJJLjava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/StorageDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExternalAvailable ()Ljava/lang/Long;
+	public final fun getExternalTotal ()Ljava/lang/Long;
+	public final fun getExternalUsed ()Ljava/lang/Long;
+	public final fun getHasExternalStorage ()Z
+	public final fun getInternalAvailable ()J
+	public final fun getInternalTotal ()J
+	public final fun getInternalUsed ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/StorageMode : java/lang/Enum {
+	public static final field MEMORY Lcom/azikar24/wormaceptor/domain/entities/StorageMode;
+	public static final field NO_OP Lcom/azikar24/wormaceptor/domain/entities/StorageMode;
+	public static final field PERSISTENT Lcom/azikar24/wormaceptor/domain/entities/StorageMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/StorageMode;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/StorageMode;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/TableInfo {
+	public fun <init> (Ljava/lang/String;JI)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()J
+	public final fun component3 ()I
+	public final fun copy (Ljava/lang/String;JI)Lcom/azikar24/wormaceptor/domain/entities/TableInfo;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/TableInfo;Ljava/lang/String;JIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/TableInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumnCount ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRowCount ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ThreadViolation {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$Companion;
+	public fun <init> (JJLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/String;)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/lang/Long;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (JJLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;JJLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDurationMs ()Ljava/lang/Long;
+	public final fun getId ()J
+	public final fun getStackTrace ()Ljava/util/List;
+	public final fun getThreadName ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public final fun getViolationType ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ThreadViolation$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType : java/lang/Enum {
+	public static final field CUSTOM_SLOW_CODE Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static final field DISK_READ Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static final field DISK_WRITE Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static final field NETWORK Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static final field SLOW_CALL Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ThrottleStats {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats$Companion;
+	public fun <init> (IJIJ)V
+	public final fun component1 ()I
+	public final fun component2 ()J
+	public final fun component3 ()I
+	public final fun component4 ()J
+	public final fun copy (IJIJ)Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;IJIJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytesThrottled ()J
+	public final fun getPacketsDropped ()I
+	public final fun getRequestsThrottled ()I
+	public final fun getTotalDelayMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ThrottleStats$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/TokenHistory {
+	public fun <init> (Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public final fun copy (Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;)Lcom/azikar24/wormaceptor/domain/entities/TokenHistory;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/TokenHistory;Ljava/lang/String;JLcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/TokenHistory;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEvent ()Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public final fun getTimestamp ()J
+	public final fun getToken ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent : java/lang/Enum {
+	public static final field CREATED Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public static final field DELETED Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public static final field INVALIDATED Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public static final field REFRESHED Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/TokenHistory$TokenEvent;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/TransactionStatus : java/lang/Enum {
+	public static final field ACTIVE Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public static final field COMPLETED Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public static final field FAILED Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/TransactionSummary {
+	public fun <init> (Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/TransactionStatus;J)V
+	public final fun component1 ()Ljava/util/UUID;
+	public final fun component10 ()J
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun component6 ()Ljava/lang/Long;
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun component9 ()Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public final fun copy (Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/TransactionStatus;J)Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;Ljava/util/UUID;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;ZZLcom/azikar24/wormaceptor/domain/entities/TransactionStatus;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()Ljava/lang/Integer;
+	public final fun getHasRequestBody ()Z
+	public final fun getHasResponseBody ()Z
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getId ()Ljava/util/UUID;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getStatus ()Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;
+	public final fun getTimestamp ()J
+	public final fun getTookMs ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViewBounds {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ViewBounds$Companion;
+	public fun <init> (IIII)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun copy (IIII)Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;IIIIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBottom ()I
+	public final fun getHeight ()I
+	public final fun getLeft ()I
+	public final fun getRight ()I
+	public final fun getTop ()I
+	public final fun getWidth ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViewBounds$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViewNode {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ViewNode$Companion;
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;IFFILjava/util/List;Ljava/util/Map;)V
+	public final fun component1 ()I
+	public final fun component10 ()I
+	public final fun component11 ()Ljava/util/List;
+	public final fun component12 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;
+	public final fun component7 ()I
+	public final fun component8 ()F
+	public final fun component9 ()F
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;IFFILjava/util/List;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/ViewNode;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ViewNode;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;IFFILjava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ViewNode;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlpha ()F
+	public final fun getBounds ()Lcom/azikar24/wormaceptor/domain/entities/ViewBounds;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getClassName ()Ljava/lang/String;
+	public final fun getContentDescription ()Ljava/lang/String;
+	public final fun getDepth ()I
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getElevation ()F
+	public final fun getId ()I
+	public final fun getProperties ()Ljava/util/Map;
+	public final fun getResourceId ()Ljava/lang/String;
+	public final fun getSimpleClassName ()Ljava/lang/String;
+	public final fun getTotalCount ()I
+	public final fun getViewType ()Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public final fun getVisibility ()I
+	public fun hashCode ()I
+	public final fun isVisible ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViewNode$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ViewNode;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViewType : java/lang/Enum {
+	public static final field BUTTON Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field IMAGE Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field INPUT Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field LAYOUT Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field LIST Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field OTHER Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field SURFACE Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field TEXT Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static final field WEB Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/ViewType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViolationStats {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/ViolationStats$Companion;
+	public fun <init> (IIIIII)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()I
+	public final fun copy (IIIIII)Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;IIIIIIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCustomSlowCodeCount ()I
+	public final fun getDiskReadCount ()I
+	public final fun getDiskWriteCount ()I
+	public final fun getNetworkCount ()I
+	public final fun getSlowCallCount ()I
+	public final fun getTotalViolations ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/ViolationStats$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebSocketConnection {
+	public fun <init> (JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/String;)V
+	public synthetic fun <init> (JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCloseCode ()Ljava/lang/Integer;
+	public final fun getCloseReason ()Ljava/lang/String;
+	public final fun getClosedAt ()Ljava/lang/Long;
+	public final fun getDuration ()Ljava/lang/Long;
+	public final fun getId ()J
+	public final fun getOpenedAt ()Ljava/lang/Long;
+	public final fun getState ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isActive ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebSocketMessage {
+	public fun <init> (JJLcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/String;JJ)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()J
+	public final fun component7 ()J
+	public final fun copy (JJLcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/String;JJ)Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessage;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessage;JJLcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/String;JJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()J
+	public final fun getDirection ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public final fun getId ()J
+	public final fun getPayload ()Ljava/lang/String;
+	public final fun getSize ()J
+	public final fun getTimestamp ()J
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public fun hashCode ()I
+	public final fun payloadPreview (I)Ljava/lang/String;
+	public static synthetic fun payloadPreview$default (Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessage;IILjava/lang/Object;)Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection : java/lang/Enum {
+	public static final field RECEIVED Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public static final field SENT Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebSocketMessageType : java/lang/Enum {
+	public static final field BINARY Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public static final field PING Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public static final field PONG Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public static final field TEXT Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebSocketState : java/lang/Enum {
+	public static final field CLOSED Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public static final field CLOSING Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public static final field CONNECTING Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public static final field OPEN Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/WebSocketState;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewRequest {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZLjava/lang/Integer;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZLjava/lang/Integer;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Z
+	public final fun component11 ()Ljava/lang/Integer;
+	public final fun component12 ()Ljava/util/Map;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Ljava/lang/Long;
+	public final fun component17 ()Ljava/lang/Long;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public final fun component8 ()Z
+	public final fun component9 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZLjava/lang/Integer;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;JLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZLjava/lang/Integer;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentLength ()Ljava/lang/Long;
+	public final fun getDuration ()Ljava/lang/Long;
+	public final fun getEncoding ()Ljava/lang/String;
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getHasGesture ()Z
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getResourceType ()Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public final fun getResponseHeaders ()Ljava/util/Map;
+	public final fun getStatusCode ()Ljava/lang/Integer;
+	public final fun getTimestamp ()J
+	public final fun getUrl ()Ljava/lang/String;
+	public final fun getWebViewId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isFailed ()Z
+	public final fun isForMainFrame ()Z
+	public final fun isPending ()Z
+	public final fun isRedirect ()Z
+	public final fun isSuccess ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewRequest$Companion {
+	public final fun create (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZ)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
+	public static synthetic fun create$default (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest$Companion;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;ZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewRequestStats {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats$Companion;
+	public fun <init> (IIIILjava/util/Map;JJ)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()J
+	public final fun component7 ()J
+	public final fun copy (IIIILjava/util/Map;JJ)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;IIIILjava/util/Map;JJILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAverageDuration ()J
+	public final fun getByResourceType ()Ljava/util/Map;
+	public final fun getFailedRequests ()I
+	public final fun getPendingRequests ()I
+	public final fun getSuccessfulRequests ()I
+	public final fun getTotalDataTransferred ()J
+	public final fun getTotalRequests ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewRequestStats$Companion {
+	public final fun empty ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
+	public final fun from (Ljava/util/List;)Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewResourceType : java/lang/Enum {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType$Companion;
+	public static final field DOCUMENT Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field FONT Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field IFRAME Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field IMAGE Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field MANIFEST Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field MEDIA Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field OBJECT Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field OTHER Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field SCRIPT Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field STYLESHEET Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field UNKNOWN Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field WEBSOCKET Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static final field XHR Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+}
+
+public final class com/azikar24/wormaceptor/domain/entities/WebViewResourceType$Companion {
+	public final fun fromUrl (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+	public static synthetic fun fromUrl$default (Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType$Companion;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;
+}
+

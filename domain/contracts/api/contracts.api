@@ -1,0 +1,317 @@
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/BlobStorage {
+	public abstract fun deleteBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun readBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveBlob (Ljava/io/InputStream;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public abstract fun canParse (Ljava/lang/String;[B)Z
+	public abstract fun getPriority ()I
+	public abstract fun getSupportedContentTypes ()Ljava/util/List;
+	public abstract fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/BodyParserKt {
+	public static final fun emptyParsedBody (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public static synthetic fun emptyParsedBody$default (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public static final fun isImage (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;)Z
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/ContentType : java/lang/Enum {
+	public static final field BINARY Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field FORM_DATA Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field HTML Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_BMP Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_GIF Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_ICO Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_JPEG Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_OTHER Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_PNG Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_SVG Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field IMAGE_WEBP Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field JSON Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field MULTIPART Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field PDF Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field PLAIN_TEXT Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field PROTOBUF Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field UNKNOWN Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static final field XML Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/CookiesRepository {
+	public abstract fun clearAllCookies (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteAllCookiesForDomain (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteCookie (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAllCookies ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getCookiesForDomain (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun refresh (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/CrashRepository {
+	public abstract fun clearCrashes (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeCrashes ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun saveCrash (Lcom/azikar24/wormaceptor/domain/entities/Crash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/DarkSyntaxColors : com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/domain/contracts/DarkSyntaxColors;
+	public fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
+	public fun getBoolean-0d7_KjU ()J
+	public fun getComment-0d7_KjU ()J
+	public fun getDefault-0d7_KjU ()J
+	public fun getKeyword-0d7_KjU ()J
+	public fun getNumber-0d7_KjU ()J
+	public fun getOperator-0d7_KjU ()J
+	public fun getProperty-0d7_KjU ()J
+	public fun getPunctuation-0d7_KjU ()J
+	public fun getString-0d7_KjU ()J
+	public fun getTag-0d7_KjU ()J
+	public fun getTypeAnnotation-0d7_KjU ()J
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/DatabaseRepository {
+	public abstract fun executeQuery (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public abstract fun getDatabases ()Ljava/util/List;
+	public abstract fun getTableSchema (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+	public abstract fun getTables (Ljava/lang/String;)Ljava/util/List;
+	public abstract fun queryTable (Ljava/lang/String;Ljava/lang/String;II)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/DatabaseRepository$DefaultImpls {
+	public static synthetic fun queryTable$default (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Ljava/lang/String;Ljava/lang/String;IIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/ExtensionContext {
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/lang/Long;J)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()J
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/lang/Long;J)Lcom/azikar24/wormaceptor/domain/contracts/ExtensionContext;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionContext;Lcom/azikar24/wormaceptor/domain/entities/Request;Lcom/azikar24/wormaceptor/domain/entities/Response;Ljava/lang/Long;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/ExtensionContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDurationMs ()Ljava/lang/Long;
+	public final fun getRequest ()Lcom/azikar24/wormaceptor/domain/entities/Request;
+	public final fun getResponse ()Lcom/azikar24/wormaceptor/domain/entities/Response;
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/ExtensionProvider {
+	public abstract fun extractExtensions (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionContext;)Ljava/util/Map;
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getPriority ()I
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/ExtensionProvider$DefaultImpls {
+	public static fun getPriority (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionProvider;)I
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/FeatureConfig {
+	public static final field Companion Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig$Companion;
+	public fun <init> ()V
+	public fun <init> (ZZZZZZZ)V
+	public synthetic fun <init> (ZZZZZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun copy (ZZZZZZZ)Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;ZZZZZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getShowConsoleLogs ()Z
+	public final fun getShowCrashesTab ()Z
+	public final fun getShowDeviceInfo ()Z
+	public final fun getShowFileBrowser ()Z
+	public final fun getShowNetworkTab ()Z
+	public final fun getShowPreferences ()Z
+	public final fun getShowSqliteBrowser ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/FeatureConfig$Companion {
+	public final fun getDEFAULT ()Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/FeatureConfigRepository {
+	public abstract fun observeConfig ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun resetToDefaults (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun updateConfig (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/FileSystemRepository {
+	public abstract fun deleteFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getFileInfo (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getRootDirectories (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun listFiles (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun readFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/LeakRepository {
+	public abstract fun clearLeaks (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeLeaks ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun saveLeak (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/LightSyntaxColors : com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/domain/contracts/LightSyntaxColors;
+	public fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
+	public fun getBoolean-0d7_KjU ()J
+	public fun getComment-0d7_KjU ()J
+	public fun getDefault-0d7_KjU ()J
+	public fun getKeyword-0d7_KjU ()J
+	public fun getNumber-0d7_KjU ()J
+	public fun getOperator-0d7_KjU ()J
+	public fun getProperty-0d7_KjU ()J
+	public fun getPunctuation-0d7_KjU ()J
+	public fun getString-0d7_KjU ()J
+	public fun getTag-0d7_KjU ()J
+	public fun getTypeAnnotation-0d7_KjU ()J
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository {
+	public abstract fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getPresets ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/ParsedBody {
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/util/Map;ZLjava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/util/Map;ZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/util/Map;ZLjava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/util/Map;ZLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentType ()Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getFormatted ()Ljava/lang/String;
+	public final fun getMetadata ()Ljava/util/Map;
+	public fun hashCode ()I
+	public final fun isValid ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/PreferencesRepository {
+	public abstract fun clearFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deletePreference (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getPreference (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observePreferenceFiles ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun observePreferenceItems (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun setPreference (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
+	public abstract fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getNotificationChannels (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getTemplates ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
+	public abstract fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
+	public abstract fun getBoolean-0d7_KjU ()J
+	public abstract fun getComment-0d7_KjU ()J
+	public abstract fun getDefault-0d7_KjU ()J
+	public abstract fun getKeyword-0d7_KjU ()J
+	public abstract fun getNumber-0d7_KjU ()J
+	public abstract fun getOperator-0d7_KjU ()J
+	public abstract fun getProperty-0d7_KjU ()J
+	public abstract fun getPunctuation-0d7_KjU ()J
+	public abstract fun getString-0d7_KjU ()J
+	public abstract fun getTag-0d7_KjU ()J
+	public abstract fun getTypeAnnotation-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/SyntaxColors$DefaultImpls {
+	public static fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter {
+	public abstract fun getLanguage ()Ljava/lang/String;
+	public abstract fun highlight (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;)Landroidx/compose/ui/text/AnnotatedString;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/Token {
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;II)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;II)Lcom/azikar24/wormaceptor/domain/contracts/Token;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/contracts/Token;Lcom/azikar24/wormaceptor/domain/contracts/TokenType;IIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/Token;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnd ()I
+	public final fun getStart ()I
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/TokenType : java/lang/Enum {
+	public static final field BOOLEAN Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field COMMENT Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field DEFAULT Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field KEYWORD Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field NUMBER Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field OPERATOR Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field PROPERTY Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field PUNCTUATION Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field STRING Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field TAG Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static final field TYPE Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+	public static fun values ()[Lcom/azikar24/wormaceptor/domain/contracts/TokenType;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/TransactionFilters {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/ranges/IntRange;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;)V
+	public synthetic fun <init> (Lkotlin/ranges/IntRange;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlin/ranges/IntRange;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Lkotlin/ranges/IntRange;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;Lkotlin/ranges/IntRange;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentType ()Ljava/lang/String;
+	public final fun getMaxDuration ()Ljava/lang/Long;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getMinDuration ()Ljava/lang/Long;
+	public final fun getStatusRange ()Lkotlin/ranges/IntRange;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/TransactionRepository {
+	public abstract fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteTransactions (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteTransactionsBefore (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAllTransactions ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getAllTransactionsAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getTransactionById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/domain/contracts/TransactionRepository$DefaultImpls {
+	public static synthetic fun getTransactionsPaged$default (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ImplicitDefaultLocale:ViewHierarchyScreen.kt$String.format("%.2f", node.alpha)</ID>
+    <ID>LongMethod:ViewHierarchyScreen.kt$@Composable private fun NodeDetailContent( node: ViewNode, colors: com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.ViewHierarchyColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ViewHierarchyScreen.kt$@Composable private fun TreeNode( node: ViewNode, expandedNodeIds: Set&lt;Int&gt;, searchQuery: String, onNodeClick: (ViewNode) -&gt; Unit, onToggleExpand: (Int) -&gt; Unit, colors: com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.ViewHierarchyColors, depth: Int, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ViewHierarchyScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ViewHierarchyScreen( rootNode: ViewNode?, viewCount: Int, maxDepth: Int, captureTimestamp: Long, selectedNode: ViewNode?, searchQuery: String, expandedNodeIds: Set&lt;Int&gt;, is3DMode: Boolean, onSearchQueryChanged: (String) -&gt; Unit, onNodeSelected: (ViewNode) -&gt; Unit, onDismissDetail: () -&gt; Unit, onToggleNodeExpanded: (Int) -&gt; Unit, onExpandAll: () -&gt; Unit, onCollapseAll: () -&gt; Unit, onToggle3DMode: () -&gt; Unit, onClear: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ViewHierarchyScreen.kt$( node: ViewNode, expandedNodeIds: Set&lt;Int&gt;, searchQuery: String, onNodeClick: (ViewNode) -&gt; Unit, onToggleExpand: (Int) -&gt; Unit, colors: com.azikar24.wormaceptor.feature.viewhierarchy.ui.theme.ViewHierarchyColors, depth: Int, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ViewHierarchyScreen.kt$( rootNode: ViewNode?, viewCount: Int, maxDepth: Int, captureTimestamp: Long, selectedNode: ViewNode?, searchQuery: String, expandedNodeIds: Set&lt;Int&gt;, is3DMode: Boolean, onSearchQueryChanged: (String) -&gt; Unit, onNodeSelected: (ViewNode) -&gt; Unit, onDismissDetail: () -&gt; Unit, onToggleNodeExpanded: (Int) -&gt; Unit, onExpandAll: () -&gt; Unit, onCollapseAll: () -&gt; Unit, onToggle3DMode: () -&gt; Unit, onClear: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF009688</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF00BCD4</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF1565C0</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF1E1E1E</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF212121</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF252525</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF2D2D2D</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF311B92</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF424242</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF4DB6AC</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF4DD0E1</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF616161</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF64B5F6</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF6A1B9A</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF757575</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF7C4DFF</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF81C784</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF90CAF9</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFF9E9E9E</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFB388FF</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFBDBDBD</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFCE93D8</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFE0E0E0</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFE1BEE7</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFEDE7F6</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFF48FB1</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFF5F5F5</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFAFAFA</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFFB74D</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFFC107</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFFD54F</ID>
+    <ID>MagicNumber:ViewHierarchyColors.kt$0xFFFFFFFF</ID>
+    <ID>MagicNumber:ViewHierarchyScreen.kt$16</ID>
+    <ID>MagicNumber:ViewHierarchyScreen.kt$4</ID>
+    <ID>MagicNumber:ViewHierarchyScreen.kt$8</ID>
+    <ID>MagicNumber:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$5000</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val button: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val cardBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val className: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val depthIndicator: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val expandIcon: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val image: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val input: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val labelPrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val labelSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val layout: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val list: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val nodeBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val nodeBackgroundSelected: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val other: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val primary: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val resourceId: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val searchBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val selectedNode: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val surface: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val text: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val treeLine: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val valuePrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyColors.kt$ViewHierarchyColors$val web: Color</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$// Capture timestamp val captureTimestamp: StateFlow&lt;Long&gt; = engine.captureTimestamp .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), 0L, )</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$// Flattened list of all nodes for search val allNodes: StateFlow&lt;List&lt;ViewNode&gt;&gt; = engine.rootNode .map { root -&gt; if (root != null) flattenHierarchy(root) else emptyList() } .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList(), )</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$// Maximum depth val maxDepth: StateFlow&lt;Int&gt; = engine.maxDepth .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), 0, )</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$// Root node of the captured hierarchy val rootNode: StateFlow&lt;ViewNode?&gt; = engine.rootNode .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), null, )</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$// Total view count val viewCount: StateFlow&lt;Int&gt; = engine.viewCount .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), 0, )</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$val expandedNodeIds: StateFlow&lt;Set&lt;Int&gt;&gt; = _expandedNodeIds.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$val is3DMode: StateFlow&lt;Boolean&gt; = _is3DMode.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ViewHierarchyViewModel.kt$ViewHierarchyViewModel$val selectedNode: StateFlow&lt;ViewNode?&gt; = _selectedNode.asStateFlow()</ID>
+    <ID>UnstableCollections:ViewHierarchyScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
+    <ID>UnstableCollections:ViewHierarchyScreen.kt$Set&lt;Int&gt;</ID>
+    <ID>UnusedParameter:ViewHierarchyScreen.kt$is3DMode: Boolean</ID>
+    <ID>UnusedParameter:ViewHierarchyScreen.kt$onToggle3DMode: () -&gt; Unit</ID>
+    <ID>ViewModelInjection:ViewHierarchyFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -49,6 +49,7 @@ import java.util.regex.Pattern
  * if (engine.shouldBlockView(view)) return // Don't process the view
  * ```
  */
+@Suppress("TooManyFunctions")
 class InterceptionEngine {
 
     // Current configuration

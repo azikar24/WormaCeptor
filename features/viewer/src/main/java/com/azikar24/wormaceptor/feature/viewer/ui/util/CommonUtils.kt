@@ -11,8 +11,8 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.FileProvider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -302,13 +302,4 @@ fun getStatusColorValue(status: TransactionStatus, code: Int?): Color {
  * @param method The HTTP method string
  * @return The appropriate Color for the method
  */
-fun getMethodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> WormaCeptorColors.HttpMethodColors.Get
-    "POST" -> WormaCeptorColors.HttpMethodColors.Post
-    "PUT" -> WormaCeptorColors.HttpMethodColors.Put
-    "DELETE" -> WormaCeptorColors.HttpMethodColors.Delete
-    "PATCH" -> WormaCeptorColors.HttpMethodColors.Patch
-    "HEAD" -> WormaCeptorColors.HttpMethodColors.Head
-    "OPTIONS" -> WormaCeptorColors.HttpMethodColors.Options
-    else -> WormaCeptorColors.StatusGrey
-}
+fun getMethodColor(method: String): Color = WormaCeptorColors.HttpMethod.forMethod(method)

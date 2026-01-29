@@ -2,6 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>EndOfSentenceFormat:PdfParser.kt$PdfParser$* Priority: 150 (binary format, higher than text formats)</ID>
+    <ID>EndOfSentenceFormat:PdfParser.kt$PdfParser.Companion$* PDF magic bytes: %PDF- (25 50 44 46 2D in hex)</ID>
     <ID>ImplicitDefaultLocale:PdfParser.kt$PdfParser.Companion$String.format("%.1f GB", bytes / (1024.0 * 1024 * 1024))</ID>
     <ID>ImplicitDefaultLocale:PdfParser.kt$PdfParser.Companion$String.format("%.1f KB", bytes / 1024.0)</ID>
     <ID>ImplicitDefaultLocale:PdfParser.kt$PdfParser.Companion$String.format("%.1f MB", bytes / (1024.0 * 1024))</ID>

@@ -34,6 +34,14 @@ firebase-messaging = "24.0.0"
 security-crypto = "1.1.0-alpha06"
 osmdroid = "6.1.18"
 
+# Code Quality Plugins
+owaspDependencyCheck = "9.0.9"
+dependencyAnalysis = "1.30.0"
+binaryCompatibilityValidator = "0.14.0"
+kover = "0.7.6"
+gradleDoctor = "0.9.1"
+sortDependencies = "0.6"
+
 #noinspection UnusedVersionCatalogEntry
 minSdk = "23"
 #noinspection UnusedVersionCatalogEntry
@@ -107,3 +115,11 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinJvm" }
 intellij-platform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
+
+# Code Quality Plugins
+owasp-dependency-check = { id = "org.owasp.dependencycheck", version.ref = "owaspDependencyCheck" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
+sort-dependencies = { id = "com.squareup.sort-dependencies", version.ref = "sortDependencies" }

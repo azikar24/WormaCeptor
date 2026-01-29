@@ -1,0 +1,174 @@
+public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
+	public static final field COMPOSE_RENDER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field CONSOLE_LOGS Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field COOKIES_MANAGER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field CPU_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field CRYPTO_TOOL Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field Companion Lcom/azikar24/wormaceptor/api/Feature$Companion;
+	public static final field DATABASE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field DEPENDENCIES_INSPECTOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field DEVICE_INFO Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field FILE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field FPS_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field INTERCEPTION Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field LEAK_DETECTION Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field LOADED_LIBRARIES Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field LOCATION_SIMULATOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field MEMORY_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field PUSH_SIMULATOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field PUSH_TOKEN_MANAGER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field RATE_LIMITER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field SECURE_STORAGE Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field SHARED_PREFERENCES Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field THREAD_VIOLATIONS Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field VIEW_HIERARCHY Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field WEBSOCKET_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field WEBVIEW_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/Feature;
+	public static fun values ()[Lcom/azikar24/wormaceptor/api/Feature;
+}
+
+public final class com/azikar24/wormaceptor/api/Feature$Companion {
+	public final fun getALL ()Ljava/util/Set;
+	public final fun getCORE ()Ljava/util/Set;
+	public final fun getDEFAULT ()Ljava/util/Set;
+}
+
+public final class com/azikar24/wormaceptor/api/RedactionConfig {
+	public fun <init> ()V
+	public final fun redactBody (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
+	public final fun redactHeader (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
+	public final fun redactJsonValue (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
+	public final fun redactXmlValue (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
+	public final fun replacement (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
+}
+
+public abstract interface class com/azikar24/wormaceptor/api/ServiceProvider {
+	public abstract fun cleanup (J)V
+	public abstract fun clearTransactions ()V
+	public abstract fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun getAllTransactions ()Ljava/util/List;
+	public abstract fun getLaunchIntent (Landroid/content/Context;)Landroid/content/Intent;
+	public abstract fun getTransaction (Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun getTransactionCount ()I
+	public abstract fun getTransactionDetail (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/TransactionDetailDto;
+	public abstract fun init (Landroid/content/Context;ZZ)V
+	public abstract fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;J)Ljava/util/UUID;
+}
+
+public final class com/azikar24/wormaceptor/api/ServiceProvider$DefaultImpls {
+	public static synthetic fun init$default (Lcom/azikar24/wormaceptor/api/ServiceProvider;Landroid/content/Context;ZZILjava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/api/TransactionDetailDto {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/Map;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()J
+	public final fun component13 ()Ljava/util/Map;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()J
+	public final fun component16 ()Ljava/lang/String;
+	public final fun component17 ()Ljava/lang/String;
+	public final fun component18 ()Ljava/lang/String;
+	public final fun component19 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component20 ()Ljava/lang/String;
+	public final fun component21 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Ljava/lang/Long;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()J
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)Lcom/azikar24/wormaceptor/api/TransactionDetailDto;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/api/TransactionDetailDto;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/api/TransactionDetailDto;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCode ()Ljava/lang/Integer;
+	public final fun getContentType ()Ljava/lang/String;
+	public final fun getDuration ()Ljava/lang/Long;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getExtensions ()Ljava/util/Map;
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getProtocol ()Ljava/lang/String;
+	public final fun getRequestBody ()Ljava/lang/String;
+	public final fun getRequestHeaders ()Ljava/util/Map;
+	public final fun getRequestSize ()J
+	public final fun getResponseBody ()Ljava/lang/String;
+	public final fun getResponseHeaders ()Ljava/util/Map;
+	public final fun getResponseMessage ()Ljava/lang/String;
+	public final fun getResponseSize ()J
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getTimestamp ()J
+	public final fun getTlsVersion ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/api/WormaCeptorApi {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/api/WormaCeptorApi;
+	public final fun canShowFloatingButton (Landroid/content/Context;)Z
+	public final fun getEnabledFeatures ()Ljava/util/Set;
+	public final fun getLaunchIntent (Landroid/content/Context;)Landroid/content/Intent;
+	public final fun getOverlayPermissionIntent (Landroid/content/Context;)Landroid/content/Intent;
+	public final fun getRedactionConfig ()Lcom/azikar24/wormaceptor/api/RedactionConfig;
+	public final fun getRegisteredExtensionProviders ()Ljava/util/List;
+	public final fun hideFloatingButton (Landroid/content/Context;)V
+	public final fun hidePerformanceOverlay ()V
+	public final fun init (Landroid/content/Context;ZLjava/util/Set;Z)V
+	public static synthetic fun init$default (Lcom/azikar24/wormaceptor/api/WormaCeptorApi;Landroid/content/Context;ZLjava/util/Set;ZILjava/lang/Object;)V
+	public final fun isFeatureEnabled (Lcom/azikar24/wormaceptor/api/Feature;)Z
+	public final fun isPerformanceOverlayVisible ()Z
+	public final fun registerExtensionProvider (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionProvider;)V
+	public final fun showFloatingButton (Landroid/content/Context;)Z
+	public final fun showPerformanceOverlay (Landroidx/activity/ComponentActivity;)Z
+	public final fun startActivityOnShake (Landroidx/activity/ComponentActivity;)V
+	public final fun unregisterExtensionProvider (Ljava/lang/String;)Z
+}
+
+public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor : okhttp3/Interceptor {
+	public fun <init> ()V
+	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
+	public final fun maxContentLength (J)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun redactBody (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun redactHeader (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun redactJsonValue (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun redactXmlValue (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun retainDataFor (Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+	public final fun showNotification (Z)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
+}
+
+public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period : java/lang/Enum {
+	public static final field FOREVER Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static final field ONE_DAY Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static final field ONE_HOUR Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static final field ONE_MONTH Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static final field ONE_WEEK Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+	public static fun values ()[Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+}
+
+public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider : android/content/ContentProvider {
+	public static final field Companion Lcom/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider$Companion;
+	public fun <init> ()V
+	public fun delete (Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
+	public fun getType (Landroid/net/Uri;)Ljava/lang/String;
+	public fun insert (Landroid/net/Uri;Landroid/content/ContentValues;)Landroid/net/Uri;
+	public fun onCreate ()Z
+	public fun openFile (Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;
+	public fun query (Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+	public fun update (Landroid/net/Uri;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+}
+
+public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider$Companion {
+}
+

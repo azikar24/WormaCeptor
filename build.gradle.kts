@@ -14,6 +14,11 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.owasp.dependency.check)
+    alias(libs.plugins.dependency.analysis)
+    alias(libs.plugins.binary.compatibility.validator)
+    alias(libs.plugins.kover)
+    alias(libs.plugins.gradle.doctor)
 }
 
 // Detekt configuration for root project
@@ -29,9 +34,157 @@ dependencies {
     detektPlugins(libs.compose.rules.detekt)
 }
 
-// Apply detekt and lint configuration to all subprojects
+// =============================================================================
+// OWASP Dependency-Check Configuration (Security Vulnerability Scanning)
+// =============================================================================
+dependencyCheck {
+    failBuildOnCVSS = 7.0f // Fail on HIGH and CRITICAL vulnerabilities
+    suppressionFile = "$rootDir/config/owasp/suppressions.xml"
+    formats = listOf("HTML", "JSON", "SARIF")
+    outputDirectory = "$buildDir/reports/dependency-check"
+}
+
+// =============================================================================
+// Dependency Analysis Configuration (Unused/Misused Dependencies)
+// =============================================================================
+dependencyAnalysis {
+    issues {
+        all {
+            onUnusedDependencies {
+                severity("warn")
+            }
+            onUsedTransitiveDependencies {
+                severity("warn")
+            }
+            onIncorrectConfiguration {
+                severity("warn")
+            }
+            onRedundantPlugins {
+                severity("warn")
+            }
+        }
+        project(":test:architecture") {
+            onUnusedDependencies { severity("ignore") }
+        }
+    }
+}
+
+// =============================================================================
+// Binary Compatibility Validator Configuration (API Stability)
+// =============================================================================
+apiValidation {
+    ignoredPackages +=
+        listOf(
+            "com.azikar24.wormaceptor.internal",
+        )
+    ignoredProjects +=
+        listOf(
+            "app",
+            "test",
+            "architecture",
+        )
+    nonPublicMarkers +=
+        listOf(
+            "kotlin.internal.InlineOnly",
+        )
+}
+
+// =============================================================================
+// Kover Configuration (Code Coverage)
+// =============================================================================
+koverReport {
+    filters {
+        excludes {
+            classes(
+                "*BuildConfig",
+                "*_Factory",
+                "*_HiltModules*",
+                "*Hilt_*",
+                "*_Impl",
+                "*.di.*",
+                "*.theme.*",
+            )
+            packages(
+                "*.generated.*",
+                "*.databinding.*",
+            )
+        }
+    }
+    verify {
+        rule("Minimum Coverage") {
+            minBound(50)
+        }
+    }
+}
+
+// =============================================================================
+// Gradle Doctor Configuration (Build Health)
+// =============================================================================
+doctor {
+    disallowMultipleDaemons.set(false)
+    GCWarningThreshold.set(0.10f)
+    daggerThreshold.set(5000)
+    negativeAvoidanceThreshold.set(500)
+    warnWhenNotUsingParallelGC.set(false)
+    javaHome {
+        ensureJavaHomeIsSet.set(true)
+        ensureJavaHomeMatches.set(true)
+        failOnError.set(false)
+    }
+}
+
+// =============================================================================
+// Git Hooks Installation
+// =============================================================================
+tasks.register<Copy>("installGitHooks") {
+    group = "git"
+    description = "Installs Git hooks for pre-commit checks"
+    from("$rootDir/config/git-hooks/")
+    into("$rootDir/.git/hooks/")
+    fileMode = 0b111101101
+}
+
+tasks.named("prepareKotlinBuildScriptModel") {
+    dependsOn("installGitHooks")
+}
+
+// =============================================================================
+// Convenience Aggregate Tasks
+// =============================================================================
+tasks.register("codeQuality") {
+    group = "verification"
+    description = "Run all code quality checks"
+    dependsOn("spotlessCheck", "detekt", "lint")
+}
+
+tasks.register("codeFormat") {
+    group = "formatting"
+    description = "Auto-format all code"
+    dependsOn("spotlessApply")
+}
+
+tasks.register("securityCheck") {
+    group = "verification"
+    description = "Run security vulnerability scanning"
+    dependsOn("dependencyCheckAnalyze")
+}
+
+tasks.register("coverageReport") {
+    group = "verification"
+    description = "Generate code coverage report"
+    dependsOn("koverHtmlReport")
+}
+
+tasks.register("fullCheck") {
+    group = "verification"
+    description = "Run all checks"
+    dependsOn("codeQuality", "securityCheck", "koverVerify", "buildHealth")
+}
+
+// Apply detekt, lint, and kover configuration to all subprojects
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
 
     detekt {
         buildUponDefaultConfig = true

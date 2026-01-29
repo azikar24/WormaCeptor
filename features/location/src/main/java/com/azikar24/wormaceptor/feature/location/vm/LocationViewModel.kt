@@ -8,6 +8,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
@@ -45,6 +46,10 @@ class LocationViewModel(
     private val engine: LocationSimulatorEngine,
     context: Context,
 ) : ViewModel() {
+
+    private companion object {
+        private const val TAG = "LocationViewModel"
+    }
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -171,7 +176,8 @@ class LocationViewModel(
                 } else {
                     _errorMessage.value = engine.lastError.value
                 }
-            } catch (e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                Log.w(TAG, "Failed to set mock location", e)
                 _errorMessage.value = "Failed to set mock location: ${e.message}"
             } finally {
                 _isLoading.value = false
@@ -188,7 +194,8 @@ class LocationViewModel(
             try {
                 repository.setMockLocation(null)
                 _successMessage.value = "Mock location cleared"
-            } catch (e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                Log.w(TAG, "Failed to clear mock location", e)
                 _errorMessage.value = "Failed to clear mock location: ${e.message}"
             } finally {
                 _isLoading.value = false
@@ -230,8 +237,10 @@ class LocationViewModel(
                     _errorMessage.value = "Could not get current location. Make sure location is enabled."
                 }
             } catch (e: SecurityException) {
+                Log.w(TAG, "Location permission not granted", e)
                 _errorMessage.value = "Location permission not granted"
-            } catch (e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                Log.w(TAG, "Failed to get location", e)
                 _errorMessage.value = "Failed to get location: ${e.message}"
             } finally {
                 _isLoading.value = false
@@ -267,7 +276,8 @@ class LocationViewModel(
                 )
                 repository.savePreset(preset)
                 _successMessage.value = "Preset saved: ${preset.name}"
-            } catch (e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                Log.w(TAG, "Failed to save preset", e)
                 _errorMessage.value = "Failed to save preset: ${e.message}"
             } finally {
                 _isLoading.value = false
@@ -283,7 +293,8 @@ class LocationViewModel(
             try {
                 repository.deletePreset(presetId)
                 _successMessage.value = "Preset deleted"
-            } catch (e: Exception) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                Log.w(TAG, "Failed to delete preset", e)
                 _errorMessage.value = "Failed to delete preset: ${e.message}"
             }
         }

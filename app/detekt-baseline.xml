@@ -4,35 +4,23 @@
   <CurrentIssues>
     <ID>ClassOrdering:MainActivity.kt$MainActivity$Companion</ID>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
-    <ID>ComposableParamOrder:CookiesTestScreen.kt$DetailItem</ID>
     <ID>ComposableParamOrder:WebViewTestScreen.kt$DetailRow</ID>
-    <ID>CyclomaticComplexMethod:CookiesTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
     <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
-    <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun AddCookieDialog( onDismiss: () -&gt; Unit, onAdd: (domain: String, name: String, value: String, isSecure: Boolean) -&gt; Unit, )</ID>
-    <ID>LongMethod:CookiesTestScreen.kt$@Composable private fun CookieDetailSheet(cookie: ParsedCookie, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:CookiesTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CookiesTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:GlitchEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:MainActivity.kt$MainActivity$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel())</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>LongMethod:WebViewTestScreen.kt$@Composable private fun CapturedRequestItem(request: WebViewRequest, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:WebViewTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WebViewTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:WebViewTestScreen.kt$@SuppressLint("SetJavaScriptEnabled") @Composable private fun WebViewTestContent( viewModel: WebViewMonitorViewModel, requests: List&lt;WebViewRequest&gt;, stats: WebViewRequestStats, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
-    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onCookiesClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$3600</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$40</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$60</ID>
-    <ID>MagicNumber:CookiesTestScreen.kt$86400</ID>
+    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>MagicNumber:Data.kt$Data$10</ID>
     <ID>MagicNumber:GlitchEffect.kt$0.02f</ID>
     <ID>MagicNumber:GlitchEffect.kt$0.05f</ID>
@@ -366,9 +354,7 @@
     <ID>MagicNumber:WormaceptorLogo.kt$96.65f</ID>
     <ID>MatchingDeclarationName:TestToolsNavigation.kt$TestToolsRoutes</ID>
     <ID>MatchingDeclarationName:TestToolsTab.kt$ToolStatus</ID>
-    <ID>MaxLineLength:CookiesTestScreen.kt$text = "$totalCookies cookie${if (totalCookies != 1) "s" else ""} in ${domainCookies.size} domain${if (domainCookies.size != 1) "s" else ""}"</ID>
     <ID>MaxLineLength:LocationTestScreen.kt$color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant</ID>
-    <ID>MaximumLineLength:CookiesTestScreen.kt$ </ID>
     <ID>MaximumLineLength:LocationTestScreen.kt$ </ID>
     <ID>ModifierReused:GlitchEffect.kt$Box( modifier = modifier.graphicsLayer { shader.setFloatUniform("resolution", screenWidthPx, screenHeightPx) shader.setFloatUniform("progress", progress) shader.setFloatUniform("time", time) renderEffect = RenderEffect .createRuntimeShaderEffect(shader, "content") .asComposeRenderEffect() }, ) { content() }</ID>
     <ID>ModifierReused:GlitchEffect.kt$Box(modifier = modifier) { content() }</ID>
@@ -376,7 +362,6 @@
     <ID>TooGenericExceptionCaught:SecureStorageTestScreen.kt$e: Exception</ID>
     <ID>TooManyFunctions:HttpBinApi.kt$HttpBinApi</ID>
     <ID>TopLevelPropertyNaming:GlitchEffect.kt$private const val GLITCH_SHADER = """ uniform shader content; uniform float2 resolution; uniform float progress; uniform float time; // Saturate/clamp helper float sat(float t) { return clamp(t, 0.0, 1.0); } float2 sat2(float2 t) { return clamp(t, float2(0.0), float2(1.0)); } // Remaps interval [a;b] to [0;1] float remap(float t, float a, float b) { return sat((t - a) / (b - a)); } // Triangle wave: t=[0;0.5;1], y=[0;1;0] float linterp(float t) { return sat(1.0 - abs(2.0 * t - 1.0)); } // Chromatic spectrum offset float3 spectrum_offset(float t) { float lo = step(t, 0.5); float hi = 1.0 - lo; float w = linterp(remap(t, 1.0 / 6.0, 5.0 / 6.0)); float neg_w = 1.0 - w; float3 ret = float3(lo, 1.0, hi) * float3(neg_w, w, neg_w); return pow(ret, float3(1.0 / 2.2)); } // Pseudo-random [0;1] float rand(float2 n) { return fract(sin(dot(n, float2(12.9898, 78.233))) * 43758.5453); } // Pseudo-random [-1;1] float srand(float2 n) { return rand(n) * 2.0 - 1.0; } // Truncate to discrete levels float mytrunc(float x, float num_levels) { return floor(x * num_levels) / num_levels; } float2 mytrunc2(float2 x, float num_levels) { return floor(x * num_levels) / num_levels; } half4 main(float2 coord) { float2 uv = coord / resolution; float modTime = mod(time * 100.0, 32.0) / 110.0; float GLITCH = clamp(progress, 0.0, 1.0); float gnm = sat(GLITCH); float rnd0 = rand(mytrunc2(float2(modTime, modTime), 6.0)); float r0 = sat((1.0 - gnm) * 0.7 + rnd0); float rnd1 = rand(float2(mytrunc(uv.x, 10.0 * r0), modTime)); float r1 = 0.5 - 0.5 * gnm + rnd1; r1 = 1.0 - max(0.0, (r1 &lt; 1.0) ? r1 : 0.9999999); float rnd2 = rand(float2(mytrunc(uv.y, 40.0 * r1), modTime)); float r2 = sat(rnd2); float rnd3 = rand(float2(mytrunc(uv.y, 10.0 * r0), modTime)); float r3 = (1.0 - sat(rnd3 + 0.8)) - 0.1; float pxrnd = rand(uv + modTime); float ofs = 0.05 * r2 * GLITCH * (rnd0 &gt; 0.5 ? 1.0 : -1.0); ofs += 0.5 * pxrnd * ofs; float2 distortedUV = uv; distortedUV.y += 0.1 * r3 * GLITCH; const int NUM_SAMPLES = 20; const float RCP_NUM_SAMPLES_F = 1.0 / float(NUM_SAMPLES); float4 sum = float4(0.0); float3 wsum = float3(0.0); for (int i = 0; i &lt; NUM_SAMPLES; ++i) { float t = float(i) * RCP_NUM_SAMPLES_F; float2 sampleUV = distortedUV; sampleUV.x = sat(sampleUV.x + ofs * t); half4 sampleCol = content.eval(sampleUV * resolution); float3 s = spectrum_offset(t); sum.rgb += float3(sampleCol.rgb) * s; sum.a += float(sampleCol.a); wsum += s; } sum.rgb /= wsum; sum.a *= RCP_NUM_SAMPLES_F; return half4(half3(sum.rgb), half(sum.a)); } """</ID>
-    <ID>UnderscoresInNumericLiterals:CookiesTestScreen.kt$86400</ID>
     <ID>UnderscoresInNumericLiterals:GlitchEffect.kt$10000</ID>
     <ID>UnderscoresInNumericLiterals:SampleApiService.kt$SampleApiService$250000L</ID>
     <ID>UnderscoresInNumericLiterals:SampleContentService.kt$SampleContentService$500000L</ID>

@@ -89,12 +89,13 @@ dependencies {
 
     implementation(project(":api:client"))
     implementation(project(":core:ui")) // Used in main source set
+    implementation(project(":core:engine")) // For WebViewMonitorEngine access
     implementation(project(":api:impl:persistence"))
     implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     // Feature modules for testing
     implementation(project(":features:location"))
-    implementation(project(":features:cookies"))
     implementation(project(":features:webviewmonitor"))
     implementation(project(":features:securestorage"))
 //    debugImplementation(project(":api:impl:no-op"))

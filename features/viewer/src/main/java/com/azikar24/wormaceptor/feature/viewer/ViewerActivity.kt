@@ -35,10 +35,10 @@ import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
+import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.cookies.CookiesInspector
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
 import com.azikar24.wormaceptor.feature.crypto.CryptoHistoryScreen
@@ -89,6 +89,7 @@ class ViewerActivity : ComponentActivity() {
     private val threadViolationEngine: ThreadViolationEngine by inject()
     private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
     private val rateLimitEngine: RateLimitEngine by inject()
+    private val webViewMonitorEngine: WebViewMonitorEngine by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -409,14 +410,6 @@ class ViewerActivity : ComponentActivity() {
                             )
                         }
 
-                        // Cookies Manager route
-                        composable("cookies") {
-                            CookiesInspector(
-                                context = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-                        }
-
                         // CPU Monitor route
                         composable("cpu") {
                             // Enable CPU metric in overlay if overlay is enabled
@@ -466,6 +459,7 @@ class ViewerActivity : ComponentActivity() {
                         // WebView Monitor route
                         composable("webviewmonitor") {
                             WebViewMonitorScreen(
+                                engine = webViewMonitorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }

@@ -61,11 +61,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorFeature
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorViewModel
+import org.koin.compose.koinInject
 
 /**
  * Test screen for the WebView Monitor feature.
@@ -74,7 +76,9 @@ import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
-    val factory = remember { WebViewMonitorFeature.createViewModelFactory() }
+    // Use Koin singleton engine so requests appear in WebView Monitor tool
+    val engine: WebViewMonitorEngine = koinInject()
+    val factory = remember(engine) { WebViewMonitorFeature.createViewModelFactory(engine) }
     val viewModel: WebViewMonitorViewModel = viewModel(factory = factory)
 
     val isEnabled by viewModel.isEnabled.collectAsState()

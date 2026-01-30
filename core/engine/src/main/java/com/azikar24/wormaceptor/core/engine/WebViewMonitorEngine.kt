@@ -52,8 +52,8 @@ import java.util.concurrent.ConcurrentHashMap
 class WebViewMonitorEngine(
     private val maxRequests: Int = DEFAULT_MAX_REQUESTS,
 ) {
-    // Whether monitoring is enabled
-    private val _isEnabled = MutableStateFlow(false)
+    // Whether monitoring is enabled (default: true)
+    private val _isEnabled = MutableStateFlow(true)
     val isEnabled: StateFlow<Boolean> = _isEnabled.asStateFlow()
 
     // All captured requests

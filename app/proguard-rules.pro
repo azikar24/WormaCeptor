@@ -98,3 +98,16 @@
 # Keep all WormaCeptor library classes (uses Koin reflection internally)
 -keep class com.azikar24.wormaceptor.** { *; }
 -keepclassmembers class com.azikar24.wormaceptor.** { *; }
+
+# -------------------- Firebase --------------------
+# Keep Firebase Messaging classes (accessed via reflection in PushTokenEngine)
+-keep class com.google.firebase.messaging.FirebaseMessaging { *; }
+-keep class com.google.firebase.messaging.** { *; }
+-keep class com.google.android.gms.tasks.Tasks { *; }
+-keep class com.google.android.gms.tasks.Task { *; }
+-keep class com.google.android.gms.tasks.** { *; }
+
+# Firebase common
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**

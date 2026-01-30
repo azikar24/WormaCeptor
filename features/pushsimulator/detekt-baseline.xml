@@ -3,10 +3,14 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:PushSimulatorScreen.kt$@Composable private fun TemplateCard( template: NotificationTemplate, onLoad: () -&gt; Unit, onSend: () -&gt; Unit, onDelete: () -&gt; Unit, )</ID>
+    <ID>LongMethod:PushSimulatorScreen.kt$@Composable private fun ChannelSelector( selectedChannelId: String, channels: List&lt;NotificationChannelInfo&gt;, onChannelSelected: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:PushSimulatorScreen.kt$@Composable private fun NotificationFormCard( uiState: PushSimulatorUiState, channels: List&lt;NotificationChannelInfo&gt;, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ActionButtonsSection( actions: List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;, newActionTitle: String, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun NotificationPreview( title: String, body: String, priority: NotificationPriority, channelName: String?, actions: List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;, )</ID>
+    <ID>LongMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun TemplateCard( template: NotificationTemplate, onLoad: () -&gt; Unit, onSend: () -&gt; Unit, onDelete: () -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongParameterList:PushSimulatorScreen.kt$( uiState: PushSimulatorUiState, channels: List&lt;NotificationChannelInfo&gt;, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
+    <ID>LongParameterList:PushSimulatorScreen.kt$( value: String, onValueChange: (String) -&gt; Unit, label: String, placeholder: String, singleLine: Boolean, maxChars: Int, minLines: Int = 1, maxLines: Int = 1, )</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$0xFF4FC3F7</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$0xFF90A4AE</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$0xFFEF5350</ID>
@@ -18,8 +22,6 @@
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$3</ID>
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$5000</ID>
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$8</ID>
-    <ID>MaxLineLength:PushSimulatorScreen.kt$"Notification permission is required to send test notifications. Please grant the permission in app settings."</ID>
-    <ID>MaximumLineLength:PushSimulatorScreen.kt$ </ID>
     <ID>SwallowedException:PushSimulatorDataSource.kt$PushSimulatorDataSource$e: Exception</ID>
     <ID>SwallowedException:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: NotificationPermissionException</ID>
     <ID>TooGenericExceptionCaught:PushSimulatorDataSource.kt$PushSimulatorDataSource$e: Exception</ID>

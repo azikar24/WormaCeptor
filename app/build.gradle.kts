@@ -2,11 +2,23 @@
  * Copyright AziKar24 19/2/2023.
  */
 
+import java.io.File
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.services)
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties =
+    Properties().apply {
+        if (keystorePropertiesFile.exists()) {
+            load(keystorePropertiesFile.inputStream())
+        }
+    }
 
 android {
     namespace = "com.azikar24.wormaceptorapp"
@@ -20,6 +32,21 @@ android {
         multiDexEnabled = true
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = keystoreProperties["storeFile"] as String?
+            if (storeFilePath != null) {
+                val keyFile = File(storeFilePath)
+                if (keyFile.exists()) {
+                    storeFile = keyFile
+                    storePassword = keystoreProperties["storePassword"] as String?
+                    keyAlias = keystoreProperties["keyAlias"] as String?
+                    keyPassword = keystoreProperties["keyPassword"] as String?
+                }
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -28,6 +55,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig =
+                if (signingConfigs.getByName("release").storeFile != null) {
+                    signingConfigs.getByName("release")
+                } else {
+                    signingConfigs.getByName("debug")
+                }
         }
     }
 
@@ -56,14 +89,14 @@ dependencies {
 
     implementation(project(":api:client"))
     implementation(project(":core:ui")) // Used in main source set
-    debugImplementation(project(":api:impl:persistence"))
-    debugImplementation(libs.koin.android)
+    implementation(project(":api:impl:persistence"))
+    implementation(libs.koin.android)
 
     // Feature modules for testing
-    debugImplementation(project(":features:location"))
-    debugImplementation(project(":features:cookies"))
-    debugImplementation(project(":features:webviewmonitor"))
-    debugImplementation(project(":features:securestorage"))
+    implementation(project(":features:location"))
+    implementation(project(":features:cookies"))
+    implementation(project(":features:webviewmonitor"))
+    implementation(project(":features:securestorage"))
 //    debugImplementation(project(":api:impl:no-op"))
 //    debugImplementation(project(":api:impl:imdb"))
 
@@ -87,4 +120,8 @@ dependencies {
 
     // osmdroid for location map
     implementation(libs.osmdroid.android)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 }

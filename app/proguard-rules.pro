@@ -83,3 +83,18 @@
 -dontwarn com.google.errorprone.annotations.**
 -dontwarn javax.annotation.**
 -dontwarn com.google.crypto.tink.**
+
+# -------------------- Koin --------------------
+# Keep Koin modules and definitions
+-keep class org.koin.** { *; }
+-keepclassmembers class * {
+    public <init>(...);
+}
+# Keep classes instantiated by Koin (ViewModels, Repositories, etc.)
+-keep class * extends androidx.lifecycle.ViewModel { *; }
+-keep class * extends org.koin.core.module.Module { *; }
+
+# -------------------- WormaCeptor --------------------
+# Keep all WormaCeptor library classes (uses Koin reflection internally)
+-keep class com.azikar24.wormaceptor.** { *; }
+-keepclassmembers class com.azikar24.wormaceptor.** { *; }

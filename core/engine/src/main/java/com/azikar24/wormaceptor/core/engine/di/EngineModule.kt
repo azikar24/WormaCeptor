@@ -13,6 +13,7 @@ import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
+import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -47,4 +48,5 @@ val engineModule = module {
 
     // Network engines
     single { RateLimitEngine() }
+    single { WebViewMonitorEngine() }
 }

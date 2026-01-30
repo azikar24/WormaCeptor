@@ -18,3 +18,11 @@ local.properties
 /.vscode/settings.json
 /.kotlin/*
 /plugins/android-studio/.intellijPlatform/*
+
+# Signing
+keystore.properties
+*.jks
+*.keystore
+
+# Release builds
+app/release/

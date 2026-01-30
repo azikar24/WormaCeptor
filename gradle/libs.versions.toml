@@ -30,7 +30,9 @@ coil = "2.6.0"
 splashscreen = "1.0.1"
 kotlinx-collections-immutable = "0.3.7"
 datastore = "1.1.1"
-firebase-messaging = "24.0.0"
+firebase-bom = "33.7.0"
+firebase-messaging = "24.1.0"
+google-services = "4.4.2"
 security-crypto = "1.1.0-alpha06"
 osmdroid = "6.1.18"
 
@@ -97,6 +99,7 @@ compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", ver
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebase-messaging" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 osmdroid-android = { group = "org.osmdroid", name = "osmdroid-android", version.ref = "osmdroid" }
@@ -115,6 +118,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinJvm" }
 intellij-platform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 # Code Quality Plugins
 owasp-dependency-check = { id = "org.owasp.dependencycheck", version.ref = "owaspDependencyCheck" }

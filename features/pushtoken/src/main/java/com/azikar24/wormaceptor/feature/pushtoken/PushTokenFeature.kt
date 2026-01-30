@@ -14,7 +14,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -23,16 +22,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import kotlinx.coroutines.flow.StateFlow
@@ -88,9 +87,9 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Icon(Icons.Default.Notifications, null, tint = Color(0xFFFF9800))
+                        Icon(Icons.Default.Notifications, null, tint = WormaCeptorColors.StatusAmber)
                         Text("Push Token", fontWeight = FontWeight.SemiBold)
                     }
                 },
@@ -104,7 +103,10 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                 actions = {
                     IconButton(onClick = { viewModel.fetchToken() }, enabled = !isLoading) {
                         if (isLoading) {
-                            CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
+                            CircularProgressIndicator(
+                                Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                                strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
+                            )
                         } else {
                             Icon(Icons.Default.Refresh, "Fetch token")
                         }
@@ -119,18 +121,23 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
         },
     ) { padding ->
         LazyColumn(
-            Modifier.fillMaxSize().padding(padding).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Error
             error?.let {
                 item {
                     Card(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
                     ) {
                         Row(
-                            Modifier.fillMaxWidth().padding(12.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(WormaCeptorDesignSystem.Spacing.md),
                             Arrangement.SpaceBetween,
                             Alignment.CenterVertically,
                         ) {
@@ -144,10 +151,15 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
             // Current token
             item {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = WormaCeptorDesignSystem.Shapes.cardLarge,
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 ) {
-                    Column(Modifier.fillMaxWidth().padding(16.dp), Arrangement.spacedBy(12.dp)) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(WormaCeptorDesignSystem.Spacing.lg),
+                        Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                    ) {
                         Text(
                             "Current Token",
                             style = MaterialTheme.typography.titleMedium,
@@ -156,27 +168,35 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                         if (currentToken != null) {
                             Surface(
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(8.dp),
-                                color = Color(0xFFF5F5F5),
+                                shape = WormaCeptorDesignSystem.Shapes.card,
+                                color = MaterialTheme.colorScheme.surfaceContainerLow,
                             ) {
                                 Text(
                                     currentToken!!.token,
-                                    Modifier.padding(12.dp),
+                                    Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                                     fontFamily = FontFamily.Monospace,
                                     style = MaterialTheme.typography.bodySmall,
                                     maxLines = 3,
                                     overflow = TextOverflow.Ellipsis,
                                 )
                             }
-                            Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            ) {
                                 Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = Color(0xFF4CAF50).copy(alpha = 0.15f),
+                                    shape = WormaCeptorDesignSystem.Shapes.chip,
+                                    color = WormaCeptorColors.StatusGreen.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.light,
+                                    ),
                                 ) {
                                     Text(
                                         currentToken!!.provider.name,
-                                        Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                                        color = Color(0xFF4CAF50),
+                                        Modifier.padding(
+                                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                                        ),
+                                        color = WormaCeptorColors.StatusGreen,
                                         fontWeight = FontWeight.SemiBold,
                                         style = MaterialTheme.typography.labelSmall,
                                     )
@@ -187,25 +207,23 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
-                            Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            ) {
                                 Button(onClick = {
                                     clipboardManager.setPrimaryClip(
                                         ClipData.newPlainText("Push Token", currentToken!!.token),
                                     )
                                     showCopiedSnackbar = true
                                 }, Modifier.weight(1f)) {
-                                    Icon(Icons.Default.ContentCopy, null, Modifier.size(18.dp))
-                                    Spacer(Modifier.width(4.dp))
+                                    Icon(
+                                        Icons.Default.ContentCopy,
+                                        null,
+                                        Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                    )
+                                    Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                                     Text("Copy")
-                                }
-                                OutlinedButton(
-                                    onClick = { viewModel.refreshToken() },
-                                    Modifier.weight(1f),
-                                    enabled = !isLoading,
-                                ) {
-                                    Icon(Icons.Default.Autorenew, null, Modifier.size(18.dp))
-                                    Spacer(Modifier.width(4.dp))
-                                    Text("Refresh")
                                 }
                                 OutlinedButton(
                                     onClick = {
@@ -213,14 +231,19 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                     },
                                     enabled = !isLoading,
                                     colors = ButtonDefaults.outlinedButtonColors(
-                                        contentColor = Color(0xFFF44336),
+                                        contentColor = WormaCeptorColors.StatusRed,
                                     ),
                                 ) {
-                                    Icon(Icons.Default.Delete, null, Modifier.size(18.dp))
+                                    Icon(Icons.Default.Delete, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm))
                                 }
                             }
                         } else {
-                            Box(Modifier.fillMaxWidth().height(80.dp), Alignment.Center) {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.xxl),
+                                Alignment.Center,
+                            ) {
                                 if (isLoading) {
                                     CircularProgressIndicator()
                                 } else {
@@ -229,7 +252,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                             Icons.Default.NotificationsOff,
                                             null,
                                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.size(32.dp),
+                                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
                                         )
                                         Text("No token available", color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
@@ -254,32 +277,57 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
 
             if (tokenHistory.isEmpty()) {
                 item {
-                    Box(Modifier.fillMaxWidth().height(100.dp), Alignment.Center) {
-                        Text("No history", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.xxxl),
+                        Alignment.Center,
+                    ) {
+                        Text(
+                            "No history",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                            ),
+                        )
                     }
                 }
             } else {
                 items(tokenHistory.take(20), key = { "${it.timestamp}_${it.event}" }) { entry ->
                     Card(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = WormaCeptorDesignSystem.Shapes.card,
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                     ) {
-                        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(WormaCeptorDesignSystem.Spacing.md),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             val (icon, color) = when (entry.event) {
-                                TokenHistory.TokenEvent.CREATED -> Icons.Default.Add to Color(0xFF4CAF50)
-                                TokenHistory.TokenEvent.REFRESHED -> Icons.Default.Autorenew to Color(0xFF2196F3)
-                                TokenHistory.TokenEvent.INVALIDATED -> Icons.Default.Warning to Color(0xFFFF9800)
-                                TokenHistory.TokenEvent.DELETED -> Icons.Default.Delete to Color(0xFFF44336)
+                                TokenHistory.TokenEvent.CREATED ->
+                                    Icons.Default.Add to WormaCeptorColors.StatusGreen
+                                TokenHistory.TokenEvent.REFRESHED ->
+                                    Icons.Default.Autorenew to WormaCeptorColors.StatusBlue
+                                TokenHistory.TokenEvent.INVALIDATED ->
+                                    Icons.Default.Warning to WormaCeptorColors.StatusAmber
+                                TokenHistory.TokenEvent.DELETED ->
+                                    Icons.Default.Delete to WormaCeptorColors.StatusRed
                             }
                             Box(
-                                Modifier.size(
-                                    32.dp,
-                                ).clip(RoundedCornerShape(8.dp)).background(color.copy(alpha = 0.15f)),
+                                Modifier
+                                    .size(WormaCeptorDesignSystem.IconSize.xl)
+                                    .clip(WormaCeptorDesignSystem.Shapes.card)
+                                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                                 Alignment.Center,
                             ) {
-                                Icon(icon, null, tint = color, modifier = Modifier.size(16.dp))
+                                Icon(
+                                    icon,
+                                    null,
+                                    tint = color,
+                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                )
                             }
-                            Spacer(Modifier.width(12.dp))
+                            Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                             Column(Modifier.weight(1f)) {
                                 Text(
                                     entry.event.name.lowercase().replaceFirstChar { it.uppercase() },
@@ -295,7 +343,9 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                             Text(
                                 formatTime(entry.timestamp),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                ),
                             )
                         }
                     }

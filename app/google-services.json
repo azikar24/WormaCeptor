@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "981885622337",
+    "project_id": "wormaceptor",
+    "storage_bucket": "wormaceptor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981885622337:android:7acc5868b149fcd34ccec0",
+        "android_client_info": {
+          "package_name": "com.azikar24.wormaceptorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQ3FWRJrzs1WAl4QcdbglXVIcomHpZFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

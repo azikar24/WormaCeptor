@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.google.services) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
     alias(libs.plugins.owasp.dependency.check)

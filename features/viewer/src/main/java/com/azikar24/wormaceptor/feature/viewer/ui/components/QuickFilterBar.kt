@@ -14,9 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -95,7 +97,7 @@ fun QuickFilterBar(
                     {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = "Selected",
+                            contentDescription = stringResource(R.string.viewer_quick_filter_selected),
                             modifier = Modifier.size(18.dp),
                         )
                     }

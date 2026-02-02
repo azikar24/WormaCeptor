@@ -58,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +67,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
+import com.azikar24.wormaceptor.feature.leakdetection.R
 import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.leakDetectionColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -131,7 +133,7 @@ fun LeakDetectionScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.leakdetection_back),
                             )
                         }
                     }
@@ -140,13 +142,13 @@ fun LeakDetectionScreen(
                     IconButton(onClick = onTriggerCheck) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Trigger leak check",
+                            contentDescription = stringResource(R.string.leakdetection_trigger_check),
                         )
                     }
                     IconButton(onClick = onClearLeaks) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Clear leaks",
+                            contentDescription = stringResource(R.string.leakdetection_clear),
                         )
                     }
                 },
@@ -345,7 +347,7 @@ private fun SeverityFilterChips(
         FilterChip(
             selected = selectedSeverity == null,
             onClick = { onSeveritySelected(null) },
-            label = { Text("All") },
+            label = { Text(stringResource(R.string.leakdetection_filter_all)) },
         )
         LeakSeverity.entries.forEach { severity ->
             val color = colors.colorForSeverity(severity)
@@ -480,7 +482,7 @@ private fun LeakDetailContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
                         .background(severityBackground),
                     contentAlignment = Alignment.Center,
@@ -648,7 +650,7 @@ private fun EmptyState(
                 imageVector = Icons.Default.BugReport,
                 contentDescription = null,
                 tint = if (isRunning) colors.monitoring else colors.labelSecondary,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
                 text = if (isRunning) "Monitoring for leaks..." else "No leaks detected",

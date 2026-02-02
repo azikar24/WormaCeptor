@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +44,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Alpha
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.CornerRadius
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Spacing
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -208,7 +210,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
                 color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.light),
                 contentColor = WormaCeptorColors.StatusRed,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(Spacing.xxl),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -216,7 +218,13 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 ) {
                     Icon(
                         imageVector = if (isSevere) Icons.Default.BugReport else Icons.Default.Warning,
-                        contentDescription = if (isSevere) "Critical crash" else "Warning",
+                        contentDescription = if (isSevere) {
+                            stringResource(
+                                R.string.viewer_crash_list_critical_crash,
+                            )
+                        } else {
+                            stringResource(R.string.viewer_crash_list_warning)
+                        },
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -311,7 +319,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
-                    contentDescription = "No crashes",
+                    contentDescription = stringResource(R.string.viewer_crash_list_no_crashes),
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
@@ -322,7 +330,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
 
         // Title
         Text(
-            text = "No crashes captured",
+            text = stringResource(R.string.viewer_crash_list_no_crashes_title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -332,7 +340,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
 
         // Description
         Text(
-            text = "Your app is running smoothly",
+            text = stringResource(R.string.viewer_crash_list_no_crashes_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )

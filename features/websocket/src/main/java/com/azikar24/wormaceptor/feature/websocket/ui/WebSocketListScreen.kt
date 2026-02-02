@@ -40,12 +40,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
+import com.azikar24.wormaceptor.feature.websocket.R
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -85,7 +87,7 @@ internal fun WebSocketListScreen(
                             IconButton(onClick = back) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Back",
+                                    contentDescription = stringResource(R.string.websocket_back),
                                 )
                             }
                         }
@@ -98,7 +100,7 @@ internal fun WebSocketListScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = "Clear all",
+                                contentDescription = stringResource(R.string.websocket_clear_all),
                             )
                         }
                     },

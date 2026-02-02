@@ -40,6 +40,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import java.text.SimpleDateFormat
@@ -133,7 +135,7 @@ fun CrashDetailPagerScreen(crashes: List<Crash>, initialCrashIndex: Int, onBack:
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    "Crash not found",
+                    stringResource(R.string.viewer_crash_detail_not_found),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
@@ -183,15 +185,21 @@ private fun CrashDetailContent(
                 canSwipeRight = canNavigatePrev,
             ) {
                 TopAppBar(
-                    title = { Text("Crash Details") },
+                    title = { Text(stringResource(R.string.viewer_crash_detail_title)) },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
-                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.viewer_crash_detail_back),
+                            )
                         }
                     },
                     actions = {
                         IconButton(onClick = { shareCrash(context, crash) }) {
-                            Icon(imageVector = Icons.Default.Share, contentDescription = "Share")
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = stringResource(R.string.viewer_crash_detail_share),
+                            )
                         }
                     },
                 )
@@ -286,13 +294,13 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(WormaCeptorDesignSystem.Spacing.sm)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill))
                         .background(MaterialTheme.colorScheme.error),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
-                    text = "CRASH",
+                    text = stringResource(R.string.viewer_crash_detail_crash_label),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.error,
                     fontWeight = FontWeight.Bold,
@@ -326,7 +334,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "at ",
+                        text = stringResource(R.string.viewer_crash_detail_at),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -363,7 +371,7 @@ private fun MessageCard(message: String, context: Context) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Exception Message",
+                    text = stringResource(R.string.viewer_crash_detail_exception_message),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -372,7 +380,7 @@ private fun MessageCard(message: String, context: Context) {
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy message",
+                        contentDescription = stringResource(R.string.viewer_crash_detail_copy_message),
                         modifier = Modifier.size(16.dp),
                     )
                 }
@@ -411,7 +419,7 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Stack Trace",
+                    text = stringResource(R.string.viewer_crash_detail_stack_trace),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -420,7 +428,7 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy stack trace",
+                        contentDescription = stringResource(R.string.viewer_crash_detail_copy_stack_trace),
                         modifier = Modifier.size(16.dp),
                     )
                 }
@@ -457,13 +465,19 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "Framework & System (${frameworkFrames.size})",
+                        text = stringResource(R.string.viewer_crash_detail_framework_system, frameworkFrames.size),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Icon(
                         imageVector = if (showAllFrames) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (showAllFrames) "Collapse" else "Expand",
+                        contentDescription = if (showAllFrames) {
+                            stringResource(
+                                R.string.viewer_body_collapse,
+                            )
+                        } else {
+                            stringResource(R.string.viewer_body_expand)
+                        },
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }

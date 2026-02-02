@@ -58,14 +58,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
+import com.azikar24.wormaceptor.feature.logs.R
 import com.azikar24.wormaceptor.feature.logs.ui.theme.logLevelColors
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -135,7 +138,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                             IconButton(onClick = back) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Back",
+                                    contentDescription = stringResource(R.string.logs_back),
                                 )
                             }
                         }
@@ -160,7 +163,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                         IconButton(onClick = { viewModel.clearLogs() }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = "Clear logs",
+                                contentDescription = stringResource(R.string.logs_clear),
                             )
                         }
                     },
@@ -175,7 +178,10 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     onQueryChange = viewModel::onSearchQueryChanged,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        ),
                     placeholder = "Search by tag or message...",
                 )
 
@@ -186,7 +192,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     onLevelToggle = viewModel::toggleLevel,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
                 )
 
                 // Stats bar
@@ -197,7 +203,10 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     pid = viewModel.currentPid,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
                 )
             }
         },
@@ -216,7 +225,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Scroll to bottom",
+                        contentDescription = stringResource(R.string.logs_scroll_to_bottom),
                     )
                 }
             }
@@ -255,8 +264,8 @@ private fun LevelFilterChips(
     Row(
         modifier = modifier
             .horizontalScroll(scrollState)
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
         LogLevel.entries.forEach { level ->
             val isSelected = level in selectedLevels
@@ -269,7 +278,7 @@ private fun LevelFilterChips(
                 label = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                     ) {
                         Text(
                             text = level.tag,
@@ -318,17 +327,17 @@ private fun StatsBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Capture indicator
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(WormaCeptorDesignSystem.Spacing.sm)
                         .clip(CircleShape)
                         .background(
                             if (isCapturing) {
@@ -376,7 +385,7 @@ private fun LogList(
     LazyColumn(
         state = listState,
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.sm),
     ) {
         items(
             items = logs,
@@ -408,25 +417,25 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 6.dp),
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.md, vertical = 6.dp),
             verticalAlignment = Alignment.Top,
         ) {
             // Level badge
             Surface(
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                 color = levelColor.copy(alpha = 0.15f),
-                modifier = Modifier.padding(top = 2.dp),
+                modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxs),
             ) {
                 Text(
                     text = entry.level.tag,
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = levelColor,
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                    modifier = Modifier.padding(horizontal = 6.dp, vertical = WormaCeptorDesignSystem.Spacing.xxs),
                 )
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
             Column(modifier = Modifier.weight(1f)) {
                 // Tag and timestamp row
@@ -445,7 +454,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                         modifier = Modifier.weight(1f, fill = false),
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
                     Text(
                         text = formattedTime,
@@ -455,7 +464,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
 
                 // Message
                 Text(
@@ -478,7 +487,7 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -495,7 +504,7 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
             text = if (isCapturing) "Waiting for logs..." else "No logs captured",
@@ -504,7 +513,7 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
             text = if (isCapturing) {
@@ -517,18 +526,18 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
         )
 
         if (!isCapturing) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
             Surface(
                 onClick = onStartCapture,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
                 color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+                modifier = Modifier.clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg)),
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = WormaCeptorDesignSystem.Spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Icon(
                         imageVector = Icons.Default.PlayArrow,

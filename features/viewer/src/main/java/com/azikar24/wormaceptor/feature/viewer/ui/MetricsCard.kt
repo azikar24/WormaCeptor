@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
@@ -127,14 +129,20 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Performance Metrics",
+                    text = stringResource(R.string.viewer_metrics_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() },
                 )
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = if (isExpanded) {
+                        stringResource(
+                            R.string.viewer_body_collapse,
+                        )
+                    } else {
+                        stringResource(R.string.viewer_body_expand)
+                    },
                     modifier = Modifier.rotate(rotationAngle),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -153,20 +161,20 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     contentAlignment = Alignment.Center,
                 ) {
                     CircularSuccessMetric(
-                        label = "Success",
+                        label = stringResource(R.string.viewer_metrics_success),
                         percentage = successRate.toFloat(),
                     )
                 }
 
                 MetricItem(
-                    label = "Total",
+                    label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 )
 
                 MetricItem(
-                    label = "Avg Time",
+                    label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
                     color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f),
@@ -198,12 +206,12 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     // Response Time Distribution
                     SectionHeader(
                         icon = Icons.Outlined.Speed,
-                        title = "Response Time Distribution",
+                        title = stringResource(R.string.viewer_metrics_response_time_distribution),
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                     DistributionBar(
-                        label = "Fast (<100ms)",
+                        label = stringResource(R.string.viewer_metrics_fast),
                         count = fastCount,
                         total = totalRequests,
                         color = WormaCeptorColors.Chart.Fast,
@@ -211,7 +219,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                     DistributionBar(
-                        label = "Medium (100-500ms)",
+                        label = stringResource(R.string.viewer_metrics_medium),
                         count = mediumCount,
                         total = totalRequests,
                         color = WormaCeptorColors.Chart.Medium,
@@ -219,7 +227,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                     DistributionBar(
-                        label = "Slow (>500ms)",
+                        label = stringResource(R.string.viewer_metrics_slow),
                         count = slowCount,
                         total = totalRequests,
                         color = WormaCeptorColors.Chart.Slow,
@@ -230,13 +238,13 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     // Status Code Breakdown
                     SectionHeader(
                         icon = Icons.Outlined.DataUsage,
-                        title = "Status Code Breakdown",
+                        title = stringResource(R.string.viewer_metrics_status_code_breakdown),
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                     if (status2xx > 0) {
                         StatusCodeBar(
-                            label = "2xx Success",
+                            label = stringResource(R.string.viewer_metrics_status_2xx_success),
                             count = status2xx,
                             total = totalRequests,
                             color = WormaCeptorColors.Chart.Success2xx,
@@ -246,7 +254,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
 
                     if (status3xx > 0) {
                         StatusCodeBar(
-                            label = "3xx Redirect",
+                            label = stringResource(R.string.viewer_metrics_status_3xx_redirect),
                             count = status3xx,
                             total = totalRequests,
                             color = WormaCeptorColors.Chart.Redirect3xx,
@@ -256,7 +264,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
 
                     if (status4xx > 0) {
                         StatusCodeBar(
-                            label = "4xx Client Error",
+                            label = stringResource(R.string.viewer_metrics_status_4xx_client_error),
                             count = status4xx,
                             total = totalRequests,
                             color = WormaCeptorColors.Chart.ClientError4xx,
@@ -266,7 +274,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
 
                     if (status5xx > 0) {
                         StatusCodeBar(
-                            label = "5xx Server Error",
+                            label = stringResource(R.string.viewer_metrics_status_5xx_server_error),
                             count = status5xx,
                             total = totalRequests,
                             color = WormaCeptorColors.Chart.ServerError5xx,
@@ -278,7 +286,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
                         Text(
-                            text = "Requests by Method",
+                            text = stringResource(R.string.viewer_metrics_requests_by_method),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,

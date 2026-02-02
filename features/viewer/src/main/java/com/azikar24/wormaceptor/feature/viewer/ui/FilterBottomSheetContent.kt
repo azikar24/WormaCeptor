@@ -50,7 +50,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -64,6 +66,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import kotlinx.collections.immutable.ImmutableMap
 
@@ -126,7 +129,7 @@ fun FilterBottomSheetContent(
             // HTTP Methods Section
             FilterSectionHeader(
                 icon = Icons.Outlined.Code,
-                title = "HTTP Method",
+                title = stringResource(R.string.viewer_filter_http_method),
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -142,7 +145,7 @@ fun FilterBottomSheetContent(
             // Status Codes Section
             FilterSectionHeader(
                 icon = Icons.Outlined.DataUsage,
-                title = "Status Code",
+                title = stringResource(R.string.viewer_filter_status_code),
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -173,6 +176,7 @@ fun FilterBottomSheetContent(
 
 @Composable
 private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boolean) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -185,7 +189,7 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
     ) {
         Column {
             Text(
-                text = "Filters",
+                text = stringResource(R.string.viewer_filter_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -193,7 +197,7 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
             if (filtersActive) {
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
-                    text = "$filteredCount of $totalCount requests",
+                    text = stringResource(R.string.viewer_filter_results_count, filteredCount, totalCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -211,7 +215,11 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
             },
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite
-                contentDescription = "$filteredCount of $totalCount requests shown"
+                contentDescription = context.getString(
+                    R.string.viewer_filter_results_description,
+                    filteredCount,
+                    totalCount,
+                )
             },
         ) {
             Text(
@@ -242,7 +250,7 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)),
         placeholder = {
             Text(
-                text = "Search path, host, or method...",
+                text = stringResource(R.string.viewer_filter_search_placeholder),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
             )
@@ -250,7 +258,7 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.viewer_filter_search),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.size(20.dp),
             )
@@ -263,7 +271,7 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Clear",
+                        contentDescription = stringResource(R.string.viewer_filter_clear),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(18.dp),
                     )
@@ -370,16 +378,17 @@ private fun StatusFilterBars(
                 rowFilters.forEach { (label, range, color) ->
                     val count = statusCounts[range] ?: 0
                     val isSelected = selectedRange == range
+                    val sublabelText = when (label) {
+                        "2xx" -> stringResource(R.string.viewer_filter_success)
+                        "3xx" -> stringResource(R.string.viewer_filter_redirect)
+                        "4xx" -> stringResource(R.string.viewer_filter_client_error)
+                        "5xx" -> stringResource(R.string.viewer_filter_server_error)
+                        else -> null
+                    }
 
                     GridFilterCard(
                         label = label,
-                        sublabel = when (label) {
-                            "2xx" -> "Success"
-                            "3xx" -> "Redirect"
-                            "4xx" -> "Client Error"
-                            "5xx" -> "Server Error"
-                            else -> null
-                        },
+                        sublabel = sublabelText,
                         count = count,
                         color = color,
                         isSelected = isSelected,
@@ -433,10 +442,11 @@ private fun GridFilterCard(
         label = "border_animation",
     )
 
+    val context = LocalContext.current
     val stateDesc = when {
-        count == 0 -> "No items available"
-        isSelected -> "Selected, $count items"
-        else -> "$count items"
+        count == 0 -> context.getString(R.string.viewer_filter_no_items)
+        isSelected -> context.getString(R.string.viewer_filter_selected, count)
+        else -> context.getString(R.string.viewer_filter_items_count, count)
     }
 
     Box(
@@ -459,7 +469,14 @@ private fun GridFilterCard(
                 role = Role.Button
                 selected = isSelected
                 stateDescription = stateDesc
-                contentDescription = "$label filter. $stateDesc. ${if (count > 0) "Double tap to ${if (isSelected) "deselect" else "select"}" else "Disabled"}"
+                val actionText = if (count > 0) {
+                    context.getString(
+                        if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select,
+                    )
+                } else {
+                    context.getString(R.string.viewer_filter_disabled)
+                }
+                contentDescription = "$label filter. $stateDesc. $actionText"
             }
             .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
@@ -529,7 +546,7 @@ private fun GridFilterCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = "Selected",
+                            contentDescription = stringResource(R.string.viewer_filter_selected_indicator),
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(10.dp),
                         )
@@ -563,7 +580,7 @@ private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, 
                 ),
             ) {
                 Text(
-                    text = "Clear All",
+                    text = stringResource(R.string.viewer_filter_clear_all),
                     fontWeight = FontWeight.Medium,
                 )
             }
@@ -574,7 +591,7 @@ private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, 
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
             ) {
                 Text(
-                    text = "Done",
+                    text = stringResource(R.string.viewer_filter_done),
                     fontWeight = FontWeight.SemiBold,
                 )
             }

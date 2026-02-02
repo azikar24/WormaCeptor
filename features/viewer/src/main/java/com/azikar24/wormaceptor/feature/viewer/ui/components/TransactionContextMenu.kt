@@ -15,10 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
  * Data class representing a quick action in the context menu.
@@ -55,11 +57,11 @@ fun TransactionContextMenu(
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         DropdownMenuItem(
-            text = { Text("Copy URL") },
+            text = { Text(stringResource(R.string.viewer_context_menu_copy_url)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.ContentCopy,
-                    contentDescription = "Copy URL",
+                    contentDescription = stringResource(R.string.viewer_context_menu_copy_url),
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -70,11 +72,11 @@ fun TransactionContextMenu(
         )
 
         DropdownMenuItem(
-            text = { Text("Share") },
+            text = { Text(stringResource(R.string.viewer_context_menu_share)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = "Share transaction",
+                    contentDescription = stringResource(R.string.viewer_context_menu_share_transaction),
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -85,11 +87,11 @@ fun TransactionContextMenu(
         )
 
         DropdownMenuItem(
-            text = { Text("Copy as cURL") },
+            text = { Text(stringResource(R.string.viewer_context_menu_copy_as_curl)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Code,
-                    contentDescription = "Copy as cURL command",
+                    contentDescription = stringResource(R.string.viewer_context_menu_copy_as_curl_description),
                     modifier = Modifier.size(20.dp),
                 )
             },
@@ -104,14 +106,14 @@ fun TransactionContextMenu(
         DropdownMenuItem(
             text = {
                 Text(
-                    text = "Delete",
+                    text = stringResource(R.string.viewer_context_menu_delete),
                     color = MaterialTheme.colorScheme.error,
                 )
             },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete transaction",
+                    contentDescription = stringResource(R.string.viewer_context_menu_delete_transaction),
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(20.dp),
                 )

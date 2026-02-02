@@ -63,6 +63,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -74,6 +75,7 @@ import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableMap
@@ -147,11 +149,14 @@ fun HomeScreen(
     val showToolsTab = remember(enabledFeatures) {
         ToolCategories.hasAnyEnabledTools(enabledFeatures)
     }
-    val titles = remember(showToolsTab) {
+    val transactionsTitle = stringResource(R.string.viewer_home_tab_transactions)
+    val crashesTitle = stringResource(R.string.viewer_home_tab_crashes)
+    val toolsTitle = stringResource(R.string.viewer_home_tab_tools)
+    val titles = remember(showToolsTab, transactionsTitle, crashesTitle, toolsTitle) {
         buildList {
-            add("Transactions")
-            add("Crashes")
-            if (showToolsTab) add("Tools")
+            add(transactionsTitle)
+            add(crashesTitle)
+            if (showToolsTab) add(toolsTitle)
         }
     }
     var showFilterSheet by remember { mutableStateOf(false) }
@@ -216,12 +221,12 @@ fun HomeScreen(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     TopAppBar(
-                        title = { Text("WormaCeptor V2") },
+                        title = { Text(stringResource(R.string.viewer_home_title)) },
                         navigationIcon = {
                             IconButton(onClick = { (context as? Activity)?.finish() }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Back",
+                                    contentDescription = stringResource(R.string.viewer_home_back),
                                 )
                             }
                         },
@@ -260,7 +265,7 @@ fun HomeScreen(
                                         )
                                         Icon(
                                             imageVector = Icons.Default.FilterList,
-                                            contentDescription = "Filter",
+                                            contentDescription = stringResource(R.string.viewer_home_filter),
                                             tint = if (isFiltering) {
                                                 MaterialTheme.colorScheme.primary
                                             } else {
@@ -277,20 +282,24 @@ fun HomeScreen(
                                 IconButton(onClick = { showOverflowMenu = true }) {
                                     Icon(
                                         imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "More options",
+                                        contentDescription = stringResource(R.string.viewer_home_more_options),
                                     )
                                 }
 
                                 DropdownMenu(
                                     expanded = showOverflowMenu,
                                     onDismissRequest = { showOverflowMenu = false },
-                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+                                    shape = WormaCeptorDesignSystem.Shapes.cardLarge,
                                 ) {
                                     when (pagerState.currentPage) {
                                         0 -> {
                                             // Transactions tab menu
                                             DropdownMenuItem(
-                                                text = { Text("Export Transactions") },
+                                                text = {
+                                                    Text(
+                                                        stringResource(R.string.viewer_home_export_transactions),
+                                                    )
+                                                },
                                                 leadingIcon = { Icon(Icons.Default.Share, null) },
                                                 onClick = {
                                                     showOverflowMenu = false
@@ -298,7 +307,11 @@ fun HomeScreen(
                                                 },
                                             )
                                             DropdownMenuItem(
-                                                text = { Text("Clear All Transactions") },
+                                                text = {
+                                                    Text(
+                                                        stringResource(R.string.viewer_home_clear_all_transactions),
+                                                    )
+                                                },
                                                 leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                                 onClick = {
                                                     showOverflowMenu = false
@@ -309,7 +322,7 @@ fun HomeScreen(
                                         1 -> {
                                             // Crashes tab menu
                                             DropdownMenuItem(
-                                                text = { Text("Export Crashes") },
+                                                text = { Text(stringResource(R.string.viewer_home_export_crashes)) },
                                                 leadingIcon = { Icon(Icons.Default.Share, null) },
                                                 onClick = {
                                                     showOverflowMenu = false
@@ -317,7 +330,7 @@ fun HomeScreen(
                                                 },
                                             )
                                             DropdownMenuItem(
-                                                text = { Text("Clear All Crashes") },
+                                                text = { Text(stringResource(R.string.viewer_home_clear_all_crashes)) },
                                                 leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                                 onClick = {
                                                     showOverflowMenu = false
@@ -372,7 +385,7 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "Active filters:",
+                                text = stringResource(R.string.viewer_home_active_filters),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontWeight = FontWeight.Medium,
@@ -409,7 +422,10 @@ fun HomeScreen(
                                         modifier = Modifier.semantics {
                                             role = Role.Button
                                             selected = true
-                                            contentDescription = "Search filter: $searchQuery, selected. Double tap to remove"
+                                            contentDescription = context.getString(
+                                                R.string.viewer_home_search_filter_description,
+                                                searchQuery,
+                                            )
                                         },
                                     )
                                 }
@@ -434,7 +450,10 @@ fun HomeScreen(
                                         modifier = Modifier.semantics {
                                             role = Role.Button
                                             selected = true
-                                            contentDescription = "HTTP method filter: $method, selected. Double tap to remove"
+                                            contentDescription = context.getString(
+                                                R.string.viewer_home_method_filter_description,
+                                                method,
+                                            )
                                         },
                                     )
                                 }
@@ -445,7 +464,7 @@ fun HomeScreen(
                                         range == (300..399) -> "3xx"
                                         range == (400..499) -> "4xx"
                                         range == (500..599) -> "5xx"
-                                        else -> "Status"
+                                        else -> context.getString(R.string.viewer_home_status_label)
                                     }
                                     AssistChip(
                                         onClick = { onStatusFilterChanged(null) },
@@ -466,7 +485,10 @@ fun HomeScreen(
                                         modifier = Modifier.semantics {
                                             role = Role.Button
                                             selected = true
-                                            contentDescription = "Status code filter: $statusLabel, selected. Double tap to remove"
+                                            contentDescription = context.getString(
+                                                R.string.viewer_home_status_filter_description,
+                                                statusLabel,
+                                            )
                                         },
                                     )
                                 }
@@ -481,7 +503,7 @@ fun HomeScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Clear all filters",
+                                    contentDescription = stringResource(R.string.viewer_home_clear_all_filters),
                                     modifier = Modifier.size(20.dp),
                                 )
                             }
@@ -595,10 +617,10 @@ fun HomeScreen(
         if (showClearTransactionsDialog) {
             AlertDialog(
                 onDismissRequest = { showClearTransactionsDialog = false },
-                title = { Text("Clear All Transactions?") },
+                title = { Text(stringResource(R.string.viewer_dialog_clear_transactions_title)) },
                 text = {
                     Text(
-                        "This will permanently delete all captured network transactions. This action cannot be undone.",
+                        stringResource(R.string.viewer_dialog_clear_transactions_message),
                     )
                 },
                 confirmButton = {
@@ -610,12 +632,12 @@ fun HomeScreen(
                             }
                         },
                     ) {
-                        Text("Clear")
+                        Text(stringResource(R.string.viewer_dialog_button_clear))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showClearTransactionsDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },
             )
@@ -625,10 +647,10 @@ fun HomeScreen(
         if (showClearCrashesDialog) {
             AlertDialog(
                 onDismissRequest = { showClearCrashesDialog = false },
-                title = { Text("Clear All Crashes?") },
+                title = { Text(stringResource(R.string.viewer_dialog_clear_crashes_title)) },
                 text = {
                     Text(
-                        "This will permanently delete all captured crash reports. This action cannot be undone.",
+                        stringResource(R.string.viewer_dialog_clear_crashes_message),
                     )
                 },
                 confirmButton = {
@@ -640,12 +662,12 @@ fun HomeScreen(
                             }
                         },
                     ) {
-                        Text("Clear")
+                        Text(stringResource(R.string.viewer_dialog_button_clear))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showClearCrashesDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },
             )
@@ -655,10 +677,10 @@ fun HomeScreen(
         if (showDeleteSelectedDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteSelectedDialog = false },
-                title = { Text("Delete ${selectedIds.size} Transactions?") },
+                title = { Text(stringResource(R.string.viewer_dialog_delete_selected_title, selectedIds.size)) },
                 text = {
                     Text(
-                        "This will permanently delete the selected transactions. This action cannot be undone.",
+                        stringResource(R.string.viewer_dialog_delete_selected_message),
                     )
                 },
                 confirmButton = {
@@ -670,12 +692,15 @@ fun HomeScreen(
                             }
                         },
                     ) {
-                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                        Text(
+                            stringResource(R.string.viewer_dialog_button_delete),
+                            color = MaterialTheme.colorScheme.error,
+                        )
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDeleteSelectedDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },
             )

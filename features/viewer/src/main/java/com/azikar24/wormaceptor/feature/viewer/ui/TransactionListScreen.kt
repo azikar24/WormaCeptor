@@ -32,6 +32,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +44,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorState
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ErrorType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.InlineErrorRetry
@@ -217,7 +219,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
             ) {
                 Icon(
                     imageVector = Icons.Default.Wifi,
-                    contentDescription = "No transactions",
+                    contentDescription = stringResource(R.string.viewer_transaction_list_no_transactions),
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 )
@@ -228,7 +230,13 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
 
         // Title
         Text(
-            text = if (hasActiveFilters) "No matches found" else "No transactions yet",
+            text = if (hasActiveFilters) {
+                stringResource(
+                    R.string.viewer_transaction_list_no_matches_title,
+                )
+            } else {
+                stringResource(R.string.viewer_transaction_list_no_transactions_title)
+            },
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -239,9 +247,9 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
         // Description
         Text(
             text = if (hasActiveFilters) {
-                "Try adjusting your filters to see more results"
+                stringResource(R.string.viewer_transaction_list_no_matches_description)
             } else {
-                "Network requests will appear here"
+                stringResource(R.string.viewer_transaction_list_no_transactions_description)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -254,7 +262,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
             ) {
                 Text(
-                    text = "Clear Filters",
+                    text = stringResource(R.string.viewer_transaction_list_clear_filters),
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
                         vertical = WormaCeptorDesignSystem.Spacing.xxs,
@@ -288,7 +296,7 @@ private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit
             Box(
                 modifier = Modifier
                     .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                    .height(48.dp)
+                    .height(WormaCeptorDesignSystem.Spacing.xxxl)
                     .background(
                         statusColor,
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),

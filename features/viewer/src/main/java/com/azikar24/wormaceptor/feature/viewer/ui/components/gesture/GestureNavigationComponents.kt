@@ -62,9 +62,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlin.math.roundToInt
 
 // =============================================================================
@@ -116,7 +118,7 @@ fun TransactionPositionIndicator(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "Previous transaction",
+                    contentDescription = stringResource(R.string.viewer_gesture_previous),
                     modifier = Modifier.size(24.dp),
                 )
             }
@@ -156,7 +158,7 @@ fun TransactionPositionIndicator(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Next transaction",
+                    contentDescription = stringResource(R.string.viewer_gesture_next),
                     modifier = Modifier.size(24.dp),
                 )
             }
@@ -317,7 +319,7 @@ fun ZoomControls(
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomIn,
-                    contentDescription = "Zoom in",
+                    contentDescription = stringResource(R.string.viewer_image_zoom_in),
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -341,7 +343,7 @@ fun ZoomControls(
             ) {
                 Icon(
                     imageVector = Icons.Default.ZoomOut,
-                    contentDescription = "Zoom out",
+                    contentDescription = stringResource(R.string.viewer_image_zoom_out),
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -361,7 +363,7 @@ fun ZoomControls(
                 ) {
                     Icon(
                         imageVector = Icons.Default.RestartAlt,
-                        contentDescription = "Reset zoom",
+                        contentDescription = stringResource(R.string.viewer_gesture_reset_zoom),
                         modifier = Modifier.size(18.dp),
                     )
                 }

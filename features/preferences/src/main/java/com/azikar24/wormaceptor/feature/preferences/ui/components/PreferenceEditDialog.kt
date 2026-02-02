@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
+import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 
 /**
@@ -126,7 +128,11 @@ fun PreferenceEditDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = if (isCreating) "Create Preference" else "Edit Preference",
+                text = if (isCreating) {
+                    stringResource(R.string.preferences_dialog_create_title)
+                } else {
+                    stringResource(R.string.preferences_dialog_edit_title)
+                },
                 fontWeight = FontWeight.SemiBold,
             )
         },
@@ -141,7 +147,7 @@ fun PreferenceEditDialog(
                 OutlinedTextField(
                     value = key,
                     onValueChange = { key = it },
-                    label = { Text("Key") },
+                    label = { Text(stringResource(R.string.preferences_label_key)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .then(
@@ -169,7 +175,7 @@ fun PreferenceEditDialog(
                         value = selectedType,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Type") },
+                        label = { Text(stringResource(R.string.preferences_label_type)) },
                         trailingIcon = {
                             if (isCreating) {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = typeDropdownExpanded)
@@ -223,7 +229,7 @@ fun PreferenceEditDialog(
                         OutlinedTextField(
                             value = stringValue,
                             onValueChange = { stringValue = it },
-                            label = { Text("Value") },
+                            label = { Text(stringResource(R.string.preferences_label_value)) },
                             modifier = Modifier.fillMaxWidth(),
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = FontFamily.Monospace,
@@ -238,13 +244,13 @@ fun PreferenceEditDialog(
                         OutlinedTextField(
                             value = intValue,
                             onValueChange = { intValue = it },
-                            label = { Text("Value") },
+                            label = { Text(stringResource(R.string.preferences_label_value)) },
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             isError = intValue.isNotBlank() && intValue.toIntOrNull() == null,
                             supportingText = {
                                 if (intValue.isNotBlank() && intValue.toIntOrNull() == null) {
-                                    Text("Must be a valid integer")
+                                    Text(stringResource(R.string.preferences_validation_invalid_integer))
                                 }
                             },
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -259,13 +265,13 @@ fun PreferenceEditDialog(
                         OutlinedTextField(
                             value = longValue,
                             onValueChange = { longValue = it },
-                            label = { Text("Value") },
+                            label = { Text(stringResource(R.string.preferences_label_value)) },
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             isError = longValue.isNotBlank() && longValue.toLongOrNull() == null,
                             supportingText = {
                                 if (longValue.isNotBlank() && longValue.toLongOrNull() == null) {
-                                    Text("Must be a valid long integer")
+                                    Text(stringResource(R.string.preferences_validation_invalid_long))
                                 }
                             },
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -280,13 +286,13 @@ fun PreferenceEditDialog(
                         OutlinedTextField(
                             value = floatValue,
                             onValueChange = { floatValue = it },
-                            label = { Text("Value") },
+                            label = { Text(stringResource(R.string.preferences_label_value)) },
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                             isError = floatValue.isNotBlank() && floatValue.toFloatOrNull() == null,
                             supportingText = {
                                 if (floatValue.isNotBlank() && floatValue.toFloatOrNull() == null) {
-                                    Text("Must be a valid decimal number")
+                                    Text(stringResource(R.string.preferences_validation_invalid_float))
                                 }
                             },
                             textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -304,7 +310,7 @@ fun PreferenceEditDialog(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "Value",
+                                text = stringResource(R.string.preferences_label_value),
                                 style = MaterialTheme.typography.bodyMedium,
                             )
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -332,7 +338,7 @@ fun PreferenceEditDialog(
                     "StringSet" -> {
                         Column {
                             Text(
-                                text = "Values",
+                                text = stringResource(R.string.preferences_label_values),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -363,7 +369,9 @@ fun PreferenceEditDialog(
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Close,
-                                                        contentDescription = "Remove",
+                                                        contentDescription = stringResource(
+                                                            R.string.preferences_remove,
+                                                        ),
                                                         modifier = Modifier.padding(0.dp),
                                                     )
                                                 }
@@ -382,7 +390,7 @@ fun PreferenceEditDialog(
                                 OutlinedTextField(
                                     value = newStringSetItem,
                                     onValueChange = { newStringSetItem = it },
-                                    placeholder = { Text("Add item...") },
+                                    placeholder = { Text(stringResource(R.string.preferences_add_item_placeholder)) },
                                     modifier = Modifier.weight(1f),
                                     singleLine = true,
                                     textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -404,7 +412,7 @@ fun PreferenceEditDialog(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Add,
-                                        contentDescription = "Add",
+                                        contentDescription = stringResource(R.string.preferences_add),
                                     )
                                 }
                             }
@@ -429,12 +437,18 @@ fun PreferenceEditDialog(
                 },
                 enabled = canSave,
             ) {
-                Text(if (isCreating) "Create" else "Save")
+                Text(
+                    if (isCreating) {
+                        stringResource(R.string.preferences_button_create)
+                    } else {
+                        stringResource(R.string.preferences_button_save)
+                    },
+                )
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.preferences_dialog_cancel))
             }
         },
         modifier = modifier,

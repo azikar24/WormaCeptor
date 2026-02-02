@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logs_back">Back</string>
+    <string name="logs_clear">Clear logs</string>
+    <string name="logs_scroll_to_bottom">Scroll to bottom</string>
+</resources>

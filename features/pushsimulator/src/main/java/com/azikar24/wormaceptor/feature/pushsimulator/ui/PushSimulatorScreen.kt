@@ -89,6 +89,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -103,6 +104,7 @@ import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
+import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorEvent
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorUiState
@@ -134,29 +136,38 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
         if (isGranted) {
             viewModel.sendNotification()
         } else {
+            val message = context.getString(R.string.pushsimulator_notification_permission_denied)
             scope.launch {
-                snackbarHostState.showSnackbar("Notification permission denied")
+                snackbarHostState.showSnackbar(message)
             }
         }
     }
+
+    // String resources for snackbar messages
+    val notificationSentMessage = stringResource(R.string.pushsimulator_notification_sent)
+    val templateSavedMessage = stringResource(R.string.pushsimulator_template_saved)
+    val templateDeletedMessage = stringResource(R.string.pushsimulator_template_deleted)
 
     // Handle events
     LaunchedEffect(event) {
         when (event) {
             is PushSimulatorEvent.NotificationSent -> {
-                snackbarHostState.showSnackbar("Notification sent")
+                snackbarHostState.showSnackbar(notificationSentMessage)
                 viewModel.clearEvent()
             }
             is PushSimulatorEvent.TemplateSaved -> {
-                snackbarHostState.showSnackbar("Template saved")
+                snackbarHostState.showSnackbar(templateSavedMessage)
                 viewModel.clearEvent()
             }
             is PushSimulatorEvent.TemplateDeleted -> {
-                snackbarHostState.showSnackbar("Template deleted")
+                snackbarHostState.showSnackbar(templateDeletedMessage)
                 viewModel.clearEvent()
             }
             is PushSimulatorEvent.TemplateLoaded -> {
-                snackbarHostState.showSnackbar("Loaded: ${(event as PushSimulatorEvent.TemplateLoaded).name}")
+                val templateName = (event as PushSimulatorEvent.TemplateLoaded).name
+                snackbarHostState.showSnackbar(
+                    context.getString(R.string.pushsimulator_template_loaded, templateName),
+                )
                 viewModel.clearEvent()
             }
             is PushSimulatorEvent.PermissionRequired -> {
@@ -175,12 +186,12 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Push Simulator") },
+                title = { Text(stringResource(R.string.pushsimulator_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.pushsimulator_back),
                         )
                     }
                 },
@@ -188,7 +199,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                     IconButton(onClick = { viewModel.clearForm() }) {
                         Icon(
                             imageVector = Icons.Default.Clear,
-                            contentDescription = "Clear form",
+                            contentDescription = stringResource(R.string.pushsimulator_clear_form),
                         )
                     }
                 },
@@ -208,6 +219,8 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                 NotificationFormCard(
                     uiState = uiState,
                     channels = channels,
+                    previewTitlePlaceholder = stringResource(R.string.pushsimulator_preview_title_placeholder),
+                    previewBodyPlaceholder = stringResource(R.string.pushsimulator_preview_body_placeholder),
                     onTitleChange = viewModel::updateTitle,
                     onBodyChange = viewModel::updateBody,
                     onChannelChange = viewModel::updateChannelId,
@@ -244,7 +257,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
 
             // Templates Section
             item {
-                SectionHeader(text = "Templates", count = templates.size)
+                SectionHeader(text = stringResource(R.string.pushsimulator_templates_header), count = templates.size)
             }
 
             if (templates.isEmpty()) {
@@ -279,17 +292,16 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
-            title = { Text("Permission Required") },
+            title = { Text(stringResource(R.string.pushsimulator_permission_title)) },
             text = {
                 Text(
-                    text = "Notification permission is required to send test notifications. " +
-                        "Please grant the permission in app settings.",
+                    text = stringResource(R.string.pushsimulator_permission_message),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
             confirmButton = {
                 Button(onClick = { showPermissionDialog = false }) {
-                    Text("OK")
+                    Text(stringResource(R.string.pushsimulator_ok))
                 }
             },
         )
@@ -300,6 +312,8 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
 private fun NotificationFormCard(
     uiState: PushSimulatorUiState,
     channels: List<NotificationChannelInfo>,
+    previewTitlePlaceholder: String,
+    previewBodyPlaceholder: String,
     onTitleChange: (String) -> Unit,
     onBodyChange: (String) -> Unit,
     onChannelChange: (String) -> Unit,
@@ -327,8 +341,8 @@ private fun NotificationFormCard(
         ) {
             // Enhanced Preview Header
             NotificationPreview(
-                title = uiState.title.ifBlank { "Notification Title" },
-                body = uiState.body.ifBlank { "Notification message will appear here" },
+                title = uiState.title.ifBlank { previewTitlePlaceholder },
+                body = uiState.body.ifBlank { previewBodyPlaceholder },
                 priority = uiState.priority,
                 channelName = selectedChannel?.name,
                 actions = uiState.actions,
@@ -344,8 +358,8 @@ private fun NotificationFormCard(
             OutlinedTextFieldWithCounter(
                 value = uiState.title,
                 onValueChange = onTitleChange,
-                label = "Title",
-                placeholder = "Enter notification title",
+                label = stringResource(R.string.pushsimulator_field_title),
+                placeholder = stringResource(R.string.pushsimulator_field_title_placeholder),
                 singleLine = true,
                 maxChars = TitleMaxChars,
             )
@@ -354,8 +368,8 @@ private fun NotificationFormCard(
             OutlinedTextFieldWithCounter(
                 value = uiState.body,
                 onValueChange = onBodyChange,
-                label = "Message",
-                placeholder = "Enter notification message",
+                label = stringResource(R.string.pushsimulator_field_message),
+                placeholder = stringResource(R.string.pushsimulator_field_message_placeholder),
                 singleLine = false,
                 minLines = 2,
                 maxLines = 4,
@@ -481,7 +495,7 @@ private fun NotificationPreview(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Text(
-                    text = "Preview",
+                    text = stringResource(R.string.pushsimulator_preview),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -550,7 +564,7 @@ private fun NotificationPreview(
                         Box(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .size(12.dp)
+                                .size(WormaCeptorDesignSystem.Spacing.md)
                                 .background(
                                     color = priorityColor,
                                     shape = CircleShape,
@@ -577,7 +591,7 @@ private fun NotificationPreview(
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
-                                text = "now",
+                                text = stringResource(R.string.pushsimulator_preview_time_now),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -682,9 +696,11 @@ private fun ChannelSelector(
         label = "dropdownRotation",
     )
 
+    val channelContentDescription = stringResource(R.string.pushsimulator_channel_select)
+
     Column {
         Text(
-            text = "Channel",
+            text = stringResource(R.string.pushsimulator_channel_label),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -698,7 +714,7 @@ private fun ChannelSelector(
                     .clickable { expanded = true }
                     .semantics {
                         role = Role.DropdownList
-                        contentDescription = "Select notification channel"
+                        contentDescription = channelContentDescription
                     },
                 shape = WormaCeptorDesignSystem.Shapes.button,
                 border = BorderStroke(
@@ -723,7 +739,7 @@ private fun ChannelSelector(
                         modifier = Modifier.weight(1f),
                     ) {
                         Text(
-                            text = selectedChannel?.name ?: "Select channel",
+                            text = selectedChannel?.name ?: stringResource(R.string.pushsimulator_channel_placeholder),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (selectedChannel != null) {
                                 MaterialTheme.colorScheme.onSurface
@@ -737,7 +753,11 @@ private fun ChannelSelector(
                     }
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = if (expanded) "Collapse" else "Expand",
+                        contentDescription = if (expanded) {
+                            stringResource(R.string.pushsimulator_channel_collapse)
+                        } else {
+                            stringResource(R.string.pushsimulator_channel_expand)
+                        },
                         modifier = Modifier.rotate(dropdownRotation),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -788,8 +808,8 @@ private fun ChannelSelector(
                                 if (isSelected) {
                                     Icon(
                                         imageVector = Icons.Outlined.Circle,
-                                        contentDescription = "Selected",
-                                        modifier = Modifier.size(8.dp),
+                                        contentDescription = stringResource(R.string.pushsimulator_channel_selected),
+                                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.sm),
                                         tint = MaterialTheme.colorScheme.primary,
                                     )
                                 }
@@ -815,12 +835,18 @@ private fun ChannelSelector(
 
 @Composable
 private fun ImportanceBadge(importance: Int) {
+    val urgentLabel = stringResource(R.string.pushsimulator_importance_urgent)
+    val highLabel = stringResource(R.string.pushsimulator_importance_high)
+    val defaultLabel = stringResource(R.string.pushsimulator_importance_default)
+    val lowLabel = stringResource(R.string.pushsimulator_importance_low)
+    val minLabel = stringResource(R.string.pushsimulator_importance_min)
+
     val (label, color) = when (importance) {
-        ImportanceUrgent -> "Urgent" to PushSimulatorDesignSystem.PriorityColors.max
-        ImportanceHigh -> "High" to PushSimulatorDesignSystem.PriorityColors.high
-        ImportanceDefault -> "Default" to PushSimulatorDesignSystem.PriorityColors.default
-        ImportanceLow -> "Low" to PushSimulatorDesignSystem.PriorityColors.low
-        else -> "Min" to MaterialTheme.colorScheme.outline
+        ImportanceUrgent -> urgentLabel to PushSimulatorDesignSystem.PriorityColors.max
+        ImportanceHigh -> highLabel to PushSimulatorDesignSystem.PriorityColors.high
+        ImportanceDefault -> defaultLabel to PushSimulatorDesignSystem.PriorityColors.default
+        ImportanceLow -> lowLabel to PushSimulatorDesignSystem.PriorityColors.low
+        else -> minLabel to MaterialTheme.colorScheme.outline
     }
 
     Surface(
@@ -847,7 +873,7 @@ private fun PrioritySelector(
 ) {
     Column {
         Text(
-            text = "Priority",
+            text = stringResource(R.string.pushsimulator_priority_label),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -873,7 +899,7 @@ private fun PrioritySelector(
                     leadingIcon = {
                         Box(
                             modifier = Modifier
-                                .size(8.dp)
+                                .size(WormaCeptorDesignSystem.Spacing.sm)
                                 .background(
                                     color = priorityColor,
                                     shape = CircleShape,
@@ -918,7 +944,7 @@ private fun ActionButtonsSection(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Action Buttons",
+                text = stringResource(R.string.pushsimulator_actions_label),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -965,12 +991,15 @@ private fun ActionButtonsSection(
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Remove ${action.title}",
+                                contentDescription = stringResource(
+                                    R.string.pushsimulator_actions_remove,
+                                    action.title,
+                                ),
                                 modifier = Modifier
                                     .size(InputChipDefaults.IconSize)
                                     .clip(CircleShape)
                                     .clickable { onRemoveAction(action.actionId) }
-                                    .padding(2.dp),
+                                    .padding(WormaCeptorDesignSystem.Spacing.xxs),
                             )
                         },
                         colors = InputChipDefaults.inputChipColors(
@@ -1009,9 +1038,9 @@ private fun ActionButtonsSection(
                     placeholder = {
                         Text(
                             text = if (actions.isEmpty()) {
-                                "e.g., Open, Reply, Dismiss"
+                                stringResource(R.string.pushsimulator_actions_placeholder_empty)
                             } else {
-                                "Add another action"
+                                stringResource(R.string.pushsimulator_actions_placeholder_add)
                             },
                         )
                     },
@@ -1044,12 +1073,12 @@ private fun ActionButtonsSection(
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     },
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "Add action",
+                            contentDescription = stringResource(R.string.pushsimulator_actions_add),
                             tint = if (canAdd) {
                                 MaterialTheme.colorScheme.onPrimary
                             } else {
@@ -1073,7 +1102,7 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit, i
             onClick = onSaveClick,
             modifier = Modifier
                 .weight(1f)
-                .height(48.dp),
+                .height(WormaCeptorDesignSystem.Spacing.xxxl),
             contentPadding = PaddingValues(
                 horizontal = WormaCeptorDesignSystem.Spacing.lg,
                 vertical = WormaCeptorDesignSystem.Spacing.sm,
@@ -1085,14 +1114,14 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit, i
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Text("Save Template")
+            Text(stringResource(R.string.pushsimulator_save_template))
         }
 
         Button(
             onClick = onSendClick,
             modifier = Modifier
                 .weight(1f)
-                .height(48.dp),
+                .height(WormaCeptorDesignSystem.Spacing.xxxl),
             contentPadding = PaddingValues(
                 horizontal = WormaCeptorDesignSystem.Spacing.lg,
                 vertical = WormaCeptorDesignSystem.Spacing.sm,
@@ -1105,7 +1134,7 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit, i
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Text("Send")
+            Text(stringResource(R.string.pushsimulator_send))
         }
     }
 }
@@ -1190,14 +1219,14 @@ private fun EmptyTemplatesCard() {
             }
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
             Text(
-                text = "No templates saved",
+                text = stringResource(R.string.pushsimulator_templates_empty_title),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
-                text = "Save your notification configuration as a template for quick reuse",
+                text = stringResource(R.string.pushsimulator_templates_empty_description),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -1335,7 +1364,7 @@ private fun TemplateCard(
                                 .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
                         ) {
                             Text(
-                                text = "Preset",
+                                text = stringResource(R.string.pushsimulator_template_preset),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = PushSimulatorDesignSystem.TemplateColors.preset,
                                 modifier = Modifier.padding(
@@ -1378,7 +1407,10 @@ private fun TemplateCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete ${template.name}",
+                            contentDescription = stringResource(
+                                R.string.pushsimulator_template_delete,
+                                template.name,
+                            ),
                             tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                             modifier = Modifier.size(20.dp),
                         )
@@ -1394,7 +1426,7 @@ private fun TemplateCard(
                         vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 ) {
-                    Text("Load")
+                    Text(stringResource(R.string.pushsimulator_template_load))
                 }
 
                 Button(
@@ -1410,7 +1442,7 @@ private fun TemplateCard(
                         modifier = Modifier.size(16.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text("Send")
+                    Text(stringResource(R.string.pushsimulator_send))
                 }
             }
         }
@@ -1424,21 +1456,21 @@ private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) 
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Save as Template") },
+        title = { Text(stringResource(R.string.pushsimulator_dialog_save_title)) },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
-                    text = "Give your notification a name for quick access later.",
+                    text = stringResource(R.string.pushsimulator_dialog_save_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 OutlinedTextField(
                     value = templateName,
                     onValueChange = { templateName = it },
-                    label = { Text("Template name") },
-                    placeholder = { Text("e.g., Welcome Message") },
+                    label = { Text(stringResource(R.string.pushsimulator_dialog_template_name)) },
+                    placeholder = { Text(stringResource(R.string.pushsimulator_dialog_template_placeholder)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = WormaCeptorDesignSystem.Shapes.textField,
@@ -1450,12 +1482,12 @@ private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) 
                 onClick = { onSave(templateName) },
                 enabled = isValid,
             ) {
-                Text("Save")
+                Text(stringResource(R.string.pushsimulator_dialog_save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.pushsimulator_dialog_cancel))
             }
         },
     )

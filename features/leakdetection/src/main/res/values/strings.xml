@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="leakdetection_back">Back</string>
+    <string name="leakdetection_trigger_check">Trigger leak check</string>
+    <string name="leakdetection_clear">Clear leaks</string>
+    <string name="leakdetection_filter_all">All</string>
+</resources>

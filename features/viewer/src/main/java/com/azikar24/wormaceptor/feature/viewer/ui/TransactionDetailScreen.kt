@@ -67,6 +67,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -75,6 +76,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
@@ -355,13 +357,19 @@ private fun TransactionDetailContent(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
-                                        contentDescription = "Close search",
+                                        contentDescription = stringResource(
+                                            R.string.viewer_transaction_detail_close_search,
+                                        ),
                                     )
                                 }
                                 TextField(
                                     value = searchQuery,
                                     onValueChange = { searchQuery = it },
-                                    placeholder = { Text("Search in body...") },
+                                    placeholder = {
+                                        Text(
+                                            stringResource(R.string.viewer_transaction_detail_search_placeholder),
+                                        )
+                                    },
                                     modifier = Modifier
                                         .weight(1f)
                                         .focusRequester(focusRequester),
@@ -376,7 +384,12 @@ private fun TransactionDetailContent(
                                     trailingIcon = {
                                         if (searchQuery.isNotEmpty()) {
                                             IconButton(onClick = { searchQuery = "" }) {
-                                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                                                Icon(
+                                                    Icons.Default.Close,
+                                                    contentDescription = stringResource(
+                                                        R.string.viewer_transaction_detail_clear_search,
+                                                    ),
+                                                )
                                             }
                                         }
                                     },
@@ -395,7 +408,7 @@ private fun TransactionDetailContent(
                                 IconButton(onClick = onBack) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = "Back",
+                                        contentDescription = stringResource(R.string.viewer_transaction_detail_back),
                                     )
                                 }
                             },
@@ -405,13 +418,18 @@ private fun TransactionDetailContent(
                                     IconButton(onClick = { showSearch = true }) {
                                         Icon(
                                             imageVector = Icons.Default.Search,
-                                            contentDescription = "Search",
+                                            contentDescription = stringResource(
+                                                R.string.viewer_transaction_detail_search,
+                                            ),
                                         )
                                     }
                                 }
 
                                 IconButton(onClick = { showMenu = true }) {
-                                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Options")
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = stringResource(R.string.viewer_transaction_detail_options),
+                                    )
                                 }
 
                                 DropdownMenu(
@@ -419,14 +437,22 @@ private fun TransactionDetailContent(
                                     onDismissRequest = { showMenu = false },
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text("Copy as Text") },
+                                        text = {
+                                            Text(
+                                                stringResource(R.string.viewer_transaction_detail_copy_as_text),
+                                            )
+                                        },
                                         onClick = {
                                             showMenu = false
                                             copyToClipboard(context, "Transaction", generateTextSummary(transaction))
                                         },
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Copy as cURL") },
+                                        text = {
+                                            Text(
+                                                stringResource(R.string.viewer_transaction_detail_copy_as_curl),
+                                            )
+                                        },
                                         onClick = {
                                             showMenu = false
                                             copyToClipboard(context, "cURL", generateCurlCommand(transaction))
@@ -434,7 +460,11 @@ private fun TransactionDetailContent(
                                     )
                                     HorizontalDivider()
                                     DropdownMenuItem(
-                                        text = { Text("Share as JSON") },
+                                        text = {
+                                            Text(
+                                                stringResource(R.string.viewer_transaction_detail_share_as_json),
+                                            )
+                                        },
                                         onClick = {
                                             showMenu = false
                                             val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
@@ -1054,7 +1084,10 @@ private fun RequestTab(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        Text("Processing body...", style = MaterialTheme.typography.bodySmall)
+                        Text(
+                            stringResource(R.string.viewer_body_processing),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
                     }
                 } else if (requestBody != null || rawBody != null) {
                     val detectedContentType = remember(rawBody, requestContentType) {
@@ -1076,7 +1109,11 @@ private fun RequestTab(
                             )
                         },
                     ) {
-                        val displayBody = if (isPrettyMode) (requestBody ?: rawBody!!) else (rawBody ?: requestBody!!)
+                        val displayBody = if (isPrettyMode) {
+                            requestBody ?: requireNotNull(rawBody) { "Body must be available" }
+                        } else {
+                            rawBody ?: requireNotNull(requestBody) { "Body must be available" }
+                        }
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                         val hasActiveSearch = searchQuery.isNotEmpty()
 
@@ -1174,9 +1211,10 @@ private fun RequestTab(
                     val fullContent = buildString {
                         appendLine("=== REQUEST HEADERS ===")
                         appendLine(formatHeaders(transaction.request.headers))
-                        if (requestBody != null) {
+                        if (requestBody != null || rawBody != null) {
                             appendLine("\n=== REQUEST BODY ===")
-                            appendLine(if (isPrettyMode) requestBody!! else rawBody!!)
+                            val body = if (isPrettyMode) (requestBody ?: rawBody) else (rawBody ?: requestBody)
+                            body?.let { appendLine(it) }
                         }
                     }
                     copyToClipboard(context, "Request Content", fullContent)
@@ -1184,7 +1222,7 @@ private fun RequestTab(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ) {
-                Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
+                Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
             }
         }
     }
@@ -1255,7 +1293,7 @@ private fun ResponseTab(
 
     // Determine if content is an image
     val isImageContent = remember(contentType, rawBodyBytes) {
-        isImageContentType(contentType) || (rawBodyBytes != null && isImageData(rawBodyBytes!!))
+        isImageContentType(contentType) || rawBodyBytes?.let { isImageData(it) } == true
     }
 
     // Determine if content is a PDF
@@ -1382,9 +1420,13 @@ private fun ResponseTab(
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            Text("Processing body...", style = MaterialTheme.typography.bodySmall)
+                            Text(
+                                stringResource(R.string.viewer_body_processing),
+                                style = MaterialTheme.typography.bodySmall,
+                            )
                         }
-                    } else if (isImageContent && rawBodyBytes != null) {
+                    } else if (isImageContent) {
+                        val imageBytes = rawBodyBytes ?: return@Column
                         // Image content - show Image preview card
                         CollapsibleSection(
                             title = "Body (Image)",
@@ -1393,21 +1435,22 @@ private fun ResponseTab(
                             onCopy = null,
                         ) {
                             ImagePreviewCard(
-                                imageData = rawBodyBytes!!,
+                                imageData = imageBytes,
                                 contentType = contentType,
                                 onFullscreen = { showImageViewer = true },
                                 onDownload = {
-                                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                                    val message = saveImageToGallery(context, rawBodyBytes!!, format)
+                                    val format = imageMetadata?.format ?: detectImageFormat(imageBytes)
+                                    val message = saveImageToGallery(context, imageBytes, format)
                                     onShowMessage(message)
                                 },
                                 onShare = {
-                                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                                    shareImage(context, rawBodyBytes!!, format)?.let { onShowMessage(it) }
+                                    val format = imageMetadata?.format ?: detectImageFormat(imageBytes)
+                                    shareImage(context, imageBytes, format)?.let { onShowMessage(it) }
                                 },
                             )
                         }
-                    } else if (isPdfContentDetected && rawBodyBytes != null) {
+                    } else if (isPdfContentDetected) {
+                        val pdfBytes = rawBodyBytes ?: return@Column
                         // PDF content - show PDF preview card
                         CollapsibleSection(
                             title = "Body (PDF)",
@@ -1416,11 +1459,11 @@ private fun ResponseTab(
                             onCopy = null,
                         ) {
                             PdfPreviewCard(
-                                pdfData = rawBodyBytes!!,
+                                pdfData = pdfBytes,
                                 contentType = contentType,
                                 onFullscreen = { showPdfViewer = true },
                                 onDownload = {
-                                    val message = savePdfToDownloads(context, rawBodyBytes!!)
+                                    val message = savePdfToDownloads(context, pdfBytes)
                                     onShowMessage(message)
                                 },
                                 onShowMessage = onShowMessage,
@@ -1446,7 +1489,11 @@ private fun ResponseTab(
                                 )
                             },
                         ) {
-                            val displayBody = if (isPrettyMode) (responseBody ?: rawBody!!) else (rawBody ?: responseBody!!)
+                            val displayBody = if (isPrettyMode) {
+                                responseBody ?: requireNotNull(rawBody) { "Body must be available" }
+                            } else {
+                                rawBody ?: requireNotNull(responseBody) { "Body must be available" }
+                            }
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                             val hasActiveSearch = searchQuery.isNotEmpty()
 
@@ -1558,9 +1605,10 @@ private fun ResponseTab(
                             appendLine("=== RESPONSE HEADERS ===")
                             appendLine(formatHeaders(it))
                         }
-                        if (responseBody != null) {
+                        if (responseBody != null || rawBody != null) {
                             appendLine("\n=== RESPONSE BODY ===")
-                            appendLine(if (isPrettyMode) responseBody!! else rawBody!!)
+                            val body = if (isPrettyMode) (responseBody ?: rawBody) else (rawBody ?: responseBody)
+                            body?.let { appendLine(it) }
                         }
                     }
                     copyToClipboard(context, "Response Content", fullContent)
@@ -1568,38 +1616,40 @@ private fun ResponseTab(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ) {
-                Icon(Icons.Default.ContentCopy, contentDescription = "Copy All")
+                Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
             }
         }
 
         // Fullscreen Image Viewer dialog
-        if (showImageViewer && rawBodyBytes != null) {
-            FullscreenImageViewer(
-                imageData = rawBodyBytes!!,
-                metadata = imageMetadata,
-                onDismiss = { showImageViewer = false },
-                onDownload = {
-                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                    val message = saveImageToGallery(context, rawBodyBytes!!, format)
-                    onShowMessage(message)
-                },
-                onShare = {
-                    val format = imageMetadata?.format ?: detectImageFormat(rawBodyBytes!!)
-                    shareImage(context, rawBodyBytes!!, format)?.let { onShowMessage(it) }
-                },
-            )
-        }
+        rawBodyBytes?.let { bytes ->
+            if (showImageViewer) {
+                FullscreenImageViewer(
+                    imageData = bytes,
+                    metadata = imageMetadata,
+                    onDismiss = { showImageViewer = false },
+                    onDownload = {
+                        val format = imageMetadata?.format ?: detectImageFormat(bytes)
+                        val message = saveImageToGallery(context, bytes, format)
+                        onShowMessage(message)
+                    },
+                    onShare = {
+                        val format = imageMetadata?.format ?: detectImageFormat(bytes)
+                        shareImage(context, bytes, format)?.let { onShowMessage(it) }
+                    },
+                )
+            }
 
-        // Fullscreen PDF Viewer dialog
-        if (showPdfViewer && rawBodyBytes != null) {
-            PdfViewerScreen(
-                pdfData = rawBodyBytes!!,
-                onDismiss = { showPdfViewer = false },
-                onDownload = {
-                    val message = savePdfToDownloads(context, rawBodyBytes!!)
-                    onShowMessage(message)
-                },
-            )
+            // Fullscreen PDF Viewer dialog
+            if (showPdfViewer) {
+                PdfViewerScreen(
+                    pdfData = bytes,
+                    onDismiss = { showPdfViewer = false },
+                    onDownload = {
+                        val message = savePdfToDownloads(context, bytes)
+                        onShowMessage(message)
+                    },
+                )
+            }
         }
     }
 }
@@ -1665,7 +1715,7 @@ private fun CollapsibleSection(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
-                                contentDescription = "Copy",
+                                contentDescription = stringResource(R.string.viewer_body_copy),
                                 modifier = Modifier.size(16.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )

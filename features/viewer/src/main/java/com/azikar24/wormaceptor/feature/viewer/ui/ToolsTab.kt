@@ -69,6 +69,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -83,6 +84,7 @@ import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
 import org.koin.java.KoinJavaComponent.get
 
@@ -176,7 +178,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
         WormaCeptorSearchBar(
             query = searchQuery,
             onQueryChange = { searchQuery = it },
-            placeholder = "Search tools...",
+            placeholder = stringResource(R.string.viewer_tools_search_placeholder),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -221,7 +223,12 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
                     onToolLongClick = { tool ->
                         val added = favoritesRepository.toggleFavorite(tool.feature)
                         if (!added && favorites.size >= FavoritesRepository.MAX_FAVORITES) {
-                            onShowMessage("Maximum ${FavoritesRepository.MAX_FAVORITES} favorites allowed")
+                            onShowMessage(
+                                context.getString(
+                                    R.string.viewer_tools_max_favorites,
+                                    FavoritesRepository.MAX_FAVORITES,
+                                ),
+                            )
                         }
                     },
                     favorites = favorites,
@@ -281,7 +288,7 @@ private fun FavoritesStrip(
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text(
-                text = "QUICK ACCESS",
+                text = stringResource(R.string.viewer_tools_quick_access),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -480,7 +487,13 @@ private fun ToolCategorySection(
 
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = if (isCollapsed) "Expand" else "Collapse",
+                    contentDescription = if (isCollapsed) {
+                        stringResource(
+                            R.string.viewer_body_expand,
+                        )
+                    } else {
+                        stringResource(R.string.viewer_body_collapse)
+                    },
                     modifier = Modifier
                         .size(20.dp)
                         .rotate(rotationAngle),
@@ -613,7 +626,7 @@ private fun ToolTile(
             if (isFavorite) {
                 Icon(
                     imageVector = Icons.Default.Star,
-                    contentDescription = "Favorite",
+                    contentDescription = stringResource(R.string.viewer_tools_favorite),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(6.dp)
@@ -644,9 +657,9 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
 
         Text(
             text = if (searchQuery.isNotEmpty()) {
-                "No tools found for \"$searchQuery\""
+                stringResource(R.string.viewer_tools_no_tools_found, searchQuery)
             } else {
-                "No tools available"
+                stringResource(R.string.viewer_tools_no_tools_available)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -656,7 +669,7 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
         if (searchQuery.isNotEmpty()) {
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             Text(
-                text = "Try a different search term",
+                text = stringResource(R.string.viewer_tools_try_different_search),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
@@ -666,7 +679,7 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
 }
 
 /**
- * Performance overlay controls with metric visibility buttons.
+ * Performance overlay toggle - single on/off switch for all metrics.
  */
 @Composable
 private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
@@ -676,6 +689,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
 
     val performanceOverlayEngine = remember { get<PerformanceOverlayEngine>(PerformanceOverlayEngine::class.java) }
     val overlayState by performanceOverlayEngine.state.collectAsState()
+    val isOverlayEnabled = overlayState.isOverlayEnabled
 
     // Load saved metric states on first composition
     LaunchedEffect(Unit) {
@@ -695,170 +709,133 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
         }
     }
 
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .background(
-                            color = WormaCeptorColors.Category.Performance.copy(alpha = 0.15f),
-                            shape = RoundedCornerShape(8.dp),
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Speed,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = WormaCeptorColors.Category.Performance,
-                    )
-                }
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Performance Overlay",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = "Tap metrics to show/hide in overlay",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-
-                if (!canDrawOverlays) {
-                    Surface(
-                        onClick = {
-                            WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
-                                context.startActivity(intent)
-                            }
-                        },
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.errorContainer,
-                    ) {
-                        Text(
-                            text = "Grant",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xs,
-                            ),
-                        )
-                    }
-                }
-            }
-
-            // Metric visibility buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                MetricToggleChip(
-                    label = "CPU",
-                    isEnabled = overlayState.cpuEnabled,
-                    enabled = canDrawOverlays,
-                    onClick = {
-                        (context as? ComponentActivity)?.let { activity ->
-                            performanceOverlayEngine.toggleCpu(activity)
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                )
-                MetricToggleChip(
-                    label = "Memory",
-                    isEnabled = overlayState.memoryEnabled,
-                    enabled = canDrawOverlays,
-                    onClick = {
-                        (context as? ComponentActivity)?.let { activity ->
-                            performanceOverlayEngine.toggleMemory(activity)
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                )
-                MetricToggleChip(
-                    label = "FPS",
-                    isEnabled = overlayState.fpsEnabled,
-                    enabled = canDrawOverlays,
-                    onClick = {
-                        (context as? ComponentActivity)?.let { activity ->
-                            performanceOverlayEngine.toggleFps(activity)
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MetricToggleChip(
-    label: String,
-    isEnabled: Boolean,
-    enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
     val backgroundColor = when {
-        !enabled -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-        isEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
+        !canDrawOverlays -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
         else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     }
     val borderColor = when {
-        !enabled -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        isEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.4f)
+        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.4f)
         else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
-    }
-    val contentColor = when {
-        !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-        isEnabled -> WormaCeptorColors.Category.Performance
-        else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     Surface(
-        onClick = onClick,
-        enabled = enabled,
+        onClick = {
+            if (canDrawOverlays) {
+                (context as? ComponentActivity)?.let { activity ->
+                    performanceOverlayEngine.toggleOverlayWithAllMetrics(activity)
+                }
+            }
+        },
+        enabled = canDrawOverlays,
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         color = backgroundColor,
         border = androidx.compose.foundation.BorderStroke(1.dp, borderColor),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
-                ),
-            horizontalArrangement = Arrangement.Center,
+                .padding(WormaCeptorDesignSystem.Spacing.md),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = if (isEnabled && enabled) FontWeight.SemiBold else FontWeight.Normal,
-                color = contentColor,
-            )
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(
+                        color = if (isOverlayEnabled && canDrawOverlays) {
+                            WormaCeptorColors.Category.Performance.copy(alpha = 0.25f)
+                        } else {
+                            WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
+                        },
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Speed,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = if (isOverlayEnabled && canDrawOverlays) {
+                        WormaCeptorColors.Category.Performance
+                    } else {
+                        WormaCeptorColors.Category.Performance.copy(alpha = 0.7f)
+                    },
+                )
+            }
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.viewer_tools_performance_overlay),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = if (isOverlayEnabled && canDrawOverlays) {
+                        stringResource(R.string.viewer_tools_overlay_showing)
+                    } else {
+                        stringResource(R.string.viewer_tools_overlay_tap_enable)
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            if (!canDrawOverlays) {
+                Surface(
+                    onClick = {
+                        WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
+                            context.startActivity(intent)
+                        }
+                    },
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.errorContainer,
+                ) {
+                    Text(
+                        text = stringResource(R.string.viewer_tools_overlay_grant),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
+                    )
+                }
+            } else {
+                // On/Off indicator
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = if (isOverlayEnabled) {
+                        WormaCeptorColors.Category.Performance.copy(alpha = 0.2f)
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                ) {
+                    Text(
+                        text = if (isOverlayEnabled) {
+                            stringResource(
+                                R.string.viewer_tools_overlay_on,
+                            )
+                        } else {
+                            stringResource(R.string.viewer_tools_overlay_off)
+                        },
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isOverlayEnabled) {
+                            WormaCeptorColors.Category.Performance
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        ),
+                    )
+                }
+            }
         }
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen title -->
+    <string name="location_title">Location Simulator</string>
+    <string name="location_status_active">ACTIVE</string>
+    <string name="location_back">Back</string>
+
+    <!-- Mock location warning banner -->
+    <string name="location_warning_title">Mock Locations Not Enabled</string>
+    <string name="location_warning_description">To use location simulation, enable Developer Options, then set this app as the mock location app.</string>
+    <string name="location_open_dev_options">Open Developer Options</string>
+
+    <!-- Mock location status card -->
+    <string name="location_mock_active">Mock Location Active</string>
+    <string name="location_mock_disabled">Mock Location Disabled</string>
+    <string name="location_enable_hint">Enter coordinates or select a preset to enable</string>
+
+    <!-- Presets section -->
+    <string name="location_presets_title">Location Presets</string>
+    <string name="location_presets_count">%d locations</string>
+    <string name="location_search_placeholder">Search presets…</string>
+    <string name="location_search">Search</string>
+
+    <!-- Coordinate input card -->
+    <string name="location_set_custom_title">Set Custom Location</string>
+    <string name="location_latitude">Latitude</string>
+    <string name="location_latitude_placeholder">e.g., 40.7128</string>
+    <string name="location_latitude_range">Range: -90 to 90</string>
+    <string name="location_longitude">Longitude</string>
+    <string name="location_longitude_placeholder">e.g., -74.0060</string>
+    <string name="location_longitude_range">Range: -180 to 180</string>
+    <string name="location_current">Current</string>
+    <string name="location_save">Save</string>
+    <string name="location_set_mock">Set Mock Location</string>
+
+    <!-- Preset item -->
+    <string name="location_selected">Selected</string>
+    <string name="location_delete_preset">Delete preset</string>
+
+    <!-- Map section -->
+    <string name="location_map_preview">Map Preview</string>
+    <string name="location_map_live">LIVE</string>
+    <string name="location_collapse">Collapse</string>
+    <string name="location_expand">Expand</string>
+
+    <!-- Map card -->
+    <string name="location_real_location">Real Location</string>
+    <string name="location_mock_location">Mock Location</string>
+    <string name="location_mock_location_active">Mock Location (Active)</string>
+    <string name="location_tap_to_set">Tap to set coordinates</string>
+    <string name="location_distance">Distance: %s</string>
+
+    <!-- Empty state -->
+    <string name="location_no_matches">No matches found</string>
+    <string name="location_no_presets">No presets saved</string>
+    <string name="location_try_different_search">Try a different search term</string>
+    <string name="location_save_for_quick_access">Save locations for quick access</string>
+
+    <!-- Save preset dialog -->
+    <string name="location_preset_dialog_title">Save Location Preset</string>
+    <string name="location_preset_name">Preset Name</string>
+    <string name="location_preset_name_placeholder">e.g., Office, Home, Gym</string>
+    <string name="location_cancel">Cancel</string>
+</resources>

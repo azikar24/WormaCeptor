@@ -37,12 +37,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
+import com.azikar24.wormaceptor.feature.preferences.R
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -61,13 +63,13 @@ fun PreferencesListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("SharedPreferences") },
+                title = { Text(stringResource(R.string.preferences_list_title)) },
                 navigationIcon = {
                     onNavigateBack?.let { callback ->
                         IconButton(onClick = callback) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.preferences_back),
                             )
                         }
                     }
@@ -81,11 +83,11 @@ fun PreferencesListScreen(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,
-                placeholder = { Text("Search preferences files...") },
+                placeholder = { Text(stringResource(R.string.preferences_search_placeholder)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
+                        contentDescription = stringResource(R.string.preferences_search),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 },
@@ -168,8 +170,13 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                val itemCountLabel = if (file.itemCount == 1) {
+                    stringResource(R.string.preferences_item_count_singular)
+                } else {
+                    stringResource(R.string.preferences_item_count_plural)
+                }
                 Text(
-                    text = "${file.itemCount} ${if (file.itemCount == 1) "item" else "items"}",
+                    text = "${file.itemCount} $itemCountLabel",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -213,7 +220,11 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
-            text = if (hasSearchQuery) "No matches found" else "No preferences files",
+            text = if (hasSearchQuery) {
+                stringResource(R.string.preferences_empty_no_matches)
+            } else {
+                stringResource(R.string.preferences_empty_no_files)
+            },
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -223,9 +234,9 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
 
         Text(
             text = if (hasSearchQuery) {
-                "Try a different search term"
+                stringResource(R.string.preferences_empty_try_different_search)
             } else {
-                "SharedPreferences files will appear here"
+                stringResource(R.string.preferences_empty_files_will_appear)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),

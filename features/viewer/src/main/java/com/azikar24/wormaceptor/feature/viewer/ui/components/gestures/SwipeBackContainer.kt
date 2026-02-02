@@ -33,8 +33,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -186,7 +188,7 @@ fun SwipeBackContainer(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.viewer_gesture_back),
                     tint = MaterialTheme.colorScheme.primary.copy(
                         alpha = (progress * 2f).coerceIn(0f, 1f),
                     ),

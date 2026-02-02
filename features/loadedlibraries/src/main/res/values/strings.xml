@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loadedlibraries_title">Loaded Libraries</string>
+    <string name="loadedlibraries_filter_all">All</string>
+    <string name="loadedlibraries_show_system">Show system libraries</string>
+    <string name="loadedlibraries_empty">No libraries found</string>
+    <string name="loadedlibraries_back">Back</string>
+    <string name="loadedlibraries_refresh">Refresh</string>
+</resources>

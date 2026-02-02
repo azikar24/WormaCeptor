@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cpu_back">Back</string>
+    <string name="cpu_clear_history">Clear history</string>
+    <string name="cpu_warning">CPU warning</string>
+    <string name="cpu_usage_label">CPU Usage</string>
+    <string name="cpu_frequency_label">Frequency</string>
+    <string name="cpu_temperature_label">Temperature</string>
+    <string name="cpu_cores_label">Cores</string>
+</resources>

@@ -65,11 +65,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
+import com.azikar24.wormaceptor.feature.memory.R
 import com.azikar24.wormaceptor.feature.memory.ui.theme.memoryColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.DecimalFormat
@@ -129,7 +131,7 @@ fun MemoryScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.memory_back),
                             )
                         }
                     }
@@ -154,7 +156,7 @@ fun MemoryScreen(
                     IconButton(onClick = onClearHistory) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Clear history",
+                            contentDescription = stringResource(R.string.memory_clear_history),
                         )
                     }
                 },
@@ -728,7 +730,7 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
     ) {
         Icon(
             imageVector = Icons.Default.Warning,
-            contentDescription = "Memory warning",
+            contentDescription = stringResource(R.string.memory_warning),
             tint = MaterialTheme.colorScheme.onError,
             modifier = Modifier
                 .padding(WormaCeptorDesignSystem.Spacing.xs)

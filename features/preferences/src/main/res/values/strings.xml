@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright AziKar24 2025.
+  -->
+<resources>
+    <!-- PreferencesListScreen -->
+    <string name="preferences_list_title">SharedPreferences</string>
+    <string name="preferences_back">Back</string>
+    <string name="preferences_search_placeholder">Search preferences files…</string>
+    <string name="preferences_search">Search</string>
+    <string name="preferences_item_count_singular">item</string>
+    <string name="preferences_item_count_plural">items</string>
+    <string name="preferences_empty_no_matches">No matches found</string>
+    <string name="preferences_empty_no_files">No preferences files</string>
+    <string name="preferences_empty_try_different_search">Try a different search term</string>
+    <string name="preferences_empty_files_will_appear">SharedPreferences files will appear here</string>
+
+    <!-- PreferenceDetailScreen -->
+    <string name="preferences_filter">Filter</string>
+    <string name="preferences_more_options">More options</string>
+    <string name="preferences_menu_clear_all">Clear All</string>
+    <string name="preferences_add_preference">Add preference</string>
+    <string name="preferences_search_keys_values_placeholder">Search keys or values…</string>
+    <string name="preferences_clear">Clear</string>
+    <string name="preferences_filter_all">All</string>
+    <string name="preferences_dialog_clear_title">Clear All Preferences</string>
+    <string name="preferences_dialog_clear_message">Are you sure you want to delete all preferences in %1$s? This action cannot be undone.</string>
+    <string name="preferences_dialog_clear_confirm">Clear All</string>
+    <string name="preferences_dialog_cancel">Cancel</string>
+    <string name="preferences_dialog_delete_title">Delete Preference</string>
+    <string name="preferences_dialog_delete_message">Are you sure you want to delete \"%1$s\"?</string>
+    <string name="preferences_dialog_delete_confirm">Delete</string>
+    <string name="preferences_empty_no_preferences">No preferences</string>
+    <string name="preferences_empty_try_adjusting_filters">Try adjusting your search or filters</string>
+    <string name="preferences_empty_add_using_button">Add preferences using the + button</string>
+
+    <!-- PreferenceEditDialog -->
+    <string name="preferences_dialog_create_title">Create Preference</string>
+    <string name="preferences_dialog_edit_title">Edit Preference</string>
+    <string name="preferences_label_key">Key</string>
+    <string name="preferences_label_type">Type</string>
+    <string name="preferences_label_value">Value</string>
+    <string name="preferences_label_values">Values</string>
+    <string name="preferences_validation_invalid_integer">Must be a valid integer</string>
+    <string name="preferences_validation_invalid_long">Must be a valid long integer</string>
+    <string name="preferences_validation_invalid_float">Must be a valid decimal number</string>
+    <string name="preferences_remove">Remove</string>
+    <string name="preferences_add_item_placeholder">Add item…</string>
+    <string name="preferences_add">Add</string>
+    <string name="preferences_button_create">Create</string>
+    <string name="preferences_button_save">Save</string>
+</resources>

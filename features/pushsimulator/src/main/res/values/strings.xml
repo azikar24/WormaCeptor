@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen -->
+    <string name="pushsimulator_title">Push Simulator</string>
+    <string name="pushsimulator_back">Back</string>
+    <string name="pushsimulator_clear_form">Clear form</string>
+
+    <!-- Snackbar messages -->
+    <string name="pushsimulator_notification_permission_denied">Notification permission denied</string>
+    <string name="pushsimulator_notification_sent">Notification sent</string>
+    <string name="pushsimulator_template_saved">Template saved</string>
+    <string name="pushsimulator_template_deleted">Template deleted</string>
+    <string name="pushsimulator_template_loaded">Loaded: %1$s</string>
+
+    <!-- Permission dialog -->
+    <string name="pushsimulator_permission_title">Permission Required</string>
+    <string name="pushsimulator_permission_message">Notification permission is required to send test notifications. Please grant the permission in app settings.</string>
+    <string name="pushsimulator_ok">OK</string>
+
+    <!-- Notification preview -->
+    <string name="pushsimulator_preview">Preview</string>
+    <string name="pushsimulator_preview_title_placeholder">Notification Title</string>
+    <string name="pushsimulator_preview_body_placeholder">Notification message will appear here</string>
+    <string name="pushsimulator_preview_time_now">now</string>
+
+    <!-- Form fields -->
+    <string name="pushsimulator_field_title">Title</string>
+    <string name="pushsimulator_field_title_placeholder">Enter notification title</string>
+    <string name="pushsimulator_field_message">Message</string>
+    <string name="pushsimulator_field_message_placeholder">Enter notification message</string>
+
+    <!-- Channel selector -->
+    <string name="pushsimulator_channel_label">Channel</string>
+    <string name="pushsimulator_channel_select">Select notification channel</string>
+    <string name="pushsimulator_channel_placeholder">Select channel</string>
+    <string name="pushsimulator_channel_collapse">Collapse</string>
+    <string name="pushsimulator_channel_expand">Expand</string>
+    <string name="pushsimulator_channel_selected">Selected</string>
+
+    <!-- Importance levels -->
+    <string name="pushsimulator_importance_urgent">Urgent</string>
+    <string name="pushsimulator_importance_high">High</string>
+    <string name="pushsimulator_importance_default">Default</string>
+    <string name="pushsimulator_importance_low">Low</string>
+    <string name="pushsimulator_importance_min">Min</string>
+
+    <!-- Priority selector -->
+    <string name="pushsimulator_priority_label">Priority</string>
+
+    <!-- Action buttons section -->
+    <string name="pushsimulator_actions_label">Action Buttons</string>
+    <string name="pushsimulator_actions_remove">Remove %1$s</string>
+    <string name="pushsimulator_actions_placeholder_empty">e.g., Open, Reply, Dismiss</string>
+    <string name="pushsimulator_actions_placeholder_add">Add another action</string>
+    <string name="pushsimulator_actions_add">Add action</string>
+
+    <!-- Main action buttons -->
+    <string name="pushsimulator_save_template">Save Template</string>
+    <string name="pushsimulator_send">Send</string>
+
+    <!-- Templates section -->
+    <string name="pushsimulator_templates_header">Templates</string>
+    <string name="pushsimulator_templates_empty_title">No templates saved</string>
+    <string name="pushsimulator_templates_empty_description">Save your notification configuration as a template for quick reuse</string>
+    <string name="pushsimulator_template_delete">Delete %1$s</string>
+    <string name="pushsimulator_template_preset">Preset</string>
+    <string name="pushsimulator_template_load">Load</string>
+
+    <!-- Save template dialog -->
+    <string name="pushsimulator_dialog_save_title">Save as Template</string>
+    <string name="pushsimulator_dialog_save_description">Give your notification a name for quick access later.</string>
+    <string name="pushsimulator_dialog_template_name">Template name</string>
+    <string name="pushsimulator_dialog_template_placeholder">e.g., Welcome Message</string>
+    <string name="pushsimulator_dialog_save">Save</string>
+    <string name="pushsimulator_dialog_cancel">Cancel</string>
+</resources>

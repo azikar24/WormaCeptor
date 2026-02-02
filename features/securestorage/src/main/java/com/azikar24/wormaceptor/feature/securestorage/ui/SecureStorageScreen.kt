@@ -57,6 +57,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +67,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
+import com.azikar24.wormaceptor.feature.securestorage.R
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -130,7 +132,7 @@ fun SecureStorageScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.securestorage_back),
                             )
                         }
                     }
@@ -145,7 +147,7 @@ fun SecureStorageScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh",
+                                contentDescription = stringResource(R.string.securestorage_refresh),
                             )
                         }
                     }
@@ -392,7 +394,7 @@ private fun TypeFilterChips(
         FilterChip(
             selected = selectedType == null,
             onClick = { onTypeSelected(null) },
-            label = { Text("All") },
+            label = { Text(stringResource(R.string.securestorage_filter_all)) },
             colors = FilterChipDefaults.filterChipColors(
                 selectedContainerColor = colors.chipBackgroundSelected,
             ),
@@ -549,7 +551,7 @@ private fun EntryDetailContent(
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(WormaCeptorDesignSystem.Spacing.xxxl)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
                     .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                 contentAlignment = Alignment.Center,
@@ -673,7 +675,7 @@ private fun EmptyState(
                 imageVector = Icons.Default.Storage,
                 contentDescription = null,
                 tint = colors.labelSecondary,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
                 text = if (hasFilters) "No matching entries" else "No secure storage found",

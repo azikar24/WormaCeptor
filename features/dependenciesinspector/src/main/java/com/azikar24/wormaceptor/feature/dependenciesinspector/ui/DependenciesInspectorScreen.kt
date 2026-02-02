@@ -54,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -64,6 +65,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
+import com.azikar24.wormaceptor.feature.dependenciesinspector.R
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.DependenciesInspectorColors
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.dependenciesInspectorColors
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.shortLabel
@@ -102,7 +104,7 @@ fun DependenciesInspectorScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.Extension, null, tint = colors.primary)
-                        Text("Dependencies", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.dependenciesinspector_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
@@ -256,7 +258,7 @@ private fun FilterSection(
             FilterChip(
                 selected = selectedCategory == null,
                 onClick = { onCategorySelected(null) },
-                label = { Text("All") },
+                label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
             )
 
             // Show categories that have detected dependencies, sorted by count
@@ -566,7 +568,7 @@ private fun EmptyState(colors: DependenciesInspectorColors, modifier: Modifier) 
                 Icons.Default.HelpOutline,
                 null,
                 tint = colors.labelSecondary,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
                 "No dependencies found",

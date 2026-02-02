@@ -67,6 +67,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,6 +77,7 @@ import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
+import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.asSubtleBackground
 import kotlinx.collections.immutable.ImmutableList
@@ -118,8 +120,13 @@ fun PreferenceDetailScreen(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
+                        val itemCountLabel = if (totalCount == 1) {
+                            stringResource(R.string.preferences_item_count_singular)
+                        } else {
+                            stringResource(R.string.preferences_item_count_plural)
+                        }
                         Text(
-                            text = "$totalCount ${if (totalCount == 1) "item" else "items"}",
+                            text = "$totalCount $itemCountLabel",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -129,7 +136,7 @@ fun PreferenceDetailScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.preferences_back),
                         )
                     }
                 },
@@ -137,7 +144,7 @@ fun PreferenceDetailScreen(
                     IconButton(onClick = { showFilters = !showFilters }) {
                         Icon(
                             imageVector = Icons.Default.FilterList,
-                            contentDescription = "Filter",
+                            contentDescription = stringResource(R.string.preferences_filter),
                             tint = if (typeFilter != null) {
                                 MaterialTheme.colorScheme.primary
                             } else {
@@ -148,7 +155,7 @@ fun PreferenceDetailScreen(
                     IconButton(onClick = { showMenu = true }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = "More options",
+                            contentDescription = stringResource(R.string.preferences_more_options),
                         )
                     }
                     DropdownMenu(
@@ -156,7 +163,7 @@ fun PreferenceDetailScreen(
                         onDismissRequest = { showMenu = false },
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Clear All") },
+                            text = { Text(stringResource(R.string.preferences_menu_clear_all)) },
                             onClick = {
                                 showMenu = false
                                 showClearConfirmDialog = true
@@ -178,7 +185,7 @@ fun PreferenceDetailScreen(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add preference")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.preferences_add_preference))
             }
         },
         modifier = modifier,
@@ -192,18 +199,18 @@ fun PreferenceDetailScreen(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,
-                placeholder = { Text("Search keys or values...") },
+                placeholder = { Text(stringResource(R.string.preferences_search_keys_values_placeholder)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
+                        contentDescription = stringResource(R.string.preferences_search),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) {
                         IconButton(onClick = { onSearchQueryChanged("") }) {
-                            Icon(Icons.Default.Clear, contentDescription = "Clear")
+                            Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.preferences_clear))
                         }
                     }
                 },
@@ -237,7 +244,7 @@ fun PreferenceDetailScreen(
                     FilterChip(
                         selected = typeFilter == null,
                         onClick = { onTypeFilterChanged(null) },
-                        label = { Text("All") },
+                        label = { Text(stringResource(R.string.preferences_filter_all)) },
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                         ),
@@ -288,10 +295,10 @@ fun PreferenceDetailScreen(
     if (showClearConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showClearConfirmDialog = false },
-            title = { Text("Clear All Preferences") },
+            title = { Text(stringResource(R.string.preferences_dialog_clear_title)) },
             text = {
                 Text(
-                    "Are you sure you want to delete all preferences in $fileName? This action cannot be undone.",
+                    stringResource(R.string.preferences_dialog_clear_message, fileName),
                 )
             },
             confirmButton = {
@@ -301,12 +308,15 @@ fun PreferenceDetailScreen(
                         onClearAll()
                     },
                 ) {
-                    Text("Clear All", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        stringResource(R.string.preferences_dialog_clear_confirm),
+                        color = MaterialTheme.colorScheme.error,
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearConfirmDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.preferences_dialog_cancel))
                 }
             },
         )
@@ -316,8 +326,8 @@ fun PreferenceDetailScreen(
     showDeleteConfirmDialog?.let { key ->
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = null },
-            title = { Text("Delete Preference") },
-            text = { Text("Are you sure you want to delete \"$key\"?") },
+            title = { Text(stringResource(R.string.preferences_dialog_delete_title)) },
+            text = { Text(stringResource(R.string.preferences_dialog_delete_message, key)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -325,12 +335,15 @@ fun PreferenceDetailScreen(
                         onDeleteItem(key)
                     },
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(
+                        stringResource(R.string.preferences_dialog_delete_confirm),
+                        color = MaterialTheme.colorScheme.error,
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.preferences_dialog_cancel))
                 }
             },
         )
@@ -519,7 +532,11 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
-            text = if (hasFilters) "No matches found" else "No preferences",
+            text = if (hasFilters) {
+                stringResource(R.string.preferences_empty_no_matches)
+            } else {
+                stringResource(R.string.preferences_empty_no_preferences)
+            },
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -529,9 +546,9 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
 
         Text(
             text = if (hasFilters) {
-                "Try adjusting your search or filters"
+                stringResource(R.string.preferences_empty_try_adjusting_filters)
             } else {
-                "Add preferences using the + button"
+                stringResource(R.string.preferences_empty_add_using_button)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),

@@ -57,11 +57,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FpsInfo
+import com.azikar24.wormaceptor.feature.fps.R
 import com.azikar24.wormaceptor.feature.fps.ui.theme.FpsColors
 import com.azikar24.wormaceptor.feature.fps.ui.theme.fpsColors
 import com.azikar24.wormaceptor.feature.fps.vm.FpsViewModel
@@ -96,7 +99,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
                             text = "FPS Monitor",
@@ -110,7 +113,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.fps_back),
                             )
                         }
                     }
@@ -120,7 +123,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                     IconButton(onClick = { viewModel.resetStats() }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Reset statistics",
+                            contentDescription = stringResource(R.string.fps_reset_statistics),
                         )
                     }
 
@@ -148,8 +151,8 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Current FPS Display
             CurrentFpsCard(
@@ -189,7 +192,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                     onStartMonitoring = { viewModel.startMonitoring() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 32.dp),
+                        .padding(top = WormaCeptorDesignSystem.Spacing.xxl),
                 )
             }
         }
@@ -211,7 +214,7 @@ private fun MonitoringIndicator(isMonitoring: Boolean, modifier: Modifier = Modi
 
     Box(
         modifier = modifier
-            .size(8.dp)
+            .size(WormaCeptorDesignSystem.Spacing.sm)
             .clip(CircleShape)
             .background(
                 if (isMonitoring) {
@@ -247,13 +250,13 @@ private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsC
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
         color = backgroundColor,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -262,7 +265,7 @@ private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsC
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             Text(
                 text = if (fpsInfo.currentFps > 0 || isMonitoring) {
@@ -278,7 +281,7 @@ private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsC
                 color = fpsColor,
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
             Text(
                 text = when {
@@ -298,7 +301,7 @@ private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsC
 private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
     ) {
         StatCard(
             label = "Min",
@@ -345,13 +348,13 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
 private fun StatCard(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -360,7 +363,7 @@ private fun StatCard(label: String, value: String, color: Color, modifier: Modif
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
             Text(
                 text = value,
@@ -378,13 +381,13 @@ private fun StatCard(label: String, value: String, color: Color, modifier: Modif
 private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -398,7 +401,7 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
                 Text(
                     text = droppedFrames.toString(),
@@ -420,7 +423,7 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
             Box(
                 modifier = Modifier
                     .width(1.dp)
-                    .height(48.dp)
+                    .height(WormaCeptorDesignSystem.Spacing.xxxl)
                     .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)),
             )
 
@@ -430,7 +433,7 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     Text(
                         text = "Jank Frames",
@@ -445,14 +448,14 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
                     ) {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = "Jank detected",
+                            contentDescription = stringResource(R.string.fps_jank_detected),
                             modifier = Modifier.size(16.dp),
                             tint = colors.jankIndicator,
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
                 Text(
                     text = jankFrames.toString(),
@@ -477,13 +480,13 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
 private fun FpsChartCard(history: ImmutableList<FpsInfo>, colors: FpsColors, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
                 text = "FPS Over Time",
@@ -491,7 +494,7 @@ private fun FpsChartCard(history: ImmutableList<FpsInfo>, colors: FpsColors, mod
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             if (history.isEmpty()) {
                 Box(
@@ -619,7 +622,7 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
             modifier = Modifier.size(64.dp),
         ) {
@@ -638,7 +641,7 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
             text = "Ready to monitor",
@@ -647,7 +650,7 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
             text = "Tap play to start measuring frame rate",
@@ -655,18 +658,18 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Surface(
             onClick = onStartMonitoring,
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
             color = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+            modifier = Modifier.clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg)),
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = WormaCeptorDesignSystem.Spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,

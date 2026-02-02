@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Feature Toggles</string>
+    <string name="settings_back">Back</string>
+    <string name="settings_reset_defaults">Reset to defaults</string>
+</resources>

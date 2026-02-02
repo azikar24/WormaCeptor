@@ -25,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.settings.R
 import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
 
 /**
@@ -42,12 +44,12 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("Feature Toggles") },
+                title = { Text(stringResource(R.string.settings_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.settings_back),
                         )
                     }
                 },
@@ -55,7 +57,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     IconButton(onClick = viewModel::resetToDefaults) {
                         Icon(
                             imageVector = Icons.Default.RestartAlt,
-                            contentDescription = "Reset to defaults",
+                            contentDescription = stringResource(R.string.settings_reset_defaults),
                         )
                     }
                 },
@@ -91,7 +93,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
             }
 
             item {
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
             }
 
             // Tools Section
@@ -156,7 +158,7 @@ private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg, vertical = WormaCeptorDesignSystem.Spacing.md),
     )
 }
 

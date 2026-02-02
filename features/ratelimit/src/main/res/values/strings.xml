@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ratelimit_back">Back</string>
+    <string name="ratelimit_reset_defaults">Reset to defaults</string>
+    <string name="ratelimit_clear_statistics">Clear statistics</string>
+</resources>

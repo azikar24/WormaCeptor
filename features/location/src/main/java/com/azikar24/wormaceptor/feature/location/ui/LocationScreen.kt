@@ -84,6 +84,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -92,6 +93,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
+import com.azikar24.wormaceptor.feature.location.R
 import com.azikar24.wormaceptor.feature.location.ui.components.LocationMapCard
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
@@ -158,7 +160,7 @@ fun LocationScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
@@ -166,17 +168,20 @@ fun LocationScreen(
                             tint = LocationColors.enabled,
                         )
                         Text(
-                            text = "Location Simulator",
+                            text = stringResource(R.string.location_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         if (isMockEnabled) {
                             Surface(
-                                shape = RoundedCornerShape(4.dp),
+                                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                                 color = LocationColors.enabled.copy(alpha = 0.15f),
                             ) {
                                 Text(
-                                    text = "ACTIVE",
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    text = stringResource(R.string.location_status_active),
+                                    modifier = Modifier.padding(
+                                        horizontal = 6.dp,
+                                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                    ),
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = LocationColors.enabled,
@@ -190,7 +195,7 @@ fun LocationScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.location_back),
                             )
                         }
                     }
@@ -267,13 +272,13 @@ fun LocationScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Location Presets",
+                            text = stringResource(R.string.location_presets_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
-                            text = "${presets.size} locations",
+                            text = stringResource(R.string.location_presets_count, presets.size),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -285,11 +290,11 @@ fun LocationScreen(
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = onSearchQueryChanged,
-                        placeholder = { Text("Search presets...") },
+                        placeholder = { Text(stringResource(R.string.location_search_placeholder)) },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(R.string.location_search),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         },
@@ -381,14 +386,14 @@ private fun MockLocationWarningBanner() {
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Mock Locations Not Enabled",
+                        text = stringResource(R.string.location_warning_title),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                     Text(
-                        text = "To use location simulation, enable Developer Options, then set this app as the mock location app.",
+                        text = stringResource(R.string.location_warning_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -425,7 +430,7 @@ private fun MockLocationWarningBanner() {
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text("Open Developer Options")
+                Text(stringResource(R.string.location_open_dev_options))
             }
         }
     }
@@ -474,7 +479,7 @@ private fun MockLocationStatusCard(
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     },
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -497,7 +502,9 @@ private fun MockLocationStatusCard(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = if (isMockEnabled) "Mock Location Active" else "Mock Location Disabled",
+                        text = stringResource(
+                            if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
+                        ),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -535,7 +542,7 @@ private fun MockLocationStatusCard(
             if (isEnabled && !isMockEnabled && !canEnable) {
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
-                    text = "Enter coordinates or select a preset to enable",
+                    text = stringResource(R.string.location_enable_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -575,7 +582,7 @@ private fun CoordinateInputCard(
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
-                text = "Set Custom Location",
+                text = stringResource(R.string.location_set_custom_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -587,14 +594,14 @@ private fun CoordinateInputCard(
             OutlinedTextField(
                 value = latitudeInput,
                 onValueChange = onLatitudeChanged,
-                label = { Text("Latitude") },
-                placeholder = { Text("e.g., 40.7128") },
+                label = { Text(stringResource(R.string.location_latitude)) },
+                placeholder = { Text(stringResource(R.string.location_latitude_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 supportingText = {
-                    Text("Range: -90 to 90")
+                    Text(stringResource(R.string.location_latitude_range))
                 },
                 isError = latitudeInput.isNotBlank() && latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true,
             )
@@ -605,14 +612,14 @@ private fun CoordinateInputCard(
             OutlinedTextField(
                 value = longitudeInput,
                 onValueChange = onLongitudeChanged,
-                label = { Text("Longitude") },
-                placeholder = { Text("e.g., -74.0060") },
+                label = { Text(stringResource(R.string.location_longitude)) },
+                placeholder = { Text(stringResource(R.string.location_longitude_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 supportingText = {
-                    Text("Range: -180 to 180")
+                    Text(stringResource(R.string.location_longitude_range))
                 },
                 isError = longitudeInput.isNotBlank() && longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true,
             )
@@ -636,7 +643,7 @@ private fun CoordinateInputCard(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text("Current")
+                    Text(stringResource(R.string.location_current))
                 }
 
                 // Save as preset button
@@ -651,7 +658,7 @@ private fun CoordinateInputCard(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text("Save")
+                    Text(stringResource(R.string.location_save))
                 }
             }
 
@@ -672,7 +679,7 @@ private fun CoordinateInputCard(
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text("Set Mock Location")
+                Text(stringResource(R.string.location_set_mock))
             }
         }
     }
@@ -773,7 +780,7 @@ private fun PresetItem(
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.location_selected),
                         modifier = Modifier.size(16.dp),
                         tint = LocationColors.enabled,
                     )
@@ -794,7 +801,7 @@ private fun PresetItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete preset",
+                    contentDescription = stringResource(R.string.location_delete_preset),
                     modifier = Modifier.size(18.dp),
                     tint = MaterialTheme.colorScheme.error,
                 )
@@ -845,19 +852,22 @@ private fun CollapsibleMapSection(
                         modifier = Modifier.size(20.dp),
                     )
                     Text(
-                        text = "Map Preview",
+                        text = stringResource(R.string.location_map_preview),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     if (isMockActive) {
                         Surface(
-                            shape = RoundedCornerShape(4.dp),
+                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                             color = LocationColors.enabled.copy(alpha = 0.15f),
                         ) {
                             Text(
-                                text = "LIVE",
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                text = stringResource(R.string.location_map_live),
+                                modifier = Modifier.padding(
+                                    horizontal = 6.dp,
+                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = LocationColors.enabled,
@@ -868,7 +878,9 @@ private fun CollapsibleMapSection(
 
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = stringResource(
+                        if (isExpanded) R.string.location_collapse else R.string.location_expand,
+                    ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -929,7 +941,7 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
         Text(
-            text = if (hasSearchQuery) "No matches found" else "No presets saved",
+            text = stringResource(if (hasSearchQuery) R.string.location_no_matches else R.string.location_no_presets),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -938,11 +950,13 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
         Text(
-            text = if (hasSearchQuery) {
-                "Try a different search term"
-            } else {
-                "Save locations for quick access"
-            },
+            text = stringResource(
+                if (hasSearchQuery) {
+                    R.string.location_try_different_search
+                } else {
+                    R.string.location_save_for_quick_access
+                },
+            ),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )
@@ -955,13 +969,13 @@ private fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Save Location Preset") },
+        title = { Text(stringResource(R.string.location_preset_dialog_title)) },
         text = {
             OutlinedTextField(
                 value = presetName,
                 onValueChange = { presetName = it },
-                label = { Text("Preset Name") },
-                placeholder = { Text("e.g., Office, Home, Gym") },
+                label = { Text(stringResource(R.string.location_preset_name)) },
+                placeholder = { Text(stringResource(R.string.location_preset_name_placeholder)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
@@ -972,12 +986,12 @@ private fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
                 onClick = { onSave(presetName) },
                 enabled = presetName.isNotBlank(),
             ) {
-                Text("Save")
+                Text(stringResource(R.string.location_save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.location_cancel))
             }
         },
     )

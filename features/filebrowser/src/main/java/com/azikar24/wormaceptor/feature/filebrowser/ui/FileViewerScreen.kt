@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,6 +61,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileContent
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import java.io.File
 
 /**
@@ -78,7 +80,7 @@ fun FileViewerScreen(filePath: String, content: FileContent, onBack: () -> Unit,
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.filebrowser_back),
                         )
                     }
                 },
@@ -112,7 +114,11 @@ fun FileViewerScreen(filePath: String, content: FileContent, onBack: () -> Unit,
                 }
                 is FileContent.TooLarge -> {
                     ErrorContent(
-                        "File too large: ${formatBytes(content.sizeBytes)}\nMax size: ${formatBytes(content.maxSize)}",
+                        stringResource(
+                            R.string.filebrowser_file_too_large,
+                            formatBytes(content.sizeBytes),
+                            formatBytes(content.maxSize),
+                        ),
                     )
                 }
                 is FileContent.Error -> {
@@ -143,6 +149,11 @@ private fun TextFileContent(content: FileContent.Text) {
 
 @Composable
 private fun JsonFileContent(content: FileContent.Json) {
+    val validJsonDesc = stringResource(R.string.filebrowser_valid_json)
+    val invalidJsonDesc = stringResource(R.string.filebrowser_invalid_json)
+    val validText = stringResource(R.string.filebrowser_valid)
+    val invalidText = stringResource(R.string.filebrowser_invalid)
+
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
         Row(
@@ -152,19 +163,19 @@ private fun JsonFileContent(content: FileContent.Json) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "JSON (${content.lineCount} lines)",
+                text = stringResource(R.string.filebrowser_json_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
-                contentDescription = if (content.isValid) "Valid JSON" else "Invalid JSON",
+                contentDescription = if (content.isValid) validJsonDesc else invalidJsonDesc,
                 tint = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
                 modifier = Modifier.size(20.dp),
             )
             Text(
-                text = if (content.isValid) "Valid" else "Invalid",
+                text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
@@ -190,6 +201,11 @@ private fun JsonFileContent(content: FileContent.Json) {
 
 @Composable
 private fun XmlFileContent(content: FileContent.Xml) {
+    val validXmlDesc = stringResource(R.string.filebrowser_valid_xml)
+    val invalidXmlDesc = stringResource(R.string.filebrowser_invalid_xml)
+    val validText = stringResource(R.string.filebrowser_valid)
+    val invalidText = stringResource(R.string.filebrowser_invalid)
+
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
         Row(
@@ -199,19 +215,19 @@ private fun XmlFileContent(content: FileContent.Xml) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "XML (${content.lineCount} lines)",
+                text = stringResource(R.string.filebrowser_xml_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
-                contentDescription = if (content.isValid) "Valid XML" else "Invalid XML",
+                contentDescription = if (content.isValid) validXmlDesc else invalidXmlDesc,
                 tint = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
                 modifier = Modifier.size(20.dp),
             )
             Text(
-                text = if (content.isValid) "Valid" else "Invalid",
+                text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
@@ -436,7 +452,7 @@ private fun BinaryFileContent(content: FileContent.Binary) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Header
         Text(
-            text = "Binary file (${formatBytes(content.displaySize.toLong())})",
+            text = stringResource(R.string.filebrowser_binary_file, formatBytes(content.displaySize.toLong())),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
@@ -536,6 +552,13 @@ private fun ImageFileContent(content: FileContent.Image) {
             .build()
     }
 
+    val dimensionsText = if (isAnimated) {
+        stringResource(R.string.filebrowser_image_dimensions_animated, content.width, content.height)
+    } else {
+        stringResource(R.string.filebrowser_image_dimensions, content.width, content.height)
+    }
+    val imagePreviewDesc = stringResource(R.string.filebrowser_image_preview)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -544,7 +567,7 @@ private fun ImageFileContent(content: FileContent.Image) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "${content.width} x ${content.height}${if (isAnimated) " (animated)" else ""}",
+            text = dimensionsText,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
@@ -554,7 +577,7 @@ private fun ImageFileContent(content: FileContent.Image) {
             model = ImageRequest.Builder(context)
                 .data(content.bytes)
                 .build(),
-            contentDescription = "Image preview",
+            contentDescription = imagePreviewDesc,
             imageLoader = imageLoader,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -589,7 +612,11 @@ private fun PdfFileContent(content: FileContent.Pdf) {
             Column(modifier = Modifier.fillMaxSize()) {
                 // Header with PDF info
                 Text(
-                    text = "PDF: ${content.pageCount} pages (${formatBytes(content.sizeBytes)})",
+                    text = stringResource(
+                        R.string.filebrowser_pdf_info,
+                        content.pageCount,
+                        formatBytes(content.sizeBytes),
+                    ),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
@@ -619,6 +646,7 @@ private fun PdfFileContent(content: FileContent.Pdf) {
 
 @Composable
 private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
+    val pageNumber = pageIndex + 1
     val bitmap = remember(pageIndex) {
         val page = renderer.openPage(pageIndex)
         val scale = 2f // Render at 2x for better quality
@@ -641,14 +669,14 @@ private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Page ${pageIndex + 1}",
+                text = stringResource(R.string.filebrowser_page_number, pageNumber),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
             )
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = "PDF page ${pageIndex + 1}",
+                contentDescription = stringResource(R.string.filebrowser_pdf_page, pageNumber),
                 modifier = Modifier.fillMaxWidth(),
             )
         }

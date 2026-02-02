@@ -51,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,6 +61,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary.LibraryType
+import com.azikar24.wormaceptor.feature.loadedlibraries.R
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
 
@@ -96,11 +98,15 @@ fun LoadedLibrariesScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.Extension, null, tint = colors.primary)
-                        Text("Loaded Libraries", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.loadedlibraries_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
-                    onBack?.let { IconButton(onClick = it) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } }
+                    onBack?.let {
+                        IconButton(
+                            onClick = it,
+                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.loadedlibraries_back)) }
+                    }
                 },
                 actions = {
                     IconButton(onClick = onRefresh, enabled = !isLoading) {
@@ -110,7 +116,7 @@ fun LoadedLibrariesScreen(
                                 strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
                             )
                         } else {
-                            Icon(Icons.Default.Refresh, "Refresh")
+                            Icon(Icons.Default.Refresh, stringResource(R.string.loadedlibraries_refresh))
                         }
                     }
                 },
@@ -236,7 +242,9 @@ private fun FilterSection(
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-            FilterChip(selectedType == null, { onTypeSelected(null) }, { Text("All") })
+            FilterChip(selectedType == null, {
+                onTypeSelected(null)
+            }, { Text(stringResource(R.string.loadedlibraries_filter_all)) })
             LibraryType.entries.filter { it != LibraryType.AAR_RESOURCE }.forEach { type ->
                 val (icon, label, color) = when (type) {
                     LibraryType.NATIVE_SO -> Triple(Icons.Default.Memory, "Native", colors.nativeSo)
@@ -258,7 +266,11 @@ private fun FilterSection(
             }
         }
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-            Text("Show system libraries", style = MaterialTheme.typography.bodyMedium, color = colors.labelPrimary)
+            Text(
+                stringResource(R.string.loadedlibraries_show_system),
+                style = MaterialTheme.typography.bodyMedium,
+                color = colors.labelPrimary,
+            )
             Switch(showSystemLibs, onShowSystemLibsChanged)
         }
     }
@@ -451,7 +463,11 @@ private fun EmptyState(
                 tint = colors.labelSecondary,
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
-            Text("No libraries found", style = MaterialTheme.typography.bodyLarge, color = colors.labelSecondary)
+            Text(
+                stringResource(R.string.loadedlibraries_empty),
+                style = MaterialTheme.typography.bodyLarge,
+                color = colors.labelSecondary,
+            )
         }
     }
 }

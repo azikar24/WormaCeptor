@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- HomeScreen -->
+    <string name="viewer_home_title">WormaCeptor V2</string>
+    <string name="viewer_home_back">Back</string>
+    <string name="viewer_home_filter">Filter</string>
+    <string name="viewer_home_more_options">More options</string>
+    <string name="viewer_home_export_transactions">Export Transactions</string>
+    <string name="viewer_home_clear_all_transactions">Clear All Transactions</string>
+    <string name="viewer_home_export_crashes">Export Crashes</string>
+    <string name="viewer_home_clear_all_crashes">Clear All Crashes</string>
+    <string name="viewer_home_active_filters">Active filters:</string>
+    <string name="viewer_home_clear_all_filters">Clear all filters</string>
+    <string name="viewer_home_search_filter_description">Search filter: %1$s, selected. Double tap to remove</string>
+    <string name="viewer_home_method_filter_description">HTTP method filter: %1$s, selected. Double tap to remove</string>
+    <string name="viewer_home_status_filter_description">Status code filter: %1$s, selected. Double tap to remove</string>
+    <string name="viewer_home_tab_transactions">Transactions</string>
+    <string name="viewer_home_tab_crashes">Crashes</string>
+    <string name="viewer_home_tab_tools">Tools</string>
+    <string name="viewer_home_status_label">Status</string>
+
+    <!-- Clear Dialogs -->
+    <string name="viewer_dialog_clear_transactions_title">Clear All Transactions?</string>
+    <string name="viewer_dialog_clear_transactions_message">This will permanently delete all captured network transactions. This action cannot be undone.</string>
+    <string name="viewer_dialog_clear_crashes_title">Clear All Crashes?</string>
+    <string name="viewer_dialog_clear_crashes_message">This will permanently delete all captured crash reports. This action cannot be undone.</string>
+    <string name="viewer_dialog_delete_selected_title">Delete %1$d Transactions?</string>
+    <string name="viewer_dialog_delete_selected_message">This will permanently delete the selected transactions. This action cannot be undone.</string>
+    <string name="viewer_dialog_button_clear">Clear</string>
+    <string name="viewer_dialog_button_delete">Delete</string>
+    <string name="viewer_dialog_button_cancel">Cancel</string>
+
+    <!-- TransactionDetailScreen -->
+    <string name="viewer_transaction_detail_back">Back</string>
+    <string name="viewer_transaction_detail_close_search">Close search</string>
+    <string name="viewer_transaction_detail_search_placeholder">Search in body…</string>
+    <string name="viewer_transaction_detail_clear_search">Clear</string>
+    <string name="viewer_transaction_detail_search">Search</string>
+    <string name="viewer_transaction_detail_options">Options</string>
+    <string name="viewer_transaction_detail_copy_as_text">Copy as Text</string>
+    <string name="viewer_transaction_detail_copy_as_curl">Copy as cURL</string>
+    <string name="viewer_transaction_detail_share_as_json">Share as JSON</string>
+    <string name="viewer_transaction_detail_tab_overview">Overview</string>
+    <string name="viewer_transaction_detail_tab_request">Request</string>
+    <string name="viewer_transaction_detail_tab_response">Response</string>
+    <string name="viewer_transaction_detail_previous_match">Previous match</string>
+    <string name="viewer_transaction_detail_next_match">Next match</string>
+    <string name="viewer_transaction_detail_no_matches">No matches</string>
+    <string name="viewer_transaction_detail_not_found">Transaction not found</string>
+
+    <!-- Overview Tab -->
+    <string name="viewer_overview_timing">Timing</string>
+    <string name="viewer_overview_url">URL</string>
+    <string name="viewer_overview_method">Method</string>
+    <string name="viewer_overview_status">Status</string>
+    <string name="viewer_overview_response_code">Response Code</string>
+    <string name="viewer_overview_duration">Duration</string>
+    <string name="viewer_overview_timestamp">Timestamp</string>
+    <string name="viewer_overview_timeline_title">Request/Response Timeline</string>
+    <string name="viewer_overview_timeline_request">Request</string>
+    <string name="viewer_overview_timeline_response">Response</string>
+    <string name="viewer_overview_timeline_failed">Failed</string>
+    <string name="viewer_overview_security">Security</string>
+    <string name="viewer_overview_protocol">Protocol</string>
+    <string name="viewer_overview_protocol_unknown">Unknown</string>
+    <string name="viewer_overview_secure">Secure</string>
+    <string name="viewer_overview_insecure">Insecure</string>
+    <string name="viewer_overview_secure_connection">Secure Connection</string>
+    <string name="viewer_overview_insecure_connection">Insecure Connection</string>
+    <string name="viewer_overview_data_transfer">Data Transfer</string>
+    <string name="viewer_overview_request_size">Request Size</string>
+    <string name="viewer_overview_response_size">Response Size</string>
+    <string name="viewer_overview_total_transfer">Total Transfer</string>
+    <string name="viewer_overview_extensions">Extensions</string>
+
+    <!-- Request/Response Tab -->
+    <string name="viewer_body_headers">Headers</string>
+    <string name="viewer_body_body">Body</string>
+    <string name="viewer_body_body_image">Body (Image)</string>
+    <string name="viewer_body_body_pdf">Body (PDF)</string>
+    <string name="viewer_body_processing">Processing body…</string>
+    <string name="viewer_body_no_request_data">No request data</string>
+    <string name="viewer_body_no_response_data">No response data</string>
+    <string name="viewer_body_no_response_received">No response received</string>
+    <string name="viewer_body_copy_all">Copy All</string>
+    <string name="viewer_body_copy">Copy</string>
+    <string name="viewer_body_expand">Expand</string>
+    <string name="viewer_body_collapse">Collapse</string>
+    <string name="viewer_body_pretty">Pretty</string>
+    <string name="viewer_body_raw">Raw</string>
+
+    <!-- CrashDetailScreen -->
+    <string name="viewer_crash_detail_title">Crash Details</string>
+    <string name="viewer_crash_detail_back">Back</string>
+    <string name="viewer_crash_detail_share">Share</string>
+    <string name="viewer_crash_detail_not_found">Crash not found</string>
+    <string name="viewer_crash_detail_crash_label">CRASH</string>
+    <string name="viewer_crash_detail_at">at </string>
+    <string name="viewer_crash_detail_exception_message">Exception Message</string>
+    <string name="viewer_crash_detail_copy_message">Copy message</string>
+    <string name="viewer_crash_detail_stack_trace">Stack Trace</string>
+    <string name="viewer_crash_detail_copy_stack_trace">Copy stack trace</string>
+    <string name="viewer_crash_detail_app_code">App Code (%1$d)</string>
+    <string name="viewer_crash_detail_framework_system">Framework &amp; System (%1$d)</string>
+    <string name="viewer_crash_report_title">WormaCeptor Crash Report</string>
+
+    <!-- CrashListScreen -->
+    <string name="viewer_crash_list_critical_crash">Critical crash</string>
+    <string name="viewer_crash_list_warning">Warning</string>
+    <string name="viewer_crash_list_no_crashes">No crashes</string>
+    <string name="viewer_crash_list_no_crashes_title">No crashes captured</string>
+    <string name="viewer_crash_list_no_crashes_description">Your app is running smoothly</string>
+    <string name="viewer_crash_list_just_now">Just now</string>
+    <string name="viewer_crash_list_min_ago">%1$d min ago</string>
+    <string name="viewer_crash_list_hr_ago">%1$d hr ago</string>
+    <string name="viewer_crash_list_day_ago">%1$d day ago</string>
+    <string name="viewer_crash_list_days_ago">%1$d days ago</string>
+
+    <!-- TransactionListScreen -->
+    <string name="viewer_transaction_list_no_transactions">No transactions</string>
+    <string name="viewer_transaction_list_no_matches_title">No matches found</string>
+    <string name="viewer_transaction_list_no_transactions_title">No transactions yet</string>
+    <string name="viewer_transaction_list_no_matches_description">Try adjusting your filters to see more results</string>
+    <string name="viewer_transaction_list_no_transactions_description">Network requests will appear here</string>
+    <string name="viewer_transaction_list_clear_filters">Clear Filters</string>
+
+    <!-- FilterBottomSheetContent -->
+    <string name="viewer_filter_title">Filters</string>
+    <string name="viewer_filter_results_count">%1$d of %2$d requests</string>
+    <string name="viewer_filter_results_description">%1$d of %2$d requests shown</string>
+    <string name="viewer_filter_search_placeholder">Search path, host, or method…</string>
+    <string name="viewer_filter_search">Search</string>
+    <string name="viewer_filter_clear">Clear</string>
+    <string name="viewer_filter_http_method">HTTP Method</string>
+    <string name="viewer_filter_status_code">Status Code</string>
+    <string name="viewer_filter_success">Success</string>
+    <string name="viewer_filter_redirect">Redirect</string>
+    <string name="viewer_filter_client_error">Client Error</string>
+    <string name="viewer_filter_server_error">Server Error</string>
+    <string name="viewer_filter_no_items">No items available</string>
+    <string name="viewer_filter_selected">Selected, %1$d items</string>
+    <string name="viewer_filter_items_count">%1$d items</string>
+    <string name="viewer_filter_action_select">Double tap to select</string>
+    <string name="viewer_filter_action_deselect">Double tap to deselect</string>
+    <string name="viewer_filter_disabled">Disabled</string>
+    <string name="viewer_filter_selected_indicator">Selected</string>
+    <string name="viewer_filter_clear_all">Clear All</string>
+    <string name="viewer_filter_done">Done</string>
+
+    <!-- MetricsCard -->
+    <string name="viewer_metrics_title">Performance Metrics</string>
+    <string name="viewer_metrics_success">Success</string>
+    <string name="viewer_metrics_total">Total</string>
+    <string name="viewer_metrics_avg_time">Avg Time</string>
+    <string name="viewer_metrics_response_time_distribution">Response Time Distribution</string>
+    <string name="viewer_metrics_fast">Fast (&lt;100ms)</string>
+    <string name="viewer_metrics_medium">Medium (100–500ms)</string>
+    <string name="viewer_metrics_slow">Slow (&gt;500ms)</string>
+    <string name="viewer_metrics_status_code_breakdown">Status Code Breakdown</string>
+    <string name="viewer_metrics_status_2xx_success">2xx Success</string>
+    <string name="viewer_metrics_status_3xx_redirect">3xx Redirect</string>
+    <string name="viewer_metrics_status_4xx_client_error">4xx Client Error</string>
+    <string name="viewer_metrics_status_5xx_server_error">5xx Server Error</string>
+    <string name="viewer_metrics_requests_by_method">Requests by Method</string>
+
+    <!-- ToolsTab -->
+    <string name="viewer_tools_search_placeholder">Search tools…</string>
+    <string name="viewer_tools_quick_access">QUICK ACCESS</string>
+    <string name="viewer_tools_no_tools_found">No tools found for \"%1$s\"</string>
+    <string name="viewer_tools_no_tools_available">No tools available</string>
+    <string name="viewer_tools_try_different_search">Try a different search term</string>
+    <string name="viewer_tools_max_favorites">Maximum %1$d favorites allowed</string>
+    <string name="viewer_tools_favorite">Favorite</string>
+    <string name="viewer_tools_performance_overlay">Performance Overlay</string>
+    <string name="viewer_tools_overlay_showing">Showing CPU, Memory, FPS</string>
+    <string name="viewer_tools_overlay_tap_enable">Tap to enable floating widget</string>
+    <string name="viewer_tools_overlay_grant">Grant</string>
+    <string name="viewer_tools_overlay_on">ON</string>
+    <string name="viewer_tools_overlay_off">OFF</string>
+
+    <!-- BulkActionBar -->
+    <string name="viewer_bulk_cancel_selection">Cancel selection</string>
+    <string name="viewer_bulk_selected_count">%1$d selected</string>
+    <string name="viewer_bulk_select_all">Select all</string>
+    <string name="viewer_bulk_deselect_all">Deselect all</string>
+    <string name="viewer_bulk_share_selected">Share selected</string>
+    <string name="viewer_bulk_export_selected">Export selected</string>
+    <string name="viewer_bulk_delete_selected">Delete selected</string>
+
+    <!-- SelectableTransactionItem -->
+    <string name="viewer_item_selected">Selected</string>
+
+    <!-- TransactionContextMenu -->
+    <string name="viewer_context_menu_copy_url">Copy URL</string>
+    <string name="viewer_context_menu_share">Share</string>
+    <string name="viewer_context_menu_share_transaction">Share transaction</string>
+    <string name="viewer_context_menu_copy_as_curl">Copy as cURL</string>
+    <string name="viewer_context_menu_copy_as_curl_description">Copy as cURL command</string>
+    <string name="viewer_context_menu_delete">Delete</string>
+    <string name="viewer_context_menu_delete_transaction">Delete transaction</string>
+
+    <!-- LoadingStates -->
+    <string name="viewer_loading_more">Loading more transactions…</string>
+    <string name="viewer_loading_error_title">Something went wrong</string>
+    <string name="viewer_loading_error_network">Connection error</string>
+    <string name="viewer_loading_error_not_found">Not found</string>
+    <string name="viewer_loading_error_description">Error: %1$s</string>
+    <string name="viewer_loading_retry">Try Again</string>
+    <string name="viewer_loading_retrying">Retrying…</string>
+    <string name="viewer_loading_error">Error</string>
+    <string name="viewer_loading_load_more">Load more</string>
+    <string name="viewer_loading_remaining">(%1$s remaining)</string>
+    <string name="viewer_loading_more_content">Loading more content…</string>
+    <string name="viewer_loading_scroll_to_top">Scroll to top</string>
+    <string name="viewer_loading_back_to_top">Back to top</string>
+    <string name="viewer_loading_back_to_top_count">Back to top (%1$d)</string>
+    <string name="viewer_loading_default">Loading…</string>
+
+    <!-- PDF Viewer -->
+    <string name="viewer_pdf_page_number">Page number</string>
+    <string name="viewer_pdf_go">Go</string>
+    <string name="viewer_pdf_cancel">Cancel</string>
+    <string name="viewer_pdf_close">Close</string>
+    <string name="viewer_pdf_open">Open</string>
+    <string name="viewer_pdf_download">Download</string>
+    <string name="viewer_pdf_share">Share</string>
+    <string name="viewer_pdf_page_description">Page %1$d</string>
+    <string name="viewer_pdf_first_page">First page</string>
+    <string name="viewer_pdf_previous_page">Previous page</string>
+    <string name="viewer_pdf_next_page">Next page</string>
+    <string name="viewer_pdf_last_page">Last page</string>
+    <string name="viewer_pdf_error">Error opening PDF</string>
+    <string name="viewer_pdf_preview">PDF Preview</string>
+    <string name="viewer_pdf_page_count">Page count</string>
+    <string name="viewer_pdf_open_fullscreen">Open fullscreen</string>
+    <string name="viewer_pdf_error_loading">Error loading PDF</string>
+    <string name="viewer_pdf_password_protected">Password protected</string>
+
+    <!-- Image Viewer -->
+    <string name="viewer_image">Image</string>
+    <string name="viewer_image_preview">Response image preview</string>
+    <string name="viewer_image_error">Error loading image</string>
+    <string name="viewer_image_fullscreen">View fullscreen</string>
+    <string name="viewer_image_close">Close</string>
+    <string name="viewer_image_zoom_in">Zoom in</string>
+    <string name="viewer_image_zoom_out">Zoom out</string>
+
+    <!-- Gesture Navigation -->
+    <string name="viewer_gesture_previous">Previous transaction</string>
+    <string name="viewer_gesture_next">Next transaction</string>
+    <string name="viewer_gesture_reset_zoom">Reset zoom</string>
+    <string name="viewer_gesture_back">Back</string>
+
+    <!-- Multipart -->
+    <string name="viewer_multipart_content_type">Multipart content type</string>
+
+    <!-- Quick Filter -->
+    <string name="viewer_quick_filter_selected">Selected</string>
+
+    <!-- Empty States -->
+    <string name="viewer_empty_no_matches">No matches found</string>
+    <string name="viewer_empty_no_transactions">No transactions yet</string>
+    <string name="viewer_empty_search_hint">Try a different search term</string>
+    <string name="viewer_empty_filter_hint">Try adjusting your filters to see more results</string>
+    <string name="viewer_empty_transactions_hint">Network requests will appear here as they happen</string>
+    <string name="viewer_empty_clear_search">Clear Search</string>
+    <string name="viewer_empty_clear_filters">Clear Filters</string>
+</resources>

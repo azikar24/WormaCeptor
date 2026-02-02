@@ -30,9 +30,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
  * Action bar that appears when items are selected in multi-select mode.
@@ -80,7 +82,7 @@ fun BulkActionBar(
                     IconButton(onClick = onCancel) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Cancel selection",
+                            contentDescription = stringResource(R.string.viewer_bulk_cancel_selection),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
@@ -88,7 +90,7 @@ fun BulkActionBar(
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
 
                     Text(
-                        text = "$selectedCount selected",
+                        text = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -104,7 +106,7 @@ fun BulkActionBar(
                         IconButton(onClick = onSelectAll) {
                             Icon(
                                 imageVector = Icons.Default.SelectAll,
-                                contentDescription = "Select all",
+                                contentDescription = stringResource(R.string.viewer_bulk_select_all),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.size(24.dp),
                             )
@@ -113,7 +115,7 @@ fun BulkActionBar(
                         IconButton(onClick = onDeselectAll) {
                             Icon(
                                 imageVector = Icons.Outlined.Deselect,
-                                contentDescription = "Deselect all",
+                                contentDescription = stringResource(R.string.viewer_bulk_deselect_all),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.size(24.dp),
                             )
@@ -123,7 +125,7 @@ fun BulkActionBar(
                     IconButton(onClick = onShare) {
                         Icon(
                             imageVector = Icons.Default.Share,
-                            contentDescription = "Share selected",
+                            contentDescription = stringResource(R.string.viewer_bulk_share_selected),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.size(24.dp),
                         )
@@ -132,7 +134,7 @@ fun BulkActionBar(
                     IconButton(onClick = onExport) {
                         Icon(
                             imageVector = Icons.Default.Download,
-                            contentDescription = "Export selected",
+                            contentDescription = stringResource(R.string.viewer_bulk_export_selected),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.size(24.dp),
                         )
@@ -141,7 +143,7 @@ fun BulkActionBar(
                     IconButton(onClick = onDelete) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete selected",
+                            contentDescription = stringResource(R.string.viewer_bulk_delete_selected),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(24.dp),
                         )

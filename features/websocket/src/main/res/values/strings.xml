@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="websocket_back">Back</string>
+    <string name="websocket_clear_all">Clear all</string>
+    <string name="websocket_clear_messages">Clear messages</string>
+</resources>

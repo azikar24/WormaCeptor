@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -65,6 +66,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
+import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.rateLimitColors
 
 /**
@@ -116,7 +118,7 @@ fun RateLimitScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.ratelimit_back),
                             )
                         }
                     }
@@ -125,13 +127,13 @@ fun RateLimitScreen(
                     IconButton(onClick = onResetToDefaults) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Reset to defaults",
+                            contentDescription = stringResource(R.string.ratelimit_reset_defaults),
                         )
                     }
                     IconButton(onClick = onClearStats) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Clear statistics",
+                            contentDescription = stringResource(R.string.ratelimit_clear_statistics),
                         )
                     }
                 },

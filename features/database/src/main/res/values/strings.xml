@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright AziKar24 2025.
+  -->
+
+<resources>
+    <!-- DatabaseListScreen -->
+    <string name="database_list_title">SQLite Browser</string>
+    <string name="database_list_back">Back</string>
+    <string name="database_list_search">Search</string>
+    <string name="database_list_refresh">Refresh</string>
+    <string name="database_list_search_placeholder">Search databases…</string>
+    <string name="database_list_empty">No databases found</string>
+    <string name="database_list_tables_count">%d tables</string>
+
+    <!-- QueryScreen -->
+    <string name="database_query_title">SQL Query</string>
+    <string name="database_query_back">Back</string>
+    <string name="database_query_clear">Clear</string>
+    <string name="database_query_execute">Execute</string>
+    <string name="database_query_placeholder">Enter SQL query…</string>
+    <string name="database_query_instruction">Enter a SQL query and press Execute</string>
+    <string name="database_query_database_label">Database: %s</string>
+    <string name="database_query_error">Error: %s</string>
+    <string name="database_query_rows_returned">%d rows returned</string>
+    <string name="database_query_history_title">Query History</string>
+    <string name="database_query_null_value">NULL</string>
+
+    <!-- TableDataScreen -->
+    <string name="database_table_data_back">Back</string>
+    <string name="database_table_data_page">Page %d</string>
+    <string name="database_table_data_schema">Schema</string>
+    <string name="database_table_data_previous">Previous</string>
+    <string name="database_table_data_next">Next</string>
+    <string name="database_table_data_pk">PK</string>
+    <string name="database_table_data_nullable">NULLABLE</string>
+    <string name="database_table_data_null_value">NULL</string>
+    <string name="database_table_data_no_data">No data</string>
+
+    <!-- TableListScreen -->
+    <string name="database_table_list_back">Back</string>
+    <string name="database_table_list_search">Search</string>
+    <string name="database_table_list_sql_query">SQL Query</string>
+    <string name="database_table_list_search_placeholder">Search tables…</string>
+    <string name="database_table_list_empty">No tables found</string>
+    <string name="database_table_list_tables_count">%d tables</string>
+    <string name="database_table_list_rows_count">%d rows</string>
+    <string name="database_table_list_columns_count">%d columns</string>
+</resources>

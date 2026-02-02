@@ -32,9 +32,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileInfo
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -64,7 +66,7 @@ fun FileInfoSheet(
         ) {
             // Title
             Text(
-                text = "File Information",
+                text = stringResource(R.string.filebrowser_file_information),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -73,7 +75,7 @@ fun FileInfoSheet(
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // File name
-            InfoRow("Name", fileInfo.name)
+            InfoRow(stringResource(R.string.filebrowser_label_name), fileInfo.name)
 
             // File path with copy button
             Row(
@@ -83,7 +85,7 @@ fun FileInfoSheet(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Path",
+                        text = stringResource(R.string.filebrowser_label_path),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -101,7 +103,7 @@ fun FileInfoSheet(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy path",
+                        contentDescription = stringResource(R.string.filebrowser_copy_path),
                     )
                 }
             }
@@ -109,31 +111,36 @@ fun FileInfoSheet(
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // File size
-            InfoRow("Size", formatBytes(fileInfo.sizeBytes))
+            InfoRow(stringResource(R.string.filebrowser_label_size), formatBytes(fileInfo.sizeBytes))
 
             // Last modified
-            InfoRow("Modified", formatTimestamp(fileInfo.lastModified))
+            InfoRow(stringResource(R.string.filebrowser_label_modified), formatTimestamp(fileInfo.lastModified))
 
             // MIME type
+            val typeLabel = stringResource(R.string.filebrowser_label_type)
             fileInfo.mimeType?.let {
-                InfoRow("Type", it)
+                InfoRow(typeLabel, it)
             }
 
             // Extension
+            val extensionLabel = stringResource(R.string.filebrowser_label_extension)
             fileInfo.extension?.let {
-                InfoRow("Extension", it)
+                InfoRow(extensionLabel, it)
             }
 
             // Permissions
+            val permissionRead = stringResource(R.string.filebrowser_permission_read)
+            val permissionWrite = stringResource(R.string.filebrowser_permission_write)
+            val permissionNone = stringResource(R.string.filebrowser_permission_none)
             val permissions = buildString {
-                append(if (fileInfo.isReadable) "Read" else "")
+                append(if (fileInfo.isReadable) permissionRead else "")
                 if (fileInfo.isWritable) {
                     if (isNotEmpty()) append(", ")
-                    append("Write")
+                    append(permissionWrite)
                 }
-                if (isEmpty()) append("None")
+                if (isEmpty()) append(permissionNone)
             }
-            InfoRow("Permissions", permissions)
+            InfoRow(stringResource(R.string.filebrowser_label_permissions), permissions)
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
             HorizontalDivider()
@@ -148,7 +155,7 @@ fun FileInfoSheet(
                     onClick = onDismiss,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.filebrowser_close))
                 }
 
                 if (fileInfo.isWritable) {
@@ -167,7 +174,7 @@ fun FileInfoSheet(
                             contentDescription = null,
                         )
                         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text("Delete")
+                        Text(stringResource(R.string.filebrowser_delete))
                     }
                 }
             }

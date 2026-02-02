@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright AziKar24 2025.
+  -->
+<resources>
+    <!-- FileBrowserScreen -->
+    <string name="filebrowser_title">File Browser</string>
+    <string name="filebrowser_back">Back</string>
+    <string name="filebrowser_search">Search</string>
+    <string name="filebrowser_sort">Sort</string>
+    <string name="filebrowser_sort_name">Name</string>
+    <string name="filebrowser_sort_size">Size</string>
+    <string name="filebrowser_sort_date">Date</string>
+    <string name="filebrowser_search_placeholder">Search files...</string>
+    <string name="filebrowser_no_files_found">No files found</string>
+
+    <!-- FileInfoSheet -->
+    <string name="filebrowser_file_information">File Information</string>
+    <string name="filebrowser_label_name">Name</string>
+    <string name="filebrowser_label_path">Path</string>
+    <string name="filebrowser_copy_path">Copy path</string>
+    <string name="filebrowser_label_size">Size</string>
+    <string name="filebrowser_label_modified">Modified</string>
+    <string name="filebrowser_label_type">Type</string>
+    <string name="filebrowser_label_extension">Extension</string>
+    <string name="filebrowser_label_permissions">Permissions</string>
+    <string name="filebrowser_permission_read">Read</string>
+    <string name="filebrowser_permission_write">Write</string>
+    <string name="filebrowser_permission_none">None</string>
+    <string name="filebrowser_close">Close</string>
+    <string name="filebrowser_delete">Delete</string>
+
+    <!-- FileViewerScreen -->
+    <string name="filebrowser_valid_json">Valid JSON</string>
+    <string name="filebrowser_invalid_json">Invalid JSON</string>
+    <string name="filebrowser_valid_xml">Valid XML</string>
+    <string name="filebrowser_invalid_xml">Invalid XML</string>
+    <string name="filebrowser_valid">Valid</string>
+    <string name="filebrowser_invalid">Invalid</string>
+    <string name="filebrowser_image_preview">Image preview</string>
+    <string name="filebrowser_json_lines">JSON (%1$d lines)</string>
+    <string name="filebrowser_xml_lines">XML (%1$d lines)</string>
+    <string name="filebrowser_binary_file">Binary file (%1$s)</string>
+    <string name="filebrowser_pdf_info">PDF: %1$d pages (%2$s)</string>
+    <string name="filebrowser_page_number">Page %1$d</string>
+    <string name="filebrowser_pdf_page">PDF page %1$d</string>
+    <string name="filebrowser_image_dimensions">%1$d x %2$d</string>
+    <string name="filebrowser_image_dimensions_animated">%1$d x %2$d (animated)</string>
+    <string name="filebrowser_file_too_large">File too large: %1$s\nMax size: %2$s</string>
+
+    <!-- BreadcrumbBar -->
+    <string name="filebrowser_root">Root</string>
+
+    <!-- FileListItem -->
+    <string name="filebrowser_locked">Locked</string>
+</resources>

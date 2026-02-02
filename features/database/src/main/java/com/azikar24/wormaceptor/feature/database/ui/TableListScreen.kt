@@ -38,11 +38,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TableInfo
+import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -72,7 +74,7 @@ fun TableListScreen(
                         Column {
                             Text(databaseName)
                             Text(
-                                text = "${tables.size} tables",
+                                text = stringResource(R.string.database_table_list_tables_count, tables.size),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -82,7 +84,7 @@ fun TableListScreen(
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.database_table_list_back),
                             )
                         }
                     },
@@ -90,13 +92,13 @@ fun TableListScreen(
                         IconButton(onClick = { searchActive = !searchActive }) {
                             Icon(
                                 imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(R.string.database_table_list_search),
                             )
                         }
                         IconButton(onClick = onQueryClick) {
                             Icon(
                                 imageVector = Icons.Default.Terminal,
-                                contentDescription = "SQL Query",
+                                contentDescription = stringResource(R.string.database_table_list_sql_query),
                             )
                         }
                     },
@@ -106,7 +108,7 @@ fun TableListScreen(
                     WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
-                        placeholder = "Search tables...",
+                        placeholder = stringResource(R.string.database_table_list_search_placeholder),
                         onSearch = { searchActive = false },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -163,7 +165,7 @@ fun TableListScreen(
                             modifier = Modifier.size(48.dp),
                         )
                         Text(
-                            text = "No tables found",
+                            text = stringResource(R.string.database_table_list_empty),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -209,12 +211,12 @@ private fun TableListItem(table: TableInfo, onClick: () -> Unit, modifier: Modif
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
-                    text = "${table.rowCount} rows",
+                    text = stringResource(R.string.database_table_list_rows_count, table.rowCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = "${table.columnCount} columns",
+                    text = stringResource(R.string.database_table_list_columns_count, table.columnCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

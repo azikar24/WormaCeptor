@@ -38,11 +38,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
+import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -67,12 +68,12 @@ fun DatabaseListScreen(
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("SQLite Browser") },
+                    title = { Text(stringResource(R.string.database_list_title)) },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.database_list_back),
                             )
                         }
                     },
@@ -80,13 +81,13 @@ fun DatabaseListScreen(
                         IconButton(onClick = { searchActive = !searchActive }) {
                             Icon(
                                 imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(R.string.database_list_search),
                             )
                         }
                         IconButton(onClick = onRefresh) {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh",
+                                contentDescription = stringResource(R.string.database_list_refresh),
                             )
                         }
                     },
@@ -96,7 +97,7 @@ fun DatabaseListScreen(
                     WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
-                        placeholder = "Search databases...",
+                        placeholder = stringResource(R.string.database_list_search_placeholder),
                         onSearch = { searchActive = false },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -150,10 +151,10 @@ fun DatabaseListScreen(
                             imageVector = Icons.Default.Storage,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                         )
                         Text(
-                            text = "No databases found",
+                            text = stringResource(R.string.database_list_empty),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -199,7 +200,7 @@ private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifi
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
-                    text = "${database.tableCount} tables",
+                    text = stringResource(R.string.database_list_tables_count, database.tableCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

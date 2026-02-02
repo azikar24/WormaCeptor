@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -55,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
@@ -262,7 +264,7 @@ private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier
         if (isSelected) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = "Selected",
+                contentDescription = stringResource(R.string.viewer_item_selected),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .padding(4.dp)

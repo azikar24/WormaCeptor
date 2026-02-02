@@ -18,11 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileEntry
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -98,7 +100,7 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
         // Permissions indicator
         if (!file.isReadable) {
             Text(
-                text = "Locked",
+                text = stringResource(R.string.filebrowser_locked),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.error,
             )

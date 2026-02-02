@@ -89,6 +89,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -99,6 +100,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -249,9 +251,10 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                     )
                 },
         ) {
+            val currentError = error
             when {
                 isLoading -> LoadingOverlay()
-                error != null -> ErrorOverlay(error!!, onDismiss)
+                currentError != null -> ErrorOverlay(currentError, onDismiss)
                 pages.isNotEmpty() -> {
                     // Main PDF viewer
                     HorizontalPager(
@@ -426,7 +429,7 @@ private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Page ${pageIndex + 1}",
+                contentDescription = stringResource(R.string.viewer_pdf_page_description, pageIndex + 1),
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
@@ -482,7 +485,7 @@ private fun TopControlBar(
             IconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.viewer_pdf_close),
                     tint = Color.White,
                 )
             }
@@ -511,7 +514,7 @@ private fun TopControlBar(
             IconButton(onClick = onDownload) {
                 Icon(
                     imageVector = Icons.Default.Download,
-                    contentDescription = "Download",
+                    contentDescription = stringResource(R.string.viewer_pdf_download),
                     tint = Color.White,
                 )
             }
@@ -519,7 +522,7 @@ private fun TopControlBar(
             IconButton(onClick = onShare) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
+                    contentDescription = stringResource(R.string.viewer_pdf_share),
                     tint = Color.White,
                 )
             }
@@ -561,7 +564,7 @@ private fun BottomNavigationBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.FirstPage,
-                    contentDescription = "First page",
+                    contentDescription = stringResource(R.string.viewer_pdf_first_page),
                     tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
@@ -573,7 +576,7 @@ private fun BottomNavigationBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
-                    contentDescription = "Previous page",
+                    contentDescription = stringResource(R.string.viewer_pdf_previous_page),
                     tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
@@ -602,7 +605,7 @@ private fun BottomNavigationBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
-                    contentDescription = "Next page",
+                    contentDescription = stringResource(R.string.viewer_pdf_next_page),
                     tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
@@ -614,7 +617,7 @@ private fun BottomNavigationBar(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.LastPage,
-                    contentDescription = "Last page",
+                    contentDescription = stringResource(R.string.viewer_pdf_last_page),
                     tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
                 )
             }
@@ -691,7 +694,7 @@ private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, 
         ) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Page $pageNumber",
+                contentDescription = stringResource(R.string.viewer_pdf_page_description, pageNumber),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
             )
@@ -737,7 +740,7 @@ private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> U
                         pageInput = value.filter { it.isDigit() }
                         isError = false
                     },
-                    label = { Text("Page number") },
+                    label = { Text(stringResource(R.string.viewer_pdf_page_number)) },
                     singleLine = true,
                     isError = isError,
                     keyboardOptions = KeyboardOptions(
@@ -777,12 +780,12 @@ private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> U
                     }
                 },
             ) {
-                Text("Go", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.viewer_pdf_go), fontWeight = FontWeight.SemiBold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.viewer_pdf_cancel))
             }
         },
     )
@@ -825,7 +828,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
-                contentDescription = "Error opening PDF",
+                contentDescription = stringResource(R.string.viewer_pdf_error),
                 modifier = Modifier.size(56.dp),
                 tint = MaterialTheme.colorScheme.error,
             )
@@ -852,7 +855,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
                     containerColor = Color.White.copy(alpha = 0.2f),
                 ),
             ) {
-                Text("Close", color = Color.White)
+                Text(stringResource(R.string.viewer_pdf_close), color = Color.White)
             }
         }
     }

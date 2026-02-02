@@ -37,6 +37,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -46,6 +47,7 @@ import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 
@@ -223,7 +225,8 @@ fun TransactionListSkeleton(itemCount: Int = 5, modifier: Modifier = Modifier) {
  * Features a subtle pulsing animation and contextual messaging.
  */
 @Composable
-fun LoadingMoreIndicator(modifier: Modifier = Modifier, message: String = "Loading more transactions...") {
+fun LoadingMoreIndicator(modifier: Modifier = Modifier, message: String? = null) {
+    val displayMessage = message ?: stringResource(R.string.viewer_loading_more)
     val infiniteTransition = rememberInfiniteTransition(label = "loadingMore")
     val pulse by infiniteTransition.animateFloat(
         initialValue = 0.8f,
@@ -248,7 +251,7 @@ fun LoadingMoreIndicator(modifier: Modifier = Modifier, message: String = "Loadi
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
         Text(
-            text = message,
+            text = displayMessage,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = pulse),
             fontWeight = FontWeight.Medium,
@@ -374,7 +377,7 @@ fun ErrorState(
         ) {
             Icon(
                 imageVector = errorType.icon,
-                contentDescription = "Error: ${errorType.title}",
+                contentDescription = stringResource(R.string.viewer_loading_error_description, errorType.title),
                 modifier = Modifier.size(32.dp),
                 tint = WormaCeptorColors.StatusRed,
             )
@@ -430,14 +433,20 @@ fun ErrorState(
                 } else {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = "Retry",
+                        contentDescription = stringResource(R.string.viewer_loading_retry),
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
-                    text = if (isRetrying) "Retrying..." else "Try Again",
+                    text = if (isRetrying) {
+                        stringResource(
+                            R.string.viewer_loading_retrying,
+                        )
+                    } else {
+                        stringResource(R.string.viewer_loading_retry)
+                    },
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
@@ -464,7 +473,7 @@ fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = 
     ) {
         Icon(
             imageVector = Icons.Outlined.ErrorOutline,
-            contentDescription = "Error",
+            contentDescription = stringResource(R.string.viewer_loading_error),
             modifier = Modifier.size(20.dp),
             tint = WormaCeptorColors.StatusRed,
         )
@@ -488,7 +497,7 @@ fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = 
             ),
         ) {
             Text(
-                text = "Retry",
+                text = stringResource(R.string.viewer_loading_retry),
                 fontWeight = FontWeight.SemiBold,
                 color = WormaCeptorColors.StatusRed,
             )
@@ -498,11 +507,16 @@ fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = 
 
 enum class ErrorType(
     val icon: ImageVector,
-    val title: String,
+    val titleResId: Int,
 ) {
-    GENERIC(Icons.Outlined.ErrorOutline, "Something went wrong"),
-    NETWORK(Icons.Outlined.SignalWifiOff, "Connection error"),
-    NOT_FOUND(Icons.Outlined.Search, "Not found"),
+    GENERIC(Icons.Outlined.ErrorOutline, R.string.viewer_loading_error_title),
+    NETWORK(Icons.Outlined.SignalWifiOff, R.string.viewer_loading_error_network),
+    NOT_FOUND(Icons.Outlined.Search, R.string.viewer_loading_error_not_found),
+    ;
+
+    val title: String
+        @Composable
+        get() = stringResource(titleResId)
 }
 
 // ============================================================================
@@ -566,9 +580,9 @@ fun EnhancedEmptyState(
 
         Text(
             text = when {
-                hasSearchQuery -> "No matches found"
-                hasActiveFilters -> "No matches found"
-                else -> "No transactions yet"
+                hasSearchQuery -> stringResource(R.string.viewer_empty_no_matches)
+                hasActiveFilters -> stringResource(R.string.viewer_empty_no_matches)
+                else -> stringResource(R.string.viewer_empty_no_transactions)
             },
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold,
@@ -579,9 +593,9 @@ fun EnhancedEmptyState(
 
         Text(
             text = when {
-                hasSearchQuery -> "Try a different search term"
-                hasActiveFilters -> "Try adjusting your filters to see more results"
-                else -> "Network requests will appear here as they happen"
+                hasSearchQuery -> stringResource(R.string.viewer_empty_search_hint)
+                hasActiveFilters -> stringResource(R.string.viewer_empty_filter_hint)
+                else -> stringResource(R.string.viewer_empty_transactions_hint)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -599,7 +613,13 @@ fun EnhancedEmptyState(
                 ),
             ) {
                 Text(
-                    text = if (hasSearchQuery) "Clear Search" else "Clear Filters",
+                    text = if (hasSearchQuery) {
+                        stringResource(
+                            R.string.viewer_empty_clear_search,
+                        )
+                    } else {
+                        stringResource(R.string.viewer_empty_clear_filters)
+                    },
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
                         vertical = WormaCeptorDesignSystem.Spacing.xxs,
@@ -619,7 +639,7 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
             // Search icon representation
             Icon(
                 imageVector = Icons.Outlined.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.viewer_filter_search),
                 modifier = Modifier.size(40.dp),
                 tint = primaryColor,
             )
@@ -811,7 +831,7 @@ fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = M
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "Scroll to top",
+                contentDescription = stringResource(R.string.viewer_loading_scroll_to_top),
                 modifier = Modifier
                     .size(24.dp)
                     .rotate(rotation),
@@ -855,7 +875,7 @@ fun ScrollToTopExtendedFab(
             icon = {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Scroll to top",
+                    contentDescription = stringResource(R.string.viewer_loading_scroll_to_top),
                 )
             },
             text = {

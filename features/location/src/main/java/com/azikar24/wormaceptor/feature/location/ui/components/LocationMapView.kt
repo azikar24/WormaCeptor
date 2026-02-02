@@ -143,7 +143,7 @@ private fun updateMapMarkers(
         val marker = Marker(mapView).apply {
             position = location
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            title = "Real Location"
+            title = context.getString(R.string.location_real_location)
             snippet = formatCoordinates(location)
             icon = createMarkerDrawable(context, isReal = true)
         }
@@ -155,7 +155,11 @@ private fun updateMapMarkers(
         val marker = Marker(mapView).apply {
             position = location
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            title = if (isMockActive) "Mock Location (Active)" else "Mock Location"
+            title = if (isMockActive) {
+                context.getString(R.string.location_mock_location_active)
+            } else {
+                context.getString(R.string.location_mock_location)
+            }
             snippet = formatCoordinates(location)
             icon = createMarkerDrawable(context, isReal = false)
         }

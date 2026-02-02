@@ -44,11 +44,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
  * A data class representing a single part in multipart form data.
@@ -190,7 +192,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                 ) {
                     Icon(
                         imageVector = partIcon,
-                        contentDescription = "Multipart content type",
+                        contentDescription = stringResource(R.string.viewer_multipart_content_type),
                         modifier = Modifier
                             .padding(WormaCeptorDesignSystem.Spacing.xs)
                             .size(16.dp),

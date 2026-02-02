@@ -64,11 +64,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import kotlinx.collections.immutable.ImmutableList
@@ -129,7 +131,7 @@ fun CpuScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.cpu_back),
                             )
                         }
                     }
@@ -154,7 +156,7 @@ fun CpuScreen(
                     IconButton(onClick = onClearHistory) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Clear history",
+                            contentDescription = stringResource(R.string.cpu_clear_history),
                         )
                     }
                 },
@@ -540,7 +542,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 ChartLegendItem(
-                    label = "CPU Usage",
+                    label = stringResource(R.string.cpu_usage_label),
                     color = colors.cpuUsage,
                 )
             }
@@ -693,7 +695,7 @@ private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Mod
                 // CPU Frequency
                 SystemInfoItem(
                     icon = Icons.Default.Speed,
-                    label = "Frequency",
+                    label = stringResource(R.string.cpu_frequency_label),
                     value = if (currentCpu.cpuFrequencyMHz > 0) {
                         "${currentCpu.cpuFrequencyMHz} MHz"
                     } else {
@@ -707,7 +709,7 @@ private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Mod
                 val cpuTemp = currentCpu.cpuTemperature
                 SystemInfoItem(
                     icon = Icons.Default.Thermostat,
-                    label = "Temperature",
+                    label = stringResource(R.string.cpu_temperature_label),
                     value = cpuTemp?.let {
                         String.format("%.1f C", it)
                     } ?: "N/A",
@@ -722,7 +724,7 @@ private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Mod
                 // Core count
                 SystemInfoItem(
                     icon = Icons.Default.Memory,
-                    label = "Cores",
+                    label = stringResource(R.string.cpu_cores_label),
                     value = "${currentCpu.coreCount}",
                     iconTint = colors.cpuUsage,
                     colors = colors,
@@ -802,7 +804,7 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
     ) {
         Icon(
             imageVector = Icons.Default.Warning,
-            contentDescription = "CPU warning",
+            contentDescription = stringResource(R.string.cpu_warning),
             tint = MaterialTheme.colorScheme.onError,
             modifier = Modifier
                 .padding(WormaCeptorDesignSystem.Spacing.xs)

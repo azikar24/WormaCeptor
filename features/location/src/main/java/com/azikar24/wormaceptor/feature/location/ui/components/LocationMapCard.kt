@@ -29,9 +29,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.location.R
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import org.osmdroid.util.GeoPoint
 
@@ -64,11 +66,11 @@ fun LocationMapCard(
         ) {
             LegendItem(
                 color = LocationColors.builtIn,
-                label = "Real Location",
+                label = stringResource(R.string.location_real_location),
             )
             LegendItem(
                 color = LocationColors.enabled,
-                label = "Mock Location",
+                label = stringResource(R.string.location_mock_location),
             )
         }
 
@@ -105,7 +107,7 @@ fun LocationMapCard(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = "Tap to set coordinates",
+                    text = stringResource(R.string.location_tap_to_set),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -124,7 +126,7 @@ fun LocationMapCard(
                         color = MaterialTheme.colorScheme.secondaryContainer,
                     ) {
                         Text(
-                            text = "Distance: ${formatDistance(distance)}",
+                            text = stringResource(R.string.location_distance, formatDistance(distance)),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,

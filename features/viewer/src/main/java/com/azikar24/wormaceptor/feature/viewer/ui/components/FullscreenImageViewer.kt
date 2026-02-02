@@ -72,6 +72,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -81,6 +82,7 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -293,7 +295,7 @@ private fun FullscreenImageContent(
                     .crossfade(true)
                     .build(),
                 imageLoader = gifImageLoader,
-                contentDescription = "Fullscreen image",
+                contentDescription = stringResource(R.string.viewer_image_preview),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.fillMaxSize(),
                 onState = { state ->
@@ -411,7 +413,7 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.viewer_image_close),
                 )
             }
 
@@ -432,7 +434,7 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                 ) {
                     Icon(
                         imageVector = Icons.Default.ZoomOut,
-                        contentDescription = "Zoom out",
+                        contentDescription = stringResource(R.string.viewer_image_zoom_out),
                     )
                 }
 
@@ -448,7 +450,7 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                 ) {
                     Icon(
                         imageVector = Icons.Default.ZoomIn,
-                        contentDescription = "Zoom in",
+                        contentDescription = stringResource(R.string.viewer_image_zoom_in),
                     )
                 }
             }

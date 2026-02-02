@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="threadviolation_back">Back</string>
+    <string name="threadviolation_clear">Clear</string>
+    <string name="threadviolation_copy_stack">Copy stack trace</string>
+    <string name="threadviolation_filter_all">All</string>
+</resources>

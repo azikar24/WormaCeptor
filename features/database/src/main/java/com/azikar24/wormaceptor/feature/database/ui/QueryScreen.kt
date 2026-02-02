@@ -39,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.QueryResult
+import com.azikar24.wormaceptor.feature.database.R
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 
@@ -70,12 +72,12 @@ fun QueryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("SQL Query") },
+                title = { Text(stringResource(R.string.database_query_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.database_query_back),
                         )
                     }
                 },
@@ -84,7 +86,7 @@ fun QueryScreen(
                         IconButton(onClick = onClearQuery) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear",
+                                contentDescription = stringResource(R.string.database_query_clear),
                             )
                         }
                     }
@@ -100,7 +102,7 @@ fun QueryScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.PlayArrow,
-                                contentDescription = "Execute",
+                                contentDescription = stringResource(R.string.database_query_execute),
                             )
                         }
                     }
@@ -124,7 +126,7 @@ fun QueryScreen(
             ) {
                 if (sqlQuery.isEmpty()) {
                     Text(
-                        text = "Enter SQL query...",
+                        text = stringResource(R.string.database_query_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.Monospace,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -177,12 +179,12 @@ fun QueryScreen(
                             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
                             Text(
-                                text = "Enter a SQL query and press Execute",
+                                text = stringResource(R.string.database_query_instruction),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
-                                text = "Database: $databaseName",
+                                text = stringResource(R.string.database_query_database_label, databaseName),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -204,7 +206,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
             contentAlignment = Alignment.TopStart,
         ) {
             Text(
-                text = "Error: ${result.error}",
+                text = stringResource(R.string.database_query_error, result.error ?: ""),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.error,
             )
@@ -212,7 +214,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
     } else {
         Column(modifier = modifier) {
             Text(
-                text = "${result.rowCount} rows returned",
+                text = stringResource(R.string.database_query_rows_returned, result.rowCount),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
@@ -263,8 +265,9 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                                     .widthIn(min = 100.dp, max = 200.dp)
                                     .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                             ) {
+                                val nullValue = stringResource(R.string.database_query_null_value)
                                 Text(
-                                    text = cell?.toString() ?: "NULL",
+                                    text = cell?.toString() ?: nullValue,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
                                     color = if (cell == null) {
@@ -293,7 +296,7 @@ private fun QueryHistoryView(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Query History",
+            text = stringResource(R.string.database_query_history_title),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,

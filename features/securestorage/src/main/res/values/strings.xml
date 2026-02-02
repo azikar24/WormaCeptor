@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="securestorage_back">Back</string>
+    <string name="securestorage_refresh">Refresh</string>
+    <string name="securestorage_filter_all">All</string>
+</resources>

@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
+import com.azikar24.wormaceptor.feature.database.R
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 
@@ -69,7 +71,7 @@ fun TableDataScreen(
                     Column {
                         Text(tableName)
                         Text(
-                            text = "Page ${currentPage + 1}",
+                            text = stringResource(R.string.database_table_data_page, currentPage + 1),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -79,7 +81,7 @@ fun TableDataScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.database_table_data_back),
                         )
                     }
                 },
@@ -87,7 +89,7 @@ fun TableDataScreen(
                     IconButton(onClick = onToggleSchema) {
                         Icon(
                             imageVector = Icons.Default.Info,
-                            contentDescription = "Schema",
+                            contentDescription = stringResource(R.string.database_table_data_schema),
                             tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                         )
                     }
@@ -97,7 +99,7 @@ fun TableDataScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.NavigateBefore,
-                            contentDescription = "Previous",
+                            contentDescription = stringResource(R.string.database_table_data_previous),
                         )
                     }
                     IconButton(
@@ -106,7 +108,7 @@ fun TableDataScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.NavigateNext,
-                            contentDescription = "Next",
+                            contentDescription = stringResource(R.string.database_table_data_next),
                         )
                     }
                 },
@@ -195,7 +197,7 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
                         )
                         if (column.isPrimaryKey) {
                             Text(
-                                text = "PK",
+                                text = stringResource(R.string.database_table_data_pk),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = DatabaseDesignSystem.DataTypeColors.primaryKey,
                                 fontWeight = FontWeight.Bold,
@@ -212,7 +214,7 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
                         )
                         if (column.isNullable) {
                             Text(
-                                text = "NULLABLE",
+                                text = stringResource(R.string.database_table_data_nullable),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -266,6 +268,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
             Row(
                 modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
             ) {
+                val nullValue = stringResource(R.string.database_table_data_null_value)
                 row.forEach { cell ->
                     Box(
                         modifier = Modifier
@@ -273,7 +276,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                             .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = cell?.toString() ?: "NULL",
+                            text = cell?.toString() ?: nullValue,
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
                             color = if (cell == null) {
@@ -300,7 +303,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No data",
+                        text = stringResource(R.string.database_table_data_no_data),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

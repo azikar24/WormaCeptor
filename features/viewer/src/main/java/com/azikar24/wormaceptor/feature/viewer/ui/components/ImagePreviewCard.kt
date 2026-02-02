@@ -57,6 +57,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
@@ -67,6 +68,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -270,7 +272,7 @@ fun ImagePreviewCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
-                        contentDescription = "Image",
+                        contentDescription = stringResource(R.string.viewer_image),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp),
                     )
@@ -338,7 +340,7 @@ fun ImagePreviewCard(
                             .crossfade(true)
                             .build(),
                         imageLoader = gifImageLoader,
-                        contentDescription = "Response image preview",
+                        contentDescription = stringResource(R.string.viewer_image_preview),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.fillMaxSize(),
                         onState = { state ->
@@ -389,7 +391,7 @@ fun ImagePreviewCard(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.BrokenImage,
-                                    contentDescription = "Error loading image",
+                                    contentDescription = stringResource(R.string.viewer_image_error),
                                     tint = MaterialTheme.colorScheme.error,
                                     modifier = Modifier.size(32.dp),
                                 )
@@ -415,7 +417,7 @@ fun ImagePreviewCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Fullscreen,
-                                contentDescription = "View fullscreen",
+                                contentDescription = stringResource(R.string.viewer_image_fullscreen),
                                 tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .padding(WormaCeptorDesignSystem.Spacing.sm)

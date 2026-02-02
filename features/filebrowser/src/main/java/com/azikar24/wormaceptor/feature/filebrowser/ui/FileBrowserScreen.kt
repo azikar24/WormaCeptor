@@ -41,10 +41,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileEntry
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.BreadcrumbBar
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.FileListItem
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
@@ -95,7 +97,7 @@ fun FileBrowserScreen(
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("File Browser") },
+                    title = { Text(stringResource(R.string.filebrowser_title)) },
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -106,7 +108,7 @@ fun FileBrowserScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.filebrowser_back),
                             )
                         }
                     },
@@ -114,7 +116,7 @@ fun FileBrowserScreen(
                         IconButton(onClick = { searchActive = !searchActive }) {
                             Icon(
                                 imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(R.string.filebrowser_search),
                             )
                         }
 
@@ -122,7 +124,7 @@ fun FileBrowserScreen(
                             IconButton(onClick = { showSortMenu = true }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.Sort,
-                                    contentDescription = "Sort",
+                                    contentDescription = stringResource(R.string.filebrowser_sort),
                                 )
                             }
 
@@ -131,21 +133,21 @@ fun FileBrowserScreen(
                                 onDismissRequest = { showSortMenu = false },
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Name") },
+                                    text = { Text(stringResource(R.string.filebrowser_sort_name)) },
                                     onClick = {
                                         onSortModeChanged(FileBrowserViewModel.SortMode.NAME)
                                         showSortMenu = false
                                     },
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Size") },
+                                    text = { Text(stringResource(R.string.filebrowser_sort_size)) },
                                     onClick = {
                                         onSortModeChanged(FileBrowserViewModel.SortMode.SIZE)
                                         showSortMenu = false
                                     },
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Date") },
+                                    text = { Text(stringResource(R.string.filebrowser_sort_date)) },
                                     onClick = {
                                         onSortModeChanged(FileBrowserViewModel.SortMode.DATE)
                                         showSortMenu = false
@@ -161,7 +163,7 @@ fun FileBrowserScreen(
                     WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
-                        placeholder = "Search files...",
+                        placeholder = stringResource(R.string.filebrowser_search_placeholder),
                         onSearch = { searchActive = false },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -210,10 +212,10 @@ fun FileBrowserScreen(
                             imageVector = Icons.Default.Folder,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                         )
                         Text(
-                            text = "No files found",
+                            text = stringResource(R.string.filebrowser_no_files_found),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

@@ -31,11 +31,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -251,7 +253,7 @@ private fun SuccessContent(
             // PDF page thumbnail
             Image(
                 bitmap = thumbnail.asImageBitmap(),
-                contentDescription = "PDF Preview",
+                contentDescription = stringResource(R.string.viewer_pdf_preview),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
             )
@@ -291,7 +293,7 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Description,
-                        contentDescription = "Page count",
+                        contentDescription = stringResource(R.string.viewer_pdf_page_count),
                         modifier = Modifier.size(14.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
@@ -312,7 +314,7 @@ private fun SuccessContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Fullscreen,
-                    contentDescription = "Open fullscreen",
+                    contentDescription = stringResource(R.string.viewer_pdf_open_fullscreen),
                     modifier = Modifier
                         .padding(WormaCeptorDesignSystem.Spacing.md)
                         .size(28.dp),
@@ -394,11 +396,11 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Fullscreen,
-                        contentDescription = "Open PDF fullscreen",
+                        contentDescription = stringResource(R.string.viewer_pdf_open_fullscreen),
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                    Text("Open", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.viewer_pdf_open), fontWeight = FontWeight.SemiBold)
                 }
 
                 // Download button
@@ -413,7 +415,7 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Download,
-                        contentDescription = "Download",
+                        contentDescription = stringResource(R.string.viewer_pdf_download),
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -430,7 +432,7 @@ private fun SuccessContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Share,
-                        contentDescription = "Share",
+                        contentDescription = stringResource(R.string.viewer_pdf_share),
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -477,7 +479,7 @@ private fun ErrorContent(message: String) {
         ) {
             Icon(
                 imageVector = Icons.Default.Error,
-                contentDescription = "Error loading PDF",
+                contentDescription = stringResource(R.string.viewer_pdf_error_loading),
                 modifier = Modifier.size(40.dp),
                 tint = MaterialTheme.colorScheme.error,
             )
@@ -522,7 +524,7 @@ private fun PasswordProtectedContent(
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 Icon(
                     imageVector = Icons.Default.Lock,
-                    contentDescription = "Password protected",
+                    contentDescription = stringResource(R.string.viewer_pdf_password_protected),
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.secondary,
                 )
@@ -563,11 +565,11 @@ private fun PasswordProtectedContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Download,
-                    contentDescription = "Download PDF",
+                    contentDescription = stringResource(R.string.viewer_pdf_download),
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text("Download")
+                Text(stringResource(R.string.viewer_pdf_download))
             }
 
             OutlinedButton(
@@ -576,11 +578,11 @@ private fun PasswordProtectedContent(
             ) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = "Share PDF",
+                    contentDescription = stringResource(R.string.viewer_pdf_share),
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text("Share")
+                Text(stringResource(R.string.viewer_pdf_share))
             }
         }
     }

@@ -19,9 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import kotlinx.collections.immutable.ImmutableList
 import java.io.File
 
@@ -50,7 +52,7 @@ fun BreadcrumbBar(
         // Root/Home icon
         Icon(
             imageVector = Icons.Default.Home,
-            contentDescription = "Root",
+            contentDescription = stringResource(R.string.filebrowser_root),
             tint = if (currentPath == null) {
                 MaterialTheme.colorScheme.primary
             } else {

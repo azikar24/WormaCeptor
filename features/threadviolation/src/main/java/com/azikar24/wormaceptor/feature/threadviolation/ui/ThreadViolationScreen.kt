@@ -64,6 +64,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +74,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
+import com.azikar24.wormaceptor.feature.threadviolation.R
 import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.threadViolationColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -127,7 +129,7 @@ fun ThreadViolationScreen(
                         IconButton(onClick = back) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.threadviolation_back),
                             )
                         }
                     }
@@ -143,7 +145,7 @@ fun ThreadViolationScreen(
                     IconButton(onClick = onClearViolations) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Clear",
+                            contentDescription = stringResource(R.string.threadviolation_clear),
                         )
                     }
                 },
@@ -282,7 +284,9 @@ private fun TypeFilterChips(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        FilterChip(selected = selectedType == null, onClick = { onTypeSelected(null) }, label = { Text("All") })
+        FilterChip(selected = selectedType == null, onClick = {
+            onTypeSelected(null)
+        }, label = { Text(stringResource(R.string.threadviolation_filter_all)) })
         ViolationType.entries.forEach { type ->
             val (icon, label, color) = when (type) {
                 ViolationType.DISK_READ -> Triple(Icons.Default.SaveAlt, "Read", colors.diskRead)
@@ -467,7 +471,7 @@ private fun ViolationDetailContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
-                                contentDescription = "Copy stack trace",
+                                contentDescription = stringResource(R.string.threadviolation_copy_stack),
                                 tint = colors.labelSecondary,
                                 modifier = Modifier.size(20.dp),
                             )

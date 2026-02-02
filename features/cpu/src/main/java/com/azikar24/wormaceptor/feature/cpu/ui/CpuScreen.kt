@@ -226,7 +226,7 @@ private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifie
                 } else {
                     MaterialTheme.colorScheme.outline
                 },
-                animationSpec = tween(300),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
                 label = "indicator",
             )
 
@@ -266,7 +266,7 @@ private fun CpuUsageGaugeCard(
     // Animated sweep angle for the gauge
     val animatedProgress by animateFloatAsState(
         targetValue = currentCpu.overallUsagePercent / 100f,
-        animationSpec = tween(durationMillis = 500),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.verySlow),
         label = "gauge_progress",
     )
 
@@ -451,7 +451,7 @@ private fun CoreUsageBar(
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = usage / 100f,
-        animationSpec = tween(durationMillis = 300),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.page),
         label = "core_progress_$coreIndex",
     )
 
@@ -581,7 +581,7 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         // 50% threshold (warning)
         val warningY = padding + chartHeight * 0.5f
         drawLine(
-            color = colors.warning.copy(alpha = 0.3f),
+            color = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             start = Offset(padding, warningY),
             end = Offset(width - padding, warningY),
             strokeWidth = 1.dp.toPx(),
@@ -590,7 +590,7 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         // 80% threshold (critical)
         val criticalY = padding + chartHeight * 0.2f
         drawLine(
-            color = colors.critical.copy(alpha = 0.3f),
+            color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             start = Offset(padding, criticalY),
             end = Offset(width - padding, criticalY),
             strokeWidth = 1.dp.toPx(),
@@ -639,8 +639,8 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
             path = areaPath,
             brush = Brush.verticalGradient(
                 colors = listOf(
-                    colors.cpuUsage.copy(alpha = 0.3f),
-                    colors.cpuUsage.copy(alpha = 0.05f),
+                    colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
                 ),
             ),
         )
@@ -789,9 +789,9 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = 0.5f,
+        targetValue = WormaCeptorDesignSystem.Alpha.bold,
         animationSpec = infiniteRepeatable(
-            animation = tween(500, easing = LinearEasing),
+            animation = tween(WormaCeptorDesignSystem.AnimationDuration.verySlow, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "warning_alpha",

@@ -120,15 +120,15 @@ object BodyParsingUtils {
      */
     fun getContentTypeColorHint(contentType: ContentType): String {
         return when (contentType) {
-            ContentType.JSON -> "#F59E0B" // Amber
-            ContentType.XML -> "#8B5CF6" // Purple
-            ContentType.HTML -> "#EC4899" // Pink
-            ContentType.PROTOBUF -> "#10B981" // Emerald
-            ContentType.FORM_DATA -> "#3B82F6" // Blue
-            ContentType.MULTIPART -> "#6366F1" // Indigo
-            ContentType.PLAIN_TEXT -> "#6B7280" // Gray
-            ContentType.BINARY -> "#EF4444" // Red
-            ContentType.PDF -> "#DC2626" // Red-600
+            ContentType.JSON -> ContentTypeColors.JSON
+            ContentType.XML -> ContentTypeColors.XML
+            ContentType.HTML -> ContentTypeColors.HTML
+            ContentType.PROTOBUF -> ContentTypeColors.PROTOBUF
+            ContentType.FORM_DATA -> ContentTypeColors.FORM_DATA
+            ContentType.MULTIPART -> ContentTypeColors.MULTIPART
+            ContentType.PLAIN_TEXT -> ContentTypeColors.PLAIN_TEXT
+            ContentType.BINARY -> ContentTypeColors.BINARY
+            ContentType.PDF -> ContentTypeColors.PDF
             ContentType.IMAGE_PNG,
             ContentType.IMAGE_JPEG,
             ContentType.IMAGE_GIF,
@@ -137,8 +137,8 @@ object BodyParsingUtils {
             ContentType.IMAGE_BMP,
             ContentType.IMAGE_ICO,
             ContentType.IMAGE_OTHER,
-            -> "#14B8A6" // Teal
-            ContentType.UNKNOWN -> "#9CA3AF" // Gray-400
+            -> ContentTypeColors.IMAGE
+            ContentType.UNKNOWN -> ContentTypeColors.UNKNOWN
         }
     }
 }

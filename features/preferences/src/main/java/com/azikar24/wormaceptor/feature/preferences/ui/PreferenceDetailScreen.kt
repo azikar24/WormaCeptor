@@ -223,7 +223,9 @@ fun PreferenceDetailScreen(
                 singleLine = true,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.bold,
+                    ),
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
             )
@@ -256,7 +258,7 @@ fun PreferenceDetailScreen(
                             onClick = { onTypeFilterChanged(type) },
                             label = { Text(type) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = typeColor.copy(alpha = 0.2f),
+                                selectedContainerColor = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                                 selectedLabelColor = typeColor,
                             ),
                         )
@@ -486,7 +488,7 @@ private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, mod
 
             // Type badge
             Surface(
-                color = typeColor.copy(alpha = 0.15f),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 contentColor = typeColor,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
             ) {
@@ -513,7 +515,7 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
     ) {
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             modifier = Modifier.size(64.dp),
         ) {
             Box(
@@ -524,7 +526,9 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
                     imageVector = Icons.Default.Key,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }
@@ -551,7 +555,7 @@ private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) 
                 stringResource(R.string.preferences_empty_add_using_button)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
     }
 }

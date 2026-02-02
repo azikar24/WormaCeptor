@@ -97,7 +97,9 @@ fun PreferencesListScreen(
                 singleLine = true,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.bold,
+                    ),
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
             )
@@ -144,7 +146,7 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
             // File icon
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                 modifier = Modifier.size(40.dp),
             ) {
                 Box(
@@ -186,7 +188,7 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
             Text(
                 text = ">",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
             )
         }
     }
@@ -201,7 +203,7 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
     ) {
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             modifier = Modifier.size(64.dp),
         ) {
             Box(
@@ -212,7 +214,9 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
                     imageVector = Icons.Default.Settings,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }
@@ -239,7 +243,7 @@ private fun EmptyFilesState(hasSearchQuery: Boolean, modifier: Modifier = Modifi
                 stringResource(R.string.preferences_empty_files_will_appear)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
     }
 }

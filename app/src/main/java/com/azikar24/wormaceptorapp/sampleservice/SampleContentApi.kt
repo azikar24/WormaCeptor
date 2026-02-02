@@ -19,30 +19,30 @@ interface SampleContentApi {
 
     // PDF
     @GET
-    fun pdf(@Url url: String = "https://www.stata.com/manuals/dsample.pdf"): Call<ResponseBody>
+    fun pdf(@Url url: String = SampleDataConstants.Pdf.STATA_MANUAL): Call<ResponseBody>
 
     // Images
     @GET
-    fun image(@Url url: String = "https://picsum.photos/400/300"): Call<ResponseBody>
+    fun image(@Url url: String = SampleDataConstants.Images.PICSUM): Call<ResponseBody>
 
     @GET
-    fun imagePng(@Url url: String = "https://placehold.co/400x300/png"): Call<ResponseBody>
+    fun imagePng(@Url url: String = SampleDataConstants.Images.PLACEHOLDER_PNG): Call<ResponseBody>
 
     @GET
-    fun imageWebp(@Url url: String = "https://www.gstatic.com/webp/gallery/1.webp"): Call<ResponseBody>
+    fun imageWebp(@Url url: String = SampleDataConstants.Images.WEBP_GALLERY): Call<ResponseBody>
 
     @GET
-    fun imageGif(@Url url: String = "https://media.giphy.com/media/3o7TKsQ8MgBdI7tD3y/giphy.gif"): Call<ResponseBody>
+    fun imageGif(@Url url: String = SampleDataConstants.Images.GIPHY_GIF): Call<ResponseBody>
 
     // JSON
     @GET
-    fun json(@Url url: String = "https://jsonplaceholder.typicode.com/posts/1"): Call<ResponseBody>
+    fun json(@Url url: String = SampleDataConstants.Json.PLACEHOLDER_POST): Call<ResponseBody>
 
     // XML
     @GET
-    fun xml(@Url url: String = "https://www.w3schools.com/xml/note.xml"): Call<ResponseBody>
+    fun xml(@Url url: String = SampleDataConstants.Xml.W3SCHOOLS_NOTE): Call<ResponseBody>
 
     // HTML
     @GET
-    fun html(@Url url: String = "https://example.com"): Call<ResponseBody>
+    fun html(@Url url: String = SampleDataConstants.Html.EXAMPLE): Call<ResponseBody>
 }

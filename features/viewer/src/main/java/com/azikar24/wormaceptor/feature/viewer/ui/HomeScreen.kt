@@ -371,7 +371,9 @@ fun HomeScreen(
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        ),
                         tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
                     ) {
                         Row(
@@ -408,14 +410,14 @@ fun HomeScreen(
                                             Icon(
                                                 imageVector = Icons.Default.Search,
                                                 contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
+                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                             )
                                         },
                                         trailingIcon = {
                                             Icon(
                                                 imageVector = Icons.Default.Close,
                                                 contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
+                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                             )
                                         },
                                         shape = WormaCeptorDesignSystem.Shapes.chip,
@@ -443,7 +445,7 @@ fun HomeScreen(
                                             Icon(
                                                 imageVector = Icons.Default.Close,
                                                 contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
+                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                             )
                                         },
                                         shape = WormaCeptorDesignSystem.Shapes.chip,
@@ -478,7 +480,7 @@ fun HomeScreen(
                                             Icon(
                                                 imageVector = Icons.Default.Close,
                                                 contentDescription = null,
-                                                modifier = Modifier.size(16.dp),
+                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                             )
                                         },
                                         shape = WormaCeptorDesignSystem.Shapes.chip,
@@ -504,7 +506,7 @@ fun HomeScreen(
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = stringResource(R.string.viewer_home_clear_all_filters),
-                                    modifier = Modifier.size(20.dp),
+                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                                 )
                             }
                         }

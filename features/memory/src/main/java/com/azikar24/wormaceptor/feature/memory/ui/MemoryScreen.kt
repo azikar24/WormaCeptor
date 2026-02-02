@@ -225,7 +225,7 @@ private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifie
                 } else {
                     MaterialTheme.colorScheme.outline
                 },
-                animationSpec = tween(300),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
                 label = "indicator",
             )
 
@@ -589,8 +589,8 @@ private fun MemoryLineChart(
             path = areaPath,
             brush = Brush.verticalGradient(
                 colors = listOf(
-                    colors.heapUsed.copy(alpha = 0.3f),
-                    colors.heapUsed.copy(alpha = 0.05f),
+                    colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
                 ),
             ),
         )
@@ -699,7 +699,7 @@ private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) 
             Icon(
                 imageVector = Icons.Default.CleaningServices,
                 contentDescription = null,
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text(
@@ -715,9 +715,9 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = 0.5f,
+        targetValue = WormaCeptorDesignSystem.Alpha.bold,
         animationSpec = infiniteRepeatable(
-            animation = tween(500, easing = LinearEasing),
+            animation = tween(WormaCeptorDesignSystem.AnimationDuration.verySlow, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "warning_alpha",

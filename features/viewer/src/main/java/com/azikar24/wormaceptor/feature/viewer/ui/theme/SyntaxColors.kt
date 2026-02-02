@@ -92,12 +92,12 @@ val LightComposeSyntaxColors = ComposeSyntaxColors(
     type = LightSyntaxColors.typeAnnotation,
     default = LightSyntaxColors.default,
     // UI-specific colors for light theme
-    lineNumberText = Color(0xFF9E9E9E),
-    lineNumberBackground = Color(0xFFF5F5F5),
-    codeBackground = Color(0xFFFAFAFA),
-    searchHighlight = Color(0xFFFFF59D), // Soft yellow
-    searchHighlightCurrent = Color(0xFF4DD0E1), // Cyan for current match
-    searchHighlightText = Color(0xFF000000), // Black text on highlight
+    lineNumberText = SyntaxColorTokens.Light.LineNumberText,
+    lineNumberBackground = SyntaxColorTokens.Light.LineNumberBackground,
+    codeBackground = SyntaxColorTokens.Light.CodeBackground,
+    searchHighlight = SyntaxColorTokens.Light.SearchHighlight,
+    searchHighlightCurrent = SyntaxColorTokens.Light.SearchHighlightCurrent,
+    searchHighlightText = SyntaxColorTokens.Light.SearchHighlightText,
 )
 
 /**
@@ -117,12 +117,12 @@ val DarkComposeSyntaxColors = ComposeSyntaxColors(
     type = DarkSyntaxColors.typeAnnotation,
     default = DarkSyntaxColors.default,
     // UI-specific colors for dark theme
-    lineNumberText = Color(0xFF606060),
-    lineNumberBackground = Color(0xFF1E1E1E),
-    codeBackground = Color(0xFF252526),
-    searchHighlight = Color(0xFF613214), // Muted orange for dark theme
-    searchHighlightCurrent = Color(0xFF264F78), // Blue highlight for current
-    searchHighlightText = Color(0xFFFFFFFF), // White text on highlight
+    lineNumberText = SyntaxColorTokens.Dark.LineNumberText,
+    lineNumberBackground = SyntaxColorTokens.Dark.LineNumberBackground,
+    codeBackground = SyntaxColorTokens.Dark.CodeBackground,
+    searchHighlight = SyntaxColorTokens.Dark.SearchHighlight,
+    searchHighlightCurrent = SyntaxColorTokens.Dark.SearchHighlightCurrent,
+    searchHighlightText = SyntaxColorTokens.Dark.SearchHighlightText,
 )
 
 /**

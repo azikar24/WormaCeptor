@@ -171,9 +171,9 @@ private fun GlitchMeltdownEffectAGSL(progress: Float, modifier: Modifier = Modif
     val infiniteTransition = rememberInfiniteTransition(label = "glitch_time")
     val time by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 100f,
+        targetValue = GlitchConstants.Animation.GLITCH_TIME_TARGET,
         animationSpec = infiniteRepeatable(
-            animation = tween(10000, easing = LinearEasing),
+            animation = tween(GlitchConstants.Animation.GLITCH_TIME_DURATION_MS, easing = LinearEasing),
             repeatMode = RepeatMode.Restart,
         ),
         label = "time",
@@ -212,7 +212,7 @@ private fun GlitchMeltdownEffectFallback(
         initialValue = -1f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(50, easing = LinearEasing),
+            animation = tween(GlitchConstants.Animation.SHAKE_DURATION_MS, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "shake",
@@ -222,7 +222,7 @@ private fun GlitchMeltdownEffectFallback(
         initialValue = -1f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(100, easing = LinearEasing),
+            animation = tween(GlitchConstants.Animation.ROTATION_DURATION_MS, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "rotation",
@@ -230,20 +230,27 @@ private fun GlitchMeltdownEffectFallback(
 
     val noiseKey by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 1000f,
+        targetValue = GlitchConstants.Animation.NOISE_KEY_TARGET,
         animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
+            animation = tween(GlitchConstants.Animation.NOISE_KEY_DURATION_MS, easing = LinearEasing),
             repeatMode = RepeatMode.Restart,
         ),
         label = "noise_key",
     )
 
-    val shakeIntensity = progress * 20f
-    val rotationIntensity = progress * 3f
-    val scaleVariation = 1f + (progress * 0.05f * shakeOffset)
+    val shakeIntensity = progress * GlitchConstants.Intensity.MAX_SHAKE_DP
+    val rotationIntensity = progress * GlitchConstants.Intensity.MAX_ROTATION_DEGREES
+    val scaleVariation = 1f + progress * GlitchConstants.Intensity.SCALE_VARIATION * shakeOffset
 
-    val darkOverlayAlpha = (progress * 0.6f).coerceIn(0f, 0.6f)
-    val flashAlpha = if (progress > 0.9f) ((progress - 0.9f) / 0.1f).coerceIn(0f, 1f) else 0f
+    val darkOverlayAlpha = (progress * GlitchConstants.Alpha.MAX_DARK_OVERLAY).coerceIn(
+        0f,
+        GlitchConstants.Alpha.MAX_DARK_OVERLAY,
+    )
+    val flashAlpha = if (progress > GlitchConstants.Alpha.FLASH_THRESHOLD) {
+        ((progress - GlitchConstants.Alpha.FLASH_THRESHOLD) / GlitchConstants.Alpha.FLASH_RANGE).coerceIn(0f, 1f)
+    } else {
+        0f
+    }
 
     Box(modifier = modifier) {
         Box(
@@ -251,7 +258,7 @@ private fun GlitchMeltdownEffectFallback(
                 .fillMaxSize()
                 .offset(
                     x = (shakeOffset * shakeIntensity).dp,
-                    y = (shakeOffset * shakeIntensity * 0.7f).dp,
+                    y = (shakeOffset * shakeIntensity * GlitchConstants.Intensity.Y_SHAKE_FACTOR).dp,
                 )
                 .rotate(rotationWobble * rotationIntensity)
                 .scale(scaleVariation),
@@ -259,10 +266,14 @@ private fun GlitchMeltdownEffectFallback(
             content()
         }
 
-        if (progress > 0.2f) {
+        if (progress > GlitchConstants.ProgressThreshold.SCANLINES) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                val scanLineCount = 100
-                val scanLineAlpha = ((progress - 0.2f) / 0.8f * 0.3f).coerceIn(0f, 0.3f)
+                val scanLineCount = GlitchConstants.Scanlines.COUNT
+                val scanlineProgress = progress - GlitchConstants.ProgressThreshold.SCANLINES
+                val scanLineAlpha = (
+                    scanlineProgress / GlitchConstants.Scanlines.FADE_IN_RANGE *
+                        GlitchConstants.Scanlines.MAX_ALPHA
+                    ).coerceIn(0f, GlitchConstants.Scanlines.MAX_ALPHA)
                 for (i in 0 until scanLineCount) {
                     val y = (i.toFloat() / scanLineCount) * size.height
                     if (i % 2 == 0) {
@@ -276,12 +287,17 @@ private fun GlitchMeltdownEffectFallback(
             }
         }
 
-        if (progress > 0.4f) {
+        if (progress > GlitchConstants.ProgressThreshold.NOISE) {
             val random = remember(noiseKey.toInt()) { Random(noiseKey.toInt()) }
             Canvas(modifier = Modifier.fillMaxSize()) {
-                val noiseAlpha = ((progress - 0.4f) / 0.6f * 0.4f).coerceIn(0f, 0.4f)
-                val pixelSize = 4f
-                val noiseCount = ((size.width / pixelSize) * (size.height / pixelSize) * 0.02f).toInt()
+                val noiseProgress = progress - GlitchConstants.ProgressThreshold.NOISE
+                val noiseAlpha = (
+                    noiseProgress / GlitchConstants.Noise.FADE_IN_RANGE *
+                        GlitchConstants.Noise.MAX_ALPHA
+                    ).coerceIn(0f, GlitchConstants.Noise.MAX_ALPHA)
+                val pixelSize = GlitchConstants.Noise.PIXEL_SIZE
+                val pixelArea = (size.width / pixelSize) * (size.height / pixelSize)
+                val noiseCount = (pixelArea * GlitchConstants.Noise.DENSITY).toInt()
 
                 repeat(noiseCount) {
                     val x = random.nextFloat() * size.width
@@ -296,7 +312,7 @@ private fun GlitchMeltdownEffectFallback(
             }
         }
 
-        if (progress > 0.3f) {
+        if (progress > GlitchConstants.ProgressThreshold.DARK_OVERLAY) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

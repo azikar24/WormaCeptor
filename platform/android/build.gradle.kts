@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.androidx.startup)
     implementation(libs.androidx.activity.ktx)
     implementation(project(":domain:contracts"))
+    implementation(project(":core:ui"))
 
     // Compose dependencies for FloatingButtonService
     implementation(platform(libs.androidx.compose.bom))

@@ -47,8 +47,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -100,7 +98,7 @@ fun CrashDetailPagerScreen(crashes: List<Crash>, initialCrashIndex: Int, onBack:
     }
 
     // Smooth animation config
-    val animDuration = 250
+    val animDuration = WormaCeptorDesignSystem.AnimationDuration.normal
     val slideOffset = 100
 
     // Smooth directional slide transition
@@ -282,7 +280,9 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f),
+            containerColor = MaterialTheme.colorScheme.errorContainer.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.subtle,
+            ),
         ),
     ) {
         Column(
@@ -359,7 +359,7 @@ private fun MessageCard(message: String, context: Context) {
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         ),
     ) {
         Column(
@@ -381,7 +381,7 @@ private fun MessageCard(message: String, context: Context) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.viewer_crash_detail_copy_message),
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
                 }
             }
@@ -429,7 +429,7 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.viewer_crash_detail_copy_stack_trace),
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
                 }
             }
@@ -511,7 +511,7 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
 @Composable
 private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean) {
     val backgroundColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.15f)
+        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
     } else {
         Color.Transparent
     }
@@ -536,7 +536,7 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
             SelectionContainer {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(SpanStyle(color = textColor.copy(alpha = 0.6f))) {
+                        withStyle(SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense))) {
                             append("at ")
                         }
                         withStyle(
@@ -551,20 +551,22 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
                             append(frame.methodName)
                         }
                         if (frame.fileName != null && frame.lineNumber != null) {
-                            withStyle(SpanStyle(color = textColor.copy(alpha = 0.6f))) {
+                            withStyle(
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense)),
+                            ) {
                                 append("(")
                             }
                             withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
                                 append("${frame.fileName}:${frame.lineNumber}")
                             }
-                            withStyle(SpanStyle(color = textColor.copy(alpha = 0.6f))) {
+                            withStyle(
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense)),
+                            ) {
                                 append(")")
                             }
                         }
                     },
-                    style = MaterialTheme.typography.bodySmall,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
+                    style = WormaCeptorDesignSystem.Typography.codeMedium,
                 )
             }
         } else {
@@ -572,10 +574,8 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
             SelectionContainer {
                 Text(
                     text = frame.fullLine,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontFamily = FontFamily.Monospace,
+                    style = WormaCeptorDesignSystem.Typography.codeMedium,
                     color = textColor,
-                    fontSize = 12.sp,
                 )
             }
         }

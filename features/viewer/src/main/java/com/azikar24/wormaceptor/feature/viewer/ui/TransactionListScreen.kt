@@ -210,7 +210,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
         // Icon
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             modifier = Modifier.size(64.dp),
         ) {
             Box(
@@ -252,7 +252,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
                 stringResource(R.string.viewer_transaction_list_no_transactions_description)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
 
         if (hasActiveFilters) {
@@ -348,7 +348,9 @@ private fun TransactionItem(transaction: TransactionSummary, onClick: () -> Unit
                 Text(
                     text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
@@ -378,7 +380,7 @@ private fun MethodBadge(method: String) {
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(

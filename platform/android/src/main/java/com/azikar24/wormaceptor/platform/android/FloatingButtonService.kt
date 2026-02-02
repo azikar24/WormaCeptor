@@ -34,9 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -257,7 +255,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
                     touchStartTime = System.currentTimeMillis()
                     totalMovement = 0f
                     isDragging = false
-                    pressedScaleState.value = 0.9f
+                    pressedScaleState.value = FloatingButtonConstants.Visual.PRESSED_SCALE
                     true
                 }
 
@@ -282,7 +280,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    pressedScaleState.value = 1f
+                    pressedScaleState.value = FloatingButtonConstants.Visual.NORMAL_SCALE
                     val touchDuration = System.currentTimeMillis() - touchStartTime
 
                     if (!isDragging && touchDuration < TAP_THRESHOLD_MS) {
@@ -296,7 +294,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
                 }
 
                 MotionEvent.ACTION_CANCEL -> {
-                    pressedScaleState.value = 1f
+                    pressedScaleState.value = FloatingButtonConstants.Visual.NORMAL_SCALE
                     true
                 }
 
@@ -344,7 +342,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         val startY = layoutParams.y
 
         val animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 250
+            duration = FloatingButtonConstants.Animation.SNAP_DURATION_MS
             interpolator = DecelerateInterpolator()
 
             addUpdateListener { animation ->
@@ -423,20 +421,20 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
 private fun FloatingButtonContent(pressedScaleState: MutableState<Float>) {
     val scale by animateFloatAsState(
         targetValue = pressedScaleState.value,
-        animationSpec = tween(durationMillis = 100),
+        animationSpec = tween(durationMillis = FloatingButtonConstants.Animation.SCALE_DURATION_MS),
         label = "scale",
     )
 
     Box(
         modifier = Modifier
-            .size(56.dp)
+            .size(FloatingButtonConstants.Dimensions.BUTTON_SIZE)
             .scale(scale)
             .shadow(
-                elevation = 8.dp,
+                elevation = FloatingButtonConstants.Dimensions.SHADOW_ELEVATION,
                 shape = CircleShape,
             )
             .background(
-                color = Color(0xFF0061A4), // Primary color
+                color = FloatingButtonConstants.Visual.BUTTON_COLOR,
                 shape = CircleShape,
             ),
         contentAlignment = Alignment.Center,
@@ -444,10 +442,10 @@ private fun FloatingButtonContent(pressedScaleState: MutableState<Float>) {
         Icon(
             imageVector = Icons.Default.BugReport,
             contentDescription = "Open WormaCeptor",
-            tint = Color.White,
+            tint = FloatingButtonConstants.Visual.ICON_TINT,
             modifier = Modifier
-                .size(28.dp)
-                .alpha(0.9f),
+                .size(FloatingButtonConstants.Dimensions.ICON_SIZE)
+                .alpha(FloatingButtonConstants.Visual.ICON_ALPHA),
         )
     }
 }

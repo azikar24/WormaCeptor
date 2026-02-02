@@ -290,9 +290,13 @@ private fun LevelFilterChips(
                                 text = if (count > 999) "999+" else count.toString(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                    )
                                 } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                    )
                                 },
                             )
                         }
@@ -303,8 +307,8 @@ private fun LevelFilterChips(
                     selectedLabelColor = levelColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = levelColor.copy(alpha = 0.3f),
-                    selectedBorderColor = levelColor.copy(alpha = 0.5f),
+                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                     enabled = true,
                     selected = isSelected,
                 ),
@@ -412,7 +416,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
 
     Surface(
         modifier = modifier,
-        color = backgroundColor.copy(alpha = 0.3f),
+        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
     ) {
         Row(
             modifier = Modifier
@@ -466,7 +470,9 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                         text = formattedTime,
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        ),
                     )
                 }
 
@@ -494,7 +500,7 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
     ) {
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             modifier = Modifier.size(64.dp),
         ) {
             Box(
@@ -528,7 +534,7 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
                 "Tap play to start capturing logs"
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
 
         if (!isCapturing) {

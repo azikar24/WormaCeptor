@@ -1,7 +1,5 @@
 public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
-	public static final field COMPOSE_RENDER Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CONSOLE_LOGS Lcom/azikar24/wormaceptor/api/Feature;
-	public static final field COOKIES_MANAGER Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CPU_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CRYPTO_TOOL Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field Companion Lcom/azikar24/wormaceptor/api/Feature$Companion;
@@ -10,7 +8,6 @@ public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
 	public static final field DEVICE_INFO Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field FILE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field FPS_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
-	public static final field INTERCEPTION Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field LEAK_DETECTION Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field LOADED_LIBRARIES Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field LOCATION_SIMULATOR Lcom/azikar24/wormaceptor/api/Feature;
@@ -21,7 +18,6 @@ public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
 	public static final field SECURE_STORAGE Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field SHARED_PREFERENCES Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field THREAD_VIOLATIONS Lcom/azikar24/wormaceptor/api/Feature;
-	public static final field VIEW_HIERARCHY Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field WEBSOCKET_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field WEBVIEW_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
@@ -155,6 +151,22 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period : 
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
 	public static fun values ()[Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
+}
+
+public final class com/azikar24/wormaceptor/api/WormaCeptorWebSocket {
+	public static final field Companion Lcom/azikar24/wormaceptor/api/WormaCeptorWebSocket$Companion;
+	public synthetic fun <init> (Lokhttp3/WebSocketListener;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getConnectionId ()J
+	public final fun getListener ()Lokhttp3/WebSocketListener;
+	public final fun recordPing (Lokio/ByteString;)V
+	public final fun recordPong (Lokio/ByteString;)V
+	public final fun recordSentMessage (Ljava/lang/String;)V
+	public final fun recordSentMessage (Lokio/ByteString;)V
+}
+
+public final class com/azikar24/wormaceptor/api/WormaCeptorWebSocket$Companion {
+	public final fun wrap (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorWebSocket;
+	public final fun wrap (Lokhttp3/WebSocketListener;Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/WormaCeptorWebSocket;
 }
 
 public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider : android/content/ContentProvider {

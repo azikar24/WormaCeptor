@@ -1,7 +1,6 @@
 public final class com/azikar24/wormaceptor/feature/pushtoken/ComposableSingletons$PushTokenFeatureKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushtoken/ComposableSingletons$PushTokenFeatureKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function3;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function3;
@@ -12,7 +11,6 @@ public final class com/azikar24/wormaceptor/feature/pushtoken/ComposableSingleto
 	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$pushtoken_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$pushtoken_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-2$pushtoken_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$pushtoken_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$pushtoken_release ()Lkotlin/jvm/functions/Function3;

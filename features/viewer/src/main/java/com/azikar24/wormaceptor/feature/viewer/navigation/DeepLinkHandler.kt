@@ -88,7 +88,6 @@ object DeepLinkHandler {
             "database" -> "database"
             "filebrowser", "files" -> "filebrowser"
             "websocket" -> "websocket"
-            "cookies" -> "cookies"
             "touchviz", "touch" -> "touchviz"
             "viewborders", "borders" -> "viewborders"
             "location" -> "location"

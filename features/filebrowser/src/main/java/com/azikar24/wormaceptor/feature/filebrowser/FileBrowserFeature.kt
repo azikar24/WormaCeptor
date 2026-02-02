@@ -85,10 +85,12 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
     val fileInfo by viewModel.fileInfo.collectAsState()
 
     // Main browser screen or file viewer
-    if (selectedFile != null && fileContent != null) {
+    val file = selectedFile
+    val content = fileContent
+    if (file != null && content != null) {
         FileViewerScreen(
-            filePath = selectedFile!!,
-            content = fileContent!!,
+            filePath = file,
+            content = content,
             onBack = viewModel::closeFileViewer,
             modifier = modifier,
         )

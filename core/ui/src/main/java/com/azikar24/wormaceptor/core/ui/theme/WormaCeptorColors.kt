@@ -322,21 +322,6 @@ object WormaCeptorColors {
     }
 
     /**
-     * Cookies feature colors.
-     */
-    object Cookies {
-        val Secure = Color(0xFF4CAF50) // Green
-        val HttpOnly = Color(0xFF2196F3) // Blue
-        val Session = Color(0xFF9C27B0) // Purple
-        val Expired = Color(0xFFF44336) // Red
-        val Valid = Color(0xFF4CAF50) // Green
-        val Domain = Color(0xFFFF9800) // Orange
-        val SameSiteStrict = Color(0xFF3F51B5) // Indigo
-        val SameSiteLax = Color(0xFF00BCD4) // Cyan
-        val SameSiteNone = Color(0xFFFF5722) // Deep Orange
-    }
-
-    /**
      * Location simulation feature colors.
      */
     object Location {

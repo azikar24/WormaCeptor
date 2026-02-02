@@ -110,9 +110,10 @@ class LogCaptureEngine(
             // Start logcat with threadtime format
             val processBuilder = ProcessBuilder("logcat", "-v", "threadtime")
             processBuilder.redirectErrorStream(true)
-            process = processBuilder.start()
+            val logcatProcess = processBuilder.start()
+            process = logcatProcess
 
-            val reader = BufferedReader(InputStreamReader(process!!.inputStream))
+            val reader = BufferedReader(InputStreamReader(logcatProcess.inputStream))
             var line: String?
 
             while (scope.isActive && _isCapturing.value) {

@@ -28,7 +28,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
-import androidx.compose.material.icons.outlined.Cookie
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Memory
@@ -81,7 +80,6 @@ fun TestToolsTab(
     onTriggerLeak: () -> Unit,
     onThreadViolation: () -> Unit,
     onLocationClick: () -> Unit,
-    onCookiesClick: () -> Unit,
     onWebViewClick: () -> Unit,
     onSecureStorageClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -152,13 +150,6 @@ fun TestToolsTab(
             icon = Icons.Outlined.LocationOn,
             label = "Location Simulator",
             onClick = onLocationClick,
-            showChevron = true,
-        )
-
-        ToolListItem(
-            icon = Icons.Outlined.Cookie,
-            label = "Cookie Inspector",
-            onClick = onCookiesClick,
             showChevron = true,
         )
 

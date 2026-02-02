@@ -471,6 +471,58 @@ class PerformanceOverlayEngine(
     }
 
     /**
+     * Toggles the overlay with all metrics enabled/disabled together.
+     * When enabling: shows overlay with all metrics (CPU, Memory, FPS) enabled.
+     * When disabling: hides overlay and disables all metrics.
+     *
+     * @param activity The activity to attach the overlay to (required when enabling)
+     */
+    fun toggleOverlayWithAllMetrics(activity: Activity? = null) {
+        val newEnabled = !_state.value.isOverlayEnabled
+
+        if (newEnabled) {
+            // Enable all metrics and show overlay
+            _state.value = _state.value.copy(
+                isOverlayEnabled = true,
+                fpsEnabled = true,
+                memoryEnabled = true,
+                cpuEnabled = true,
+            )
+            saveOverlayEnabled(true)
+            saveFpsEnabled(true)
+            saveMemoryEnabled(true)
+            saveCpuEnabled(true)
+
+            // Start all monitoring engines
+            if (!fpsMonitorEngine.isRunning.value) fpsMonitorEngine.start()
+            if (!memoryMonitorEngine.isMonitoring.value) memoryMonitorEngine.start()
+            if (!cpuMonitorEngine.isMonitoring.value) cpuMonitorEngine.start()
+
+            val targetActivity = activity ?: activityRef?.get()
+            targetActivity?.let { show(it) }
+        } else {
+            // Disable overlay and all metrics
+            _state.value = _state.value.copy(
+                isOverlayEnabled = false,
+                fpsEnabled = false,
+                memoryEnabled = false,
+                cpuEnabled = false,
+            )
+            saveOverlayEnabled(false)
+            saveFpsEnabled(false)
+            saveMemoryEnabled(false)
+            saveCpuEnabled(false)
+
+            // Stop all monitoring engines
+            fpsMonitorEngine.stop()
+            memoryMonitorEngine.stop()
+            cpuMonitorEngine.stop()
+
+            hide()
+        }
+    }
+
+    /**
      * Sets the overlay enabled state.
      */
     fun setOverlayEnabled(enabled: Boolean, activity: Activity? = null) {

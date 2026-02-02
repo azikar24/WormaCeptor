@@ -158,11 +158,10 @@ class CpuMonitorEngine(
             val currentPerCoreStats = perCoreLines.map { parseCpuLine(it) }
 
             // Calculate per-core usage from delta
-            val perCoreUsage = if (previousPerCoreStats != null &&
-                previousPerCoreStats!!.size == currentPerCoreStats.size
-            ) {
+            val prevStats = previousPerCoreStats
+            val perCoreUsage = if (prevStats != null && prevStats.size == currentPerCoreStats.size) {
                 currentPerCoreStats.mapIndexed { index, currentStats ->
-                    calculateUsagePercent(previousPerCoreStats!![index], currentStats)
+                    calculateUsagePercent(prevStats[index], currentStats)
                 }
             } else {
                 List(currentPerCoreStats.size) { 0f }

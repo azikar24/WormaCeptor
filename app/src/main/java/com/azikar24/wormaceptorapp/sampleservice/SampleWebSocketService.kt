@@ -72,9 +72,10 @@ object SampleWebSocketService {
             .build()
 
         // Use the public API to wrap the listener for monitoring
-        monitor = WormaCeptorWebSocket.wrap(listener, ECHO_SERVER_URL)
+        val wsMonitor = WormaCeptorWebSocket.wrap(listener, ECHO_SERVER_URL)
+        monitor = wsMonitor
 
-        webSocket = client.newWebSocket(request, monitor!!.listener)
+        webSocket = client.newWebSocket(request, wsMonitor.listener)
     }
 
     fun sendMessage(message: String) {

@@ -2,7 +2,20 @@ package com.azikar24.wormaceptor.api
 
 /**
  * Configuration for data redaction in WormaCeptor.
- * Allows masking sensitive information in headers and request/response bodies.
+ *
+ * Allows masking sensitive information in HTTP headers and request/response bodies.
+ * Configure redaction rules before capturing network traffic to prevent sensitive
+ * data from being stored or displayed.
+ *
+ * Usage:
+ * ```kotlin
+ * WormaCeptorApi.redactionConfig
+ *     .redactHeader("Authorization")
+ *     .redactHeader("Cookie")
+ *     .redactJsonValue("password")
+ *     .redactJsonValue("api_key")
+ *     .replacement("[REDACTED]")
+ * ```
  */
 class RedactionConfig {
     internal val headersToRedact = mutableSetOf<String>()
@@ -10,7 +23,10 @@ class RedactionConfig {
     internal var replacementText: String = "********"
 
     /**
-     * Represents a body redaction pattern with its replacement strategy.
+     * Internal representation of a body redaction pattern with its replacement strategy.
+     *
+     * @property pattern The regex pattern to match
+     * @property replacer Function that produces the replacement string given a match and replacement text
      */
     internal data class BodyRedaction(
         val pattern: Regex,
@@ -18,7 +34,11 @@ class RedactionConfig {
     )
 
     /**
-     * Adds a header name to be redacted. Comparison is case-insensitive.
+     * Adds a header name to be redacted. The header value will be replaced with the
+     * configured replacement text. Comparison is case-insensitive.
+     *
+     * @param name The header name to redact (e.g., "Authorization", "Cookie", "X-Api-Key")
+     * @return this configuration for chaining
      */
     fun redactHeader(name: String): RedactionConfig {
         headersToRedact.add(name.lowercase())
@@ -26,10 +46,13 @@ class RedactionConfig {
     }
 
     /**
-     * Adds a regex pattern to be redacted in the request and response body.
+     * Adds a regex pattern to be redacted in request and response bodies.
      * The entire matched pattern will be replaced with the replacement text.
      *
      * For JSON/XML value-only redaction, use [redactJsonValue] or [redactXmlValue] instead.
+     *
+     * @param pattern A regex pattern to match (e.g., "api_key=\\w+", "Bearer \\S+")
+     * @return this configuration for chaining
      */
     fun redactBody(pattern: String): RedactionConfig {
         val regex = Regex(pattern, RegexOption.IGNORE_CASE)
@@ -45,6 +68,9 @@ class RedactionConfig {
      * - `"password":"secret123"` -> `"password":"********"`
      * - `"password": "secret123"` -> `"password": "********"`
      * - `"password":null` -> `"password":"********"`
+     *
+     * @param key The JSON key whose value should be redacted
+     * @return this configuration for chaining
      */
     fun redactJsonValue(key: String): RedactionConfig {
         // Pattern matches: "key" : "value" or "key" : value (for non-strings)
@@ -65,10 +91,14 @@ class RedactionConfig {
 
     /**
      * Redacts XML element values for the specified tag.
+     * Tag matching is case-insensitive.
      *
      * Example: `redactXmlValue("password")` will transform:
      * - `<password>secret123</password>` -> `<password>********</password>`
      * - `<Password>secret123</Password>` -> `<Password>********</Password>`
+     *
+     * @param tag The XML tag whose content should be redacted
+     * @return this configuration for chaining
      */
     fun redactXmlValue(tag: String): RedactionConfig {
         // Pattern matches: <tag>value</tag> with case-insensitive tag matching
@@ -85,7 +115,10 @@ class RedactionConfig {
     }
 
     /**
-     * Sets the replacement text for redacted content. Default is "********".
+     * Sets the replacement text for redacted content.
+     *
+     * @param text The text to substitute for redacted content (default: "********")
+     * @return this configuration for chaining
      */
     fun replacement(text: String): RedactionConfig {
         replacementText = text
@@ -94,6 +127,9 @@ class RedactionConfig {
 
     /**
      * Applies all configured redactions to the given text.
+     *
+     * @param text The text to process
+     * @return The text with all matching patterns replaced
      */
     internal fun applyRedactions(text: String): String {
         var result = text

@@ -68,6 +68,12 @@ object WormaCeptorApi {
      */
     fun getEnabledFeatures(): Set<Feature> = enabledFeatures.toSet()
 
+    /**
+     * Registers a shake gesture detector that opens WormaCeptor when the device is shaken.
+     * The detector is lifecycle-aware and automatically stops when the activity is destroyed.
+     *
+     * @param activity The activity to attach the shake detector to
+     */
     fun startActivityOnShake(activity: ComponentActivity) {
         // Platform classes are safe to refer if they are in a common layout or handled similarly
         // For simplicity, we'll delegate shake start to provider if needed,
@@ -81,6 +87,12 @@ object WormaCeptorApi {
         }
     }
 
+    /**
+     * Returns an Intent that launches the WormaCeptor UI.
+     *
+     * @param context Application or Activity context
+     * @return Intent to launch WormaCeptor, or an empty Intent if not initialized
+     */
     fun getLaunchIntent(context: Context): Intent {
         return provider?.getLaunchIntent(context) ?: Intent()
     }

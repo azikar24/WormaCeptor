@@ -52,7 +52,6 @@ import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
-import com.azikar24.wormaceptorapp.screens.CookiesTestScreen
 import com.azikar24.wormaceptorapp.screens.LocationTestScreen
 import com.azikar24.wormaceptorapp.screens.SecureStorageTestScreen
 import com.azikar24.wormaceptorapp.screens.WebViewTestScreen
@@ -234,24 +233,6 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(
-                        route = TestToolsRoutes.COOKIES,
-                        enterTransition = {
-                            slideInHorizontally(
-                                initialOffsetX = { it },
-                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
-                            )
-                        },
-                        popExitTransition = {
-                            slideOutHorizontally(
-                                targetOffsetX = { it },
-                                animationSpec = tween(NAV_TRANSITION_DURATION, easing = FastOutSlowInEasing),
-                            )
-                        },
-                    ) {
-                        CookiesTestScreen(onBack = { navController.popBackStack() })
-                    }
-
-                    composable(
                         route = TestToolsRoutes.WEBVIEW,
                         enterTransition = {
                             slideInHorizontally(
@@ -343,16 +324,6 @@ class MainActivity : ComponentActivity() {
                             scope.launch {
                                 delay(SHEET_DISMISS_DELAY)
                                 navController.navigate(TestToolsRoutes.LOCATION)
-                            }
-                        },
-                        onCookiesClick = {
-                            scope.launch {
-                                sheetState.hide()
-                                showTestToolsSheet = false
-                            }
-                            scope.launch {
-                                delay(SHEET_DISMISS_DELAY)
-                                navController.navigate(TestToolsRoutes.COOKIES)
                             }
                         },
                         onWebViewClick = {

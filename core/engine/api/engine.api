@@ -9,28 +9,6 @@ public final class com/azikar24/wormaceptor/core/engine/CaptureEngine {
 	public static synthetic fun startTransaction$default (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
-public final class com/azikar24/wormaceptor/core/engine/ComposeRenderEngine {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine$Companion;
-	public fun <init> ()V
-	public final fun clearStats ()V
-	public final fun getComposables ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isTracking ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun recordRenderTime (Ljava/lang/String;J)V
-	public final fun startTracking ()V
-	public final fun stopTracking ()V
-	public final fun trackComposable (Ljava/lang/String;Ljava/util/List;I)V
-	public static synthetic fun trackComposable$default (Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;Ljava/lang/String;Ljava/util/List;IILjava/lang/Object;)V
-	public final fun trackRecomposition (Ljava/lang/String;Ljava/util/List;I)V
-	public static synthetic fun trackRecomposition$default (Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;Ljava/lang/String;Ljava/util/List;IILjava/lang/Object;)V
-	public final fun trackSkip (Ljava/lang/String;)V
-}
-
-public final class com/azikar24/wormaceptor/core/engine/ComposeRenderEngine$Companion {
-	public final fun getInstance ()Lcom/azikar24/wormaceptor/core/engine/ComposeRenderEngine;
-}
-
 public final class com/azikar24/wormaceptor/core/engine/CoreHolder {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/engine/CoreHolder;
@@ -173,115 +151,6 @@ public abstract interface class com/azikar24/wormaceptor/core/engine/Highlighter
 	public abstract fun getHighlighterForContentType (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter;
 	public abstract fun getSupportedLanguages ()Ljava/util/Set;
 	public abstract fun register (Lcom/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter;)V
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionEngine {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$Companion;
-	public fun <init> ()V
-	public final fun addRule (Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)V
-	public final fun clearEvents ()V
-	public final fun clearRules ()V
-	public final fun clearStats ()V
-	public final fun disable ()V
-	public final fun enable ()V
-	public final fun getConfig ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getEvents ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getEventsByType (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;)Ljava/util/List;
-	public final fun getInterceptedLocation (Landroid/location/Location;)Landroid/location/Location;
-	public final fun getRule (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun interceptLocation (Landroid/location/Location;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$LocationInterceptionResult;
-	public final fun interceptTouchEvent (Landroid/view/MotionEvent;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$TouchInterceptionResult;
-	public final fun interceptView (Landroid/view/View;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$ViewInterceptionResult;
-	public final fun isEnabled ()Z
-	public final fun removeRule (Ljava/lang/String;)V
-	public final fun setConfig (Lcom/azikar24/wormaceptor/domain/entities/InterceptionConfig;)V
-	public final fun setLogEvents (Z)V
-	public final fun setRuleEnabled (Ljava/lang/String;Z)V
-	public final fun setTypeEnabled (Lcom/azikar24/wormaceptor/domain/entities/InterceptionType;Z)V
-	public final fun shouldBlockView (Landroid/view/View;)Z
-	public final fun updateRule (Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)V
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionEngine$Companion {
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionEngine$LocationInterceptionResult {
-	public static final field $stable I
-	public fun <init> (ZLandroid/location/Location;Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)V
-	public final fun component1 ()Z
-	public final fun component2 ()Landroid/location/Location;
-	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun copy (ZLandroid/location/Location;Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$LocationInterceptionResult;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$LocationInterceptionResult;ZLandroid/location/Location;Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$LocationInterceptionResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBlocked ()Z
-	public final fun getMatchedRule ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun getModifiedLocation ()Landroid/location/Location;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionEngine$TouchInterceptionResult {
-	public static final field $stable I
-	public fun <init> (ZLandroid/view/MotionEvent;JLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)V
-	public final fun component1 ()Z
-	public final fun component2 ()Landroid/view/MotionEvent;
-	public final fun component3 ()J
-	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun copy (ZLandroid/view/MotionEvent;JLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$TouchInterceptionResult;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$TouchInterceptionResult;ZLandroid/view/MotionEvent;JLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$TouchInterceptionResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBlocked ()Z
-	public final fun getDelayMs ()J
-	public final fun getMatchedRule ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun getModifiedEvent ()Landroid/view/MotionEvent;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionEngine$ViewInterceptionResult {
-	public static final field $stable I
-	public fun <init> (ZLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)V
-	public final fun component1 ()Z
-	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public final fun copy (ZLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$ViewInterceptionResult;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$ViewInterceptionResult;ZLcom/azikar24/wormaceptor/domain/entities/InterceptionRule;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/InterceptionEngine$ViewInterceptionResult;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getBlocked ()Z
-	public final fun getMatchedRule ()Lcom/azikar24/wormaceptor/domain/entities/InterceptionRule;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionStats {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/InterceptionStats$Companion;
-	public fun <init> (IIIIII)V
-	public final fun component1 ()I
-	public final fun component2 ()I
-	public final fun component3 ()I
-	public final fun component4 ()I
-	public final fun component5 ()I
-	public final fun component6 ()I
-	public final fun copy (IIIIII)Lcom/azikar24/wormaceptor/core/engine/InterceptionStats;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/InterceptionStats;IIIIIIILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/InterceptionStats;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getLocationBlocked ()I
-	public final fun getLocationInterceptions ()I
-	public final fun getTotalBlocked ()I
-	public final fun getTotalInterceptions ()I
-	public final fun getTouchBlocked ()I
-	public final fun getTouchInterceptions ()I
-	public final fun getViewBlocked ()I
-	public final fun getViewInterceptions ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/InterceptionStats$Companion {
-	public final fun empty ()Lcom/azikar24/wormaceptor/core/engine/InterceptionStats;
 }
 
 public final class com/azikar24/wormaceptor/core/engine/LeakDetectionEngine {
@@ -444,6 +313,8 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine
 	public static synthetic fun toggleMemory$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
 	public final fun toggleOverlay (Landroid/app/Activity;)V
 	public static synthetic fun toggleOverlay$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
+	public final fun toggleOverlayWithAllMetrics (Landroid/app/Activity;)V
+	public static synthetic fun toggleOverlayWithAllMetrics$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
 	public final fun updatePosition-k-4lQ0M (J)V
 }
 
@@ -700,24 +571,6 @@ public final class com/azikar24/wormaceptor/core/engine/ThreadViolationEngine {
 }
 
 public final class com/azikar24/wormaceptor/core/engine/ThreadViolationEngine$Companion {
-}
-
-public final class com/azikar24/wormaceptor/core/engine/ViewHierarchyEngine {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/ViewHierarchyEngine$Companion;
-	public static final field MAX_DEPTH I
-	public fun <init> ()V
-	public final fun captureHierarchy (Landroid/view/View;)V
-	public final fun clear ()V
-	public final fun findNodeById (I)Lcom/azikar24/wormaceptor/domain/entities/ViewNode;
-	public final fun getAllNodes ()Ljava/util/List;
-	public final fun getCaptureTimestamp ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getMaxDepth ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getRootNode ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getViewCount ()Lkotlinx/coroutines/flow/StateFlow;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/ViewHierarchyEngine$Companion {
 }
 
 public final class com/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine {

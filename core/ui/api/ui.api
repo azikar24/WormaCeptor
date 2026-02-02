@@ -161,20 +161,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Cont
 	public final fun getXml-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Cookies {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Cookies;
-	public final fun getDomain-0d7_KjU ()J
-	public final fun getExpired-0d7_KjU ()J
-	public final fun getHttpOnly-0d7_KjU ()J
-	public final fun getSameSiteLax-0d7_KjU ()J
-	public final fun getSameSiteNone-0d7_KjU ()J
-	public final fun getSameSiteStrict-0d7_KjU ()J
-	public final fun getSecure-0d7_KjU ()J
-	public final fun getSession-0d7_KjU ()J
-	public final fun getValid-0d7_KjU ()J
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Cpu {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Cpu;
@@ -506,6 +492,39 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public final fun getXxl-D9Ej5fM ()F
 	public final fun getXxs-D9Ej5fM ()F
 	public final fun getXxxl-D9Ej5fM ()F
+}
+
+public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$ThemeColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$ThemeColors;
+	public final fun getAccentDark-0d7_KjU ()J
+	public final fun getAccentLight-0d7_KjU ()J
+	public final fun getAccentSubtleDark-0d7_KjU ()J
+	public final fun getAccentSubtleLight-0d7_KjU ()J
+	public final fun getDarkBackground-0d7_KjU ()J
+	public final fun getDarkOutline-0d7_KjU ()J
+	public final fun getDarkOutlineVariant-0d7_KjU ()J
+	public final fun getDarkSurface-0d7_KjU ()J
+	public final fun getDarkSurfaceVariant-0d7_KjU ()J
+	public final fun getDarkTextPrimary-0d7_KjU ()J
+	public final fun getDarkTextSecondary-0d7_KjU ()J
+	public final fun getDarkTextTertiary-0d7_KjU ()J
+	public final fun getError-0d7_KjU ()J
+	public final fun getErrorDark-0d7_KjU ()J
+	public final fun getInfo-0d7_KjU ()J
+	public final fun getInfoDark-0d7_KjU ()J
+	public final fun getLightBackground-0d7_KjU ()J
+	public final fun getLightOutline-0d7_KjU ()J
+	public final fun getLightOutlineVariant-0d7_KjU ()J
+	public final fun getLightSurface-0d7_KjU ()J
+	public final fun getLightSurfaceVariant-0d7_KjU ()J
+	public final fun getLightTextPrimary-0d7_KjU ()J
+	public final fun getLightTextSecondary-0d7_KjU ()J
+	public final fun getLightTextTertiary-0d7_KjU ()J
+	public final fun getSuccess-0d7_KjU ()J
+	public final fun getSuccessDark-0d7_KjU ()J
+	public final fun getWarning-0d7_KjU ()J
+	public final fun getWarningDark-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$TouchTarget {

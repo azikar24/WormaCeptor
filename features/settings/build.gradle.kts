@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation(project(":domain:contracts"))
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.datastore.preferences)

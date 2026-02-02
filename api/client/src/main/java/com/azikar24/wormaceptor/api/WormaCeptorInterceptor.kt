@@ -41,9 +41,49 @@ private object MagicBytes {
     val BMP_SIGNATURE = byteArrayOf(0x42, 0x4D)
 }
 
+/**
+ * OkHttp interceptor that captures HTTP/HTTPS network traffic for inspection in WormaCeptor.
+ *
+ * Add this interceptor to your OkHttpClient to monitor network requests and responses.
+ * Both request and response bodies are captured (up to [maxContentLength]) and can be
+ * viewed in the WormaCeptor UI.
+ *
+ * Usage:
+ * ```kotlin
+ * val client = OkHttpClient.Builder()
+ *     .addInterceptor(WormaCeptorInterceptor())
+ *     .build()
+ * ```
+ *
+ * For sensitive data, configure redaction:
+ * ```kotlin
+ * val interceptor = WormaCeptorInterceptor()
+ *     .redactHeader("Authorization")
+ *     .redactJsonValue("password")
+ *     .maxContentLength(500_000L)
+ * ```
+ */
 class WormaCeptorInterceptor : Interceptor {
 
-    enum class Period { ONE_HOUR, ONE_DAY, ONE_WEEK, ONE_MONTH, FOREVER }
+    /**
+     * Data retention period for captured network transactions.
+     */
+    enum class Period {
+        /** Retains data for 1 hour. */
+        ONE_HOUR,
+
+        /** Retains data for 24 hours. */
+        ONE_DAY,
+
+        /** Retains data for 7 days. */
+        ONE_WEEK,
+
+        /** Retains data for 30 days. */
+        ONE_MONTH,
+
+        /** Retains data indefinitely. */
+        FOREVER,
+    }
 
     private var showNotification = true
     private var maxContentLength = 250_000L
@@ -249,16 +289,36 @@ class WormaCeptorInterceptor : Interceptor {
         return response
     }
 
+    /**
+     * Enables or disables notification display when transactions are captured.
+     *
+     * @param show true to show notifications, false to hide them
+     * @return this interceptor for chaining
+     */
     fun showNotification(show: Boolean): WormaCeptorInterceptor {
         this.showNotification = show
         return this
     }
 
+    /**
+     * Sets the maximum content length to capture for request and response bodies.
+     * Bodies larger than this limit will be truncated.
+     *
+     * @param length Maximum body size in bytes (default: 250,000)
+     * @return this interceptor for chaining
+     */
     fun maxContentLength(length: Long): WormaCeptorInterceptor {
         this.maxContentLength = length
         return this
     }
 
+    /**
+     * Configures data retention period. Transactions older than the specified period
+     * will be deleted when this method is called.
+     *
+     * @param period The retention period for captured data
+     * @return this interceptor for chaining
+     */
     fun retainDataFor(period: Period): WormaCeptorInterceptor {
         val millis = when (period) {
             Period.ONE_HOUR -> 60 * 60 * 1000L
@@ -275,21 +335,47 @@ class WormaCeptorInterceptor : Interceptor {
         return this
     }
 
+    /**
+     * Adds a header name to be redacted. The header value will be replaced with asterisks.
+     * Comparison is case-insensitive.
+     *
+     * @param name The header name to redact (e.g., "Authorization", "Cookie")
+     * @return this interceptor for chaining
+     */
     fun redactHeader(name: String): WormaCeptorInterceptor {
         WormaCeptorApi.redactionConfig.redactHeader(name)
         return this
     }
 
+    /**
+     * Adds a regex pattern to redact in request and response bodies.
+     * Matched content will be replaced with asterisks.
+     *
+     * @param pattern A regex pattern to match (e.g., "api_key=\\w+")
+     * @return this interceptor for chaining
+     */
     fun redactBody(pattern: String): WormaCeptorInterceptor {
         WormaCeptorApi.redactionConfig.redactBody(pattern)
         return this
     }
 
+    /**
+     * Redacts JSON values for the specified key in request and response bodies.
+     *
+     * @param key The JSON key whose value should be redacted (e.g., "password", "token")
+     * @return this interceptor for chaining
+     */
     fun redactJsonValue(key: String): WormaCeptorInterceptor {
         WormaCeptorApi.redactionConfig.redactJsonValue(key)
         return this
     }
 
+    /**
+     * Redacts XML element values for the specified tag in request and response bodies.
+     *
+     * @param tag The XML tag whose content should be redacted (e.g., "Password")
+     * @return this interceptor for chaining
+     */
     fun redactXmlValue(tag: String): WormaCeptorInterceptor {
         WormaCeptorApi.redactionConfig.redactXmlValue(tag)
         return this

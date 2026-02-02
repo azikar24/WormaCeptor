@@ -337,18 +337,19 @@ class LocationViewModel(
         ).setMinUpdateIntervalMillis(2000L)
             .build()
 
-        locationCallback = object : LocationCallback() {
+        val callback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 result.lastLocation?.let { location ->
                     _realDeviceLocation.value = location
                 }
             }
         }
+        locationCallback = callback
 
         try {
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
-                locationCallback!!,
+                callback,
                 Looper.getMainLooper(),
             )
         } catch (e: SecurityException) {

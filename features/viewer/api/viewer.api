@@ -512,7 +512,8 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ErrorTy
 	public static final field NOT_FOUND Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ErrorType;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getIcon ()Landroidx/compose/ui/graphics/vector/ImageVector;
-	public final fun getTitle ()Ljava/lang/String;
+	public final fun getTitle (Landroidx/compose/runtime/Composer;I)Ljava/lang/String;
+	public final fun getTitleResId ()I
 	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ErrorType;
 	public static fun values ()[Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ErrorType;
 }

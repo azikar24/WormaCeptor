@@ -38,7 +38,6 @@ dependencies {
     implementation(project(":features:memory"))
     implementation(project(":features:fps"))
     implementation(project(":features:websocket"))
-    implementation(project(":features:cookies"))
     implementation(project(":features:cpu"))
     implementation(project(":features:location"))
     implementation(project(":features:pushsimulator"))

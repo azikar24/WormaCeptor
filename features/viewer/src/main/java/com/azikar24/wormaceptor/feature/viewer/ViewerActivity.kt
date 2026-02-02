@@ -631,9 +631,9 @@ class ViewerActivity : ComponentActivity() {
         }
         // Include request body for methods that typically have a body
         val methodsWithBody = setOf("POST", "PUT", "PATCH", "DELETE")
-        if (transaction.request.method.uppercase() in methodsWithBody && transaction.request.bodyRef != null) {
-            val body = CoreHolder.queryEngine?.getBody(transaction.request.bodyRef!!)
-            if (body != null) {
+        val bodyRef = transaction.request.bodyRef
+        if (transaction.request.method.uppercase() in methodsWithBody && bodyRef != null) {
+            CoreHolder.queryEngine?.getBody(bodyRef)?.let { body ->
                 val escapedBody = body.replace("'", "'\\''")
                 append(" -d '$escapedBody'")
             }

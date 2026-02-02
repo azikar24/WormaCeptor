@@ -41,15 +41,6 @@ public final class com/azikar24/wormaceptor/domain/contracts/ContentType : java/
 	public static fun values ()[Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
 }
 
-public abstract interface class com/azikar24/wormaceptor/domain/contracts/CookiesRepository {
-	public abstract fun clearAllCookies (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun deleteAllCookiesForDomain (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun deleteCookie (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun getAllCookies ()Lkotlinx/coroutines/flow/Flow;
-	public abstract fun getCookiesForDomain (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
-	public abstract fun refresh (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/CrashRepository {
 	public abstract fun clearCrashes (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeCrashes ()Lkotlinx/coroutines/flow/Flow;

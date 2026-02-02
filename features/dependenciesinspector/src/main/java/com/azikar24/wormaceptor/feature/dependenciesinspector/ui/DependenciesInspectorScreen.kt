@@ -110,7 +110,10 @@ fun DependenciesInspectorScreen(
                 navigationIcon = {
                     onBack?.let {
                         IconButton(onClick = it) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.dependenciesinspector_navigation_back),
+                            )
                         }
                     }
                 },
@@ -119,7 +122,7 @@ fun DependenciesInspectorScreen(
                         if (isLoading) {
                             CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
                         } else {
-                            Icon(Icons.Default.Refresh, "Refresh")
+                            Icon(Icons.Default.Refresh, stringResource(R.string.dependenciesinspector_action_refresh))
                         }
                     }
                 },
@@ -135,7 +138,7 @@ fun DependenciesInspectorScreen(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
                     vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
-                placeholder = "Search dependencies...",
+                placeholder = stringResource(R.string.dependenciesinspector_search_placeholder),
             )
 
             SummarySection(
@@ -204,9 +207,27 @@ fun DependenciesInspectorScreen(
 @Composable
 private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        SummaryCard("Detected", summary.totalDetected, colors.primary, colors, Modifier.weight(1f))
-        SummaryCard("Versioned", summary.withVersion, colors.versionDetected, colors, Modifier.weight(1f))
-        SummaryCard("Unknown", summary.withoutVersion, colors.versionUnknown, colors, Modifier.weight(1f))
+        SummaryCard(
+            stringResource(R.string.dependenciesinspector_summary_detected),
+            summary.totalDetected,
+            colors.primary,
+            colors,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.dependenciesinspector_summary_versioned),
+            summary.withVersion,
+            colors.versionDetected,
+            colors,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.dependenciesinspector_summary_unknown),
+            summary.withoutVersion,
+            colors.versionUnknown,
+            colors,
+            Modifier.weight(1f),
+        )
     }
 }
 
@@ -285,7 +306,7 @@ private fun FilterSection(
         // Version filter toggle
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
             Text(
-                "Show only versioned",
+                stringResource(R.string.dependenciesinspector_filter_versioned_only),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colors.labelPrimary,
             )
@@ -338,7 +359,7 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
                         Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         Icon(
                             Icons.Default.CheckCircle,
-                            "Version detected",
+                            stringResource(R.string.dependenciesinspector_status_version_detected),
                             tint = colors.versionDetected,
                             modifier = Modifier.size(14.dp),
                         )
@@ -473,24 +494,33 @@ private fun DependencyDetailContent(
         )
 
         // Details section
+        val packageLabel = stringResource(R.string.dependenciesinspector_detail_label_package)
+        val groupIdLabel = stringResource(R.string.dependenciesinspector_detail_label_group_id)
+        val artifactIdLabel = stringResource(R.string.dependenciesinspector_detail_label_artifact_id)
+        val mavenLabel = stringResource(R.string.dependenciesinspector_detail_label_maven)
         DetailSection(
-            "Details",
+            stringResource(R.string.dependenciesinspector_detail_section_details),
             listOfNotNull(
-                "Package" to dependency.packageName,
-                dependency.groupId?.let { "Group ID" to it },
-                dependency.artifactId?.let { "Artifact ID" to it },
-                dependency.mavenCoordinate?.let { "Maven" to it },
+                packageLabel to dependency.packageName,
+                dependency.groupId?.let { groupIdLabel to it },
+                dependency.artifactId?.let { artifactIdLabel to it },
+                dependency.mavenCoordinate?.let { mavenLabel to it },
             ),
             colors,
         )
 
         // Detection info
+        val methodLabel = stringResource(R.string.dependenciesinspector_detail_label_method)
+        val confidenceLabel = stringResource(R.string.dependenciesinspector_detail_label_confidence)
+        val versionStatusLabel = stringResource(R.string.dependenciesinspector_detail_label_version_status)
+        val versionDetected = stringResource(R.string.dependenciesinspector_summary_detected)
+        val versionUnknown = stringResource(R.string.dependenciesinspector_summary_unknown)
         DetailSection(
-            "Detection",
+            stringResource(R.string.dependenciesinspector_detail_section_detection),
             listOf(
-                "Method" to dependency.detectionMethod.displayName(),
-                "Confidence" to dependency.detectionMethod.confidence(),
-                "Version Status" to if (dependency.version != null) "Detected" else "Unknown",
+                methodLabel to dependency.detectionMethod.displayName(),
+                confidenceLabel to dependency.detectionMethod.confidence(),
+                versionStatusLabel to if (dependency.version != null) versionDetected else versionUnknown,
             ),
             colors,
         )
@@ -571,12 +601,12 @@ private fun EmptyState(colors: DependenciesInspectorColors, modifier: Modifier) 
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
-                "No dependencies found",
+                stringResource(R.string.dependenciesinspector_empty_title),
                 style = MaterialTheme.typography.bodyLarge,
                 color = colors.labelSecondary,
             )
             Text(
-                "Try adjusting your filters",
+                stringResource(R.string.dependenciesinspector_empty_subtitle),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.labelSecondary,
             )

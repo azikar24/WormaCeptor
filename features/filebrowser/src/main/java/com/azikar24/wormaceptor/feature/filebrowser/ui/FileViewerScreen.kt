@@ -662,7 +662,7 @@ private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = WormaCeptorDesignSystem.Elevation.sm),
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),

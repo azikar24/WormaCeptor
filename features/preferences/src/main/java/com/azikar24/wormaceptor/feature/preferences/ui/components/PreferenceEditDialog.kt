@@ -199,13 +199,13 @@ fun PreferenceEditDialog(
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Surface(
                                                 color = typeColor.copy(alpha = 0.2f),
-                                                shape = RoundedCornerShape(4.dp),
+                                                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                                             ) {
                                                 Text(
                                                     text = type,
                                                     modifier = Modifier.padding(
-                                                        horizontal = 8.dp,
-                                                        vertical = 4.dp,
+                                                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                                        vertical = WormaCeptorDesignSystem.Spacing.xs,
                                                     ),
                                                     color = typeColor,
                                                     fontWeight = FontWeight.Medium,
@@ -326,7 +326,7 @@ fun PreferenceEditDialog(
                                         MaterialTheme.colorScheme.onSurfaceVariant
                                     },
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                                 Switch(
                                     checked = booleanValue,
                                     onCheckedChange = { booleanValue = it },
@@ -343,12 +343,12 @@ fun PreferenceEditDialog(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
                             // Display existing items as chips
                             if (stringSetValues.isNotEmpty()) {
                                 Column(
-                                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                                 ) {
                                     stringSetValues.forEachIndexed { index, value ->
                                         InputChip(
@@ -380,7 +380,7 @@ fun PreferenceEditDialog(
                                     }
                                 }
 
-                                Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                             }
 
                             // Add new item input
@@ -399,7 +399,7 @@ fun PreferenceEditDialog(
                                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                                 )
 
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
                                 IconButton(
                                     onClick = {

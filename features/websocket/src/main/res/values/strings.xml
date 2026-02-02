@@ -3,4 +3,26 @@
     <string name="websocket_back">Back</string>
     <string name="websocket_clear_all">Clear all</string>
     <string name="websocket_clear_messages">Clear messages</string>
+
+    <!-- WebSocketListScreen -->
+    <string name="websocket_title">WebSocket Monitor</string>
+    <string name="websocket_search_url_placeholder">Search by URL…</string>
+    <string name="websocket_connections_label">Connections</string>
+    <string name="websocket_stats_filtered">%1$d / %2$d</string>
+    <string name="websocket_stats_total">%d total</string>
+    <string name="websocket_message_count">%d msgs</string>
+    <string name="websocket_empty_no_connections">No WebSocket connections</string>
+    <string name="websocket_empty_no_matching_connections">No matching connections</string>
+    <string name="websocket_empty_connections_hint">WebSocket connections will appear here</string>
+    <string name="websocket_empty_search_hint">Try a different search query</string>
+
+    <!-- WebSocketDetailScreen -->
+    <string name="websocket_messages_title">Messages</string>
+    <string name="websocket_search_messages_placeholder">Search messages…</string>
+    <string name="websocket_expand">Expand</string>
+    <string name="websocket_collapse">Collapse</string>
+    <string name="websocket_empty_no_messages">No messages yet</string>
+    <string name="websocket_empty_no_matching_messages">No matching messages</string>
+    <string name="websocket_empty_messages_hint">Messages will appear as they are sent or received</string>
+    <string name="websocket_empty_filter_hint">Try adjusting your filters</string>
 </resources>

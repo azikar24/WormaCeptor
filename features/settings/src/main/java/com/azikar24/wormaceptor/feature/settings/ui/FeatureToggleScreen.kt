@@ -71,13 +71,13 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
         ) {
             // Tabs Section
             item {
-                SectionHeader(text = "Tabs")
+                SectionHeader(text = stringResource(R.string.settings_tabs_title))
             }
 
             item {
                 FeatureToggleItem(
-                    title = "Network Tab",
-                    description = "Show network transactions",
+                    title = stringResource(R.string.settings_network_tab),
+                    description = stringResource(R.string.settings_network_tab_description),
                     checked = config.showNetworkTab,
                     onCheckedChange = { viewModel.toggleNetworkTab() },
                 )
@@ -85,8 +85,8 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             item {
                 FeatureToggleItem(
-                    title = "Crashes Tab",
-                    description = "Show crash reports",
+                    title = stringResource(R.string.settings_crashes_tab),
+                    description = stringResource(R.string.settings_crashes_tab_description),
                     checked = config.showCrashesTab,
                     onCheckedChange = { viewModel.toggleCrashesTab() },
                 )
@@ -98,13 +98,13 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             // Tools Section
             item {
-                SectionHeader(text = "Tools")
+                SectionHeader(text = stringResource(R.string.settings_tools_title))
             }
 
             item {
                 FeatureToggleItem(
-                    title = "SharedPreferences",
-                    description = "Inspect and edit SharedPreferences files",
+                    title = stringResource(R.string.settings_preferences_title),
+                    description = stringResource(R.string.settings_preferences_description),
                     checked = config.showPreferences,
                     onCheckedChange = { viewModel.togglePreferences() },
                 )
@@ -112,8 +112,8 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             item {
                 FeatureToggleItem(
-                    title = "Console Logs",
-                    description = "View app console logs",
+                    title = stringResource(R.string.settings_console_logs_title),
+                    description = stringResource(R.string.settings_console_logs_description),
                     checked = config.showConsoleLogs,
                     onCheckedChange = { viewModel.toggleConsoleLogs() },
                 )
@@ -121,8 +121,8 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             item {
                 FeatureToggleItem(
-                    title = "Device Info",
-                    description = "View device information",
+                    title = stringResource(R.string.settings_device_info_title),
+                    description = stringResource(R.string.settings_device_info_description),
                     checked = config.showDeviceInfo,
                     onCheckedChange = { viewModel.toggleDeviceInfo() },
                 )
@@ -130,8 +130,8 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             item {
                 FeatureToggleItem(
-                    title = "SQLite Browser",
-                    description = "Browse and query SQLite databases",
+                    title = stringResource(R.string.settings_sqlite_browser_title),
+                    description = stringResource(R.string.settings_sqlite_browser_description),
                     checked = config.showSqliteBrowser,
                     onCheckedChange = { viewModel.toggleSqliteBrowser() },
                 )
@@ -139,8 +139,8 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
 
             item {
                 FeatureToggleItem(
-                    title = "File Browser",
-                    description = "Browse app internal files",
+                    title = stringResource(R.string.settings_file_browser_title),
+                    description = stringResource(R.string.settings_file_browser_description),
                     checked = config.showFileBrowser,
                     onCheckedChange = { viewModel.toggleFileBrowser() },
                 )

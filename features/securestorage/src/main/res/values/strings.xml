@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Screen title -->
+    <string name="securestorage_title">Secure Storage</string>
+
+    <!-- Navigation -->
     <string name="securestorage_back">Back</string>
     <string name="securestorage_refresh">Refresh</string>
+
+    <!-- Search -->
+    <string name="securestorage_search_placeholder">Search keys and values…</string>
+
+    <!-- Summary cards -->
+    <string name="securestorage_summary_prefs">Prefs</string>
+    <string name="securestorage_summary_keystore">KeyStore</string>
+    <string name="securestorage_summary_datastore">DataStore</string>
+    <string name="securestorage_last_scanned">Last scanned: %1$s</string>
+
+    <!-- Status -->
+    <string name="securestorage_status_accessible">Accessible</string>
+    <string name="securestorage_status_not_accessible">Not accessible</string>
+
+    <!-- Filter chips -->
     <string name="securestorage_filter_all">All</string>
+    <string name="securestorage_filter_prefs">Prefs</string>
+    <string name="securestorage_filter_keystore">KeyStore</string>
+    <string name="securestorage_filter_datastore">DataStore</string>
+
+    <!-- Type badges -->
+    <string name="securestorage_badge_prefs">Prefs</string>
+    <string name="securestorage_badge_keystore">Key</string>
+    <string name="securestorage_badge_datastore">DS</string>
+
+    <!-- Detail sheet -->
+    <string name="securestorage_detail_encrypted_prefs">Encrypted SharedPreferences</string>
+    <string name="securestorage_detail_android_keystore">Android KeyStore</string>
+    <string name="securestorage_detail_datastore">DataStore</string>
+    <string name="securestorage_detail_encrypted">Encrypted</string>
+    <string name="securestorage_detail_not_encrypted">Not encrypted</string>
+    <string name="securestorage_detail_label_key">Key</string>
+    <string name="securestorage_detail_label_value">Value</string>
+    <string name="securestorage_detail_label_last_modified">Last Modified</string>
+
+    <!-- Empty state -->
+    <string name="securestorage_empty_no_matches">No matching entries</string>
+    <string name="securestorage_empty_no_storage">No secure storage found</string>
+    <string name="securestorage_empty_adjust_filters">Try adjusting your filters</string>
+    <string name="securestorage_empty_description">This app has no EncryptedSharedPreferences,\nKeyStore aliases, or DataStore files</string>
 </resources>

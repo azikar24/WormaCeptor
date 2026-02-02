@@ -74,6 +74,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -230,16 +231,16 @@ fun CryptoTool(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.Security, null, tint = Color(0xFF673AB7))
-                        Text("Crypto Tool", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.crypto_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
                     onNavigateBack?.let {
                         IconButton(onClick = it) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.crypto_back))
                         }
                     }
                 },
@@ -248,7 +249,7 @@ fun CryptoTool(
                         IconButton(onClick = onNavigateToHistory) {
                             Icon(
                                 Icons.Default.History,
-                                "History",
+                                stringResource(R.string.crypto_history),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -275,7 +276,7 @@ fun CryptoTool(
                     modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
-                    Text("Presets", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_presets), fontWeight = FontWeight.SemiBold)
                     Row(
                         modifier = Modifier.horizontalScroll(rememberScrollState()),
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -301,7 +302,7 @@ fun CryptoTool(
                     modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
-                    Text("Algorithm", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_algorithm), fontWeight = FontWeight.SemiBold)
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -316,7 +317,7 @@ fun CryptoTool(
                     }
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-                    Text("Mode", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_mode), fontWeight = FontWeight.SemiBold)
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -331,7 +332,7 @@ fun CryptoTool(
                     }
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-                    Text("Padding", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_padding), fontWeight = FontWeight.SemiBold)
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -356,7 +357,7 @@ fun CryptoTool(
                     modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
-                    Text("Key Format", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_key_format), fontWeight = FontWeight.SemiBold)
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -371,10 +372,11 @@ fun CryptoTool(
                     }
 
                     // Key input
+                    val keyGeneratedMessage = stringResource(R.string.crypto_key_generated)
                     OutlinedTextField(
                         value = config.key,
                         onValueChange = { viewModel.setKey(it) },
-                        label = { Text("Key (${config.algorithm.keyLengthBits / 8} bytes)") },
+                        label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / 8)) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
@@ -382,16 +384,22 @@ fun CryptoTool(
                                 IconButton(onClick = { showKeyPassword = !showKeyPassword }) {
                                     Icon(
                                         if (showKeyPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                        contentDescription = if (showKeyPassword) "Hide key" else "Show key",
+                                        contentDescription = if (showKeyPassword) {
+                                            stringResource(
+                                                R.string.crypto_hide_key,
+                                            )
+                                        } else {
+                                            stringResource(R.string.crypto_show_key)
+                                        },
                                     )
                                 }
                                 IconButton(onClick = {
                                     viewModel.generateKey()
                                     scope.launch {
-                                        snackbarHostState.showSnackbar("Key generated")
+                                        snackbarHostState.showSnackbar(keyGeneratedMessage)
                                     }
                                 }) {
-                                    Icon(Icons.Default.Refresh, "Generate key")
+                                    Icon(Icons.Default.Refresh, stringResource(R.string.crypto_generate_key))
                                 }
                             }
                         },
@@ -400,6 +408,11 @@ fun CryptoTool(
                     )
 
                     // IV input (only show if mode requires it)
+                    val ivGeneratedMessage = stringResource(R.string.crypto_iv_generated)
+                    val ivLabel = stringResource(R.string.crypto_iv_label)
+                    val hideIv = stringResource(R.string.crypto_hide_iv)
+                    val showIv = stringResource(R.string.crypto_show_iv)
+                    val generateIv = stringResource(R.string.crypto_generate_iv)
                     AnimatedVisibility(
                         visible = config.mode.requiresIv,
                         enter = fadeIn() + expandVertically(),
@@ -408,7 +421,7 @@ fun CryptoTool(
                         OutlinedTextField(
                             value = config.iv,
                             onValueChange = { viewModel.setIv(it) },
-                            label = { Text("IV (Initialization Vector)") },
+                            label = { Text(ivLabel) },
                             modifier = Modifier.fillMaxWidth(),
                             visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation(),
                             trailingIcon = {
@@ -416,16 +429,16 @@ fun CryptoTool(
                                     IconButton(onClick = { showIvPassword = !showIvPassword }) {
                                         Icon(
                                             if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                            contentDescription = if (showIvPassword) "Hide IV" else "Show IV",
+                                            contentDescription = if (showIvPassword) hideIv else showIv,
                                         )
                                     }
                                     IconButton(onClick = {
                                         viewModel.generateIv()
                                         scope.launch {
-                                            snackbarHostState.showSnackbar("IV generated")
+                                            snackbarHostState.showSnackbar(ivGeneratedMessage)
                                         }
                                     }) {
-                                        Icon(Icons.Default.Refresh, "Generate IV")
+                                        Icon(Icons.Default.Refresh, generateIv)
                                     }
                                 }
                             },
@@ -444,11 +457,11 @@ fun CryptoTool(
                     modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
-                    Text("Input", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.crypto_input), fontWeight = FontWeight.SemiBold)
                     OutlinedTextField(
                         value = viewModel.inputText,
                         onValueChange = { viewModel.updateInputText(it) },
-                        label = { Text("Enter text to encrypt/decrypt") },
+                        label = { Text(stringResource(R.string.crypto_input_hint)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(120.dp),
@@ -476,7 +489,7 @@ fun CryptoTool(
                                 Icon(Icons.Default.Lock, null, modifier = Modifier.size(18.dp))
                             }
                             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                            Text("Encrypt")
+                            Text(stringResource(R.string.crypto_encrypt))
                         }
 
                         Button(
@@ -495,13 +508,16 @@ fun CryptoTool(
                                 Icon(Icons.Default.LockOpen, null, modifier = Modifier.size(18.dp))
                             }
                             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                            Text("Decrypt")
+                            Text(stringResource(R.string.crypto_decrypt))
                         }
                     }
                 }
             }
 
             // Result Display
+            val copiedMessage = stringResource(R.string.crypto_copied_to_clipboard)
+            val outputLoadedMessage = stringResource(R.string.crypto_output_loaded_as_input)
+            val clipboardLabel = stringResource(R.string.crypto_clipboard_label)
             AnimatedVisibility(
                 visible = currentResult != null || error != null,
                 enter = fadeIn() + expandVertically(),
@@ -511,16 +527,16 @@ fun CryptoTool(
                     ResultCard(
                         result = result,
                         onCopy = { text ->
-                            copyToClipboard(context, text)
+                            copyToClipboard(context, text, clipboardLabel)
                             scope.launch {
-                                snackbarHostState.showSnackbar("Copied to clipboard")
+                                snackbarHostState.showSnackbar(copiedMessage)
                             }
                         },
                         onClear = { viewModel.clearResult() },
                         onUseAsInput = { text ->
                             viewModel.updateInputText(text)
                             scope.launch {
-                                snackbarHostState.showSnackbar("Output loaded as input")
+                                snackbarHostState.showSnackbar(outputLoadedMessage)
                             }
                         },
                     )
@@ -548,6 +564,9 @@ private fun ResultCard(
     } else {
         Color(0xFFF44336)
     }
+    val successText = stringResource(R.string.crypto_success)
+    val failedText = stringResource(R.string.crypto_failed)
+    val unknownErrorText = stringResource(R.string.crypto_unknown_error)
 
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
@@ -574,20 +593,24 @@ private fun ResultCard(
                         tint = accentColor,
                     )
                     Text(
-                        "${result.operation.displayName} ${if (isSuccess) "Success" else "Failed"}",
+                        "${result.operation.displayName} ${if (isSuccess) successText else failedText}",
                         fontWeight = FontWeight.SemiBold,
                         color = accentColor,
                     )
                 }
                 IconButton(onClick = onClear) {
-                    Icon(Icons.Default.Delete, "Clear result", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(
+                        Icons.Default.Delete,
+                        stringResource(R.string.crypto_clear_result),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
 
             val outputText = result.output
             if (isSuccess && outputText != null) {
                 Text(
-                    "Output:",
+                    stringResource(R.string.crypto_output_label),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -616,7 +639,7 @@ private fun ResultCard(
                     ) {
                         Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text("Copy")
+                        Text(stringResource(R.string.crypto_copy))
                     }
                     OutlinedButton(
                         onClick = { onUseAsInput(outputText) },
@@ -624,12 +647,12 @@ private fun ResultCard(
                     ) {
                         Icon(Icons.Default.Refresh, null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text("Use as Input")
+                        Text(stringResource(R.string.crypto_use_as_input))
                     }
                 }
             } else if (!isSuccess) {
                 Text(
-                    result.errorMessage ?: "Unknown error",
+                    result.errorMessage ?: unknownErrorText,
                     color = accentColor,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -671,7 +694,11 @@ private fun ErrorCard(message: String, onDismiss: () -> Unit) {
                 )
             }
             IconButton(onClick = onDismiss) {
-                Icon(Icons.Default.Delete, "Dismiss", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                Icon(
+                    Icons.Default.Delete,
+                    stringResource(R.string.crypto_dismiss),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }
@@ -685,6 +712,8 @@ private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -
     } else {
         Color(0xFFF44336)
     }
+    val successText = stringResource(R.string.crypto_success)
+    val failedText = stringResource(R.string.crypto_failed)
 
     Row(
         modifier = Modifier
@@ -720,20 +749,24 @@ private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -
             Text(
                 "${dateFormat.format(
                     Date(result.timestamp),
-                )} | ${if (result.success) "Success" else "Failed"} | ${result.durationMs}ms",
+                )} | ${if (result.success) successText else failedText} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
         }
         IconButton(onClick = onRemove) {
-            Icon(Icons.Default.Delete, "Remove", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Icon(
+                Icons.Default.Delete,
+                stringResource(R.string.crypto_remove),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }
 
-private fun copyToClipboard(context: Context, text: String) {
+private fun copyToClipboard(context: Context, text: String, label: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText("Crypto Output", text)
+    val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
 }
 
@@ -762,15 +795,15 @@ fun CryptoHistoryScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.History, null, tint = Color(0xFF673AB7))
-                        Text("Crypto History", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.crypto_history_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.crypto_back))
                     }
                 },
                 actions = {
@@ -778,7 +811,7 @@ fun CryptoHistoryScreen(
                         IconButton(onClick = { viewModel.clearHistory() }) {
                             Icon(
                                 Icons.Default.Delete,
-                                "Clear all",
+                                stringResource(R.string.crypto_clear_all),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -787,6 +820,7 @@ fun CryptoHistoryScreen(
             )
         },
     ) { padding ->
+        val loadedMessage = stringResource(R.string.crypto_loaded_to_tool)
         if (history.isEmpty()) {
             Box(
                 modifier = Modifier
@@ -805,12 +839,12 @@ fun CryptoHistoryScreen(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     )
                     Text(
-                        "No history yet",
+                        stringResource(R.string.crypto_no_history),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
-                        "Your encryption and decryption operations will appear here",
+                        stringResource(R.string.crypto_empty_history_description),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     )
@@ -831,7 +865,7 @@ fun CryptoHistoryScreen(
                         onLoad = {
                             onLoadResult(result)
                             scope.launch {
-                                snackbarHostState.showSnackbar("Loaded to crypto tool")
+                                snackbarHostState.showSnackbar(loadedMessage)
                             }
                         },
                         onRemove = { viewModel.removeFromHistory(result.id) },

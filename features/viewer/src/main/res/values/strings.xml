@@ -72,6 +72,9 @@
     <string name="viewer_overview_response_size">Response Size</string>
     <string name="viewer_overview_total_transfer">Total Transfer</string>
     <string name="viewer_overview_extensions">Extensions</string>
+    <string name="viewer_search_previous_match">Previous match</string>
+    <string name="viewer_search_next_match">Next match</string>
+    <string name="viewer_search_no_matches">No matches</string>
 
     <!-- Request/Response Tab -->
     <string name="viewer_body_headers">Headers</string>
@@ -215,6 +218,8 @@
     <string name="viewer_loading_back_to_top">Back to top</string>
     <string name="viewer_loading_back_to_top_count">Back to top (%1$d)</string>
     <string name="viewer_loading_default">Loading…</string>
+    <string name="viewer_skeleton_headers">Headers</string>
+    <string name="viewer_skeleton_body">Body</string>
 
     <!-- PDF Viewer -->
     <string name="viewer_pdf_page_number">Page number</string>
@@ -244,6 +249,15 @@
     <string name="viewer_image_close">Close</string>
     <string name="viewer_image_zoom_in">Zoom in</string>
     <string name="viewer_image_zoom_out">Zoom out</string>
+    <string name="viewer_image_save_to_gallery">Save to Gallery</string>
+    <string name="viewer_image_share">Share</string>
+    <string name="viewer_image_response">Image Response</string>
+    <string name="viewer_image_failed_to_load">Failed to load image</string>
+    <string name="viewer_image_dimensions">Dimensions</string>
+    <string name="viewer_image_size">Size</string>
+    <string name="viewer_image_color">Color</string>
+    <string name="viewer_image_save">Save</string>
+    <string name="viewer_image_expand">Expand</string>
 
     <!-- Gesture Navigation -->
     <string name="viewer_gesture_previous">Previous transaction</string>

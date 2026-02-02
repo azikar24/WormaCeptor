@@ -118,7 +118,7 @@ fun ThreadViolationScreen(
                             tint = colors.primary,
                         )
                         Text(
-                            text = "Thread Violations",
+                            text = stringResource(R.string.threadviolation_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         MonitoringIndicator(isMonitoring = isMonitoring, colors = colors)
@@ -138,7 +138,13 @@ fun ThreadViolationScreen(
                     IconButton(onClick = onToggleMonitoring) {
                         Icon(
                             imageVector = if (isMonitoring) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = if (isMonitoring) "Stop" else "Start",
+                            contentDescription = stringResource(
+                                if (isMonitoring) {
+                                    R.string.threadviolation_action_stop
+                                } else {
+                                    R.string.threadviolation_action_start
+                                },
+                            ),
                             tint = if (isMonitoring) colors.monitoring else colors.idle,
                         )
                     }
@@ -243,10 +249,30 @@ private fun SummarySection(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        SummaryCard("Disk R", stats.diskReadCount, colors.diskRead, Modifier.weight(1f))
-        SummaryCard("Disk W", stats.diskWriteCount, colors.diskWrite, Modifier.weight(1f))
-        SummaryCard("Network", stats.networkCount, colors.network, Modifier.weight(1f))
-        SummaryCard("Slow", stats.slowCallCount + stats.customSlowCodeCount, colors.slowCall, Modifier.weight(1f))
+        SummaryCard(
+            stringResource(R.string.threadviolation_summary_disk_read),
+            stats.diskReadCount,
+            colors.diskRead,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.threadviolation_summary_disk_write),
+            stats.diskWriteCount,
+            colors.diskWrite,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.threadviolation_summary_network),
+            stats.networkCount,
+            colors.network,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.threadviolation_summary_slow),
+            stats.slowCallCount + stats.customSlowCodeCount,
+            colors.slowCall,
+            Modifier.weight(1f),
+        )
     }
 }
 
@@ -288,17 +314,37 @@ private fun TypeFilterChips(
             onTypeSelected(null)
         }, label = { Text(stringResource(R.string.threadviolation_filter_all)) })
         ViolationType.entries.forEach { type ->
-            val (icon, label, color) = when (type) {
-                ViolationType.DISK_READ -> Triple(Icons.Default.SaveAlt, "Read", colors.diskRead)
-                ViolationType.DISK_WRITE -> Triple(Icons.Default.Storage, "Write", colors.diskWrite)
-                ViolationType.NETWORK -> Triple(Icons.Default.Cloud, "Network", colors.network)
-                ViolationType.SLOW_CALL -> Triple(Icons.Default.SlowMotionVideo, "Slow", colors.slowCall)
-                ViolationType.CUSTOM_SLOW_CODE -> Triple(Icons.Default.Speed, "Custom", colors.customSlowCode)
+            val (icon, labelRes, color) = when (type) {
+                ViolationType.DISK_READ -> Triple(
+                    Icons.Default.SaveAlt,
+                    R.string.threadviolation_filter_read,
+                    colors.diskRead,
+                )
+                ViolationType.DISK_WRITE -> Triple(
+                    Icons.Default.Storage,
+                    R.string.threadviolation_filter_write,
+                    colors.diskWrite,
+                )
+                ViolationType.NETWORK -> Triple(
+                    Icons.Default.Cloud,
+                    R.string.threadviolation_filter_network,
+                    colors.network,
+                )
+                ViolationType.SLOW_CALL -> Triple(
+                    Icons.Default.SlowMotionVideo,
+                    R.string.threadviolation_filter_slow,
+                    colors.slowCall,
+                )
+                ViolationType.CUSTOM_SLOW_CODE -> Triple(
+                    Icons.Default.Speed,
+                    R.string.threadviolation_filter_custom,
+                    colors.customSlowCode,
+                )
             }
             FilterChip(
                 selected = selectedType == type,
                 onClick = { onTypeSelected(if (selectedType == type) null else type) },
-                label = { Text(label) },
+                label = { Text(stringResource(labelRes)) },
                 leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
@@ -437,12 +483,16 @@ private fun ViolationDetailContent(
 
         item {
             DetailSection(
-                "Details",
+                stringResource(R.string.threadviolation_detail_section_details),
                 listOf(
-                    "Description" to violation.description,
-                    "Thread" to violation.threadName,
-                    "Time" to formatTimeFull(violation.timestamp),
-                ) + (violation.durationMs?.let { listOf("Duration" to "${it}ms") } ?: emptyList()),
+                    stringResource(R.string.threadviolation_detail_label_description) to violation.description,
+                    stringResource(R.string.threadviolation_detail_label_thread) to violation.threadName,
+                    stringResource(R.string.threadviolation_detail_label_time) to formatTimeFull(violation.timestamp),
+                ) + (
+                    violation.durationMs?.let {
+                        listOf(stringResource(R.string.threadviolation_detail_label_duration) to "${it}ms")
+                    } ?: emptyList()
+                    ),
                 colors,
             )
         }
@@ -457,7 +507,7 @@ private fun ViolationDetailContent(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            "Stack Trace",
+                            stringResource(R.string.threadviolation_detail_section_stack_trace),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.labelSecondary,
@@ -560,12 +610,24 @@ private fun EmptyState(
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
-                if (isMonitoring) "Monitoring..." else "No violations",
+                stringResource(
+                    if (isMonitoring) {
+                        R.string.threadviolation_empty_monitoring
+                    } else {
+                        R.string.threadviolation_empty_no_violations
+                    },
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = colors.labelSecondary,
             )
             Text(
-                if (isMonitoring) "Violations will appear here" else "Start monitoring to detect violations",
+                stringResource(
+                    if (isMonitoring) {
+                        R.string.threadviolation_empty_hint_monitoring
+                    } else {
+                        R.string.threadviolation_empty_hint_start
+                    },
+                ),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.labelSecondary,
             )

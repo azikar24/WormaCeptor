@@ -304,7 +304,7 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
     ) {
         StatCard(
-            label = "Min",
+            label = stringResource(R.string.fps_min),
             value = if (fpsInfo.minFps > 0) fpsInfo.minFps.roundToInt().toString() else "--",
             color = if (fpsInfo.minFps > 0) {
                 colors.forFps(
@@ -317,7 +317,7 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
         )
 
         StatCard(
-            label = "Avg",
+            label = stringResource(R.string.fps_avg),
             value = if (fpsInfo.averageFps > 0) fpsInfo.averageFps.roundToInt().toString() else "--",
             color = if (fpsInfo.averageFps > 0) {
                 colors.forFps(
@@ -330,7 +330,7 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
         )
 
         StatCard(
-            label = "Max",
+            label = stringResource(R.string.fps_max),
             value = if (fpsInfo.maxFps > 0) fpsInfo.maxFps.roundToInt().toString() else "--",
             color = if (fpsInfo.maxFps > 0) {
                 colors.forFps(

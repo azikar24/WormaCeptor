@@ -366,25 +366,25 @@ private fun HeapUsageCard(
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 MemoryStatItem(
-                    label = "Used",
+                    label = stringResource(R.string.memory_used),
                     value = formatBytes(currentMemory.usedMemory),
                     color = colors.heapUsed,
                     colors = colors,
                 )
                 MemoryStatItem(
-                    label = "Free",
+                    label = stringResource(R.string.memory_free),
                     value = formatBytes(currentMemory.freeMemory),
                     color = colors.heapFree,
                     colors = colors,
                 )
                 MemoryStatItem(
-                    label = "Total",
+                    label = stringResource(R.string.memory_total),
                     value = formatBytes(currentMemory.totalMemory),
                     color = colors.heapTotal,
                     colors = colors,
                 )
                 MemoryStatItem(
-                    label = "Max",
+                    label = stringResource(R.string.memory_max),
                     value = formatBytes(currentMemory.maxMemory),
                     color = colors.labelSecondary,
                     colors = colors,
@@ -477,11 +477,11 @@ private fun MemoryChartCard(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 ChartLegendItem(
-                    label = "Heap Used",
+                    label = stringResource(R.string.memory_heap_used),
                     color = colors.heapUsed,
                 )
                 ChartLegendItem(
-                    label = "Native",
+                    label = stringResource(R.string.memory_native),
                     color = colors.nativeHeap,
                 )
             }

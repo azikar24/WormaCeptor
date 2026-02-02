@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen titles -->
+    <string name="crypto_title">Crypto Tool</string>
+    <string name="crypto_history_title">Crypto History</string>
+
+    <!-- Navigation -->
+    <string name="crypto_back">Back</string>
+    <string name="crypto_history">History</string>
+
+    <!-- Section headers -->
+    <string name="crypto_presets">Presets</string>
+    <string name="crypto_algorithm">Algorithm</string>
+    <string name="crypto_mode">Mode</string>
+    <string name="crypto_padding">Padding</string>
+    <string name="crypto_key_format">Key Format</string>
+    <string name="crypto_input">Input</string>
+
+    <!-- Key input -->
+    <string name="crypto_key_label">Key (%1$d bytes)</string>
+    <string name="crypto_show_key">Show key</string>
+    <string name="crypto_hide_key">Hide key</string>
+    <string name="crypto_generate_key">Generate key</string>
+    <string name="crypto_key_generated">Key generated</string>
+
+    <!-- IV input -->
+    <string name="crypto_iv_label">IV (Initialization Vector)</string>
+    <string name="crypto_show_iv">Show IV</string>
+    <string name="crypto_hide_iv">Hide IV</string>
+    <string name="crypto_generate_iv">Generate IV</string>
+    <string name="crypto_iv_generated">IV generated</string>
+
+    <!-- Input text -->
+    <string name="crypto_input_hint">Enter text to encrypt/decrypt</string>
+
+    <!-- Actions -->
+    <string name="crypto_encrypt">Encrypt</string>
+    <string name="crypto_decrypt">Decrypt</string>
+    <string name="crypto_copy">Copy</string>
+    <string name="crypto_use_as_input">Use as Input</string>
+    <string name="crypto_clear_result">Clear result</string>
+    <string name="crypto_clear_all">Clear all</string>
+    <string name="crypto_dismiss">Dismiss</string>
+    <string name="crypto_remove">Remove</string>
+
+    <!-- Result display -->
+    <string name="crypto_output_label">Output:</string>
+    <string name="crypto_success">Success</string>
+    <string name="crypto_failed">Failed</string>
+    <string name="crypto_unknown_error">Unknown error</string>
+
+    <!-- Snackbar messages -->
+    <string name="crypto_copied_to_clipboard">Copied to clipboard</string>
+    <string name="crypto_output_loaded_as_input">Output loaded as input</string>
+    <string name="crypto_loaded_to_tool">Loaded to crypto tool</string>
+
+    <!-- Clipboard -->
+    <string name="crypto_clipboard_label">Crypto Output</string>
+
+    <!-- Empty state -->
+    <string name="crypto_no_history">No history yet</string>
+    <string name="crypto_empty_history_description">Your encryption and decryption operations will appear here</string>
+</resources>

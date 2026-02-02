@@ -4,4 +4,26 @@
     <string name="threadviolation_clear">Clear</string>
     <string name="threadviolation_copy_stack">Copy stack trace</string>
     <string name="threadviolation_filter_all">All</string>
+    <string name="threadviolation_title">Thread Violations</string>
+    <string name="threadviolation_action_stop">Stop</string>
+    <string name="threadviolation_action_start">Start</string>
+    <string name="threadviolation_summary_disk_read">Disk R</string>
+    <string name="threadviolation_summary_disk_write">Disk W</string>
+    <string name="threadviolation_summary_network">Network</string>
+    <string name="threadviolation_summary_slow">Slow</string>
+    <string name="threadviolation_filter_read">Read</string>
+    <string name="threadviolation_filter_write">Write</string>
+    <string name="threadviolation_filter_network">Network</string>
+    <string name="threadviolation_filter_slow">Slow</string>
+    <string name="threadviolation_filter_custom">Custom</string>
+    <string name="threadviolation_detail_section_details">Details</string>
+    <string name="threadviolation_detail_label_description">Description</string>
+    <string name="threadviolation_detail_label_thread">Thread</string>
+    <string name="threadviolation_detail_label_time">Time</string>
+    <string name="threadviolation_detail_label_duration">Duration</string>
+    <string name="threadviolation_detail_section_stack_trace">Stack Trace</string>
+    <string name="threadviolation_empty_monitoring">Monitoring…</string>
+    <string name="threadviolation_empty_no_violations">No violations</string>
+    <string name="threadviolation_empty_hint_monitoring">Violations will appear here</string>
+    <string name="threadviolation_empty_hint_start">Start monitoring to detect violations</string>
 </resources>

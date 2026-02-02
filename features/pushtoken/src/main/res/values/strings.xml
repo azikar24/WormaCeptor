@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen title -->
+    <string name="pushtoken_title">Push Token</string>
+
+    <!-- Navigation -->
+    <string name="pushtoken_back">Back</string>
+    <string name="pushtoken_fetch_token">Fetch token</string>
+
+    <!-- Snackbar -->
+    <string name="pushtoken_token_copied">Token copied to clipboard</string>
+
+    <!-- Error card -->
+    <string name="pushtoken_dismiss">Dismiss</string>
+
+    <!-- Current token section -->
+    <string name="pushtoken_current_token">Current Token</string>
+    <string name="pushtoken_refreshed">Refreshed: %1$s</string>
+    <string name="pushtoken_clipboard_label">Push Token</string>
+    <string name="pushtoken_copy">Copy</string>
+    <string name="pushtoken_no_token">No token available</string>
+
+    <!-- Token history section -->
+    <string name="pushtoken_token_history">Token History</string>
+    <string name="pushtoken_clear">Clear</string>
+    <string name="pushtoken_no_history">No history</string>
+</resources>

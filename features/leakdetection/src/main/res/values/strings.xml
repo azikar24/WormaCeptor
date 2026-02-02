@@ -4,4 +4,19 @@
     <string name="leakdetection_trigger_check">Trigger leak check</string>
     <string name="leakdetection_clear">Clear leaks</string>
     <string name="leakdetection_filter_all">All</string>
+    <string name="leakdetection_title">Leak Detection</string>
+    <string name="leakdetection_severity_critical">Critical</string>
+    <string name="leakdetection_severity_high">High</string>
+    <string name="leakdetection_severity_medium">Medium</string>
+    <string name="leakdetection_severity_low">Low</string>
+    <string name="leakdetection_section_details">Details</string>
+    <string name="leakdetection_detail_class">Class</string>
+    <string name="leakdetection_detail_description">Description</string>
+    <string name="leakdetection_detail_retained_size">Retained Size</string>
+    <string name="leakdetection_detail_detected">Detected</string>
+    <string name="leakdetection_section_reference_path">Reference Path</string>
+    <string name="leakdetection_empty_monitoring">Monitoring for leaks…</string>
+    <string name="leakdetection_empty_no_leaks">No leaks detected</string>
+    <string name="leakdetection_empty_hint_monitoring">Navigate between activities to detect potential leaks</string>
+    <string name="leakdetection_empty_hint_start">Start monitoring to begin leak detection</string>
 </resources>

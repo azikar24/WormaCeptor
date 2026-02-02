@@ -80,9 +80,12 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.AppDetails
 import com.azikar24.wormaceptor.domain.entities.DeviceDetails
 import com.azikar24.wormaceptor.domain.entities.DeviceInfo
@@ -98,42 +101,6 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-// Design System constants (matching viewer module patterns)
-private object DeviceInfoDesignSystem {
-    object Spacing {
-        val xxs = 2.dp
-        val xs = 4.dp
-        val sm = 8.dp
-        val md = 12.dp
-        val lg = 16.dp
-        val xl = 24.dp
-        val xxl = 32.dp
-    }
-
-    object CornerRadius {
-        val xs = 4.dp
-        val sm = 6.dp
-        val md = 8.dp
-        val lg = 12.dp
-    }
-
-    object BorderWidth {
-        val thin = 0.5.dp
-        val regular = 1.dp
-    }
-
-    object Alpha {
-        const val subtle = 0.08f
-        const val light = 0.12f
-    }
-
-    object Elevation {
-        val sm = 2.dp
-    }
-
-    val cardShape = RoundedCornerShape(CornerRadius.md)
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,12 +145,12 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Device Information") },
+                title = { Text(stringResource(R.string.deviceinfo_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.deviceinfo_back),
                         )
                     }
                 },
@@ -195,13 +162,13 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                         }) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
-                                contentDescription = "Copy All",
+                                contentDescription = stringResource(R.string.deviceinfo_copy_all),
                             )
                         }
                         IconButton(onClick = { shareDeviceInfo(context, info) }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
-                                contentDescription = "Share",
+                                contentDescription = stringResource(R.string.deviceinfo_share),
                             )
                         }
                     }
@@ -253,8 +220,8 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(scrollState)
-                            .padding(DeviceInfoDesignSystem.Spacing.lg),
-                        verticalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.lg),
+                            .padding(WormaCeptorDesignSystem.Spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
                     ) {
                         val showMessage: (String) -> Unit = { message ->
                             scope.launch { snackbarHostState.showSnackbar(message) }
@@ -283,13 +250,13 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 
                         // Timestamp footer
                         Text(
-                            text = "Collected: ${formatTimestamp(info.timestamp)}",
+                            text = stringResource(R.string.deviceinfo_collected, formatTimestamp(info.timestamp)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = DeviceInfoDesignSystem.Spacing.sm),
+                            modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
                         )
 
-                        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xl))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                     }
                 }
             }
@@ -300,95 +267,103 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 @Composable
 private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_device)
+    val yes = stringResource(R.string.deviceinfo_yes)
+    val no = stringResource(R.string.deviceinfo_no)
     InfoCard(
-        title = "Device",
+        title = sectionTitle,
         icon = Icons.Default.PhoneAndroid,
         iconTint = MaterialTheme.colorScheme.primary,
         onCopy = {
-            val message = copyToClipboard(context, "Device Info", formatDeviceDetails(device))
+            val message = copyToClipboard(context, sectionTitle, formatDeviceDetails(device))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Manufacturer", device.manufacturer)
-        InfoRow("Model", device.model)
-        InfoRow("Brand", device.brand)
-        InfoRow("Device", device.device)
-        InfoRow("Hardware", device.hardware)
-        InfoRow("Board", device.board)
-        InfoRow("Product", device.product)
-        InfoRow("Emulator", if (device.isEmulator) "Yes" else "No")
+        InfoRow(stringResource(R.string.deviceinfo_device_manufacturer), device.manufacturer)
+        InfoRow(stringResource(R.string.deviceinfo_device_model), device.model)
+        InfoRow(stringResource(R.string.deviceinfo_device_brand), device.brand)
+        InfoRow(stringResource(R.string.deviceinfo_device_device), device.device)
+        InfoRow(stringResource(R.string.deviceinfo_device_hardware), device.hardware)
+        InfoRow(stringResource(R.string.deviceinfo_device_board), device.board)
+        InfoRow(stringResource(R.string.deviceinfo_device_product), device.product)
+        InfoRow(stringResource(R.string.deviceinfo_device_emulator), if (device.isEmulator) yes else no)
     }
 }
 
 @Composable
 private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_os)
     InfoCard(
-        title = "Operating System",
+        title = sectionTitle,
         icon = Icons.Default.SystemUpdate,
-        iconTint = Color(0xFF4CAF50),
+        iconTint = WormaCeptorColors.StatusGreen,
         onCopy = {
-            val message = copyToClipboard(context, "OS Info", formatOsDetails(os))
+            val message = copyToClipboard(context, sectionTitle, formatOsDetails(os))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Android Version", os.androidVersion)
-        InfoRow("SDK Level", os.sdkLevel.toString())
-        InfoRow("Build ID", os.buildId)
-        os.securityPatch?.let { InfoRow("Security Patch", it) }
-        InfoRow("Bootloader", os.bootloader)
-        InfoRow("Incremental", os.incremental)
-        CollapsibleInfoRow("Fingerprint", os.fingerprint)
+        InfoRow(stringResource(R.string.deviceinfo_os_android_version), os.androidVersion)
+        InfoRow(stringResource(R.string.deviceinfo_os_sdk_level), os.sdkLevel.toString())
+        InfoRow(stringResource(R.string.deviceinfo_os_build_id), os.buildId)
+        os.securityPatch?.let { InfoRow(stringResource(R.string.deviceinfo_os_security_patch), it) }
+        InfoRow(stringResource(R.string.deviceinfo_os_bootloader), os.bootloader)
+        InfoRow(stringResource(R.string.deviceinfo_os_incremental), os.incremental)
+        CollapsibleInfoRow(stringResource(R.string.deviceinfo_os_fingerprint), os.fingerprint)
     }
 }
 
 @Composable
 private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_display)
     InfoCard(
-        title = "Display",
+        title = sectionTitle,
         icon = Icons.Default.ScreenRotation,
-        iconTint = Color(0xFF2196F3),
+        iconTint = WormaCeptorColors.StatusBlue,
         onCopy = {
-            val message = copyToClipboard(context, "Screen Info", formatScreenDetails(screen))
+            val message = copyToClipboard(context, sectionTitle, formatScreenDetails(screen))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Resolution", "${screen.widthPixels} x ${screen.heightPixels}")
-        InfoRow("Density DPI", screen.densityDpi.toString())
-        InfoRow("Density", String.format("%.2f", screen.density))
-        InfoRow("Scaled Density", String.format("%.2f", screen.scaledDensity))
-        InfoRow("Size Category", screen.sizeCategory)
-        InfoRow("Orientation", screen.orientation)
-        InfoRow("Refresh Rate", "${screen.refreshRate.toInt()} Hz")
+        InfoRow(stringResource(R.string.deviceinfo_screen_resolution), "${screen.widthPixels} x ${screen.heightPixels}")
+        InfoRow(stringResource(R.string.deviceinfo_screen_density_dpi), screen.densityDpi.toString())
+        InfoRow(stringResource(R.string.deviceinfo_screen_density), String.format("%.2f", screen.density))
+        InfoRow(stringResource(R.string.deviceinfo_screen_scaled_density), String.format("%.2f", screen.scaledDensity))
+        InfoRow(stringResource(R.string.deviceinfo_screen_size_category), screen.sizeCategory)
+        InfoRow(stringResource(R.string.deviceinfo_screen_orientation), screen.orientation)
+        InfoRow(stringResource(R.string.deviceinfo_screen_refresh_rate), "${screen.refreshRate.toInt()} Hz")
     }
 }
 
 @Composable
 private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_memory)
+    val yes = stringResource(R.string.deviceinfo_yes)
+    val no = stringResource(R.string.deviceinfo_no)
     InfoCard(
-        title = "Memory",
+        title = sectionTitle,
         icon = Icons.Default.Memory,
-        iconTint = Color(0xFFFF9800),
+        iconTint = WormaCeptorColors.StatusAmber,
         onCopy = {
-            val message = copyToClipboard(context, "Memory Info", formatMemoryDetails(memory))
+            val message = copyToClipboard(context, sectionTitle, formatMemoryDetails(memory))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Total RAM", formatBytes(memory.totalRam))
-        InfoRow("Available RAM", formatBytes(memory.availableRam))
-        InfoRow("Used RAM", formatBytes(memory.usedRam))
+        InfoRow(stringResource(R.string.deviceinfo_memory_total_ram), formatBytes(memory.totalRam))
+        InfoRow(stringResource(R.string.deviceinfo_memory_available_ram), formatBytes(memory.availableRam))
+        InfoRow(stringResource(R.string.deviceinfo_memory_used_ram), formatBytes(memory.usedRam))
 
         // Memory usage progress bar
-        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = "Usage",
+                    text = stringResource(R.string.deviceinfo_label_usage),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -399,7 +374,7 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
                     color = getUsageColor(memory.usagePercentage),
                 )
             }
-            Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             LinearProgressIndicator(
                 progress = { memory.usagePercentage / 100f },
                 modifier = Modifier
@@ -411,35 +386,39 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
             )
         }
 
-        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.sm))
-        InfoRow("Low Memory Threshold", formatBytes(memory.lowMemoryThreshold))
-        InfoRow("Low Memory", if (memory.isLowMemory) "Yes" else "No")
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        InfoRow(stringResource(R.string.deviceinfo_memory_low_threshold), formatBytes(memory.lowMemoryThreshold))
+        InfoRow(stringResource(R.string.deviceinfo_memory_low_memory), if (memory.isLowMemory) yes else no)
     }
 }
 
 @Composable
 private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_storage)
+    val totalLabel = stringResource(R.string.deviceinfo_label_total)
+    val availableLabel = stringResource(R.string.deviceinfo_label_available)
+    val usedLabel = stringResource(R.string.deviceinfo_label_used)
     InfoCard(
-        title = "Storage",
+        title = sectionTitle,
         icon = Icons.Default.Storage,
-        iconTint = Color(0xFF9C27B0),
+        iconTint = WormaCeptorColors.Category.Simulation,
         onCopy = {
-            val message = copyToClipboard(context, "Storage Info", formatStorageDetails(storage))
+            val message = copyToClipboard(context, sectionTitle, formatStorageDetails(storage))
             onShowMessage(message)
         },
     ) {
         // Internal Storage
         Text(
-            text = "Internal Storage",
+            text = stringResource(R.string.deviceinfo_storage_internal),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
         )
-        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
-        InfoRow("Total", formatBytes(storage.internalTotal))
-        InfoRow("Available", formatBytes(storage.internalAvailable))
-        InfoRow("Used", formatBytes(storage.internalUsed))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+        InfoRow(totalLabel, formatBytes(storage.internalTotal))
+        InfoRow(availableLabel, formatBytes(storage.internalAvailable))
+        InfoRow(usedLabel, formatBytes(storage.internalUsed))
 
         val internalUsagePercent = if (storage.internalTotal > 0) {
             (storage.internalUsed.toFloat() / storage.internalTotal.toFloat()) * 100f
@@ -447,7 +426,7 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
             0f
         }
 
-        Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
         LinearProgressIndicator(
             progress = { internalUsagePercent / 100f },
             modifier = Modifier
@@ -460,25 +439,25 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
 
         // External Storage (if available)
         if (storage.hasExternalStorage && storage.externalTotal != null) {
-            Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
-            Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             val extTotal = storage.externalTotal ?: 0L
             val extUsed = storage.externalUsed ?: 0L
 
             Text(
-                text = "External Storage",
+                text = stringResource(R.string.deviceinfo_storage_external),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
             )
-            Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
-            InfoRow("Total", formatBytes(extTotal))
-            storage.externalAvailable?.let { InfoRow("Available", formatBytes(it)) }
-            storage.externalUsed?.let { InfoRow("Used", formatBytes(it)) }
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+            InfoRow(totalLabel, formatBytes(extTotal))
+            storage.externalAvailable?.let { InfoRow(availableLabel, formatBytes(it)) }
+            storage.externalUsed?.let { InfoRow(usedLabel, formatBytes(it)) }
 
             val externalUsagePercent = if (extTotal > 0) {
                 (extUsed.toFloat() / extTotal.toFloat()) * 100f
@@ -486,7 +465,7 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
                 0f
             }
 
-            Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.xs))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
             LinearProgressIndicator(
                 progress = { externalUsagePercent / 100f },
                 modifier = Modifier
@@ -503,44 +482,58 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
 @Composable
 private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_application)
+    val yes = stringResource(R.string.deviceinfo_yes)
+    val no = stringResource(R.string.deviceinfo_no)
     InfoCard(
-        title = "Application",
+        title = sectionTitle,
         icon = Icons.Default.Apps,
-        iconTint = Color(0xFF00BCD4),
+        iconTint = WormaCeptorColors.Accent.Tertiary,
         onCopy = {
-            val message = copyToClipboard(context, "App Info", formatAppDetails(app))
+            val message = copyToClipboard(context, sectionTitle, formatAppDetails(app))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Package Name", app.packageName)
-        InfoRow("Version Name", app.versionName)
-        InfoRow("Version Code", app.versionCode.toString())
-        InfoRow("Target SDK", app.targetSdk.toString())
-        InfoRow("Min SDK", app.minSdk.toString())
-        InfoRow("First Install", formatTimestamp(app.firstInstallTime))
-        InfoRow("Last Update", formatTimestamp(app.lastUpdateTime))
-        InfoRow("Debuggable", if (app.isDebuggable) "Yes" else "No")
+        InfoRow(stringResource(R.string.deviceinfo_app_package_name), app.packageName)
+        InfoRow(stringResource(R.string.deviceinfo_app_version_name), app.versionName)
+        InfoRow(stringResource(R.string.deviceinfo_app_version_code), app.versionCode.toString())
+        InfoRow(stringResource(R.string.deviceinfo_app_target_sdk), app.targetSdk.toString())
+        InfoRow(stringResource(R.string.deviceinfo_app_min_sdk), app.minSdk.toString())
+        InfoRow(stringResource(R.string.deviceinfo_app_first_install), formatTimestamp(app.firstInstallTime))
+        InfoRow(stringResource(R.string.deviceinfo_app_last_update), formatTimestamp(app.lastUpdateTime))
+        InfoRow(stringResource(R.string.deviceinfo_app_debuggable), if (app.isDebuggable) yes else no)
     }
 }
 
 @Composable
 private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
+    val sectionTitle = stringResource(R.string.deviceinfo_section_network)
+    val yes = stringResource(R.string.deviceinfo_yes)
+    val no = stringResource(R.string.deviceinfo_no)
+    val connected = stringResource(R.string.deviceinfo_connected)
+    val notConnected = stringResource(R.string.deviceinfo_not_connected)
     InfoCard(
-        title = "Network",
+        title = sectionTitle,
         icon = Icons.Default.NetworkCheck,
-        iconTint = if (network.isConnected) Color(0xFF4CAF50) else Color(0xFFF44336),
+        iconTint = if (network.isConnected) WormaCeptorColors.StatusGreen else WormaCeptorColors.StatusRed,
         onCopy = {
-            val message = copyToClipboard(context, "Network Info", formatNetworkDetails(network))
+            val message = copyToClipboard(context, sectionTitle, formatNetworkDetails(network))
             onShowMessage(message)
         },
     ) {
-        InfoRow("Connection Type", network.connectionType)
-        InfoRow("Connected", if (network.isConnected) "Yes" else "No")
-        InfoRow("WiFi", if (network.isWifiConnected) "Connected" else "Not Connected")
-        InfoRow("Cellular", if (network.isCellularConnected) "Connected" else "Not Connected")
-        InfoRow("Metered", if (network.isMetered) "Yes" else "No")
-        network.cellularNetworkType?.let { InfoRow("Cellular Type", it) }
+        InfoRow(stringResource(R.string.deviceinfo_network_connection_type), network.connectionType)
+        InfoRow(stringResource(R.string.deviceinfo_network_connected), if (network.isConnected) yes else no)
+        InfoRow(
+            stringResource(R.string.deviceinfo_network_wifi),
+            if (network.isWifiConnected) connected else notConnected,
+        )
+        InfoRow(
+            stringResource(R.string.deviceinfo_network_cellular),
+            if (network.isCellularConnected) connected else notConnected,
+        )
+        InfoRow(stringResource(R.string.deviceinfo_network_metered), if (network.isMetered) yes else no)
+        network.cellularNetworkType?.let { InfoRow(stringResource(R.string.deviceinfo_network_cellular_type), it) }
     }
 }
 
@@ -553,21 +546,21 @@ private fun InfoCard(
     content: @Composable () -> Unit,
 ) {
     val gradientColors = listOf(
-        iconTint.copy(alpha = DeviceInfoDesignSystem.Alpha.subtle),
-        iconTint.copy(alpha = DeviceInfoDesignSystem.Alpha.subtle / 2),
+        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle / 2),
         Color.Transparent,
     )
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(DeviceInfoDesignSystem.Elevation.sm),
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
         ),
         border = BorderStroke(
-            DeviceInfoDesignSystem.BorderWidth.thin,
+            WormaCeptorDesignSystem.BorderWidth.thin,
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
         ),
-        shape = DeviceInfoDesignSystem.cardShape,
+        shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Box(
             modifier = Modifier
@@ -575,7 +568,7 @@ private fun InfoCard(
                 .background(brush = Brush.verticalGradient(gradientColors)),
         ) {
             Column(
-                modifier = Modifier.padding(DeviceInfoDesignSystem.Spacing.lg),
+                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 // Header
                 Row(
@@ -585,7 +578,7 @@ private fun InfoCard(
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(DeviceInfoDesignSystem.Spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = icon,
@@ -605,14 +598,14 @@ private fun InfoCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ContentCopy,
-                            contentDescription = "Copy $title",
+                            contentDescription = stringResource(R.string.deviceinfo_copy_section, title),
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DeviceInfoDesignSystem.Spacing.md))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                 content()
             }
@@ -625,7 +618,7 @@ private fun InfoRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = DeviceInfoDesignSystem.Spacing.xs),
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
@@ -634,7 +627,7 @@ private fun InfoRow(label: String, value: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(0.4f),
         )
-        Spacer(modifier = Modifier.width(DeviceInfoDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
         SelectionContainer {
             Text(
                 text = value,
@@ -651,11 +644,13 @@ private fun InfoRow(label: String, value: String) {
 @Composable
 private fun CollapsibleInfoRow(label: String, value: String) {
     var isExpanded by remember { mutableStateOf(false) }
+    val collapse = stringResource(R.string.deviceinfo_collapse)
+    val expand = stringResource(R.string.deviceinfo_expand)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = DeviceInfoDesignSystem.Spacing.xs),
+            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
     ) {
         Row(
             modifier = Modifier
@@ -671,7 +666,7 @@ private fun CollapsibleInfoRow(label: String, value: String) {
             )
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = if (isExpanded) collapse else expand,
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -700,12 +695,12 @@ private fun CollapsibleInfoRow(label: String, value: String) {
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = DeviceInfoDesignSystem.Spacing.xs)
+                        .padding(top = WormaCeptorDesignSystem.Spacing.xs)
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                            RoundedCornerShape(DeviceInfoDesignSystem.CornerRadius.xs),
+                            RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                         )
-                        .padding(DeviceInfoDesignSystem.Spacing.sm),
+                        .padding(WormaCeptorDesignSystem.Spacing.sm),
                 )
             }
         }
@@ -715,10 +710,10 @@ private fun CollapsibleInfoRow(label: String, value: String) {
 @Composable
 private fun getUsageColor(percentage: Float): Color {
     return when {
-        percentage >= 90 -> Color(0xFFF44336) // Red
-        percentage >= 70 -> Color(0xFFFF9800) // Orange
-        percentage >= 50 -> Color(0xFFFFC107) // Amber
-        else -> Color(0xFF4CAF50) // Green
+        percentage >= 90 -> WormaCeptorColors.StatusRed
+        percentage >= 70 -> WormaCeptorColors.StatusAmber
+        percentage >= 50 -> WormaCeptorColors.StatusAmber
+        else -> WormaCeptorColors.StatusGreen
     }
 }
 

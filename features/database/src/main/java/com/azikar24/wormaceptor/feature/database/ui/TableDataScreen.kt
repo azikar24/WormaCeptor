@@ -257,7 +257,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                     }
                 }
             }
-            HorizontalDivider(thickness = 2.dp)
+            HorizontalDivider(thickness = WormaCeptorDesignSystem.Spacing.xxs)
         }
 
         // Data rows

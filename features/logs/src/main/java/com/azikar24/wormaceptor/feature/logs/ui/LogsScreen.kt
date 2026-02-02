@@ -182,7 +182,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                             horizontal = WormaCeptorDesignSystem.Spacing.lg,
                             vertical = WormaCeptorDesignSystem.Spacing.sm,
                         ),
-                    placeholder = "Search by tag or message...",
+                    placeholder = stringResource(R.string.logs_search_placeholder),
                 )
 
                 // Level filter chips
@@ -417,7 +417,10 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.md, vertical = 6.dp),
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.md,
+                    vertical = WormaCeptorDesignSystem.CornerRadius.sm,
+                ),
             verticalAlignment = Alignment.Top,
         ) {
             // Level badge
@@ -431,7 +434,10 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = levelColor,
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = WormaCeptorDesignSystem.Spacing.xxs),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.CornerRadius.sm,
+                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                    ),
                 )
             }
 

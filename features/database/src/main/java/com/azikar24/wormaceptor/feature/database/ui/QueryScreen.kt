@@ -96,8 +96,8 @@ fun QueryScreen(
                     ) {
                         if (isExecuting) {
                             CircularProgressIndicator(
-                                modifier = Modifier.padding(8.dp),
-                                strokeWidth = 2.dp,
+                                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
+                                strokeWidth = WormaCeptorDesignSystem.Spacing.xxs,
                             )
                         } else {
                             Icon(
@@ -248,7 +248,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                             }
                         }
                     }
-                    HorizontalDivider(thickness = 2.dp)
+                    HorizontalDivider(thickness = WormaCeptorDesignSystem.Spacing.xxs)
                 }
 
                 // Data rows

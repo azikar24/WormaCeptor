@@ -1,38 +1,34 @@
 public final class com/azikar24/wormaceptor/feature/crypto/ComposableSingletons$CryptoFeatureKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ComposableSingletons$CryptoFeatureKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function3;
-	public static field lambda-11 Lkotlin/jvm/functions/Function3;
+	public static field lambda-10 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function2;
 	public static field lambda-12 Lkotlin/jvm/functions/Function2;
 	public static field lambda-13 Lkotlin/jvm/functions/Function2;
 	public static field lambda-14 Lkotlin/jvm/functions/Function2;
-	public static field lambda-15 Lkotlin/jvm/functions/Function2;
-	public static field lambda-16 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
+	public static field lambda-8 Lkotlin/jvm/functions/Function3;
+	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$crypto_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-11$crypto_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-10$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-12$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-13$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-14$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-15$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-16$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-6$crypto_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-7$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-8$crypto_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-9$crypto_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/CryptoFeature {

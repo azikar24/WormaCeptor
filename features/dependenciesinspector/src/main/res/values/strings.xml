@@ -2,4 +2,23 @@
 <resources>
     <string name="dependenciesinspector_title">Dependencies</string>
     <string name="dependenciesinspector_filter_all">All</string>
+    <string name="dependenciesinspector_navigation_back">Back</string>
+    <string name="dependenciesinspector_action_refresh">Refresh</string>
+    <string name="dependenciesinspector_search_placeholder">Search dependencies…</string>
+    <string name="dependenciesinspector_summary_detected">Detected</string>
+    <string name="dependenciesinspector_summary_versioned">Versioned</string>
+    <string name="dependenciesinspector_summary_unknown">Unknown</string>
+    <string name="dependenciesinspector_filter_versioned_only">Show only versioned</string>
+    <string name="dependenciesinspector_status_version_detected">Version detected</string>
+    <string name="dependenciesinspector_detail_section_details">Details</string>
+    <string name="dependenciesinspector_detail_label_package">Package</string>
+    <string name="dependenciesinspector_detail_label_group_id">Group ID</string>
+    <string name="dependenciesinspector_detail_label_artifact_id">Artifact ID</string>
+    <string name="dependenciesinspector_detail_label_maven">Maven</string>
+    <string name="dependenciesinspector_detail_section_detection">Detection</string>
+    <string name="dependenciesinspector_detail_label_method">Method</string>
+    <string name="dependenciesinspector_detail_label_confidence">Confidence</string>
+    <string name="dependenciesinspector_detail_label_version_status">Version Status</string>
+    <string name="dependenciesinspector_empty_title">No dependencies found</string>
+    <string name="dependenciesinspector_empty_subtitle">Try adjusting your filters</string>
 </resources>

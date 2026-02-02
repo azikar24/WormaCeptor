@@ -122,7 +122,7 @@ fun SecureStorageScreen(
                             tint = colors.primary,
                         )
                         Text(
-                            text = "Secure Storage",
+                            text = stringResource(R.string.securestorage_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
@@ -173,7 +173,7 @@ fun SecureStorageScreen(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
                         vertical = WormaCeptorDesignSystem.Spacing.sm,
                     ),
-                placeholder = "Search keys and values...",
+                placeholder = stringResource(R.string.securestorage_search_placeholder),
             )
 
             // Summary cards with integrated status
@@ -277,34 +277,43 @@ private fun SummarySection(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
+        val accessibleText = stringResource(R.string.securestorage_status_accessible)
+        val notAccessibleText = stringResource(R.string.securestorage_status_not_accessible)
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             SummaryCard(
                 count = summary.encryptedPrefsCount,
-                label = "Prefs",
+                label = stringResource(R.string.securestorage_summary_prefs),
                 icon = Icons.Default.EnhancedEncryption,
                 color = colors.encryptedPrefs,
                 isAccessible = encryptedPrefsAccessible,
+                accessibleText = accessibleText,
+                notAccessibleText = notAccessibleText,
                 colors = colors,
                 modifier = Modifier.weight(1f),
             )
             SummaryCard(
                 count = summary.keystoreAliasCount,
-                label = "KeyStore",
+                label = stringResource(R.string.securestorage_summary_keystore),
                 icon = Icons.Default.Key,
                 color = colors.keystore,
                 isAccessible = keystoreAccessible,
+                accessibleText = accessibleText,
+                notAccessibleText = notAccessibleText,
                 colors = colors,
                 modifier = Modifier.weight(1f),
             )
             SummaryCard(
                 count = summary.dataStoreFileCount,
-                label = "DataStore",
+                label = stringResource(R.string.securestorage_summary_datastore),
                 icon = Icons.Default.DataObject,
                 color = colors.datastore,
                 isAccessible = true, // DataStore is always accessible if files exist
+                accessibleText = accessibleText,
+                notAccessibleText = notAccessibleText,
                 colors = colors,
                 modifier = Modifier.weight(1f),
             )
@@ -313,7 +322,7 @@ private fun SummarySection(
         // Last refresh time
         lastRefreshTime?.let { time ->
             Text(
-                text = "Last scanned: ${formatTimestamp(time)}",
+                text = stringResource(R.string.securestorage_last_scanned, formatTimestamp(time)),
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.labelSecondary,
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
@@ -329,6 +338,8 @@ private fun SummaryCard(
     icon: ImageVector,
     color: Color,
     isAccessible: Boolean,
+    accessibleText: String,
+    notAccessibleText: String,
     colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
@@ -356,7 +367,7 @@ private fun SummaryCard(
                 // Small status dot in corner
                 Icon(
                     imageVector = if (isAccessible) Icons.Default.CheckCircle else Icons.Default.Error,
-                    contentDescription = if (isAccessible) "Accessible" else "Not accessible",
+                    contentDescription = if (isAccessible) accessibleText else notAccessibleText,
                     tint = if (isAccessible) colors.encrypted else colors.unencrypted,
                     modifier = Modifier
                         .size(10.dp)
@@ -400,14 +411,18 @@ private fun TypeFilterChips(
             ),
         )
         StorageType.entries.forEach { type ->
-            val (icon, label, color) = when (type) {
-                StorageType.ENCRYPTED_SHARED_PREFS -> Triple(
+            val (icon, color) = when (type) {
+                StorageType.ENCRYPTED_SHARED_PREFS -> Pair(
                     Icons.Default.EnhancedEncryption,
-                    "Prefs",
                     colors.encryptedPrefs,
                 )
-                StorageType.KEYSTORE -> Triple(Icons.Default.Key, "KeyStore", colors.keystore)
-                StorageType.DATASTORE -> Triple(Icons.Default.DataObject, "DataStore", colors.datastore)
+                StorageType.KEYSTORE -> Pair(Icons.Default.Key, colors.keystore)
+                StorageType.DATASTORE -> Pair(Icons.Default.DataObject, colors.datastore)
+            }
+            val label = when (type) {
+                StorageType.ENCRYPTED_SHARED_PREFS -> stringResource(R.string.securestorage_filter_prefs)
+                StorageType.KEYSTORE -> stringResource(R.string.securestorage_filter_keystore)
+                StorageType.DATASTORE -> stringResource(R.string.securestorage_filter_datastore)
             }
             FilterChip(
                 selected = selectedType == type,
@@ -511,9 +526,9 @@ private fun EntryCard(
             ) {
                 Text(
                     text = when (entry.storageType) {
-                        StorageType.ENCRYPTED_SHARED_PREFS -> "Prefs"
-                        StorageType.KEYSTORE -> "Key"
-                        StorageType.DATASTORE -> "DS"
+                        StorageType.ENCRYPTED_SHARED_PREFS -> stringResource(R.string.securestorage_badge_prefs)
+                        StorageType.KEYSTORE -> stringResource(R.string.securestorage_badge_keystore)
+                        StorageType.DATASTORE -> stringResource(R.string.securestorage_badge_datastore)
                     },
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.xs + WormaCeptorDesignSystem.Spacing.xxs,
@@ -570,9 +585,11 @@ private fun EntryDetailContent(
             Column {
                 Text(
                     text = when (entry.storageType) {
-                        StorageType.ENCRYPTED_SHARED_PREFS -> "Encrypted SharedPreferences"
-                        StorageType.KEYSTORE -> "Android KeyStore"
-                        StorageType.DATASTORE -> "DataStore"
+                        StorageType.ENCRYPTED_SHARED_PREFS -> stringResource(
+                            R.string.securestorage_detail_encrypted_prefs,
+                        )
+                        StorageType.KEYSTORE -> stringResource(R.string.securestorage_detail_android_keystore)
+                        StorageType.DATASTORE -> stringResource(R.string.securestorage_detail_datastore)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -589,7 +606,11 @@ private fun EntryDetailContent(
                         modifier = Modifier.size(14.dp),
                     )
                     Text(
-                        text = if (entry.isEncrypted) "Encrypted" else "Not encrypted",
+                        text = if (entry.isEncrypted) {
+                            stringResource(R.string.securestorage_detail_encrypted)
+                        } else {
+                            stringResource(R.string.securestorage_detail_not_encrypted)
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         color = if (entry.isEncrypted) colors.encrypted else colors.unencrypted,
                     )
@@ -599,14 +620,14 @@ private fun EntryDetailContent(
 
         // Key section
         DetailSection(
-            label = "Key",
+            label = stringResource(R.string.securestorage_detail_label_key),
             value = entry.key,
             colors = colors,
         )
 
         // Value section
         DetailSection(
-            label = "Value",
+            label = stringResource(R.string.securestorage_detail_label_value),
             value = entry.value,
             colors = colors,
         )
@@ -614,7 +635,7 @@ private fun EntryDetailContent(
         // Timestamp
         entry.lastModified?.let { timestamp ->
             DetailSection(
-                label = "Last Modified",
+                label = stringResource(R.string.securestorage_detail_label_last_modified),
                 value = formatTimestampFull(timestamp),
                 colors = colors,
             )
@@ -678,15 +699,19 @@ private fun EmptyState(
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
-                text = if (hasFilters) "No matching entries" else "No secure storage found",
+                text = if (hasFilters) {
+                    stringResource(R.string.securestorage_empty_no_matches)
+                } else {
+                    stringResource(R.string.securestorage_empty_no_storage)
+                },
                 style = MaterialTheme.typography.bodyLarge,
                 color = colors.labelSecondary,
             )
             Text(
                 text = if (hasFilters) {
-                    "Try adjusting your filters"
+                    stringResource(R.string.securestorage_empty_adjust_filters)
                 } else {
-                    "This app has no EncryptedSharedPreferences,\nKeyStore aliases, or DataStore files"
+                    stringResource(R.string.securestorage_empty_description)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.valueSecondary,

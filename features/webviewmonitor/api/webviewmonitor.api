@@ -22,7 +22,9 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;
 	public final fun createEngine (I)Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;
 	public static synthetic fun createEngine$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;
+	public final fun createViewModelFactory (I)Landroidx/lifecycle/ViewModelProvider$Factory;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModelFactory;
+	public static synthetic fun createViewModelFactory$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;IILjava/lang/Object;)Landroidx/lifecycle/ViewModelProvider$Factory;
 }
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeatureKt {
@@ -36,6 +38,8 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public final fun clearFilters ()V
 	public final fun clearRequests ()V
 	public final fun clearSelection ()V
+	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
+	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
 	public final fun getFilteredRequests ()Ljava/util/List;
 	public final fun getRequests ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getResourceTypeFilter ()Lkotlinx/coroutines/flow/StateFlow;

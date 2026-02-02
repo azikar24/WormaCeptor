@@ -6,4 +6,22 @@
     <string name="loadedlibraries_empty">No libraries found</string>
     <string name="loadedlibraries_back">Back</string>
     <string name="loadedlibraries_refresh">Refresh</string>
+    <string name="loadedlibraries_search_placeholder">Search libraries…</string>
+    <string name="loadedlibraries_summary_native">Native</string>
+    <string name="loadedlibraries_summary_dex">DEX</string>
+    <string name="loadedlibraries_summary_jar">JAR</string>
+    <string name="loadedlibraries_summary_total">Total</string>
+    <string name="loadedlibraries_filter_native">Native</string>
+    <string name="loadedlibraries_filter_dex">DEX</string>
+    <string name="loadedlibraries_filter_jar">JAR</string>
+    <string name="loadedlibraries_filter_other">Other</string>
+    <string name="loadedlibraries_badge_system">System</string>
+    <string name="loadedlibraries_detail_title">Details</string>
+    <string name="loadedlibraries_detail_path">Path</string>
+    <string name="loadedlibraries_detail_size">Size</string>
+    <string name="loadedlibraries_detail_load_address">Load Address</string>
+    <string name="loadedlibraries_detail_version">Version</string>
+    <string name="loadedlibraries_detail_type">Type</string>
+    <string name="loadedlibraries_type_system">System Library</string>
+    <string name="loadedlibraries_type_app">App Library</string>
 </resources>

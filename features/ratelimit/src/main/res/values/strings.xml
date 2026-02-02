@@ -3,4 +3,33 @@
     <string name="ratelimit_back">Back</string>
     <string name="ratelimit_reset_defaults">Reset to defaults</string>
     <string name="ratelimit_clear_statistics">Clear statistics</string>
+
+    <!-- Screen title -->
+    <string name="ratelimit_title">Network Rate Limiter</string>
+
+    <!-- Enable toggle card -->
+    <string name="ratelimit_toggle_title">Rate Limiting</string>
+    <string name="ratelimit_toggle_status_active">Active - throttling network</string>
+    <string name="ratelimit_toggle_status_disabled">Disabled</string>
+
+    <!-- Network presets card -->
+    <string name="ratelimit_presets_title">Network Presets</string>
+    <string name="ratelimit_preset_info_down">Down</string>
+    <string name="ratelimit_preset_info_up">Up</string>
+    <string name="ratelimit_preset_info_latency">Latency</string>
+    <string name="ratelimit_preset_info_loss">Loss</string>
+
+    <!-- Custom configuration card -->
+    <string name="ratelimit_config_title">Custom Configuration</string>
+    <string name="ratelimit_config_download_speed">Download Speed</string>
+    <string name="ratelimit_config_upload_speed">Upload Speed</string>
+    <string name="ratelimit_config_latency">Latency</string>
+    <string name="ratelimit_config_packet_loss">Packet Loss</string>
+
+    <!-- Statistics card -->
+    <string name="ratelimit_stats_title">Statistics</string>
+    <string name="ratelimit_stats_requests_throttled">Requests Throttled</string>
+    <string name="ratelimit_stats_packets_dropped">Packets Dropped</string>
+    <string name="ratelimit_stats_total_delay">Total Delay</string>
+    <string name="ratelimit_stats_bytes_throttled">Bytes Throttled</string>
 </resources>

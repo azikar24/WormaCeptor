@@ -3,4 +3,26 @@
     <string name="settings_title">Feature Toggles</string>
     <string name="settings_back">Back</string>
     <string name="settings_reset_defaults">Reset to defaults</string>
+
+    <!-- Section Headers -->
+    <string name="settings_tabs_title">Tabs</string>
+    <string name="settings_tools_title">Tools</string>
+
+    <!-- Tabs Section -->
+    <string name="settings_network_tab">Network Tab</string>
+    <string name="settings_network_tab_description">Show network transactions</string>
+    <string name="settings_crashes_tab">Crashes Tab</string>
+    <string name="settings_crashes_tab_description">Show crash reports</string>
+
+    <!-- Tools Section -->
+    <string name="settings_preferences_title">SharedPreferences</string>
+    <string name="settings_preferences_description">Inspect and edit SharedPreferences files</string>
+    <string name="settings_console_logs_title">Console Logs</string>
+    <string name="settings_console_logs_description">View app console logs</string>
+    <string name="settings_device_info_title">Device Info</string>
+    <string name="settings_device_info_description">View device information</string>
+    <string name="settings_sqlite_browser_title">SQLite Browser</string>
+    <string name="settings_sqlite_browser_description">Browse and query SQLite databases</string>
+    <string name="settings_file_browser_title">File Browser</string>
+    <string name="settings_file_browser_description">Browse app internal files</string>
 </resources>

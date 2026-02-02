@@ -132,7 +132,7 @@ fun LoadedLibrariesScreen(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
                     vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
-                placeholder = "Search libraries...",
+                placeholder = stringResource(R.string.loadedlibraries_search_placeholder),
             )
             SummarySection(
                 summary,
@@ -199,10 +199,34 @@ private fun SummarySection(
     modifier: Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        SummaryCard("Native", summary.nativeSoCount, colors.nativeSo, colors, Modifier.weight(1f))
-        SummaryCard("DEX", summary.dexCount, colors.dex, colors, Modifier.weight(1f))
-        SummaryCard("JAR", summary.jarCount, colors.jar, colors, Modifier.weight(1f))
-        SummaryCard("Total", summary.totalLibraries, colors.primary, colors, Modifier.weight(1f))
+        SummaryCard(
+            stringResource(R.string.loadedlibraries_summary_native),
+            summary.nativeSoCount,
+            colors.nativeSo,
+            colors,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.loadedlibraries_summary_dex),
+            summary.dexCount,
+            colors.dex,
+            colors,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.loadedlibraries_summary_jar),
+            summary.jarCount,
+            colors.jar,
+            colors,
+            Modifier.weight(1f),
+        )
+        SummaryCard(
+            stringResource(R.string.loadedlibraries_summary_total),
+            summary.totalLibraries,
+            colors.primary,
+            colors,
+            Modifier.weight(1f),
+        )
     }
 }
 
@@ -246,16 +270,20 @@ private fun FilterSection(
                 onTypeSelected(null)
             }, { Text(stringResource(R.string.loadedlibraries_filter_all)) })
             LibraryType.entries.filter { it != LibraryType.AAR_RESOURCE }.forEach { type ->
-                val (icon, label, color) = when (type) {
-                    LibraryType.NATIVE_SO -> Triple(Icons.Default.Memory, "Native", colors.nativeSo)
-                    LibraryType.DEX -> Triple(Icons.Default.Android, "DEX", colors.dex)
-                    LibraryType.JAR -> Triple(Icons.Default.Code, "JAR", colors.jar)
-                    else -> Triple(Icons.Default.Extension, "Other", colors.primary)
+                val (icon, labelRes, color) = when (type) {
+                    LibraryType.NATIVE_SO -> Triple(
+                        Icons.Default.Memory,
+                        R.string.loadedlibraries_filter_native,
+                        colors.nativeSo,
+                    )
+                    LibraryType.DEX -> Triple(Icons.Default.Android, R.string.loadedlibraries_filter_dex, colors.dex)
+                    LibraryType.JAR -> Triple(Icons.Default.Code, R.string.loadedlibraries_filter_jar, colors.jar)
+                    else -> Triple(Icons.Default.Extension, R.string.loadedlibraries_filter_other, colors.primary)
                 }
                 FilterChip(
                     selectedType == type,
                     { onTypeSelected(if (selectedType == type) null else type) },
-                    { Text(label) },
+                    { Text(stringResource(labelRes)) },
                     leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
                     colors = FilterChipDefaults.filterChipColors(
                         color.copy(WormaCeptorDesignSystem.Alpha.medium),
@@ -334,7 +362,7 @@ private fun LibraryCard(
                     }
                     if (library.isSystemLibrary) {
                         Text(
-                            "System",
+                            stringResource(R.string.loadedlibraries_badge_system),
                             style = MaterialTheme.typography.labelSmall,
                             color = colors.systemBadge,
                         )
@@ -397,14 +425,23 @@ private fun LibraryDetailContent(
             }
         }
 
+        val detailTitle = stringResource(R.string.loadedlibraries_detail_title)
+        val pathLabel = stringResource(R.string.loadedlibraries_detail_path)
+        val sizeLabel = stringResource(R.string.loadedlibraries_detail_size)
+        val loadAddressLabel = stringResource(R.string.loadedlibraries_detail_load_address)
+        val versionLabel = stringResource(R.string.loadedlibraries_detail_version)
+        val typeLabel = stringResource(R.string.loadedlibraries_detail_type)
+        val systemLibraryType = stringResource(R.string.loadedlibraries_type_system)
+        val appLibraryType = stringResource(R.string.loadedlibraries_type_app)
+
         DetailSection(
-            "Details",
+            detailTitle,
             listOfNotNull(
-                "Path" to library.path,
-                library.size?.let { "Size" to formatSize(it) },
-                library.loadAddress?.let { "Load Address" to it },
-                library.version?.let { "Version" to it },
-                "Type" to if (library.isSystemLibrary) "System Library" else "App Library",
+                pathLabel to library.path,
+                library.size?.let { sizeLabel to formatSize(it) },
+                library.loadAddress?.let { loadAddressLabel to it },
+                library.version?.let { versionLabel to it },
+                typeLabel to if (library.isSystemLibrary) systemLibraryType else appLibraryType,
             ),
             colors,
         )

@@ -1035,14 +1035,14 @@ fun RequestResponseTabSkeleton(modifier: Modifier = Modifier) {
         // Headers section
         CollapsibleSectionSkeleton(
             shimmerBrush = shimmerBrush,
-            title = "Headers",
+            title = stringResource(R.string.viewer_skeleton_headers),
             contentRowCount = 5,
         )
 
         // Body section
         CollapsibleSectionSkeleton(
             shimmerBrush = shimmerBrush,
-            title = "Body",
+            title = stringResource(R.string.viewer_skeleton_body),
             isBodySection = true,
         )
     }

@@ -118,7 +118,7 @@ fun LeakDetectionScreen(
                             tint = colors.critical,
                         )
                         Text(
-                            text = "Leak Detection",
+                            text = stringResource(R.string.leakdetection_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         // Monitoring indicator
@@ -262,7 +262,7 @@ private fun SummarySection(
     ) {
         SummaryCard(
             count = summary.criticalCount,
-            label = "Critical",
+            label = stringResource(R.string.leakdetection_severity_critical),
             color = colors.critical,
             backgroundColor = colors.criticalBackground,
             colors = colors,
@@ -270,7 +270,7 @@ private fun SummarySection(
         )
         SummaryCard(
             count = summary.highCount,
-            label = "High",
+            label = stringResource(R.string.leakdetection_severity_high),
             color = colors.high,
             backgroundColor = colors.highBackground,
             colors = colors,
@@ -278,7 +278,7 @@ private fun SummarySection(
         )
         SummaryCard(
             count = summary.mediumCount,
-            label = "Medium",
+            label = stringResource(R.string.leakdetection_severity_medium),
             color = colors.medium,
             backgroundColor = colors.mediumBackground,
             colors = colors,
@@ -286,7 +286,7 @@ private fun SummarySection(
         )
         SummaryCard(
             count = summary.lowCount,
-            label = "Low",
+            label = stringResource(R.string.leakdetection_severity_low),
             color = colors.low,
             backgroundColor = colors.lowBackground,
             colors = colors,
@@ -534,12 +534,12 @@ private fun LeakDetailContent(
         // Details
         item {
             DetailSection(
-                title = "Details",
+                title = stringResource(R.string.leakdetection_section_details),
                 items = listOf(
-                    "Class" to leak.objectClass,
-                    "Description" to leak.leakDescription,
-                    "Retained Size" to formatSize(leak.retainedSize),
-                    "Detected" to formatTimestampFull(leak.timestamp),
+                    stringResource(R.string.leakdetection_detail_class) to leak.objectClass,
+                    stringResource(R.string.leakdetection_detail_description) to leak.leakDescription,
+                    stringResource(R.string.leakdetection_detail_retained_size) to formatSize(leak.retainedSize),
+                    stringResource(R.string.leakdetection_detail_detected) to formatTimestampFull(leak.timestamp),
                 ),
                 colors = colors,
             )
@@ -552,7 +552,7 @@ private fun LeakDetailContent(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     Text(
-                        text = "Reference Path",
+                        text = stringResource(R.string.leakdetection_section_reference_path),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.labelSecondary,
@@ -653,16 +653,20 @@ private fun EmptyState(
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
             )
             Text(
-                text = if (isRunning) "Monitoring for leaks..." else "No leaks detected",
+                text = stringResource(
+                    if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks,
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 color = colors.labelSecondary,
             )
             Text(
-                text = if (isRunning) {
-                    "Navigate between activities to detect potential leaks"
-                } else {
-                    "Start monitoring to begin leak detection"
-                },
+                text = stringResource(
+                    if (isRunning) {
+                        R.string.leakdetection_empty_hint_monitoring
+                    } else {
+                        R.string.leakdetection_empty_hint_start
+                    },
+                ),
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.labelSecondary,
             )

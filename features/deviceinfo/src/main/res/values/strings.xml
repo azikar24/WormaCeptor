@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen title -->
+    <string name="deviceinfo_title">Device Information</string>
+
+    <!-- Navigation -->
+    <string name="deviceinfo_back">Back</string>
+
+    <!-- Actions -->
+    <string name="deviceinfo_copy_all">Copy All</string>
+    <string name="deviceinfo_share">Share</string>
+    <string name="deviceinfo_copy_section">Copy %1$s</string>
+    <string name="deviceinfo_collapse">Collapse</string>
+    <string name="deviceinfo_expand">Expand</string>
+
+    <!-- Section titles -->
+    <string name="deviceinfo_section_device">Device</string>
+    <string name="deviceinfo_section_os">Operating System</string>
+    <string name="deviceinfo_section_display">Display</string>
+    <string name="deviceinfo_section_memory">Memory</string>
+    <string name="deviceinfo_section_storage">Storage</string>
+    <string name="deviceinfo_section_application">Application</string>
+    <string name="deviceinfo_section_network">Network</string>
+
+    <!-- Storage subsections -->
+    <string name="deviceinfo_storage_internal">Internal Storage</string>
+    <string name="deviceinfo_storage_external">External Storage</string>
+
+    <!-- Common labels -->
+    <string name="deviceinfo_label_usage">Usage</string>
+    <string name="deviceinfo_label_total">Total</string>
+    <string name="deviceinfo_label_available">Available</string>
+    <string name="deviceinfo_label_used">Used</string>
+
+    <!-- Device labels -->
+    <string name="deviceinfo_device_manufacturer">Manufacturer</string>
+    <string name="deviceinfo_device_model">Model</string>
+    <string name="deviceinfo_device_brand">Brand</string>
+    <string name="deviceinfo_device_device">Device</string>
+    <string name="deviceinfo_device_hardware">Hardware</string>
+    <string name="deviceinfo_device_board">Board</string>
+    <string name="deviceinfo_device_product">Product</string>
+    <string name="deviceinfo_device_emulator">Emulator</string>
+
+    <!-- OS labels -->
+    <string name="deviceinfo_os_android_version">Android Version</string>
+    <string name="deviceinfo_os_sdk_level">SDK Level</string>
+    <string name="deviceinfo_os_build_id">Build ID</string>
+    <string name="deviceinfo_os_security_patch">Security Patch</string>
+    <string name="deviceinfo_os_bootloader">Bootloader</string>
+    <string name="deviceinfo_os_incremental">Incremental</string>
+    <string name="deviceinfo_os_fingerprint">Fingerprint</string>
+
+    <!-- Screen labels -->
+    <string name="deviceinfo_screen_resolution">Resolution</string>
+    <string name="deviceinfo_screen_density_dpi">Density DPI</string>
+    <string name="deviceinfo_screen_density">Density</string>
+    <string name="deviceinfo_screen_scaled_density">Scaled Density</string>
+    <string name="deviceinfo_screen_size_category">Size Category</string>
+    <string name="deviceinfo_screen_orientation">Orientation</string>
+    <string name="deviceinfo_screen_refresh_rate">Refresh Rate</string>
+
+    <!-- Memory labels -->
+    <string name="deviceinfo_memory_total_ram">Total RAM</string>
+    <string name="deviceinfo_memory_available_ram">Available RAM</string>
+    <string name="deviceinfo_memory_used_ram">Used RAM</string>
+    <string name="deviceinfo_memory_low_threshold">Low Memory Threshold</string>
+    <string name="deviceinfo_memory_low_memory">Low Memory</string>
+
+    <!-- App labels -->
+    <string name="deviceinfo_app_package_name">Package Name</string>
+    <string name="deviceinfo_app_version_name">Version Name</string>
+    <string name="deviceinfo_app_version_code">Version Code</string>
+    <string name="deviceinfo_app_target_sdk">Target SDK</string>
+    <string name="deviceinfo_app_min_sdk">Min SDK</string>
+    <string name="deviceinfo_app_first_install">First Install</string>
+    <string name="deviceinfo_app_last_update">Last Update</string>
+    <string name="deviceinfo_app_debuggable">Debuggable</string>
+
+    <!-- Network labels -->
+    <string name="deviceinfo_network_connection_type">Connection Type</string>
+    <string name="deviceinfo_network_connected">Connected</string>
+    <string name="deviceinfo_network_wifi">WiFi</string>
+    <string name="deviceinfo_network_cellular">Cellular</string>
+    <string name="deviceinfo_network_metered">Metered</string>
+    <string name="deviceinfo_network_cellular_type">Cellular Type</string>
+
+    <!-- Boolean values -->
+    <string name="deviceinfo_yes">Yes</string>
+    <string name="deviceinfo_no">No</string>
+    <string name="deviceinfo_connected">Connected</string>
+    <string name="deviceinfo_not_connected">Not Connected</string>
+
+    <!-- Timestamp -->
+    <string name="deviceinfo_collected">Collected: %1$s</string>
+</resources>

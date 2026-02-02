@@ -95,7 +95,7 @@ internal fun WebSocketDetailScreen(
                     title = {
                         Column {
                             Text(
-                                text = "Messages",
+                                text = stringResource(R.string.websocket_messages_title),
                                 fontWeight = FontWeight.SemiBold,
                             )
                             if (connection != null) {
@@ -156,7 +156,7 @@ internal fun WebSocketDetailScreen(
                             horizontal = WormaCeptorDesignSystem.Spacing.lg,
                             vertical = WormaCeptorDesignSystem.Spacing.sm,
                         ),
-                    placeholder = "Search messages...",
+                    placeholder = stringResource(R.string.websocket_search_messages_placeholder),
                 )
 
                 // Direction filter chips
@@ -289,16 +289,16 @@ private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = M
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Messages",
+            text = stringResource(R.string.websocket_messages_title),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Text(
             text = if (filteredCount != totalCount) {
-                "$filteredCount / $totalCount"
+                stringResource(R.string.websocket_stats_filtered, filteredCount, totalCount)
             } else {
-                "$totalCount total"
+                stringResource(R.string.websocket_stats_total, totalCount)
             },
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -426,7 +426,9 @@ private fun MessageItem(
                 // Expand indicator
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = stringResource(
+                        if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
+                    ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
                     ),
@@ -492,7 +494,13 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
-            text = if (hasFilters) "No matching messages" else "No messages yet",
+            text = stringResource(
+                if (hasFilters) {
+                    R.string.websocket_empty_no_matching_messages
+                } else {
+                    R.string.websocket_empty_no_messages
+                },
+            ),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -501,11 +509,13 @@ private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifie
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
-            text = if (hasFilters) {
-                "Try adjusting your filters"
-            } else {
-                "Messages will appear as they are sent or received"
-            },
+            text = stringResource(
+                if (hasFilters) {
+                    R.string.websocket_empty_filter_hint
+                } else {
+                    R.string.websocket_empty_messages_hint
+                },
+            ),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                 alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,

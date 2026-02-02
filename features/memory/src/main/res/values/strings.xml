@@ -3,4 +3,10 @@
     <string name="memory_back">Back</string>
     <string name="memory_clear_history">Clear history</string>
     <string name="memory_warning">Memory warning</string>
+    <string name="memory_used">Used</string>
+    <string name="memory_free">Free</string>
+    <string name="memory_total">Total</string>
+    <string name="memory_max">Max</string>
+    <string name="memory_heap_used">Heap Used</string>
+    <string name="memory_native">Native</string>
 </resources>

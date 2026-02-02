@@ -277,7 +277,7 @@ fun ImagePreviewCard(
                         modifier = Modifier.size(20.dp),
                     )
                     Text(
-                        text = "Image Response",
+                        text = stringResource(R.string.viewer_image_response),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold,
                         ),
@@ -396,7 +396,7 @@ fun ImagePreviewCard(
                                     modifier = Modifier.size(32.dp),
                                 )
                                 Text(
-                                    text = "Failed to load image",
+                                    text = stringResource(R.string.viewer_image_failed_to_load),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.error,
                                 )
@@ -446,19 +446,19 @@ fun ImagePreviewCard(
                         metadata?.let { meta ->
                             MetadataItem(
                                 icon = Icons.Outlined.AspectRatio,
-                                label = "Dimensions",
+                                label = stringResource(R.string.viewer_image_dimensions),
                                 value = "${meta.width} x ${meta.height}",
                                 tint = MaterialTheme.colorScheme.primary,
                             )
                             MetadataItem(
                                 icon = Icons.Outlined.Memory,
-                                label = "Size",
+                                label = stringResource(R.string.viewer_image_size),
                                 value = formatFileSize(meta.fileSize),
                                 tint = MaterialTheme.colorScheme.secondary,
                             )
                             MetadataItem(
                                 icon = Icons.Outlined.ColorLens,
-                                label = "Color",
+                                label = stringResource(R.string.viewer_image_color),
                                 value = if (meta.hasAlpha) "RGBA" else "RGB",
                                 tint = MaterialTheme.colorScheme.tertiary,
                             )
@@ -475,19 +475,19 @@ fun ImagePreviewCard(
                 ) {
                     ActionButton(
                         icon = Icons.Default.Download,
-                        label = "Save",
+                        label = stringResource(R.string.viewer_image_save),
                         onClick = onDownload,
                         modifier = Modifier.weight(1f),
                     )
                     ActionButton(
                         icon = Icons.Default.Share,
-                        label = "Share",
+                        label = stringResource(R.string.viewer_image_share),
                         onClick = onShare,
                         modifier = Modifier.weight(1f),
                     )
                     ActionButton(
                         icon = Icons.Default.Fullscreen,
-                        label = "Expand",
+                        label = stringResource(R.string.viewer_image_expand),
                         onClick = onFullscreen,
                         modifier = Modifier.weight(1f),
                         isPrimary = true,

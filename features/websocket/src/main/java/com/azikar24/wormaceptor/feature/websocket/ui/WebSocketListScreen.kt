@@ -78,7 +78,7 @@ internal fun WebSocketListScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "WebSocket Monitor",
+                            text = stringResource(R.string.websocket_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                     },
@@ -119,7 +119,7 @@ internal fun WebSocketListScreen(
                             horizontal = WormaCeptorDesignSystem.Spacing.lg,
                             vertical = WormaCeptorDesignSystem.Spacing.sm,
                         ),
-                    placeholder = "Search by URL...",
+                    placeholder = stringResource(R.string.websocket_search_url_placeholder),
                 )
 
                 // Stats bar
@@ -164,16 +164,16 @@ private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = M
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Connections",
+            text = stringResource(R.string.websocket_connections_label),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Text(
             text = if (filteredCount != totalCount) {
-                "$filteredCount / $totalCount"
+                stringResource(R.string.websocket_stats_filtered, filteredCount, totalCount)
             } else {
-                "$totalCount total"
+                stringResource(R.string.websocket_stats_total, totalCount)
             },
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -288,7 +288,7 @@ private fun ConnectionItem(
 
                     // Message count
                     Text(
-                        text = "$messageCount msgs",
+                        text = stringResource(R.string.websocket_message_count, messageCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -350,7 +350,13 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
-            text = if (hasSearchQuery) "No matching connections" else "No WebSocket connections",
+            text = stringResource(
+                if (hasSearchQuery) {
+                    R.string.websocket_empty_no_matching_connections
+                } else {
+                    R.string.websocket_empty_no_connections
+                },
+            ),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -359,11 +365,13 @@ private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
-            text = if (hasSearchQuery) {
-                "Try a different search query"
-            } else {
-                "WebSocket connections will appear here"
-            },
+            text = stringResource(
+                if (hasSearchQuery) {
+                    R.string.websocket_empty_search_hint
+                } else {
+                    R.string.websocket_empty_connections_hint
+                },
+            ),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                 alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,

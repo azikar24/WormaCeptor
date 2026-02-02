@@ -520,12 +520,12 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
             ) {
                 ActionChip(
                     icon = Icons.Default.Download,
-                    label = "Save to Gallery",
+                    label = stringResource(R.string.viewer_image_save_to_gallery),
                     onClick = onDownload,
                 )
                 ActionChip(
                     icon = Icons.Default.Share,
-                    label = "Share",
+                    label = stringResource(R.string.viewer_image_share),
                     onClick = onShare,
                 )
             }

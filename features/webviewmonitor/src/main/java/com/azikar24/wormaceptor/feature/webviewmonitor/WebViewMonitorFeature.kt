@@ -72,6 +72,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,6 +85,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
@@ -357,20 +359,23 @@ private fun WebViewMonitorListScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Language,
                             contentDescription = null,
                             tint = Color(0xFF2196F3),
                         )
-                        Text("WebView Monitor", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.webviewmonitor_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
                     onNavigateBack?.let {
                         IconButton(onClick = it) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.webviewmonitor_action_back),
+                            )
                         }
                     }
                 },
@@ -378,7 +383,7 @@ private fun WebViewMonitorListScreen(
                     IconButton(onClick = onToggleFilters) {
                         Icon(
                             Icons.Default.FilterList,
-                            "Filters",
+                            stringResource(R.string.webviewmonitor_action_filters),
                             tint = if (showFilters || resourceTypeFilter.isNotEmpty()) {
                                 Color(0xFF2196F3)
                             } else {
@@ -387,7 +392,11 @@ private fun WebViewMonitorListScreen(
                         )
                     }
                     IconButton(onClick = onClearRequests) {
-                        Icon(Icons.Default.Delete, "Clear", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Icon(
+                            Icons.Default.Delete,
+                            stringResource(R.string.webviewmonitor_action_clear),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 },
             )
@@ -397,24 +406,24 @@ private fun WebViewMonitorListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             // Enable toggle card
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(WormaCeptorDesignSystem.Spacing.lg),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         Box(
                             modifier = Modifier.size(48.dp),
@@ -428,9 +437,18 @@ private fun WebViewMonitorListScreen(
                             )
                         }
                         Column {
-                            Text("WebView Monitoring", fontWeight = FontWeight.SemiBold)
                             Text(
-                                if (isEnabled) "Capturing requests" else "Disabled",
+                                stringResource(R.string.webviewmonitor_monitoring_title),
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                            Text(
+                                if (isEnabled) {
+                                    stringResource(
+                                        R.string.webviewmonitor_status_capturing,
+                                    )
+                                } else {
+                                    stringResource(R.string.webviewmonitor_status_disabled)
+                                },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -443,33 +461,33 @@ private fun WebViewMonitorListScreen(
             // Stats card
             if (stats.totalRequests > 0) {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(WormaCeptorDesignSystem.Spacing.lg),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         StatItem(
                             value = stats.totalRequests.toString(),
-                            label = "Total",
+                            label = stringResource(R.string.webviewmonitor_stats_total),
                             color = Color(0xFF2196F3),
                         )
                         StatItem(
                             value = stats.successfulRequests.toString(),
-                            label = "Success",
+                            label = stringResource(R.string.webviewmonitor_stats_success),
                             color = Color(0xFF4CAF50),
                         )
                         StatItem(
                             value = stats.failedRequests.toString(),
-                            label = "Failed",
+                            label = stringResource(R.string.webviewmonitor_stats_failed),
                             color = Color(0xFFF44336),
                         )
                         StatItem(
                             value = stats.pendingRequests.toString(),
-                            label = "Pending",
+                            label = stringResource(R.string.webviewmonitor_stats_pending),
                             color = Color(0xFFFF9800),
                         )
                     }
@@ -480,17 +498,21 @@ private fun WebViewMonitorListScreen(
             TextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChanged,
-                placeholder = { Text("Search requests...") },
+                placeholder = { Text(stringResource(R.string.webviewmonitor_search_placeholder)) },
                 leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchQueryChanged("") }) {
-                            Icon(Icons.Default.Clear, "Clear", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(
+                                Icons.Default.Clear,
+                                stringResource(R.string.webviewmonitor_action_clear),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -503,14 +525,14 @@ private fun WebViewMonitorListScreen(
             // Filter chips
             AnimatedVisibility(visible = showFilters) {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                            .padding(WormaCeptorDesignSystem.Spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -518,13 +540,13 @@ private fun WebViewMonitorListScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                "Filter by type",
+                                stringResource(R.string.webviewmonitor_filter_by_type),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 14.sp,
                             )
                             if (resourceTypeFilter.isNotEmpty()) {
                                 Text(
-                                    "Clear",
+                                    stringResource(R.string.webviewmonitor_action_clear_filters),
                                     color = Color(0xFF2196F3),
                                     fontSize = 14.sp,
                                     modifier = Modifier.clickable { onClearFilters() },
@@ -532,8 +554,8 @@ private fun WebViewMonitorListScreen(
                             }
                         }
                         FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
                             WebViewResourceType.entries.filter { it != WebViewResourceType.UNKNOWN }.forEach { type ->
                                 FilterChip(
@@ -557,9 +579,9 @@ private fun WebViewMonitorListScreen(
             // Request count
             Text(
                 text = if (requests.size == totalCount) {
-                    "$totalCount requests"
+                    stringResource(R.string.webviewmonitor_request_count, totalCount)
                 } else {
-                    "${requests.size} of $totalCount requests"
+                    stringResource(R.string.webviewmonitor_request_count_filtered, requests.size, totalCount)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -575,7 +597,7 @@ private fun WebViewMonitorListScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(
                             Icons.Default.Language,
@@ -584,7 +606,13 @@ private fun WebViewMonitorListScreen(
                             tint = MaterialTheme.colorScheme.outlineVariant,
                         )
                         Text(
-                            if (isEnabled) "No requests captured yet" else "Enable monitoring to capture requests",
+                            if (isEnabled) {
+                                stringResource(
+                                    R.string.webviewmonitor_empty_state_enabled,
+                                )
+                            } else {
+                                stringResource(R.string.webviewmonitor_empty_state_disabled)
+                            },
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -592,7 +620,7 @@ private fun WebViewMonitorListScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(requests, key = { it.id }) { request ->
                         WebViewRequestItem(
@@ -629,14 +657,14 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.md),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Status indicator
@@ -657,10 +685,10 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Method badge
@@ -672,9 +700,12 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                         modifier = Modifier
                             .background(
                                 getMethodColor(request.method),
-                                RoundedCornerShape(4.dp),
+                                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                             )
-                            .padding(horizontal = 6.dp, vertical = 2.dp),
+                            .padding(
+                                horizontal = WormaCeptorDesignSystem.CornerRadius.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            ),
                     )
 
                     // Resource type
@@ -698,7 +729,7 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                         }
                         request.isSuccess -> {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Icon(
@@ -716,8 +747,9 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                             }
                         }
                         request.isFailed -> {
+                            val errorText = request.statusCode?.toString()
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Icon(
@@ -727,7 +759,7 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                                     modifier = Modifier.size(14.dp),
                                 )
                                 Text(
-                                    text = request.statusCode?.toString() ?: "ERR",
+                                    text = errorText ?: stringResource(R.string.webviewmonitor_status_error),
                                     fontSize = 10.sp,
                                     color = Color(0xFFF44336),
                                     fontWeight = FontWeight.Bold,
@@ -756,7 +788,7 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Timestamp
@@ -769,7 +801,7 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
                     // Duration
                     request.duration?.let { duration ->
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(2.dp),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(
@@ -822,7 +854,7 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.webviewmonitor_action_back))
                     }
                 },
             )
@@ -833,23 +865,23 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Status card
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(WormaCeptorDesignSystem.Spacing.lg),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(
@@ -873,14 +905,22 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
                         Column {
                             Text(
                                 when {
-                                    request.isPending -> "Pending"
-                                    request.isSuccess -> "Success"
-                                    else -> "Failed"
+                                    request.isPending -> stringResource(R.string.webviewmonitor_status_pending)
+                                    request.isSuccess -> stringResource(R.string.webviewmonitor_status_success)
+                                    else -> stringResource(R.string.webviewmonitor_status_failed)
                                 },
                                 fontWeight = FontWeight.SemiBold,
                             )
+                            val statusText = request.statusCode?.let {
+                                stringResource(
+                                    R.string.webviewmonitor_detail_status_prefix,
+                                    it,
+                                )
+                            }
+                                ?: request.errorMessage
+                                ?: stringResource(R.string.webviewmonitor_status_waiting)
                             Text(
-                                request.statusCode?.let { "Status: $it" } ?: request.errorMessage ?: "Waiting for response",
+                                statusText,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -895,7 +935,7 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
                                 color = Color(0xFF2196F3),
                             )
                             Text(
-                                "Duration",
+                                stringResource(R.string.webviewmonitor_detail_duration),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -905,7 +945,7 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
             }
 
             // URL card
-            DetailCard(title = "URL") {
+            DetailCard(title = stringResource(R.string.webviewmonitor_detail_url)) {
                 Text(
                     text = request.url,
                     fontFamily = FontFamily.Monospace,
@@ -915,19 +955,35 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
             }
 
             // Request info
-            DetailCard(title = "Request Info") {
-                DetailRow("Method", request.method)
-                DetailRow("Resource Type", request.resourceType.displayName)
-                DetailRow("Main Frame", if (request.isForMainFrame) "Yes" else "No")
-                DetailRow("Has Gesture", if (request.hasGesture) "Yes" else "No")
-                DetailRow("Is Redirect", if (request.isRedirect) "Yes" else "No")
-                DetailRow("WebView ID", request.webViewId)
-                DetailRow("Timestamp", formatFullTimestamp(request.timestamp))
+            val yesString = stringResource(R.string.webviewmonitor_yes)
+            val noString = stringResource(R.string.webviewmonitor_no)
+            DetailCard(title = stringResource(R.string.webviewmonitor_detail_request_info)) {
+                DetailRow(stringResource(R.string.webviewmonitor_label_method), request.method)
+                DetailRow(stringResource(R.string.webviewmonitor_label_resource_type), request.resourceType.displayName)
+                DetailRow(
+                    stringResource(R.string.webviewmonitor_label_main_frame),
+                    if (request.isForMainFrame) yesString else noString,
+                )
+                DetailRow(
+                    stringResource(R.string.webviewmonitor_label_has_gesture),
+                    if (request.hasGesture) yesString else noString,
+                )
+                DetailRow(
+                    stringResource(R.string.webviewmonitor_label_is_redirect),
+                    if (request.isRedirect) yesString else noString,
+                )
+                DetailRow(stringResource(R.string.webviewmonitor_label_webview_id), request.webViewId)
+                DetailRow(
+                    stringResource(R.string.webviewmonitor_label_timestamp),
+                    formatFullTimestamp(request.timestamp),
+                )
             }
 
             // Request headers
             if (request.headers.isNotEmpty()) {
-                DetailCard(title = "Request Headers (${request.headers.size})") {
+                DetailCard(
+                    title = stringResource(R.string.webviewmonitor_detail_request_headers, request.headers.size),
+                ) {
                     request.headers.forEach { (key, value) ->
                         DetailRow(key, value)
                     }
@@ -936,18 +992,38 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
 
             // Response info
             if (request.statusCode != null || request.mimeType != null || request.contentLength != null) {
-                DetailCard(title = "Response Info") {
-                    request.statusCode?.let { DetailRow("Status Code", it.toString()) }
-                    request.mimeType?.let { DetailRow("MIME Type", it) }
-                    request.encoding?.let { DetailRow("Encoding", it) }
-                    request.contentLength?.let { DetailRow("Content Length", formatBytes(it)) }
-                    request.duration?.let { DetailRow("Duration", formatDuration(it)) }
+                DetailCard(title = stringResource(R.string.webviewmonitor_detail_response_info)) {
+                    request.statusCode?.let {
+                        DetailRow(
+                            stringResource(R.string.webviewmonitor_label_status_code),
+                            it.toString(),
+                        )
+                    }
+                    request.mimeType?.let { DetailRow(stringResource(R.string.webviewmonitor_label_mime_type), it) }
+                    request.encoding?.let { DetailRow(stringResource(R.string.webviewmonitor_label_encoding), it) }
+                    request.contentLength?.let {
+                        DetailRow(
+                            stringResource(R.string.webviewmonitor_label_content_length),
+                            formatBytes(it),
+                        )
+                    }
+                    request.duration?.let {
+                        DetailRow(
+                            stringResource(R.string.webviewmonitor_detail_duration),
+                            formatDuration(it),
+                        )
+                    }
                 }
             }
 
             // Response headers
             if (request.responseHeaders.isNotEmpty()) {
-                DetailCard(title = "Response Headers (${request.responseHeaders.size})") {
+                DetailCard(
+                    title = stringResource(
+                        R.string.webviewmonitor_detail_response_headers,
+                        request.responseHeaders.size,
+                    ),
+                ) {
                     request.responseHeaders.forEach { (key, value) ->
                         DetailRow(key, value)
                     }
@@ -956,7 +1032,7 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
 
             // Error message
             request.errorMessage?.let { error ->
-                DetailCard(title = "Error") {
+                DetailCard(title = stringResource(R.string.webviewmonitor_detail_error)) {
                     Text(
                         text = error,
                         fontFamily = FontFamily.Monospace,
@@ -972,14 +1048,14 @@ private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: 
 @Composable
 private fun DetailCard(title: String, content: @Composable () -> Unit) {
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
                 text = title,
@@ -995,7 +1071,7 @@ private fun DetailCard(title: String, content: @Composable () -> Unit) {
 private fun DetailRow(label: String, value: String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
     ) {
         Text(
             text = label,
@@ -1009,7 +1085,7 @@ private fun DetailRow(label: String, value: String) {
             color = MaterialTheme.colorScheme.onSurface,
         )
         HorizontalDivider(
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
             color = MaterialTheme.colorScheme.outlineVariant,
         )
     }

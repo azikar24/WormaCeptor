@@ -225,7 +225,7 @@ private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () ->
             Box(
                 modifier = Modifier
                     .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                    .height(48.dp)
+                    .height(WormaCeptorDesignSystem.Spacing.xxxl)
                     .background(
                         statusColor,
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),

@@ -3,4 +3,5 @@
     <string name="logs_back">Back</string>
     <string name="logs_clear">Clear logs</string>
     <string name="logs_scroll_to_bottom">Scroll to bottom</string>
+    <string name="logs_search_placeholder">Search by tag or message…</string>
 </resources>

@@ -3,4 +3,7 @@
     <string name="fps_back">Back</string>
     <string name="fps_reset_statistics">Reset statistics</string>
     <string name="fps_jank_detected">Jank detected</string>
+    <string name="fps_min">Min</string>
+    <string name="fps_avg">Avg</string>
+    <string name="fps_max">Max</string>
 </resources>

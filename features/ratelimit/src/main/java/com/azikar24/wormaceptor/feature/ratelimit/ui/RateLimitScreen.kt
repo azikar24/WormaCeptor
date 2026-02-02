@@ -108,7 +108,7 @@ fun RateLimitScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = "Network Rate Limiter",
+                            text = stringResource(R.string.ratelimit_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                     }
@@ -234,13 +234,19 @@ private fun EnableToggleCard(
 
                 Column {
                     Text(
-                        text = "Rate Limiting",
+                        text = stringResource(R.string.ratelimit_toggle_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.labelPrimary,
                     )
                     Text(
-                        text = if (enabled) "Active - throttling network" else "Disabled",
+                        text = if (enabled) {
+                            stringResource(
+                                R.string.ratelimit_toggle_status_active,
+                            )
+                        } else {
+                            stringResource(R.string.ratelimit_toggle_status_disabled)
+                        },
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.labelSecondary,
                     )
@@ -280,7 +286,7 @@ private fun NetworkPresetsCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Network Presets",
+                text = stringResource(R.string.ratelimit_presets_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -315,25 +321,25 @@ private fun NetworkPresetsCard(
                     ) {
                         PresetInfoItem(
                             icon = Icons.Default.CloudDownload,
-                            label = "Down",
+                            label = stringResource(R.string.ratelimit_preset_info_down),
                             value = formatSpeed(preset.downloadKbps),
                             color = colors.download,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.CloudUpload,
-                            label = "Up",
+                            label = stringResource(R.string.ratelimit_preset_info_up),
                             value = formatSpeed(preset.uploadKbps),
                             color = colors.upload,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.Timer,
-                            label = "Latency",
+                            label = stringResource(R.string.ratelimit_preset_info_latency),
                             value = "${preset.latencyMs}ms",
                             color = colors.latency,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.Warning,
-                            label = "Loss",
+                            label = stringResource(R.string.ratelimit_preset_info_loss),
                             value = "${preset.packetLoss.toInt()}%",
                             color = colors.packetLoss,
                         )
@@ -452,7 +458,7 @@ private fun ConfigurationCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
-                text = "Custom Configuration",
+                text = stringResource(R.string.ratelimit_config_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -461,7 +467,7 @@ private fun ConfigurationCard(
             // Download speed slider
             ConfigSlider(
                 icon = Icons.Default.CloudDownload,
-                label = "Download Speed",
+                label = stringResource(R.string.ratelimit_config_download_speed),
                 value = config.downloadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.downloadSpeedKbps),
                 minValue = 1f,
@@ -475,7 +481,7 @@ private fun ConfigurationCard(
             // Upload speed slider
             ConfigSlider(
                 icon = Icons.Default.CloudUpload,
-                label = "Upload Speed",
+                label = stringResource(R.string.ratelimit_config_upload_speed),
                 value = config.uploadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.uploadSpeedKbps),
                 minValue = 1f,
@@ -489,7 +495,7 @@ private fun ConfigurationCard(
             // Latency slider
             ConfigSlider(
                 icon = Icons.Default.Timer,
-                label = "Latency",
+                label = stringResource(R.string.ratelimit_config_latency),
                 value = config.latencyMs.toFloat(),
                 valueText = "${config.latencyMs} ms",
                 minValue = 0f,
@@ -503,7 +509,7 @@ private fun ConfigurationCard(
             // Packet loss slider
             ConfigSlider(
                 icon = Icons.Default.Warning,
-                label = "Packet Loss",
+                label = stringResource(R.string.ratelimit_config_packet_loss),
                 value = config.packetLossPercent,
                 valueText = "${config.packetLossPercent.toInt()}%",
                 minValue = 0f,
@@ -605,7 +611,7 @@ private fun StatisticsCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Statistics",
+                    text = stringResource(R.string.ratelimit_stats_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.labelPrimary,
@@ -623,13 +629,13 @@ private fun StatisticsCard(
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 StatItem(
-                    label = "Requests Throttled",
+                    label = stringResource(R.string.ratelimit_stats_requests_throttled),
                     value = stats.requestsThrottled.toString(),
                     color = colors.primary,
                     colors = colors,
                 )
                 StatItem(
-                    label = "Packets Dropped",
+                    label = stringResource(R.string.ratelimit_stats_packets_dropped),
                     value = stats.packetsDropped.toString(),
                     color = colors.packetLoss,
                     colors = colors,
@@ -641,13 +647,13 @@ private fun StatisticsCard(
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 StatItem(
-                    label = "Total Delay",
+                    label = stringResource(R.string.ratelimit_stats_total_delay),
                     value = formatDuration(stats.totalDelayMs),
                     color = colors.latency,
                     colors = colors,
                 )
                 StatItem(
-                    label = "Bytes Throttled",
+                    label = stringResource(R.string.ratelimit_stats_bytes_throttled),
                     value = formatBytes(stats.bytesThrottled),
                     color = colors.download,
                     colors = colors,

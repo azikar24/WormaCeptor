@@ -347,7 +347,10 @@ private fun TransactionDetailContent(
                                     .fillMaxWidth()
                                     .statusBarsPadding()
                                     .height(64.dp)
-                                    .padding(start = 4.dp, end = 16.dp),
+                                    .padding(
+                                        start = WormaCeptorDesignSystem.Spacing.xs,
+                                        end = WormaCeptorDesignSystem.Spacing.lg,
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 IconButton(onClick = {
@@ -556,7 +559,7 @@ private fun TransactionDetailContent(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .imePadding()
-                    .padding(bottom = 32.dp, end = 16.dp),
+                    .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl, end = WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 Surface(
                     shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
@@ -564,14 +567,17 @@ private fun TransactionDetailContent(
                     shadowElevation = 6.dp,
                 ) {
                     Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.md,
+                            vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (matchCount > 0) {
                             Text(
                                 text = "${currentMatchIndex + 1}/$matchCount",
                                 style = MaterialTheme.typography.labelLarge,
-                                modifier = Modifier.padding(end = 4.dp),
+                                modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.xs),
                             )
                             IconButton(
                                 onClick = {
@@ -579,7 +585,10 @@ private fun TransactionDetailContent(
                                 },
                                 modifier = Modifier.size(36.dp),
                             ) {
-                                Icon(Icons.Default.KeyboardArrowUp, "Previous match")
+                                Icon(
+                                    Icons.Default.KeyboardArrowUp,
+                                    stringResource(R.string.viewer_search_previous_match),
+                                )
                             }
                             IconButton(
                                 onClick = {
@@ -587,11 +596,11 @@ private fun TransactionDetailContent(
                                 },
                                 modifier = Modifier.size(36.dp),
                             ) {
-                                Icon(Icons.Default.KeyboardArrowDown, "Next match")
+                                Icon(Icons.Default.KeyboardArrowDown, stringResource(R.string.viewer_search_next_match))
                             }
                         } else {
                             Text(
-                                text = "No matches",
+                                text = stringResource(R.string.viewer_search_no_matches),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -659,7 +668,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
     ) {
         // Status & Timing Card with Timeline
         EnhancedOverviewCard(
-            title = "Timing",
+            title = stringResource(R.string.viewer_overview_timing),
             icon = Icons.Default.Schedule,
             iconTint = MaterialTheme.colorScheme.tertiary,
         ) {
@@ -687,7 +696,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
 
         // Security Card with Badge
         EnhancedOverviewCard(
-            title = "Security",
+            title = stringResource(R.string.viewer_overview_security),
             icon = Icons.Default.Security,
             iconTint = MaterialTheme.colorScheme.secondary,
         ) {
@@ -705,7 +714,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
 
         // Data Transfer Card
         EnhancedOverviewCard(
-            title = "Data Transfer",
+            title = stringResource(R.string.viewer_overview_data_transfer),
             icon = Icons.Default.Storage,
             iconTint = MaterialTheme.colorScheme.primary,
         ) {
@@ -721,7 +730,7 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
         // Extensions Card - only shown when extensions exist
         if (transaction.extensions.isNotEmpty()) {
             EnhancedOverviewCard(
-                title = "Extensions",
+                title = stringResource(R.string.viewer_overview_extensions),
                 icon = Icons.Default.Extension,
                 iconTint = MaterialTheme.colorScheme.tertiary,
             ) {
@@ -1059,7 +1068,7 @@ private fun RequestTab(
             // Only show Headers section if headers exist
             if (transaction.request.headers.isNotEmpty()) {
                 CollapsibleSection(
-                    title = "Headers",
+                    title = stringResource(R.string.viewer_body_headers),
                     isExpanded = headersExpanded,
                     onToggle = { headersExpanded = !headersExpanded },
                     onCopy = {
@@ -1096,7 +1105,7 @@ private fun RequestTab(
                     val colors = syntaxColors()
 
                     CollapsibleSection(
-                        title = "Body",
+                        title = stringResource(R.string.viewer_body_body),
                         isExpanded = bodyExpanded,
                         onToggle = { bodyExpanded = !bodyExpanded },
                         onCopy = { copyRequested = true },
@@ -1391,7 +1400,7 @@ private fun ResponseTab(
                 // Only show Headers section if headers exist
                 if (hasHeaders) {
                     CollapsibleSection(
-                        title = "Headers",
+                        title = stringResource(R.string.viewer_body_headers),
                         isExpanded = headersExpanded,
                         onToggle = { headersExpanded = !headersExpanded },
                         onCopy = {
@@ -1429,7 +1438,7 @@ private fun ResponseTab(
                         val imageBytes = rawBodyBytes ?: return@Column
                         // Image content - show Image preview card
                         CollapsibleSection(
-                            title = "Body (Image)",
+                            title = stringResource(R.string.viewer_body_body_image),
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = null,
@@ -1453,7 +1462,7 @@ private fun ResponseTab(
                         val pdfBytes = rawBodyBytes ?: return@Column
                         // PDF content - show PDF preview card
                         CollapsibleSection(
-                            title = "Body (PDF)",
+                            title = stringResource(R.string.viewer_body_body_pdf),
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = null,
@@ -1476,7 +1485,7 @@ private fun ResponseTab(
                         }
 
                         CollapsibleSection(
-                            title = "Body",
+                            title = stringResource(R.string.viewer_body_body),
                             isExpanded = bodyExpanded,
                             onToggle = { bodyExpanded = !bodyExpanded },
                             onCopy = { copyRequested = true },
@@ -1973,7 +1982,7 @@ private fun rememberHighlightedText(
 
 @Composable
 private fun DetailRow(label: String, value: String) {
-    Row(modifier = Modifier.padding(vertical = 4.dp)) {
+    Row(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs)) {
         Text(
             text = "$label: ",
             style = MaterialTheme.typography.bodyMedium,

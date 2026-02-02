@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -90,14 +91,14 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Icon(Icons.Default.Notifications, null, tint = WormaCeptorColors.StatusAmber)
-                        Text("Push Token", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.pushtoken_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 navigationIcon = {
                     onNavigateBack?.let {
                         IconButton(
                             onClick = it,
-                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
+                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.pushtoken_back)) }
                     }
                 },
                 actions = {
@@ -108,7 +109,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                 strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
                             )
                         } else {
-                            Icon(Icons.Default.Refresh, "Fetch token")
+                            Icon(Icons.Default.Refresh, stringResource(R.string.pushtoken_fetch_token))
                         }
                     }
                 },
@@ -116,7 +117,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
         },
         snackbarHost = {
             AnimatedVisibility(showCopiedSnackbar, enter = fadeIn(), exit = fadeOut()) {
-                Snackbar { Text("Token copied to clipboard") }
+                Snackbar { Text(stringResource(R.string.pushtoken_token_copied)) }
             }
         },
     ) { padding ->
@@ -142,7 +143,9 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                             Alignment.CenterVertically,
                         ) {
                             Text(it, color = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.weight(1f))
-                            IconButton(onClick = { viewModel.clearError() }) { Icon(Icons.Default.Close, "Dismiss") }
+                            IconButton(onClick = {
+                                viewModel.clearError()
+                            }) { Icon(Icons.Default.Close, stringResource(R.string.pushtoken_dismiss)) }
                         }
                     }
                 }
@@ -161,18 +164,19 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                         Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         Text(
-                            "Current Token",
+                            stringResource(R.string.pushtoken_current_token),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                         )
-                        if (currentToken != null) {
+                        val token = currentToken
+                        if (token != null) {
                             Surface(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = WormaCeptorDesignSystem.Shapes.card,
                                 color = MaterialTheme.colorScheme.surfaceContainerLow,
                             ) {
                                 Text(
-                                    currentToken!!.token,
+                                    token.token,
                                     Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
                                     fontFamily = FontFamily.Monospace,
                                     style = MaterialTheme.typography.bodySmall,
@@ -191,7 +195,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                     ),
                                 ) {
                                     Text(
-                                        currentToken!!.provider.name,
+                                        token.provider.name,
                                         Modifier.padding(
                                             horizontal = WormaCeptorDesignSystem.Spacing.sm,
                                             vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -202,7 +206,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                     )
                                 }
                                 Text(
-                                    "Refreshed: ${formatTime(currentToken!!.lastRefreshed)}",
+                                    stringResource(R.string.pushtoken_refreshed, formatTime(token.lastRefreshed)),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -211,9 +215,10 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                 Modifier.fillMaxWidth(),
                                 Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                             ) {
+                                val clipboardLabel = stringResource(R.string.pushtoken_clipboard_label)
                                 Button(onClick = {
                                     clipboardManager.setPrimaryClip(
-                                        ClipData.newPlainText("Push Token", currentToken!!.token),
+                                        ClipData.newPlainText(clipboardLabel, token.token),
                                     )
                                     showCopiedSnackbar = true
                                 }, Modifier.weight(1f)) {
@@ -223,7 +228,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                         Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                     )
                                     Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                                    Text("Copy")
+                                    Text(stringResource(R.string.pushtoken_copy))
                                 }
                                 OutlinedButton(
                                     onClick = {
@@ -254,7 +259,10 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
                                         )
-                                        Text("No token available", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(
+                                            stringResource(R.string.pushtoken_no_token),
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        )
                                     }
                                 }
                             }
@@ -267,11 +275,15 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
             item {
                 Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
                     Text(
-                        "Token History",
+                        stringResource(R.string.pushtoken_token_history),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
-                    if (tokenHistory.isNotEmpty()) TextButton(onClick = { viewModel.clearHistory() }) { Text("Clear") }
+                    if (tokenHistory.isNotEmpty()) {
+                        TextButton(onClick = {
+                            viewModel.clearHistory()
+                        }) { Text(stringResource(R.string.pushtoken_clear)) }
+                    }
                 }
             }
 
@@ -284,7 +296,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                         Alignment.Center,
                     ) {
                         Text(
-                            "No history",
+                            stringResource(R.string.pushtoken_no_history),
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                 alpha = WormaCeptorDesignSystem.Alpha.heavy,
                             ),

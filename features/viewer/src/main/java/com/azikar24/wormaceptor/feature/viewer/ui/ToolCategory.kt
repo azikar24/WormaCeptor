@@ -47,6 +47,7 @@ data class ToolCategory(
  */
 object ToolCategories {
 
+    /** Tools for inspecting app data like SharedPreferences, databases, and files. */
     val inspectionTools = listOf(
         ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"),
         ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"),
@@ -62,6 +63,7 @@ object ToolCategories {
         ToolItem(Feature.WEBVIEW_MONITOR, "WebView Monitor", Icons.Default.Language, "webviewmonitor"),
     )
 
+    /** Tools for monitoring performance metrics like memory, FPS, and CPU usage. */
     val performanceTools = listOf(
         ToolItem(Feature.MEMORY_MONITOR, "Memory Monitor", Icons.Default.Memory, "memory"),
         ToolItem(Feature.FPS_MONITOR, "FPS Monitor", Icons.Default.Speed, "fps"),
@@ -70,11 +72,13 @@ object ToolCategories {
         ToolItem(Feature.THREAD_VIOLATIONS, "Thread Violations", Icons.Default.Warning, "threadviolation"),
     )
 
+    /** Tools for monitoring network activity like WebSocket connections. */
     val networkTools = listOf(
         ToolItem(Feature.WEBSOCKET_MONITOR, "WebSocket Monitor", Icons.Default.Cable, "websocket"),
         ToolItem(Feature.RATE_LIMITER, "Rate Limiter", Icons.Default.NetworkCheck, "ratelimit"),
     )
 
+    /** Tools for simulating device features like location and push notifications. */
     val simulationTools = listOf(
         ToolItem(Feature.LOCATION_SIMULATOR, "Location Simulator", Icons.Default.LocationOn, "location"),
         ToolItem(Feature.PUSH_SIMULATOR, "Push Simulator", Icons.Default.Notifications, "pushsimulator"),
@@ -82,11 +86,13 @@ object ToolCategories {
         ToolItem(Feature.CRYPTO_TOOL, "Crypto Tool", Icons.Default.Lock, "crypto"),
     )
 
+    /** Core debugging tools like console logs and device information. */
     val coreTools = listOf(
         ToolItem(Feature.CONSOLE_LOGS, "Console Logs", Icons.Default.Terminal, "logs"),
         ToolItem(Feature.DEVICE_INFO, "Device Info", Icons.Default.Info, "deviceinfo"),
     )
 
+    /** All tool categories in display order. */
     val allCategories = listOf(
         ToolCategory("Inspection", inspectionTools),
         ToolCategory("Performance", performanceTools),
@@ -95,6 +101,7 @@ object ToolCategories {
         ToolCategory("Core", coreTools),
     )
 
+    /** Flattened list of all tools across all categories. */
     val allTools: List<ToolItem> = allCategories.flatMap { it.tools }
 
     /**

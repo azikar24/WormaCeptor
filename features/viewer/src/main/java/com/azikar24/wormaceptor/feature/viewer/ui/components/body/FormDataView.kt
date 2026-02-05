@@ -37,69 +37,70 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
         parseFormData(formData)
     }
 
-    if (parsedData.isEmpty()) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = "No form data",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        return
-    }
-
-    WormaCeptorContainer(
-        style = ContainerStyle.Outlined,
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Column {
-            Row(
+    Box(modifier = modifier.fillMaxWidth()) {
+        if (parsedData.isEmpty()) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                    .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "Key",
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                    ),
+                    text = "No form data",
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(0.4f),
-                )
-                Text(
-                    text = "Value",
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(0.6f),
                 )
             }
+        } else {
+            WormaCeptorContainer(
+                style = ContainerStyle.Outlined,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                            .padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.md,
+                                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = "Key",
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.SemiBold,
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(0.4f),
+                        )
+                        Text(
+                            text = "Value",
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.SemiBold,
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(0.6f),
+                        )
+                    }
 
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
 
-            parsedData.forEachIndexed { index, (key, value) ->
-                FormDataRow(
-                    key = key,
-                    value = value,
-                    isEven = index % 2 == 0,
-                )
+                    parsedData.forEachIndexed { index, (key, value) ->
+                        FormDataRow(
+                            key = key,
+                            value = value,
+                            isEven = index % 2 == 0,
+                        )
 
-                if (index < parsedData.lastIndex) {
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                        modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
-                    )
+                        if (index < parsedData.lastIndex) {
+                            HorizontalDivider(
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                                modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
+                            )
+                        }
+                    }
                 }
             }
         }

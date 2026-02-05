@@ -382,7 +382,7 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 private fun ToolCategorySection(
     categoryName: String,

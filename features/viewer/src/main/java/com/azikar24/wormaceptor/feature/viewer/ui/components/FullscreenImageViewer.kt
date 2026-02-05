@@ -181,7 +181,7 @@ private fun FullscreenImageContent(
                     onTap = {
                         showControls = !showControls
                     },
-                    onDoubleTap = { tapOffset ->
+                    onDoubleTap = { _ ->
                         scope.launch {
                             if (scale > 1.1f) {
                                 // Zoom out
@@ -641,7 +641,6 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
             "Image saved to gallery"
         } else {
             // Legacy approach for older Android versions
-            @Suppress("DEPRECATION")
             val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val wormaceptorDir = File(picturesDir, "WormaCeptor")
             if (!wormaceptorDir.exists()) {

@@ -97,11 +97,13 @@ fun WormaCeptorTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
+            @Suppress("DEPRECATION")
             window.statusBarColor = colorScheme.primary.toArgb()
             // Set window background to match theme surface color to prevent white flash during navigation
             window.setBackgroundDrawableResource(android.R.color.transparent)
             window.decorView.setBackgroundColor(colorScheme.background.toArgb())
             // Also set navigation bar color to match
+            @Suppress("DEPRECATION")
             window.navigationBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme

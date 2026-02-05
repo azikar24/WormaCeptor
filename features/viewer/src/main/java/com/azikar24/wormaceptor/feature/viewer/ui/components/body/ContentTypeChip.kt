@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.DataArray
 import androidx.compose.material.icons.filled.DataObject
@@ -20,7 +21,6 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.TextFields
-import androidx.compose.material.icons.filled.ViewList
 import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -144,7 +144,7 @@ fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo {
         )
         ContentType.FORM_DATA -> ContentTypeChipInfo(
             displayName = "Form Data",
-            icon = Icons.Default.ViewList,
+            icon = Icons.AutoMirrored.Filled.ViewList,
             color = WormaCeptorColors.ContentType.FormData,
         )
         ContentType.MULTIPART -> ContentTypeChipInfo(

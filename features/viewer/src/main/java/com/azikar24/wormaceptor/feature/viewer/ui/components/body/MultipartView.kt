@@ -29,7 +29,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -250,7 +250,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                 exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Divider(
+                    HorizontalDivider(
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                     )
 
@@ -299,7 +299,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                             }
                         }
 
-                        Divider(
+                        HorizontalDivider(
                             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
                         )
                     }

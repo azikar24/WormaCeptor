@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
 import androidx.compose.material.icons.filled.DeveloperBoard
@@ -9,7 +10,6 @@ import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Memory
@@ -51,7 +51,12 @@ object ToolCategories {
         ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"),
         ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"),
         ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"),
-        ToolItem(Feature.LOADED_LIBRARIES, "Loaded Libraries", Icons.Default.LibraryBooks, "loadedlibraries"),
+        ToolItem(
+            Feature.LOADED_LIBRARIES,
+            "Loaded Libraries",
+            Icons.AutoMirrored.Filled.LibraryBooks,
+            "loadedlibraries",
+        ),
         ToolItem(Feature.DEPENDENCIES_INSPECTOR, "Dependencies", Icons.Default.Extension, "dependencies"),
         ToolItem(Feature.SECURE_STORAGE, "Secure Storage", Icons.Default.Security, "securestorage"),
         ToolItem(Feature.WEBVIEW_MONITOR, "WebView Monitor", Icons.Default.Language, "webviewmonitor"),

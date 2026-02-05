@@ -394,8 +394,8 @@ private fun ToolCategorySection(
     onToolClick: (String) -> Unit,
     onToolLongClick: (ToolItem) -> Unit,
     favorites: Set<Feature>,
-    headerContent: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
+    headerContent: (@Composable () -> Unit)? = null,
 ) {
     val rotationAngle by animateFloatAsState(
         targetValue = if (isCollapsed) 0f else 180f,

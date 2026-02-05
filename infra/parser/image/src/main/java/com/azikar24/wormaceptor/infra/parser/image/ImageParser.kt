@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.infra.parser.image
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import java.util.Locale
 
 /**
  * Parser for image content types.
@@ -178,7 +179,7 @@ class ImageParser : BodyParser {
         return when {
             bytes < 1024 -> "$bytes B"
             bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-            else -> String.format("%.2f MB", bytes / (1024.0 * 1024.0))
+            else -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
         }
     }
 

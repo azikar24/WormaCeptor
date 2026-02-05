@@ -64,6 +64,7 @@ import com.azikar24.wormaceptor.domain.entities.LoadedLibrary.LibraryType
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -510,7 +511,7 @@ private fun EmptyState(
 }
 
 private fun formatSize(bytes: Long) = when {
-    bytes >= 1_048_576 -> String.format("%.1f MB", bytes / 1_048_576.0)
-    bytes >= 1_024 -> String.format("%.1f KB", bytes / 1_024.0)
+    bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
+    bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
     else -> "$bytes B"
 }

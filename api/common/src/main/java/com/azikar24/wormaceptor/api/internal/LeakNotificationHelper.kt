@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
+import java.util.Locale
 
 class LeakNotificationHelper(
     private val context: Context,
@@ -66,8 +67,8 @@ class LeakNotificationHelper(
 
     private fun formatBytes(bytes: Long): String {
         return when {
-            bytes >= 1_048_576 -> String.format("%.1f MB", bytes / 1_048_576.0)
-            bytes >= 1024 -> String.format("%.1f KB", bytes / 1024.0)
+            bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
+            bytes >= 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
             else -> "$bytes B"
         }
     }

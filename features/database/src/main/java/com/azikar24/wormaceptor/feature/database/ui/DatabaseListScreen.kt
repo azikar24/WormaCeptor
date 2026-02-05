@@ -45,6 +45,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
+import java.util.Locale
 
 /**
  * Screen displaying list of available databases.
@@ -225,8 +226,8 @@ private fun formatFileSize(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     return when {
         bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
+        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }

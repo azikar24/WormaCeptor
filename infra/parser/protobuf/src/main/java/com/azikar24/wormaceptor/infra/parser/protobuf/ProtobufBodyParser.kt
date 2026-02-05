@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
 import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.nio.ByteBuffer
+import java.util.Locale
 
 /**
  * Parser for Protocol Buffers (protobuf) content.
@@ -256,7 +257,7 @@ class ProtobufBodyParser : BodyParser {
 
         return buildString {
             append("0x")
-            bytes.forEach { append(String.format("%02X", it)) }
+            bytes.forEach { append(String.format(Locale.US, "%02X", it)) }
             append(" (int64: $asLong")
             if (asDouble.isFinite()) {
                 append(", double: $asDouble")
@@ -273,7 +274,7 @@ class ProtobufBodyParser : BodyParser {
 
         return buildString {
             append("0x")
-            bytes.forEach { append(String.format("%02X", it)) }
+            bytes.forEach { append(String.format(Locale.US, "%02X", it)) }
             append(" (int32: $asInt")
             if (asFloat.isFinite()) {
                 append(", float: $asFloat")
@@ -296,9 +297,9 @@ class ProtobufBodyParser : BodyParser {
 
         // Show as bytes
         return if (bytes.size <= 32) {
-            bytes.joinToString(" ") { String.format("%02X", it) } + " (${bytes.size} bytes)"
+            bytes.joinToString(" ") { String.format(Locale.US, "%02X", it) } + " (${bytes.size} bytes)"
         } else {
-            val preview = bytes.take(32).joinToString(" ") { String.format("%02X", it) }
+            val preview = bytes.take(32).joinToString(" ") { String.format(Locale.US, "%02X", it) }
             "$preview ... (${bytes.size} bytes)"
         }
     }
@@ -333,12 +334,12 @@ class ProtobufBodyParser : BodyParser {
         val bytesPerLine = 16
         for (i in body.indices step bytesPerLine) {
             // Offset
-            sb.append(String.format("%08X  ", i))
+            sb.append(String.format(Locale.US, "%08X  ", i))
 
             // Hex bytes
             for (j in 0 until bytesPerLine) {
                 if (i + j < body.size) {
-                    sb.append(String.format("%02X ", body[i + j]))
+                    sb.append(String.format(Locale.US, "%02X ", body[i + j]))
                 } else {
                     sb.append("   ")
                 }

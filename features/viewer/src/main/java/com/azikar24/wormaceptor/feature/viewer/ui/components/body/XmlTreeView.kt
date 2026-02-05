@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.ComposeSyntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
+import java.util.Locale
 
 /**
  * A formatted view for XML content with proper indentation and syntax highlighting.
@@ -74,7 +75,7 @@ private fun XmlLineView(line: String, lineNumber: Int, colors: ComposeSyntaxColo
         verticalAlignment = Alignment.Top,
     ) {
         Text(
-            text = String.format("%4d", lineNumber),
+            text = String.format(Locale.US, "%4d", lineNumber),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontFamily = FontFamily.Monospace,
             ),

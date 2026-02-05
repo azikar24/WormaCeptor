@@ -59,6 +59,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
  * Minimum and maximum zoom levels
@@ -414,7 +415,7 @@ private fun ZoomLevelBadge(zoom: Float) {
         ),
     ) {
         Text(
-            text = "${String.format("%.1f", zoom)}x",
+            text = "${String.format(Locale.US, "%.1f", zoom)}x",
             style = MaterialTheme.typography.labelSmall.copy(
                 fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
             ),

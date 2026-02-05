@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.util.Locale
 import java.util.zip.ZipFile
 
 /**
@@ -448,9 +449,9 @@ class LoadedLibrariesEngine(
 
     private fun formatSize(bytes: Long): String {
         return when {
-            bytes >= 1_073_741_824 -> String.format("%.2f GB", bytes / 1_073_741_824.0)
-            bytes >= 1_048_576 -> String.format("%.2f MB", bytes / 1_048_576.0)
-            bytes >= 1_024 -> String.format("%.2f KB", bytes / 1_024.0)
+            bytes >= 1_073_741_824 -> String.format(Locale.US, "%.2f GB", bytes / 1_073_741_824.0)
+            bytes >= 1_048_576 -> String.format(Locale.US, "%.2f MB", bytes / 1_048_576.0)
+            bytes >= 1_024 -> String.format(Locale.US, "%.2f KB", bytes / 1_024.0)
             else -> "$bytes B"
         }
     }

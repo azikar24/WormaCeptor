@@ -63,6 +63,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.feature.filebrowser.R
 import java.io.File
+import java.util.Locale
 
 /**
  * Screen for viewing file content.
@@ -496,13 +497,13 @@ private fun buildHexLine(bytes: ByteArray, lineStart: Int): String {
     val builder = StringBuilder()
 
     // Address column
-    builder.append(String.format("%08X  ", lineStart))
+    builder.append(String.format(Locale.US, "%08X  ", lineStart))
 
     // Hex bytes - first 8 bytes
     for (i in 0 until 8) {
         val index = lineStart + i
         if (index < bytes.size) {
-            builder.append(String.format("%02X ", bytes[index].toInt() and 0xFF))
+            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
         } else {
             builder.append("   ")
         }
@@ -514,7 +515,7 @@ private fun buildHexLine(bytes: ByteArray, lineStart: Int): String {
     for (i in 8 until BYTES_PER_LINE) {
         val index = lineStart + i
         if (index < bytes.size) {
-            builder.append(String.format("%02X ", bytes[index].toInt() and 0xFF))
+            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
         } else {
             builder.append("   ")
         }
@@ -707,8 +708,8 @@ private fun formatBytes(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     return when {
         bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
+        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }

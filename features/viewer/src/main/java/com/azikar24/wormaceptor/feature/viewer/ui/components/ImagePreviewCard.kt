@@ -71,6 +71,7 @@ import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 /**
  * Metadata extracted from an image
@@ -593,8 +594,8 @@ private fun ActionButton(
 private fun formatFileSize(bytes: Long): String {
     return when {
         bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.2f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
+        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }

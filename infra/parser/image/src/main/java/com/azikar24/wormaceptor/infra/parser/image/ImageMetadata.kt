@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.infra.parser.image
 
+import java.util.Locale
+
 /**
  * Metadata extracted from an image file.
  *
@@ -33,7 +35,7 @@ data class ImageMetadata(
         get() = when {
             fileSize < 1024 -> "$fileSize B"
             fileSize < 1024 * 1024 -> "${fileSize / 1024} KB"
-            else -> String.format("%.2f MB", fileSize / (1024.0 * 1024.0))
+            else -> String.format(Locale.US, "%.2f MB", fileSize / (1024.0 * 1024.0))
         }
 
     companion object {

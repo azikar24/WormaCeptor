@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
+import java.util.Locale
 
 /**
  * A data class representing a single part in multipart form data.
@@ -353,7 +354,7 @@ private fun formatSize(bytes: Int): String {
     return when {
         bytes < 1024 -> "$bytes B"
         bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        else -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
     }
 }
 

@@ -68,6 +68,7 @@ import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.rateLimitColors
+import java.util.Locale
 
 /**
  * Main screen for Network Rate Limiting.
@@ -694,9 +695,10 @@ private fun StatItem(
  * Formats speed in Kbps to a human-readable string.
  */
 private fun formatSpeed(kbps: Long): String {
-    return when {
-        kbps >= 1000 -> String.format("%.1f Mbps", kbps / 1000.0)
-        else -> "$kbps Kbps"
+    return if (kbps >= 1000) {
+        String.format(Locale.US, "%.1f Mbps", kbps / 1000.0)
+    } else {
+        "$kbps Kbps"
     }
 }
 
@@ -705,9 +707,9 @@ private fun formatSpeed(kbps: Long): String {
  */
 private fun formatBytes(bytes: Long): String {
     return when {
-        bytes >= 1_073_741_824 -> String.format("%.1f GB", bytes / 1_073_741_824.0)
-        bytes >= 1_048_576 -> String.format("%.1f MB", bytes / 1_048_576.0)
-        bytes >= 1_024 -> String.format("%.1f KB", bytes / 1_024.0)
+        bytes >= 1_073_741_824 -> String.format(Locale.US, "%.1f GB", bytes / 1_073_741_824.0)
+        bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
+        bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
         else -> "$bytes B"
     }
 }
@@ -717,8 +719,8 @@ private fun formatBytes(bytes: Long): String {
  */
 private fun formatDuration(ms: Long): String {
     return when {
-        ms >= 60000 -> String.format("%.1f min", ms / 60000.0)
-        ms >= 1000 -> String.format("%.1f s", ms / 1000.0)
+        ms >= 60000 -> String.format(Locale.US, "%.1f min", ms / 60000.0)
+        ms >= 1000 -> String.format(Locale.US, "%.1f s", ms / 1000.0)
         else -> "$ms ms"
     }
 }

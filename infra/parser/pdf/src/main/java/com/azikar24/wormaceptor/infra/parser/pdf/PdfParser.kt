@@ -13,6 +13,7 @@ import com.azikar24.wormaceptor.domain.contracts.ParsedBody
 import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 /**
  * Parser for PDF documents.
@@ -347,9 +348,9 @@ class PdfParser(
         fun formatFileSize(bytes: Long): String {
             return when {
                 bytes < 1024 -> "$bytes B"
-                bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-                bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024))
-                else -> String.format("%.1f GB", bytes / (1024.0 * 1024 * 1024))
+                bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+                bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024))
+                else -> String.format(Locale.US, "%.1f GB", bytes / (1024.0 * 1024 * 1024))
             }
         }
     }

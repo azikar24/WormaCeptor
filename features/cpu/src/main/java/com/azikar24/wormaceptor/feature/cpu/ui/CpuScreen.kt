@@ -75,6 +75,7 @@ import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.DecimalFormat
+import java.util.Locale
 
 /**
  * Main screen for CPU Monitoring.
@@ -711,7 +712,7 @@ private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Mod
                     icon = Icons.Default.Thermostat,
                     label = stringResource(R.string.cpu_temperature_label),
                     value = cpuTemp?.let {
-                        String.format("%.1f C", it)
+                        String.format(Locale.US, "%.1f C", it)
                     } ?: "N/A",
                     iconTint = when {
                         cpuTemp != null && cpuTemp > 70f -> colors.critical

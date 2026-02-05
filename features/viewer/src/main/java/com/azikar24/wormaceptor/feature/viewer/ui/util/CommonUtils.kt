@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URI
+import java.util.Locale
 
 // ============================================================================
 // BYTE FORMATTING UTILITIES
@@ -34,9 +35,9 @@ fun formatBytes(bytes: Long): String {
 
     return when {
         bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
+        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }
 

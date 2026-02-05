@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.core.engine
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import java.util.Locale
 
 /**
  * Registry for body parsers.
@@ -123,7 +124,7 @@ class DefaultParserRegistry : ParserRegistry {
     private fun formatBinaryPreview(body: ByteArray): String {
         val previewSize = minOf(body.size, 256)
         val hex = body.take(previewSize).joinToString(" ") {
-            String.format("%02X", it)
+            String.format(Locale.US, "%02X", it)
         }
         return if (body.size > previewSize) {
             "$hex\n... (${body.size} bytes total)"

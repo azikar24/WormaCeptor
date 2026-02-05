@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.util
 
+import java.util.Locale
+
 /**
  * Formats duration in milliseconds to a human-readable string.
  * - Values < 1000ms are displayed as "Xms"
@@ -8,7 +10,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui.util
 fun formatDuration(durationMs: Long?): String {
     if (durationMs == null) return "?"
     return if (durationMs >= 1000) {
-        String.format("%.2fs", durationMs / 1000.0)
+        String.format(Locale.US, "%.2fs", durationMs / 1000.0)
     } else {
         "${durationMs}ms"
     }
@@ -19,7 +21,7 @@ fun formatDuration(durationMs: Long?): String {
  */
 fun formatDurationAvg(durationMs: Double): String {
     return if (durationMs >= 1000) {
-        String.format("%.2fs", durationMs / 1000.0)
+        String.format(Locale.US, "%.2fs", durationMs / 1000.0)
     } else {
         "${durationMs.toInt()}ms"
     }

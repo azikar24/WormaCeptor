@@ -24,6 +24,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import javax.swing.JPanel
 import javax.swing.SwingConstants
 import javax.swing.border.EmptyBorder
@@ -293,7 +294,7 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
             return when {
                 bytes < 1024 -> "$bytes B"
                 bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-                else -> String.format("%.2f MB", bytes / (1024.0 * 1024.0))
+                else -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
             }
         }
     }
@@ -440,7 +441,7 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
             return when {
                 bytes < 1024 -> "$bytes B"
                 bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-                else -> String.format("%.2f MB", bytes / (1024.0 * 1024.0))
+                else -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
             }
         }
     }

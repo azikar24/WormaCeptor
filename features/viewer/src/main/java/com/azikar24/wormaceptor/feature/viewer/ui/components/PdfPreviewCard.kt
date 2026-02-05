@@ -42,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Locale
 
 /**
  * PDF metadata extracted from the document
@@ -594,7 +595,7 @@ private fun formatFileSize(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     val units = listOf("B", "KB", "MB", "GB")
     val digitGroup = (Math.log10(bytes.toDouble()) / Math.log10(1024.0)).toInt()
-    return String.format("%.1f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
+    return String.format(Locale.US, "%.1f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
 }
 
 private fun extractPdfTitle(data: ByteArray): String? {

@@ -328,8 +328,11 @@ private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit
     ) {
         InfoRow(stringResource(R.string.deviceinfo_screen_resolution), "${screen.widthPixels} x ${screen.heightPixels}")
         InfoRow(stringResource(R.string.deviceinfo_screen_density_dpi), screen.densityDpi.toString())
-        InfoRow(stringResource(R.string.deviceinfo_screen_density), String.format("%.2f", screen.density))
-        InfoRow(stringResource(R.string.deviceinfo_screen_scaled_density), String.format("%.2f", screen.scaledDensity))
+        InfoRow(stringResource(R.string.deviceinfo_screen_density), String.format(Locale.US, "%.2f", screen.density))
+        InfoRow(
+            stringResource(R.string.deviceinfo_screen_scaled_density),
+            String.format(Locale.US, "%.2f", screen.scaledDensity),
+        )
         InfoRow(stringResource(R.string.deviceinfo_screen_size_category), screen.sizeCategory)
         InfoRow(stringResource(R.string.deviceinfo_screen_orientation), screen.orientation)
         InfoRow(stringResource(R.string.deviceinfo_screen_refresh_rate), "${screen.refreshRate.toInt()} Hz")
@@ -368,7 +371,7 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = "${String.format("%.1f", memory.usagePercentage)}%",
+                    text = "${String.format(Locale.US, "%.1f", memory.usagePercentage)}%",
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = getUsageColor(memory.usagePercentage),
@@ -723,9 +726,9 @@ private fun formatBytes(bytes: Long): String {
     if (bytes <= 0) return "0 B"
     return when {
         bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format("%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format("%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format("%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
+        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
+        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
+        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }
 
@@ -780,7 +783,9 @@ private fun generateCompactReport(info: DeviceInfo): String = buildString {
     appendLine(
         "RAM: ${formatBytes(
             info.memory.usedRam,
-        )}/${formatBytes(info.memory.totalRam)} (${String.format("%.1f", info.memory.usagePercentage)}% used)",
+        )}/${formatBytes(
+            info.memory.totalRam,
+        )} (${String.format(Locale.US, "%.1f", info.memory.usagePercentage)}% used)",
     )
     appendLine()
 
@@ -859,8 +864,8 @@ private fun formatOsDetails(os: OsDetails): String = buildString {
 private fun formatScreenDetails(screen: ScreenDetails): String = buildString {
     appendLine("Resolution: ${screen.widthPixels} x ${screen.heightPixels}")
     appendLine("Density DPI: ${screen.densityDpi}")
-    appendLine("Density: ${String.format("%.2f", screen.density)}")
-    appendLine("Scaled Density: ${String.format("%.2f", screen.scaledDensity)}")
+    appendLine("Density: ${String.format(Locale.US, "%.2f", screen.density)}")
+    appendLine("Scaled Density: ${String.format(Locale.US, "%.2f", screen.scaledDensity)}")
     appendLine("Size Category: ${screen.sizeCategory}")
     appendLine("Orientation: ${screen.orientation}")
     appendLine("Refresh Rate: ${screen.refreshRate.toInt()} Hz")
@@ -870,7 +875,7 @@ private fun formatMemoryDetails(memory: MemoryDetails): String = buildString {
     appendLine("Total RAM: ${formatBytes(memory.totalRam)}")
     appendLine("Available RAM: ${formatBytes(memory.availableRam)}")
     appendLine("Used RAM: ${formatBytes(memory.usedRam)}")
-    appendLine("Usage: ${String.format("%.1f", memory.usagePercentage)}%")
+    appendLine("Usage: ${String.format(Locale.US, "%.1f", memory.usagePercentage)}%")
     appendLine("Low Memory Threshold: ${formatBytes(memory.lowMemoryThreshold)}")
     appendLine("Low Memory: ${if (memory.isLowMemory) "Yes" else "No"}")
 }

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.security.KeyStore
+import java.util.Locale
 
 /**
  * Engine that scans and exposes secure storage entries from the app.
@@ -456,8 +457,8 @@ class SecureStorageEngine(
      */
     private fun formatFileSize(bytes: Long): String {
         return when {
-            bytes >= 1_048_576 -> String.format("%.1f MB", bytes / 1_048_576.0)
-            bytes >= 1_024 -> String.format("%.1f KB", bytes / 1_024.0)
+            bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
+            bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
             else -> "$bytes B"
         }
     }

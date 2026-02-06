@@ -4,7 +4,7 @@
   -->
 <resources>
     <!-- PreferencesListScreen -->
-    <string name="preferences_list_title">SharedPreferences</string>
+    <string name="preferences_list_title">Shared Preferences</string>
     <string name="preferences_back">Back</string>
     <string name="preferences_search_placeholder">Search preferences files…</string>
     <string name="preferences_search">Search</string>
@@ -13,7 +13,7 @@
     <string name="preferences_empty_no_matches">No matches found</string>
     <string name="preferences_empty_no_files">No preferences files</string>
     <string name="preferences_empty_try_different_search">Try a different search term</string>
-    <string name="preferences_empty_files_will_appear">SharedPreferences files will appear here</string>
+    <string name="preferences_empty_files_will_appear">Shared Preferences files will appear here</string>
 
     <!-- PreferenceDetailScreen -->
     <string name="preferences_filter">Filter</string>

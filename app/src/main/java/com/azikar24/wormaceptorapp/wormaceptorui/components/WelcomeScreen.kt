@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -118,32 +117,15 @@ fun WelcomeScreen(
 @Composable
 private fun HeroSection() {
     Column(
+        modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // Logo with subtle glow effect container
-        Box(
-            contentAlignment = Alignment.Center,
-        ) {
-            // Subtle glow background
-            Box(
-                modifier = Modifier
-                    .size(88.dp)
-                    .clip(CircleShape)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
-                    ),
-            )
-            // Logo
-            Image(
-                imageVector = WormaceptorLogo(),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier.size(56.dp),
-            )
-        }
+        Image(
+            imageVector = WormaceptorLogo(),
+            contentDescription = stringResource(id = R.string.app_name),
+            modifier = Modifier.size(56.dp),
+        )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-        // App Name with better typography
         Text(
             text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.headlineMedium.copy(
@@ -155,7 +137,6 @@ private fun HeroSection() {
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
-        // Tagline
         Text(
             text = stringResource(id = R.string.app_subtitle),
             style = MaterialTheme.typography.bodyMedium,
@@ -281,9 +262,8 @@ private fun ActionButtonsSection(onLaunchClick: () -> Unit, onTestToolsClick: ()
         )
 
         SecondaryActionButton(
-            text = "Test Tools",
-            onClick = onTestToolsClick,
             modifier = Modifier.fillMaxWidth(),
+            onClick = onTestToolsClick,
         )
     }
 }
@@ -324,7 +304,7 @@ private fun PrimaryActionButton(text: String, onClick: () -> Unit, modifier: Mod
 }
 
 @Composable
-private fun SecondaryActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun SecondaryActionButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -345,7 +325,7 @@ private fun SecondaryActionButton(text: String, onClick: () -> Unit, modifier: M
         ),
     ) {
         Text(
-            text = text,
+            text = "Test Tools",
             style = MaterialTheme.typography.labelLarge.copy(
                 fontWeight = FontWeight.Medium,
             ),

@@ -49,7 +49,7 @@ object ToolCategories {
 
     /** Tools for inspecting app data like SharedPreferences, databases, and files. */
     val inspectionTools = listOf(
-        ToolItem(Feature.SHARED_PREFERENCES, "SharedPreferences", Icons.Default.Settings, "preferences"),
+        ToolItem(Feature.SHARED_PREFERENCES, "Shared Preferences", Icons.Default.Settings, "preferences"),
         ToolItem(Feature.DATABASE_BROWSER, "Database Browser", Icons.Default.Storage, "database"),
         ToolItem(Feature.FILE_BROWSER, "File Browser", Icons.Default.Folder, "filebrowser"),
         ToolItem(
@@ -108,11 +108,6 @@ object ToolCategories {
      * Get a tool item by its feature.
      */
     fun getToolByFeature(feature: Feature): ToolItem? = allTools.find { it.feature == feature }
-
-    /**
-     * Get a tool item by its route.
-     */
-    fun getToolByRoute(route: String): ToolItem? = allTools.find { it.route == route }
 
     /**
      * Check if any tools are enabled based on the provided enabled features set.

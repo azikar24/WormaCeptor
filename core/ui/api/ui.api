@@ -22,6 +22,16 @@ public final class com/azikar24/wormaceptor/core/ui/components/ContainerStyle : 
 	public static fun values ()[Lcom/azikar24/wormaceptor/core/ui/components/ContainerStyle;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/DividerStyle : java/lang/Enum {
+	public static final field Section Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+	public static final field Standard Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+	public static final field Subtle Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+	public static final field Thick Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+	public static fun values ()[Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/ErrorType : java/lang/Enum {
 	public static final field GENERIC Lcom/azikar24/wormaceptor/core/ui/components/ErrorType;
 	public static final field NETWORK Lcom/azikar24/wormaceptor/core/ui/components/ErrorType;
@@ -37,6 +47,10 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorContai
 	public static final fun WormaCeptorContainer-Pz9yvRs (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/ContainerStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorDividerKt {
+	public static final fun WormaCeptorDivider (Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorEmptyStateKt {
 	public static final fun WormaCeptorEmptyState (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
@@ -44,7 +58,6 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorEmptyS
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorLoadingStatesKt {
 	public static final fun CompactLoadingSpinner-Zi-j2fk (Landroidx/compose/ui/Modifier;FFJLandroidx/compose/runtime/Composer;II)V
 	public static final fun ErrorState-V-9fs2A (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/ErrorType;ZJLandroidx/compose/runtime/Composer;II)V
-	public static final fun FullScreenLoading (Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun InlineErrorRetry-ww6aTOc (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 	public static final fun LoadingMoreIndicator (Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ScrollToTopExtendedFab (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Landroidx/compose/runtime/Composer;II)V

@@ -307,7 +307,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/FilterBottomSheetC
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
-	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/SharedFlow;Landroidx/compose/runtime/Composer;IIIIII)V
+	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/SharedFlow;Landroidx/compose/runtime/Composer;IIIIII)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
@@ -330,7 +330,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolCategories {
 	public final fun getPerformanceTools ()Ljava/util/List;
 	public final fun getSimulationTools ()Ljava/util/List;
 	public final fun getToolByFeature (Lcom/azikar24/wormaceptor/api/Feature;)Lcom/azikar24/wormaceptor/feature/viewer/ui/ToolItem;
-	public final fun getToolByRoute (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/ToolItem;
 	public final fun hasAnyEnabledTools (Ljava/util/Set;)Z
 }
 
@@ -554,7 +553,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ImageMe
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ImagePreviewCardKt {
-	public static final fun ImagePreviewCard ([BLjava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ImagePreviewCard ([BLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun detectImageFormat ([B)Ljava/lang/String;
 	public static final fun extractImageMetadata ([BLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun isImageContentType (Ljava/lang/String;)Z
@@ -567,7 +566,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Loading
 	public static final fun CompactLoadingSpinner-Zi-j2fk (Landroidx/compose/ui/Modifier;FFJLandroidx/compose/runtime/Composer;II)V
 	public static final fun EnhancedEmptyState (Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ErrorState (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ErrorType;ZLandroidx/compose/runtime/Composer;II)V
-	public static final fun FullScreenLoading (Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun InlineErrorRetry (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LoadMoreBodyButton (JZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LoadingMoreIndicator (Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.core.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
@@ -90,7 +86,7 @@ fun WormaCeptorSearchBar(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = backgroundColor,
             unfocusedContainerColor = backgroundColor,
-            disabledContainerColor = backgroundColor.copy(alpha = 0.5f),
+            disabledContainerColor = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,

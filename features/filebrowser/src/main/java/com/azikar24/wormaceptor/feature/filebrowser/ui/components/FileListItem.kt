@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.filebrowser.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi

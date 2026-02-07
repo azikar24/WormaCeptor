@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.database.ui
 
 import androidx.compose.foundation.clickable
@@ -23,7 +19,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -40,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
@@ -177,7 +173,7 @@ fun DatabaseListScreen(
                             database = database,
                             onClick = { onDatabaseClick(database) },
                         )
-                        HorizontalDivider()
+                        WormaCeptorDivider()
                     }
                 }
             }

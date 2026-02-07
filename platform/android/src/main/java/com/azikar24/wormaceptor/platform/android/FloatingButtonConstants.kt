@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2024.
- */
-
 package com.azikar24.wormaceptor.platform.android
 
 import androidx.compose.ui.graphics.Color

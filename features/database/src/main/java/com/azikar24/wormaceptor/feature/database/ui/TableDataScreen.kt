@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.database.ui
 
 import androidx.compose.foundation.background
@@ -24,7 +20,6 @@ import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +34,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
@@ -222,7 +219,7 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
                     }
                 }
             }
-            HorizontalDivider()
+            WormaCeptorDivider()
         }
     }
 }
@@ -257,7 +254,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                     }
                 }
             }
-            HorizontalDivider(thickness = WormaCeptorDesignSystem.Spacing.xxs)
+            WormaCeptorDivider(style = DividerStyle.Thick)
         }
 
         // Data rows
@@ -290,7 +287,7 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                     }
                 }
             }
-            HorizontalDivider()
+            WormaCeptorDivider()
         }
 
         // Empty state

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.webviewmonitor
 
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -52,7 +48,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -85,6 +80,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
@@ -1084,9 +1080,8 @@ private fun DetailRow(label: String, value: String) {
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.onSurface,
         )
-        HorizontalDivider(
+        WormaCeptorDivider(
             modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
-            color = MaterialTheme.colorScheme.outlineVariant,
         )
     }
 }

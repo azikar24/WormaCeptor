@@ -269,7 +269,7 @@ private fun SuccessContent(
                         Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black.copy(alpha = 0.4f),
+                                Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
                             ),
                         ),
                     ),
@@ -311,7 +311,7 @@ private fun SuccessContent(
             Surface(
                 modifier = Modifier.align(Alignment.Center),
                 shape = CircleShape,
-                color = Color.Black.copy(alpha = 0.6f),
+                color = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
             ) {
                 Icon(
                     imageVector = Icons.Default.Fullscreen,
@@ -519,7 +519,7 @@ private fun PasswordProtectedContent(
         // Lock icon with subtle background
         Surface(
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
             modifier = Modifier.size(72.dp),
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {

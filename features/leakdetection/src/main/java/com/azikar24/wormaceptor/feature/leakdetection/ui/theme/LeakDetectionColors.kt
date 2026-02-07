@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.leakdetection.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -83,9 +79,9 @@ fun leakDetectionColors(darkTheme: Boolean = isSystemInDarkTheme()): LeakDetecti
         detailBackground = surfaceVariant,
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = 0.87f),
+        valuePrimary = onSurface.copy(alpha = alpha.prominent),
         actionButton = primary,
         actionButtonText = MaterialTheme.colorScheme.onPrimary,
-        divider = outline.copy(alpha = 0.2f),
+        divider = outline.copy(alpha = alpha.medium),
     )
 }

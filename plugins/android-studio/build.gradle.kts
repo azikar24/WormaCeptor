@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 // Version constants - keep in sync with gradle/libs.versions.toml
 object Versions {
     const val KOTLIN = "2.0.21" // Must match libs.versions.toml kotlin version

@@ -111,7 +111,7 @@ fun SelectableTransactionItem(
                     color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
                     },
                     shape = WormaCeptorDesignSystem.Shapes.card,
                 )
@@ -297,7 +297,7 @@ private fun MethodBadge(method: String) {
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(

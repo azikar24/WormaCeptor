@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.location.ui
 
 import android.content.Intent
@@ -302,7 +298,9 @@ fun LocationScreen(
                         singleLine = true,
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
                         colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.bold,
+                            ),
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                         ),
                     )
@@ -933,7 +931,9 @@ private fun EmptyPresetsState(hasSearchQuery: Boolean) {
                     imageVector = Icons.Default.Place,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }

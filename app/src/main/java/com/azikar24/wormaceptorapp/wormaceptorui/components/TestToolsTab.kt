@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptorapp.wormaceptorui.components
 
 import androidx.compose.animation.AnimatedContent
@@ -297,7 +293,7 @@ private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 )
             } else {
                 Spacer(modifier = Modifier.size(20.dp))

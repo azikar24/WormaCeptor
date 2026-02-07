@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 4/3/2023.
- */
-
 package com.azikar24.wormaceptorapp
 
 import android.content.Context

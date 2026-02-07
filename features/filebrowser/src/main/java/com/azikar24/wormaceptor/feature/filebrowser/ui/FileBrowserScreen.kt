@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
 import androidx.activity.compose.BackHandler
@@ -24,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileEntry
@@ -179,7 +175,7 @@ fun FileBrowserScreen(
                     onBreadcrumbClick = onNavigateToBreadcrumb,
                 )
 
-                HorizontalDivider()
+                WormaCeptorDivider()
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -239,7 +235,7 @@ fun FileBrowserScreen(
                             onClick = { onFileClick(file) },
                             onLongClick = { onFileLongClick(file) },
                         )
-                        HorizontalDivider()
+                        WormaCeptorDivider()
                     }
                 }
             }

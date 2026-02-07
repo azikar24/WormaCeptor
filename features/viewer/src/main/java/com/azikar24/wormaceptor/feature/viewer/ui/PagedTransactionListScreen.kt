@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.animation.core.*
@@ -306,7 +302,7 @@ private fun MethodBadge(method: String) {
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(
@@ -345,7 +341,7 @@ private fun EndOfListIndicator(modifier: Modifier = Modifier) {
         Text(
             text = "You've reached the end",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         )
     }
 }

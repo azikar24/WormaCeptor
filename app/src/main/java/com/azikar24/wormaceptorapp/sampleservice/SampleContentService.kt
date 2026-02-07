@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2024.
- */
-
 package com.azikar24.wormaceptorapp.sampleservice
 
 import com.azikar24.wormaceptor.api.WormaCeptorInterceptor

@@ -1,5 +1,4 @@
 /*
- * Copyright AziKar24 2025.
  * Gesture Utilities for WormaCeptor
  *
  * Provides helper functions and extensions for gesture handling:

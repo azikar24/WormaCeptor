@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 25/2/2023.
- */
-
 package com.azikar24.wormaceptorapp.wormaceptorui.theme
 
 import android.app.Activity
@@ -17,6 +13,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 private val DarkColorScheme = darkColorScheme(
     primary = DarkAccent,
@@ -41,7 +38,7 @@ private val DarkColorScheme = darkColorScheme(
     outlineVariant = DarkTextTertiary,
     error = DarkDestructive,
     onError = DarkBackground,
-    errorContainer = DarkDestructive.copy(alpha = 0.12f),
+    errorContainer = DarkDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
     onErrorContainer = DarkDestructive,
 )
 
@@ -68,7 +65,7 @@ private val LightColorScheme = lightColorScheme(
     outlineVariant = LightTextTertiary,
     error = LightDestructive,
     onError = LightBackground,
-    errorContainer = LightDestructive.copy(alpha = 0.12f),
+    errorContainer = LightDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
     onErrorContainer = LightDestructive,
 )
 

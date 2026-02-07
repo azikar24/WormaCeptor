@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
@@ -41,30 +37,50 @@ object WormaCeptorColors {
     // ============================================================
 
     object Surfaces {
-        /** Success surface tint */
-        val SuccessSubtle = Color(0xFF10B981).copy(alpha = 0.08f)
-        val SuccessLight = Color(0xFF10B981).copy(alpha = 0.12f)
-        val SuccessMedium = Color(0xFF10B981).copy(alpha = 0.20f)
+        /** Success surface tint at subtle alpha. */
+        val SuccessSubtle = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
 
-        /** Warning surface tint */
-        val WarningSubtle = Color(0xFFF59E0B).copy(alpha = 0.08f)
-        val WarningLight = Color(0xFFF59E0B).copy(alpha = 0.12f)
-        val WarningMedium = Color(0xFFF59E0B).copy(alpha = 0.20f)
+        /** Success surface tint at light alpha. */
+        val SuccessLight = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
 
-        /** Error surface tint */
-        val ErrorSubtle = Color(0xFFEF4444).copy(alpha = 0.08f)
-        val ErrorLight = Color(0xFFEF4444).copy(alpha = 0.12f)
-        val ErrorMedium = Color(0xFFEF4444).copy(alpha = 0.20f)
+        /** Success surface tint at medium alpha. */
+        val SuccessMedium = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
 
-        /** Info surface tint */
-        val InfoSubtle = Color(0xFF3B82F6).copy(alpha = 0.08f)
-        val InfoLight = Color(0xFF3B82F6).copy(alpha = 0.12f)
-        val InfoMedium = Color(0xFF3B82F6).copy(alpha = 0.20f)
+        /** Warning surface tint at subtle alpha. */
+        val WarningSubtle = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
 
-        /** Neutral surface tint */
-        val NeutralSubtle = Color(0xFF6B7280).copy(alpha = 0.08f)
-        val NeutralLight = Color(0xFF6B7280).copy(alpha = 0.12f)
-        val NeutralMedium = Color(0xFF6B7280).copy(alpha = 0.20f)
+        /** Warning surface tint at light alpha. */
+        val WarningLight = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+
+        /** Warning surface tint at medium alpha. */
+        val WarningMedium = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+
+        /** Error surface tint at subtle alpha. */
+        val ErrorSubtle = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+
+        /** Error surface tint at light alpha. */
+        val ErrorLight = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+
+        /** Error surface tint at medium alpha. */
+        val ErrorMedium = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+
+        /** Info surface tint at subtle alpha. */
+        val InfoSubtle = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+
+        /** Info surface tint at light alpha. */
+        val InfoLight = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+
+        /** Info surface tint at medium alpha. */
+        val InfoMedium = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+
+        /** Neutral surface tint at subtle alpha. */
+        val NeutralSubtle = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+
+        /** Neutral surface tint at light alpha. */
+        val NeutralLight = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+
+        /** Neutral surface tint at medium alpha. */
+        val NeutralMedium = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
     }
 
     // ============================================================
@@ -228,10 +244,10 @@ object WormaCeptorColors {
         val Highlight = Color(0xFFFBBF24) // Yellow-400
 
         /** Selection color */
-        val Selection = Color(0xFF3B82F6).copy(alpha = 0.20f)
+        val Selection = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
 
         /** Focus ring color */
-        val FocusRing = Color(0xFF3B82F6).copy(alpha = 0.40f)
+        val FocusRing = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
     }
 
     // ============================================================

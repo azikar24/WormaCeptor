@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.fps.ui
 
 import androidx.compose.animation.AnimatedVisibility

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.logs.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -511,7 +507,9 @@ private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, mod
                     imageVector = Icons.Default.VerticalAlignBottom,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }

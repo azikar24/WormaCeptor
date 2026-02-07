@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.ratelimit.vm
 
 import androidx.lifecycle.ViewModel

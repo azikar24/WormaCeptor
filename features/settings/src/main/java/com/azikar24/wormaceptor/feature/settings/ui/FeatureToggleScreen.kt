@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.settings.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -27,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.settings.R
 import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
@@ -93,7 +89,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
             }
 
             item {
-                HorizontalDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
+                WormaCeptorDivider(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm))
             }
 
             // Tools Section

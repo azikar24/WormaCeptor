@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.deviceinfo
 
 import android.content.ClipData
@@ -51,7 +47,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -84,6 +79,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.AppDetails
@@ -443,9 +440,7 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
         // External Storage (if available)
         if (storage.hasExternalStorage && storage.externalTotal != null) {
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-            HorizontalDivider(
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-            )
+            WormaCeptorDivider(style = DividerStyle.Subtle)
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             val extTotal = storage.externalTotal ?: 0L
@@ -561,7 +556,7 @@ private fun InfoCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {

@@ -1,5 +1,4 @@
 /*
- * Copyright AziKar24 2025.
  * Gesture Navigation UI Components for WormaCeptor
  *
  * Provides visual feedback and controls for:
@@ -95,7 +94,7 @@ fun TransactionPositionIndicator(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
     ) {
         Row(
@@ -113,7 +112,9 @@ fun TransactionPositionIndicator(
                 modifier = Modifier.size(48.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    ),
                 ),
             ) {
                 Icon(
@@ -153,7 +154,9 @@ fun TransactionPositionIndicator(
                 modifier = Modifier.size(48.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    ),
                 ),
             ) {
                 Icon(
@@ -299,7 +302,7 @@ fun ZoomControls(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
     ) {
         Column(
@@ -314,7 +317,9 @@ fun ZoomControls(
                 modifier = Modifier.size(36.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    ),
                 ),
             ) {
                 Icon(
@@ -338,7 +343,9 @@ fun ZoomControls(
                 modifier = Modifier.size(36.dp),
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
-                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                    disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    ),
                 ),
             ) {
                 Icon(

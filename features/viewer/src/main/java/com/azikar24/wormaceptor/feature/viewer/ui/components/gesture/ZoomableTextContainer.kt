@@ -1,5 +1,4 @@
 /*
- * Copyright AziKar24 2025.
  * Zoomable Text Container for WormaCeptor
  *
  * Provides pinch-to-zoom and pan functionality for large response bodies.

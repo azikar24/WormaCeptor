@@ -449,7 +449,7 @@ private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(
-                    color = Color.White.copy(alpha = 0.5f),
+                    color = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                     modifier = Modifier.size(32.dp),
                 )
             }
@@ -852,7 +852,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White.copy(alpha = 0.2f),
+                    containerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                 ),
             ) {
                 Text(stringResource(R.string.viewer_pdf_close), color = Color.White)

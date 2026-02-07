@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -206,8 +207,8 @@ fun SwipeBackContainer(
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
                     elevation = (16.dp * progress),
-                    ambientColor = Color.Black.copy(alpha = 0.5f),
-                    spotColor = Color.Black.copy(alpha = 0.5f),
+                    ambientColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    spotColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 )
                 .background(MaterialTheme.colorScheme.surface),
             content = content,

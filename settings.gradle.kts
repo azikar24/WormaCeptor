@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 21/12/2025.
- */
-
 pluginManagement {
     repositories {
         gradlePluginPortal()

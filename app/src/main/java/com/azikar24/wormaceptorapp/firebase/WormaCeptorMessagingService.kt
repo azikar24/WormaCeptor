@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptorapp.firebase
 
 import android.app.NotificationChannel

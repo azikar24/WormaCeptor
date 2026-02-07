@@ -110,8 +110,10 @@ fun QuickFilterBar(
                     selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                    selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                    borderColor = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    selectedBorderColor = MaterialTheme.colorScheme.primary.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.bold,
+                    ),
                     enabled = true,
                     selected = isSelected,
                 ),

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.viewer.ui.components.body
 
 import androidx.compose.foundation.background
@@ -12,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +18,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import java.net.URLDecoder
 
@@ -60,7 +57,11 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                            .background(
+                                MaterialTheme.colorScheme.surfaceVariant.copy(
+                                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                                ),
+                            )
                             .padding(
                                 horizontal = WormaCeptorDesignSystem.Spacing.md,
                                 vertical = WormaCeptorDesignSystem.Spacing.sm,
@@ -85,7 +86,7 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                         )
                     }
 
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+                    WormaCeptorDivider(style = DividerStyle.Subtle)
 
                     parsedData.forEachIndexed { index, (key, value) ->
                         FormDataRow(
@@ -95,9 +96,9 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                         )
 
                         if (index < parsedData.lastIndex) {
-                            HorizontalDivider(
-                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                            WormaCeptorDivider(
                                 modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
+                                style = DividerStyle.Subtle,
                             )
                         }
                     }
@@ -116,7 +117,7 @@ private fun FormDataRow(key: String, value: String, isEven: Boolean) {
                 if (isEven) {
                     MaterialTheme.colorScheme.surface
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
                 },
             )
             .padding(

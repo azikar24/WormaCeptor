@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.core.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
@@ -83,9 +79,9 @@ import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 @Composable
 fun rememberShimmerBrush(): Brush {
     val shimmerColors = listOf(
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
     )
 
     val transition = rememberInfiniteTransition(label = "shimmer")

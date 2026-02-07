@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptorapp.screens
 
 import android.annotation.SuppressLint
@@ -292,7 +288,7 @@ private fun RequestStatsCard(stats: WebViewRequestStats, modifier: Modifier = Mo
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         ),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
     ) {

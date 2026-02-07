@@ -133,8 +133,8 @@ class ViewerActivity : ComponentActivity() {
             val allTransactions by viewModel.allTransactions.collectAsState()
             val crashes by viewModel.crashes.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
-            val filterMethod by viewModel.filterMethod.collectAsState()
-            val filterStatusRange by viewModel.filterStatusRange.collectAsState()
+            val filterMethods by viewModel.filterMethods.collectAsState()
+            val filterStatusRanges by viewModel.filterStatusRanges.collectAsState()
             val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
             val isRefreshingTransactions by viewModel.isRefreshingTransactions.collectAsState()
             val isRefreshingCrashes by viewModel.isRefreshingCrashes.collectAsState()
@@ -198,10 +198,10 @@ class ViewerActivity : ComponentActivity() {
                                 onSearchChanged = viewModel::onSearchQueryChanged,
                                 onTransactionClick = { navController.navigate("detail/${it.id}") },
                                 onCrashClick = { crash -> navController.navigate("crash/${crash.timestamp}") },
-                                filterMethod = filterMethod,
-                                filterStatusRange = filterStatusRange,
-                                onMethodFilterChanged = viewModel::setMethodFilter,
-                                onStatusFilterChanged = viewModel::setStatusFilter,
+                                filterMethods = filterMethods,
+                                filterStatusRanges = filterStatusRanges,
+                                onMethodFiltersChanged = viewModel::setMethodFilters,
+                                onStatusFiltersChanged = viewModel::setStatusFilters,
                                 onClearFilters = viewModel::clearFilters,
                                 onClearTransactions = { scope.launch { viewModel.clearAllTransactions() } },
                                 onClearCrashes = { scope.launch { viewModel.clearAllCrashes() } },

@@ -96,10 +96,10 @@ fun HomeScreen(
     onSearchChanged: (String) -> Unit,
     onTransactionClick: (TransactionSummary) -> Unit,
     onCrashClick: (Crash) -> Unit,
-    filterMethod: String?,
-    filterStatusRange: IntRange?,
-    onMethodFilterChanged: (String?) -> Unit,
-    onStatusFilterChanged: (IntRange?) -> Unit,
+    filterMethods: Set<String>,
+    filterStatusRanges: Set<IntRange>,
+    onMethodFiltersChanged: (Set<String>) -> Unit,
+    onStatusFiltersChanged: (Set<IntRange>) -> Unit,
     onClearFilters: () -> Unit,
     onClearTransactions: suspend () -> Unit,
     onClearCrashes: suspend () -> Unit,
@@ -232,12 +232,8 @@ fun HomeScreen(
                         },
                         actions = {
                             if (pagerState.currentPage == 0) {
-                                val isFiltering = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
-                                val filterCount = listOfNotNull(
-                                    filterMethod,
-                                    filterStatusRange,
-                                    searchQuery.takeIf { it.isNotBlank() },
-                                ).size
+                                val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
+                                val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
 
                                 BadgedBox(
                                     badge = {
@@ -363,7 +359,7 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
             if (pagerState.currentPage == 0 && !isSelectionMode) {
-                val hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+                val hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
                 AnimatedVisibility(
                     visible = hasActiveFilters,
                     enter = expandVertically() + fadeIn(),
@@ -428,9 +424,9 @@ fun HomeScreen(
                                     )
                                 }
 
-                                filterMethod?.let { method ->
+                                filterMethods.forEach { method ->
                                     AssistChip(
-                                        onClick = { onMethodFilterChanged(null) },
+                                        onClick = { onMethodFiltersChanged(filterMethods - method) },
                                         label = {
                                             Text(
                                                 text = method,
@@ -456,16 +452,20 @@ fun HomeScreen(
                                     )
                                 }
 
-                                filterStatusRange?.let { range ->
-                                    val statusLabel = when {
-                                        range == (200..299) -> "2xx"
-                                        range == (300..399) -> "3xx"
-                                        range == (400..499) -> "4xx"
-                                        range == (500..599) -> "5xx"
+                                filterStatusRanges.forEach { range ->
+                                    val statusLabel = when (range) {
+                                        200..299 -> "2xx"
+                                        300..399 -> "3xx"
+                                        400..499 -> "4xx"
+                                        500..599 -> "5xx"
                                         else -> context.getString(R.string.viewer_home_status_label)
                                     }
                                     AssistChip(
-                                        onClick = { onStatusFilterChanged(null) },
+                                        onClick = {
+                                            onStatusFiltersChanged(
+                                                filterStatusRanges.filter { it != range }.toSet(),
+                                            )
+                                        },
                                         label = {
                                             Text(
                                                 text = statusLabel,
@@ -522,7 +522,7 @@ fun HomeScreen(
                     0 -> SelectableTransactionListScreen(
                         transactions = transactions,
                         onItemClick = onTransactionClick,
-                        hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank(),
+                        hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank(),
                         onClearFilters = {
                             onClearFilters()
                             onSearchChanged("")
@@ -592,14 +592,13 @@ fun HomeScreen(
                 shape = WormaCeptorDesignSystem.Shapes.sheet,
             ) {
                 FilterBottomSheetContent(
-                    searchQuery = searchQuery,
-                    onSearchChanged = onSearchChanged,
-                    filterMethod = filterMethod,
-                    filterStatusRange = filterStatusRange,
-                    onMethodFilterChanged = onMethodFilterChanged,
-                    onStatusFilterChanged = onStatusFilterChanged,
-                    onClearFilters = onClearFilters,
-                    onApply = {
+                    initialSearchQuery = searchQuery,
+                    initialFilterMethods = filterMethods,
+                    initialFilterStatusRanges = filterStatusRanges,
+                    onApply = { query, methods, statusRanges ->
+                        onSearchChanged(query)
+                        onMethodFiltersChanged(methods)
+                        onStatusFiltersChanged(statusRanges)
                         focusManager.clearFocus()
                         showFilterSheet = false
                     },

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
 import android.content.ClipData
@@ -21,7 +17,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FileInfo
 import com.azikar24.wormaceptor.feature.filebrowser.R
@@ -143,7 +139,7 @@ fun FileInfoSheet(
             InfoRow(stringResource(R.string.filebrowser_label_permissions), permissions)
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-            HorizontalDivider()
+            WormaCeptorDivider()
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
 
             // Actions

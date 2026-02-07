@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 19/2/2023.
- */
-
 import java.io.File
 import java.util.Properties
 

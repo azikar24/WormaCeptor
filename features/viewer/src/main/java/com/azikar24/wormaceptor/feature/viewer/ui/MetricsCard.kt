@@ -28,7 +28,6 @@ import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,6 +50,8 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
@@ -197,12 +198,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
-                        ),
-                    )
+                    WormaCeptorDivider(style = DividerStyle.Subtle)
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
                     // Response Time Distribution

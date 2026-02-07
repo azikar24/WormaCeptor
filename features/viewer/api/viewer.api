@@ -303,7 +303,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashUtils$StackFr
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/FilterBottomSheetContentKt {
-	public static final fun FilterBottomSheetContent (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/ranges/IntRange;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;IILkotlinx/collections/immutable/ImmutableMap;Lkotlinx/collections/immutable/ImmutableMap;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
+	public static final fun FilterBottomSheetContent (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function3;IILkotlinx/collections/immutable/ImmutableMap;Lkotlinx/collections/immutable/ImmutableMap;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
@@ -1283,8 +1283,8 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel : 
 	public final fun deleteTransaction (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getAllTransactions ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getCrashes ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getFilterMethod ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getFilterStatusRange ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFilterMethods ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getFilterStatusRanges ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getHasActiveQuickFilters ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getPagedTransactions ()Lkotlinx/coroutines/flow/Flow;
 	public final fun getQuickFilters ()Lkotlinx/coroutines/flow/StateFlow;
@@ -1303,8 +1303,8 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel : 
 	public final fun refreshCrashes ()V
 	public final fun refreshTransactions ()V
 	public final fun selectAll ()V
-	public final fun setMethodFilter (Ljava/lang/String;)V
-	public final fun setStatusFilter (Lkotlin/ranges/IntRange;)V
+	public final fun setMethodFilters (Ljava/util/Set;)V
+	public final fun setStatusFilters (Ljava/util/Set;)V
 	public final fun showMessage (Ljava/lang/String;)V
 	public final fun toggleQuickFilter (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickFilter;)V
 	public final fun toggleSelection (Ljava/util/UUID;)V

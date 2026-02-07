@@ -39,7 +39,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -72,6 +71,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.contracts.ContentType
@@ -457,7 +458,7 @@ private fun TransactionDetailContent(
                                             copyToClipboard(context, "cURL", generateCurlCommand(transaction))
                                         },
                                     )
-                                    HorizontalDivider()
+                                    WormaCeptorDivider()
                                     DropdownMenuItem(
                                         text = {
                                             Text(
@@ -504,9 +505,7 @@ private fun TransactionDetailContent(
                         )
                     }
                 }
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-                )
+                WormaCeptorDivider(style = DividerStyle.Section)
             }
         },
     ) { padding ->

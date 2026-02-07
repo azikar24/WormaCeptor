@@ -1,5 +1,4 @@
 /*
- * Copyright AziKar24 2025.
  * Gesture-specific colors and theme extensions for WormaCeptor
  *
  * Provides consistent colors for gesture-related UI elements:
@@ -72,7 +71,7 @@ val LightGestureColors = GestureColors(
     swipeEdgeGradientStart = md_theme_light_primary.copy(alpha = 0.10f),
     swipeEdgeGradientEnd = Color.Transparent,
     swipeIndicatorActive = md_theme_light_primary,
-    swipeIndicatorInactive = md_theme_light_primary.copy(alpha = 0.20f),
+    swipeIndicatorInactive = md_theme_light_primary.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
 
     // Zoom controls - using surface colors
     zoomControlBackground = md_theme_light_surface,
@@ -86,7 +85,7 @@ val LightGestureColors = GestureColors(
     positionHighlight = md_theme_light_primary,
 
     // Swipe-back
-    swipeBackShadow = md_theme_light_scrim.copy(alpha = 0.20f),
+    swipeBackShadow = md_theme_light_scrim.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
     swipeBackIndicator = md_theme_light_surface,
     swipeBackThreshold = md_theme_light_primary,
 
@@ -123,7 +122,7 @@ val DarkGestureColors = GestureColors(
     positionHighlight = md_theme_dark_primary,
 
     // Swipe-back
-    swipeBackShadow = md_theme_dark_scrim.copy(alpha = 0.40f),
+    swipeBackShadow = md_theme_dark_scrim.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
     swipeBackIndicator = md_theme_dark_surfaceVariant,
     swipeBackThreshold = md_theme_dark_primary,
 

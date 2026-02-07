@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright AziKar24 2025.
-  -->
 <resources>
     <!-- FileBrowserScreen -->
     <string name="filebrowser_title">File Browser</string>

@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.viewer.ui.components.body
 
 import androidx.compose.animation.AnimatedVisibility
@@ -29,7 +25,6 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -49,6 +44,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import java.util.Locale
@@ -163,7 +160,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
             color = if (expanded) {
                 accentColor.copy(alpha = 0.3f)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
             },
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
@@ -251,9 +248,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                 exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                    )
+                    WormaCeptorDivider(style = DividerStyle.Subtle)
 
                     if (part.headers.isNotEmpty()) {
                         Column(
@@ -300,9 +295,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                             }
                         }
 
-                        HorizontalDivider(
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
-                        )
+                        WormaCeptorDivider(style = DividerStyle.Subtle)
                     }
 
                     Box(

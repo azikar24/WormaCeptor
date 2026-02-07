@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.infra.syntax.json
 
 import androidx.compose.ui.text.AnnotatedString

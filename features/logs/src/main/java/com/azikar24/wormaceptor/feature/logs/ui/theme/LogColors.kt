@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.logs.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -9,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 
 /**
@@ -96,11 +93,11 @@ val DarkLogLevelColors = LogLevelColors(
     assert = Color(0xFFF06292), // Pink 300
     // Subtle backgrounds (very dark tints)
     verboseBackground = Color(0xFF212121), // Gray 900
-    debugBackground = Color(0xFF0D47A1).copy(alpha = 0.2f), // Blue with alpha
-    infoBackground = Color(0xFF1B5E20).copy(alpha = 0.2f), // Green with alpha
-    warnBackground = Color(0xFFE65100).copy(alpha = 0.2f), // Orange with alpha
-    errorBackground = Color(0xFFB71C1C).copy(alpha = 0.2f), // Red with alpha
-    assertBackground = Color(0xFF880E4F).copy(alpha = 0.2f), // Pink with alpha
+    debugBackground = Color(0xFF0D47A1).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Blue with alpha
+    infoBackground = Color(0xFF1B5E20).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Green with alpha
+    warnBackground = Color(0xFFE65100).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Orange with alpha
+    errorBackground = Color(0xFFB71C1C).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Red with alpha
+    assertBackground = Color(0xFF880E4F).copy(alpha = WormaCeptorDesignSystem.Alpha.medium), // Pink with alpha
 )
 
 /**

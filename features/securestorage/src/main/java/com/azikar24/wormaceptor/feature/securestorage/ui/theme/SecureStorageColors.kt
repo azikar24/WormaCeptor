@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.securestorage.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -58,7 +54,7 @@ fun secureStorageColors(darkTheme: Boolean = isSystemInDarkTheme()): SecureStora
         chipBackgroundSelected = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.light),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = 0.87f),
-        valueSecondary = onSurfaceVariant.copy(alpha = 0.6f),
+        valuePrimary = onSurface.copy(alpha = alpha.prominent),
+        valueSecondary = onSurfaceVariant.copy(alpha = alpha.intense),
     )
 }

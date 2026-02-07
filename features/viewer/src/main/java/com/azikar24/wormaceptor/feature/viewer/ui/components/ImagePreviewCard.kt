@@ -33,7 +33,6 @@ import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -62,6 +61,8 @@ import coil.compose.AsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -421,12 +422,7 @@ fun ImagePreviewCard(
 
                 // Metadata Section
                 if (!isLoadingMetadata && metadata != null) {
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.medium,
-                        ),
-                        thickness = 1.dp,
-                    )
+                    WormaCeptorDivider(style = DividerStyle.Subtle)
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 

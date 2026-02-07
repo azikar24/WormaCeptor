@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.studio.service
 
 import com.azikar24.wormaceptor.studio.model.TransactionDetail

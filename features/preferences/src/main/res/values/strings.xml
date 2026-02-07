@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright AziKar24 2025.
-  -->
 <resources>
     <!-- PreferencesListScreen -->
     <string name="preferences_list_title">Shared Preferences</string>

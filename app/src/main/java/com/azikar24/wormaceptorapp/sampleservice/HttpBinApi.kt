@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 25/2/2023.
- */
-
 package com.azikar24.wormaceptorapp.sampleservice
 
 import retrofit2.Call

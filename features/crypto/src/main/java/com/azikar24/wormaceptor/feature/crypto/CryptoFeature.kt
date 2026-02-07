@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.crypto
 
 import android.content.ClipData
@@ -51,7 +47,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -86,6 +81,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
@@ -836,7 +832,9 @@ fun CryptoHistoryScreen(
                         Icons.Default.History,
                         null,
                         modifier = Modifier.size(48.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.bold,
+                        ),
                     )
                     Text(
                         stringResource(R.string.crypto_no_history),
@@ -871,7 +869,7 @@ fun CryptoHistoryScreen(
                         onRemove = { viewModel.removeFromHistory(result.id) },
                     )
                     if (index < history.lastIndex) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        WormaCeptorDivider()
                     }
                 }
             }

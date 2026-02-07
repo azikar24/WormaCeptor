@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2024.
- */
-
 package com.azikar24.wormaceptorapp.wormaceptorui.effects
 
 /**

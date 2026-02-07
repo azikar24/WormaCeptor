@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptorapp.wormaceptorui.components
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -140,7 +136,7 @@ private fun HeroSection() {
         Text(
             text = stringResource(id = R.string.app_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
             textAlign = TextAlign.Center,
         )
     }
@@ -193,7 +189,7 @@ private fun FeatureCard(feature: WelcomeFeature, onClick: (() -> Unit)?) {
                 },
             ),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         tonalElevation = 0.dp,
     ) {
         Row(
@@ -215,7 +211,7 @@ private fun FeatureIcon(feature: WelcomeFeature) {
         modifier = Modifier
             .size(44.dp)
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-            .background(feature.accentColor.copy(alpha = 0.12f)),
+            .background(feature.accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -243,7 +239,7 @@ private fun FeatureTextContent(feature: WelcomeFeature, modifier: Modifier = Mod
         Text(
             text = feature.description,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
         )
     }
 }
@@ -350,12 +346,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
         // Version badge
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
         ) {
             Text(
                 text = stringResource(id = R.string.app_version),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
                     vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -386,12 +382,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
                 imageVector = IcGithubBuilder.build(),
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
             )
             Text(
                 text = stringResource(id = R.string.view_on_github),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
             )
         }
     }

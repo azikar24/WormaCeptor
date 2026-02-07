@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptorapp.screens
 
 import android.security.keystore.KeyGenParameterSpec
@@ -345,7 +341,7 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                             if (encryptedPrefs.isNotEmpty()) {
                                 Surface(
                                     shape = CircleShape,
-                                    color = SecureGreen.copy(alpha = 0.2f),
+                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                                     modifier = Modifier.size(20.dp),
                                 ) {
                                     Box(
@@ -381,7 +377,7 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                             if (keyStoreEntries.isNotEmpty()) {
                                 Surface(
                                     shape = CircleShape,
-                                    color = SecureGreen.copy(alpha = 0.2f),
+                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                                     modifier = Modifier.size(20.dp),
                                 ) {
                                     Box(

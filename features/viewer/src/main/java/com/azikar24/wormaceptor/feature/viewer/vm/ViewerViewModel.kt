@@ -51,11 +51,11 @@ class ViewerViewModel(
         _snackbarMessage.tryEmit(message)
     }
 
-    private val _filterMethod = MutableStateFlow<String?>(null)
-    val filterMethod: StateFlow<String?> = _filterMethod
+    private val _filterMethods = MutableStateFlow<Set<String>>(emptySet())
+    val filterMethods: StateFlow<Set<String>> = _filterMethods
 
-    private val _filterStatusRange = MutableStateFlow<IntRange?>(null)
-    val filterStatusRange: StateFlow<IntRange?> = _filterStatusRange
+    private val _filterStatusRanges = MutableStateFlow<Set<IntRange>>(emptySet())
+    val filterStatusRanges: StateFlow<Set<IntRange>> = _filterStatusRanges
 
     private val _selectedTabIndex = MutableStateFlow(0)
     val selectedTabIndex: StateFlow<Int> = _selectedTabIndex
@@ -92,14 +92,14 @@ class ViewerViewModel(
     val pagedTransactions: Flow<PagingData<TransactionSummary>> =
         combine(
             _searchQuery.debounce(100),
-            _filterMethod,
-            _filterStatusRange,
-        ) { query, method, statusRange ->
-            Triple(query, method, statusRange)
-        }.flatMapLatest { (query, method, statusRange) ->
+            _filterMethods,
+            _filterStatusRanges,
+        ) { query, methods, statusRanges ->
+            Triple(query, methods, statusRanges)
+        }.flatMapLatest { (query, methods, statusRanges) ->
             val filters = TransactionFilters(
-                statusRange = statusRange,
-                method = method,
+                statusRange = statusRanges.singleOrNull(),
+                method = methods.singleOrNull(),
             )
             // Update total count when filters change
             viewModelScope.launch {
@@ -114,11 +114,11 @@ class ViewerViewModel(
 
     val transactions: StateFlow<ImmutableList<TransactionSummary>> = combine(
         _searchQuery.debounce(150),
-        _filterMethod,
-        _filterStatusRange,
+        _filterMethods,
+        _filterStatusRanges,
         _quickFilters,
         allTransactions,
-    ) { query, method, statusRange, quickFilters, list ->
+    ) { query, methods, statusRanges, quickFilters, list ->
         list.filter { transaction ->
             val matchesSearch = if (query.isBlank()) {
                 true
@@ -129,9 +129,11 @@ class ViewerViewModel(
                     transaction.status.name.contains(query, ignoreCase = true)
             }
 
-            val matchesMethod = method == null || transaction.method.equals(method, ignoreCase = true)
+            val matchesMethod = methods.isEmpty() ||
+                methods.any { transaction.method.equals(it, ignoreCase = true) }
 
-            val matchesStatus = statusRange == null || (transaction.code?.let { it in statusRange } ?: false)
+            val matchesStatus = statusRanges.isEmpty() ||
+                (transaction.code?.let { code -> statusRanges.any { code in it } } ?: false)
 
             matchesSearch && matchesMethod && matchesStatus
         }.applyQuickFilters(quickFilters).toImmutableList()
@@ -147,17 +149,17 @@ class ViewerViewModel(
         _searchQuery.value = query
     }
 
-    fun setMethodFilter(method: String?) {
-        _filterMethod.value = method
+    fun setMethodFilters(methods: Set<String>) {
+        _filterMethods.value = methods
     }
 
-    fun setStatusFilter(range: IntRange?) {
-        _filterStatusRange.value = range
+    fun setStatusFilters(ranges: Set<IntRange>) {
+        _filterStatusRanges.value = ranges
     }
 
     fun clearFilters() {
-        _filterMethod.value = null
-        _filterStatusRange.value = null
+        _filterMethods.value = emptySet()
+        _filterStatusRanges.value = emptySet()
     }
 
     suspend fun clearAllTransactions() {

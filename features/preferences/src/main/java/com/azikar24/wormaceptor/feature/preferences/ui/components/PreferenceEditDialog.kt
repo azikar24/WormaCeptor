@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.preferences.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -198,7 +194,7 @@ fun PreferenceEditDialog(
                                     text = {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Surface(
-                                                color = typeColor.copy(alpha = 0.2f),
+                                                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                                                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                                             ) {
                                                 Text(

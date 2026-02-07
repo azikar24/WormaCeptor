@@ -1,5 +1,4 @@
 /*
- * Copyright AziKar24 2025.
  * Transaction Pager for WormaCeptor
  *
  * Provides horizontal swipe navigation between transactions with:

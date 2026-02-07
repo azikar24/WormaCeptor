@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +31,6 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +41,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,25 +65,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import kotlinx.collections.immutable.ImmutableMap
 
-/**
- * Modern filter bottom sheet content with distribution bars
- * Inspired by MetricsCard visual style
- */
 @Composable
 fun FilterBottomSheetContent(
-    searchQuery: String,
-    onSearchChanged: (String) -> Unit,
-    filterMethod: String?,
-    filterStatusRange: IntRange?,
-    onMethodFilterChanged: (String?) -> Unit,
-    onStatusFilterChanged: (IntRange?) -> Unit,
-    onClearFilters: () -> Unit,
-    onApply: () -> Unit,
+    initialSearchQuery: String,
+    initialFilterMethods: Set<String>,
+    initialFilterStatusRanges: Set<IntRange>,
+    onApply: (searchQuery: String, methods: Set<String>, statusRanges: Set<IntRange>) -> Unit,
     filteredCount: Int,
     totalCount: Int,
     methodCounts: ImmutableMap<String, Int>,
@@ -91,27 +85,25 @@ fun FilterBottomSheetContent(
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
-    val filtersActive = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()
+
+    var localSearchQuery by remember { mutableStateOf(initialSearchQuery) }
+    var localMethods by remember { mutableStateOf(initialFilterMethods) }
+    var localStatusRanges by remember { mutableStateOf(initialFilterStatusRanges) }
+
+    val filtersActive = localMethods.isNotEmpty() || localStatusRanges.isNotEmpty() || localSearchQuery.isNotBlank()
 
     Column(
         modifier = modifier
             .fillMaxWidth(),
     ) {
-        // Compact Header
         FilterHeader(
             filteredCount = filteredCount,
             totalCount = totalCount,
             filtersActive = filtersActive,
         )
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium,
-            ),
-        )
+        WormaCeptorDivider(style = DividerStyle.Subtle)
 
-        // Scrollable Content
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -119,16 +111,14 @@ fun FilterBottomSheetContent(
                 .verticalScroll(rememberScrollState())
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            // Search Field
             MinimalSearchField(
-                value = searchQuery,
-                onValueChange = onSearchChanged,
+                value = localSearchQuery,
+                onValueChange = { localSearchQuery = it },
                 onSearch = { focusManager.clearFocus() },
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
-            // HTTP Methods Section
             FilterSectionHeader(
                 icon = Icons.Outlined.Code,
                 title = stringResource(R.string.viewer_filter_http_method),
@@ -138,13 +128,18 @@ fun FilterBottomSheetContent(
 
             MethodFilterBars(
                 methodCounts = methodCounts,
-                selectedMethod = filterMethod,
-                onMethodSelected = onMethodFilterChanged,
+                selectedMethods = localMethods,
+                onMethodToggled = { method ->
+                    localMethods = if (method in localMethods) {
+                        localMethods - method
+                    } else {
+                        localMethods + method
+                    }
+                },
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
-            // Status Codes Section
             FilterSectionHeader(
                 icon = Icons.Outlined.DataUsage,
                 title = stringResource(R.string.viewer_filter_status_code),
@@ -154,23 +149,29 @@ fun FilterBottomSheetContent(
 
             StatusFilterBars(
                 statusCounts = statusCounts,
-                selectedRange = filterStatusRange,
-                onStatusSelected = onStatusFilterChanged,
+                selectedRanges = localStatusRanges,
+                onStatusToggled = { range ->
+                    localStatusRanges = if (range in localStatusRanges) {
+                        localStatusRanges.filter { it != range }.toSet()
+                    } else {
+                        localStatusRanges + setOf(range)
+                    }
+                },
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
         }
 
-        // Action Buttons - Fixed at bottom
         FilterActionButtons(
             filtersActive = filtersActive,
             onClearAll = {
-                onClearFilters()
-                onSearchChanged("")
+                localSearchQuery = ""
+                localMethods = emptySet()
+                localStatusRanges = emptySet()
             },
             onApply = {
                 focusManager.clearFocus()
-                onApply()
+                onApply(localSearchQuery, localMethods, localStatusRanges)
             },
         )
     }
@@ -207,7 +208,6 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
             }
         }
 
-        // Result count badge with LiveRegion for accessibility announcements
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             color = if (filtersActive) {
@@ -322,8 +322,8 @@ private fun FilterSectionHeader(icon: ImageVector, title: String) {
 @Composable
 private fun MethodFilterBars(
     methodCounts: ImmutableMap<String, Int>,
-    selectedMethod: String?,
-    onMethodSelected: (String?) -> Unit,
+    selectedMethods: Set<String>,
+    onMethodToggled: (String) -> Unit,
 ) {
     val methods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
 
@@ -338,20 +338,17 @@ private fun MethodFilterBars(
                 rowMethods.forEach { method ->
                     val count = methodCounts[method] ?: 0
                     val color = methodColor(method)
-                    val isSelected = selectedMethod == method
+                    val isSelected = method in selectedMethods
 
                     GridFilterCard(
                         label = method,
                         count = count,
                         color = color,
                         isSelected = isSelected,
-                        onClick = {
-                            onMethodSelected(if (isSelected) null else method)
-                        },
+                        onClick = { onMethodToggled(method) },
                         modifier = Modifier.weight(1f),
                     )
                 }
-                // Fill empty space if odd number of items
                 if (rowMethods.size == 1) {
                     Spacer(modifier = Modifier.weight(1f))
                 }
@@ -363,8 +360,8 @@ private fun MethodFilterBars(
 @Composable
 private fun StatusFilterBars(
     statusCounts: ImmutableMap<IntRange, Int>,
-    selectedRange: IntRange?,
-    onStatusSelected: (IntRange?) -> Unit,
+    selectedRanges: Set<IntRange>,
+    onStatusToggled: (IntRange) -> Unit,
 ) {
     val statusFilters = listOf(
         Triple("2xx", 200..299, WormaCeptorColors.StatusGreen),
@@ -383,7 +380,7 @@ private fun StatusFilterBars(
             ) {
                 rowFilters.forEach { (label, range, color) ->
                     val count = statusCounts[range] ?: 0
-                    val isSelected = selectedRange == range
+                    val isSelected = range in selectedRanges
                     val sublabelText = when (label) {
                         "2xx" -> stringResource(R.string.viewer_filter_success)
                         "3xx" -> stringResource(R.string.viewer_filter_redirect)
@@ -398,9 +395,7 @@ private fun StatusFilterBars(
                         count = count,
                         color = color,
                         isSelected = isSelected,
-                        onClick = {
-                            onStatusSelected(if (isSelected) null else range)
-                        },
+                        onClick = { onStatusToggled(range) },
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -432,18 +427,14 @@ private fun GridFilterCard(
         targetValue = if (isSelected) {
             color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
+            Color.Transparent
         },
         animationSpec = tween(durationMillis = 200),
         label = "bg_animation",
     )
 
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            color.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
-        } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
-        },
+        targetValue = if (isSelected) color else MaterialTheme.colorScheme.outlineVariant,
         animationSpec = tween(durationMillis = 200),
         label = "border_animation",
     )
@@ -472,7 +463,7 @@ private fun GridFilterCard(
                 enabled = count > 0,
             )
             .semantics {
-                role = Role.Button
+                role = Role.Checkbox
                 selected = isSelected
                 stateDescription = stateDesc
                 val actionText = if (count > 0) {
@@ -491,13 +482,11 @@ private fun GridFilterCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Left side: dot, label, sublabel
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 modifier = Modifier.weight(1f),
             ) {
-                // Color indicator dot
                 Box(
                     modifier = Modifier
                         .size(8.dp)
@@ -524,14 +513,17 @@ private fun GridFilterCard(
                             style = MaterialTheme.typography.labelSmall,
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = if (count > 0) WormaCeptorDesignSystem.Alpha.intense else WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = if (count > 0) {
+                                    WormaCeptorDesignSystem.Alpha.intense
+                                } else {
+                                    WormaCeptorDesignSystem.Alpha.moderate
+                                },
                             ),
                         )
                     }
                 }
             }
 
-            // Right side: count and checkmark
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -543,7 +535,6 @@ private fun GridFilterCard(
                     color = if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                 )
 
-                // Selection indicator
                 if (isSelected) {
                     Box(
                         modifier = Modifier
@@ -567,41 +558,43 @@ private fun GridFilterCard(
 
 @Composable
 private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, onApply: () -> Unit) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = WormaCeptorDesignSystem.Elevation.sm,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+    Column(modifier = Modifier.fillMaxWidth()) {
+        WormaCeptorDivider(style = DividerStyle.Subtle)
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.surfaceContainer,
         ) {
-            OutlinedButton(
-                onClick = onClearAll,
-                modifier = Modifier.weight(1f),
-                enabled = filtersActive,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                ),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
-                Text(
-                    text = stringResource(R.string.viewer_filter_clear_all),
-                    fontWeight = FontWeight.Medium,
-                )
-            }
+                OutlinedButton(
+                    onClick = onClearAll,
+                    modifier = Modifier.weight(1f),
+                    enabled = filtersActive,
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(R.string.viewer_filter_clear_all),
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
 
-            Button(
-                onClick = onApply,
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            ) {
-                Text(
-                    text = stringResource(R.string.viewer_filter_done),
-                    fontWeight = FontWeight.SemiBold,
-                )
+                Button(
+                    onClick = onApply,
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                ) {
+                    Text(
+                        text = stringResource(R.string.viewer_filter_done),
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
             }
         }
     }

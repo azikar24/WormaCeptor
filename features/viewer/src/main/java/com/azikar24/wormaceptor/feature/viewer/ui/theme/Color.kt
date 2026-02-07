@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors as CoreColors
 
@@ -21,7 +22,7 @@ val md_theme_light_onTertiary = ThemeColors.LightBackground
 val md_theme_light_tertiaryContainer = ThemeColors.AccentSubtleLight
 val md_theme_light_onTertiaryContainer = ThemeColors.AccentLight
 val md_theme_light_error = ThemeColors.Error
-val md_theme_light_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)
+val md_theme_light_errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
 val md_theme_light_onError = ThemeColors.LightBackground
 val md_theme_light_onErrorContainer = ThemeColors.Error
 val md_theme_light_background = ThemeColors.LightBackground
@@ -55,7 +56,7 @@ val md_theme_dark_onTertiary = ThemeColors.DarkBackground
 val md_theme_dark_tertiaryContainer = ThemeColors.AccentSubtleDark
 val md_theme_dark_onTertiaryContainer = ThemeColors.AccentDark
 val md_theme_dark_error = ThemeColors.ErrorDark
-val md_theme_dark_errorContainer = ThemeColors.Error.copy(alpha = 0.12f)
+val md_theme_dark_errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
 val md_theme_dark_onError = ThemeColors.DarkBackground
 val md_theme_dark_onErrorContainer = ThemeColors.ErrorDark
 val md_theme_dark_background = ThemeColors.DarkBackground

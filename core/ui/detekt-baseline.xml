@@ -51,11 +51,6 @@
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ POST request - creation </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ PUT request - replacement </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ TRACE request - debugging </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$ Error surface tint </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$ Info surface tint </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$ Neutral surface tint </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$ Success surface tint </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$ Warning surface tint </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply disabled state</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply hover overlay</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply light background tint</ID>
@@ -358,16 +353,6 @@
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val Keystore = Color(0xFF2196F3) // Blue</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val Primary = Color(0xFF5C6BC0) // Indigo</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val Unencrypted = Color(0xFFFF9800) // Orange</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val ErrorLight = Color(0xFFEF4444).copy(alpha = 0.12f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val ErrorMedium = Color(0xFFEF4444).copy(alpha = 0.20f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val InfoLight = Color(0xFF3B82F6).copy(alpha = 0.12f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val InfoMedium = Color(0xFF3B82F6).copy(alpha = 0.20f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val NeutralLight = Color(0xFF6B7280).copy(alpha = 0.12f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val NeutralMedium = Color(0xFF6B7280).copy(alpha = 0.20f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val SuccessLight = Color(0xFF10B981).copy(alpha = 0.12f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val SuccessMedium = Color(0xFF10B981).copy(alpha = 0.20f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val WarningLight = Color(0xFFF59E0B).copy(alpha = 0.12f)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$val WarningMedium = Color(0xFFF59E0B).copy(alpha = 0.20f)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$val CustomSlowCode = Color(0xFF9C27B0) // Purple</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$val DiskRead = Color(0xFF2196F3) // Blue</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$val DiskWrite = Color(0xFF1565C0) // Blue 800</ID>

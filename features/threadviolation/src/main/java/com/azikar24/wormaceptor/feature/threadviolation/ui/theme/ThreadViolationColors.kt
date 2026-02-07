@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.threadviolation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -10,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 
 /**
@@ -64,6 +61,6 @@ fun threadViolationColors(darkTheme: Boolean = isSystemInDarkTheme()): ThreadVio
         detailBackground = surfaceVariant,
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = 0.87f),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
     )
 }

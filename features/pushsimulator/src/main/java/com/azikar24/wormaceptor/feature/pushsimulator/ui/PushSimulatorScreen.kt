@@ -1,7 +1,3 @@
-/*
- * Copyright AziKar24 2025.
- */
-
 package com.azikar24.wormaceptor.feature.pushsimulator.ui
 
 import android.Manifest
@@ -57,7 +53,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
@@ -99,6 +94,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
@@ -348,10 +345,9 @@ private fun NotificationFormCard(
                 actions = uiState.actions,
             )
 
-            HorizontalDivider(
+            WormaCeptorDivider(
                 modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
-                color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                style = DividerStyle.Subtle,
             )
 
             // Title Input with character count
@@ -617,9 +613,7 @@ private fun NotificationPreview(
                 ) {
                     Column {
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-                        HorizontalDivider(
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                        )
+                        WormaCeptorDivider(style = DividerStyle.Section)
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
@@ -1082,7 +1076,9 @@ private fun ActionButtonsSection(
                             tint = if (canAdd) {
                                 MaterialTheme.colorScheme.onPrimary
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                                )
                             },
                         )
                     }

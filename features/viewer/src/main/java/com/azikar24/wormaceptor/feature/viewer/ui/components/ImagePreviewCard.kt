@@ -2,9 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui.components
 
 import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
@@ -45,7 +42,6 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -111,7 +107,7 @@ suspend fun extractImageMetadata(data: ByteArray): ImageMetadata? = withContext(
             hasAlpha = hasAlpha,
             colorDepth = "8-bit",
         )
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         null
     }
 }
@@ -208,7 +204,6 @@ fun rememberGifImageLoader(): ImageLoader {
 @Composable
 fun ImagePreviewCard(
     imageData: ByteArray,
-    contentType: String? = null,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
     onShare: () -> Unit,
@@ -218,7 +213,6 @@ fun ImagePreviewCard(
     val gifImageLoader = rememberGifImageLoader()
     var metadata by remember { mutableStateOf<ImageMetadata?>(null) }
     var isLoadingMetadata by remember { mutableStateOf(true) }
-    var loadingProgress by remember { mutableFloatStateOf(0f) }
     var imageLoadState by remember { mutableStateOf<AsyncImagePainter.State?>(null) }
 
     // Extract metadata on composition
@@ -228,21 +222,7 @@ fun ImagePreviewCard(
         isLoadingMetadata = false
     }
 
-    // Animate progress
-    val animatedProgress by animateFloatAsState(
-        targetValue = loadingProgress,
-        animationSpec = tween(durationMillis = 300),
-        label = "loading_progress",
-    )
-
     val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
-    val gradientBrush = Brush.verticalGradient(
-        colors = listOf(
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.03f),
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.01f),
-            Color.Transparent,
-        ),
-    )
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -251,14 +231,13 @@ fun ImagePreviewCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(gradientBrush),
+                .fillMaxWidth(),
         ) {
             Column(
                 modifier = Modifier
@@ -290,7 +269,9 @@ fun ImagePreviewCard(
                     metadata?.let { meta ->
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                            color = MaterialTheme.colorScheme.primaryContainer.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.intense,
+                            ),
                         ) {
                             Text(
                                 text = meta.format,
@@ -308,14 +289,18 @@ fun ImagePreviewCard(
                 }
 
                 // Image Preview Container
-                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: 16f / 9f
+                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: (16f / 9f)
                 val constrainedAspectRatio = aspectRatio.coerceIn(0.5f, 2.5f)
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            ),
+                        )
                         .clickable(onClick = onFullscreen)
                         .aspectRatio(constrainedAspectRatio, matchHeightConstraintsFirst = false),
                     contentAlignment = Alignment.Center,
@@ -327,7 +312,9 @@ fun ImagePreviewCard(
                             .background(
                                 brush = Brush.linearGradient(
                                     colors = listOf(
-                                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(
+                                            alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                        ),
                                         MaterialTheme.colorScheme.surface,
                                     ),
                                 ),
@@ -346,12 +333,6 @@ fun ImagePreviewCard(
                         modifier = Modifier.fillMaxSize(),
                         onState = { state ->
                             imageLoadState = state
-                            when (state) {
-                                is AsyncImagePainter.State.Loading -> loadingProgress = 0.5f
-                                is AsyncImagePainter.State.Success -> loadingProgress = 1f
-                                is AsyncImagePainter.State.Error -> loadingProgress = 0f
-                                else -> {}
-                            }
                         },
                     )
 
@@ -364,7 +345,9 @@ fun ImagePreviewCard(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                                .background(
+                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(
@@ -383,7 +366,11 @@ fun ImagePreviewCard(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
+                                .background(
+                                    MaterialTheme.colorScheme.errorContainer.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                    ),
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Column(
@@ -413,7 +400,9 @@ fun ImagePreviewCard(
                     ) {
                         Surface(
                             shape = CircleShape,
-                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+                            color = MaterialTheme.colorScheme.surface.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                            ),
                             shadowElevation = 2.dp,
                         ) {
                             Icon(
@@ -433,7 +422,9 @@ fun ImagePreviewCard(
                 // Metadata Section
                 if (!isLoadingMetadata && metadata != null) {
                     HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.medium,
+                        ),
                         thickness = 1.dp,
                     )
 
@@ -542,14 +533,14 @@ private fun ActionButton(
         color = if (isPrimary) {
             MaterialTheme.colorScheme.primary.asSubtleBackground()
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
         },
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
             if (isPrimary) {
-                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
             },
         ),
     ) {

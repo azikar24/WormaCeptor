@@ -371,10 +371,6 @@ fun HomeScreen(
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
-                        ),
-                        tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
                     ) {
                         Row(
                             modifier = Modifier

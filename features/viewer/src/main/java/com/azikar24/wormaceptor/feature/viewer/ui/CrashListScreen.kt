@@ -225,7 +225,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                         } else {
                             stringResource(R.string.viewer_crash_list_warning)
                         },
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
                 }
             }
@@ -237,7 +237,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 Text(
                     text = crash.exceptionType,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -252,7 +252,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     Text(
                         text = message,
                         fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alpha.prominent),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         lineHeight = 18.sp,
@@ -265,7 +265,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 if (location != null) {
                     Surface(
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alpha.strong),
                     ) {
                         Text(
                             text = location,
@@ -274,7 +274,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                            modifier = Modifier.padding(horizontal = Spacing.sm, vertical = Spacing.xxs),
                         )
                     }
 
@@ -286,7 +286,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     text = relativeTime,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.heavy),
                     letterSpacing = 0.2.sp,
                 )
             }
@@ -310,7 +310,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
         // Icon
         Surface(
             shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alpha.moderate),
             modifier = Modifier.size(64.dp),
         ) {
             Box(
@@ -320,8 +320,8 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
                     contentDescription = stringResource(R.string.viewer_crash_list_no_crashes),
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.intense),
                 )
             }
         }
@@ -342,7 +342,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.viewer_crash_list_no_crashes_description),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.heavy),
         )
     }
 }

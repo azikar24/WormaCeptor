@@ -9,7 +9,6 @@
     <ID>ClassOrdering:ViewerViewModel.kt$ViewerViewModel$val hasActiveQuickFilters: StateFlow&lt;Boolean&gt; = _quickFilters .map { it.isNotEmpty() } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)</ID>
     <ID>ComposableParamOrder:CrashListScreen.kt$CrashListScreen</ID>
     <ID>ComposableParamOrder:GestureNavigationComponents.kt$ZoomControls</ID>
-    <ID>ComposableParamOrder:ImagePreviewCard.kt$ImagePreviewCard</ID>
     <ID>ComposableParamOrder:LoadingStates.kt$TransactionListSkeleton</ID>
     <ID>ComposableParamOrder:MetricsCard.kt$MetricItem</ID>
     <ID>ComposableParamOrder:MultipartView.kt$MultipartView</ID>
@@ -33,7 +32,7 @@
     <ID>CyclomaticComplexMethod:ToolsTab.kt$@Composable private fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@Composable private fun RequestTab( transaction: NetworkTransaction, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@Composable private fun ResponseTab( transaction: NetworkTransaction, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun TransactionDetailContent( transaction: NetworkTransaction, onBack: () -&gt; Unit, currentTransactionIndex: Int = 0, totalTransactions: Int = 1, onNavigatePrevTransaction: () -&gt; Unit = {}, onNavigateNextTransaction: () -&gt; Unit = {}, canNavigatePrev: Boolean = false, canNavigateNext: Boolean = false, )</ID>
+    <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun TransactionDetailContent( transaction: NetworkTransaction, onBack: () -&gt; Unit, onNavigatePrevTransaction: () -&gt; Unit = {}, onNavigateNextTransaction: () -&gt; Unit = {}, canNavigatePrev: Boolean = false, canNavigateNext: Boolean = false, )</ID>
     <ID>CyclomaticComplexMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreenWithRefresh( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: () -&gt; Unit, modifier: Modifier = Modifier, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>CyclomaticComplexMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors)</ID>
     <ID>CyclomaticComplexMethod:XmlTreeView.kt$private fun formatXml(xml: String): List&lt;String&gt;</ID>
@@ -100,7 +99,7 @@
     <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun TransactionPositionIndicator( currentIndex: Int, totalCount: Int, onPrevious: () -&gt; Unit, onNext: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun ZoomControls( currentZoom: Float, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, onReset: () -&gt; Unit, minZoom: Float = 0.5f, maxZoom: Float = 3f, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethod: String?, filterStatusRange: IntRange?, onMethodFilterChanged: (String?) -&gt; Unit, onStatusFilterChanged: (IntRange?) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: SharedFlow&lt;String&gt;? = null, )</ID>
-    <ID>LongMethod:ImagePreviewCard.kt$@Composable fun ImagePreviewCard( imageData: ByteArray, contentType: String? = null, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ImagePreviewCard.kt$@Composable fun ImagePreviewCard( imageData: ByteArray, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonArrayNode( array: JSONArray, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
     <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonObjectNode( obj: JSONObject, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
     <ID>LongMethod:LoadingStates.kt$@Composable fun EnhancedEmptyState( modifier: Modifier = Modifier, hasActiveFilters: Boolean = false, hasSearchQuery: Boolean = false, onClearFilters: () -&gt; Unit = {}, )</ID>
@@ -133,7 +132,7 @@
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun ResponseTab( transaction: NetworkTransaction, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean)</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionDetailPagerScreen( transactionIds: List&lt;UUID&gt;, initialTransactionIndex: Int, getTransaction: suspend (UUID) -&gt; NetworkTransaction?, onBack: () -&gt; Unit, )</ID>
-    <ID>LongMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun TransactionDetailContent( transaction: NetworkTransaction, onBack: () -&gt; Unit, currentTransactionIndex: Int = 0, totalTransactions: Int = 1, onNavigatePrevTransaction: () -&gt; Unit = {}, onNavigateNextTransaction: () -&gt; Unit = {}, canNavigatePrev: Boolean = false, canNavigateNext: Boolean = false, )</ID>
+    <ID>LongMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun TransactionDetailContent( transaction: NetworkTransaction, onBack: () -&gt; Unit, onNavigatePrevTransaction: () -&gt; Unit = {}, onNavigateNextTransaction: () -&gt; Unit = {}, canNavigatePrev: Boolean = false, canNavigateNext: Boolean = false, )</ID>
     <ID>LongMethod:TransactionListScreen.kt$@Composable private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:TransactionListScreen.kt$@Composable private fun TransactionItem(transaction: TransactionSummary, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreen( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, modifier: Modifier = Modifier, header: (@Composable () -&gt; Unit)? = null, )</ID>
@@ -286,7 +285,6 @@
     <ID>MagicNumber:QuickFilterBar.kt$QuickFilter$400</ID>
     <ID>MagicNumber:QuickFilterBar.kt$QuickFilter$599</ID>
     <ID>MagicNumber:SwipeBackContainer.kt$16f</ID>
-    <ID>MagicNumber:ToolsTab.kt$0.4f</ID>
     <ID>MagicNumber:ToolsTab.kt$150</ID>
     <ID>MagicNumber:ToolsTab.kt$200</ID>
     <ID>MagicNumber:ToolsTab.kt$250</ID>
@@ -329,6 +327,7 @@
     <ID>MatchingDeclarationName:QuickFilterBar.kt$QuickFilter</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:TransactionContextMenu.kt$QuickAction</ID>
+    <ID>MaxLineLength:FilterBottomSheetContent.kt$alpha = if (count &gt; 0) WormaCeptorDesignSystem.Alpha.intense else WormaCeptorDesignSystem.Alpha.moderate</ID>
     <ID>MaxLineLength:FilterBottomSheetContent.kt$if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select</ID>
     <ID>MaxLineLength:FilterBottomSheetContent.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin</ID>
     <ID>MaxLineLength:HomeScreen.kt$hasActiveFilters = filterMethod != null || filterStatusRange != null || searchQuery.isNotBlank()</ID>
@@ -389,7 +388,6 @@
     <ID>SwallowedException:BodyParsingUtils.kt$BodyParsingUtils$e: Exception</ID>
     <ID>SwallowedException:FavoritesRepository.kt$FavoritesRepository$e: IllegalArgumentException</ID>
     <ID>SwallowedException:FormDataView.kt$e: Exception</ID>
-    <ID>SwallowedException:ImagePreviewCard.kt$e: Exception</ID>
     <ID>SwallowedException:JsonTreeView.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: SecurityException</ID>
@@ -403,7 +401,6 @@
     <ID>TooGenericExceptionCaught:ExportManager.kt$ExportManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FormDataView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FullscreenImageViewer.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:ImagePreviewCard.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PaginatedBodyView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
@@ -760,6 +757,7 @@
     <ID>UnnecessaryParentheses:HomeScreen.kt$(400..499)</ID>
     <ID>UnnecessaryParentheses:HomeScreen.kt$(500..599)</ID>
     <ID>UnnecessaryParentheses:HomeScreen.kt$(it.code ?: 0)</ID>
+    <ID>UnnecessaryParentheses:ImagePreviewCard.kt$(16f / 9f)</ID>
     <ID>UnnecessaryParentheses:MetricsCard.kt$(animatedPercentage / 100f)</ID>
     <ID>UnnecessaryParentheses:MetricsCard.kt$(count.toFloat() / total.toFloat())</ID>
     <ID>UnnecessaryParentheses:MetricsCard.kt$(it.code ?: 0)</ID>
@@ -796,18 +794,13 @@
     <ID>UnstableCollections:TransactionPager.kt$List&lt;T&gt;</ID>
     <ID>UnstableCollections:TransactionPager.kt$List&lt;UUID&gt;</ID>
     <ID>UnusedParameter:CrashListScreen.kt$message: String</ID>
-    <ID>UnusedParameter:ImagePreviewCard.kt$contentType: String? = null</ID>
     <ID>UnusedParameter:LoadingStates.kt$title: String</ID>
     <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
-    <ID>UnusedParameter:TransactionDetailScreen.kt$currentTransactionIndex: Int = 0</ID>
-    <ID>UnusedParameter:TransactionDetailScreen.kt$totalTransactions: Int = 1</ID>
     <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
     <ID>UnusedParameter:ZoomableTextContainer.kt$offset: Offset</ID>
     <ID>UnusedParameter:ZoomableTextContainer.kt$scale: Float</ID>
     <ID>UnusedPrivateMember:CrashListScreen.kt$@Composable @Deprecated("Use EnhancedEmptyState instead") private fun EmptyState(message: String, modifier: Modifier = Modifier)</ID>
-    <ID>UnusedPrivateMember:TransactionDetailScreen.kt$@Composable private fun rememberHighlightedText( text: String, query: String, @Suppress("UNUSED_PARAMETER") currentMatchGlobalPos: Int?, ): androidx.compose.ui.text.AnnotatedString</ID>
-    <ID>UnusedPrivateProperty:ImagePreviewCard.kt$val animatedProgress by animateFloatAsState( targetValue = loadingProgress, animationSpec = tween(durationMillis = 300), label = "loading_progress", )</ID>
     <ID>UseIfInsteadOfWhen:XmlTreeView.kt$when { c == '&lt;' -&gt; { val text = builder.toString().trim() if (text.isNotEmpty()) { result.add(indentString.repeat(indent) + text) } builder.clear() val tagEnd = xml.indexOf('&gt;', i) if (tagEnd == -1) { builder.append(c) i++ continue } val tag = xml.substring(i, tagEnd + 1) when { tag.startsWith("&lt;?") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.startsWith("&lt;!--") -&gt; { val commentEnd = xml.indexOf("--&gt;", i) if (commentEnd != -1) { val comment = xml.substring(i, commentEnd + 3) result.add(indentString.repeat(indent) + comment) i = commentEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;![CDATA[") -&gt; { val cdataEnd = xml.indexOf("]]&gt;", i) if (cdataEnd != -1) { val cdata = xml.substring(i, cdataEnd + 3) result.add(indentString.repeat(indent) + cdata) i = cdataEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;/") -&gt; { indent = maxOf(0, indent - 1) result.add(indentString.repeat(indent) + tag) } tag.endsWith("/&gt;") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.uppercase().startsWith("&lt;!DOCTYPE") -&gt; { result.add(indentString.repeat(indent) + tag) } else -&gt; { result.add(indentString.repeat(indent) + tag) indent++ } } i = tagEnd } else -&gt; { builder.append(c) } }</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>

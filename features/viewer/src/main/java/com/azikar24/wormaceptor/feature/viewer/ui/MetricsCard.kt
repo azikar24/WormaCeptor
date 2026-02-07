@@ -95,7 +95,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
     val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
     val gradientBrush = Brush.verticalGradient(
         colors = listOf(
-            surfaceColor.copy(alpha = 0.97f),
+            surfaceColor.copy(alpha = WormaCeptorDesignSystem.Alpha.opaque),
             surfaceColor.copy(alpha = 1f),
         ),
     )
@@ -109,7 +109,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
     ) {
         Column(
@@ -199,7 +199,9 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        ),
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
@@ -297,7 +299,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 6.dp),
+                                    .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
@@ -309,7 +311,11 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                                         modifier = Modifier
                                             .size(6.dp)
                                             .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
+                                            .background(
+                                                MaterialTheme.colorScheme.primary.copy(
+                                                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                                ),
+                                            ),
                                     )
                                     Text(
                                         text = method,
@@ -346,13 +352,13 @@ private fun MetricItem(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
             Box(
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(color.copy(alpha = 0.8f)),
+                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)),
             )
             Text(
                 text = value,
@@ -389,7 +395,7 @@ private fun CircularSuccessMetric(label: String, percentage: Float) {
             // Background circle
             Canvas(modifier = Modifier.size(64.dp)) {
                 drawArc(
-                    color = Color.Gray.copy(alpha = 0.1f),
+                    color = Color.Gray.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
@@ -441,8 +447,8 @@ private fun SectionHeader(icon: androidx.compose.ui.graphics.vector.ImageVector,
         Icon(
             imageVector = icon,
             contentDescription = title,
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
         Text(
             text = title,
@@ -462,7 +468,7 @@ private fun DistributionBar(label: String, count: Int, total: Int, color: Color)
         label = "bar_animation",
     )
 
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -497,7 +503,9 @@ private fun DistributionBar(label: String, count: Int, total: Int, color: Color)
                 .fillMaxWidth()
                 .height(8.dp)
                 .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                ),
         ) {
             Box(
                 modifier = Modifier
@@ -507,7 +515,7 @@ private fun DistributionBar(label: String, count: Int, total: Int, color: Color)
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                color.copy(alpha = 0.8f),
+                                color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                                 color,
                             ),
                         ),
@@ -526,7 +534,7 @@ private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
         label = "status_bar_animation",
     )
 
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -561,7 +569,9 @@ private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
                 .fillMaxWidth()
                 .height(8.dp)
                 .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                ),
         ) {
             Box(
                 modifier = Modifier
@@ -571,7 +581,7 @@ private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                color.copy(alpha = 0.8f),
+                                color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                                 color,
                             ),
                         ),

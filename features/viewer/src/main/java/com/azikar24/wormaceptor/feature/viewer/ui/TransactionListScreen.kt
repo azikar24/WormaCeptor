@@ -220,8 +220,10 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
                 Icon(
                     imageVector = Icons.Default.Wifi,
                     contentDescription = stringResource(R.string.viewer_transaction_list_no_transactions),
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    ),
                 )
             }
         }

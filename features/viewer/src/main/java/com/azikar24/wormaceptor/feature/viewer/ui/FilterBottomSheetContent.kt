@@ -106,7 +106,9 @@ fun FilterBottomSheetContent(
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.medium,
+            ),
         )
 
         // Scrollable Content
@@ -209,9 +211,9 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             color = if (filtersActive) {
-                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
             } else {
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
             },
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite
@@ -252,15 +254,15 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
             Text(
                 text = stringResource(R.string.viewer_filter_search_placeholder),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
             )
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(R.string.viewer_filter_search),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
             )
         },
         trailingIcon = {
@@ -273,15 +275,19 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
                         imageVector = Icons.Default.Close,
                         contentDescription = stringResource(R.string.viewer_filter_clear),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
                 }
             }
         },
         singleLine = true,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+            ),
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+            ),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             cursorColor = MaterialTheme.colorScheme.primary,
@@ -301,8 +307,8 @@ private fun FilterSectionHeader(icon: ImageVector, title: String) {
         Icon(
             imageVector = icon,
             contentDescription = title,
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
         Text(
             text = title,
@@ -426,7 +432,7 @@ private fun GridFilterCard(
         targetValue = if (isSelected) {
             color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
         },
         animationSpec = tween(durationMillis = 200),
         label = "bg_animation",
@@ -434,9 +440,9 @@ private fun GridFilterCard(
 
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) {
-            color.copy(alpha = 0.5f)
+            color.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
         } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f)
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
         },
         animationSpec = tween(durationMillis = 200),
         label = "border_animation",
@@ -496,7 +502,9 @@ private fun GridFilterCard(
                     modifier = Modifier
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(if (count > 0) color else color.copy(alpha = 0.3f)),
+                        .background(
+                            if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        ),
                 )
 
                 Column {
@@ -507,7 +515,7 @@ private fun GridFilterCard(
                         color = if (count > 0) {
                             MaterialTheme.colorScheme.onSurface
                         } else {
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
                         },
                     )
                     if (sublabel != null) {
@@ -516,7 +524,7 @@ private fun GridFilterCard(
                             style = MaterialTheme.typography.labelSmall,
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = if (count > 0) 0.6f else 0.3f,
+                                alpha = if (count > 0) WormaCeptorDesignSystem.Alpha.intense else WormaCeptorDesignSystem.Alpha.moderate,
                             ),
                         )
                     }
@@ -532,7 +540,7 @@ private fun GridFilterCard(
                     text = "$count",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (count > 0) color else color.copy(alpha = 0.3f),
+                    color = if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                 )
 
                 // Selection indicator

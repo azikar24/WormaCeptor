@@ -268,7 +268,7 @@ private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .padding(4.dp)
-                    .size(16.dp),
+                    .size(WormaCeptorDesignSystem.IconSize.sm),
             )
         }
     }

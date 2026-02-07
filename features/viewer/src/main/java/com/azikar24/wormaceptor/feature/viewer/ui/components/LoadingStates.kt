@@ -42,7 +42,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -62,9 +61,9 @@ import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 @Composable
 fun rememberShimmerBrush(): Brush {
     val shimmerColors = listOf(
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
     )
 
     val transition = rememberInfiniteTransition(label = "shimmer")
@@ -98,8 +97,8 @@ fun TransactionItemSkeleton(modifier: Modifier = Modifier) {
 
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
-        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f),
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
+        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
         modifier = modifier
             .fillMaxWidth()
             .padding(
@@ -378,7 +377,7 @@ fun ErrorState(
             Icon(
                 imageVector = errorType.icon,
                 contentDescription = stringResource(R.string.viewer_loading_error_description, errorType.title),
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
                 tint = WormaCeptorColors.StatusRed,
             )
         }
@@ -397,7 +396,7 @@ fun ErrorState(
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xl),
         )
@@ -434,7 +433,7 @@ fun ErrorState(
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = stringResource(R.string.viewer_loading_retry),
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                         tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
@@ -474,7 +473,7 @@ fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = 
         Icon(
             imageVector = Icons.Outlined.ErrorOutline,
             contentDescription = stringResource(R.string.viewer_loading_error),
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
             tint = WormaCeptorColors.StatusRed,
         )
 
@@ -598,7 +597,7 @@ fun EnhancedEmptyState(
                 else -> stringResource(R.string.viewer_empty_transactions_hint)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             textAlign = TextAlign.Center,
         )
 
@@ -640,7 +639,7 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
             Icon(
                 imageVector = Icons.Outlined.Search,
                 contentDescription = stringResource(R.string.viewer_filter_search),
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xxl),
                 tint = primaryColor,
             )
         } else {
@@ -694,7 +693,7 @@ fun LoadMoreBodyButton(remainingBytes: Long, isLoading: Boolean, onClick: () -> 
                 indication = null,
                 enabled = !isLoading,
             ) { onClick() },
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
     ) {
         Row(
@@ -722,7 +721,7 @@ fun LoadMoreBodyButton(remainingBytes: Long, isLoading: Boolean, onClick: () -> 
                     modifier = Modifier
                         .size(20.dp)
                         .background(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                            MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
                             CircleShape,
                         ),
                     contentAlignment = Alignment.Center,
@@ -730,7 +729,7 @@ fun LoadMoreBodyButton(remainingBytes: Long, isLoading: Boolean, onClick: () -> 
                     Text(
                         text = "+",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
@@ -745,7 +744,9 @@ fun LoadMoreBodyButton(remainingBytes: Long, isLoading: Boolean, onClick: () -> 
                 Text(
                     text = "(${formatBytes(remainingBytes)} remaining)",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
@@ -767,12 +768,12 @@ fun BodyLoadingProgress(loadedBytes: Long, totalBytes: Long, modifier: Modifier 
             Text(
                 text = formatBytes(loadedBytes),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             )
             Text(
                 text = formatBytes(totalBytes),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             )
         }
 
@@ -833,7 +834,7 @@ fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = M
                 imageVector = Icons.Default.KeyboardArrowUp,
                 contentDescription = stringResource(R.string.viewer_loading_scroll_to_top),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(WormaCeptorDesignSystem.IconSize.lg)
                     .rotate(rotation),
             )
         }
@@ -949,7 +950,7 @@ private fun DetailCardSkeleton(shimmerBrush: Brush, rowCount: Int, modifier: Mod
         ),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.1f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -1118,7 +1119,7 @@ private fun CollapsibleSectionSkeleton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                         WormaCeptorDesignSystem.Shapes.chip,
                     )
                     .padding(WormaCeptorDesignSystem.Spacing.md),
@@ -1158,32 +1159,6 @@ private fun CollapsibleSectionSkeleton(
                     )
                 }
             }
-        }
-    }
-}
-
-/**
- * Full-screen loading state with centered spinner and message.
- */
-@Composable
-fun FullScreenLoading(modifier: Modifier = Modifier, message: String = "Loading...") {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                strokeWidth = 4.dp,
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            )
         }
     }
 }

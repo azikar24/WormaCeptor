@@ -209,8 +209,6 @@ fun TransactionDetailPagerScreen(
                 TransactionDetailContent(
                     transaction = currentTransaction,
                     onBack = onBack,
-                    currentTransactionIndex = currentTransactionIndex,
-                    totalTransactions = transactionIds.size,
                     onNavigatePrevTransaction = ::navigateToPrevTransaction,
                     onNavigateNextTransaction = ::navigateToNextTransaction,
                     canNavigatePrev = canNavigatePrev,
@@ -257,8 +255,6 @@ fun TransactionDetailScreen(transaction: NetworkTransaction, onBack: () -> Unit)
 private fun TransactionDetailContent(
     transaction: NetworkTransaction,
     onBack: () -> Unit,
-    currentTransactionIndex: Int = 0,
-    totalTransactions: Int = 1,
     onNavigatePrevTransaction: () -> Unit = {},
     onNavigateNextTransaction: () -> Unit = {},
     canNavigatePrev: Boolean = false,
@@ -509,7 +505,7 @@ private fun TransactionDetailContent(
                     }
                 }
                 HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 )
             }
         },
@@ -562,9 +558,9 @@ private fun TransactionDetailContent(
                     .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl, end = WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 Surface(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
+                    shape = WormaCeptorDesignSystem.Shapes.pill,
                     color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-                    shadowElevation = 6.dp,
+                    shadowElevation = WormaCeptorDesignSystem.Elevation.lg,
                 ) {
                     Row(
                         modifier = Modifier.padding(
@@ -748,7 +744,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
@@ -770,7 +766,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.3f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(
                             topStart = WormaCeptorDesignSystem.CornerRadius.xs,
                             bottomStart = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -784,7 +780,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.4f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
+                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
                     ),
             )
 
@@ -795,9 +791,9 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
                         if (hasResponse) {
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f)
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
                         } else {
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.4f)
+                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
                         },
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(
                             topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -846,9 +842,9 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
             if (isSsl) {
-                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
             } else {
-                MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
             },
         ),
         modifier = Modifier.wrapContentSize(),
@@ -865,7 +861,7 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
                 imageVector = if (isSsl) Icons.Default.Lock else Icons.Default.LockOpen,
                 contentDescription = if (isSsl) "Secure" else "Insecure",
                 tint = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
             Text(
                 text = if (isSsl) (tlsVersion ?: "Secure Connection") else "Insecure Connection",
@@ -886,8 +882,8 @@ private fun EnhancedOverviewCard(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val gradientColors = listOf(
-        iconTint.copy(alpha = 0.03f),
-        iconTint.copy(alpha = 0.01f),
+        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
+        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
         Color.Transparent,
     )
 
@@ -898,7 +894,7 @@ private fun EnhancedOverviewCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -920,7 +916,7 @@ private fun EnhancedOverviewCard(
                         imageVector = icon,
                         contentDescription = title,
                         tint = iconTint,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                     )
                     Text(
                         text = title,
@@ -1445,7 +1441,6 @@ private fun ResponseTab(
                         ) {
                             ImagePreviewCard(
                                 imageData = imageBytes,
-                                contentType = contentType,
                                 onFullscreen = { showImageViewer = true },
                                 onDownload = {
                                     val format = imageMetadata?.format ?: detectImageFormat(imageBytes)
@@ -1692,7 +1687,7 @@ private fun CollapsibleSection(
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
@@ -1725,7 +1720,7 @@ private fun CollapsibleSection(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.viewer_body_copy),
-                                modifier = Modifier.size(16.dp),
+                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -1762,10 +1757,10 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
     Surface(
         onClick = onToggle,
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+            MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
         ),
     ) {
         Row(
@@ -1880,7 +1875,7 @@ private fun buildBaseHighlightedText(
     return androidx.compose.ui.text.buildAnnotatedString {
         append(text)
         val defaultStyle = androidx.compose.ui.text.SpanStyle(
-            background = Color.Yellow.copy(alpha = 0.4f),
+            background = Color.Yellow.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
         )
         matchRanges.forEach { range ->
             addStyle(defaultStyle, range.first, range.last + 1)
@@ -1934,7 +1929,7 @@ private fun HighlightedBodyText(
         }
     }
 
-    val highlightColor = Color.Cyan.copy(alpha = 0.7f)
+    val highlightColor = Color.Cyan.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
 
     Box(modifier = modifier) {
         // Current match overlay using Canvas to draw the actual path shape
@@ -1958,25 +1953,6 @@ private fun HighlightedBodyText(
                 onTextLayout(it)
             },
         )
-    }
-}
-
-/**
- * Wrapper that returns AnnotatedString for compatibility with existing code.
- * For small-medium texts, this is fine. For huge texts, use HighlightedBodyText directly.
- */
-@Composable
-private fun rememberHighlightedText(
-    text: String,
-    query: String,
-    @Suppress("UNUSED_PARAMETER") currentMatchGlobalPos: Int?,
-): androidx.compose.ui.text.AnnotatedString {
-    val matchRanges = remember(text, query) {
-        findMatchRanges(text, query)
-    }
-
-    return remember(text, matchRanges) {
-        buildBaseHighlightedText(text, matchRanges)
     }
 }
 

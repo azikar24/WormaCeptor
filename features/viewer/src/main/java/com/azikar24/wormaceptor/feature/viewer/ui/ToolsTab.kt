@@ -32,7 +32,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
@@ -284,7 +283,7 @@ private fun FavoritesStrip(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = WormaCeptorColors.Category.Favorites,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text(
@@ -326,7 +325,7 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
         modifier = modifier
             .width(88.dp)
             .height(88.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(WormaCeptorDesignSystem.Shapes.cardLarge)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = {
@@ -334,11 +333,11 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
                     onLongClick()
                 },
             ),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.15f),
+        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
     ) {
         Column(
@@ -354,7 +353,7 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
                 modifier = Modifier
                     .size(36.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
                         shape = CircleShape,
                     ),
                 contentAlignment = Alignment.Center,
@@ -362,7 +361,7 @@ private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () ->
                 Icon(
                     imageVector = tool.icon,
                     contentDescription = tool.name,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -405,9 +404,9 @@ private fun ToolCategorySection(
 
     val headerBackground by animateColorAsState(
         targetValue = if (isCollapsed) {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
         } else {
-            categoryColor.copy(alpha = 0.08f)
+            categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
         },
         animationSpec = tween(200),
         label = "header_bg",
@@ -423,9 +422,9 @@ private fun ToolCategorySection(
             onClick = onToggleCollapse,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp)),
+                .clip(WormaCeptorDesignSystem.Shapes.card),
             color = headerBackground,
-            shape = RoundedCornerShape(10.dp),
+            shape = WormaCeptorDesignSystem.Shapes.card,
         ) {
             Row(
                 modifier = Modifier
@@ -453,8 +452,8 @@ private fun ToolCategorySection(
                     Icon(
                         imageVector = categoryIcon,
                         contentDescription = null,
-                        tint = categoryColor.copy(alpha = 0.8f),
-                        modifier = Modifier.size(18.dp),
+                        tint = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
 
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -470,7 +469,7 @@ private fun ToolCategorySection(
 
                     // Tool count badge
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
+                        shape = WormaCeptorDesignSystem.Shapes.badge,
                         color = MaterialTheme.colorScheme.surfaceVariant,
                     ) {
                         Text(
@@ -495,7 +494,7 @@ private fun ToolCategorySection(
                         stringResource(R.string.viewer_body_collapse)
                     },
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(WormaCeptorDesignSystem.IconSize.md)
                         .rotate(rotationAngle),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -560,13 +559,13 @@ private fun ToolTile(
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
-    val tileBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
-    val tileBorder = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+    val tileBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
+    val tileBorder = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
 
     Card(
         modifier = modifier
             .height(116.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(WormaCeptorDesignSystem.Shapes.cardLarge)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = {
@@ -575,7 +574,7 @@ private fun ToolTile(
                 },
             ),
         colors = CardDefaults.cardColors(containerColor = tileBackground),
-        shape = RoundedCornerShape(12.dp),
+        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
         border = androidx.compose.foundation.BorderStroke(1.dp, tileBorder),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -593,11 +592,11 @@ private fun ToolTile(
                         .background(
                             brush = Brush.radialGradient(
                                 colors = listOf(
-                                    categoryColor.copy(alpha = 0.15f),
-                                    categoryColor.copy(alpha = 0.05f),
+                                    categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                                    categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
                                 ),
                             ),
-                            shape = RoundedCornerShape(10.dp),
+                            shape = WormaCeptorDesignSystem.Shapes.card,
                         ),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -605,7 +604,7 @@ private fun ToolTile(
                         imageVector = tool.icon,
                         contentDescription = tool.name,
                         modifier = Modifier.size(22.dp),
-                        tint = categoryColor.copy(alpha = 0.9f),
+                        tint = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
                     )
                 }
 
@@ -629,8 +628,8 @@ private fun ToolTile(
                     contentDescription = stringResource(R.string.viewer_tools_favorite),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(6.dp)
-                        .size(12.dp),
+                        .padding(WormaCeptorDesignSystem.Spacing.sm)
+                        .size(WormaCeptorDesignSystem.IconSize.xxs),
                     tint = WormaCeptorColors.Category.Favorites,
                 )
             }
@@ -648,8 +647,8 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
             imageVector = Icons.Default.Search,
             contentDescription = null,
             modifier = Modifier
-                .size(48.dp)
-                .alpha(0.4f),
+                .size(WormaCeptorDesignSystem.IconSize.xxxl)
+                .alpha(WormaCeptorDesignSystem.Alpha.strong),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
@@ -671,7 +670,7 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
             Text(
                 text = stringResource(R.string.viewer_tools_try_different_search),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                 textAlign = TextAlign.Center,
             )
         }
@@ -710,14 +709,16 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
     }
 
     val backgroundColor = when {
-        !canDrawOverlays -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
-        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        !canDrawOverlays -> MaterialTheme.colorScheme.surfaceVariant.copy(
+            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+        )
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
+        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
     }
     val borderColor = when {
-        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
-        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = 0.4f)
-        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
+        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
     }
 
     Surface(
@@ -730,7 +731,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
         },
         enabled = canDrawOverlays,
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
         color = backgroundColor,
         border = androidx.compose.foundation.BorderStroke(1.dp, borderColor),
     ) {
@@ -746,22 +747,22 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     .size(36.dp)
                     .background(
                         color = if (isOverlayEnabled && canDrawOverlays) {
-                            WormaCeptorColors.Category.Performance.copy(alpha = 0.25f)
+                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
                         } else {
-                            WormaCeptorColors.Category.Performance.copy(alpha = 0.15f)
+                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
                         },
-                        shape = RoundedCornerShape(8.dp),
+                        shape = WormaCeptorDesignSystem.Shapes.card,
                     ),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.Speed,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                     tint = if (isOverlayEnabled && canDrawOverlays) {
                         WormaCeptorColors.Category.Performance
                     } else {
-                        WormaCeptorColors.Category.Performance.copy(alpha = 0.7f)
+                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
                     },
                 )
             }
@@ -791,7 +792,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                             context.startActivity(intent)
                         }
                     },
-                    shape = RoundedCornerShape(6.dp),
+                    shape = WormaCeptorDesignSystem.Shapes.button,
                     color = MaterialTheme.colorScheme.errorContainer,
                 ) {
                     Text(
@@ -807,9 +808,9 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
             } else {
                 // On/Off indicator
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = WormaCeptorDesignSystem.Shapes.button,
                     color = if (isOverlayEnabled) {
-                        WormaCeptorColors.Category.Performance.copy(alpha = 0.2f)
+                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     },

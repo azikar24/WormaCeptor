@@ -1,0 +1,276 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:PerformanceOverlayState.kt$PerformanceOverlayState$Companion</ID>
+    <ID>ClassOrdering:PushSimulatorEngine.kt$PushSimulatorEngine$Companion</ID>
+    <ID>CyclomaticComplexMethod:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun categorizePackage(packageName: String): Pair&lt;String, DependencyCategory&gt;</ID>
+    <ID>DestructuringDeclarationWithTooManyEntries:LogCaptureEngine.kt$LogCaptureEngine$val (dateStr, timeStr, pidStr, tidStr, levelStr, tag, message) = match.destructured</ID>
+    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
+    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default sampling interval: 1 second </ID>
+    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Medium threshold for CPU usage percentage </ID>
+    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Warning threshold for CPU usage percentage </ID>
+    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ GCM IV length in bytes (12 is recommended) </ID>
+    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ GCM tag length in bits </ID>
+    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ Maximum number of results to keep in history </ID>
+    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ Standard IV length in bytes </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default delay before checking if an object was collected (5 seconds) </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default estimated size for unknown objects (~256KB) </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default maximum number of leaks to keep in history </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Estimated retained size for an Activity (~2MB) </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Size threshold for critical severity (10MB) </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Size threshold for high severity (1MB) </ID>
+    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Wait time after GC to allow collection to complete </ID>
+    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
+    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Default sampling interval: 1 second </ID>
+    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Warning threshold for heap usage percentage </ID>
+    <ID>EndOfSentenceFormat:QueryEngine.kt$QueryEngine$* Gets raw bytes from blob storage - useful for binary content like PDFs</ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum latency in ms </ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum packet loss percent </ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum speed in Kbps (100 Mbps) </ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum latency in ms </ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum packet loss percent </ID>
+    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum speed in Kbps </ID>
+    <ID>EndOfSentenceFormat:ThreadViolationEngine.kt$ThreadViolationEngine.Companion$ Default history size: 100 violations </ID>
+    <ID>EndOfSentenceFormat:WebViewMonitorEngine.kt$WebViewMonitorEngine.Companion$ Default maximum number of requests to store </ID>
+    <ID>ExplicitGarbageCollectionCall:LeakDetectionEngine.kt$LeakDetectionEngine$gc()</ID>
+    <ID>ExplicitGarbageCollectionCall:LeakDetectionEngine.kt$LeakDetectionEngine$runFinalization()</ID>
+    <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$gc()</ID>
+    <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$runFinalization()</ID>
+    <ID>InstanceOfCheckForException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e is SecurityException</ID>
+    <ID>LargeClass:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$Companion</ID>
+    <ID>LongMethod:CryptoEngine.kt$CryptoEngine$fun decrypt(ciphertext: String): CryptoResult</ID>
+    <ID>LongMethod:PerformanceOverlayContent.kt$@Composable fun PerformanceOverlayContent( state: PerformanceOverlayState, callbacks: PerformanceOverlayEngine.OverlayCallbacks, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:CaptureEngine.kt$CaptureEngine$400</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000f</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$100f</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$3</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$4</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$5</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$6</ID>
+    <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$7</ID>
+    <ID>MagicNumber:CrashReporter.kt$CrashReporter$500</ID>
+    <ID>MagicNumber:CryptoEngine.kt$CryptoEngine$16</ID>
+    <ID>MagicNumber:CryptoEngine.kt$CryptoEngine$8</ID>
+    <ID>MagicNumber:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$3</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_024</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_024.0</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_048_576</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_048_576.0</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_073_741_824</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$1_073_741_824.0</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$3</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$5</ID>
+    <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$6</ID>
+    <ID>MagicNumber:LocationSimulatorEngine.kt$LocationSimulatorEngine$0.1f</ID>
+    <ID>MagicNumber:MemoryMonitorEngine.kt$MemoryMonitorEngine$100f</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0.1f</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0xFF</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$1024</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$127</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$14</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$256</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$31</ID>
+    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$9</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF1C1C1E</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF32D74B</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF8E8E93</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF3B30</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF453A</ID>
+    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF9F0A</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$0.3f</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$0.7f</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$3</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$4</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$5</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$6</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$7</ID>
+    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$8</ID>
+    <ID>MagicNumber:PushSimulatorEngine.kt$PushSimulatorEngine$3</ID>
+    <ID>MagicNumber:PushSimulatorEngine.kt$PushSimulatorEngine$40</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine$1000</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine$100f</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine$8</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine.RateLimitInterceptor$100f</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine.ThrottledSource$1000</ID>
+    <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine.ThrottledSource$8</ID>
+    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_024</ID>
+    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_024.0</ID>
+    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576</ID>
+    <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576.0</ID>
+    <ID>MaxLineLength:CryptoEngine.kt$CryptoEngine$"Invalid key length: expected $expectedKeyLength bytes for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"</ID>
+    <ID>MaxLineLength:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$website = "https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/"</ID>
+    <ID>MaxLineLength:LocationSimulatorEngine.kt$LocationSimulatorEngine$_lastError.value = "Mock locations not enabled. Enable in Developer Options and select this app as mock location app."</ID>
+    <ID>MaximumLineLength:CryptoEngine.kt$CryptoEngine$ </ID>
+    <ID>MaximumLineLength:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$ </ID>
+    <ID>MaximumLineLength:LocationSimulatorEngine.kt$LocationSimulatorEngine$ </ID>
+    <ID>NestedBlockDepth:CpuMonitorEngine.kt$CpuMonitorEngine$private fun readCpuTemperature(): Float?</ID>
+    <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun scanDynamicDependencies(): List&lt;DependencyInfo&gt;</ID>
+    <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryCommonVersionPatterns(spec: LibrarySpec): Pair&lt;String, DetectionMethod&gt;?</ID>
+    <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryFindVersionDynamically(packageName: String): Pair&lt;String, DetectionMethod&gt;?</ID>
+    <ID>NestedBlockDepth:LeakDetectionEngine.kt$LeakDetectionEngine$private fun buildReferencePath(obj: Any): List&lt;String&gt;</ID>
+    <ID>NestedBlockDepth:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$private fun parseNativeLibraries(): List&lt;LoadedLibrary&gt;</ID>
+    <ID>NestedBlockDepth:LogCaptureEngine.kt$LogCaptureEngine$private suspend fun captureLogcat()</ID>
+    <ID>NestedBlockDepth:PushSimulatorEngine.kt$PushSimulatorEngine$@SuppressLint("MissingPermission") // Permission checked via hasNotificationPermission() before notify() fun sendNotification(notification: SimulatedNotification): Int</ID>
+    <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun buildKeyInfo(keyStore: KeyStore, alias: String): String</ID>
+    <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>
+    <ID>OutdatedDocumentation:WebSocketMonitorEngine.kt$WebSocketMonitorEngine</ID>
+    <ID>PrintStackTrace:CrashReporter.kt$CrashReporter$e</ID>
+    <ID>RethrowCaughtException:LocationSimulatorEngine.kt$LocationSimulatorEngine$throw e</ID>
+    <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
+    <ID>SwallowedException:CpuMonitorEngine.kt$CpuMonitorEngine$e: Exception</ID>
+    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: ClassNotFoundException</ID>
+    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: Exception</ID>
+    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: NoClassDefFoundError</ID>
+    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$e: Exception</ID>
+    <ID>SwallowedException:LeakDetectionEngine.kt$LeakDetectionEngine$e: Exception</ID>
+    <ID>SwallowedException:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: Exception</ID>
+    <ID>SwallowedException:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: Exception</ID>
+    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: SecurityException</ID>
+    <ID>SwallowedException:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
+    <ID>SwallowedException:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
+    <ID>SwallowedException:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$e: Exception</ID>
+    <ID>SwallowedException:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
+    <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: ClassNotFoundException</ID>
+    <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
+    <ID>SwallowedException:SecureStorageEngine.kt$SecureStorageEngine$e: Exception</ID>
+    <ID>SwallowedException:SecureStorageEngine.kt$SecureStorageEngine$e: SecurityException</ID>
+    <ID>TooGenericExceptionCaught:CpuMonitorEngine.kt$CpuMonitorEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CrashReporter.kt$CrashReporter$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CryptoEngine.kt$CryptoEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ExtensionRegistry.kt$DefaultExtensionRegistry$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LeakDetectionEngine.kt$LeakDetectionEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SecureStorageEngine.kt$SecureStorageEngine$e: Exception</ID>
+    <ID>UndocumentedPublicClass:CaptureEngine.kt$CaptureEngine</ID>
+    <ID>UndocumentedPublicClass:CoreHolder.kt$CoreHolder</ID>
+    <ID>UndocumentedPublicClass:CrashReporter.kt$CrashReporter</ID>
+    <ID>UndocumentedPublicClass:QueryEngine.kt$QueryEngine</ID>
+    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun cleanup(timestampThreshold: Long)</ID>
+    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun completeTransaction( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long = 0, protocol: String? = null, tlsVersion: String? = null, error: String? = null, )</ID>
+    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun startTransaction( url: String, method: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long = 0, ): UUID</ID>
+    <ID>UndocumentedPublicFunction:CoreHolder.kt$CoreHolder$fun initialize(capture: CaptureEngine, query: QueryEngine, extensions: ExtensionRegistry? = null): Boolean</ID>
+    <ID>UndocumentedPublicFunction:CrashReporter.kt$CrashReporter$fun init()</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeCrashes(): Flow&lt;List&lt;com.azikar24.wormaceptor.domain.entities.Crash&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeTransactions(): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun search(query: String): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun clear()</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun clearCrashes()</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun deleteTransactions(ids: List&lt;UUID&gt;)</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getAllTransactionsForExport()</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getBody(blobId: BlobID): String?</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getDetails(id: UUID)</ID>
+    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val captureEngine: CaptureEngine? get() = engines.get()?.first</ID>
+    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val extensionRegistry: ExtensionRegistry? get() = engines.get()?.third</ID>
+    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val queryEngine: QueryEngine? get() = engines.get()?.second</ID>
+    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val cpuHistory: StateFlow&lt;List&lt;CpuInfo&gt;&gt; = _cpuHistory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val currentCpu: StateFlow&lt;CpuInfo&gt; = _currentCpu.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val config: StateFlow&lt;CryptoConfig&gt; = _config.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val currentResult: StateFlow&lt;CryptoResult?&gt; = _currentResult.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val history: StateFlow&lt;List&lt;CryptoResult&gt;&gt; = _history.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val isProcessing: StateFlow&lt;Boolean&gt; = _isProcessing.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val dependencies: StateFlow&lt;List&lt;DependencyInfo&gt;&gt; = _dependencies.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val summary: StateFlow&lt;DependencySummary&gt; = _summary.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val currentFpsInfo: StateFlow&lt;FpsInfo&gt; = _currentFpsInfo.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val fpsHistory: StateFlow&lt;List&lt;FpsInfo&gt;&gt; = _fpsHistory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val isRunning: StateFlow&lt;Boolean&gt; = _isRunning.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine.Companion$const val DEFAULT_HISTORY_SIZE = 60</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val detectedLeaks: StateFlow&lt;List&lt;LeakInfo&gt;&gt; = _detectedLeaks.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val isRunning: StateFlow&lt;Boolean&gt; = _isRunning.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val leakSummary: StateFlow&lt;LeakSummary&gt; = _leakSummary.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val libraries: StateFlow&lt;List&lt;LoadedLibrary&gt;&gt; = _libraries.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val summary: StateFlow&lt;LibrarySummary&gt; = _summary.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val currentMockLocation: StateFlow&lt;MockLocation?&gt; = _currentMockLocation.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val isEnabled: StateFlow&lt;Boolean&gt; = _isEnabled.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val lastError: StateFlow&lt;String?&gt; = _lastError.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine$val isCapturing: StateFlow&lt;Boolean&gt; = _isCapturing.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine$val logs: StateFlow&lt;List&lt;LogEntry&gt;&gt; = _logs.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine.Companion$const val DEFAULT_BUFFER_SIZE = 1000</ID>
+    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val currentMemory: StateFlow&lt;MemoryInfo&gt; = _currentMemory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val memoryHistory: StateFlow&lt;List&lt;MemoryInfo&gt;&gt; = _memoryHistory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$val isVisible: StateFlow&lt;Boolean&gt; = _isVisible.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$val state: StateFlow&lt;PerformanceOverlayState&gt; = _state.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDrag: (Offset) -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragEnd: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragStart: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onHideOverlay: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenCpuDetail: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenFpsDetail: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenMemoryDetail: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenWormaCeptor: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveCpu: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveFps: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveMemory: () -&gt; Unit</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceOverlaySettings.Companion$val DEFAULT = PerformanceOverlaySettings()</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// CPU usage thresholds (percentage) const val CPU_GOOD = 50</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// FPS thresholds const val FPS_GOOD = 55</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// Memory usage thresholds (percentage) const val MEMORY_GOOD = 60</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val CPU_WARNING = 80</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val FPS_WARNING = 30</ID>
+    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val MEMORY_WARNING = 80</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_ID = "wormaceptor_test_channel"</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_NAME = "WormaCeptor Test Notifications"</ID>
+    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val currentToken: StateFlow&lt;PushTokenInfo?&gt; = _currentToken.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val tokenHistory: StateFlow&lt;List&lt;TokenHistory&gt;&gt; = _tokenHistory.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:RateLimitEngine.kt$RateLimitEngine$val config: StateFlow&lt;RateLimitConfig&gt; = _config.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:RateLimitEngine.kt$RateLimitEngine$val stats: StateFlow&lt;ThrottleStats&gt; = _stats.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val encryptedPrefsAccessible: StateFlow&lt;Boolean&gt; = _encryptedPrefsAccessible.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val entries: StateFlow&lt;List&lt;SecureStorageEntry&gt;&gt; = _entries.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val keystoreAccessible: StateFlow&lt;Boolean&gt; = _keystoreAccessible.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val lastRefreshTime: StateFlow&lt;Long?&gt; = _lastRefreshTime.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val summary: StateFlow&lt;SecureStorageSummary&gt; = _summary.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val stats: StateFlow&lt;ViolationStats&gt; = _stats.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val violations: StateFlow&lt;List&lt;ThreadViolation&gt;&gt; = _violations.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine$val connections: StateFlow&lt;List&lt;WebSocketConnection&gt;&gt; = _connections.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine$val messages: StateFlow&lt;List&lt;WebSocketMessage&gt;&gt; = _messages.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine.Companion$const val DEFAULT_MAX_MESSAGES = 500</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val isEnabled: StateFlow&lt;Boolean&gt; = _isEnabled.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val requests: StateFlow&lt;List&lt;WebViewRequest&gt;&gt; = _requests.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val resourceTypeFilter: StateFlow&lt;Set&lt;WebViewResourceType&gt;&gt; = _resourceTypeFilter.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val stats: StateFlow&lt;WebViewRequestStats&gt; = _stats.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val urlFilter: StateFlow&lt;String?&gt; = _urlFilter.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val webViewIdFilter: StateFlow&lt;String?&gt; = _webViewIdFilter.asStateFlow()</ID>
+    <ID>UnnecessaryParentheses:CpuMonitorEngine.kt$CpuMonitorEngine$((totalDelta - idleDelta).toFloat() / totalDelta.toFloat())</ID>
+    <ID>UnnecessaryParentheses:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$(entry.name.startsWith("classes") &amp;&amp; entry.name.endsWith(".dex"))</ID>
+    <ID>UnnecessaryParentheses:MemoryMonitorEngine.kt$MemoryMonitorEngine$(usedMemory.toFloat() / maxMemory.toFloat())</ID>
+    <ID>UnnecessaryParentheses:ParserRegistry.kt$DefaultParserRegistry$(b in 14..31)</ID>
+    <ID>UnnecessaryParentheses:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$(overlayWidthPx / 2)</ID>
+    <ID>UnnecessaryParentheses:RateLimitEngine.kt$RateLimitEngine$(bytes * 1000)</ID>
+    <ID>UnnecessaryParentheses:RateLimitEngine.kt$RateLimitEngine.ThrottledSource$(bytesRead * 1000)</ID>
+    <ID>UnusedPrivateMember:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryGetStaticMethod(className: String, methodName: String): String?</ID>
+    <ID>UnusedPrivateMember:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$private fun hideOverlayOnly()</ID>
+    <ID>UnusedPrivateProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$private val appNativeLibDir: String by lazy { try { context.packageManager.getApplicationInfo(packageName, 0).nativeLibraryDir ?: "" } catch (e: PackageManager.NameNotFoundException) { "" } }</ID>
+    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val OVERLAY_HEIGHT_COLLAPSED_DP = 40</ID>
+    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val OVERLAY_HEIGHT_EXPANDED_DP = 180</ID>
+    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val PREF_ENABLED = "overlay_enabled"</ID>
+    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val TAG = "PerformanceOverlayEngine"</ID>
+    <ID>UnusedPrivateProperty:SecureStorageEngine.kt$SecureStorageEngine.Companion$private const val TAG = "SecureStorageEngine"</ID>
+    <ID>UseIfInsteadOfWhen:CryptoEngine.kt$CryptoEngine$when (_config.value.mode) { CipherMode.GCM -&gt; GCM_IV_LENGTH_BYTES else -&gt; IV_LENGTH_BYTES }</ID>
+    <ID>UseIfInsteadOfWhen:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$when { parts.size &gt;= 2 -&gt; parts.take(2).joinToString(".") else -&gt; packageName }</ID>
+    <ID>UseIfInsteadOfWhen:LeakDetectionEngine.kt$LeakDetectionEngine$when (obj) { is Activity -&gt; ESTIMATED_ACTIVITY_SIZE else -&gt; ESTIMATED_DEFAULT_SIZE }</ID>
+  </CurrentIssues>
+</SmellBaseline>

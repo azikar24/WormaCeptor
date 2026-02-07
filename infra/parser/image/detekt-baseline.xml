@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CollapsibleIfStatements:ImageMetadataExtractor.kt$ImageMetadataExtractor$if (marker in 0xC0..0xCF &amp;&amp; marker !in listOf(0xC4, 0xC8, 0xCC)) { if (offset + 7 &lt;= data.size) { val precision = data[offset + 2].toInt() and 0xFF val height = ((data[offset + 3].toInt() and 0xFF) shl 8) or (data[offset + 4].toInt() and 0xFF) val width = ((data[offset + 5].toInt() and 0xFF) shl 8) or (data[offset + 6].toInt() and 0xFF) val components = data[offset + 7].toInt() and 0xFF val colorSpace = when (components) { 1 -&gt; "Grayscale" 3 -&gt; "YCbCr" // Usually converted to RGB 4 -&gt; "CMYK" else -&gt; null } return ImageMetadata( width = width, height = height, format = "JPEG", colorSpace = colorSpace, hasAlpha = false, // JPEG doesn't support alpha bitDepth = precision, fileSize = data.size.toLong(), ) } }</ID>
+    <ID>CyclomaticComplexMethod:ImageMetadataExtractor.kt$ImageMetadataExtractor$private fun extractJpegMetadata(data: ByteArray): ImageMetadata</ID>
+    <ID>LoopWithTooManyJumpStatements:ImageMetadataExtractor.kt$ImageMetadataExtractor$while</ID>
+    <ID>MagicNumber:ImageMetadata.kt$ImageMetadata$1024</ID>
+    <ID>MagicNumber:ImageMetadata.kt$ImageMetadata$1024.0</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0x10</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0x3FFF</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xC0</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xC4</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xC8</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xCC</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xCF</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xD0</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xD9</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$0xFF</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$10</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$12</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$14</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$15</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$16</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$18</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$20</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$21</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$22</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$23</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$24</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$25</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$256</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$26</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$27</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$28</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$29</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$3</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$30</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$32</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$4</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$5</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$6</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$7</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$8</ID>
+    <ID>MagicNumber:ImageMetadataExtractor.kt$ImageMetadataExtractor$9</ID>
+    <ID>MagicNumber:ImageParser.kt$ImageParser$1024</ID>
+    <ID>MagicNumber:ImageParser.kt$ImageParser$1024.0</ID>
+    <ID>MagicNumber:ImageParser.kt$ImageParser$150</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x0A</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x1A</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x38</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x42</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x45</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x46</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x47</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x49</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x4D</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x4E</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x50</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x52</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x57</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$1000</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$11</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$12</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$4</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$5</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$6</ID>
+    <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$8</ID>
+    <ID>MaxLineLength:ImageMetadataExtractor.kt$ImageMetadataExtractor$// Entry: width (1) + height (1) + color count (1) + reserved (1) + planes (2) + bit count (2) + size (4) + offset (4)</ID>
+    <ID>MaxLineLength:ImageMetadataExtractor.kt$ImageMetadataExtractor$if</ID>
+    <ID>MaximumLineLength:ImageMetadataExtractor.kt$ImageMetadataExtractor$ </ID>
+    <ID>MayBeConst:MagicByteDetector.kt$MagicByteDetector$// SVG detection - check for XML/SVG tags private val XML_DECLARATION = "&lt;?xml"</ID>
+    <ID>MayBeConst:MagicByteDetector.kt$MagicByteDetector$private val SVG_DOCTYPE = "&lt;!DOCTYPE svg"</ID>
+    <ID>MayBeConst:MagicByteDetector.kt$MagicByteDetector$private val SVG_TAG = "&lt;svg"</ID>
+    <ID>NestedBlockDepth:ImageMetadataExtractor.kt$ImageMetadataExtractor$private fun extractJpegMetadata(data: ByteArray): ImageMetadata</ID>
+    <ID>SwallowedException:ImageMetadataExtractor.kt$ImageMetadataExtractor$e: Exception</ID>
+    <ID>SwallowedException:ImageParser.kt$ImageParser$e: Exception</ID>
+    <ID>SwallowedException:MagicByteDetector.kt$MagicByteDetector$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ImageMetadataExtractor.kt$ImageMetadataExtractor$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ImageParser.kt$ImageParser$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MagicByteDetector.kt$MagicByteDetector$e: Exception</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val contentType: ContentType</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val displayName: String</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val mimeTypes: List&lt;String&gt;</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((bits shr 28) and 1)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[7].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[9].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 3].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 4].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 5].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 6].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset].toInt() and 0xFF) shl 8)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(bits shr 14)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(bits shr 28)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[24].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[25].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[26].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[27].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[28].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[29].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[7].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[9].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 3].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 4].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 5].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 6].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset].toInt() and 0xFF)</ID>
+    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(flags and 0x10)</ID>
+    <ID>UnnecessaryParentheses:MagicByteDetector.kt$MagicByteDetector$(lowercasePreview.contains(XML_DECLARATION) &amp;&amp; lowercasePreview.contains("svg"))</ID>
+  </CurrentIssues>
+</SmellBaseline>

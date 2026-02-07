@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakCard( leak: LeakInfo, onClick: () -&gt; Unit, colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakDetailContent( leak: LeakInfo, colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LeakDetectionScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LeakDetectionScreen( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:LeakDetectionScreen.kt$( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1000</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_024</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_024.0</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_048_576</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_048_576.0</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_073_741_824</ID>
+    <ID>MagicNumber:LeakDetectionScreen.kt$1_073_741_824.0</ID>
+    <ID>MagicNumber:LeakDetectionViewModel.kt$LeakDetectionViewModel$5000</ID>
+    <ID>UndocumentedPublicFunction:LeakDetectionColors.kt$LeakDetectionColors$fun backgroundForSeverity(severity: LeakSeverity): Color</ID>
+    <ID>UndocumentedPublicFunction:LeakDetectionColors.kt$LeakDetectionColors$fun colorForSeverity(severity: LeakSeverity): Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val actionButton: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val actionButtonText: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val cardBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val critical: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val criticalBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val detailBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val divider: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val high: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val highBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val idle: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val labelPrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val labelSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val low: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val lowBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val medium: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val mediumBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val monitoring: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val surfaceBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val valuePrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$// Filtered leaks val filteredLeaks: StateFlow&lt;ImmutableList&lt;LeakInfo&gt;&gt; = combine( engine.detectedLeaks, _selectedSeverity, ) { leaks, severity -&gt; val filtered = if (severity != null) { leaks.filter { it.severity == severity } } else { leaks } filtered.toImmutableList() }.stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf(), )</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$// Is running state val isRunning: StateFlow&lt;Boolean&gt; = engine.isRunning .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), false, )</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$// Leak summary val summary: StateFlow&lt;LeakSummary&gt; = engine.leakSummary .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), LeakSummary.empty(), )</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$val selectedLeak: StateFlow&lt;LeakInfo?&gt; = _selectedLeak.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$val selectedSeverity: StateFlow&lt;LeakSeverity?&gt; = _selectedSeverity.asStateFlow()</ID>
+    <ID>UnstableCollections:LeakDetectionScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
+    <ID>UnusedParameter:LeakDetectionColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
+    <ID>UnusedParameter:LeakDetectionScreen.kt$colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors</ID>
+    <ID>ViewModelInjection:LeakDetectionFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

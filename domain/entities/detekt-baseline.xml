@@ -1,0 +1,268 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.BUILD_CONFIG$ Version found via BuildConfig class </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.CLASS_PRESENCE_ONLY$ Library detected but version could not be determined </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.JAR_MANIFEST$ Version extracted from JAR manifest </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.MANIFEST_METADATA$ Version found via manifest metadata </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.PACKAGE_ANNOTATION$ Version found via package annotation </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.USER_AGENT$ Version found via user-agent or other runtime string </ID>
+    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.VERSION_FIELD$ Version found via static VERSION field </ID>
+    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.CRITICAL$ Critical severity - severe leak, requires immediate attention </ID>
+    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.HIGH$ High severity - significant leak, should be fixed soon </ID>
+    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.LOW$ Low severity - minor leak, minimal impact </ID>
+    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.MEDIUM$ Medium severity - moderate leak, should be investigated </ID>
+    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.AAR_RESOURCE$ Resource from AAR (Android Archive) </ID>
+    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.DEX$ Dalvik executable (.dex) file </ID>
+    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.JAR$ Java archive (.jar) file </ID>
+    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.NATIVE_SO$ Native shared object (.so) file </ID>
+    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.CUSTOM_SLOW_CODE$ Custom slow code block on main thread </ID>
+    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.DISK_READ$ File read operation on main thread </ID>
+    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.DISK_WRITE$ File write operation on main thread </ID>
+    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.NETWORK$ Network operation on main thread </ID>
+    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.SLOW_CALL$ Slow method call on main thread </ID>
+    <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, input: String, output: String, algorithm: CryptoAlgorithm, mode: CipherMode, durationMs: Long, )</ID>
+    <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, operation: CryptoOperation, input: String, algorithm: CryptoAlgorithm, mode: CipherMode, errorMessage: String, durationMs: Long, )</ID>
+    <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$16</ID>
+    <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$24</ID>
+    <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$32</ID>
+    <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$8</ID>
+    <ID>MagicNumber:MockLocation.kt$MockLocation$180.0</ID>
+    <ID>MagicNumber:MockLocation.kt$MockLocation$360f</ID>
+    <ID>MagicNumber:MockLocation.kt$MockLocation$90.0</ID>
+    <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$200</ID>
+    <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$299</ID>
+    <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$399</ID>
+    <ID>OutdatedDocumentation:DependencyInfo.kt$DependencyInfo</ID>
+    <ID>OutdatedDocumentation:RateLimitConfig.kt$RateLimitConfig$NetworkPreset</ID>
+    <ID>SwallowedException:CryptoConfig.kt$CryptoConfig$e: Exception</ID>
+    <ID>SwallowedException:WebViewRequest.kt$WebViewRequest$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CryptoConfig.kt$CryptoConfig$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WebViewRequest.kt$WebViewRequest$e: Exception</ID>
+    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$20000</ID>
+    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$50000</ID>
+    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.NetworkPreset.WIFI$20000</ID>
+    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.NetworkPreset.WIFI$50000</ID>
+    <ID>UndocumentedPublicClass:Crash.kt$Crash</ID>
+    <ID>UndocumentedPublicClass:NetworkTransaction.kt$NetworkTransaction</ID>
+    <ID>UndocumentedPublicClass:NetworkTransaction.kt$TransactionStatus</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$BooleanValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$FloatValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$IntValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$LongValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$StringSetValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Preference.kt$PreferenceValue$StringValue : PreferenceValue</ID>
+    <ID>UndocumentedPublicClass:Request.kt$Request</ID>
+    <ID>UndocumentedPublicClass:Response.kt$Response</ID>
+    <ID>UndocumentedPublicClass:SecureStorageEntry.kt$SecureStorageEntry$StorageType</ID>
+    <ID>UndocumentedPublicClass:TransactionSummary.kt$TransactionSummary</ID>
+    <ID>UndocumentedPublicFunction:DependencyInfo.kt$DependencyCategory$fun displayName(): String</ID>
+    <ID>UndocumentedPublicFunction:DependencyInfo.kt$DependencySummary.Companion$fun empty()</ID>
+    <ID>UndocumentedPublicFunction:DependencyInfo.kt$DetectionMethod$fun confidence(): String</ID>
+    <ID>UndocumentedPublicFunction:DependencyInfo.kt$DetectionMethod$fun displayName(): String</ID>
+    <ID>UndocumentedPublicFunction:LogEntry.kt$LogLevel.Companion$fun fromPriority(priority: Int): LogLevel</ID>
+    <ID>UndocumentedPublicFunction:LogEntry.kt$LogLevel.Companion$fun fromTag(tag: String): LogLevel</ID>
+    <ID>UndocumentedPublicFunction:SecureStorageEntry.kt$SecureStorageEntry.Companion$fun empty()</ID>
+    <ID>UndocumentedPublicFunction:SecureStorageEntry.kt$SecureStorageSummary.Companion$fun empty()</ID>
+    <ID>UndocumentedPublicFunction:SimulatedNotification.kt$SimulatedNotification.Companion$fun empty()</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequest.kt$WebViewRequestStats.Companion$fun empty()</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequest.kt$WebViewRequestStats.Companion$fun from(requests: List&lt;WebViewRequest&gt;): WebViewRequestStats</ID>
+    <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val isNullable: Boolean</ID>
+    <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val isPrimaryKey: Boolean</ID>
+    <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val name: String</ID>
+    <ID>UndocumentedPublicProperty:ColumnInfo.kt$ColumnInfo$val type: String</ID>
+    <ID>UndocumentedPublicProperty:Crash.kt$Crash$val exceptionType: String</ID>
+    <ID>UndocumentedPublicProperty:Crash.kt$Crash$val id: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:Crash.kt$Crash$val message: String?</ID>
+    <ID>UndocumentedPublicProperty:Crash.kt$Crash$val stackTrace: String</ID>
+    <ID>UndocumentedPublicProperty:Crash.kt$Crash$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:CryptoResult.kt$CryptoOperation$val displayName: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseInfo.kt$DatabaseInfo$val name: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseInfo.kt$DatabaseInfo$val path: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseInfo.kt$DatabaseInfo$val sizeBytes: Long</ID>
+    <ID>UndocumentedPublicProperty:DatabaseInfo.kt$DatabaseInfo$val tableCount: Int</ID>
+    <ID>UndocumentedPublicProperty:DependencyInfo.kt$DependencyInfo$val isInternalDependency: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DependencyInfo.kt$DependencySummary$val byCategory: Map&lt;DependencyCategory, Int&gt;</ID>
+    <ID>UndocumentedPublicProperty:DependencyInfo.kt$DependencySummary$val totalDetected: Int</ID>
+    <ID>UndocumentedPublicProperty:DependencyInfo.kt$DependencySummary$val withVersion: Int</ID>
+    <ID>UndocumentedPublicProperty:DependencyInfo.kt$DependencySummary$val withoutVersion: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val firstInstallTime: EpochMillis</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val isDebuggable: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val lastUpdateTime: EpochMillis</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val minSdk: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val packageName: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val targetSdk: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val versionCode: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$AppDetails$val versionName: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val board: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val brand: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val device: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val hardware: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val isEmulator: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val manufacturer: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val model: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceDetails$val product: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val app: AppDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val device: DeviceDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val memory: MemoryDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val network: NetworkDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val os: OsDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val screen: ScreenDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val storage: StorageDetails</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$DeviceInfo$val timestamp: EpochMillis = System.currentTimeMillis()</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val availableRam: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val isLowMemory: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val lowMemoryThreshold: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val totalRam: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val usagePercentage: Float</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$MemoryDetails$val usedRam: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val cellularNetworkType: String?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val connectionType: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val isCellularConnected: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val isConnected: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val isMetered: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val isWifiConnected: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$NetworkDetails$val wifiSsid: String?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val androidVersion: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val bootloader: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val buildId: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val fingerprint: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val incremental: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val sdkLevel: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$OsDetails$val securityPatch: String?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val density: Float</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val densityDpi: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val heightPixels: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val orientation: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val refreshRate: Float</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val scaledDensity: Float</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val sizeCategory: String</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$ScreenDetails$val widthPixels: Int</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val externalAvailable: Long?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val externalTotal: Long?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val externalUsed: Long?</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val hasExternalStorage: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val internalAvailable: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val internalTotal: Long</ID>
+    <ID>UndocumentedPublicProperty:DeviceInfo.kt$StorageDetails$val internalUsed: Long</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Binary$val bytes: ByteArray</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Binary$val displaySize: Int = bytes.size</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Error$val message: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Error$val throwable: Throwable? = null</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Image$val bytes: ByteArray</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Image$val height: Int</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Image$val mimeType: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Image$val width: Int</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Json$val formattedContent: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Json$val isValid: Boolean</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Json$val lineCount: Int = formattedContent.lines().size</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Json$val rawContent: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Pdf$val filePath: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Pdf$val pageCount: Int</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Pdf$val sizeBytes: Long</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Text$val content: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Text$val encoding: String = "UTF-8"</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Text$val lineCount: Int = content.lines().size</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.TooLarge$val maxSize: Long</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.TooLarge$val sizeBytes: Long</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Xml$val formattedContent: String</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Xml$val isValid: Boolean</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Xml$val lineCount: Int = formattedContent.lines().size</ID>
+    <ID>UndocumentedPublicProperty:FileContent.kt$FileContent.Xml$val rawContent: String</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val isDirectory: Boolean</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val isReadable: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val isWritable: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val lastModified: Long</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val name: String</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val path: String</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val permissions: String</ID>
+    <ID>UndocumentedPublicProperty:FileEntry.kt$FileEntry$val sizeBytes: Long</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val extension: String?</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val isReadable: Boolean</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val isWritable: Boolean</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val lastModified: Long</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val mimeType: String?</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val name: String</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val parentPath: String?</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val path: String</ID>
+    <ID>UndocumentedPublicProperty:FileInfo.kt$FileInfo$val sizeBytes: Long</ID>
+    <ID>UndocumentedPublicProperty:LogEntry.kt$LogLevel$val priority: Int</ID>
+    <ID>UndocumentedPublicProperty:LogEntry.kt$LogLevel$val tag: String</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val durationMs: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val extensions: Map&lt;String, String&gt; = emptyMap()</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val id: UUID = UUID.randomUUID()</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val request: Request</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val response: Response? = null</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val status: TransactionStatus = TransactionStatus.ACTIVE</ID>
+    <ID>UndocumentedPublicProperty:NetworkTransaction.kt$NetworkTransaction$val timestamp: EpochMillis = System.currentTimeMillis()</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceFile$val itemCount: Int</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceFile$val name: String</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceItem$val key: String</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceItem$val value: PreferenceValue</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue$abstract val displayValue: String</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue$abstract val typeName: String</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.BooleanValue$val value: Boolean</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.FloatValue$val value: Float</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.IntValue$val value: Int</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.LongValue$val value: Long</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.StringSetValue$val value: Set&lt;String&gt;</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.StringValue$val value: String</ID>
+    <ID>UndocumentedPublicProperty:QueryResult.kt$QueryResult$val columns: List&lt;String&gt;</ID>
+    <ID>UndocumentedPublicProperty:QueryResult.kt$QueryResult$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:QueryResult.kt$QueryResult$val isSuccess: Boolean get() = error == null</ID>
+    <ID>UndocumentedPublicProperty:QueryResult.kt$QueryResult$val rowCount: Int</ID>
+    <ID>UndocumentedPublicProperty:QueryResult.kt$QueryResult$val rows: List&lt;List&lt;Any?&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:RateLimitConfig.kt$RateLimitConfig.NetworkPreset$val displayName: String</ID>
+    <ID>UndocumentedPublicProperty:Request.kt$Request$val bodyRef: BlobID?</ID>
+    <ID>UndocumentedPublicProperty:Request.kt$Request$val bodySize: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:Request.kt$Request$val headers: Map&lt;String, List&lt;String&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:Request.kt$Request$val method: String</ID>
+    <ID>UndocumentedPublicProperty:Request.kt$Request$val url: String</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val bodyRef: BlobID?</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val bodySize: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val code: Int</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val headers: Map&lt;String, List&lt;String&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val message: String</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val protocol: String? = null</ID>
+    <ID>UndocumentedPublicProperty:Response.kt$Response$val tlsVersion: String? = null</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageEntry.kt$SecureStorageSummary$val totalCount: Int get() = encryptedPrefsCount + keystoreAliasCount + dataStoreFileCount</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationAction$val actionId: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationAction$val title: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationChannelInfo$val description: String?</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationChannelInfo$val id: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationChannelInfo$val importance: Int</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationChannelInfo$val name: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationPriority$val value: Int</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationTemplate$val id: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationTemplate$val name: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$NotificationTemplate$val notification: SimulatedNotification</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val actions: List&lt;NotificationAction&gt; = emptyList()</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val body: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val channelId: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val extras: Map&lt;String, String&gt; = emptyMap()</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val id: String</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val largeIconUri: String? = null</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val priority: NotificationPriority = NotificationPriority.DEFAULT</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val smallIconRes: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val timestamp: Long = System.currentTimeMillis()</ID>
+    <ID>UndocumentedPublicProperty:SimulatedNotification.kt$SimulatedNotification$val title: String</ID>
+    <ID>UndocumentedPublicProperty:TableInfo.kt$TableInfo$val columnCount: Int</ID>
+    <ID>UndocumentedPublicProperty:TableInfo.kt$TableInfo$val name: String</ID>
+    <ID>UndocumentedPublicProperty:TableInfo.kt$TableInfo$val rowCount: Long</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val code: Int?</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val hasRequestBody: Boolean</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val hasResponseBody: Boolean</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val host: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val id: UUID</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val method: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val path: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val status: TransactionStatus</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val timestamp: EpochMillis</ID>
+    <ID>UndocumentedPublicProperty:TransactionSummary.kt$TransactionSummary$val tookMs: Long?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequest.kt$WebViewResourceType$val description: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequest.kt$WebViewResourceType$val displayName: String</ID>
+    <ID>UnnecessaryParentheses:WebViewRequest.kt$WebViewRequest$(statusCode != null &amp;&amp; statusCode !in 200..399)</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>MagicNumber:ExtensionProvider.kt$ExtensionProvider$50</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFF6897BB</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFF6A8759</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFF808080</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFF9876AA</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFFA9B7C6</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFFCC7832</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$DarkSyntaxColors$0xFFE8BF6A</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF000000</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF0033B3</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF008080</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF067D17</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF1750EB</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF871094</ID>
+    <ID>MagicNumber:SyntaxHighlighter.kt$LightSyntaxColors$0xFF8C8C8C</ID>
+    <ID>UndocumentedPublicClass:BlobStorage.kt$BlobStorage</ID>
+    <ID>UndocumentedPublicClass:CrashRepository.kt$CrashRepository</ID>
+    <ID>UndocumentedPublicClass:LeakRepository.kt$LeakRepository</ID>
+    <ID>UndocumentedPublicClass:TransactionRepository.kt$TransactionRepository</ID>
+    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun deleteBlob(id: BlobID)</ID>
+    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun readBlob(id: BlobID): InputStream?</ID>
+    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun saveBlob(stream: InputStream): BlobID</ID>
+    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$fun observeCrashes(): kotlinx.coroutines.flow.Flow&lt;List&lt;Crash&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$suspend fun clearCrashes()</ID>
+    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$suspend fun saveCrash(crash: Crash)</ID>
+    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$fun observeLeaks(): Flow&lt;List&lt;LeakInfo&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$suspend fun clearLeaks()</ID>
+    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$suspend fun saveLeak(leak: LeakInfo)</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun getAllTransactions(): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun getTransactionsPaged( searchQuery: String?, filters: TransactionFilters, pageSize: Int = 30, ): Flow&lt;PagingData&lt;TransactionSummary&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun searchTransactions(query: String): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun clearAll()</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun deleteTransactions(ids: List&lt;UUID&gt;)</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun deleteTransactionsBefore(timestamp: Long)</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getAllTransactionsAsList(): List&lt;NetworkTransaction&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getTransactionById(id: UUID): NetworkTransaction?</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getTransactionCount(searchQuery: String?): Int</ID>
+    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun saveTransaction(transaction: NetworkTransaction)</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showConsoleLogs: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showCrashesTab: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showDeviceInfo: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showFileBrowser: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showNetworkTab: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showPreferences: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showSqliteBrowser: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val boolean: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val comment: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val default: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val keyword: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val number: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val operator: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val property: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val punctuation: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val string: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val tag: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$SyntaxColors$val typeAnnotation: Color</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val end: Int</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val start: Int</ID>
+    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val type: TokenType</ID>
+    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val contentType: String? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val maxDuration: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val method: String? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val minDuration: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val statusRange: IntRange? = null</ID>
+  </CurrentIssues>
+</SmellBaseline>

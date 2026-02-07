@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:WebViewMonitorFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -&gt; Unit)</ID>
+    <ID>LongMethod:WebViewMonitorFeature.kt$@Composable fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>LongMethod:WebViewMonitorFeature.kt$@Composable private fun WebViewRequestItem(request: WebViewRequest, onClick: () -&gt; Unit)</ID>
+    <ID>LongMethod:WebViewMonitorFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -&gt; Unit)</ID>
+    <ID>LongMethod:WebViewMonitorFeature.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable private fun WebViewMonitorListScreen( isEnabled: Boolean, requests: List&lt;WebViewRequest&gt;, totalCount: Int, stats: WebViewRequestStats, searchQuery: String, resourceTypeFilter: Set&lt;WebViewResourceType&gt;, showFilters: Boolean, onToggleEnabled: () -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onToggleResourceTypeFilter: (WebViewResourceType) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearRequests: () -&gt; Unit, onToggleFilters: () -&gt; Unit, onRequestClick: (WebViewRequest) -&gt; Unit, onNavigateBack: (() -&gt; Unit)?, )</ID>
+    <ID>LongParameterList:WebViewMonitorFeature.kt$( isEnabled: Boolean, requests: List&lt;WebViewRequest&gt;, totalCount: Int, stats: WebViewRequestStats, searchQuery: String, resourceTypeFilter: Set&lt;WebViewResourceType&gt;, showFilters: Boolean, onToggleEnabled: () -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onToggleResourceTypeFilter: (WebViewResourceType) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearRequests: () -&gt; Unit, onToggleFilters: () -&gt; Unit, onRequestClick: (WebViewRequest) -&gt; Unit, onNavigateBack: (() -&gt; Unit)?, )</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF607D8B</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF757575</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF795548</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFFF44336</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$1000</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$1000.0</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$1024</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$1024.0</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$300</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$60000</ID>
+    <ID>MagicNumber:WebViewMonitorFeature.kt$60000.0</ID>
+    <ID>UnderscoresInNumericLiterals:WebViewMonitorFeature.kt$60000</ID>
+    <ID>UnderscoresInNumericLiterals:WebViewMonitorFeature.kt$60000.0</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearFilters()</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearRequests()</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearSelection()</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun selectRequest(request: WebViewRequest)</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun setSearchQuery(query: String)</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleEnabled()</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleFilters()</ID>
+    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleResourceTypeFilter(type: WebViewResourceType)</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val isEnabled: StateFlow&lt;Boolean&gt; = engine.isEnabled</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val requests: StateFlow&lt;List&lt;WebViewRequest&gt;&gt; = engine.requests</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val resourceTypeFilter: StateFlow&lt;Set&lt;WebViewResourceType&gt;&gt; = engine.resourceTypeFilter</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val selectedRequest: StateFlow&lt;WebViewRequest?&gt; = _selectedRequest.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val showFilters: StateFlow&lt;Boolean&gt; = _showFilters.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val stats: StateFlow&lt;WebViewRequestStats&gt; = engine.stats</ID>
+    <ID>UnstableCollections:WebViewMonitorFeature.kt$List&lt;WebViewRequest&gt;</ID>
+    <ID>UnstableCollections:WebViewMonitorFeature.kt$Set&lt;WebViewResourceType&gt;</ID>
+    <ID>ViewModelInjection:WebViewMonitorFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

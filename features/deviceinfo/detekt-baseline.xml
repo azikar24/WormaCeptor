@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun CollapsibleInfoRow(label: String, value: String)</ID>
+    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun InfoCard( title: String, icon: ImageVector, iconTint: Color, onCopy: () -&gt; Unit, content: @Composable () -&gt; Unit, )</ID>
+    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -&gt; Unit)</ID>
+    <ID>LongMethod:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
+    <ID>LongMethod:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$@SuppressLint("MissingPermission") private fun getNetworkDetails(): NetworkDetails</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$0.4f</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$0.6f</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$100f</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$1024</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$1024.0</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$200</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$50</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$70</ID>
+    <ID>MagicNumber:DeviceInfoScreen.kt$90</ID>
+    <ID>MagicNumber:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$100f</ID>
+    <ID>MagicNumber:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$60f</ID>
+    <ID>ModifierMissing:DeviceInfoScreen.kt$DeviceInfoScreen</ID>
+    <ID>SwallowedException:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
+    <ID>SwallowedException:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: SecurityException</ID>
+    <ID>TooGenericExceptionCaught:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
+    <ID>TooManyFunctions:DeviceInfoScreen.kt$com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen.kt</ID>
+    <ID>UndocumentedPublicFunction:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
+    <ID>UnnecessaryParentheses:DeviceInfoScreen.kt$(extUsed.toFloat() / extTotal.toFloat())</ID>
+    <ID>UnnecessaryParentheses:DeviceInfoScreen.kt$(storage.internalUsed.toFloat() / storage.internalTotal.toFloat())</ID>
+    <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(Build.BRAND.startsWith("generic") &amp;&amp; Build.DEVICE.startsWith("generic"))</ID>
+    <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)</ID>
+    <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(usedRam.toFloat() / totalRam.toFloat())</ID>
+  </CurrentIssues>
+</SmellBaseline>

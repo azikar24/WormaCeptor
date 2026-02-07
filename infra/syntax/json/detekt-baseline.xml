@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>NestedBlockDepth:JsonHighlighter.kt$JsonHighlighter$private fun tokenize(code: String): List&lt;Token&gt;</ID>
+  </CurrentIssues>
+</SmellBaseline>

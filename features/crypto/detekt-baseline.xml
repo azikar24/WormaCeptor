@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:CryptoFeature.kt$CryptoHistoryScreen</ID>
+    <ID>CyclomaticComplexMethod:CryptoFeature.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CryptoTool( modifier: Modifier = Modifier, engine: CryptoEngine? = null, onNavigateBack: (() -&gt; Unit)? = null, onNavigateToHistory: (() -&gt; Unit)? = null, )</ID>
+    <ID>LongMethod:CryptoFeature.kt$@Composable private fun ResultCard( result: CryptoResult, onCopy: (String) -&gt; Unit, onClear: () -&gt; Unit, onUseAsInput: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:CryptoFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CryptoHistoryScreen( engine: CryptoEngine, modifier: Modifier = Modifier, onNavigateBack: () -&gt; Unit, onLoadResult: (CryptoResult) -&gt; Unit, )</ID>
+    <ID>LongMethod:CryptoFeature.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CryptoTool( modifier: Modifier = Modifier, engine: CryptoEngine? = null, onNavigateBack: (() -&gt; Unit)? = null, onNavigateToHistory: (() -&gt; Unit)? = null, )</ID>
+    <ID>MagicNumber:CryptoFeature.kt$0xFF009688</ID>
+    <ID>MagicNumber:CryptoFeature.kt$0xFF673AB7</ID>
+    <ID>MagicNumber:CryptoFeature.kt$0xFFF44336</ID>
+    <ID>MagicNumber:CryptoFeature.kt$50</ID>
+    <ID>MagicNumber:CryptoFeature.kt$8</ID>
+    <ID>MaxLineLength:CryptoFeature.kt$if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility</ID>
+    <ID>MaxLineLength:CryptoFeature.kt$visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation()</ID>
+    <ID>MaxLineLength:CryptoFeature.kt$visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation()</ID>
+    <ID>MaximumLineLength:CryptoFeature.kt$ </ID>
+    <ID>OutdatedDocumentation:CryptoFeature.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CryptoTool( modifier: Modifier = Modifier, engine: CryptoEngine? = null, onNavigateBack: (() -&gt; Unit)? = null, onNavigateToHistory: (() -&gt; Unit)? = null, )</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun applyPreset(preset: CryptoPreset)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun clearHistory()</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun clearResult()</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun decrypt()</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun encrypt()</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun generateIv(): String</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun generateKey(): String</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun loadFromHistory(result: CryptoResult)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun removeFromHistory(id: String)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setAlgorithm(algorithm: CryptoAlgorithm)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setIv(iv: String)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setKey(key: String)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setKeyFormat(format: KeyFormat)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setMode(mode: CipherMode)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun setPadding(padding: PaddingScheme)</ID>
+    <ID>UndocumentedPublicFunction:CryptoFeature.kt$CryptoViewModel$fun updateInputText(text: String)</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$val config: StateFlow&lt;CryptoConfig&gt; = engine.config</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$val currentResult: StateFlow&lt;CryptoResult?&gt; = engine.currentResult</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$val error: StateFlow&lt;String?&gt; = engine.error</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$val history: StateFlow&lt;List&lt;CryptoResult&gt;&gt; = engine.history</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$val isProcessing: StateFlow&lt;Boolean&gt; = engine.isProcessing</ID>
+    <ID>UndocumentedPublicProperty:CryptoFeature.kt$CryptoViewModel$var inputText by mutableStateOf("") private set</ID>
+    <ID>ViewModelInjection:CryptoFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

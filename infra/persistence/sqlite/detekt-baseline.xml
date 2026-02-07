@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:TransactionPagingSource.kt$TransactionPagingSource$override fun getRefreshKey(state: PagingState&lt;Int, TransactionSummary&gt;): Int?</ID>
+    <ID>LongParameterList:TransactionDao.kt$TransactionDao$( offset: Int, limit: Int, searchQuery: String?, statusMin: Int?, statusMax: Int?, method: String?, )</ID>
+    <ID>MaxLineLength:TransactionDao.kt$TransactionDao$"SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC"</ID>
+    <ID>MaximumLineLength:TransactionDao.kt$TransactionDao$ </ID>
+    <ID>OptionalUnit:FileSystemBlobStorage.kt$FileSystemBlobStorage$val file = File(blobDir, id) if (file.exists()) file.delete() Unit</ID>
+    <ID>SwallowedException:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TransactionPagingSource.kt$TransactionPagingSource$e: Exception</ID>
+    <ID>UndocumentedPublicClass:Converters.kt$Converters</ID>
+    <ID>UndocumentedPublicClass:CrashDao.kt$CrashDao</ID>
+    <ID>UndocumentedPublicClass:CrashEntity.kt$CrashEntity</ID>
+    <ID>UndocumentedPublicClass:FileSystemBlobStorage.kt$FileSystemBlobStorage : BlobStorage</ID>
+    <ID>UndocumentedPublicClass:InMemoryBlobStorage.kt$InMemoryBlobStorage : BlobStorage</ID>
+    <ID>UndocumentedPublicClass:InMemoryCrashRepository.kt$InMemoryCrashRepository : CrashRepository</ID>
+    <ID>UndocumentedPublicClass:InMemoryLeakRepository.kt$InMemoryLeakRepository : LeakRepository</ID>
+    <ID>UndocumentedPublicClass:InMemoryTransactionRepository.kt$InMemoryTransactionRepository : TransactionRepository</ID>
+    <ID>UndocumentedPublicClass:LeakDao.kt$LeakDao</ID>
+    <ID>UndocumentedPublicClass:LeakEntity.kt$LeakEntity</ID>
+    <ID>UndocumentedPublicClass:RoomCrashRepository.kt$RoomCrashRepository : CrashRepository</ID>
+    <ID>UndocumentedPublicClass:RoomLeakRepository.kt$RoomLeakRepository : LeakRepository</ID>
+    <ID>UndocumentedPublicClass:RoomTransactionRepository.kt$RoomTransactionRepository : TransactionRepository</ID>
+    <ID>UndocumentedPublicClass:TransactionDao.kt$TransactionDao</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun dateToTimestamp(date: Date?): Long?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromExtensions(ext: Map&lt;String, String&gt;?): String?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromHeaders(headers: Map&lt;String, List&lt;String&gt;&gt;?): String?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromStatus(status: TransactionStatus): String</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromStringList(list: List&lt;String&gt;?): String?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromTimestamp(value: Long?): Date?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromUUID(uuid: UUID?): String?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun toExtensions(value: String?): Map&lt;String, String&gt;?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun toHeaders(value: String?): Map&lt;String, List&lt;String&gt;&gt;?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun toStatus(value: String): TransactionStatus</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun toStringList(value: String?): List&lt;String&gt;?</ID>
+    <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun toUUID(value: String?): UUID?</ID>
+    <ID>UndocumentedPublicFunction:CrashDao.kt$CrashDao$@Insert suspend fun insert(crash: CrashEntity)</ID>
+    <ID>UndocumentedPublicFunction:CrashDao.kt$CrashDao$@Query("DELETE FROM crashes") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:CrashDao.kt$CrashDao$@Query("SELECT * FROM crashes ORDER BY timestamp DESC") fun getAll(): Flow&lt;List&lt;CrashEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:CrashEntity.kt$CrashEntity$fun toDomain()</ID>
+    <ID>UndocumentedPublicFunction:CrashEntity.kt$CrashEntity.Companion$fun fromDomain(crash: Crash)</ID>
+    <ID>UndocumentedPublicFunction:LeakDao.kt$LeakDao$@Insert suspend fun insert(leak: LeakEntity)</ID>
+    <ID>UndocumentedPublicFunction:LeakDao.kt$LeakDao$@Query("DELETE FROM leaks") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:LeakDao.kt$LeakDao$@Query("SELECT * FROM leaks ORDER BY timestamp DESC") fun getAll(): Flow&lt;List&lt;LeakEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:LeakDao.kt$LeakDao$@Query("SELECT COUNT(*) FROM leaks") suspend fun getCount(): Int</ID>
+    <ID>UndocumentedPublicFunction:LeakEntity.kt$LeakEntity$fun toDomain()</ID>
+    <ID>UndocumentedPublicFunction:LeakEntity.kt$LeakEntity.Companion$fun fromDomain(leak: LeakInfo)</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(transaction: TransactionEntity)</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query( """ SELECT * FROM transactions WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%') AND (:statusMin IS NULL OR resCode &gt;= :statusMin) AND (:statusMax IS NULL OR resCode &lt;= :statusMax) AND (:method IS NULL OR reqMethod = :method) ORDER BY timestamp DESC LIMIT :limit OFFSET :offset """, ) suspend fun getTransactionsPaged( offset: Int, limit: Int, searchQuery: String?, statusMin: Int?, statusMax: Int?, method: String?, ): List&lt;TransactionEntity&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query( """ SELECT COUNT(*) FROM transactions WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%') """, ) suspend fun getTransactionCount(searchQuery: String?): Int</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query( "SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC", ) fun search(query: String): Flow&lt;List&lt;TransactionEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("DELETE FROM transactions WHERE id IN (:ids)") suspend fun deleteByIds(ids: List&lt;UUID&gt;)</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("DELETE FROM transactions WHERE timestamp &lt; :timestamp") suspend fun deleteOlderThan(timestamp: Long)</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("DELETE FROM transactions") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("SELECT * FROM transactions ORDER BY timestamp DESC") fun getAll(): Flow&lt;List&lt;TransactionEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("SELECT * FROM transactions ORDER BY timestamp DESC") suspend fun getAllAsList(): List&lt;TransactionEntity&gt;</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("SELECT * FROM transactions WHERE id = :id") suspend fun getById(id: String): TransactionEntity?</ID>
+    <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("SELECT * FROM transactions WHERE id = :id") suspend fun getById(id: UUID): TransactionEntity?</ID>
+    <ID>UndocumentedPublicFunction:TransactionEntity.kt$TransactionEntity$fun toDomain(): NetworkTransaction</ID>
+    <ID>UndocumentedPublicFunction:TransactionEntity.kt$TransactionEntity.Companion$fun fromDomain(domain: NetworkTransaction): TransactionEntity</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun crashDao(): CrashDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun leakDao(): LeakDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun transactionDao(): TransactionDao</ID>
+    <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$@PrimaryKey(autoGenerate = true) val id: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val exceptionType: String</ID>
+    <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val message: String?</ID>
+    <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val stackTrace: String</ID>
+    <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$@PrimaryKey(autoGenerate = true) val id: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val leakDescription: String</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val objectClass: String</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val referencePath: List&lt;String&gt;</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val retainedSize: Long</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val severity: String</ID>
+    <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$@PrimaryKey val id: UUID</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val durationMs: Long?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val extensions: Map&lt;String, String&gt;</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val reqBodyRef: String?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val reqBodySize: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val reqHeaders: Map&lt;String, List&lt;String&gt;&gt;</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val reqMethod: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val reqUrl: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resBodyRef: String?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resBodySize: Long = 0</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resCode: Int?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resError: String?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resHeaders: Map&lt;String, List&lt;String&gt;&gt;?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resMessage: String?</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resProtocol: String? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val resTlsVersion: String? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val status: TransactionStatus</ID>
+    <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagingSource.kt$TransactionPagingSource.Companion$const val PAGE_SIZE = 30</ID>
+    <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$(response?.bodySize ?: 0)</ID>
+    <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$(tx.response?.code?.let { it in statusRange } ?: false)</ID>
+  </CurrentIssues>
+</SmellBaseline>

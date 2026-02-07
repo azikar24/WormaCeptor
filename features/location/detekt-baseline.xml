@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:LocationViewModel.kt$LocationViewModel$Companion</ID>
+    <ID>ComposableParamOrder:LocationScreen.kt$LocationScreen</ID>
+    <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>LongMethod:LocationMapCard.kt$@Composable fun LocationMapCard( realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@Composable private fun CollapsibleMapSection( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@Composable private fun CoordinateInputCard( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@Composable private fun MockLocationStatusCard( currentMockLocation: MockLocation?, isMockEnabled: Boolean, onToggle: () -&gt; Unit, isEnabled: Boolean, canEnable: Boolean, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@Composable private fun MockLocationWarningBanner()</ID>
+    <ID>LongMethod:LocationScreen.kt$@Composable private fun PresetItem( preset: LocationPreset, isSelected: Boolean, onClick: () -&gt; Unit, onDelete: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationScreen( latitudeInput: String, longitudeInput: String, searchQuery: String, presets: ImmutableList&lt;LocationPreset&gt;, currentMockLocation: MockLocation?, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, isInputValid: Boolean, isLoading: Boolean, errorMessage: String?, successMessage: String?, realDeviceLocation: GeoPoint?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onClearMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onPresetClick: (LocationPreset) -&gt; Unit, onDeletePreset: (String) -&gt; Unit, onSavePreset: (String) -&gt; Unit, onClearError: () -&gt; Unit, onClearSuccessMessage: () -&gt; Unit, onMapTap: (GeoPoint) -&gt; Unit, onBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:LocationScreen.kt$( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:LocationScreen.kt$( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:LocationScreen.kt$( latitudeInput: String, longitudeInput: String, searchQuery: String, presets: ImmutableList&lt;LocationPreset&gt;, currentMockLocation: MockLocation?, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, isInputValid: Boolean, isLoading: Boolean, errorMessage: String?, successMessage: String?, realDeviceLocation: GeoPoint?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onClearMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onPresetClick: (LocationPreset) -&gt; Unit, onDeletePreset: (String) -&gt; Unit, onSavePreset: (String) -&gt; Unit, onClearError: () -&gt; Unit, onClearSuccessMessage: () -&gt; Unit, onMapTap: (GeoPoint) -&gt; Unit, onBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$0.1278</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$139.6503</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$151.2093</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$2.3522</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$33.8688</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$35.6762</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$40.7128</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$48.8566</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$51.5074</ID>
+    <ID>MagicNumber:LocationDataSource.kt$LocationDataSource$74.0060</ID>
+    <ID>MagicNumber:LocationMapView.kt$1000</ID>
+    <ID>MagicNumber:LocationMapView.kt$15.0</ID>
+    <ID>MagicNumber:LocationMapView.kt$19.0</ID>
+    <ID>MagicNumber:LocationMapView.kt$3.0</ID>
+    <ID>MagicNumber:LocationScreen.kt$180.0</ID>
+    <ID>MagicNumber:LocationScreen.kt$90.0</ID>
+    <ID>MagicNumber:LocationViewModel.kt$LocationViewModel$180.0</ID>
+    <ID>MagicNumber:LocationViewModel.kt$LocationViewModel$2000L</ID>
+    <ID>MagicNumber:LocationViewModel.kt$LocationViewModel$5000</ID>
+    <ID>MagicNumber:LocationViewModel.kt$LocationViewModel$5000L</ID>
+    <ID>MagicNumber:LocationViewModel.kt$LocationViewModel$90.0</ID>
+    <ID>MaxLineLength:LocationMapView.kt$targetValue = if (isMockActive) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
+    <ID>MaxLineLength:LocationScreen.kt$isError = latitudeInput.isNotBlank() &amp;&amp; latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true</ID>
+    <ID>MaxLineLength:LocationScreen.kt$isError = longitudeInput.isNotBlank() &amp;&amp; longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true</ID>
+    <ID>MaxLineLength:LocationScreen.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
+    <ID>MaximumLineLength:LocationMapView.kt$ </ID>
+    <ID>MaximumLineLength:LocationScreen.kt$ </ID>
+    <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
+    <ID>UndocumentedPublicFunction:LocationViewModel.kt$LocationViewModel$fun onLatitudeChanged(value: String)</ID>
+    <ID>UndocumentedPublicFunction:LocationViewModel.kt$LocationViewModel$fun onLongitudeChanged(value: String)</ID>
+    <ID>UndocumentedPublicFunction:LocationViewModel.kt$LocationViewModel$fun onSearchQueryChanged(query: String)</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val builtIn: Color = WormaCeptorColors.Location.BuiltInPreset</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val coordinate: Color = WormaCeptorColors.Location.Coordinate</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val disabled: Color = WormaCeptorColors.Location.Disabled</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val enabled: Color = WormaCeptorColors.Location.Enabled</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val error: Color = WormaCeptorColors.Location.Error</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val userPreset: Color = WormaCeptorColors.Location.UserPreset</ID>
+    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val warning: Color = WormaCeptorColors.Location.Warning</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$// All presets (filtered by search) val presets: StateFlow&lt;ImmutableList&lt;LocationPreset&gt;&gt; = combine( repository.getPresets(), _searchQuery, ) { presets, query -&gt; presets.filter { preset -&gt; query.isBlank() || preset.name.contains(query, ignoreCase = true) || preset.location.name?.contains(query, ignoreCase = true) == true }.toImmutableList() }.flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$// Current mock location state val currentMockLocation: StateFlow&lt;MockLocation?&gt; = repository.getCurrentMockLocation() .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$// Engine error state val engineError: StateFlow&lt;String?&gt; = engine.lastError</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$// Mock location enabled state val isMockEnabled: StateFlow&lt;Boolean&gt; = engine.isEnabled</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$// Validation state for input val isInputValid: StateFlow&lt;Boolean&gt; = combine( _latitudeInput, _longitudeInput, ) { lat, lon -&gt; val latitude = lat.toDoubleOrNull() val longitude = lon.toDoubleOrNull() latitude != null &amp;&amp; longitude != null &amp;&amp; latitude in -90.0..90.0 &amp;&amp; longitude in -180.0..180.0 }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val errorMessage: StateFlow&lt;String?&gt; = _errorMessage.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val isMockLocationAvailable: StateFlow&lt;Boolean&gt; = _isMockLocationAvailable.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val latitudeInput: StateFlow&lt;String&gt; = _latitudeInput.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val longitudeInput: StateFlow&lt;String&gt; = _longitudeInput.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val realDeviceLocation: StateFlow&lt;Location?&gt; = _realDeviceLocation.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val successMessage: StateFlow&lt;String?&gt; = _successMessage.asStateFlow()</ID>
+    <ID>UseIfInsteadOfWhen:LocationMapView.kt$when { meters &lt; 1000 -&gt; "%.0f m".format(meters) else -&gt; "%.2f km".format(meters / 1000) }</ID>
+    <ID>ViewModelInjection:LocationFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

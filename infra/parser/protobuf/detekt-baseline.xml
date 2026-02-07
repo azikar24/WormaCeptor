@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LoopWithTooManyJumpStatements:ProtobufBodyParser.kt$ProtobufBodyParser$while</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$0x7</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$0x7F</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$0x80</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$0xFF</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$100</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$126</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$150</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$16</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$3</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$32</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$4</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$5</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$536870911</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$64</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$7</ID>
+    <ID>MagicNumber:ProtobufBodyParser.kt$ProtobufBodyParser$8</ID>
+    <ID>ReturnCount:ProtobufBodyParser.kt$ProtobufBodyParser$private fun readField(buffer: ByteBuffer, fieldNumber: Int, wireType: Int): ProtobufField?</ID>
+    <ID>ReturnCount:ProtobufBodyParser.kt$ProtobufBodyParser$private fun skipField(buffer: ByteBuffer, wireType: Int): Boolean</ID>
+    <ID>SwallowedException:ProtobufBodyParser.kt$ProtobufBodyParser$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ProtobufBodyParser.kt$ProtobufBodyParser$e: Exception</ID>
+    <ID>UnderscoresInNumericLiterals:ProtobufBodyParser.kt$ProtobufBodyParser$536870911</ID>
+    <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val fieldNumber: Int</ID>
+    <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val value: String</ID>
+    <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val wireType: Int</ID>
+    <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val wireTypeName: String</ID>
+    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(b and 0x80)</ID>
+    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(b.toLong() and 0x7F)</ID>
+    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(value shr 1)</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ClassOrdering:FloatingButtonService.kt$FloatingButtonService$Companion</ID>
+    <ID>CyclomaticComplexMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton()</ID>
+    <ID>EmptyFunctionBlock:FloatingButtonService.kt$FloatingButtonService.&lt;no name provided&gt;${}</ID>
+    <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var layoutParams: WindowManager.LayoutParams</ID>
+    <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var windowManager: WindowManager</ID>
+    <ID>LongMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton()</ID>
+    <ID>MagicNumber:FloatingButtonService.kt$FloatingButtonService$4</ID>
+    <ID>MutableStateParam:FloatingButtonService.kt$pressedScaleState</ID>
+    <ID>PrintStackTrace:FloatingButtonService.kt$FloatingButtonService$e</ID>
+    <ID>TooGenericExceptionCaught:FloatingButtonService.kt$FloatingButtonService$e: Exception</ID>
+    <ID>UndocumentedPublicClass:ShakeDetector.kt$ShakeDetector : SensorEventListener</ID>
+    <ID>UndocumentedPublicClass:ShakeDetector.kt$ShakeDetector$OnShakeListener</ID>
+    <ID>UndocumentedPublicFunction:ShakeDetector.kt$ShakeDetector$fun setOnShakeListener(listener: OnShakeListener?)</ID>
+    <ID>UndocumentedPublicFunction:ShakeDetector.kt$ShakeDetector.Companion$fun start(activity: ComponentActivity, onShake: () -&gt; Unit)</ID>
+    <ID>UndocumentedPublicFunction:ShakeDetector.kt$ShakeDetector.OnShakeListener$fun onShake(count: Int)</ID>
+    <ID>UnnecessaryParentheses:FloatingButtonService.kt$FloatingButtonService$(resources.displayMetrics.heightPixels / 4)</ID>
+  </CurrentIssues>
+</SmellBaseline>

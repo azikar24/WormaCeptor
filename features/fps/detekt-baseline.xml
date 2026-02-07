@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun EmptyState(onStartMonitoring: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun FpsChart(data: ImmutableList&lt;FpsInfo&gt;, colors: FpsColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FpsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null)</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF1976D2</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF1B5E20</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF388E3C</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF424242</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF64B5F6</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFF81C784</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFB71C1C</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFD32F2F</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFE0E0E0</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFE57373</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFE65100</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFE8F5E9</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFF06292</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFF57C00</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFFFB74D</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFFFEBEE</ID>
+    <ID>MagicNumber:FpsColors.kt$0xFFFFF3E0</ID>
+    <ID>MagicNumber:FpsScreen.kt$30f</ID>
+    <ID>MagicNumber:FpsScreen.kt$55f</ID>
+    <ID>MagicNumber:FpsScreen.kt$60f</ID>
+    <ID>MagicNumber:FpsScreen.kt$65f</ID>
+    <ID>MagicNumber:FpsScreen.kt$8f</ID>
+    <ID>MagicNumber:FpsViewModel.kt$FpsViewModel$5000</ID>
+    <ID>MaxLineLength:FpsFeature.kt$*</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartFill: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartGrid: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartLine: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val critical: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val criticalBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val good: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val goodBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val jankIndicator: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val warning: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val warningBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors.Companion$const val FPS_GOOD_THRESHOLD = 55f</ID>
+    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors.Companion$const val FPS_WARNING_THRESHOLD = 30f</ID>
+    <ID>ViewModelInjection:FpsFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

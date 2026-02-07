@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:XmlBodyParser.kt$XmlBodyParser$private fun extractMetadata(xml: String): Map&lt;String, String&gt;</ID>
+    <ID>CyclomaticComplexMethod:XmlBodyParser.kt$XmlBodyParser$private fun formatXml(xml: String): String</ID>
+    <ID>LongMethod:XmlBodyParser.kt$XmlBodyParser$private fun formatXml(xml: String): String</ID>
+    <ID>MagicNumber:XmlBodyParser.kt$XmlBodyParser$240</ID>
+    <ID>MagicNumber:XmlBodyParser.kt$XmlBodyParser$3</ID>
+    <ID>MagicNumber:XmlBodyParser.kt$XmlBodyParser$5</ID>
+    <ID>NestedBlockDepth:XmlBodyParser.kt$XmlBodyParser$private fun extractMetadata(xml: String): Map&lt;String, String&gt;</ID>
+    <ID>NestedBlockDepth:XmlBodyParser.kt$XmlBodyParser$private fun formatXml(xml: String): String</ID>
+    <ID>SwallowedException:XmlBodyParser.kt$XmlBodyParser$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:XmlBodyParser.kt$XmlBodyParser$e: Exception</ID>
+    <ID>UnnecessaryParentheses:XmlBodyParser.kt$XmlBodyParser$(trimmed.startsWith("&lt;") &amp;&amp; !trimmed.startsWith("&lt;!DOCTYPE html", ignoreCase = true))</ID>
+  </CurrentIssues>
+</SmellBaseline>

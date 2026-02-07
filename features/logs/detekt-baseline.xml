@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CompositionLocalAllowlist:LogColors.kt$LocalLogLevelColors</ID>
+    <ID>LongMethod:LogsScreen.kt$@Composable private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:LogsScreen.kt$@Composable private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:LogsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null)</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF0D47A1</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF1976D2</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF1B5E20</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF212121</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF388E3C</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF64B5F6</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF757575</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF81C784</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF880E4F</ID>
+    <ID>MagicNumber:LogColors.kt$0xFF9E9E9E</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFB71C1C</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFC2185B</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFD32F2F</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFE3F2FD</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFE57373</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFE65100</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFE8F5E9</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFF06292</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFF57C00</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFF5F5F5</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFFCE4EC</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFFFB74D</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFFFEBEE</ID>
+    <ID>MagicNumber:LogColors.kt$0xFFFFF3E0</ID>
+    <ID>MagicNumber:LogsViewModel.kt$LogsViewModel$100</ID>
+    <ID>MagicNumber:LogsViewModel.kt$LogsViewModel$5000</ID>
+    <ID>MatchingDeclarationName:LogColors.kt$LogLevelColors</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assert: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assertBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val debug: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val debugBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val error: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val errorBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val info: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val infoBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val verbose: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val verboseBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val warn: Color</ID>
+    <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val warnBackground: Color</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$// Capture state from engine val isCapturing: StateFlow&lt;Boolean&gt; = logCaptureEngine.isCapturing</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$// Count per level for badges val levelCounts: StateFlow&lt;Map&lt;LogLevel, Int&gt;&gt; = rawLogs .map { logs -&gt; logs.groupingBy { it.level }.eachCount() } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$// Current PID val currentPid: Int = logCaptureEngine.getCurrentPid()</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$// Filtered logs combining search, level filter val logs: StateFlow&lt;ImmutableList&lt;LogEntry&gt;&gt; = combine( rawLogs, _searchQuery.debounce(100), _selectedLevels, ) { logs, query, levels -&gt; logs.filter { entry -&gt; // Filter by selected levels val matchesLevel = entry.level in levels // Filter by search query val matchesSearch = if (query.isBlank()) { true } else { entry.tag.contains(query, ignoreCase = true) || entry.message.contains(query, ignoreCase = true) } matchesLevel &amp;&amp; matchesSearch }.toImmutableList() }.flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$// Total count of unfiltered logs val totalCount: StateFlow&lt;Int&gt; = rawLogs .map { it.size } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$val autoScroll: StateFlow&lt;Boolean&gt; = _autoScroll</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$val minimumLevel: StateFlow&lt;LogLevel&gt; = _minimumLevel</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery</ID>
+    <ID>UndocumentedPublicProperty:LogsViewModel.kt$LogsViewModel$val selectedLevels: StateFlow&lt;Set&lt;LogLevel&gt;&gt; = _selectedLevels</ID>
+    <ID>UnstableCollections:LogsScreen.kt$Map&lt;LogLevel, Int&gt;</ID>
+    <ID>UnstableCollections:LogsScreen.kt$Set&lt;LogLevel&gt;</ID>
+  </CurrentIssues>
+</SmellBaseline>

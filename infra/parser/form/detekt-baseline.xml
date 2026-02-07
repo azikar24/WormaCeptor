@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ComplexCondition:FormBodyParser.kt$FormBodyParser$trimmed.startsWith("{") || trimmed.startsWith("[") || trimmed.startsWith("&lt;") || trimmed.startsWith("&lt;!")</ID>
+    <ID>MagicNumber:FormBodyParser.kt$FormBodyParser$100</ID>
+    <ID>MagicNumber:FormBodyParser.kt$FormBodyParser$220</ID>
+    <ID>SwallowedException:FormBodyParser.kt$FormBodyParser$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FormBodyParser.kt$FormBodyParser$e: Exception</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val arrayIndex: Int? = null</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val decodingFailed: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val key: String</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val nestedKeys: List&lt;String&gt; = emptyList()</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val rawKey: String</ID>
+    <ID>UndocumentedPublicProperty:FormBodyParser.kt$FormParameter$val value: String</ID>
+  </CurrentIssues>
+</SmellBaseline>

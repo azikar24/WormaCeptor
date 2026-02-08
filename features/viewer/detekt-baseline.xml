@@ -2,8 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(MatchInfo(globalPosition = index, lineIndex = 0))</ID>
-    <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(globalPosition = index, lineIndex = 0)</ID>
     <ID>ClassOrdering:ViewerViewModel.kt$ViewerViewModel$fun showMessage(message: String)</ID>
     <ID>ClassOrdering:ViewerViewModel.kt$ViewerViewModel$val hasActiveQuickFilters: StateFlow&lt;Boolean&gt; = _quickFilters .map { it.isNotEmpty() } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)</ID>
     <ID>ComposableParamOrder:CrashListScreen.kt$CrashListScreen</ID>
@@ -281,8 +279,6 @@
     <ID>MaxLineLength:PagedTransactionListScreen.kt$if</ID>
     <ID>MaxLineLength:SelectableTransactionItem.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
     <ID>MaxLineLength:TransactionDetailScreen.kt$fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal</ID>
-    <ID>MaxLineLength:TransactionDetailScreen.kt$foundMatches.add(MatchInfo(globalPosition = index, lineIndex = 0))</ID>
-    <ID>MaxLineLength:TransactionDetailScreen.kt$val</ID>
     <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$"WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"</ID>
     <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$val</ID>
     <ID>MaximumLineLength:FilterBottomSheetContent.kt$ </ID>

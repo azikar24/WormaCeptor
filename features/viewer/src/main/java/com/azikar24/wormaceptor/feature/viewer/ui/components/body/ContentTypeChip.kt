@@ -39,12 +39,7 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
  * Uses semantic colors for each content type for quick visual identification.
  */
 @Composable
-fun ContentTypeChip(
-    contentType: ContentType,
-    modifier: Modifier = Modifier,
-    isAutoDetected: Boolean = true,
-    onClick: (() -> Unit)? = null,
-) {
+fun ContentTypeChip(contentType: ContentType, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
     val chipInfo = getContentTypeChipInfo(contentType)
 
     val backgroundColor by animateColorAsState(
@@ -91,13 +86,6 @@ fun ContentTypeChip(
                 ),
                 color = chipInfo.color,
             )
-            if (isAutoDetected) {
-                Text(
-                    text = "(auto)",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = chipInfo.color.copy(alpha = 0.7f),
-                )
-            }
         }
     }
 }

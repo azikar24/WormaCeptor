@@ -70,7 +70,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
@@ -349,11 +348,13 @@ private fun TransactionDetailContent(
                                     ),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                IconButton(onClick = {
-                                    showSearch = false
-                                    searchQuery = ""
-                                    debouncedSearchQuery = ""
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        showSearch = false
+                                        searchQuery = ""
+                                        debouncedSearchQuery = ""
+                                    },
+                                ) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
                                         contentDescription = stringResource(
@@ -466,9 +467,10 @@ private fun TransactionDetailContent(
                                         },
                                         onClick = {
                                             showMenu = false
-                                            val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                                context,
-                                            )
+                                            val exportManager =
+                                                com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                    context,
+                                                )
                                             scope.launch {
                                                 exportManager.exportTransactions(listOf(transaction))
                                             }
@@ -482,9 +484,6 @@ private fun TransactionDetailContent(
                 // Tab row with click support (swipe is handled by the content pager)
                 TabRow(
                     selectedTabIndex = tabPagerState.currentPage,
-                    containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.primary,
-                    divider = {},
                 ) {
                     tabs.forEachIndexed { index, tabTitle ->
                         Tab(
@@ -504,7 +503,6 @@ private fun TransactionDetailContent(
                         )
                     }
                 }
-                WormaCeptorDivider(style = DividerStyle.Section)
             }
         },
     ) { padding ->
@@ -633,6 +631,7 @@ private fun SwipeableTopBar(
                                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 onSwipeLeft()
                             }
+
                             dragOffset > threshold && canSwipeRight -> {
                                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                 onSwipeRight()
@@ -742,7 +741,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
@@ -1014,7 +1013,12 @@ private fun RequestTab(
             val foundMatches = mutableListOf<MatchInfo>()
             var index = body.indexOf(searchQuery, ignoreCase = true)
             while (index >= 0) {
-                foundMatches.add(MatchInfo(globalPosition = index, lineIndex = 0)) // lineIndex not used for pixel scroll
+                foundMatches.add(
+                    MatchInfo(
+                        globalPosition = index,
+                        lineIndex = 0,
+                    ),
+                ) // lineIndex not used for pixel scroll
                 index = body.indexOf(searchQuery, index + 1, ignoreCase = true)
             }
             matches = foundMatches
@@ -1208,8 +1212,8 @@ private fun RequestTab(
                     }
                     copyToClipboard(context, "Request Content", fullContent)
                 },
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
             }
@@ -1601,8 +1605,8 @@ private fun ResponseTab(
                     }
                     copyToClipboard(context, "Response Content", fullContent)
                 },
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
             }
@@ -1738,58 +1742,72 @@ private fun CollapsibleSection(
 
 @Composable
 private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
+    val activeColor = MaterialTheme.colorScheme.primary
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+    ) {
+        ToggleChip(
+            text = "Pretty",
+            isSelected = isPretty,
+            activeColor = activeColor,
+            onClick = { if (!isPretty) onToggle() },
+        )
+        ToggleChip(
+            text = "Raw",
+            isSelected = !isPretty,
+            activeColor = activeColor,
+            onClick = { if (isPretty) onToggle() },
+        )
+    }
+}
+
+@Composable
+private fun ToggleChip(text: String, isSelected: Boolean, activeColor: Color, onClick: () -> Unit) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) {
+            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+        },
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        label = "toggle_bg",
+    )
+    val borderColor by animateColorAsState(
+        targetValue = if (isSelected) {
+            activeColor.copy(alpha = 0.3f)
+        } else {
+            MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+        },
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        label = "toggle_border",
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        label = "toggle_text",
+    )
+
     Surface(
-        onClick = onToggle,
+        onClick = onClick,
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+        color = backgroundColor,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            borderColor,
         ),
     ) {
-        Row(
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+            ),
+            color = textColor,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
-        ) {
-            Text(
-                text = "Pretty",
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (isPretty) {
-                        FontWeight.Bold
-                    } else {
-                        FontWeight.Normal
-                    },
-                ),
-                color = if (isPretty) {
-                    MaterialTheme.colorScheme.secondary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-            )
-            Text(
-                text = "|",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = "Raw",
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = if (!isPretty) {
-                        FontWeight.Bold
-                    } else {
-                        FontWeight.Normal
-                    },
-                ),
-                color = if (!isPretty) {
-                    MaterialTheme.colorScheme.secondary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-            )
-        }
+        )
     }
 }
 
@@ -1816,10 +1834,7 @@ private fun BodyControlsRow(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
     ) {
         // Content type chip - informational, can wrap first
-        ContentTypeChip(
-            contentType = contentType,
-            isAutoDetected = true,
-        )
+        ContentTypeChip(contentType = contentType)
         // Pretty/Raw toggle - most important, always visible
         PrettyRawToggle(
             isPretty = isPrettyMode,

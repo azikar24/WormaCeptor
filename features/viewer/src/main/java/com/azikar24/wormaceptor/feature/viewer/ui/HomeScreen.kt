@@ -590,6 +590,7 @@ fun HomeScreen(
                 },
                 sheetState = sheetState,
                 shape = WormaCeptorDesignSystem.Shapes.sheet,
+                containerColor = MaterialTheme.colorScheme.surface,
             ) {
                 FilterBottomSheetContent(
                     initialSearchQuery = searchQuery,

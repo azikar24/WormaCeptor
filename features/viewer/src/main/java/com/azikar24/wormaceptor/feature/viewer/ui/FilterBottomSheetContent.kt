@@ -249,7 +249,12 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
         onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md)),
+            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+            .border(
+                width = WormaCeptorDesignSystem.BorderWidth.thin,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+            ),
         placeholder = {
             Text(
                 text = stringResource(R.string.viewer_filter_search_placeholder),
@@ -282,12 +287,8 @@ private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, o
         },
         singleLine = true,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.moderate,
-            ),
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.moderate,
-            ),
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             cursorColor = MaterialTheme.colorScheme.primary,

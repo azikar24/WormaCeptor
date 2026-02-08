@@ -4,7 +4,6 @@
   <CurrentIssues>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(MatchInfo(globalPosition = index, lineIndex = 0))</ID>
     <ID>ArgumentListWrapping:TransactionDetailScreen.kt$(globalPosition = index, lineIndex = 0)</ID>
-    <ID>ClassOrdering:GestureUtils.kt$GestureHaptics$fun perform(type: GestureHapticType)</ID>
     <ID>ClassOrdering:ViewerViewModel.kt$ViewerViewModel$fun showMessage(message: String)</ID>
     <ID>ClassOrdering:ViewerViewModel.kt$ViewerViewModel$val hasActiveQuickFilters: StateFlow&lt;Boolean&gt; = _quickFilters .map { it.isNotEmpty() } .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)</ID>
     <ID>ComposableParamOrder:CrashListScreen.kt$CrashListScreen</ID>
@@ -18,8 +17,6 @@
     <ID>ComposableParamOrder:TransactionListScreen.kt$PagedTransactionListScreenWithRefresh</ID>
     <ID>ComposableParamOrder:TransactionListScreen.kt$SelectableTransactionListScreen</ID>
     <ID>ComposableParamOrder:TransactionListScreen.kt$TransactionListScreen</ID>
-    <ID>ComposableParamOrder:TransactionPager.kt$SimplePager</ID>
-    <ID>CompositionLocalAllowlist:GestureColors.kt$LocalGestureColors</ID>
     <ID>CompositionLocalAllowlist:SyntaxColors.kt$LocalSyntaxColors</ID>
     <ID>CyclomaticComplexMethod:BodyParsingUtils.kt$BodyParsingUtils$fun detectContentType(contentTypeHeader: String?, body: String?): ContentType</ID>
     <ID>CyclomaticComplexMethod:FilterBottomSheetContent.kt$@Composable private fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
@@ -47,14 +44,7 @@
     <ID>EndOfSentenceFormat:FavoritesRepository.kt$FavoritesRepository.Companion$ Default favorites for new users </ID>
     <ID>EndOfSentenceFormat:FavoritesRepository.kt$FavoritesRepository.Companion$ Maximum number of favorite tools allowed </ID>
     <ID>EndOfSentenceFormat:FullscreenImageViewer.kt$* Formats file size in human-readable format</ID>
-    <ID>EndOfSentenceFormat:GestureNavigationComponents.kt$* Animated number that slides when value changes</ID>
     <ID>EndOfSentenceFormat:GestureNavigationComponents.kt$* Visual zoom level indicator with progress bar</ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.ACTION_CONFIRMED$ Strong feedback for significant actions </ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.LIGHT_TAP$ Light tap feedback for minor interactions </ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.PAGE_TURN$ Page change feedback </ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.REJECTION$ Error/rejection feedback </ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.THRESHOLD_CROSSED$ Medium feedback for threshold crossings </ID>
-    <ID>EndOfSentenceFormat:GestureUtils.kt$GestureHapticType.ZOOM_CHANGE$ Zoom level change </ID>
     <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Checks if raw bytes likely represent an image by examining magic bytes</ID>
     <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Checks if the given content type string indicates an image</ID>
     <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Detects image format from magic bytes</ID>
@@ -67,18 +57,7 @@
     <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$* Original TransactionDetailScreen - kept for backward compatibility</ID>
     <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$* Transaction detail content - the actual content without swipe-back wrapper * * UX Behavior: * - Swipe on toolbar/topBar area: Switch between transactions * - Swipe on content area (HorizontalPager): Switch between Overview/Request/Response tabs</ID>
     <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$MatchInfo$* Data class holding information about a single search match</ID>
-    <ID>EndOfSentenceFormat:TransactionPager.kt$* Edge shadows that appear during swipe gestures</ID>
-    <ID>EndOfSentenceFormat:TransactionPager.kt$* Page indicator dots for compact representation</ID>
-    <ID>EndOfSentenceFormat:TransactionPager.kt$* Simplified pager that just handles the horizontal swipe</ID>
     <ID>EndOfSentenceFormat:ViewerViewModel.kt$ViewerViewModel$* Get the list of all transaction IDs for pager navigation</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Calculates constrained offset to keep content within viewable bounds</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Core zoomable container with gesture handling</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Default text rendering for annotated strings (syntax highlighted)</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Default text rendering for plain strings</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Minimum and maximum zoom levels</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Simplified zoomable wrapper for any composable content</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Small badge showing current zoom level</ID>
-    <ID>EndOfSentenceFormat:ZoomableTextContainer.kt$* Variant that accepts AnnotatedString for syntax-highlighted content</ID>
     <ID>LongMethod:BulkActionBar.kt$@Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:ContentTypeChip.kt$@Composable fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat)</ID>
@@ -94,8 +73,6 @@
     <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -&gt; Unit, onShare: () -&gt; Unit)</ID>
     <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun FullscreenImageContent( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
     <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun TopControlBar(onClose: () -&gt; Unit, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, currentZoom: Float)</ID>
-    <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun SwipeNavigationHint(canSwipeLeft: Boolean, canSwipeRight: Boolean, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun TransactionPositionIndicator( currentIndex: Int, totalCount: Int, onPrevious: () -&gt; Unit, onNext: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun ZoomControls( currentZoom: Float, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, onReset: () -&gt; Unit, minZoom: Float = 0.5f, maxZoom: Float = 3f, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: SharedFlow&lt;String&gt;? = null, )</ID>
     <ID>LongMethod:ImagePreviewCard.kt$@Composable fun ImagePreviewCard( imageData: ByteArray, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -107,12 +84,9 @@
     <ID>LongMethod:LoadingStates.kt$@Composable fun TransactionItemSkeleton(modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:LoadingStates.kt$@Composable private fun CollapsibleSectionSkeleton( shimmerBrush: Brush, title: String, modifier: Modifier = Modifier, contentRowCount: Int = 0, isBodySection: Boolean = false, )</ID>
     <ID>LongMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:MetricsCard.kt$@Composable private fun DistributionBar(label: String, count: Int, total: Int, color: Color)</ID>
-    <ID>LongMethod:MetricsCard.kt$@Composable private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color)</ID>
     <ID>LongMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
     <ID>LongMethod:PagedTransactionListScreen.kt$@Composable private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:PagedTransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreen( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, hasActiveFilters: Boolean = false, hasSearchQuery: Boolean = false, onClearFilters: () -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>LongMethod:PaginatedBodyView.kt$@Composable fun PaginatedPlainBodyView( content: String, totalSize: Long, isLoading: Boolean, hasMore: Boolean, onLoadMore: () -&gt; Unit, modifier: Modifier = Modifier, error: String? = null, onRetry: () -&gt; Unit = onLoadMore, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit = {}, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun PasswordProtectedContent( metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun SuccessContent( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
@@ -138,11 +112,9 @@
     <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreenWithRefresh( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: () -&gt; Unit, modifier: Modifier = Modifier, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onLongClick: (UUID) -&gt; Unit = {}, onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, modifier: Modifier = Modifier, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, header: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>LongMethod:TransactionPager.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun TransactionPager( transactionIds: List&lt;UUID&gt;, initialTransactionId: UUID, onTransactionChanged: (UUID) -&gt; Unit, modifier: Modifier = Modifier, showPositionIndicator: Boolean = true, content: @Composable (transactionId: UUID, pageIndex: Int) -&gt; Unit, )</ID>
     <ID>LongMethod:ViewerActivity.kt$ViewerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors)</ID>
     <ID>LongMethod:XmlTreeView.kt$private fun formatXml(xml: String): List&lt;String&gt;</ID>
-    <ID>LongMethod:ZoomableTextContainer.kt$@Composable fun ZoomableContainer( modifier: Modifier = Modifier, initialZoom: Float = DEFAULT_ZOOM, showZoomControls: Boolean = true, onZoomChange: ((Float) -&gt; Unit)? = null, content: @Composable (scale: Float, offset: Offset) -&gt; Unit, )</ID>
     <ID>LongParameterList:BulkActionBar.kt$( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:FilterBottomSheetContent.kt$( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:HomeScreen.kt$( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: SharedFlow&lt;String&gt;? = null, )</ID>
@@ -167,7 +139,6 @@
     <ID>MagicNumber:CrashDetailScreen.kt$100</ID>
     <ID>MagicNumber:CrashListScreen.kt$7</ID>
     <ID>MagicNumber:CrashUtils.kt$CrashUtils$3</ID>
-    <ID>MagicNumber:CrashUtils.kt$CrashUtils$50</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FilterBottomSheetContent.kt$0xFF9C27B0</ID>
@@ -189,9 +160,6 @@
     <ID>MagicNumber:FullscreenImageViewer.kt$2.5f</ID>
     <ID>MagicNumber:FullscreenImageViewer.kt$200f</ID>
     <ID>MagicNumber:FullscreenImageViewer.kt$5f</ID>
-    <ID>MagicNumber:GestureNavigationComponents.kt$1500</ID>
-    <ID>MagicNumber:GestureUtils.kt$0.5f</ID>
-    <ID>MagicNumber:GestureUtils.kt$GestureHaptics$50L</ID>
     <ID>MagicNumber:HighlightedText.kt$10</ID>
     <ID>MagicNumber:HighlightedText.kt$16</ID>
     <ID>MagicNumber:HighlightedText.kt$64</ID>
@@ -262,11 +230,6 @@
     <ID>MagicNumber:PagedTransactionListScreen.kt$499</ID>
     <ID>MagicNumber:PagedTransactionListScreen.kt$500</ID>
     <ID>MagicNumber:PagedTransactionListScreen.kt$599</ID>
-    <ID>MagicNumber:PaginatedBodyView.kt$0.5f</ID>
-    <ID>MagicNumber:PaginatedBodyView.kt$0.6f</ID>
-    <ID>MagicNumber:PaginatedBodyView.kt$0.75f</ID>
-    <ID>MagicNumber:PaginatedBodyView.kt$0.9f</ID>
-    <ID>MagicNumber:PaginatedBodyView.kt$4</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$0.75f</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$1024.0</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$20</ID>
@@ -297,17 +260,6 @@
     <ID>MagicNumber:TransactionDetailScreen.kt$500_000</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$64</ID>
     <ID>MagicNumber:TransactionListScreen.kt$5</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.05f</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.2f</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.3f</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.4f</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.5f</ID>
-    <ID>MagicNumber:TransactionPager.kt$0.7f</ID>
-    <ID>MagicNumber:TransactionPager.kt$3</ID>
-    <ID>MagicNumber:TransactionPager.kt$4</ID>
-    <ID>MagicNumber:TransactionPager.kt$5</ID>
-    <ID>MagicNumber:TransactionPager.kt$5f</ID>
-    <ID>MagicNumber:TransactionPager.kt$7</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$300</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$400</ID>
     <ID>MagicNumber:ViewerViewModel.kt$ViewerViewModel$100</ID>
@@ -316,16 +268,10 @@
     <ID>MagicNumber:ViewerViewModel.kt$ViewerViewModel$5000</ID>
     <ID>MagicNumber:XmlTreeView.kt$3</ID>
     <ID>MagicNumber:XmlTreeView.kt$9</ID>
-    <ID>MagicNumber:ZoomableTextContainer.kt$1.05f</ID>
-    <ID>MagicNumber:ZoomableTextContainer.kt$1.1f</ID>
-    <ID>MagicNumber:ZoomableTextContainer.kt$1.5f</ID>
-    <ID>MagicNumber:ZoomableTextContainer.kt$3000</ID>
     <ID>MatchingDeclarationName:ImagePreviewCard.kt$ImageMetadata</ID>
     <ID>MatchingDeclarationName:MultipartView.kt$MultipartPart</ID>
-    <ID>MatchingDeclarationName:PaginatedBodyView.kt$PaginatedBodyState</ID>
     <ID>MatchingDeclarationName:QuickFilterBar.kt$QuickFilter</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
-    <ID>MatchingDeclarationName:TransactionContextMenu.kt$QuickAction</ID>
     <ID>MaxLineLength:FilterBottomSheetContent.kt$if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select</ID>
     <ID>MaxLineLength:FilterBottomSheetContent.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin</ID>
     <ID>MaxLineLength:HomeScreen.kt$hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
@@ -370,10 +316,6 @@
     <ID>NoWildcardImports:PagedTransactionListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:PagedTransactionListScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>NoWildcardImports:PagedTransactionListScreen.kt$import com.azikar24.wormaceptor.feature.viewer.ui.components.*</ID>
-    <ID>NoWildcardImports:PaginatedBodyView.kt$import androidx.compose.animation.core.*</ID>
-    <ID>NoWildcardImports:PaginatedBodyView.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:PaginatedBodyView.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:PaginatedBodyView.kt$import androidx.compose.runtime.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>
@@ -383,7 +325,6 @@
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.animation.core.*</ID>
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>OutdatedDocumentation:TransactionPager.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun TransactionPager( transactionIds: List&lt;UUID&gt;, initialTransactionId: UUID, onTransactionChanged: (UUID) -&gt; Unit, modifier: Modifier = Modifier, showPositionIndicator: Boolean = true, content: @Composable (transactionId: UUID, pageIndex: Int) -&gt; Unit, )</ID>
     <ID>ReturnCount:BodyParsingUtils.kt$BodyParsingUtils$fun detectContentType(contentTypeHeader: String?, body: String?): ContentType</ID>
     <ID>SwallowedException:BodyParsingUtils.kt$BodyParsingUtils$e: Exception</ID>
     <ID>SwallowedException:FavoritesRepository.kt$FavoritesRepository$e: IllegalArgumentException</ID>
@@ -394,7 +335,6 @@
     <ID>SwallowedException:PdfViewerScreen.kt$e: Exception</ID>
     <ID>SwallowedException:PdfViewerScreen.kt$e: SecurityException</ID>
     <ID>SwallowedException:TransactionDetailScreen.kt$e: Exception</ID>
-    <ID>SwallowedException:ZoomableTextContainer.kt$e: kotlinx.coroutines.CancellationException</ID>
     <ID>TooGenericExceptionCaught:BodyParsingUtils.kt$BodyParsingUtils$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CommonUtils.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CrashExport.kt$e: Exception</ID>
@@ -402,7 +342,6 @@
     <ID>TooGenericExceptionCaught:FormDataView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FullscreenImageViewer.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:PaginatedBodyView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfViewerScreen.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:TransactionDetailScreen.kt$e: Exception</ID>
@@ -467,14 +406,9 @@
     <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiary = ThemeColors.AccentLight</ID>
     <ID>TopLevelPropertyNaming:Color.kt$val md_theme_light_tertiaryContainer = ThemeColors.AccentSubtleLight</ID>
     <ID>TopLevelPropertyNaming:CommonUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
-    <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$/** * Minimum and maximum zoom levels */ private const val MIN_ZOOM = 0.5f</ID>
-    <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$private const val DEFAULT_ZOOM = 1f</ID>
-    <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$private const val DOUBLE_TAP_ZOOM = 2f</ID>
-    <ID>TopLevelPropertyNaming:ZoomableTextContainer.kt$private const val MAX_ZOOM = 3f</ID>
     <ID>UndocumentedPublicClass:CommonUtils.kt$ClipboardResult$Success : ClipboardResult</ID>
     <ID>UndocumentedPublicClass:CommonUtils.kt$ClipboardResult$TooLarge : ClipboardResult</ID>
     <ID>UndocumentedPublicClass:ExportManager.kt$ExportManager</ID>
-    <ID>UndocumentedPublicClass:GestureUtils.kt$AnimatedDragState</ID>
     <ID>UndocumentedPublicClass:LoadingStates.kt$ErrorType</ID>
     <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$Error : PdfLoadState</ID>
     <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$Loading : PdfLoadState</ID>
@@ -488,17 +422,7 @@
     <ID>UndocumentedPublicFunction:ExportManager.kt$ExportManager$suspend fun exportTransactions(transactions: List&lt;NetworkTransaction&gt;)</ID>
     <ID>UndocumentedPublicFunction:FavoritesRepository.kt$FavoritesRepository.Companion$fun getInstance(context: Context): FavoritesRepository</ID>
     <ID>UndocumentedPublicFunction:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
-    <ID>UndocumentedPublicFunction:GestureUtils.kt$AnimatedDragState$suspend fun animateTo( offset: Offset, animationSpec: androidx.compose.animation.core.AnimationSpec&lt;Float&gt; = spring( dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMedium, ), )</ID>
-    <ID>UndocumentedPublicFunction:GestureUtils.kt$AnimatedDragState$suspend fun reset()</ID>
-    <ID>UndocumentedPublicFunction:GestureUtils.kt$AnimatedDragState$suspend fun snapTo(offset: Offset)</ID>
-    <ID>UndocumentedPublicFunction:GestureUtils.kt$GestureHaptics$fun performThrottled(type: GestureHapticType)</ID>
-    <ID>UndocumentedPublicFunction:GestureUtils.kt$fun Offset.dominantDirection(): DragDirection</ID>
     <ID>UndocumentedPublicFunction:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
-    <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$@Composable fun rememberPaginatedBodyState( initialContent: String = "", totalSize: Long = 0L, pageSize: Long = 50_000L, ): PaginatedBodyState</ID>
-    <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun appendContent(newContent: String)</ID>
-    <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun reset(initialContent: String)</ID>
-    <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun updateError(message: String)</ID>
-    <ID>UndocumentedPublicFunction:PaginatedBodyView.kt$PaginatedBodyState$fun updateLoading(loading: Boolean)</ID>
     <ID>UndocumentedPublicFunction:Theme.kt$@Composable fun WormaCeptorTheme( darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = false, content: @Composable () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:ViewerViewModel.kt$ViewerViewModel$fun clearFilters()</ID>
     <ID>UndocumentedPublicFunction:ViewerViewModel.kt$ViewerViewModel$fun clearQuickFilters()</ID>
@@ -617,53 +541,6 @@
     <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tab$val tabIndex: Int</ID>
     <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tool$val route: String</ID>
     <ID>UndocumentedPublicProperty:FavoritesRepository.kt$FavoritesRepository$val favorites: StateFlow&lt;Set&lt;Feature&gt;&gt;</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAlpha$const val ACTIVE = 0.6f</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAlpha$const val FULL = 1f</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAlpha$const val HINT = 0.3f</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAlpha$const val IDLE = 0f</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAlpha$const val SUBTLE = 0.1f</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAnimationDuration$const val INSTANT = 50</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAnimationDuration$const val NORMAL = 200</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAnimationDuration$const val QUICK = WormaCeptorDesignSystem.AnimationDuration.fast // 150ms</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAnimationDuration$const val SMOOTH = WormaCeptorDesignSystem.AnimationDuration.slow // 350ms</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureAnimationDuration$const val SNAP = 100</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val hapticPulse: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val positionBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val positionHighlight: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val positionText: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val refreshActive: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val refreshComplete: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val refreshPulling: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val refreshThreshold: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeBackIndicator: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeBackShadow: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeBackThreshold: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeEdgeGradientEnd: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeEdgeGradientStart: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeIndicatorActive: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val swipeIndicatorInactive: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val zoomControlBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val zoomControlBorder: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val zoomLevelNormal: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureColors$val zoomLevelZoomed: Color</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureSpring$// For bouncy feedback animations val bouncy = androidx.compose.animation.core.spring&lt;Float&gt;( dampingRatio = androidx.compose.animation.core.Spring.DampingRatioLowBouncy, stiffness = androidx.compose.animation.core.Spring.StiffnessLow, )</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureSpring$// For quick snapping animations val snap = androidx.compose.animation.core.spring&lt;Float&gt;( dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy, stiffness = androidx.compose.animation.core.Spring.StiffnessHigh, )</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureSpring$// For smooth drag release animations val smooth = androidx.compose.animation.core.spring&lt;Float&gt;( dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy, stiffness = androidx.compose.animation.core.Spring.StiffnessMedium, )</ID>
-    <ID>UndocumentedPublicProperty:GestureColors.kt$GestureSpring$// For snappy interactions like tap responses val snappy = androidx.compose.animation.core.spring&lt;Float&gt;( dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy, stiffness = androidx.compose.animation.core.Spring.StiffnessHigh, )</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$AnimatedDragState$val offset: Offset get() = Offset(animatedX.value, animatedY.value)</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val horizontalProgress: Float get() = if (startPosition.x != 0f) offset.x / startPosition.x else 0f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val isDragging: Boolean = false</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val offset: Offset = Offset.Zero</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val startPosition: Offset = Offset.Zero</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val totalDistance: Float get() = offset.getDistance()</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val velocity: Offset = Offset.Zero</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$DragState$val verticalProgress: Float get() = if (startPosition.y != 0f) offset.y / startPosition.y else 0f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val pullToRefresh: Float = 120f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val swipeBack: Float = 100f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val swipeNavigation: Float = 0.3f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val zoomDoubleTap: Float = 2f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val zoomMax: Float = 3f</ID>
-    <ID>UndocumentedPublicProperty:GestureUtils.kt$GestureThresholds$val zoomMin: Float = 0.5f</ID>
     <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val colorDepth: String = "8-bit"</ID>
     <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val fileSize: Long</ID>
     <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val format: String</ID>
@@ -679,15 +556,6 @@
     <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val headers: Map&lt;String, String&gt; = emptyMap()</ID>
     <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val name: String</ID>
     <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val size: Int = body.length</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$val hasMore: Boolean get() = loadedBytes &lt; totalSize</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$val pageSize: Long = 50_000L</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$val progress: Float get() = if (totalSize &gt; 0) loadedBytes.toFloat() / totalSize else 1f</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$val remainingBytes: Long get() = (totalSize - loadedBytes).coerceAtLeast(0)</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$val totalSize: Long = 0L</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$var error by mutableStateOf&lt;String?&gt;(null) private set</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$var isLoading by mutableStateOf(false) private set</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$var loadedBytes by mutableLongStateOf(initialContent.length.toLong()) private set</ID>
-    <ID>UndocumentedPublicProperty:PaginatedBodyView.kt$PaginatedBodyState$var loadedContent by mutableStateOf(initialContent) private set</ID>
     <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.Error$val message: String</ID>
     <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.PasswordProtected$val metadata: PdfMetadata</ID>
     <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.Success$val metadata: PdfMetadata</ID>
@@ -724,13 +592,6 @@
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val icon: ImageVector</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val name: String</ID>
     <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val route: String</ID>
-    <ID>UndocumentedPublicProperty:TransactionContextMenu.kt$QuickAction$val destructive: Boolean = false</ID>
-    <ID>UndocumentedPublicProperty:TransactionContextMenu.kt$QuickAction$val icon: ImageVector</ID>
-    <ID>UndocumentedPublicProperty:TransactionContextMenu.kt$QuickAction$val id: String</ID>
-    <ID>UndocumentedPublicProperty:TransactionContextMenu.kt$QuickAction$val label: String</ID>
-    <ID>UndocumentedPublicProperty:TransactionContextMenu.kt$QuickAction$val onClick: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:ViewerDesignSystem.kt$ViewerDesignSystem$val Alpha = WormaCeptorDesignSystem.Alpha</ID>
-    <ID>UndocumentedPublicProperty:ViewerDesignSystem.kt$ViewerDesignSystem$val CornerRadius = WormaCeptorDesignSystem.CornerRadius</ID>
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$// Paged transactions with database-level pagination for better performance with large datasets val pagedTransactions: Flow&lt;PagingData&lt;TransactionSummary&gt;&gt; = combine( _searchQuery.debounce(100), _filterMethods, _filterStatusRanges, ) { query, methods, statusRanges -&gt; Triple(query, methods, statusRanges) }.flatMapLatest { (query, methods, statusRanges) -&gt; val filters = TransactionFilters( statusRange = statusRanges.singleOrNull(), method = methods.singleOrNull(), ) // Update total count when filters change viewModelScope.launch { _totalCount.value = queryEngine.getTransactionCount(query.takeIf { it.isNotBlank() }) } queryEngine.observeTransactionsPaged( searchQuery = query.takeIf { it.isNotBlank() }, filters = filters, pageSize = 30, ) }.cachedIn(viewModelScope)</ID>
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$val allTransactions: StateFlow&lt;ImmutableList&lt;TransactionSummary&gt;&gt; = queryEngine.observeTransactions() .map { it.toImmutableList() } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$val crashes = queryEngine.observeCrashes() .map { it.toImmutableList() } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
@@ -750,8 +611,6 @@
     <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$( trimmed.startsWith("&lt;") &amp;&amp; !trimmed.startsWith("&lt;!DOCTYPE html") &amp;&amp; !trimmed.lowercase().startsWith("&lt;html") )</ID>
     <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$(trimmed.startsWith("[") &amp;&amp; trimmed.endsWith("]"))</ID>
     <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$(trimmed.startsWith("{") &amp;&amp; trimmed.endsWith("}"))</ID>
-    <ID>UnnecessaryParentheses:GestureUtils.kt$(0.5f * deceleration * duration * duration)</ID>
-    <ID>UnnecessaryParentheses:GestureUtils.kt$(velocity * duration)</ID>
     <ID>UnnecessaryParentheses:HighlightedText.kt$(index + searchQuery.length)</ID>
     <ID>UnnecessaryParentheses:HomeScreen.kt$(it.code ?: 0)</ID>
     <ID>UnnecessaryParentheses:ImagePreviewCard.kt$(16f / 9f)</ID>
@@ -772,10 +631,6 @@
     <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(tlsVersion ?: "Secure Connection")</ID>
     <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(transaction.response?.bodyRef != null)</ID>
     <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(transaction.response?.headers?.isNotEmpty() == true)</ID>
-    <ID>UnnecessaryParentheses:TransactionPager.kt$(currentPage + 4)</ID>
-    <ID>UnnecessaryParentheses:TransactionPager.kt$(currentPage - 3)</ID>
-    <ID>UnnecessaryParentheses:TransactionPager.kt$(pagerState.currentPage - page + pagerState.currentPageOffsetFraction)</ID>
-    <ID>UnnecessaryParentheses:TransactionPager.kt$(totalPages - 7)</ID>
     <ID>UnnecessaryParentheses:ViewerViewModel.kt$ViewerViewModel$(transaction.code?.let { code -&gt; statusRanges.any { code in it } } ?: false)</ID>
     <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;Crash&gt;</ID>
     <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;CrashUtils.StackFrame&gt;</ID>
@@ -785,22 +640,16 @@
     <ID>UnstableCollections:HomeScreen.kt$Set&lt;String&gt;</ID>
     <ID>UnstableCollections:HomeScreen.kt$Set&lt;UUID&gt;</ID>
     <ID>UnstableCollections:PdfViewerScreen.kt$List&lt;Bitmap&gt;</ID>
-    <ID>UnstableCollections:QuickFilterBar.kt$List&lt;QuickFilter&gt;</ID>
-    <ID>UnstableCollections:QuickFilterBar.kt$Set&lt;QuickFilter&gt;</ID>
     <ID>UnstableCollections:ToolsTab.kt$List&lt;ToolItem&gt;</ID>
     <ID>UnstableCollections:ToolsTab.kt$Set&lt;Feature&gt;</ID>
     <ID>UnstableCollections:TransactionDetailScreen.kt$List&lt;UUID&gt;</ID>
     <ID>UnstableCollections:TransactionDetailScreen.kt$Map&lt;String, List&lt;String&gt;&gt;</ID>
     <ID>UnstableCollections:TransactionListScreen.kt$Set&lt;UUID&gt;</ID>
-    <ID>UnstableCollections:TransactionPager.kt$List&lt;T&gt;</ID>
-    <ID>UnstableCollections:TransactionPager.kt$List&lt;UUID&gt;</ID>
     <ID>UnusedParameter:CrashListScreen.kt$message: String</ID>
     <ID>UnusedParameter:LoadingStates.kt$title: String</ID>
     <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
     <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
-    <ID>UnusedParameter:ZoomableTextContainer.kt$offset: Offset</ID>
-    <ID>UnusedParameter:ZoomableTextContainer.kt$scale: Float</ID>
     <ID>UnusedPrivateMember:CrashListScreen.kt$@Composable @Deprecated("Use EnhancedEmptyState instead") private fun EmptyState(message: String, modifier: Modifier = Modifier)</ID>
     <ID>UseIfInsteadOfWhen:XmlTreeView.kt$when { c == '&lt;' -&gt; { val text = builder.toString().trim() if (text.isNotEmpty()) { result.add(indentString.repeat(indent) + text) } builder.clear() val tagEnd = xml.indexOf('&gt;', i) if (tagEnd == -1) { builder.append(c) i++ continue } val tag = xml.substring(i, tagEnd + 1) when { tag.startsWith("&lt;?") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.startsWith("&lt;!--") -&gt; { val commentEnd = xml.indexOf("--&gt;", i) if (commentEnd != -1) { val comment = xml.substring(i, commentEnd + 3) result.add(indentString.repeat(indent) + comment) i = commentEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;![CDATA[") -&gt; { val cdataEnd = xml.indexOf("]]&gt;", i) if (cdataEnd != -1) { val cdata = xml.substring(i, cdataEnd + 3) result.add(indentString.repeat(indent) + cdata) i = cdataEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;/") -&gt; { indent = maxOf(0, indent - 1) result.add(indentString.repeat(indent) + tag) } tag.endsWith("/&gt;") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.uppercase().startsWith("&lt;!DOCTYPE") -&gt; { result.add(indentString.repeat(indent) + tag) } else -&gt; { result.add(indentString.repeat(indent) + tag) indent++ } } i = tagEnd } else -&gt; { builder.append(c) } }</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
@@ -817,10 +666,6 @@
     <ID>WildcardImport:PagedTransactionListScreen.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:PagedTransactionListScreen.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:PagedTransactionListScreen.kt$import com.azikar24.wormaceptor.feature.viewer.ui.components.*</ID>
-    <ID>WildcardImport:PaginatedBodyView.kt$import androidx.compose.animation.core.*</ID>
-    <ID>WildcardImport:PaginatedBodyView.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:PaginatedBodyView.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:PaginatedBodyView.kt$import androidx.compose.runtime.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>

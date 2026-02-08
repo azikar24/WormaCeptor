@@ -93,16 +93,4 @@ object CrashUtils {
             isAppCode = false,
         )
     }
-
-    /**
-     * Generates a Stack Overflow search query from crash information.
-     */
-    fun generateStackOverflowQuery(exceptionType: String, message: String?): String {
-        val baseQuery = exceptionType.substringAfterLast(".")
-        return if (!message.isNullOrBlank()) {
-            "$baseQuery ${message.take(50)}"
-        } else {
-            baseQuery
-        }
-    }
 }

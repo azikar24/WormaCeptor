@@ -7,4 +7,7 @@
     <string name="cpu_frequency_label">Frequency</string>
     <string name="cpu_temperature_label">Temperature</string>
     <string name="cpu_cores_label">Cores</string>
+    <string name="cpu_measurement_system">System CPU</string>
+    <string name="cpu_measurement_process">App Process CPU</string>
+    <string name="cpu_per_core_unavailable_process">Per-core data unavailable in app process mode</string>
 </resources>

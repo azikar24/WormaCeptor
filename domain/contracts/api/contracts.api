@@ -14,7 +14,6 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/BodyPa
 public final class com/azikar24/wormaceptor/domain/contracts/BodyParserKt {
 	public static final fun emptyParsedBody (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 	public static synthetic fun emptyParsedBody$default (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
-	public static final fun isImage (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;)Z
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/ContentType : java/lang/Enum {

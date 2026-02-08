@@ -45,7 +45,7 @@ class PdfParser(
         }
 
         // Check magic bytes: %PDF- (25 50 44 46 2D in hex)
-        return isPdfMagicBytes(body)
+        return hasPdfMagicBytes(body)
     }
 
     override fun parse(body: ByteArray): ParsedBody {
@@ -54,7 +54,7 @@ class PdfParser(
         }
 
         // Verify magic bytes
-        if (!isPdfMagicBytes(body)) {
+        if (!hasPdfMagicBytes(body)) {
             return ParsedBody(
                 formatted = "[Invalid PDF - Missing magic bytes]",
                 contentType = ContentType.PDF,
@@ -130,7 +130,7 @@ class PdfParser(
             pdfRenderer = PdfRenderer(fileDescriptor)
             val pageCount = pdfRenderer.pageCount
             val version = extractPdfVersion(body)
-            val documentInfo = extractDocumentInfo(body)
+            val documentInfo = extractDocInfo(body)
 
             return PdfMetadata(
                 pageCount = pageCount,
@@ -171,8 +171,8 @@ class PdfParser(
         metadata.subject?.let { append("Subject: $it\n") }
         metadata.creator?.let { append("Creator: $it\n") }
         metadata.producer?.let { append("Producer: $it\n") }
-        metadata.creationDate?.let { append("Created: ${formatPdfDate(it)}\n") }
-        metadata.modificationDate?.let { append("Modified: ${formatPdfDate(it)}\n") }
+        metadata.creationDate?.let { append("Created: ${convertPdfDate(it)}\n") }
+        metadata.modificationDate?.let { append("Modified: ${convertPdfDate(it)}\n") }
         metadata.keywords?.let { append("Keywords: $it\n") }
     }.trimEnd()
 
@@ -182,10 +182,7 @@ class PdfParser(
          */
         private val PDF_MAGIC_BYTES = byteArrayOf(0x25, 0x50, 0x44, 0x46, 0x2D)
 
-        /**
-         * Checks if the byte array starts with PDF magic bytes.
-         */
-        fun isPdfMagicBytes(body: ByteArray): Boolean {
+        private fun hasPdfMagicBytes(body: ByteArray): Boolean {
             if (body.size < PDF_MAGIC_BYTES.size) {
                 return false
             }
@@ -218,11 +215,7 @@ class PdfParser(
             }
         }
 
-        /**
-         * Extracts document info dictionary from PDF.
-         * This is a basic parser that looks for common metadata fields.
-         */
-        fun extractDocumentInfo(body: ByteArray): Map<String, String> {
+        private fun extractDocInfo(body: ByteArray): Map<String, String> {
             val info = mutableMapOf<String, String>()
 
             try {
@@ -308,11 +301,7 @@ class PdfParser(
                 .replace("\\\\", "\\")
         }
 
-        /**
-         * Formats PDF date string to human-readable format.
-         * PDF dates are in format: D:YYYYMMDDHHmmSSOHH'mm'
-         */
-        fun formatPdfDate(pdfDate: String): String {
+        private fun convertPdfDate(pdfDate: String): String {
             if (!pdfDate.startsWith("D:")) {
                 return pdfDate
             }

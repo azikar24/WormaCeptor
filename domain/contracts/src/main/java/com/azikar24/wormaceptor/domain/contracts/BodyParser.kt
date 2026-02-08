@@ -83,22 +83,6 @@ enum class ContentType {
 }
 
 /**
- * Checks if the content type represents an image format.
- */
-fun ContentType.isImage(): Boolean = when (this) {
-    ContentType.IMAGE_PNG,
-    ContentType.IMAGE_JPEG,
-    ContentType.IMAGE_GIF,
-    ContentType.IMAGE_WEBP,
-    ContentType.IMAGE_SVG,
-    ContentType.IMAGE_BMP,
-    ContentType.IMAGE_ICO,
-    ContentType.IMAGE_OTHER,
-    -> true
-    else -> false
-}
-
-/**
  * Creates a ParsedBody for empty body content.
  * Use this in parser implementations to handle empty input consistently.
  *

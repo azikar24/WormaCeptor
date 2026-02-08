@@ -69,7 +69,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -543,12 +542,6 @@ private fun InfoCard(
     onCopy: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    val gradientColors = listOf(
-        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
-        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle / 2),
-        Color.Transparent,
-    )
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -560,53 +553,47 @@ private fun InfoCard(
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(brush = Brush.verticalGradient(gradientColors)),
+        Column(
+            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            Column(
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            // Header
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                // Header
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = title,
-                            tint = iconTint,
-                            modifier = Modifier.size(20.dp),
-                        )
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                    IconButton(
-                        onClick = onCopy,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ContentCopy,
-                            contentDescription = stringResource(R.string.deviceinfo_copy_section, title),
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = title,
+                        tint = iconTint,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-                content()
+                IconButton(
+                    onClick = onCopy,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = stringResource(R.string.deviceinfo_copy_section, title),
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+
+            content()
         }
     }
 }

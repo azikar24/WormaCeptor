@@ -1,6 +1,5 @@
 public final class com/azikar24/wormaceptor/infra/parser/image/ImageFormat : java/lang/Enum {
 	public static final field BMP Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
-	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat$Companion;
 	public static final field GIF Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
 	public static final field ICO Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
 	public static final field JPEG Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
@@ -13,11 +12,6 @@ public final class com/azikar24/wormaceptor/infra/parser/image/ImageFormat : jav
 	public final fun getMimeTypes ()Ljava/util/List;
 	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
 	public static fun values ()[Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
-}
-
-public final class com/azikar24/wormaceptor/infra/parser/image/ImageFormat$Companion {
-	public final fun fromMimeType (Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
-	public final fun getAllMimeTypes ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/parser/image/ImageMetadata {
@@ -75,12 +69,5 @@ public final class com/azikar24/wormaceptor/infra/parser/image/ImageParser$Compa
 public final class com/azikar24/wormaceptor/infra/parser/image/MagicByteDetector {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/infra/parser/image/MagicByteDetector;
 	public final fun detect ([B)Lcom/azikar24/wormaceptor/infra/parser/image/ImageFormat;
-	public final fun isBmp ([B)Z
-	public final fun isGif ([B)Z
-	public final fun isIco ([B)Z
-	public final fun isJpeg ([B)Z
-	public final fun isPng ([B)Z
-	public final fun isSvg ([B)Z
-	public final fun isWebP ([B)Z
 }
 

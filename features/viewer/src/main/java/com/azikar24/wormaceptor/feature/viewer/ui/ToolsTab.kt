@@ -62,7 +62,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -590,12 +589,7 @@ private fun ToolTile(
                     modifier = Modifier
                         .size(40.dp)
                         .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
-                                    categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-                                ),
-                            ),
+                            color = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                             shape = WormaCeptorDesignSystem.Shapes.card,
                         ),
                     contentAlignment = Alignment.Center,

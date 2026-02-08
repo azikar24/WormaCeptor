@@ -25,7 +25,6 @@ import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,96 +57,89 @@ fun BulkActionBar(
         exit = shrinkVertically() + fadeOut(),
         modifier = modifier,
     ) {
-        Surface(
-            color = MaterialTheme.colorScheme.primaryContainer,
-            tonalElevation = WormaCeptorDesignSystem.Elevation.sm,
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                )
                 .windowInsetsPadding(WindowInsets.statusBars),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
+            // Left side: Cancel button and selection count
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs,
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Left side: Cancel button and selection count
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    IconButton(onClick = onCancel) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.viewer_bulk_cancel_selection),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-
-                    Text(
-                        text = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                IconButton(onClick = onCancel) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.viewer_bulk_cancel_selection),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
 
-                // Right side: Action buttons
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    // Select all / Deselect all button
-                    if (selectedCount < totalCount) {
-                        IconButton(onClick = onSelectAll) {
-                            Icon(
-                                imageVector = Icons.Default.SelectAll,
-                                contentDescription = stringResource(R.string.viewer_bulk_select_all),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = onDeselectAll) {
-                            Icon(
-                                imageVector = Icons.Outlined.Deselect,
-                                contentDescription = stringResource(R.string.viewer_bulk_deselect_all),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        }
-                    }
+                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
 
-                    IconButton(onClick = onShare) {
+                Text(
+                    text = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+
+            // Right side: Action buttons
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Select all / Deselect all button
+                if (selectedCount < totalCount) {
+                    IconButton(onClick = onSelectAll) {
                         Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = stringResource(R.string.viewer_bulk_share_selected),
+                            imageVector = Icons.Default.SelectAll,
+                            contentDescription = stringResource(R.string.viewer_bulk_select_all),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.size(24.dp),
                         )
                     }
-
-                    IconButton(onClick = onExport) {
+                } else {
+                    IconButton(onClick = onDeselectAll) {
                         Icon(
-                            imageVector = Icons.Default.Download,
-                            contentDescription = stringResource(R.string.viewer_bulk_export_selected),
+                            imageVector = Icons.Outlined.Deselect,
+                            contentDescription = stringResource(R.string.viewer_bulk_deselect_all),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.size(24.dp),
                         )
                     }
+                }
 
-                    IconButton(onClick = onDelete) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.viewer_bulk_delete_selected),
-                            tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
+                IconButton(onClick = onShare) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = stringResource(R.string.viewer_bulk_share_selected),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+
+                IconButton(onClick = onExport) {
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = stringResource(R.string.viewer_bulk_export_selected),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.viewer_bulk_delete_selected),
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(24.dp),
+                    )
                 }
             }
         }

@@ -80,48 +80,6 @@ class MultipartBodyParser : BodyParser {
         }
     }
 
-    /**
-     * Parse multipart content with known Content-Type header.
-     */
-    fun parseWithContentType(contentType: String, body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.MULTIPART)
-        }
-
-        val boundary = extractBoundary(contentType)
-        if (boundary == null) {
-            return ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.MULTIPART,
-                isValid = false,
-                errorMessage = "Missing boundary in Content-Type",
-            )
-        }
-
-        return try {
-            val content = String(body, Charsets.UTF_8)
-            val parts = parseParts(content, boundary)
-            val formatted = formatParts(parts)
-
-            ParsedBody(
-                formatted = formatted,
-                contentType = ContentType.MULTIPART,
-                metadata = mapOf(
-                    "partCount" to parts.size.toString(),
-                    "boundary" to boundary,
-                ),
-                isValid = true,
-            )
-        } catch (e: Exception) {
-            ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.MULTIPART,
-                isValid = false,
-                errorMessage = "Multipart parsing error: ${e.message}",
-            )
-        }
-    }
-
     private fun extractBoundary(contentType: String): String? {
         val boundaryRegex = """boundary\s*=\s*["']?([^"';\s]+)["']?""".toRegex(RegexOption.IGNORE_CASE)
         return boundaryRegex.find(contentType)?.groupValues?.get(1)

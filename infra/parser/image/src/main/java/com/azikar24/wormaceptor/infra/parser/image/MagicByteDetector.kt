@@ -56,31 +56,18 @@ object MagicByteDetector {
         if (data.isEmpty()) return null
 
         return when {
-            isPng(data) -> ImageFormat.PNG
-            isJpeg(data) -> ImageFormat.JPEG
-            isGif(data) -> ImageFormat.GIF
-            isWebP(data) -> ImageFormat.WEBP
-            isBmp(data) -> ImageFormat.BMP
-            isIco(data) -> ImageFormat.ICO
-            isSvg(data) -> ImageFormat.SVG
+            data.startsWith(PNG_SIGNATURE) -> ImageFormat.PNG
+            data.startsWith(JPEG_SIGNATURE) -> ImageFormat.JPEG
+            matchesGif(data) -> ImageFormat.GIF
+            matchesWebP(data) -> ImageFormat.WEBP
+            data.startsWith(BMP_SIGNATURE) -> ImageFormat.BMP
+            data.size >= 4 && data.startsWith(ICO_SIGNATURE) -> ImageFormat.ICO
+            matchesSvg(data) -> ImageFormat.SVG
             else -> null
         }
     }
 
-    /**
-     * Checks if data starts with PNG signature.
-     */
-    fun isPng(data: ByteArray): Boolean = data.startsWith(PNG_SIGNATURE)
-
-    /**
-     * Checks if data starts with JPEG signature.
-     */
-    fun isJpeg(data: ByteArray): Boolean = data.startsWith(JPEG_SIGNATURE)
-
-    /**
-     * Checks if data starts with GIF signature (GIF87a or GIF89a).
-     */
-    fun isGif(data: ByteArray): Boolean {
+    private fun matchesGif(data: ByteArray): Boolean {
         if (!data.startsWith(GIF_SIGNATURE)) return false
         if (data.size < 6) return false
         // Check for '7a' or '9a' after "GIF8"
@@ -89,34 +76,14 @@ object MagicByteDetector {
         return (version == 0x37.toByte() || version == 0x39.toByte()) && suffix == 0x61.toByte()
     }
 
-    /**
-     * Checks if data is WebP format (RIFF container with WEBP identifier).
-     */
-    fun isWebP(data: ByteArray): Boolean {
+    private fun matchesWebP(data: ByteArray): Boolean {
         if (data.size < 12) return false
         if (!data.startsWith(RIFF_SIGNATURE)) return false
         // WEBP identifier is at offset 8
         return data.sliceArray(8..11).contentEquals(WEBP_SIGNATURE)
     }
 
-    /**
-     * Checks if data starts with BMP signature.
-     */
-    fun isBmp(data: ByteArray): Boolean = data.startsWith(BMP_SIGNATURE)
-
-    /**
-     * Checks if data starts with ICO signature.
-     */
-    fun isIco(data: ByteArray): Boolean {
-        if (data.size < 4) return false
-        // ICO has 00 00 01 00, CUR has 00 00 02 00
-        return data.startsWith(ICO_SIGNATURE)
-    }
-
-    /**
-     * Checks if data appears to be SVG (XML-based).
-     */
-    fun isSvg(data: ByteArray): Boolean {
+    private fun matchesSvg(data: ByteArray): Boolean {
         if (data.size < 5) return false
 
         // Try to detect SVG by looking for characteristic strings

@@ -152,10 +152,6 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/theme/Prefere
 	public final fun getStringSet-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/feature/preferences/ui/theme/PreferencesDesignSystemKt {
-	public static final fun asSubtleBackground-8_81llA (J)J
-}
-
 public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewModel : androidx/lifecycle/ViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PreferencesRepository;)V

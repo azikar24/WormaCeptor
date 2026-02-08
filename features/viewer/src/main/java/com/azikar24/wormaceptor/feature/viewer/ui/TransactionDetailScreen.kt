@@ -58,7 +58,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -880,12 +879,6 @@ private fun EnhancedOverviewCard(
     iconTint: Color,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val gradientColors = listOf(
-        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-        iconTint.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-        Color.Transparent,
-    )
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -897,36 +890,28 @@ private fun EnhancedOverviewCard(
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(gradientColors),
-                ),
-        ) {
-            Column(modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)) {
-                // Header with icon
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = title,
-                        tint = iconTint,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                    )
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-                content()
+        Column(modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg)) {
+            // Header with icon
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = iconTint,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                )
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
             }
+            content()
         }
     }
 }

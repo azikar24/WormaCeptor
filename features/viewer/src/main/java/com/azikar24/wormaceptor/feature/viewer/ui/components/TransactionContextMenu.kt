@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -21,17 +20,6 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
-
-/**
- * Data class representing a quick action in the context menu.
- */
-data class QuickAction(
-    val id: String,
-    val label: String,
-    val icon: ImageVector,
-    val destructive: Boolean = false,
-    val onClick: () -> Unit,
-)
 
 /**
  * Context menu for transaction items.

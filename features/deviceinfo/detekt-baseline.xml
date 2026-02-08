@@ -3,7 +3,6 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun CollapsibleInfoRow(label: String, value: String)</ID>
-    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun InfoCard( title: String, icon: ImageVector, iconTint: Color, onCopy: () -&gt; Unit, content: @Composable () -&gt; Unit, )</ID>
     <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -&gt; Unit)</ID>
     <ID>LongMethod:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
     <ID>LongMethod:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$@SuppressLint("MissingPermission") private fun getNetworkDetails(): NetworkDetails</ID>

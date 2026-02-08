@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.core.engine
 
 import android.os.SystemClock
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,14 +18,18 @@ import java.io.File
 /**
  * Engine that monitors CPU usage and exposes it as StateFlows.
  *
- * Reads from /proc/stat for CPU usage calculations using jiffies delta method.
- * Reads from /sys/devices/system/cpu/ for frequency information.
- * Temperature reading attempts multiple thermal zone sources.
+ * Reads from /proc/stat for system-wide CPU usage (jiffies delta method).
+ * On Android 8+ where /proc/stat may be restricted by SELinux, automatically
+ * falls back to /proc/self/stat for app process CPU measurement.
+ *
+ * Also reads from /sys/devices/system/cpu/ for frequency information
+ * and attempts multiple thermal zone sources for temperature.
  *
  * Features:
  * - Configurable sampling interval
- * - Per-core CPU usage tracking
+ * - Per-core CPU usage tracking (system mode only)
  * - Overall CPU usage percentage
+ * - Automatic fallback from system-wide to process-level measurement
  * - CPU frequency monitoring
  * - Temperature monitoring (if available)
  * - Circular buffer for history
@@ -52,9 +57,17 @@ class CpuMonitorEngine(
     private val historyBuffer = ArrayDeque<CpuInfo>(historySize)
     private val bufferLock = Any()
 
-    // Previous CPU stats for delta calculation
+    // Previous CPU stats for system-wide delta calculation
     private var previousCpuStats: CpuStats? = null
     private var previousPerCoreStats: List<CpuStats>? = null
+
+    // Previous stats for process-level delta calculation
+    private var previousProcessCpuTicks: Long? = null
+    private var previousProcessWallTimeNs: Long? = null
+
+    // Fallback detection: switch to process mode if /proc/stat returns stale data
+    private var consecutiveZeroReadings = 0
+    private var useProcessFallback = false
 
     // Core count (cached)
     private val coreCount: Int by lazy {
@@ -89,7 +102,7 @@ class CpuMonitorEngine(
     }
 
     /**
-     * Clears all CPU history.
+     * Clears all CPU history and resets measurement strategy.
      */
     fun clearHistory() {
         synchronized(bufferLock) {
@@ -98,6 +111,10 @@ class CpuMonitorEngine(
         _cpuHistory.value = emptyList()
         previousCpuStats = null
         previousPerCoreStats = null
+        previousProcessCpuTicks = null
+        previousProcessWallTimeNs = null
+        consecutiveZeroReadings = 0
+        useProcessFallback = false
     }
 
     /**
@@ -108,17 +125,15 @@ class CpuMonitorEngine(
     private fun collectCpuSample(): CpuInfo {
         val timestamp = System.currentTimeMillis()
 
-        // Read /proc/stat for CPU usage
         val (overallUsage, perCoreUsage) = readCpuUsage()
-
-        // Read CPU frequency
         val frequency = readCpuFrequency()
-
-        // Read CPU temperature
         val temperature = readCpuTemperature()
-
-        // Get system uptime
         val uptime = SystemClock.elapsedRealtime()
+        val source = if (useProcessFallback) {
+            CpuMeasurementSource.PROCESS
+        } else {
+            CpuMeasurementSource.SYSTEM
+        }
 
         return CpuInfo(
             timestamp = timestamp,
@@ -128,14 +143,43 @@ class CpuMonitorEngine(
             cpuFrequencyMHz = frequency,
             cpuTemperature = temperature,
             uptime = uptime,
+            measurementSource = source,
         )
     }
 
     /**
-     * Reads CPU usage from /proc/stat.
-     * Returns overall usage and per-core usage percentages.
+     * Reads CPU usage, trying system-wide first and falling back to process-level
+     * if /proc/stat is inaccessible or returns stale data.
      */
     private fun readCpuUsage(): Pair<Float, List<Float>> {
+        if (useProcessFallback) {
+            return readProcessCpuUsage()
+        }
+
+        val hadPreviousStats = previousCpuStats != null
+        val result = readSystemCpuUsage()
+
+        // After warmup (first reading is always 0 by design), detect stale data
+        if (hadPreviousStats && result.first == 0f) {
+            consecutiveZeroReadings++
+            if (consecutiveZeroReadings >= FALLBACK_THRESHOLD) {
+                useProcessFallback = true
+                previousProcessCpuTicks = null
+                previousProcessWallTimeNs = null
+                return readProcessCpuUsage()
+            }
+        } else if (result.first > 0f) {
+            consecutiveZeroReadings = 0
+        }
+
+        return result
+    }
+
+    /**
+     * Reads system-wide CPU usage from /proc/stat.
+     * Returns overall usage and per-core usage percentages.
+     */
+    private fun readSystemCpuUsage(): Pair<Float, List<Float>> {
         return try {
             val lines = File(PROC_STAT_PATH).readLines()
 
@@ -166,8 +210,61 @@ class CpuMonitorEngine(
 
             Pair(overallUsage, perCoreUsage)
         } catch (e: Exception) {
-            // Fallback: return zeros if we can't read /proc/stat
-            Pair(0f, List(coreCount) { 0f })
+            // /proc/stat inaccessible — switch to process fallback immediately
+            useProcessFallback = true
+            previousProcessCpuTicks = null
+            previousProcessWallTimeNs = null
+            readProcessCpuUsage()
+        }
+    }
+
+    /**
+     * Reads app process CPU usage from /proc/self/stat.
+     * Always accessible for the app's own process on all Android versions.
+     *
+     * Returns the app's CPU usage as a percentage of total system capacity (0-100).
+     * Per-core data is not available in this mode.
+     */
+    private fun readProcessCpuUsage(): Pair<Float, List<Float>> {
+        return try {
+            val statContent = File(PROC_SELF_STAT_PATH).readText()
+
+            // /proc/self/stat format: pid (comm) state ...
+            // The comm field may contain spaces/parens, so find the last ')' to skip it.
+            val closingParen = statContent.lastIndexOf(')')
+            if (closingParen < 0) return Pair(0f, emptyList())
+
+            val fields = statContent.substring(closingParen + 2).trim().split(" ")
+            // After ')': index 0=state, 1=ppid, ..., utime(field14), stime(field15)
+            val utime = fields.getOrNull(PROC_STAT_UTIME_INDEX)?.toLongOrNull() ?: 0L
+            val stime = fields.getOrNull(PROC_STAT_STIME_INDEX)?.toLongOrNull() ?: 0L
+            val cpuTicks = utime + stime
+
+            val wallTimeNs = System.nanoTime()
+
+            val prevCpu = previousProcessCpuTicks
+            val prevWall = previousProcessWallTimeNs
+
+            previousProcessCpuTicks = cpuTicks
+            previousProcessWallTimeNs = wallTimeNs
+
+            if (prevCpu != null && prevWall != null) {
+                val cpuDelta = cpuTicks - prevCpu
+                val wallDeltaNs = wallTimeNs - prevWall
+
+                if (wallDeltaNs > 0 && cpuDelta >= 0) {
+                    val cpuDeltaNs = cpuDelta * NS_PER_CLOCK_TICK
+                    // Normalize to total CPU capacity (all cores) for 0-100% range
+                    val usage = cpuDeltaNs.toFloat() / wallDeltaNs.toFloat() * 100f / coreCount
+                    Pair(usage.coerceIn(0f, 100f), emptyList())
+                } else {
+                    Pair(0f, emptyList())
+                }
+            } else {
+                Pair(0f, emptyList())
+            }
+        } catch (e: Exception) {
+            Pair(0f, emptyList())
         }
     }
 
@@ -316,8 +413,24 @@ class CpuMonitorEngine(
 
         // System file paths
         private const val PROC_STAT_PATH = "/proc/stat"
+        private const val PROC_SELF_STAT_PATH = "/proc/self/stat"
         private const val CPU_FREQ_PATH = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"
         private const val CPU_FREQ_FALLBACK_PATH = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq"
+
+        /** Number of consecutive zero readings after warmup before switching to process fallback. */
+        private const val FALLBACK_THRESHOLD = 3
+
+        /** Standard Linux clock ticks per second (USER_HZ). */
+        private const val CLOCK_TICKS_PER_SECOND = 100L
+
+        /** Nanoseconds per clock tick. */
+        private const val NS_PER_CLOCK_TICK = 1_000_000_000L / CLOCK_TICKS_PER_SECOND
+
+        /** Index of utime field in /proc/self/stat (after stripping pid and comm). */
+        private const val PROC_STAT_UTIME_INDEX = 11
+
+        /** Index of stime field in /proc/self/stat (after stripping pid and comm). */
+        private const val PROC_STAT_STIME_INDEX = 12
 
         // Thermal zone paths to try (varies by device)
         private val THERMAL_ZONE_PATHS = listOf(

@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
@@ -178,11 +177,8 @@ fun SwipeBackContainer(
                     .width(48.dp)
                     .offset { IntOffset(0, 0) }
                     .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = progress * 0.6f),
-                                Color.Transparent,
-                            ),
+                        MaterialTheme.colorScheme.primaryContainer.copy(
+                            alpha = progress * WormaCeptorDesignSystem.Alpha.strong,
                         ),
                     ),
                 contentAlignment = Alignment.CenterStart,

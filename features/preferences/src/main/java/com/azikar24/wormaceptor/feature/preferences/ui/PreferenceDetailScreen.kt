@@ -72,10 +72,10 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
-import com.azikar24.wormaceptor.feature.preferences.ui.theme.asSubtleBackground
 import kotlinx.collections.immutable.ImmutableList
 
 /**

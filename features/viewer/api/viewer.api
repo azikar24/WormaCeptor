@@ -273,7 +273,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashUtils {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/CrashUtils;
 	public final fun extractCrashLocation (Ljava/lang/String;)Ljava/lang/String;
-	public final fun generateStackOverflowQuery (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public final fun parseStackTrace (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 	public static synthetic fun parseStackTrace$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/CrashUtils;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/List;
 }
@@ -316,7 +315,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/PagedTransactionListScreenKt {
 	public static final fun PagedTransactionListScreen (Landroidx/paging/compose/LazyPagingItems;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun isScrollingUp (Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/runtime/Composer;I)Z
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolCategories {
@@ -477,13 +475,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 	public final fun getLambda-9$viewer_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$QuickFilterBarKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$QuickFilterBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -579,34 +570,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Loading
 	public static final fun rememberShimmerBrush (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Brush;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PaginatedBodyState {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;JJ)V
-	public synthetic fun <init> (Ljava/lang/String;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun appendContent (Ljava/lang/String;)V
-	public final fun getError ()Ljava/lang/String;
-	public final fun getHasMore ()Z
-	public final fun getLoadedBytes ()J
-	public final fun getLoadedContent ()Ljava/lang/String;
-	public final fun getPageSize ()J
-	public final fun getProgress ()F
-	public final fun getRemainingBytes ()J
-	public final fun getTotalSize ()J
-	public final fun isLoading ()Z
-	public final fun reset (Ljava/lang/String;)V
-	public final fun updateError (Ljava/lang/String;)V
-	public final fun updateLoading (Z)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PaginatedBodyViewKt {
-	public static final fun BodyContentSkeleton (Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
-	public static final fun PaginatedBodyView (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PaginatedBodyState;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/AnnotatedString;ZZLjava/lang/String;Landroidx/compose/runtime/Composer;II)V
-	public static final fun PaginatedPlainBodyView (Ljava/lang/String;JZZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TruncatedBodyIndicator (JJLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun rememberPaginatedBodyState (Ljava/lang/String;JJLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PaginatedBodyState;
-}
-
 public abstract class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState {
 	public static final field $stable I
 }
@@ -693,27 +656,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfView
 	public static final fun PdfViewerScreen ([BILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/QuickAction {
-	public static final field $stable I
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;ZLkotlin/jvm/functions/Function0;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;ZLkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Landroidx/compose/ui/graphics/vector/ImageVector;
-	public final fun component4 ()Z
-	public final fun component5 ()Lkotlin/jvm/functions/Function0;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;ZLkotlin/jvm/functions/Function0;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickAction;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickAction;Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickAction;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDestructive ()Z
-	public final fun getIcon ()Landroidx/compose/ui/graphics/vector/ImageVector;
-	public final fun getId ()Ljava/lang/String;
-	public final fun getLabel ()Ljava/lang/String;
-	public final fun getOnClick ()Lkotlin/jvm/functions/Function0;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/QuickFilter : java/lang/Enum {
 	public static final field ERRORS Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickFilter;
 	public static final field IMAGES Lcom/azikar24/wormaceptor/feature/viewer/ui/components/QuickFilter;
@@ -729,7 +671,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/QuickFi
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/QuickFilterBarKt {
-	public static final fun QuickFilterBar (Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/util/List;Landroidx/compose/runtime/Composer;II)V
 	public static final fun applyQuickFilters (Ljava/util/List;Ljava/util/Set;)Ljava/util/List;
 }
 
@@ -750,8 +691,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Bo
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/body/BodyParsingUtils;
 	public final fun detectContentType (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
 	public final fun extractMultipartBoundary (Ljava/lang/String;)Ljava/lang/String;
-	public final fun getContentTypeColorHint (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;)Ljava/lang/String;
-	public final fun getContentTypeDisplayName (Lcom/azikar24/wormaceptor/domain/contracts/ContentType;)Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/ContentTypeChipInfo {
@@ -814,144 +753,19 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Xm
 	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/AnimatedDragState {
-	public static final field $stable I
-	public fun <init> (Landroidx/compose/animation/core/Animatable;Landroidx/compose/animation/core/Animatable;)V
-	public final fun animateTo-9KIMszo (JLandroidx/compose/animation/core/AnimationSpec;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun animateTo-9KIMszo$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/AnimatedDragState;JLandroidx/compose/animation/core/AnimationSpec;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun getOffset-F1C5BW0 ()J
-	public final fun reset (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun snapTo-3MmeM6k (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ComposableSingletons$GestureNavigationComponentsKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ComposableSingletons$GestureNavigationComponentsKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection : java/lang/Enum {
-	public static final field DOWN Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static final field LEFT Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static final field NONE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static final field RIGHT Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static final field UP Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static fun values ()[Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragState {
-	public static final field $stable I
-	public synthetic fun <init> (ZJJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (ZJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Z
-	public final fun component2-F1C5BW0 ()J
-	public final fun component3-F1C5BW0 ()J
-	public final fun component4-F1C5BW0 ()J
-	public final fun copy-CDGqFxY (ZJJJ)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragState;
-	public static synthetic fun copy-CDGqFxY$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragState;ZJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragState;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getHorizontalProgress ()F
-	public final fun getOffset-F1C5BW0 ()J
-	public final fun getStartPosition-F1C5BW0 ()J
-	public final fun getTotalDistance ()F
-	public final fun getVelocity-F1C5BW0 ()J
-	public final fun getVerticalProgress ()F
-	public fun hashCode ()I
-	public final fun isDragging ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType : java/lang/Enum {
-	public static final field ACTION_CONFIRMED Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static final field LIGHT_TAP Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static final field PAGE_TURN Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static final field REJECTION Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static final field THRESHOLD_CROSSED Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static final field ZOOM_CHANGE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-	public static fun values ()[Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHaptics {
-	public static final field $stable I
-	public fun <init> (Landroid/view/View;Landroidx/compose/ui/hapticfeedback/HapticFeedback;)V
-	public final fun perform (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;)V
-	public final fun performThrottled (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureNavigationComponentsKt {
-	public static final fun SwipeNavigationHint (ZZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TransactionPositionIndicator (IILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ZoomControls (FLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;FFLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureThresholds {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (FFFFFF)V
-	public synthetic fun <init> (FFFFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()F
-	public final fun component2 ()F
-	public final fun component3 ()F
-	public final fun component4 ()F
-	public final fun component5 ()F
-	public final fun component6 ()F
-	public final fun copy (FFFFFF)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureThresholds;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureThresholds;FFFFFFILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureThresholds;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getPullToRefresh ()F
-	public final fun getSwipeBack ()F
-	public final fun getSwipeNavigation ()F
-	public final fun getZoomDoubleTap ()F
-	public final fun getZoomMax ()F
-	public final fun getZoomMin ()F
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureUtilsKt {
-	public static final fun ThresholdCrossing (FFLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
-	public static final fun calculateDecayTarget (FFF)F
-	public static synthetic fun calculateDecayTarget$default (FFFILjava/lang/Object;)F
-	public static final fun clampWithRubberBand (FFFF)F
-	public static synthetic fun clampWithRubberBand$default (FFFFILjava/lang/Object;)F
-	public static final fun delayedVisibility (Landroidx/compose/ui/Modifier;ZJ)Landroidx/compose/ui/Modifier;
-	public static synthetic fun delayedVisibility$default (Landroidx/compose/ui/Modifier;ZJILjava/lang/Object;)Landroidx/compose/ui/Modifier;
-	public static final fun dominantDirection-k-4lQ0M (J)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/DragDirection;
-	public static final fun getDefaultGestureThresholds ()Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureThresholds;
-	public static final fun hapticOnChange (Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;)Landroidx/compose/ui/Modifier;
-	public static synthetic fun hapticOnChange$default (Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHapticType;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
-	public static final fun isHorizontal-3MmeM6k (JF)Z
-	public static synthetic fun isHorizontal-3MmeM6k$default (JFILjava/lang/Object;)Z
-	public static final fun isVertical-3MmeM6k (JF)Z
-	public static synthetic fun isVertical-3MmeM6k$default (JFILjava/lang/Object;)Z
-	public static final fun rememberAnimatedDragState-M_7yMNQ (JLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/AnimatedDragState;
-	public static final fun rememberGestureHaptics (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureHaptics;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/TransactionPagerKt {
-	public static final fun PageIndicatorDots (IILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun SimplePager (Ljava/util/List;ILkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun TransactionPager (Ljava/util/List;Ljava/util/UUID;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ZoomableTextContainerKt {
-	public static final fun ZoomableContainer (Landroidx/compose/ui/Modifier;FZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ZoomableContent (Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ZoomableTextContainer (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;FZLkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ZoomableTextContainer (Ljava/lang/String;Landroidx/compose/ui/Modifier;FZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gestures/SwipeBackContainerKt {
@@ -1065,92 +879,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSynta
 	public final fun toSyntaxColors ()Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/GestureAlpha {
-	public static final field $stable I
-	public static final field ACTIVE F
-	public static final field FULL F
-	public static final field HINT F
-	public static final field IDLE F
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureAlpha;
-	public static final field SUBTLE F
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/GestureAnimationDuration {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureAnimationDuration;
-	public static final field INSTANT I
-	public static final field NORMAL I
-	public static final field QUICK I
-	public static final field SMOOTH I
-	public static final field SNAP I
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component18-0d7_KjU ()J
-	public final fun component19-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-USMLqHw (JJJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public static synthetic fun copy-USMLqHw$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;JJJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getHapticPulse-0d7_KjU ()J
-	public final fun getPositionBackground-0d7_KjU ()J
-	public final fun getPositionHighlight-0d7_KjU ()J
-	public final fun getPositionText-0d7_KjU ()J
-	public final fun getRefreshActive-0d7_KjU ()J
-	public final fun getRefreshComplete-0d7_KjU ()J
-	public final fun getRefreshPulling-0d7_KjU ()J
-	public final fun getRefreshThreshold-0d7_KjU ()J
-	public final fun getSwipeBackIndicator-0d7_KjU ()J
-	public final fun getSwipeBackShadow-0d7_KjU ()J
-	public final fun getSwipeBackThreshold-0d7_KjU ()J
-	public final fun getSwipeEdgeGradientEnd-0d7_KjU ()J
-	public final fun getSwipeEdgeGradientStart-0d7_KjU ()J
-	public final fun getSwipeIndicatorActive-0d7_KjU ()J
-	public final fun getSwipeIndicatorInactive-0d7_KjU ()J
-	public final fun getZoomControlBackground-0d7_KjU ()J
-	public final fun getZoomControlBorder-0d7_KjU ()J
-	public final fun getZoomLevelNormal-0d7_KjU ()J
-	public final fun getZoomLevelZoomed-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColorsKt {
-	public static final fun gestureColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public static final fun getDarkGestureColors ()Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public static final fun getGestureColors (Landroidx/compose/material3/MaterialTheme;Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public static final fun getLightGestureColors ()Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureColors;
-	public static final fun getLocalGestureColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun swipeEdgeGradient (ZLandroidx/compose/runtime/Composer;I)Ljava/util/List;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/GestureSpring {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/GestureSpring;
-	public final fun getBouncy ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getSmooth ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getSnap ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getSnappy ()Landroidx/compose/animation/core/SpringSpec;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/SyntaxColorsKt {
 	public static final fun ProvideSyntaxColors (ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getDarkComposeSyntaxColors ()Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
@@ -1208,14 +936,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/ViewerColors
 	public final fun getPut-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/ViewerDesignSystem {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ViewerDesignSystem;
-	public final fun getAlpha ()Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Alpha;
-	public final fun getCornerRadius ()Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$CornerRadius;
-	public final fun getSpacing ()Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Spacing;
-}
-
 public abstract class com/azikar24/wormaceptor/feature/viewer/ui/util/ClipboardResult {
 	public static final field $stable I
 }
@@ -1250,13 +970,11 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/util/CommonUtilsKt
 	public static synthetic fun buildFullUrl$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
 	public static final fun copyToClipboard (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 	public static final fun copyToClipboardWithSizeCheck (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/util/ClipboardResult;
-	public static final fun extractUrlHost (Ljava/lang/String;)Ljava/lang/String;
 	public static final fun extractUrlPath (Ljava/lang/String;)Ljava/lang/String;
 	public static final fun formatBytes (J)Ljava/lang/String;
 	public static final fun getFileInfoForContentType (Ljava/lang/String;)Lkotlin/Pair;
 	public static final fun getMethodColor (Ljava/lang/String;)J
 	public static final fun getStatusColor (Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Ljava/lang/Integer;Landroidx/compose/runtime/Composer;I)J
-	public static final fun getStatusColorValue (Lcom/azikar24/wormaceptor/domain/entities/TransactionStatus;Ljava/lang/Integer;)J
 	public static final fun isContentTooLargeForClipboard (Ljava/lang/String;)Z
 	public static final fun shareAsFile (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun shareAsFile$default (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;

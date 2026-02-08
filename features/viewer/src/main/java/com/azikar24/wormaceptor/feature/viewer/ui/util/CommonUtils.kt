@@ -215,21 +215,6 @@ fun extractUrlPath(url: String): String {
 }
 
 /**
- * Extracts the host from a URL string.
- *
- * @param url The full URL string
- * @return The host portion of the URL, or empty string if parsing fails
- */
-fun extractUrlHost(url: String): String {
-    return try {
-        val uri = URI(url)
-        uri.host ?: ""
-    } catch (_: Exception) {
-        ""
-    }
-}
-
-/**
  * Builds a full URL from host and path components.
  *
  * @param host The host name
@@ -261,24 +246,6 @@ fun buildFullUrl(host: String, path: String, scheme: String = "https"): String {
  */
 @Composable
 fun getStatusColor(status: TransactionStatus, code: Int?): Color {
-    return when (status) {
-        TransactionStatus.COMPLETED -> when {
-            code == null -> WormaCeptorColors.StatusAmber
-            code in 200..299 -> WormaCeptorColors.StatusGreen
-            code in 300..399 -> WormaCeptorColors.StatusBlue
-            code in 400..499 -> WormaCeptorColors.StatusAmber
-            code in 500..599 -> WormaCeptorColors.StatusRed
-            else -> WormaCeptorColors.StatusGrey
-        }
-        TransactionStatus.FAILED -> WormaCeptorColors.StatusRed
-        TransactionStatus.ACTIVE -> WormaCeptorColors.StatusGrey
-    }
-}
-
-/**
- * Non-composable version of getStatusColor for use in non-Compose contexts.
- */
-fun getStatusColorValue(status: TransactionStatus, code: Int?): Color {
     return when (status) {
         TransactionStatus.COMPLETED -> when {
             code == null -> WormaCeptorColors.StatusAmber

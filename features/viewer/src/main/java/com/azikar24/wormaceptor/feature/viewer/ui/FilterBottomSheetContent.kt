@@ -560,41 +560,36 @@ private fun GridFilterCard(
 private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, onApply: () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         WormaCeptorDivider(style = DividerStyle.Subtle)
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.surfaceContainer,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WormaCeptorDesignSystem.Spacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+            OutlinedButton(
+                onClick = onClearAll,
+                modifier = Modifier.weight(1f),
+                enabled = filtersActive,
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
             ) {
-                OutlinedButton(
-                    onClick = onClearAll,
-                    modifier = Modifier.weight(1f),
-                    enabled = filtersActive,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(R.string.viewer_filter_clear_all),
-                        fontWeight = FontWeight.Medium,
-                    )
-                }
+                Text(
+                    text = stringResource(R.string.viewer_filter_clear_all),
+                    fontWeight = FontWeight.Medium,
+                )
+            }
 
-                Button(
-                    onClick = onApply,
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                ) {
-                    Text(
-                        text = stringResource(R.string.viewer_filter_done),
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
+            Button(
+                onClick = onApply,
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+            ) {
+                Text(
+                    text = stringResource(R.string.viewer_filter_done),
+                    fontWeight = FontWeight.SemiBold,
+                )
             }
         }
     }

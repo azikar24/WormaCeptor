@@ -25,7 +25,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -163,7 +162,7 @@ fun PdfPreviewCard(
         }
     }
 
-    // Card with gradient overlay effect
+    // Card with overlay effect
     val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
 
     Card(
@@ -259,20 +258,13 @@ private fun SuccessContent(
                 contentScale = ContentScale.Crop,
             )
 
-            // Subtle vignette overlay at bottom for better text readability
+            // Subtle scrim overlay at bottom for better text readability
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
                     .align(Alignment.BottomCenter)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
-                            ),
-                        ),
-                    ),
+                    .background(Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)),
             )
 
             // Page count badge - top right
@@ -328,14 +320,6 @@ private fun SuccessContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.02f),
-                            Color.Transparent,
-                        ),
-                    ),
-                )
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {

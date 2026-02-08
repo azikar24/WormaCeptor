@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.feature.preferences.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /**
  * Feature-specific design tokens for the Preferences Inspector.
@@ -31,5 +30,3 @@ object PreferencesDesignSystem {
         }
     }
 }
-
-fun Color.asSubtleBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)

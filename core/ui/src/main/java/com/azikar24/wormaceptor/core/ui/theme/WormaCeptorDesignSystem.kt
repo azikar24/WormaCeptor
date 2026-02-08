@@ -7,7 +7,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -440,11 +439,6 @@ object WormaCeptorDesignSystem {
     }
 
     /**
-     * Status Color Tints - Subtle background colors for status indicators
-     */
-    fun Color.subtleTint(alpha: Float = Alpha.subtle): Color = this.copy(alpha = alpha)
-
-    /**
      * Card Padding Presets
      */
     object CardPadding {
@@ -472,77 +466,9 @@ object WormaCeptorDesignSystem {
         val fab = RoundedCornerShape(CornerRadius.lg)
         val pill = RoundedCornerShape(CornerRadius.pill)
     }
-
-    /**
-     * Gradient Helpers - Create consistent gradients
-     */
-    object Gradients {
-        /** Subtle vertical gradient for cards */
-        fun cardSurface(baseColor: Color): Brush = Brush.verticalGradient(
-            colors = listOf(
-                baseColor.copy(alpha = 0.97f),
-                baseColor,
-            ),
-        )
-
-        /** Horizontal progress gradient */
-        fun progress(color: Color): Brush = Brush.horizontalGradient(
-            colors = listOf(
-                color.copy(alpha = 0.8f),
-                color,
-            ),
-        )
-
-        /** Radial glow effect */
-        fun glow(color: Color): Brush = Brush.radialGradient(
-            colors = listOf(
-                color.copy(alpha = 0.15f),
-                color.copy(alpha = 0.05f),
-            ),
-        )
-
-        /** Shimmer effect for loading states */
-        fun shimmer(baseColor: Color): Brush = Brush.horizontalGradient(
-            colors = listOf(
-                baseColor.copy(alpha = 0.6f),
-                baseColor.copy(alpha = 0.9f),
-                baseColor.copy(alpha = 0.6f),
-            ),
-        )
-    }
 }
 
 /**
  * Apply subtle background tint with status color
  */
 fun Color.asSubtleBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-/**
- * Apply light background tint
- */
-fun Color.asLightBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-/**
- * Apply soft background tint
- */
-fun Color.asSoftBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
-
-/**
- * Apply medium background tint
- */
-fun Color.asMediumBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-/**
- * Apply disabled state
- */
-fun Color.asDisabled(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.disabled)
-
-/**
- * Apply hover overlay
- */
-fun Color.withHoverOverlay(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.hover)
-
-/**
- * Apply pressed overlay
- */
-fun Color.withPressedOverlay(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.pressed)

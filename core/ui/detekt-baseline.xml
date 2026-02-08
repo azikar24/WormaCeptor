@@ -51,14 +51,7 @@
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ POST request - creation </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ PUT request - replacement </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ TRACE request - debugging </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply disabled state</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply hover overlay</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply light background tint</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply medium background tint</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply pressed overlay</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply soft background tint</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply subtle background tint with status color</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem$* Status Color Tints - Subtle background colors for status indicators</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Disabled state opacity </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Dragged state overlay </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Focus state overlay </ID>
@@ -85,11 +78,6 @@
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Floating action button </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Modal/dialog elevation </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$* Elevation - Minimal, subtle elevation with layered depth</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Gradients$ Horizontal progress gradient </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Gradients$ Radial glow effect </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Gradients$ Shimmer effect for loading states </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Gradients$ Subtle vertical gradient for cards </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Gradients$* Gradient Helpers - Create consistent gradients</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Feature/category icons </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Inline icons in text </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Navigation icons </ID>

@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -94,19 +93,13 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
         .sortedByDescending { it.second }
 
     val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-    val gradientBrush = Brush.verticalGradient(
-        colors = listOf(
-            surfaceColor.copy(alpha = WormaCeptorDesignSystem.Alpha.opaque),
-            surfaceColor.copy(alpha = 1f),
-        ),
-    )
 
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg, vertical = WormaCeptorDesignSystem.Spacing.sm),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent,
+            containerColor = surfaceColor,
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
@@ -116,7 +109,6 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(gradientBrush)
                 .clickable(
                     interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
                     indication = null,
@@ -508,14 +500,7 @@ private fun DistributionBar(label: String, count: Int, total: Int, color: Color)
                     .fillMaxWidth(animatedPercentage / 100f)
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-                                color,
-                            ),
-                        ),
-                    ),
+                    .background(color),
             )
         }
     }
@@ -574,14 +559,7 @@ private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
                     .fillMaxWidth(animatedPercentage / 100f)
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-                                color,
-                            ),
-                        ),
-                    ),
+                    .background(color),
             )
         }
     }

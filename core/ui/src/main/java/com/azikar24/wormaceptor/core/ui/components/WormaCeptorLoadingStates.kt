@@ -15,8 +15,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -41,7 +39,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -474,53 +471,5 @@ fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = M
                     .rotate(rotation),
             )
         }
-    }
-}
-
-/**
- * Extended FAB variant with text label.
- */
-@Composable
-fun ScrollToTopExtendedFab(
-    visible: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    showItemCount: Int? = null,
-) {
-    AnimatedVisibility(
-        visible = visible,
-        modifier = modifier,
-        enter = slideInVertically(
-            initialOffsetY = { it },
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium,
-            ),
-        ) + fadeIn(),
-        exit = slideOutVertically(
-            targetOffsetY = { it },
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium,
-            ),
-        ) + fadeOut(),
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = onClick,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Scroll to top",
-                )
-            },
-            text = {
-                Text(
-                    text = if (showItemCount != null) "Back to top ($showItemCount)" else "Back to top",
-                    fontWeight = FontWeight.Medium,
-                )
-            },
-        )
     }
 }

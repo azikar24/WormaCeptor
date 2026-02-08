@@ -4,7 +4,6 @@ public final class com/azikar24/wormaceptor/infra/parser/multipart/MultipartBody
 	public fun getPriority ()I
 	public fun getSupportedContentTypes ()Ljava/util/List;
 	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
-	public final fun parseWithContentType (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 }
 
 public final class com/azikar24/wormaceptor/infra/parser/multipart/MultipartPart {

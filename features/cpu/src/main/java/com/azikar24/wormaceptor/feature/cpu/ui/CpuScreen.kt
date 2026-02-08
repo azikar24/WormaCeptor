@@ -55,7 +55,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -66,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
@@ -293,12 +293,22 @@ private fun CpuUsageGaugeCard(
                         tint = statusColor,
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
-                    Text(
-                        text = "Overall CPU Usage",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.labelPrimary,
-                    )
+                    Column {
+                        Text(
+                            text = "Overall CPU Usage",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = colors.labelPrimary,
+                        )
+                        Text(
+                            text = when (currentCpu.measurementSource) {
+                                CpuMeasurementSource.SYSTEM -> stringResource(R.string.cpu_measurement_system)
+                                CpuMeasurementSource.PROCESS -> stringResource(R.string.cpu_measurement_process)
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.labelSecondary,
+                        )
+                    }
                 }
 
                 // Warning indicator
@@ -420,7 +430,11 @@ private fun PerCoreUsageCard(currentCpu: CpuInfo, colors: CpuColors, modifier: M
 
             if (currentCpu.perCoreUsage.isEmpty()) {
                 Text(
-                    text = "No core data available",
+                    text = if (currentCpu.measurementSource == CpuMeasurementSource.PROCESS) {
+                        stringResource(R.string.cpu_per_core_unavailable_process)
+                    } else {
+                        "No core data available"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = colors.labelSecondary,
                 )
@@ -634,12 +648,7 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
 
         drawPath(
             path = areaPath,
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                    colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-                ),
-            ),
+            color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
         )
     }
 }

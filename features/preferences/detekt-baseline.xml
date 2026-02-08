@@ -21,7 +21,6 @@
     <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$150</ID>
     <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$5000</ID>
     <ID>UndocumentedPublicFunction:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$fun forTypeName(typeName: String): Color</ID>
-    <ID>UndocumentedPublicFunction:PreferencesDesignSystem.kt$fun Color.asSubtleBackground(): Color</ID>
     <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearCurrentFile()</ID>
     <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearFileSelection()</ID>
     <ID>UndocumentedPublicFunction:PreferencesViewModel.kt$PreferencesViewModel$fun clearFilters()</ID>

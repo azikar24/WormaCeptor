@@ -43,10 +43,7 @@ public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfParser : com/azi
 }
 
 public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfParser$Companion {
-	public final fun extractDocumentInfo ([B)Ljava/util/Map;
 	public final fun extractPdfVersion ([B)Ljava/lang/String;
 	public final fun formatFileSize (J)Ljava/lang/String;
-	public final fun formatPdfDate (Ljava/lang/String;)Ljava/lang/String;
-	public final fun isPdfMagicBytes ([B)Z
 }
 

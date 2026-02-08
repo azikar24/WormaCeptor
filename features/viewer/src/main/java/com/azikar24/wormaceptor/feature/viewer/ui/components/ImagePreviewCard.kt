@@ -47,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -306,18 +305,13 @@ fun ImagePreviewCard(
                         .aspectRatio(constrainedAspectRatio, matchHeightConstraintsFirst = false),
                     contentAlignment = Alignment.Center,
                 ) {
-                    // Background pattern for transparency
+                    // Background for transparency
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(
-                                        MaterialTheme.colorScheme.surfaceVariant.copy(
-                                            alpha = WormaCeptorDesignSystem.Alpha.medium,
-                                        ),
-                                        MaterialTheme.colorScheme.surface,
-                                    ),
+                                MaterialTheme.colorScheme.surfaceVariant.copy(
+                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
                                 ),
                             ),
                     )

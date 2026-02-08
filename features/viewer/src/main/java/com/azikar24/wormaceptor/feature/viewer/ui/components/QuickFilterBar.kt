@@ -1,24 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.viewer.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -62,63 +44,6 @@ enum class QuickFilter(val label: String) {
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
         return today == transactionDate
-    }
-}
-
-/**
- * A horizontal row of quick filter chips.
- * Users can toggle multiple filters, which are applied with AND logic.
- */
-@Composable
-fun QuickFilterBar(
-    activeFilters: Set<QuickFilter>,
-    onFilterToggle: (QuickFilter) -> Unit,
-    modifier: Modifier = Modifier,
-    availableFilters: List<QuickFilter> = QuickFilter.entries,
-) {
-    LazyRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        contentPadding = PaddingValues(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-    ) {
-        items(availableFilters) { filter ->
-            val isSelected = filter in activeFilters
-
-            FilterChip(
-                selected = isSelected,
-                onClick = { onFilterToggle(filter) },
-                label = {
-                    Text(
-                        text = filter.label,
-                        style = MaterialTheme.typography.labelMedium,
-                    )
-                },
-                leadingIcon = if (isSelected) {
-                    {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.viewer_quick_filter_selected),
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
-                } else {
-                    null
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-                    selectedBorderColor = MaterialTheme.colorScheme.primary.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.bold,
-                    ),
-                    enabled = true,
-                    selected = isSelected,
-                ),
-            )
-        }
     }
 }
 

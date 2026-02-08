@@ -45,22 +45,4 @@ enum class ImageFormat(
         contentType = ContentType.IMAGE_SVG,
         displayName = "SVG",
     ),
-    ;
-
-    companion object {
-        /**
-         * All supported MIME types across all formats.
-         */
-        val allMimeTypes: List<String> = entries.flatMap { it.mimeTypes }
-
-        /**
-         * Finds format by MIME type.
-         */
-        fun fromMimeType(mimeType: String): ImageFormat? {
-            val normalized = mimeType.lowercase().trim()
-            return entries.find { format ->
-                format.mimeTypes.any { it.equals(normalized, ignoreCase = true) }
-            }
-        }
-    }
 }

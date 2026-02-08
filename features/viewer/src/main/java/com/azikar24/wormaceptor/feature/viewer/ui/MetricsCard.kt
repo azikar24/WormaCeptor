@@ -7,7 +7,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,8 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -97,7 +94,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg, vertical = WormaCeptorDesignSystem.Spacing.sm),
+            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm, vertical = WormaCeptorDesignSystem.Spacing.md),
         colors = CardDefaults.cardColors(
             containerColor = surfaceColor,
         ),
@@ -149,15 +146,16 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
+                MetricItem(
+                    label = stringResource(R.string.viewer_metrics_success),
+                    value = stringResource(R.string.viewer_metrics_success_value, successRate),
+                    color = when {
+                        successRate.toFloat() >= 90 -> WormaCeptorColors.Chart.Fast
+                        successRate.toFloat() >= 70 -> WormaCeptorColors.Chart.Medium
+                        else -> WormaCeptorColors.Chart.Slow
+                    },
                     modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularSuccessMetric(
-                        label = stringResource(R.string.viewer_metrics_success),
-                        percentage = successRate.toFloat(),
-                    )
-                }
+                )
 
                 MetricItem(
                     label = stringResource(R.string.viewer_metrics_total),
@@ -338,84 +336,12 @@ private fun MetricItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .clip(CircleShape)
-                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)),
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-        }
         Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Medium,
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = color,
         )
-    }
-}
-
-@Composable
-private fun CircularSuccessMetric(label: String, percentage: Float) {
-    val animatedPercentage by animateFloatAsState(
-        targetValue = percentage,
-        animationSpec = tween(durationMillis = 1000),
-        label = "percentage_animation",
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.size(64.dp),
-        ) {
-            // Background circle
-            Canvas(modifier = Modifier.size(64.dp)) {
-                drawArc(
-                    color = Color.Gray.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
-                    startAngle = -90f,
-                    sweepAngle = 360f,
-                    useCenter = false,
-                    style = Stroke(width = 6.dp.toPx(), cap = StrokeCap.Round),
-                )
-            }
-
-            // Progress circle - use semantic colors
-            val color = when {
-                animatedPercentage >= 90 -> WormaCeptorColors.Chart.Fast
-                animatedPercentage >= 70 -> WormaCeptorColors.Chart.Medium
-                else -> WormaCeptorColors.Chart.Slow
-            }
-
-            Canvas(modifier = Modifier.size(64.dp)) {
-                drawArc(
-                    color = color,
-                    startAngle = -90f,
-                    sweepAngle = (animatedPercentage / 100f) * 360f,
-                    useCenter = false,
-                    style = Stroke(width = 6.dp.toPx(), cap = StrokeCap.Round),
-                )
-            }
-
-            Text(
-                text = "${animatedPercentage.roundToInt()}%",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-        }
-
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,

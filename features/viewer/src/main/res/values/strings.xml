@@ -153,6 +153,7 @@
     <!-- MetricsCard -->
     <string name="viewer_metrics_title">Performance Metrics</string>
     <string name="viewer_metrics_success">Success</string>
+    <string name="viewer_metrics_success_value">%.1f%%</string>
     <string name="viewer_metrics_total">Total</string>
     <string name="viewer_metrics_avg_time">Avg Time</string>
     <string name="viewer_metrics_response_time_distribution">Response Time Distribution</string>

@@ -5,15 +5,17 @@ import android.view.HapticFeedbackConstants
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -56,6 +58,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -741,8 +744,13 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-                shape = WormaCeptorDesignSystem.Shapes.chip,
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                shape = WormaCeptorDesignSystem.Shapes.card,
+            )
+            .border(
+                width = WormaCeptorDesignSystem.BorderWidth.regular,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
@@ -764,7 +772,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
                         MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                        shape = RoundedCornerShape(
                             topStart = WormaCeptorDesignSystem.CornerRadius.xs,
                             bottomStart = WormaCeptorDesignSystem.CornerRadius.xs,
                         ),
@@ -792,7 +800,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                         } else {
                             MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
                         },
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                        shape = RoundedCornerShape(
                             topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
                             bottomEnd = WormaCeptorDesignSystem.CornerRadius.xs,
                         ),
@@ -836,7 +844,7 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
         } else {
             MaterialTheme.colorScheme.error.asSubtleBackground()
         },
-        border = androidx.compose.foundation.BorderStroke(
+        border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
             if (isSsl) {
                 MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
@@ -883,7 +891,7 @@ private fun EnhancedOverviewCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
         ),
-        border = androidx.compose.foundation.BorderStroke(
+        border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
         ),
@@ -1007,7 +1015,7 @@ private fun RequestTab(
             return@LaunchedEffect
         }
 
-        kotlinx.coroutines.delay(250) // Debounce
+        delay(250) // Debounce
 
         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
             val foundMatches = mutableListOf<MatchInfo>()
@@ -1037,7 +1045,7 @@ private fun RequestTab(
             val lineNumber = layout.getLineForOffset(match.globalPosition)
             val pixelOffset = layout.getLineTop(lineNumber).toInt()
             scrollState.animateScrollTo(pixelOffset)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Offset out of bounds, ignore
         }
     }
@@ -1340,7 +1348,7 @@ private fun ResponseTab(
             return@LaunchedEffect
         }
 
-        kotlinx.coroutines.delay(250) // Debounce
+        delay(250) // Debounce
 
         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
             val foundMatches = mutableListOf<MatchInfo>()
@@ -1365,7 +1373,7 @@ private fun ResponseTab(
             val lineNumber = layout.getLineForOffset(match.globalPosition)
             val pixelOffset = layout.getLineTop(lineNumber).toInt()
             scrollState.animateScrollTo(pixelOffset)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Offset out of bounds, ignore
         }
     }
@@ -1743,17 +1751,27 @@ private fun CollapsibleSection(
 @Composable
 private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
     val activeColor = MaterialTheme.colorScheme.primary
+    val radius = WormaCeptorDesignSystem.CornerRadius.xs
+    val shape = RoundedCornerShape(radius)
+
+    val borderColor by animateColorAsState(
+        targetValue = activeColor.copy(alpha = 0.3f),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        label = "segment_border",
+    )
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        modifier = Modifier
+            .clip(shape)
+            .border(WormaCeptorDesignSystem.BorderWidth.thin, borderColor, shape),
     ) {
-        ToggleChip(
+        SegmentOption(
             text = "Pretty",
             isSelected = isPretty,
             activeColor = activeColor,
             onClick = { if (!isPretty) onToggle() },
         )
-        ToggleChip(
+        SegmentOption(
             text = "Raw",
             isSelected = !isPretty,
             activeColor = activeColor,
@@ -1763,52 +1781,36 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
 }
 
 @Composable
-private fun ToggleChip(text: String, isSelected: Boolean, activeColor: Color, onClick: () -> Unit) {
+private fun SegmentOption(text: String, isSelected: Boolean, activeColor: Color, onClick: () -> Unit) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
             activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+            Color.Transparent
         },
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        label = "toggle_bg",
-    )
-    val borderColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            activeColor.copy(alpha = 0.3f)
-        } else {
-            MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-        },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        label = "toggle_border",
+        label = "segment_bg",
     )
     val textColor by animateColorAsState(
         targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        label = "toggle_text",
+        label = "segment_text",
     )
 
-    Surface(
-        onClick = onClick,
-        shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = backgroundColor,
-        border = androidx.compose.foundation.BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.thin,
-            borderColor,
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall.copy(
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
         ),
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-            ),
-            color = textColor,
-            modifier = Modifier.padding(
+        color = textColor,
+        modifier = Modifier
+            .background(backgroundColor)
+            .clickable(onClick = onClick)
+            .padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                 vertical = WormaCeptorDesignSystem.Spacing.xs,
             ),
-        )
-    }
+    )
 }
 
 /**
@@ -1820,7 +1822,6 @@ private fun ToggleChip(text: String, isSelected: Boolean, activeColor: Color, on
  * 2. Zoom button - quick access to fullscreen view
  * 3. Content type chip - informational, can wrap to next row
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BodyControlsRow(
     contentType: ContentType,
@@ -1828,10 +1829,10 @@ private fun BodyControlsRow(
     onPrettyModeToggle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow(
+    Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Content type chip - informational, can wrap first
         ContentTypeChip(contentType = contentType)
@@ -1923,7 +1924,7 @@ private fun HighlightedBodyText(
 
         try {
             layout.getPathForRange(range.first, range.last + 1)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -1934,7 +1935,7 @@ private fun HighlightedBodyText(
         // Current match overlay using Canvas to draw the actual path shape
         // This correctly handles text that wraps across multiple lines
         currentMatchPath?.let { path ->
-            androidx.compose.foundation.Canvas(
+            Canvas(
                 modifier = Modifier.matchParentSize(),
             ) {
                 drawPath(path, highlightColor)

@@ -1,13 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,13 +16,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,23 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.toggleableState
-import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
@@ -144,31 +125,6 @@ fun SelectableTransactionItem(
                 .padding(WormaCeptorDesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Selection checkbox (animated)
-            AnimatedVisibility(
-                visible = isSelectionMode,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut(),
-            ) {
-                Row {
-                    SelectionCheckbox(isSelected = isSelected)
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-                }
-            }
-
-            // Status indicator bar
-            Box(
-                modifier = Modifier
-                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                    .height(48.dp)
-                    .background(
-                        statusColor,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                    ),
-            )
-
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
             // Transaction content
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -236,45 +192,6 @@ fun SelectableTransactionItem(
 }
 
 @Composable
-private fun SelectionCheckbox(isSelected: Boolean, modifier: Modifier = Modifier) {
-    val checkboxColor = if (isSelected) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.outline
-    }
-
-    Surface(
-        modifier = modifier
-            .size(24.dp)
-            .semantics(mergeDescendants = true) {
-                role = Role.Checkbox
-                toggleableState = if (isSelected) ToggleableState.On else ToggleableState.Off
-            },
-        shape = CircleShape,
-        color = if (isSelected) checkboxColor else Color.Transparent,
-        border = if (!isSelected) {
-            androidx.compose.foundation.BorderStroke(
-                width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = checkboxColor,
-            )
-        } else {
-            null
-        },
-    ) {
-        if (isSelected) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.viewer_item_selected),
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(WormaCeptorDesignSystem.IconSize.sm),
-            )
-        }
-    }
-}
-
-@Composable
 private fun MethodBadge(method: String) {
     val color = getMethodColor(method)
     Surface(
@@ -297,7 +214,7 @@ private fun MethodBadge(method: String) {
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(

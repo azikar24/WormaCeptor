@@ -397,7 +397,7 @@ private fun ToolCategorySection(
 ) {
     val rotationAngle by animateFloatAsState(
         targetValue = if (isCollapsed) 0f else 180f,
-        animationSpec = tween(250),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
         label = "collapse_rotation",
     )
 
@@ -407,14 +407,14 @@ private fun ToolCategorySection(
         } else {
             categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
         },
-        animationSpec = tween(200),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
         label = "header_bg",
     )
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(animationSpec = tween(250)),
+            .animateContentSize(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
     ) {
         // Category header
         Surface(
@@ -503,8 +503,12 @@ private fun ToolCategorySection(
         // Tools grid
         AnimatedVisibility(
             visible = !isCollapsed,
-            enter = expandVertically(animationSpec = tween(250)) + fadeIn(animationSpec = tween(200)),
-            exit = shrinkVertically(animationSpec = tween(200)) + fadeOut(animationSpec = tween(150)),
+            enter = expandVertically(
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            exit = shrinkVertically(
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
         ) {
             Column {
                 if (headerContent != null) {
@@ -639,7 +643,7 @@ private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) 
     ) {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.viewer_tools_search_placeholder),
             modifier = Modifier
                 .size(WormaCeptorDesignSystem.IconSize.xxxl)
                 .alpha(WormaCeptorDesignSystem.Alpha.strong),

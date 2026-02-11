@@ -33,13 +33,12 @@ public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfMetadata {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfParser : com/azikar24/wormaceptor/domain/contracts/BaseBodyParser {
 	public static final field Companion Lcom/azikar24/wormaceptor/infra/parser/pdf/PdfParser$Companion;
 	public fun <init> (Landroid/content/Context;)V
 	public fun canParse (Ljava/lang/String;[B)Z
 	public fun getPriority ()I
 	public fun getSupportedContentTypes ()Ljava/util/List;
-	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 }
 
 public final class com/azikar24/wormaceptor/infra/parser/pdf/PdfParser$Companion {

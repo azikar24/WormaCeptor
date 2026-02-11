@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.protobuf
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.nio.ByteBuffer
 import java.util.Locale
 
@@ -18,7 +17,7 @@ import java.util.Locale
  * Note: Without a .proto schema, we can only decode the wire format structure.
  * Field names and semantic meaning are not available.
  */
-class ProtobufBodyParser : BodyParser {
+class ProtobufBodyParser : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/x-protobuf",
@@ -29,6 +28,8 @@ class ProtobufBodyParser : BodyParser {
     )
 
     override val priority: Int = 150
+
+    override val defaultContentType: ContentType = ContentType.PROTOBUF
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first
@@ -49,11 +50,7 @@ class ProtobufBodyParser : BodyParser {
         return looksLikeProtobuf(body)
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.PROTOBUF)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             val fields = decodeWireFormat(body)
             val formatted = formatFields(fields)

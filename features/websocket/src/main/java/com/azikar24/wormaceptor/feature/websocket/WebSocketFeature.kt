@@ -1,9 +1,5 @@
 package com.azikar24.wormaceptor.feature.websocket
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
+import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewModel
@@ -110,30 +107,10 @@ fun WebSocketMonitor(
         navController = navController,
         startDestination = "connections",
         modifier = modifier,
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(300),
-            ) + fadeIn(animationSpec = tween(300))
-        },
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(300),
-            ) + fadeOut(animationSpec = tween(300))
-        },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(300),
-            ) + fadeIn(animationSpec = tween(300))
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(300),
-            ) + fadeOut(animationSpec = tween(300))
-        },
+        enterTransition = WormaCeptorNavTransitions.enterTransition,
+        exitTransition = WormaCeptorNavTransitions.exitTransition,
+        popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,
+        popExitTransition = WormaCeptorNavTransitions.popExitTransition,
     ) {
         composable("connections") {
             WebSocketListScreen(

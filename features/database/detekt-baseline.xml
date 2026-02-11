@@ -15,9 +15,6 @@
     <ID>LongParameterList:TableDataScreen.kt$( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:TableListScreen.kt$( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:DatabaseDataSource.kt$DatabaseDataSource$1000</ID>
-    <ID>MagicNumber:DatabaseFeature.kt$300</ID>
-    <ID>MagicNumber:DatabaseListScreen.kt$1024</ID>
-    <ID>MagicNumber:DatabaseListScreen.kt$1024.0</ID>
     <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$100</ID>
     <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$20</ID>
     <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$300</ID>

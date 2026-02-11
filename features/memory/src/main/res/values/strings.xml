@@ -2,7 +2,9 @@
 <resources>
     <string name="memory_back">Back</string>
     <string name="memory_clear_history">Clear history</string>
+    <string name="memory_title">Memory Monitor</string>
     <string name="memory_warning">Memory warning</string>
+    <string name="memory_warning_high">High memory usage</string>
     <string name="memory_used">Used</string>
     <string name="memory_free">Free</string>
     <string name="memory_total">Total</string>

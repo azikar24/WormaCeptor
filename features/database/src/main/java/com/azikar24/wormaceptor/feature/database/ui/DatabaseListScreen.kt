@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,10 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
-import java.util.Locale
 
 /**
  * Screen displaying list of available databases.
@@ -146,7 +147,7 @@ fun DatabaseListScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Storage,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.database_list_title),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                         )
@@ -164,6 +165,7 @@ fun DatabaseListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
+                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
                 ) {
                     items(
                         items = databases,
@@ -202,7 +204,7 @@ private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifi
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = formatFileSize(database.sizeBytes),
+                    text = formatBytes(database.sizeBytes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -216,14 +218,4 @@ private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifi
             )
         },
     )
-}
-
-private fun formatFileSize(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
 }

@@ -61,16 +61,19 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import com.azikar24.wormaceptor.feature.memory.R
 import com.azikar24.wormaceptor.feature.memory.ui.theme.memoryColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.DecimalFormat
-import java.util.Locale
 
 /**
  * Main screen for Memory Monitoring.
@@ -280,7 +283,7 @@ private fun HeapUsageCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Memory,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.memory_title),
                         tint = statusColor,
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
@@ -308,7 +311,7 @@ private fun HeapUsageCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Warning,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.memory_warning_high),
                                 tint = colors.critical,
                                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
@@ -439,6 +442,7 @@ private fun MemoryChartCard(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
+                modifier = Modifier.semantics { heading() },
             )
 
             // Chart
@@ -446,7 +450,7 @@ private fun MemoryChartCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp)
+                        .height(200.dp)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
                         .background(colors.chartBackground),
                     contentAlignment = Alignment.Center,
@@ -458,12 +462,18 @@ private fun MemoryChartCard(
                     )
                 }
             } else {
+                val latestUsed = history.lastOrNull()?.usedMemory ?: 0L
+                val totalMem = history.lastOrNull()?.totalMemory ?: 1L
                 MemoryLineChart(
                     history = history,
                     colors = colors,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp),
+                        .height(200.dp)
+                        .semantics {
+                            contentDescription =
+                                "Memory usage chart: ${latestUsed / 1_048_576}MB of ${totalMem / 1_048_576}MB"
+                        },
                 )
             }
 
@@ -665,7 +675,7 @@ private fun NativeHeapCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
                 color = colors.nativeHeap,
                 trackColor = colors.chartBackground,
             )
@@ -727,17 +737,5 @@ private fun WarningBadge(modifier: Modifier = Modifier) {
                 .padding(WormaCeptorDesignSystem.Spacing.xs)
                 .size(WormaCeptorDesignSystem.Spacing.lg),
         )
-    }
-}
-
-/**
- * Formats bytes into a human-readable string (KB, MB, GB).
- */
-private fun formatBytes(bytes: Long): String {
-    return when {
-        bytes >= 1_073_741_824 -> String.format(Locale.US, "%.1f GB", bytes / 1_073_741_824.0)
-        bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
-        bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
-        else -> "$bytes B"
     }
 }

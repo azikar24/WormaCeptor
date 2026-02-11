@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -156,9 +156,9 @@ fun TableListScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.TableChart,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.database_table_list_empty),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                         )
                         Text(
                             text = stringResource(R.string.database_table_list_empty),
@@ -174,6 +174,7 @@ fun TableListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
+                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
                 ) {
                     items(
                         items = tables,

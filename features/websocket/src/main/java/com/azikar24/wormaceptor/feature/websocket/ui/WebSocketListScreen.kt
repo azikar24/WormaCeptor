@@ -40,8 +40,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.feature.websocket.R
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
@@ -49,7 +51,6 @@ import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 /**
  * Screen displaying a list of WebSocket connections.
@@ -133,11 +134,25 @@ internal fun WebSocketListScreen(
         },
     ) { paddingValues ->
         if (connections.isEmpty()) {
-            EmptyConnectionsState(
-                hasSearchQuery = searchQuery.isNotBlank(),
+            WormaCeptorEmptyState(
+                title = stringResource(
+                    if (searchQuery.isNotBlank()) {
+                        R.string.websocket_empty_no_matching_connections
+                    } else {
+                        R.string.websocket_empty_no_connections
+                    },
+                ),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
+                subtitle = stringResource(
+                    if (searchQuery.isNotBlank()) {
+                        R.string.websocket_empty_search_hint
+                    } else {
+                        R.string.websocket_empty_connections_hint
+                    },
+                ),
+                icon = Icons.Default.Sync,
             )
         } else {
             ConnectionList(
@@ -311,82 +326,5 @@ private fun ConnectionItem(
                 ),
             )
         }
-    }
-}
-
-@Composable
-private fun EmptyConnectionsState(hasSearchQuery: Boolean, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
-            ),
-            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Sync,
-                    contentDescription = null,
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
-                    ),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-        Text(
-            text = stringResource(
-                if (hasSearchQuery) {
-                    R.string.websocket_empty_no_matching_connections
-                } else {
-                    R.string.websocket_empty_no_connections
-                },
-            ),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-        Text(
-            text = stringResource(
-                if (hasSearchQuery) {
-                    R.string.websocket_empty_search_hint
-                } else {
-                    R.string.websocket_empty_connections_hint
-                },
-            ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
-            ),
-        )
-    }
-}
-
-/**
- * Formats a duration in milliseconds to a human-readable string.
- */
-private fun formatDuration(durationMs: Long): String {
-    val hours = TimeUnit.MILLISECONDS.toHours(durationMs)
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMs) % 60
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMs) % 60
-
-    return when {
-        hours > 0 -> "${hours}h ${minutes}m"
-        minutes > 0 -> "${minutes}m ${seconds}s"
-        else -> "${seconds}s"
     }
 }

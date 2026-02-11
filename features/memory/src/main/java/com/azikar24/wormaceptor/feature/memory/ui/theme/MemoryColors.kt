@@ -58,7 +58,7 @@ fun memoryColors(darkTheme: Boolean = isSystemInDarkTheme()): MemoryColors {
         critical = WormaCeptorColors.StatusRed,
         cardBackground = surfaceColor,
         chartBackground = surfaceVariant,
-        gridLines = outline.copy(alpha = 0.3f),
+        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
         valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),

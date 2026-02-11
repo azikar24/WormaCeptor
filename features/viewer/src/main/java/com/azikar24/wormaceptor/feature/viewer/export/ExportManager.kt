@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.ui.util.MAX_CLIPBOARD_SIZE
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
-import com.azikar24.wormaceptor.feature.viewer.ui.util.MAX_CLIPBOARD_SIZE
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray

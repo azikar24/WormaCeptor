@@ -60,6 +60,9 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -289,7 +292,7 @@ private fun CpuUsageGaugeCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Memory,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.cpu_title),
                         tint = statusColor,
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
@@ -327,7 +330,7 @@ private fun CpuUsageGaugeCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Warning,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.cpu_warning_high),
                                 tint = colors.critical,
                                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
@@ -346,14 +349,19 @@ private fun CpuUsageGaugeCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp),
+                    .height(200.dp),
                 contentAlignment = Alignment.Center,
             ) {
+                val cpuPercentage = (animatedProgress * 100).toInt()
                 CpuGauge(
                     progress = animatedProgress,
                     statusColor = statusColor,
                     colors = colors,
-                    modifier = Modifier.size(160.dp),
+                    modifier = Modifier
+                        .size(160.dp)
+                        .semantics {
+                            contentDescription = "CPU usage: $cpuPercentage%"
+                        },
                 )
 
                 // Center text
@@ -519,6 +527,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
+                modifier = Modifier.semantics { heading() },
             )
 
             // Chart
@@ -526,7 +535,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp)
+                        .height(200.dp)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                         .background(colors.chartBackground),
                     contentAlignment = Alignment.Center,
@@ -538,12 +547,16 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                     )
                 }
             } else {
+                val latestCpuPct = history.lastOrNull()?.overallUsagePercent?.toInt() ?: 0
                 CpuLineChart(
                     history = history,
                     colors = colors,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp),
+                        .height(200.dp)
+                        .semantics {
+                            contentDescription = "CPU usage chart showing current: $latestCpuPct%"
+                        },
                 )
             }
 
@@ -692,6 +705,7 @@ private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Mod
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
+                modifier = Modifier.semantics { heading() },
             )
 
             Row(
@@ -771,7 +785,7 @@ private fun SystemInfoItem(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = label,
             tint = iconTint,
             modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
         )

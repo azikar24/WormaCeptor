@@ -29,11 +29,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatDateShort
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import kotlinx.coroutines.flow.StateFlow
-import java.text.SimpleDateFormat
-import java.util.*
 
 object PushTokenFeature {
     fun createEngine(context: Context) = PushTokenEngine(context.applicationContext)
@@ -202,7 +201,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                     )
                                 }
                                 Text(
-                                    stringResource(R.string.pushtoken_refreshed, formatTime(token.lastRefreshed)),
+                                    stringResource(R.string.pushtoken_refreshed, formatDateShort(token.lastRefreshed)),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -349,7 +348,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
                                 )
                             }
                             Text(
-                                formatTime(entry.timestamp),
+                                formatDateShort(entry.timestamp),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                     alpha = WormaCeptorDesignSystem.Alpha.heavy,
@@ -362,6 +361,3 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
         }
     }
 }
-
-private fun formatTime(timestamp: Long) =
-    if (timestamp > 0) SimpleDateFormat("MMM d, HH:mm", Locale.US).format(Date(timestamp)) else "--"

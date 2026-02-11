@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.form
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.net.URLDecoder
 
 /**
@@ -14,13 +13,15 @@ import java.net.URLDecoder
  * - Support for nested parameters using bracket notation
  * - Array notation handling (param[]=value)
  */
-class FormBodyParser : BodyParser {
+class FormBodyParser : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/x-www-form-urlencoded",
     )
 
     override val priority: Int = 220
+
+    override val defaultContentType: ContentType = ContentType.FORM_DATA
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first
@@ -38,11 +39,7 @@ class FormBodyParser : BodyParser {
         return isLikelyFormData(content)
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.FORM_DATA)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             val content = String(body, Charsets.UTF_8)
             val params = parseFormData(content)

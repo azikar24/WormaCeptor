@@ -1,22 +1,3 @@
-public final class com/azikar24/wormaceptor/feature/webviewmonitor/ComposableSingletons$WebViewMonitorFeatureKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ComposableSingletons$WebViewMonitorFeatureKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-}
-
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;
@@ -25,11 +6,6 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public final fun createViewModelFactory (I)Landroidx/lifecycle/ViewModelProvider$Factory;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModelFactory;
 	public static synthetic fun createViewModelFactory$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;IILjava/lang/Object;)Landroidx/lifecycle/ViewModelProvider$Factory;
-}
-
-public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeatureKt {
-	public static final fun WebViewMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
-	public static final fun WebViewMonitor (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel : androidx/lifecycle/ViewModel {
@@ -59,5 +35,28 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewMonitorScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewMonitorScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/WebViewMonitorScreenKt {
+	public static final fun WebViewMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WebViewMonitor (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 

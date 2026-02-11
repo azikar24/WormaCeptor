@@ -73,8 +73,6 @@ public final class com/azikar24/wormaceptor/feature/fps/ui/theme/FpsColors$Compa
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/theme/FpsColorsKt {
 	public static final fun fpsColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/fps/ui/theme/FpsColors;
-	public static final fun getDarkFpsColors ()Lcom/azikar24/wormaceptor/feature/fps/ui/theme/FpsColors;
-	public static final fun getLightFpsColors ()Lcom/azikar24/wormaceptor/feature/fps/ui/theme/FpsColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/vm/FpsViewModel : androidx/lifecycle/ViewModel {

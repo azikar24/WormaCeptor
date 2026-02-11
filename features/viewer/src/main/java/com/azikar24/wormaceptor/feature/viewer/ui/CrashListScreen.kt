@@ -1,8 +1,9 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,13 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Alpha
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.CornerRadius
@@ -70,25 +70,23 @@ fun CrashListScreen(
     onRefresh: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val view = LocalView.current
     val pullToRefreshState = rememberPullToRefreshState()
     val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+    val haptic = rememberHapticOnce()
 
     // Trigger haptic feedback when pull threshold is reached
     LaunchedEffect(pullToRefreshState.distanceFraction) {
-        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            hasTriggeredHaptic = true
+        if (pullToRefreshState.distanceFraction >= 1f && !haptic.isTriggered) {
+            haptic.triggerHaptic()
         } else if (pullToRefreshState.distanceFraction < 1f) {
-            hasTriggeredHaptic = false
+            haptic.resetHaptic()
         }
     }
 
     // Reset haptic state when refreshing ends
     LaunchedEffect(isRefreshing) {
         if (!isRefreshing) {
-            hasTriggeredHaptic = false
+            haptic.resetHaptic()
         }
     }
 
@@ -183,7 +181,8 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
     val relativeTime = remember(crash.timestamp) { formatRelativeTime(crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }
 
-    var isPressed by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) 0.7f else 1f,
         label = "crash_item_alpha",
@@ -251,11 +250,10 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 if (message != null && message.isNotBlank()) {
                     Text(
                         text = message,
-                        fontSize = 13.sp,
+                        style = WormaCeptorDesignSystem.Typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alpha.prominent),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        lineHeight = 18.sp,
                     )
 
                     Spacer(modifier = Modifier.height(Spacing.sm))
@@ -269,7 +267,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     ) {
                         Text(
                             text = location,
-                            fontSize = 11.sp,
+                            style = WormaCeptorDesignSystem.Typography.labelSmall,
                             fontFamily = FontFamily.Monospace,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
@@ -284,10 +282,8 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 // Relative timestamp with better typography
                 Text(
                     text = relativeTime,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
+                    style = WormaCeptorDesignSystem.Typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.heavy),
-                    letterSpacing = 0.2.sp,
                 )
             }
         }
@@ -311,7 +307,7 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
         Surface(
             shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.lg),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alpha.moderate),
-            modifier = Modifier.size(64.dp),
+            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.emptyState),
         ) {
             Box(
                 contentAlignment = Alignment.Center,

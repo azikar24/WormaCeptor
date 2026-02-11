@@ -45,12 +45,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
@@ -121,7 +125,10 @@ internal fun WebSocketDetailScreen(
                                 modifier = Modifier
                                     .size(WormaCeptorDesignSystem.Spacing.md)
                                     .clip(CircleShape)
-                                    .background(stateColor),
+                                    .background(stateColor)
+                                    .semantics {
+                                        contentDescription = connection.state.name
+                                    },
                             )
                             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
                         }
@@ -180,11 +187,24 @@ internal fun WebSocketDetailScreen(
         },
     ) { paddingValues ->
         if (messages.isEmpty()) {
-            EmptyMessagesState(
-                hasFilters = searchQuery.isNotBlank() || directionFilter != null,
+            WormaCeptorEmptyState(
+                title = stringResource(
+                    if (searchQuery.isNotBlank() || directionFilter != null) {
+                        R.string.websocket_empty_no_matching_messages
+                    } else {
+                        R.string.websocket_empty_no_messages
+                    },
+                ),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
+                subtitle = stringResource(
+                    if (searchQuery.isNotBlank() || directionFilter != null) {
+                        R.string.websocket_empty_filter_hint
+                    } else {
+                        R.string.websocket_empty_messages_hint
+                    },
+                ),
             )
         } else {
             MessageList(
@@ -400,7 +420,7 @@ private fun MessageItem(
 
                 // Size
                 Text(
-                    text = formatSize(message.size),
+                    text = formatBytes(message.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -445,88 +465,5 @@ private fun MessageItem(
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
             )
         }
-    }
-}
-
-@Composable
-private fun EmptyMessagesState(hasFilters: Boolean, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
-            ),
-            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Row {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.CallMade,
-                        contentDescription = null,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.strong,
-                        ),
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.CallReceived,
-                        contentDescription = null,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.intense,
-                        ),
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-        Text(
-            text = stringResource(
-                if (hasFilters) {
-                    R.string.websocket_empty_no_matching_messages
-                } else {
-                    R.string.websocket_empty_no_messages
-                },
-            ),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-        Text(
-            text = stringResource(
-                if (hasFilters) {
-                    R.string.websocket_empty_filter_hint
-                } else {
-                    R.string.websocket_empty_messages_hint
-                },
-            ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
-            ),
-        )
-    }
-}
-
-/**
- * Formats a size in bytes to a human-readable string.
- */
-private fun formatSize(bytes: Long): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        else -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
     }
 }

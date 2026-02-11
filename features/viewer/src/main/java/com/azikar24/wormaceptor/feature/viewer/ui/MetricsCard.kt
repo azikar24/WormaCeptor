@@ -48,11 +48,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatItem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatDurationAvg
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDurationAvg
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
 
@@ -146,7 +147,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                MetricItem(
+                WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_success),
                     value = stringResource(R.string.viewer_metrics_success_value, successRate),
                     color = when {
@@ -157,14 +158,14 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     modifier = Modifier.weight(1f),
                 )
 
-                MetricItem(
+                WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.weight(1f),
                 )
 
-                MetricItem(
+                WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
                     color = MaterialTheme.colorScheme.tertiary,
@@ -173,17 +174,18 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
             }
 
             // Expandable details
+            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.page
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(
-                    animationSpec = tween(300),
+                    animationSpec = tween(expandDuration),
                 ) + fadeIn(
-                    animationSpec = tween(300),
+                    animationSpec = tween(expandDuration),
                 ),
                 exit = shrinkVertically(
-                    animationSpec = tween(300),
+                    animationSpec = tween(expandDuration),
                 ) + fadeOut(
-                    animationSpec = tween(300),
+                    animationSpec = tween(expandDuration),
                 ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -321,33 +323,6 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun MetricItem(
-    label: String,
-    value: String,
-    color: Color = MaterialTheme.colorScheme.primary,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = color,
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Medium,
-        )
     }
 }
 

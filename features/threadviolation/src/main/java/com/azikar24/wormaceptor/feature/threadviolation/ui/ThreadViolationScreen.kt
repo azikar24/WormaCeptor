@@ -61,21 +61,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
+import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import com.azikar24.wormaceptor.feature.threadviolation.R
 import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.threadViolationColors
 import kotlinx.collections.immutable.ImmutableList
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * Main screen for Thread Violation Detection.
@@ -110,7 +111,7 @@ fun ThreadViolationScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.threadviolation_title),
                             tint = colors.primary,
                         )
                         Text(
@@ -176,7 +177,24 @@ fun ThreadViolationScreen(
 
             // Violations list
             if (violations.isEmpty()) {
-                EmptyState(isMonitoring = isMonitoring, colors = colors, modifier = Modifier.weight(1f))
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (isMonitoring) {
+                            R.string.threadviolation_empty_monitoring
+                        } else {
+                            R.string.threadviolation_empty_no_violations
+                        },
+                    ),
+                    modifier = Modifier.weight(1f),
+                    subtitle = stringResource(
+                        if (isMonitoring) {
+                            R.string.threadviolation_empty_hint_monitoring
+                        } else {
+                            R.string.threadviolation_empty_hint_start
+                        },
+                    ),
+                    icon = Icons.Default.Warning,
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier.weight(1f),
@@ -306,9 +324,12 @@ private fun TypeFilterChips(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        FilterChip(selected = selectedType == null, onClick = {
-            onTypeSelected(null)
-        }, label = { Text(stringResource(R.string.threadviolation_filter_all)) })
+        FilterChip(
+            selected = selectedType == null,
+            onClick = { onTypeSelected(null) },
+            label = { Text(stringResource(R.string.threadviolation_filter_all)) },
+            modifier = Modifier.semantics { selected = selectedType == null },
+        )
         ViolationType.entries.forEach { type ->
             val (icon, labelRes, color) = when (type) {
                 ViolationType.DISK_READ -> Triple(
@@ -337,11 +358,19 @@ private fun TypeFilterChips(
                     colors.customSlowCode,
                 )
             }
+            val isSelected = selectedType == type
             FilterChip(
-                selected = selectedType == type,
+                selected = isSelected,
                 onClick = { onTypeSelected(if (selectedType == type) null else type) },
                 label = { Text(stringResource(labelRes)) },
-                leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
+                leadingIcon = {
+                    Icon(
+                        icon,
+                        contentDescription = null,
+                        Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                    )
+                },
+                modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                     selectedLabelColor = color,
@@ -378,12 +407,17 @@ private fun ViolationCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                     .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(icon, null, tint = typeColor, modifier = Modifier.size(20.dp))
+                Icon(
+                    icon,
+                    contentDescription = violation.violationType.name.replace("_", " "),
+                    tint = typeColor,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                )
             }
             Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
             Column(Modifier.weight(1f)) {
@@ -397,7 +431,7 @@ private fun ViolationCard(
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
                     Text(
-                        formatTime(violation.timestamp),
+                        formatTimestamp(violation.timestamp),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.labelSecondary,
                     )
@@ -483,7 +517,9 @@ private fun ViolationDetailContent(
                 listOf(
                     stringResource(R.string.threadviolation_detail_label_description) to violation.description,
                     stringResource(R.string.threadviolation_detail_label_thread) to violation.threadName,
-                    stringResource(R.string.threadviolation_detail_label_time) to formatTimeFull(violation.timestamp),
+                    stringResource(
+                        R.string.threadviolation_detail_label_time,
+                    ) to formatTimestampCompact(violation.timestamp),
                 ) + (
                     violation.durationMs?.let {
                         listOf(stringResource(R.string.threadviolation_detail_label_duration) to "${it}ms")
@@ -519,7 +555,7 @@ private fun ViolationDetailContent(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.threadviolation_copy_stack),
                                 tint = colors.labelSecondary,
-                                modifier = Modifier.size(20.dp),
+                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                             )
                         }
                     }
@@ -587,49 +623,3 @@ private fun DetailSection(
         }
     }
 }
-
-@Composable
-private fun EmptyState(
-    isMonitoring: Boolean,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Icon(
-                Icons.Default.Warning,
-                null,
-                tint = if (isMonitoring) colors.monitoring else colors.labelSecondary,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-            )
-            Text(
-                stringResource(
-                    if (isMonitoring) {
-                        R.string.threadviolation_empty_monitoring
-                    } else {
-                        R.string.threadviolation_empty_no_violations
-                    },
-                ),
-                style = MaterialTheme.typography.bodyLarge,
-                color = colors.labelSecondary,
-            )
-            Text(
-                stringResource(
-                    if (isMonitoring) {
-                        R.string.threadviolation_empty_hint_monitoring
-                    } else {
-                        R.string.threadviolation_empty_hint_start
-                    },
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.labelSecondary,
-            )
-        }
-    }
-}
-
-private fun formatTime(timestamp: Long) = SimpleDateFormat("HH:mm:ss", Locale.US).format(Date(timestamp))
-private fun formatTimeFull(timestamp: Long) = SimpleDateFormat("MMM d, HH:mm:ss.SSS", Locale.US).format(Date(timestamp))

@@ -101,6 +101,9 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/Fi
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem;
+	public final fun getDarkSyntaxColors ()Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;
+	public final fun getLightSyntaxColors ()Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;
+	public final fun syntaxColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$FileTypes {
@@ -113,6 +116,36 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBro
 	public final fun getIcon (Ljava/lang/String;Z)Landroidx/compose/ui/graphics/vector/ImageVector;
 	public final fun getImageColor-0d7_KjU ()J
 	public final fun getTextColor-0d7_KjU ()J
+}
+
+public final class com/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component10-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy--K518z4 (JJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;
+	public static synthetic fun copy--K518z4$default (Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;JJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/filebrowser/ui/theme/FileBrowserDesignSystem$SyntaxColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getJsonBoolNull-0d7_KjU ()J
+	public final fun getJsonBracket-0d7_KjU ()J
+	public final fun getJsonKey-0d7_KjU ()J
+	public final fun getJsonNumber-0d7_KjU ()J
+	public final fun getJsonString-0d7_KjU ()J
+	public final fun getXmlAttrName-0d7_KjU ()J
+	public final fun getXmlAttrValue-0d7_KjU ()J
+	public final fun getXmlComment-0d7_KjU ()J
+	public final fun getXmlContent-0d7_KjU ()J
+	public final fun getXmlTag-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel : androidx/lifecycle/ViewModel {

@@ -64,10 +64,10 @@ import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Locale
 
 /**
  * Metadata extracted from an image
@@ -435,7 +435,7 @@ fun ImagePreviewCard(
                             MetadataItem(
                                 icon = Icons.Outlined.Memory,
                                 label = stringResource(R.string.viewer_image_size),
-                                value = formatFileSize(meta.fileSize),
+                                value = formatBytes(meta.fileSize),
                                 tint = MaterialTheme.colorScheme.secondary,
                             )
                             MetadataItem(
@@ -566,17 +566,5 @@ private fun ActionButton(
                 },
             )
         }
-    }
-}
-
-/**
- * Formats file size in human-readable format
- */
-private fun formatFileSize(bytes: Long): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }

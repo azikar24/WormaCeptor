@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,21 +11,25 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.ErrorState
+import com.azikar24.wormaceptor.core.ui.components.ErrorType
+import com.azikar24.wormaceptor.core.ui.components.InlineErrorRetry
+import com.azikar24.wormaceptor.core.ui.components.LoadingMoreIndicator
+import com.azikar24.wormaceptor.core.ui.components.ScrollToTopFab
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.*
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import kotlinx.coroutines.launch
 
 /**
@@ -234,10 +237,10 @@ private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () ->
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
-                    MethodBadge(transaction.method)
+                    WormaCeptorMethodBadge(transaction.method)
                     Text(
                         text = transaction.path,
-                        fontSize = 15.sp,
+                        style = WormaCeptorDesignSystem.Typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         modifier = Modifier.weight(1f, fill = false),
@@ -260,8 +263,8 @@ private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () ->
                 ) {
                     Text(
                         text = transaction.code?.toString() ?: "?",
+                        style = WormaCeptorDesignSystem.Typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorDesignSystem.Spacing.sm,
                             vertical = WormaCeptorDesignSystem.Spacing.xxs,
@@ -271,30 +274,13 @@ private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () ->
                 Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 Text(
                     text = formatDuration(transaction.tookMs),
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    style = WormaCeptorDesignSystem.Typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun MethodBadge(method: String) {
-    Surface(
-        color = methodColor(method).copy(alpha = 0.15f),
-        contentColor = methodColor(method),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-    ) {
-        Text(
-            text = method.uppercase(),
-            fontSize = 8.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
-            ),
-        )
     }
 }
 
@@ -306,7 +292,7 @@ private fun HostChip(host: String) {
     ) {
         Text(
             text = host,
-            fontSize = 11.sp,
+            style = WormaCeptorDesignSystem.Typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
@@ -334,7 +320,7 @@ private fun EndOfListIndicator(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .width(40.dp)
                 .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
             thickness = 2.dp,
         )
         Text(
@@ -345,22 +331,12 @@ private fun EndOfListIndicator(modifier: Modifier = Modifier) {
     }
 }
 
-private fun methodColor(method: String): Color = when (method.uppercase()) {
-    "GET" -> WormaCeptorColors.StatusGreen
-    "POST" -> WormaCeptorColors.StatusBlue
-    "PUT" -> WormaCeptorColors.StatusAmber
-    "DELETE" -> WormaCeptorColors.StatusRed
-    "PATCH" -> Color(0xFF9C27B0)
-    else -> WormaCeptorColors.StatusGrey
-}
-
 private fun determineErrorType(error: Throwable): ErrorType {
     val message = error.message?.lowercase() ?: ""
     return when {
         message.contains(
             "network",
         ) || message.contains("connection") || message.contains("timeout") -> ErrorType.NETWORK
-        message.contains("not found") || message.contains("404") -> ErrorType.NOT_FOUND
         else -> ErrorType.GENERIC
     }
 }

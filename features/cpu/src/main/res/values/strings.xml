@@ -2,7 +2,9 @@
 <resources>
     <string name="cpu_back">Back</string>
     <string name="cpu_clear_history">Clear history</string>
+    <string name="cpu_title">CPU Monitor</string>
     <string name="cpu_warning">CPU warning</string>
+    <string name="cpu_warning_high">High CPU usage</string>
     <string name="cpu_usage_label">CPU Usage</string>
     <string name="cpu_frequency_label">Frequency</string>
     <string name="cpu_temperature_label">Temperature</string>

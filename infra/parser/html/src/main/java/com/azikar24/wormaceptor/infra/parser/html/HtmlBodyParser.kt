@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.html
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 
 /**
  * Parser for HTML content.
@@ -15,7 +14,7 @@ import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
  */
 class HtmlBodyParser(
     private val indentString: String = "  ",
-) : BodyParser {
+) : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "text/html",
@@ -23,6 +22,8 @@ class HtmlBodyParser(
     )
 
     override val priority: Int = 230
+
+    override val defaultContentType: ContentType = ContentType.HTML
 
     // Tags that should not have their content formatted
     private val preformattedTags = setOf(
@@ -66,11 +67,7 @@ class HtmlBodyParser(
             (content.contains("<html") && content.contains("</html>"))
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.HTML)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             val html = String(body, Charsets.UTF_8)
             val metadata = extractMetadata(html)

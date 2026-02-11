@@ -280,6 +280,9 @@ object WormaCeptorDesignSystem {
 
         /** Feature/category icons */
         val feature = 32.dp
+
+        /** Empty state illustration icons */
+        val emptyState = 64.dp
     }
 
     /**

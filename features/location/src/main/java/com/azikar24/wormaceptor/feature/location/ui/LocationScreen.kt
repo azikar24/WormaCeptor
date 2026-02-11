@@ -1,72 +1,31 @@
 package com.azikar24.wormaceptor.feature.location.ui
 
-import android.content.Intent
-import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.MyLocation
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -77,20 +36,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.feature.location.R
-import com.azikar24.wormaceptor.feature.location.ui.components.LocationMapCard
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
 import org.osmdroid.util.GeoPoint
@@ -160,7 +115,7 @@ fun LocationScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.location_title),
                             tint = LocationColors.enabled,
                         )
                         Text(
@@ -170,7 +125,7 @@ fun LocationScreen(
                         if (isMockEnabled) {
                             Surface(
                                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                                color = LocationColors.enabled.copy(alpha = 0.15f),
+                                color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
                             ) {
                                 Text(
                                     text = stringResource(R.string.location_status_active),
@@ -272,6 +227,7 @@ fun LocationScreen(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.semantics { heading() },
                         )
                         Text(
                             text = stringResource(R.string.location_presets_count, presets.size),
@@ -283,26 +239,10 @@ fun LocationScreen(
 
                 // Search presets
                 item {
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = onSearchQueryChanged,
-                        placeholder = { Text(stringResource(R.string.location_search_placeholder)) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = stringResource(R.string.location_search),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.bold,
-                            ),
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        ),
+                    WormaCeptorSearchBar(
+                        query = searchQuery,
+                        onQueryChange = onSearchQueryChanged,
+                        placeholder = stringResource(R.string.location_search_placeholder),
                     )
                 }
 
@@ -354,645 +294,4 @@ fun LocationScreen(
             },
         )
     }
-}
-
-@Composable
-private fun MockLocationWarningBanner() {
-    val context = LocalContext.current
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = LocationColors.warning.asSubtleBackground(),
-        ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = null,
-                    tint = LocationColors.warning,
-                    modifier = Modifier.size(24.dp),
-                )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.location_warning_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-                    Text(
-                        text = stringResource(R.string.location_warning_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-            Button(
-                onClick = {
-                    try {
-                        context.startActivity(
-                            Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            },
-                        )
-                    } catch (_: Exception) {
-                        // Fallback to general settings if dev options not available
-                        context.startActivity(
-                            Intent(Settings.ACTION_SETTINGS).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            },
-                        )
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LocationColors.warning,
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text(stringResource(R.string.location_open_dev_options))
-            }
-        }
-    }
-}
-
-@Composable
-private fun MockLocationStatusCard(
-    currentMockLocation: MockLocation?,
-    isMockEnabled: Boolean,
-    onToggle: () -> Unit,
-    isEnabled: Boolean,
-    canEnable: Boolean,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isMockEnabled) {
-                LocationColors.enabled.asSubtleBackground()
-            } else {
-                MaterialTheme.colorScheme.surface
-            },
-        ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        border = if (isMockEnabled) {
-            null
-        } else {
-            androidx.compose.foundation.BorderStroke(
-                WormaCeptorDesignSystem.BorderWidth.regular,
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // Status icon
-                Surface(
-                    shape = CircleShape,
-                    color = if (isMockEnabled) {
-                        LocationColors.enabled
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = null,
-                            tint = if (isMockEnabled) {
-                                MaterialTheme.colorScheme.onPrimary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.lg))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(
-                            if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
-                        ),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (currentMockLocation != null && isMockEnabled) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-                        Text(
-                            text = currentMockLocation.formatCoordinates(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = LocationColors.coordinate,
-                            fontWeight = FontWeight.Medium,
-                        )
-                        currentMockLocation.name?.let { name ->
-                            Text(
-                                text = name,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-
-                Switch(
-                    checked = isMockEnabled,
-                    onCheckedChange = { onToggle() },
-                    enabled = isEnabled && (isMockEnabled || canEnable),
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = LocationColors.enabled,
-                    ),
-                )
-            }
-
-            // Show hint when switch is disabled due to missing coordinates
-            if (isEnabled && !isMockEnabled && !canEnable) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-                Text(
-                    text = stringResource(R.string.location_enable_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CoordinateInputCard(
-    latitudeInput: String,
-    longitudeInput: String,
-    isInputValid: Boolean,
-    isLoading: Boolean,
-    isMockEnabled: Boolean,
-    isMockLocationAvailable: Boolean,
-    onLatitudeChanged: (String) -> Unit,
-    onLongitudeChanged: (String) -> Unit,
-    onSetMockLocation: () -> Unit,
-    onSetToCurrentLocation: () -> Unit,
-    onSaveAsPreset: () -> Unit,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        border = androidx.compose.foundation.BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Text(
-                text = stringResource(R.string.location_set_custom_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-            // Latitude input
-            OutlinedTextField(
-                value = latitudeInput,
-                onValueChange = onLatitudeChanged,
-                label = { Text(stringResource(R.string.location_latitude)) },
-                placeholder = { Text(stringResource(R.string.location_latitude_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                supportingText = {
-                    Text(stringResource(R.string.location_latitude_range))
-                },
-                isError = latitudeInput.isNotBlank() && latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true,
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-            // Longitude input
-            OutlinedTextField(
-                value = longitudeInput,
-                onValueChange = onLongitudeChanged,
-                label = { Text(stringResource(R.string.location_longitude)) },
-                placeholder = { Text(stringResource(R.string.location_longitude_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                supportingText = {
-                    Text(stringResource(R.string.location_longitude_range))
-                },
-                isError = longitudeInput.isNotBlank() && longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true,
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-            // Action buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                // Get current location button
-                OutlinedButton(
-                    onClick = onSetToCurrentLocation,
-                    enabled = !isLoading,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MyLocation,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text(stringResource(R.string.location_current))
-                }
-
-                // Save as preset button
-                OutlinedButton(
-                    onClick = onSaveAsPreset,
-                    enabled = isInputValid && !isLoading,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text(stringResource(R.string.location_save))
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-            // Set mock location button
-            Button(
-                onClick = onSetMockLocation,
-                enabled = isMockLocationAvailable && isInputValid && !isLoading && !isMockEnabled,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LocationColors.enabled,
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text(stringResource(R.string.location_set_mock))
-            }
-        }
-    }
-}
-
-@Composable
-private fun PresetItem(
-    preset: LocationPreset,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    onDelete: (() -> Unit)?,
-    modifier: Modifier = Modifier,
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "presetItemScale",
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .scale(scale)
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-            .border(
-                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
-                color = if (isSelected) {
-                    LocationColors.enabled
-                } else {
-                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
-                },
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-            .background(
-                color = if (isSelected) {
-                    LocationColors.enabled.asSubtleBackground()
-                } else {
-                    MaterialTheme.colorScheme.surface
-                },
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Location icon
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            color = if (preset.isBuiltIn) {
-                LocationColors.builtIn.asSubtleBackground()
-            } else {
-                LocationColors.userPreset.asSubtleBackground()
-            },
-            modifier = Modifier.size(40.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Place,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = if (preset.isBuiltIn) {
-                        LocationColors.builtIn
-                    } else {
-                        LocationColors.userPreset
-                    },
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = preset.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false),
-                )
-                if (isSelected) {
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.location_selected),
-                        modifier = Modifier.size(16.dp),
-                        tint = LocationColors.enabled,
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-            Text(
-                text = preset.location.formatCoordinates(),
-                style = MaterialTheme.typography.bodySmall,
-                color = LocationColors.coordinate,
-            )
-        }
-
-        // Delete button for user presets
-        if (onDelete != null) {
-            IconButton(
-                onClick = onDelete,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.location_delete_preset),
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.error,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CollapsibleMapSection(
-    isExpanded: Boolean,
-    onToggle: () -> Unit,
-    realLocation: GeoPoint?,
-    mockLocation: GeoPoint?,
-    isMockActive: Boolean,
-    onMapTap: (GeoPoint) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        border = androidx.compose.foundation.BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        ),
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            // Toggle header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onToggle)
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Map,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp),
-                    )
-                    Text(
-                        text = stringResource(R.string.location_map_preview),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (isMockActive) {
-                        Surface(
-                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                            color = LocationColors.enabled.copy(alpha = 0.15f),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.location_map_live),
-                                modifier = Modifier.padding(
-                                    horizontal = 6.dp,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                                ),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = LocationColors.enabled,
-                            )
-                        }
-                    }
-                }
-
-                Icon(
-                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                    contentDescription = stringResource(
-                        if (isExpanded) R.string.location_collapse else R.string.location_expand,
-                    ),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            // Collapsible map content
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut(),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = WormaCeptorDesignSystem.Spacing.lg,
-                            end = WormaCeptorDesignSystem.Spacing.lg,
-                            bottom = WormaCeptorDesignSystem.Spacing.lg,
-                        ),
-                ) {
-                    LocationMapCard(
-                        realLocation = realLocation,
-                        mockLocation = mockLocation,
-                        isMockActive = isMockActive,
-                        onMapTap = onMapTap,
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun EmptyPresetsState(hasSearchQuery: Boolean) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.xxl),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(64.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Place,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
-                    ),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-        Text(
-            text = stringResource(if (hasSearchQuery) R.string.location_no_matches else R.string.location_no_presets),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-        Text(
-            text = stringResource(
-                if (hasSearchQuery) {
-                    R.string.location_try_different_search
-                } else {
-                    R.string.location_save_for_quick_access
-                },
-            ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-        )
-    }
-}
-
-@Composable
-private fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
-    var presetName by remember { mutableStateOf("") }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.location_preset_dialog_title)) },
-        text = {
-            OutlinedTextField(
-                value = presetName,
-                onValueChange = { presetName = it },
-                label = { Text(stringResource(R.string.location_preset_name)) },
-                placeholder = { Text(stringResource(R.string.location_preset_name_placeholder)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-        },
-        confirmButton = {
-            Button(
-                onClick = { onSave(presetName) },
-                enabled = presetName.isNotBlank(),
-            ) {
-                Text(stringResource(R.string.location_save))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.location_cancel))
-            }
-        },
-    )
 }

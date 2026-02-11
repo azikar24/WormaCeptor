@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.json
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,7 +18,7 @@ import org.json.JSONTokener
  */
 class JsonBodyParser(
     private val indentSpaces: Int = 2,
-) : BodyParser {
+) : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/json",
@@ -31,6 +30,8 @@ class JsonBodyParser(
     )
 
     override val priority: Int = 250
+
+    override val defaultContentType: ContentType = ContentType.JSON
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first
@@ -55,11 +56,7 @@ class JsonBodyParser(
         return firstByte == '{' || firstByte == '['
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.JSON)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             val jsonString = String(body, Charsets.UTF_8)
             val cleanedJson = cleanJson5Syntax(jsonString)

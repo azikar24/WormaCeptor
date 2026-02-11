@@ -54,21 +54,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatDateShort
+import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
 import com.azikar24.wormaceptor.feature.securestorage.R
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * Main screen for the Secure Storage Viewer.
@@ -114,7 +117,7 @@ fun SecureStorageScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Security,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.securestorage_title),
                             tint = colors.primary,
                         )
                         Text(
@@ -137,7 +140,7 @@ fun SecureStorageScreen(
                     IconButton(onClick = onRefresh, enabled = !isLoading) {
                         if (isLoading) {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
                                 strokeWidth = 2.dp,
                             )
                         } else {
@@ -167,7 +170,10 @@ fun SecureStorageScreen(
                     .fillMaxWidth()
                     .padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    )
+                    .padding(
+                        top = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 placeholder = stringResource(R.string.securestorage_search_placeholder),
             )
@@ -218,10 +224,19 @@ fun SecureStorageScreen(
 
             // Entries list
             if (entries.isEmpty() && !isLoading) {
-                EmptyState(
-                    hasFilters = selectedType != null || searchQuery.isNotBlank(),
-                    colors = colors,
+                WormaCeptorEmptyState(
+                    title = if (selectedType != null || searchQuery.isNotBlank()) {
+                        stringResource(R.string.securestorage_empty_no_matches)
+                    } else {
+                        stringResource(R.string.securestorage_empty_no_storage)
+                    },
                     modifier = Modifier.fillMaxSize(),
+                    subtitle = if (selectedType != null || searchQuery.isNotBlank()) {
+                        stringResource(R.string.securestorage_empty_adjust_filters)
+                    } else {
+                        stringResource(R.string.securestorage_empty_description)
+                    },
+                    icon = Icons.Default.Storage,
                 )
             } else {
                 LazyColumn(
@@ -318,7 +333,7 @@ private fun SummarySection(
         // Last refresh time
         lastRefreshTime?.let { time ->
             Text(
-                text = stringResource(R.string.securestorage_last_scanned, formatTimestamp(time)),
+                text = stringResource(R.string.securestorage_last_scanned, formatDateShort(time)),
                 style = MaterialTheme.typography.labelSmall,
                 color = colors.labelSecondary,
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
@@ -356,9 +371,9 @@ private fun SummaryCard(
             Box {
                 Icon(
                     imageVector = icon,
-                    contentDescription = null,
+                    contentDescription = label,
                     tint = color,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
                 // Small status dot in corner
                 Icon(
@@ -427,8 +442,8 @@ private fun TypeFilterChips(
                 leadingIcon = {
                     Icon(
                         imageVector = icon,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
+                        contentDescription = label,
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -470,18 +485,24 @@ private fun EntryCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Type indicator
+            val encryptionState = if (entry.isEncrypted) {
+                stringResource(R.string.securestorage_detail_encrypted)
+            } else {
+                stringResource(R.string.securestorage_detail_not_encrypted)
+            }
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light))
+                    .semantics { stateDescription = encryptionState },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = if (entry.isEncrypted) Icons.Default.Lock else Icons.Default.LockOpen,
-                    contentDescription = null,
+                    contentDescription = encryptionState,
                     tint = if (entry.isEncrypted) colors.encrypted else colors.unencrypted,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
             }
 
@@ -508,7 +529,7 @@ private fun EntryCard(
                 )
                 entry.lastModified?.let { timestamp ->
                     Text(
-                        text = formatTimestamp(timestamp),
+                        text = formatDateShort(timestamp),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.labelSecondary,
                     )
@@ -573,9 +594,15 @@ private fun EntryDetailContent(
                         StorageType.KEYSTORE -> Icons.Default.Key
                         StorageType.DATASTORE -> Icons.Default.DataObject
                     },
-                    contentDescription = null,
+                    contentDescription = when (entry.storageType) {
+                        StorageType.ENCRYPTED_SHARED_PREFS -> stringResource(
+                            R.string.securestorage_detail_encrypted_prefs,
+                        )
+                        StorageType.KEYSTORE -> stringResource(R.string.securestorage_detail_android_keystore)
+                        StorageType.DATASTORE -> stringResource(R.string.securestorage_detail_datastore)
+                    },
                     tint = typeColor,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
                 )
             }
             Column {
@@ -597,9 +624,13 @@ private fun EntryDetailContent(
                 ) {
                     Icon(
                         imageVector = if (entry.isEncrypted) Icons.Default.Lock else Icons.Default.LockOpen,
-                        contentDescription = null,
+                        contentDescription = if (entry.isEncrypted) {
+                            stringResource(R.string.securestorage_detail_encrypted)
+                        } else {
+                            stringResource(R.string.securestorage_detail_not_encrypted)
+                        },
                         tint = if (entry.isEncrypted) colors.encrypted else colors.unencrypted,
-                        modifier = Modifier.size(14.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
                     )
                     Text(
                         text = if (entry.isEncrypted) {
@@ -657,6 +688,7 @@ private fun DetailSection(
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
+            modifier = Modifier.semantics { heading() },
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -672,56 +704,4 @@ private fun DetailSection(
             )
         }
     }
-}
-
-@Composable
-private fun EmptyState(
-    hasFilters: Boolean,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Storage,
-                contentDescription = null,
-                tint = colors.labelSecondary,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-            )
-            Text(
-                text = if (hasFilters) {
-                    stringResource(R.string.securestorage_empty_no_matches)
-                } else {
-                    stringResource(R.string.securestorage_empty_no_storage)
-                },
-                style = MaterialTheme.typography.bodyLarge,
-                color = colors.labelSecondary,
-            )
-            Text(
-                text = if (hasFilters) {
-                    stringResource(R.string.securestorage_empty_adjust_filters)
-                } else {
-                    stringResource(R.string.securestorage_empty_description)
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.valueSecondary,
-            )
-        }
-    }
-}
-
-private fun formatTimestamp(timestamp: Long): String {
-    val sdf = SimpleDateFormat("MMM d, HH:mm", Locale.US)
-    return sdf.format(Date(timestamp))
-}
-
-private fun formatTimestampFull(timestamp: Long): String {
-    val sdf = SimpleDateFormat("MMMM d, yyyy 'at' HH:mm:ss", Locale.US)
-    return sdf.format(Date(timestamp))
 }

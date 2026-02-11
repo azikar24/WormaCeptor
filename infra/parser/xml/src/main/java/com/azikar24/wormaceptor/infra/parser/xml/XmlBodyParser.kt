@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.xml
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -20,7 +19,7 @@ import java.io.StringWriter
  */
 class XmlBodyParser(
     private val indentString: String = "  ",
-) : BodyParser {
+) : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/xml",
@@ -32,6 +31,8 @@ class XmlBodyParser(
     )
 
     override val priority: Int = 240
+
+    override val defaultContentType: ContentType = ContentType.XML
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first
@@ -54,11 +55,7 @@ class XmlBodyParser(
             (trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true))
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.XML)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             val xmlString = String(body, Charsets.UTF_8)
             val metadata = extractMetadata(xmlString)

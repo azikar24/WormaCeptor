@@ -37,12 +37,13 @@ import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
-import com.azikar24.wormaceptor.feature.crypto.CryptoHistoryScreen
-import com.azikar24.wormaceptor.feature.crypto.CryptoTool
+import com.azikar24.wormaceptor.feature.crypto.ui.CryptoHistoryScreen
+import com.azikar24.wormaceptor.feature.crypto.ui.CryptoTool
 import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
 import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
@@ -67,7 +68,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
-import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
 import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
@@ -75,7 +75,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitor as WebViewMonitorScreen
+import com.azikar24.wormaceptor.feature.webviewmonitor.ui.WebViewMonitor as WebViewMonitorScreen
 
 class ViewerActivity : ComponentActivity() {
 

@@ -36,12 +36,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Locale
 
 /**
  * PDF metadata extracted from the document
@@ -173,7 +173,7 @@ fun PdfPreviewCard(
         colors = CardDefaults.cardColors(containerColor = surfaceColor),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
         ),
     ) {
         when (val state = loadState) {
@@ -273,7 +273,7 @@ private fun SuccessContent(
                     .align(Alignment.TopEnd)
                     .padding(WormaCeptorDesignSystem.Spacing.md),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.opaque),
                 shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
             ) {
                 Row(
@@ -340,7 +340,7 @@ private fun SuccessContent(
             ) {
                 MetadataChip(
                     icon = Icons.Default.Description,
-                    text = formatFileSize(metadata.fileSize),
+                    text = formatBytes(metadata.fileSize),
                     tint = MaterialTheme.colorScheme.tertiary,
                 )
                 metadata.version?.let { version ->
@@ -394,7 +394,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -411,7 +411,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -437,7 +437,7 @@ private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
                 imageVector = it,
                 contentDescription = text,
                 modifier = Modifier.size(14.dp),
-                tint = tint.copy(alpha = 0.7f),
+                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             )
         }
         Text(
@@ -455,7 +455,7 @@ private fun ErrorContent(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
+            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -536,7 +536,7 @@ private fun PasswordProtectedContent(
         // File size info
         MetadataChip(
             icon = Icons.Default.Description,
-            text = formatFileSize(metadata.fileSize),
+            text = formatBytes(metadata.fileSize),
             tint = MaterialTheme.colorScheme.tertiary,
         )
 
@@ -571,15 +571,6 @@ private fun PasswordProtectedContent(
             }
         }
     }
-}
-
-// Utility functions
-
-private fun formatFileSize(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    val units = listOf("B", "KB", "MB", "GB")
-    val digitGroup = (Math.log10(bytes.toDouble()) / Math.log10(1024.0)).toInt()
-    return String.format(Locale.US, "%.1f %s", bytes / Math.pow(1024.0, digitGroup.toDouble()), units[digitGroup])
 }
 
 private fun extractPdfTitle(data: ByteArray): String? {

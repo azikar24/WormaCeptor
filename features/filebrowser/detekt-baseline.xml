@@ -15,25 +15,26 @@
     <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightJson(json: String): AnnotatedString</ID>
     <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightXml(xml: String): AnnotatedString</ID>
     <ID>LongParameterList:FileBrowserScreen.kt$( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (FileBrowserViewModel.SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF1565C0</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF212121</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF2E7D32</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF616161</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF64B5F6</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF757575</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF81C784</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF9C27B0</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF9E9E9E</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFBDBDBD</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFCE93D8</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFE0E0E0</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFE64A19</ID>
+    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFFF8A65</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$0xFF42A5F5</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$0xFF66BB6A</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$0xFF78909C</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$0xFF9C27B0</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$0xFFFFA726</ID>
-    <ID>MagicNumber:FileInfoSheet.kt$1024</ID>
-    <ID>MagicNumber:FileInfoSheet.kt$1024.0</ID>
-    <ID>MagicNumber:FileListItem.kt$1024</ID>
-    <ID>MagicNumber:FileListItem.kt$1024.0</ID>
     <ID>MagicNumber:FileViewerScreen.kt$0xFF</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF212121</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF757575</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFFFF5722</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$1024</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$1024.0</ID>
     <ID>MagicNumber:FileViewerScreen.kt$10f</ID>
     <ID>MagicNumber:FileViewerScreen.kt$126</ID>
     <ID>MagicNumber:FileViewerScreen.kt$14f</ID>
@@ -51,13 +52,26 @@
     <ID>TooGenericExceptionCaught:FileViewerScreen.kt$e: Exception</ID>
     <ID>TopLevelPropertyNaming:FileViewerScreen.kt$private const val BYTES_PER_LINE = 16</ID>
     <ID>UndocumentedPublicClass:FileBrowserViewModel.kt$FileBrowserViewModel$SortMode</ID>
+    <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$@Composable fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): SyntaxColors</ID>
     <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$fun getColor(fileName: String, isDirectory: Boolean): Color</ID>
     <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$fun getIcon(fileName: String, isDirectory: Boolean): ImageVector</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$val DarkSyntaxColors = SyntaxColors( jsonKey = Color(0xFFCE93D8), jsonString = Color(0xFF81C784), jsonNumber = Color(0xFF64B5F6), jsonBoolNull = Color(0xFFFF8A65), jsonBracket = Color(0xFFBDBDBD), xmlTag = Color(0xFF64B5F6), xmlAttrName = Color(0xFFCE93D8), xmlAttrValue = Color(0xFF81C784), xmlContent = Color(0xFFE0E0E0), xmlComment = Color(0xFF9E9E9E), )</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$val LightSyntaxColors = SyntaxColors( jsonKey = Color(0xFF9C27B0), jsonString = Color(0xFF2E7D32), jsonNumber = Color(0xFF1565C0), jsonBoolNull = Color(0xFFE64A19), jsonBracket = Color(0xFF616161), xmlTag = Color(0xFF1565C0), xmlAttrName = Color(0xFF9C27B0), xmlAttrValue = Color(0xFF2E7D32), xmlContent = Color(0xFF212121), xmlComment = Color(0xFF757575), )</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$val databaseColor = Color(0xFF9C27B0) // Purple</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$val defaultColor = Color(0xFF78909C) // Blue Grey</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$val folderColor = Color(0xFFFFA726) // Orange</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$val imageColor = Color(0xFF42A5F5) // Blue</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$val textColor = Color(0xFF66BB6A) // Green</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val jsonBoolNull: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val jsonBracket: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val jsonKey: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val jsonNumber: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val jsonString: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlAttrName: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlAttrValue: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlComment: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlContent: Color</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlTag: Color</ID>
     <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val currentPath: StateFlow&lt;String?&gt; = _currentPath.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val fileContent: StateFlow&lt;FileContent?&gt; = _fileContent.asStateFlow()</ID>
@@ -69,7 +83,7 @@
     <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val selectedFile: StateFlow&lt;String?&gt; = _selectedFile.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val sortMode: StateFlow&lt;SortMode&gt; = _sortMode.asStateFlow()</ID>
     <ID>UnnecessaryParentheses:FileViewerScreen.kt$(text[i] == '-' &amp;&amp; i + 1 &lt; text.length &amp;&amp; text[i + 1].isDigit())</ID>
-    <ID>UseIfInsteadOfWhen:FileViewerScreen.kt$when { // Tag start text[i] == '&lt;' -&gt; { val start = i i++ // Check for comment, CDATA, or processing instruction if (i &lt; text.length &amp;&amp; text[i] == '!') { // Comment or CDATA while (i &lt; text.length &amp;&amp; text[i] != '&gt;') i++ i++ withStyle(SpanStyle(color = Color.Gray)) { append(text.substring(start, minOf(i, text.length))) } } else if (i &lt; text.length &amp;&amp; text[i] == '?') { // Processing instruction while (i &lt; text.length &amp;&amp; !(text[i - 1] == '?' &amp;&amp; text[i] == '&gt;')) i++ i++ withStyle(SpanStyle(color = Color.Gray)) { append(text.substring(start, minOf(i, text.length))) } } else { // Regular tag withStyle(SpanStyle(color = XmlTagColor)) { append("&lt;") } // Closing tag slash if (i &lt; text.length &amp;&amp; text[i] == '/') { withStyle(SpanStyle(color = XmlTagColor)) { append("/") } i++ } // Tag name val nameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = XmlTagColor, fontWeight = FontWeight.Bold)) { append(text.substring(nameStart, i)) } // Attributes while (i &lt; text.length &amp;&amp; text[i] != '&gt;') { if (text[i].isWhitespace()) { append(text[i]) i++ } else if (text[i] == '/') { withStyle(SpanStyle(color = XmlTagColor)) { append("/") } i++ } else if (text[i] == '=') { append("=") i++ } else if (text[i] == '"' || text[i] == '\'') { val quote = text[i] val attrStart = i i++ while (i &lt; text.length &amp;&amp; text[i] != quote) i++ i++ withStyle(SpanStyle(color = XmlAttrValueColor)) { append(text.substring(attrStart, minOf(i, text.length))) } } else { // Attribute name val attrNameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = XmlAttrNameColor)) { append(text.substring(attrNameStart, i)) } } } if (i &lt; text.length &amp;&amp; text[i] == '&gt;') { withStyle(SpanStyle(color = XmlTagColor)) { append("&gt;") } i++ } } } else -&gt; { // Text content val contentStart = i while (i &lt; text.length &amp;&amp; text[i] != '&lt;') i++ val content = text.substring(contentStart, i) if (content.isNotBlank()) { withStyle(SpanStyle(color = XmlContentColor)) { append(content) } } else { append(content) } } }</ID>
+    <ID>UseIfInsteadOfWhen:FileViewerScreen.kt$when { // Tag start text[i] == '&lt;' -&gt; { val start = i i++ // Check for comment, CDATA, or processing instruction if (i &lt; text.length &amp;&amp; text[i] == '!') { // Comment or CDATA while (i &lt; text.length &amp;&amp; text[i] != '&gt;') i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(text.substring(start, minOf(i, text.length))) } } else if (i &lt; text.length &amp;&amp; text[i] == '?') { // Processing instruction while (i &lt; text.length &amp;&amp; !(text[i - 1] == '?' &amp;&amp; text[i] == '&gt;')) i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(text.substring(start, minOf(i, text.length))) } } else { // Regular tag withStyle(SpanStyle(color = colors.xmlTag)) { append("&lt;") } // Closing tag slash if (i &lt; text.length &amp;&amp; text[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } // Tag name val nameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) { append(text.substring(nameStart, i)) } // Attributes while (i &lt; text.length &amp;&amp; text[i] != '&gt;') { if (text[i].isWhitespace()) { append(text[i]) i++ } else if (text[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } else if (text[i] == '=') { append("=") i++ } else if (text[i] == '"' || text[i] == '\'') { val quote = text[i] val attrStart = i i++ while (i &lt; text.length &amp;&amp; text[i] != quote) i++ i++ withStyle(SpanStyle(color = colors.xmlAttrValue)) { append(text.substring(attrStart, minOf(i, text.length))) } } else { // Attribute name val attrNameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlAttrName)) { append(text.substring(attrNameStart, i)) } } } if (i &lt; text.length &amp;&amp; text[i] == '&gt;') { withStyle(SpanStyle(color = colors.xmlTag)) { append("&gt;") } i++ } } } else -&gt; { // Text content val contentStart = i while (i &lt; text.length &amp;&amp; text[i] != '&lt;') i++ val content = text.substring(contentStart, i) if (content.isNotBlank()) { withStyle(SpanStyle(color = colors.xmlContent)) { append(content) } } else { append(content) } } }</ID>
     <ID>ViewModelInjection:FileBrowserFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

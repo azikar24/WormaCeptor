@@ -4,12 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -18,70 +15,31 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.CompactLoadingSpinner
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.SkeletonBox
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.rememberShimmerBrush
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
 
 // ============================================================================
 // SKELETON LOADING COMPONENTS
 // ============================================================================
-
-/**
- * Shimmer effect brush for skeleton loading animations.
- * Creates a subtle, professional shimmer that moves across the component.
- */
-@Composable
-fun rememberShimmerBrush(): Brush {
-    val shimmerColors = listOf(
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-    )
-
-    val transition = rememberInfiniteTransition(label = "shimmer")
-    val translateAnimation = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1200,
-                easing = LinearEasing,
-            ),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "shimmerTranslate",
-    )
-
-    return Brush.linearGradient(
-        colors = shimmerColors,
-        start = Offset(translateAnimation.value - 200f, 0f),
-        end = Offset(translateAnimation.value, 0f),
-    )
-}
 
 /**
  * Skeleton placeholder for a single transaction item.
@@ -168,25 +126,6 @@ fun TransactionItemSkeleton(modifier: Modifier = Modifier) {
 }
 
 /**
- * Generic skeleton box with shimmer effect.
- */
-@Composable
-fun SkeletonBox(
-    modifier: Modifier = Modifier,
-    width: Dp? = null,
-    height: Dp = 16.dp,
-    brush: Brush = rememberShimmerBrush(),
-    shape: RoundedCornerShape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-) {
-    Box(
-        modifier = modifier
-            .then(if (width != null) Modifier.width(width) else Modifier)
-            .height(height)
-            .background(brush, shape),
-    )
-}
-
-/**
  * Multiple skeleton placeholders for initial loading state.
  */
 @Composable
@@ -209,309 +148,6 @@ fun TransactionListSkeleton(itemCount: Int = 5, modifier: Modifier = Modifier) {
             )
         }
     }
-}
-
-// ============================================================================
-// LOADING MORE INDICATOR
-// ============================================================================
-
-/**
- * Loading indicator shown at the bottom of the list when fetching more items.
- * Features a subtle pulsing animation and contextual messaging.
- */
-@Composable
-fun LoadingMoreIndicator(modifier: Modifier = Modifier, message: String? = null) {
-    val displayMessage = message ?: stringResource(R.string.viewer_loading_more)
-    val infiniteTransition = rememberInfiniteTransition(label = "loadingMore")
-    val pulse by infiniteTransition.animateFloat(
-        initialValue = 0.8f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(600, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "pulse",
-    )
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Animated dots loading indicator
-        LoadingDots()
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-        Text(
-            text = displayMessage,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = pulse),
-            fontWeight = FontWeight.Medium,
-        )
-    }
-}
-
-/**
- * Animated three-dot loading indicator.
- */
-@Composable
-private fun LoadingDots() {
-    val dotCount = 3
-    val infiniteTransition = rememberInfiniteTransition(label = "dots")
-
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        repeat(dotCount) { index ->
-            val delay = index * 150
-
-            val animatedY by infiniteTransition.animateFloat(
-                initialValue = 0f,
-                targetValue = -6f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = 400,
-                        delayMillis = delay,
-                        easing = FastOutSlowInEasing,
-                    ),
-                    repeatMode = RepeatMode.Reverse,
-                ),
-                label = "dotY$index",
-            )
-
-            val animatedAlpha by infiniteTransition.animateFloat(
-                initialValue = 0.4f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = 400,
-                        delayMillis = delay,
-                        easing = LinearEasing,
-                    ),
-                    repeatMode = RepeatMode.Reverse,
-                ),
-                label = "dotAlpha$index",
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(6.dp)
-                    .offset(y = animatedY.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = animatedAlpha),
-                        CircleShape,
-                    ),
-            )
-        }
-    }
-}
-
-/**
- * Compact spinner for inline loading states.
- */
-@Composable
-fun CompactLoadingSpinner(
-    modifier: Modifier = Modifier,
-    size: Dp = 16.dp,
-    strokeWidth: Dp = 2.dp,
-    color: Color = MaterialTheme.colorScheme.primary,
-) {
-    CircularProgressIndicator(
-        modifier = modifier.size(size),
-        strokeWidth = strokeWidth,
-        color = color,
-    )
-}
-
-// ============================================================================
-// ERROR STATE
-// ============================================================================
-
-/**
- * Error state with retry functionality.
- * Supports different error types with appropriate icons and messaging.
- */
-@Composable
-fun ErrorState(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-    errorType: ErrorType = ErrorType.GENERIC,
-    isRetrying: Boolean = false,
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "retryScale",
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(WormaCeptorDesignSystem.Spacing.xl),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        // Error icon with subtle background
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .background(
-                    WormaCeptorColors.StatusRed.asSubtleBackground(),
-                    CircleShape,
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = errorType.icon,
-                contentDescription = stringResource(R.string.viewer_loading_error_description, errorType.title),
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
-                tint = WormaCeptorColors.StatusRed,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-        Text(
-            text = errorType.title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xl),
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-        // Retry button with press animation
-        Surface(
-            modifier = Modifier
-                .scale(scale)
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null,
-                    enabled = !isRetrying,
-                ) { onRetry() },
-            color = MaterialTheme.colorScheme.primary,
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-        ) {
-            Row(
-                modifier = Modifier.padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.xl,
-                    vertical = WormaCeptorDesignSystem.Spacing.md,
-                ),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (isRetrying) {
-                    CompactLoadingSpinner(
-                        size = 18.dp,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = stringResource(R.string.viewer_loading_retry),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                    )
-                }
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text(
-                    text = if (isRetrying) {
-                        stringResource(
-                            R.string.viewer_loading_retrying,
-                        )
-                    } else {
-                        stringResource(R.string.viewer_loading_retry)
-                    },
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )
-            }
-        }
-    }
-}
-
-/**
- * Compact inline error for append loading failures.
- */
-@Composable
-fun InlineErrorRetry(message: String, onRetry: () -> Unit, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(WormaCeptorDesignSystem.Spacing.md)
-            .background(
-                WormaCeptorColors.StatusRed.asSubtleBackground(),
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            )
-            .padding(WormaCeptorDesignSystem.Spacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.ErrorOutline,
-            contentDescription = stringResource(R.string.viewer_loading_error),
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-            tint = WormaCeptorColors.StatusRed,
-        )
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodySmall,
-            color = WormaCeptorColors.StatusRed,
-            modifier = Modifier.weight(1f),
-        )
-
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-
-        TextButton(
-            onClick = onRetry,
-            contentPadding = PaddingValues(
-                horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.xs,
-            ),
-        ) {
-            Text(
-                text = stringResource(R.string.viewer_loading_retry),
-                fontWeight = FontWeight.SemiBold,
-                color = WormaCeptorColors.StatusRed,
-            )
-        }
-    }
-}
-
-enum class ErrorType(
-    val icon: ImageVector,
-    val titleResId: Int,
-) {
-    GENERIC(Icons.Outlined.ErrorOutline, R.string.viewer_loading_error_title),
-    NETWORK(Icons.Outlined.SignalWifiOff, R.string.viewer_loading_error_network),
-    NOT_FOUND(Icons.Outlined.Search, R.string.viewer_loading_error_not_found),
-    ;
-
-    val title: String
-        @Composable
-        get() = stringResource(titleResId)
 }
 
 // ============================================================================
@@ -650,7 +286,7 @@ private fun EmptyStateIcon(hasActiveFilters: Boolean) {
                         modifier = Modifier
                             .width(24.dp)
                             .height(4.dp)
-                            .background(primaryColor, RoundedCornerShape(2.dp)),
+                            .background(primaryColor, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
                     )
                 }
             }
@@ -780,60 +416,10 @@ fun BodyLoadingProgress(loadedBytes: Long, totalBytes: Long, modifier: Modifier 
             modifier = Modifier
                 .fillMaxWidth()
                 .height(4.dp)
-                .clip(RoundedCornerShape(2.dp)),
+                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
             color = MaterialTheme.colorScheme.primary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
-    }
-}
-
-// ============================================================================
-// SCROLL TO TOP FAB
-// ============================================================================
-
-/**
- * Floating action button to scroll to top of list.
- * Appears with animation when user scrolls down.
- */
-@Composable
-fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val rotation by animateFloatAsState(
-        targetValue = if (visible) 0f else 180f,
-        animationSpec = tween(300, easing = FastOutSlowInEasing),
-        label = "fabRotation",
-    )
-
-    AnimatedVisibility(
-        visible = visible,
-        modifier = modifier,
-        enter = scaleIn(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessMedium,
-            ),
-        ) + fadeIn(),
-        exit = scaleOut(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioNoBouncy,
-                stiffness = Spring.StiffnessMedium,
-            ),
-        ) + fadeOut(),
-    ) {
-        FloatingActionButton(
-            onClick = onClick,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            shape = CircleShape,
-            modifier = Modifier.size(48.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = stringResource(R.string.viewer_loading_scroll_to_top),
-                modifier = Modifier
-                    .size(WormaCeptorDesignSystem.IconSize.lg)
-                    .rotate(rotation),
-            )
-        }
     }
 }
 

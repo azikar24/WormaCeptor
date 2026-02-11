@@ -100,6 +100,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -244,7 +245,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF121212)) // Deep dark background
+                .background(ThemeColors.DarkBackground)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { showControls = !showControls },
@@ -365,8 +366,8 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
             ) { data ->
                 Snackbar(
                     snackbarData = data,
-                    containerColor = Color.White.copy(alpha = 0.9f),
-                    contentColor = Color.Black,
+                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                    contentColor = ThemeColors.DarkBackground,
                 )
             }
         }
@@ -445,11 +446,11 @@ private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFF1E1E1E)),
+                    .background(ThemeColors.DarkSurface),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(
-                    color = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                     modifier = Modifier.size(32.dp),
                 )
             }
@@ -469,7 +470,7 @@ private fun TopControlBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.Black.copy(alpha = 0.85f),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
     ) {
         Row(
             modifier = Modifier
@@ -486,7 +487,7 @@ private fun TopControlBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.viewer_pdf_close),
-                    tint = Color.White,
+                    tint = ThemeColors.DarkTextPrimary,
                 )
             }
 
@@ -499,13 +500,13 @@ private fun TopControlBar(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
+                    color = ThemeColors.DarkTextPrimary,
                     maxLines = 1,
                 )
                 Text(
                     text = "Page $currentPage of $totalPages",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.7f),
+                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                     modifier = Modifier.clickable { onPageJump() },
                 )
             }
@@ -515,7 +516,7 @@ private fun TopControlBar(
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = stringResource(R.string.viewer_pdf_download),
-                    tint = Color.White,
+                    tint = ThemeColors.DarkTextPrimary,
                 )
             }
 
@@ -523,7 +524,7 @@ private fun TopControlBar(
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.viewer_pdf_share),
-                    tint = Color.White,
+                    tint = ThemeColors.DarkTextPrimary,
                 )
             }
         }
@@ -545,7 +546,7 @@ private fun BottomNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = Color.Black.copy(alpha = 0.85f),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
     ) {
         Row(
             modifier = Modifier
@@ -565,7 +566,13 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = Icons.Default.FirstPage,
                     contentDescription = stringResource(R.string.viewer_pdf_first_page),
-                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
+                    tint = if (currentPage > 0) {
+                        ThemeColors.DarkTextPrimary
+                    } else {
+                        ThemeColors.DarkTextPrimary.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        )
+                    },
                 )
             }
 
@@ -577,20 +584,26 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
                     contentDescription = stringResource(R.string.viewer_pdf_previous_page),
-                    tint = if (currentPage > 0) Color.White else Color.White.copy(alpha = 0.3f),
+                    tint = if (currentPage > 0) {
+                        ThemeColors.DarkTextPrimary
+                    } else {
+                        ThemeColors.DarkTextPrimary.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        )
+                    },
                 )
             }
 
             // Page indicator
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                color = Color.White.copy(alpha = 0.1f),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
             ) {
                 Text(
                     text = "${currentPage + 1} / $totalPages",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
+                    color = ThemeColors.DarkTextPrimary,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.lg,
                         vertical = WormaCeptorDesignSystem.Spacing.sm,
@@ -606,7 +619,13 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = stringResource(R.string.viewer_pdf_next_page),
-                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
+                    tint = if (currentPage < totalPages - 1) {
+                        ThemeColors.DarkTextPrimary
+                    } else {
+                        ThemeColors.DarkTextPrimary.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        )
+                    },
                 )
             }
 
@@ -618,7 +637,13 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.LastPage,
                     contentDescription = stringResource(R.string.viewer_pdf_last_page),
-                    tint = if (currentPage < totalPages - 1) Color.White else Color.White.copy(alpha = 0.3f),
+                    tint = if (currentPage < totalPages - 1) {
+                        ThemeColors.DarkTextPrimary
+                    } else {
+                        ThemeColors.DarkTextPrimary.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        )
+                    },
                 )
             }
 
@@ -627,7 +652,7 @@ private fun BottomNavigationBar(
                 Icon(
                     imageVector = if (showThumbnails) Icons.Default.GridOff else Icons.Default.GridOn,
                     contentDescription = if (showThumbnails) "Hide thumbnails" else "Show thumbnails",
-                    tint = if (showThumbnails) MaterialTheme.colorScheme.primary else Color.White,
+                    tint = if (showThumbnails) MaterialTheme.colorScheme.primary else ThemeColors.DarkTextPrimary,
                 )
             }
         }
@@ -643,7 +668,7 @@ private fun ThumbnailStrip(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.Black.copy(alpha = 0.9f),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
         shape = RoundedCornerShape(
             topStart = WormaCeptorDesignSystem.CornerRadius.lg,
             topEnd = WormaCeptorDesignSystem.CornerRadius.lg,
@@ -673,7 +698,7 @@ private fun ThumbnailStrip(
 private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, onClick: () -> Unit) {
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-        animationSpec = tween(200),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
         label = "border",
     )
 
@@ -705,7 +730,13 @@ private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, 
         Text(
             text = "$pageNumber",
             style = MaterialTheme.typography.labelSmall,
-            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.7f),
+            color = if (isSelected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                ThemeColors.DarkTextPrimary.copy(
+                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                )
+            },
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
         )
     }
@@ -802,14 +833,14 @@ private fun LoadingOverlay() {
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             CircularProgressIndicator(
-                color = Color.White,
-                modifier = Modifier.size(48.dp),
-                strokeWidth = 3.dp,
+                color = ThemeColors.DarkTextPrimary,
+                modifier = Modifier.size(WormaCeptorDesignSystem.TouchTarget.comfortable),
+                strokeWidth = WormaCeptorDesignSystem.BorderWidth.bold,
             )
             Text(
                 text = "Loading PDF...",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.8f),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             )
         }
     }
@@ -829,7 +860,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             Icon(
                 imageVector = Icons.Default.Error,
                 contentDescription = stringResource(R.string.viewer_pdf_error),
-                modifier = Modifier.size(56.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.TouchTarget.large),
                 tint = MaterialTheme.colorScheme.error,
             )
 
@@ -837,13 +868,13 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
                 text = "Failed to open PDF",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White,
+                color = ThemeColors.DarkTextPrimary,
             )
 
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.7f),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
                 textAlign = TextAlign.Center,
             )
 
@@ -852,10 +883,10 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                 ),
             ) {
-                Text(stringResource(R.string.viewer_pdf_close), color = Color.White)
+                Text(stringResource(R.string.viewer_pdf_close), color = ThemeColors.DarkTextPrimary)
             }
         }
     }

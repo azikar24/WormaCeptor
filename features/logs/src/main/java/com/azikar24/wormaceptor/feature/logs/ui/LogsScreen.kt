@@ -54,11 +54,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LogEntry
@@ -227,12 +229,23 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
         },
     ) { paddingValues ->
         if (logs.isEmpty()) {
-            EmptyLogsState(
-                isCapturing = isCapturing,
-                onStartCapture = { viewModel.startCapture() },
+            WormaCeptorEmptyState(
+                title = if (isCapturing) "Waiting for logs..." else "No logs captured",
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
+                subtitle = if (isCapturing) {
+                    "Logs will appear here as they are generated"
+                } else {
+                    "Tap play to start capturing logs"
+                },
+                icon = Icons.Default.VerticalAlignBottom,
+                actionLabel = if (!isCapturing) "Start Capture" else null,
+                onAction = if (!isCapturing) {
+                    { viewModel.startCapture() }
+                } else {
+                    null
+                },
             )
         } else {
             LogList(
@@ -270,6 +283,7 @@ private fun LevelFilterChips(
             FilterChip(
                 selected = isSelected,
                 onClick = { onLevelToggle(level) },
+                modifier = Modifier.semantics { selected = isSelected },
                 label = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -298,7 +312,7 @@ private fun LevelFilterChips(
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = levelColor.copy(alpha = 0.15f),
+                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
                     selectedLabelColor = levelColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
@@ -425,7 +439,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
             // Level badge
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = levelColor.copy(alpha = 0.15f),
+                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
                 modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxs),
             ) {
                 Text(
@@ -478,88 +492,9 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                     text = entry.message,
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
                     lineHeight = 18.sp,
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun EmptyLogsState(isCapturing: Boolean, onStartCapture: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-            modifier = Modifier.size(64.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.VerticalAlignBottom,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
-                    ),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-        Text(
-            text = if (isCapturing) "Waiting for logs..." else "No logs captured",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-        Text(
-            text = if (isCapturing) {
-                "Logs will appear here as they are generated"
-            } else {
-                "Tap play to start capturing logs"
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-        )
-
-        if (!isCapturing) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-
-            Surface(
-                onClick = onStartCapture,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg)),
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = WormaCeptorDesignSystem.Spacing.md),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                    Text(
-                        text = "Start Capture",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
             }
         }
     }

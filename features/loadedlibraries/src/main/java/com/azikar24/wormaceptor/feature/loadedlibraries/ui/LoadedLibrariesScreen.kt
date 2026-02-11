@@ -48,19 +48,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary.LibraryType
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,7 +97,11 @@ fun LoadedLibrariesScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Icon(Icons.Default.Extension, null, tint = colors.primary)
+                        Icon(
+                            Icons.Default.Extension,
+                            stringResource(R.string.loadedlibraries_title),
+                            tint = colors.primary,
+                        )
                         Text(stringResource(R.string.loadedlibraries_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
@@ -127,7 +134,9 @@ fun LoadedLibrariesScreen(
                 onQueryChange = onSearchQueryChanged,
                 modifier = Modifier.fillMaxWidth().padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ).padding(
+                    top = WormaCeptorDesignSystem.Spacing.lg,
+                    bottom = WormaCeptorDesignSystem.Spacing.sm,
                 ),
                 placeholder = stringResource(R.string.loadedlibraries_search_placeholder),
             )
@@ -163,7 +172,11 @@ fun LoadedLibrariesScreen(
             }
 
             if (libraries.isEmpty() && !isLoading) {
-                EmptyState(colors, Modifier.fillMaxSize())
+                WormaCeptorEmptyState(
+                    title = stringResource(R.string.loadedlibraries_empty),
+                    modifier = Modifier.fillMaxSize(),
+                    icon = Icons.Default.Extension,
+                )
             } else {
                 LazyColumn(
                     Modifier.fillMaxSize(),
@@ -281,7 +294,7 @@ private fun FilterSection(
                     selectedType == type,
                     { onTypeSelected(if (selectedType == type) null else type) },
                     { Text(stringResource(labelRes)) },
-                    leadingIcon = { Icon(icon, null, Modifier.size(18.dp)) },
+                    leadingIcon = { Icon(icon, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm)) },
                     colors = FilterChipDefaults.filterChipColors(
                         color.copy(WormaCeptorDesignSystem.Alpha.medium),
                         color,
@@ -329,7 +342,7 @@ private fun LibraryCard(
                 ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.light)),
                 Alignment.Center,
             ) {
-                Icon(icon, null, tint = color, modifier = Modifier.size(20.dp))
+                Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md))
             }
             Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
             Column(Modifier.weight(1f)) {
@@ -351,7 +364,7 @@ private fun LibraryCard(
                 Row(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
                     library.size?.let {
                         Text(
-                            formatSize(it),
+                            formatBytes(it),
                             style = MaterialTheme.typography.labelSmall,
                             fontFamily = FontFamily.Monospace,
                             color = color,
@@ -435,7 +448,7 @@ private fun LibraryDetailContent(
             detailTitle,
             listOfNotNull(
                 pathLabel to library.path,
-                library.size?.let { sizeLabel to formatSize(it) },
+                library.size?.let { sizeLabel to formatBytes(it) },
                 library.loadAddress?.let { loadAddressLabel to it },
                 library.version?.let { versionLabel to it },
                 typeLabel to if (library.isSystemLibrary) systemLibraryType else appLibraryType,
@@ -456,6 +469,7 @@ private fun DetailSection(
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
             title,
+            modifier = Modifier.semantics { heading() },
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
@@ -479,35 +493,4 @@ private fun DetailSection(
             }
         }
     }
-}
-
-@Composable
-private fun EmptyState(
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
-) {
-    Box(modifier, Alignment.Center) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Icon(
-                Icons.Default.Extension,
-                null,
-                tint = colors.labelSecondary,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-            )
-            Text(
-                stringResource(R.string.loadedlibraries_empty),
-                style = MaterialTheme.typography.bodyLarge,
-                color = colors.labelSecondary,
-            )
-        }
-    }
-}
-
-private fun formatSize(bytes: Long) = when {
-    bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
-    bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
-    else -> "$bytes B"
 }

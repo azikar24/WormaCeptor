@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.feature.viewer.ui.util
+package com.azikar24.wormaceptor.core.ui.util
 
 import java.util.Locale
 

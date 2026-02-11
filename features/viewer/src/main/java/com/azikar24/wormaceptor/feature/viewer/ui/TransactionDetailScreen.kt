@@ -51,8 +51,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.*
@@ -74,8 +72,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatDuration
+import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -100,12 +103,8 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
 import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
-import com.azikar24.wormaceptor.feature.viewer.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatBytes
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
-import com.azikar24.wormaceptor.feature.viewer.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -334,23 +333,23 @@ private fun TransactionDetailContent(
                     canSwipeLeft = canNavigateNext,
                     canSwipeRight = canNavigatePrev,
                 ) {
-                    if (showSearch) {
-                        // Custom search bar that takes full width
-                        Surface(
-                            color = MaterialTheme.colorScheme.surface,
-                            tonalElevation = 0.dp,
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .statusBarsPadding()
-                                    .height(64.dp)
-                                    .padding(
-                                        start = WormaCeptorDesignSystem.Spacing.xs,
-                                        end = WormaCeptorDesignSystem.Spacing.lg,
-                                    ),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
+                    TopAppBar(
+                        title = {
+                            TextWithStartEllipsis(
+                                text = title,
+                                modifier = Modifier.weight(1f, fill = false),
+                            )
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = onBack) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.viewer_transaction_detail_back),
+                                )
+                            }
+                        },
+                        actions = {
+                            if (showSearch) {
                                 IconButton(
                                     onClick = {
                                         showSearch = false
@@ -365,124 +364,71 @@ private fun TransactionDetailContent(
                                         ),
                                     )
                                 }
-                                TextField(
-                                    value = searchQuery,
-                                    onValueChange = { searchQuery = it },
-                                    placeholder = {
+                            } else if (tabPagerState.currentPage > 0 && currentTabHasContent) {
+                                IconButton(onClick = { showSearch = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = stringResource(
+                                            R.string.viewer_transaction_detail_search,
+                                        ),
+                                    )
+                                }
+                            }
+
+                            IconButton(onClick = { showMenu = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.viewer_transaction_detail_options),
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = { showMenu = false },
+                            ) {
+                                DropdownMenuItem(
+                                    text = {
                                         Text(
-                                            stringResource(R.string.viewer_transaction_detail_search_placeholder),
+                                            stringResource(R.string.viewer_transaction_detail_copy_as_text),
                                         )
                                     },
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .focusRequester(focusRequester),
-                                    colors = TextFieldDefaults.colors(
-                                        focusedContainerColor = Color.Transparent,
-                                        unfocusedContainerColor = Color.Transparent,
-                                        disabledContainerColor = Color.Transparent,
-                                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                                        unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
-                                    ),
-                                    singleLine = true,
-                                    trailingIcon = {
-                                        if (searchQuery.isNotEmpty()) {
-                                            IconButton(onClick = { searchQuery = "" }) {
-                                                Icon(
-                                                    Icons.Default.Close,
-                                                    contentDescription = stringResource(
-                                                        R.string.viewer_transaction_detail_clear_search,
-                                                    ),
-                                                )
-                                            }
+                                    onClick = {
+                                        showMenu = false
+                                        copyToClipboard(context, "Transaction", generateTextSummary(transaction))
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            stringResource(R.string.viewer_transaction_detail_copy_as_curl),
+                                        )
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction))
+                                    },
+                                )
+                                WormaCeptorDivider()
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            stringResource(R.string.viewer_transaction_detail_share_as_json),
+                                        )
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        val exportManager =
+                                            com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                context,
+                                            )
+                                        scope.launch {
+                                            exportManager.exportTransactions(listOf(transaction))
                                         }
                                     },
                                 )
                             }
-                        }
-                    } else {
-                        TopAppBar(
-                            title = {
-                                TextWithStartEllipsis(
-                                    text = title,
-                                    modifier = Modifier.weight(1f, fill = false),
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = onBack) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.viewer_transaction_detail_back),
-                                    )
-                                }
-                            },
-                            actions = {
-                                // Show search icon only for Request/Response tabs with content
-                                if (tabPagerState.currentPage > 0 && currentTabHasContent) {
-                                    IconButton(onClick = { showSearch = true }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Search,
-                                            contentDescription = stringResource(
-                                                R.string.viewer_transaction_detail_search,
-                                            ),
-                                        )
-                                    }
-                                }
-
-                                IconButton(onClick = { showMenu = true }) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = stringResource(R.string.viewer_transaction_detail_options),
-                                    )
-                                }
-
-                                DropdownMenu(
-                                    expanded = showMenu,
-                                    onDismissRequest = { showMenu = false },
-                                ) {
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                stringResource(R.string.viewer_transaction_detail_copy_as_text),
-                                            )
-                                        },
-                                        onClick = {
-                                            showMenu = false
-                                            copyToClipboard(context, "Transaction", generateTextSummary(transaction))
-                                        },
-                                    )
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                stringResource(R.string.viewer_transaction_detail_copy_as_curl),
-                                            )
-                                        },
-                                        onClick = {
-                                            showMenu = false
-                                            copyToClipboard(context, "cURL", generateCurlCommand(transaction))
-                                        },
-                                    )
-                                    WormaCeptorDivider()
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                stringResource(R.string.viewer_transaction_detail_share_as_json),
-                                            )
-                                        },
-                                        onClick = {
-                                            showMenu = false
-                                            val exportManager =
-                                                com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                                    context,
-                                                )
-                                            scope.launch {
-                                                exportManager.exportTransactions(listOf(transaction))
-                                            }
-                                        },
-                                    )
-                                }
-                            },
-                        )
-                    }
+                        },
+                    )
                 }
                 // Tab row with click support (swipe is handled by the content pager)
                 TabRow(
@@ -510,47 +456,70 @@ private fun TransactionDetailContent(
         },
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize()) {
-            // HorizontalPager for tab content - swipe here switches between Overview/Request/Response
-            HorizontalPager(
-                state = tabPagerState,
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .consumeWindowInsets(padding)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .windowInsetsPadding(WindowInsets.ime),
-                beyondViewportPageCount = 1,
-            ) { page ->
-                when (page) {
-                    0 -> OverviewTab(transaction, Modifier.fillMaxSize())
-                    1 -> RequestTab(
-                        transaction = transaction,
-                        searchQuery = debouncedSearchQuery,
-                        currentMatchIndex = currentMatchIndex,
-                        onMatchCountChanged = { matchCount = it },
-                        isSearchActive = showSearch,
-                        modifier = Modifier.fillMaxSize(),
+            ) {
+                // Inline search bar in content area
+                AnimatedVisibility(visible = showSearch) {
+                    WormaCeptorSearchBar(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it },
+                        placeholder = stringResource(R.string.viewer_transaction_detail_search_placeholder),
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.lg,
+                                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                            ),
                     )
+                }
 
-                    2 -> ResponseTab(
-                        transaction = transaction,
-                        searchQuery = debouncedSearchQuery,
-                        currentMatchIndex = currentMatchIndex,
-                        onMatchCountChanged = { matchCount = it },
-                        isSearchActive = showSearch,
-                        onShowMessage = { message ->
-                            scope.launch { snackbarHostState.showSnackbar(message) }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
+                // HorizontalPager for tab content - swipe here switches between Overview/Request/Response
+                HorizontalPager(
+                    state = tabPagerState,
+                    modifier = Modifier.fillMaxSize(),
+                    beyondViewportPageCount = 1,
+                ) { page ->
+                    when (page) {
+                        0 -> OverviewTab(transaction, Modifier.fillMaxSize())
+                        1 -> RequestTab(
+                            transaction = transaction,
+                            searchQuery = debouncedSearchQuery,
+                            currentMatchIndex = currentMatchIndex,
+                            onMatchCountChanged = { matchCount = it },
+                            isSearchActive = showSearch,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+
+                        2 -> ResponseTab(
+                            transaction = transaction,
+                            searchQuery = debouncedSearchQuery,
+                            currentMatchIndex = currentMatchIndex,
+                            onMatchCountChanged = { matchCount = it },
+                            isSearchActive = showSearch,
+                            onShowMessage = { message ->
+                                scope.launch { snackbarHostState.showSnackbar(message) }
+                            },
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
             }
 
             // Search Navigation Controllers in Bottom Right - show immediately when search is active
             AnimatedVisibility(
                 visible = showSearch && debouncedSearchQuery.isNotEmpty(),
-                enter = fadeIn(animationSpec = tween(150)) + scaleIn(animationSpec = tween(150)),
-                exit = fadeOut(animationSpec = tween(100)) + scaleOut(animationSpec = tween(100)),
+                enter = fadeIn(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+                ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                exit = fadeOut(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast),
+                ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast)),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .imePadding()
@@ -1084,7 +1053,7 @@ private fun RequestTab(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        CircularProgressIndicator(modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg))
                         Text(
                             stringResource(R.string.viewer_body_processing),
                             style = MaterialTheme.typography.bodySmall,
@@ -1420,7 +1389,7 @@ private fun ResponseTab(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         ) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            CircularProgressIndicator(modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg))
                             Text(
                                 stringResource(R.string.viewer_body_processing),
                                 style = MaterialTheme.typography.bodySmall,
@@ -1755,7 +1724,7 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
     val shape = RoundedCornerShape(radius)
 
     val borderColor by animateColorAsState(
-        targetValue = activeColor.copy(alpha = 0.3f),
+        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
         label = "segment_border",
     )

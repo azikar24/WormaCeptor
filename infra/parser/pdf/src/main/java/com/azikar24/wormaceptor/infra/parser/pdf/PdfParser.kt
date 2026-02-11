@@ -3,10 +3,9 @@ package com.azikar24.wormaceptor.infra.parser.pdf
 import android.content.Context
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -22,7 +21,7 @@ import java.util.Locale
  */
 class PdfParser(
     private val context: Context,
-) : BodyParser {
+) : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/pdf",
@@ -38,6 +37,10 @@ class PdfParser(
      */
     override val priority: Int = 150
 
+    override val defaultContentType: ContentType = ContentType.PDF
+
+    override val emptyBodyFormatted: String = "[Empty PDF]"
+
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type header
         if (contentType?.contains("pdf", ignoreCase = true) == true) {
@@ -48,11 +51,7 @@ class PdfParser(
         return hasPdfMagicBytes(body)
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.PDF, "[Empty PDF]")
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         // Verify magic bytes
         if (!hasPdfMagicBytes(body)) {
             return ParsedBody(

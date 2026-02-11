@@ -1,9 +1,8 @@
 package com.azikar24.wormaceptor.infra.parser.multipart
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
 
 /**
  * Parser for multipart form data (multipart/form-data).
@@ -13,7 +12,7 @@ import com.azikar24.wormaceptor.domain.contracts.emptyParsedBody
  * - Individual part parsing with headers
  * - File metadata extraction (filename, content-type)
  */
-class MultipartBodyParser : BodyParser {
+class MultipartBodyParser : BaseBodyParser() {
 
     override val supportedContentTypes: List<String> = listOf(
         "multipart/form-data",
@@ -23,6 +22,8 @@ class MultipartBodyParser : BodyParser {
     )
 
     override val priority: Int = 210
+
+    override val defaultContentType: ContentType = ContentType.MULTIPART
 
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first - must have boundary parameter
@@ -38,11 +39,7 @@ class MultipartBodyParser : BodyParser {
         return false
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return emptyParsedBody(ContentType.MULTIPART)
-        }
-
+    override fun parseBody(body: ByteArray): ParsedBody {
         return try {
             // Note: When parsing, we need the Content-Type header with boundary
             // For now, attempt to detect boundary from body

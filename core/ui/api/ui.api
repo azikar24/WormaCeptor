@@ -35,6 +35,29 @@ public final class com/azikar24/wormaceptor/core/ui/components/ErrorType : java/
 	public static fun values ()[Lcom/azikar24/wormaceptor/core/ui/components/ErrorType;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/HapticHelpersKt {
+	public static final fun rememberHapticOnce (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/core/ui/components/HapticOnceState;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/HapticOnceState {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Lkotlin/jvm/functions/Function0;
+	public final fun component3 ()Lkotlin/jvm/functions/Function0;
+	public final fun isTriggered ()Z
+	public final fun resetHaptic ()V
+	public final fun triggerHaptic ()V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/SearchBarStyle : java/lang/Enum {
+	public static final field Filled Lcom/azikar24/wormaceptor/core/ui/components/SearchBarStyle;
+	public static final field Outlined Lcom/azikar24/wormaceptor/core/ui/components/SearchBarStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/core/ui/components/SearchBarStyle;
+	public static fun values ()[Lcom/azikar24/wormaceptor/core/ui/components/SearchBarStyle;
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorContainerKt {
 	public static final fun WormaCeptorContainer-Ks3TJJE (Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/ContainerStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun WormaCeptorContainer-Pz9yvRs (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/ContainerStyle;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
@@ -58,8 +81,25 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorLoadin
 	public static final fun rememberShimmerBrush (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/graphics/Brush;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorMethodBadgeKt {
+	public static final fun WormaCeptorMethodBadge (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorSearchBarKt {
-	public static final fun WormaCeptorSearchBar (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorSearchBar (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/SearchBarStyle;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorStatItemKt {
+	public static final fun WormaCeptorStatItem-cf5BqRc (Ljava/lang/String;Ljava/lang/String;JLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavTransitions {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavTransitions;
+	public final fun getEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getExitTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopEnterTransition ()Lkotlin/jvm/functions/Function1;
+	public final fun getPopExitTransition ()Lkotlin/jvm/functions/Function1;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors {
@@ -444,6 +484,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$IconSize;
 	public final fun getAction-D9Ej5fM ()F
+	public final fun getEmptyState-D9Ej5fM ()F
 	public final fun getFeature-D9Ej5fM ()F
 	public final fun getInline-D9Ej5fM ()F
 	public final fun getLg-D9Ej5fM ()F
@@ -556,5 +597,59 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystemKt {
 	public static final fun asSubtleBackground-8_81llA (J)J
+}
+
+public abstract class com/azikar24/wormaceptor/core/ui/util/ClipboardResult {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/ClipboardResult$Success : com/azikar24/wormaceptor/core/ui/util/ClipboardResult {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$Success;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$Success;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/ClipboardResult$TooLarge : com/azikar24/wormaceptor/core/ui/util/ClipboardResult {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$TooLarge;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$TooLarge;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult$TooLarge;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/ClipboardUtilsKt {
+	public static final field MAX_CLIPBOARD_SIZE I
+	public static final fun copyToClipboard (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun copyToClipboardWithSizeCheck (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/core/ui/util/ClipboardResult;
+	public static final fun isContentTooLargeForClipboard (Ljava/lang/String;)Z
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/DateTimeUtilsKt {
+	public static final fun formatDateFull (J)Ljava/lang/String;
+	public static final fun formatDateOnly (J)Ljava/lang/String;
+	public static final fun formatDateShort (J)Ljava/lang/String;
+	public static final fun formatTimestamp (J)Ljava/lang/String;
+	public static final fun formatTimestampCompact (J)Ljava/lang/String;
+	public static final fun formatTimestampFull (J)Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/DurationFormatterKt {
+	public static final fun formatDuration (Ljava/lang/Long;)Ljava/lang/String;
+	public static final fun formatDurationAvg (D)Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/util/FormatUtilsKt {
+	public static final fun formatBytes (I)Ljava/lang/String;
+	public static final fun formatBytes (J)Ljava/lang/String;
 }
 

@@ -19,12 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatDateOnly
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * List item displaying a file or directory entry.
@@ -75,7 +74,7 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
             ) {
                 if (!file.isDirectory) {
                     Text(
-                        text = formatFileSize(file.sizeBytes),
+                        text = formatBytes(file.sizeBytes),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -86,7 +85,7 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
                     )
                 }
                 Text(
-                    text = formatDate(file.lastModified),
+                    text = formatDateOnly(file.lastModified),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -102,19 +101,4 @@ fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, 
             )
         }
     }
-}
-
-private fun formatFileSize(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
-}
-
-private fun formatDate(millis: Long): String {
-    val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-    return dateFormat.format(Date(millis))
 }

@@ -32,19 +32,8 @@
     <ID>MagicNumber:RateLimitColors.kt$0xFFFFB74D</ID>
     <ID>MagicNumber:RateLimitScreen.kt$1000</ID>
     <ID>MagicNumber:RateLimitScreen.kt$1000.0</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_024</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_024.0</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_048_576</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_048_576.0</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_073_741_824</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1_073_741_824.0</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$300</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$60000</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$60000.0</ID>
     <ID>MagicNumber:RateLimitViewModel.kt$RateLimitViewModel$5000</ID>
     <ID>UnderscoresInNumericLiterals:RateLimitScreen.kt$100000f</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitScreen.kt$60000</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitScreen.kt$60000.0</ID>
     <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val cardBackground: Color</ID>
     <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val disabled: Color</ID>
     <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val download: Color</ID>

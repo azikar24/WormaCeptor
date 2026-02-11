@@ -47,8 +47,8 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
-import java.util.Locale
 
 /**
  * A data class representing a single part in multipart form data.
@@ -111,7 +111,9 @@ fun MultipartView(multipartData: String, boundary: String? = null, modifier: Mod
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
@@ -158,7 +160,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.thin,
             color = if (expanded) {
-                accentColor.copy(alpha = 0.3f)
+                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
             } else {
                 MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
             },
@@ -231,7 +233,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                     color = MaterialTheme.colorScheme.surfaceVariant,
                 ) {
                     Text(
-                        text = formatSize(part.size),
+                        text = formatBytes(part.size),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(
@@ -255,7 +257,9 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(
+                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                    ),
                                 )
                                 .padding(WormaCeptorDesignSystem.Spacing.md),
                         ) {
@@ -340,14 +344,6 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                 }
             }
         }
-    }
-}
-
-private fun formatSize(bytes: Int): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        else -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
     }
 }
 

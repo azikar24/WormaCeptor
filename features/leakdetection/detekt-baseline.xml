@@ -7,13 +7,9 @@
     <ID>LongMethod:LeakDetectionScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LeakDetectionScreen( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:LeakDetectionScreen.kt$( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:LeakDetectionScreen.kt$1000</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_024</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_024.0</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_048_576</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_048_576.0</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_073_741_824</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1_073_741_824.0</ID>
     <ID>MagicNumber:LeakDetectionViewModel.kt$LeakDetectionViewModel$5000</ID>
+    <ID>MaxLineLength:LeakDetectionScreen.kt$if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks</ID>
+    <ID>MaximumLineLength:LeakDetectionScreen.kt$ </ID>
     <ID>UndocumentedPublicFunction:LeakDetectionColors.kt$LeakDetectionColors$fun backgroundForSeverity(severity: LeakSeverity): Color</ID>
     <ID>UndocumentedPublicFunction:LeakDetectionColors.kt$LeakDetectionColors$fun colorForSeverity(severity: LeakSeverity): Color</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionColors.kt$LeakDetectionColors$val actionButton: Color</ID>

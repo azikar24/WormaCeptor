@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -206,7 +207,7 @@ fun FileBrowserScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Folder,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.filebrowser_no_files_found),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
                         )
@@ -224,6 +225,7 @@ fun FileBrowserScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
+                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(0.dp),
                 ) {
                     items(

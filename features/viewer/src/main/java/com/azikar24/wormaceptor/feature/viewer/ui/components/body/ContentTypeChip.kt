@@ -49,7 +49,7 @@ fun ContentTypeChip(contentType: ContentType, modifier: Modifier = Modifier, onC
     )
 
     val borderColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = 0.3f),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
         label = "chip_border_color",
     )

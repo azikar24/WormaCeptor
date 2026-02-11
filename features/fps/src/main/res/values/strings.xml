@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fps_back">Back</string>
+    <string name="fps_start">Start monitoring</string>
     <string name="fps_reset_statistics">Reset statistics</string>
     <string name="fps_jank_detected">Jank detected</string>
     <string name="fps_min">Min</string>

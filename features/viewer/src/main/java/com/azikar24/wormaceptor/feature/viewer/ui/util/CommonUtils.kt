@@ -1,103 +1,17 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.util
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URI
-import java.util.Locale
-
-// ============================================================================
-// BYTE FORMATTING UTILITIES
-// ============================================================================
-
-/**
- * Formats bytes into human-readable string.
- * Uses 1024-based units (KiB, MiB, etc. displayed as KB, MB for simplicity).
- *
- * @param bytes The number of bytes to format
- * @return Formatted string like "1.5 MB" or "256 B"
- */
-fun formatBytes(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
-}
-
-// ============================================================================
-// CLIPBOARD UTILITIES
-// ============================================================================
-
-/**
- * Maximum size in bytes for clipboard copy operations.
- * Content larger than this should use shareAsFile instead.
- */
-const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB
-
-/**
- * Copies text to the system clipboard.
- *
- * @param context Android context for clipboard service access
- * @param label Label for the clipboard data (shown in some Android versions)
- * @param text The text to copy
- * @return Confirmation message to display to the user
- */
-fun copyToClipboard(context: Context, label: String, text: String): String {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(label, text)
-    clipboard.setPrimaryClip(clip)
-    return "$label copied to clipboard"
-}
-
-/**
- * Checks if content is too large for clipboard and returns appropriate action.
- *
- * @param text The text to check
- * @return true if content is too large for clipboard
- */
-fun isContentTooLargeForClipboard(text: String): Boolean {
-    return text.length > MAX_CLIPBOARD_SIZE
-}
-
-/**
- * Result of a clipboard copy operation with size check.
- */
-sealed class ClipboardResult {
-    data class Success(val message: String) : ClipboardResult()
-    data class TooLarge(val message: String) : ClipboardResult()
-}
-
-/**
- * Copies text to clipboard if small enough, otherwise returns a warning.
- *
- * @param context Android context
- * @param label Label for the clipboard data
- * @param text The text to copy
- * @return ClipboardResult indicating success or too-large warning
- */
-fun copyToClipboardWithSizeCheck(context: Context, label: String, text: String): ClipboardResult {
-    return if (isContentTooLargeForClipboard(text)) {
-        ClipboardResult.TooLarge(
-            "Content too large (${formatBytes(text.length.toLong())}). Use 'Share as File' instead.",
-        )
-    } else {
-        val message = copyToClipboard(context, label, text)
-        ClipboardResult.Success(message)
-    }
-}
 
 // ============================================================================
 // SHARE UTILITIES

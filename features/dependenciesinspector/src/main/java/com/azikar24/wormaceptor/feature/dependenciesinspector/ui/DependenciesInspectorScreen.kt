@@ -51,11 +51,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
@@ -99,7 +102,11 @@ fun DependenciesInspectorScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Icon(Icons.Default.Extension, null, tint = colors.primary)
+                        Icon(
+                            Icons.Default.Extension,
+                            stringResource(R.string.dependenciesinspector_title),
+                            tint = colors.primary,
+                        )
                         Text(stringResource(R.string.dependenciesinspector_title), fontWeight = FontWeight.SemiBold)
                     }
                 },
@@ -116,7 +123,10 @@ fun DependenciesInspectorScreen(
                 actions = {
                     IconButton(onClick = onRefresh, enabled = !isLoading) {
                         if (isLoading) {
-                            CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
+                            CircularProgressIndicator(
+                                Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                                strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
+                            )
                         } else {
                             Icon(Icons.Default.Refresh, stringResource(R.string.dependenciesinspector_action_refresh))
                         }
@@ -132,7 +142,9 @@ fun DependenciesInspectorScreen(
                 onQueryChange = onSearchQueryChanged,
                 modifier = Modifier.fillMaxWidth().padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                ).padding(
+                    top = WormaCeptorDesignSystem.Spacing.lg,
+                    bottom = WormaCeptorDesignSystem.Spacing.sm,
                 ),
                 placeholder = stringResource(R.string.dependenciesinspector_search_placeholder),
             )
@@ -173,7 +185,12 @@ fun DependenciesInspectorScreen(
             }
 
             if (dependencies.isEmpty() && !isLoading) {
-                EmptyState(colors, Modifier.fillMaxSize())
+                WormaCeptorEmptyState(
+                    title = stringResource(R.string.dependenciesinspector_empty_title),
+                    modifier = Modifier.fillMaxSize(),
+                    subtitle = stringResource(R.string.dependenciesinspector_empty_subtitle),
+                    icon = Icons.Default.HelpOutline,
+                )
             } else {
                 LazyColumn(
                     Modifier.fillMaxSize(),
@@ -334,7 +351,12 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
                 ).background(categoryColor.copy(0.15f)),
                 Alignment.Center,
             ) {
-                Icon(Icons.Default.Code, null, tint = categoryColor, modifier = Modifier.size(20.dp))
+                Icon(
+                    Icons.Default.Code,
+                    null,
+                    tint = categoryColor,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                )
             }
 
             Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
@@ -357,7 +379,7 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
                             Icons.Default.CheckCircle,
                             stringResource(R.string.dependenciesinspector_status_version_detected),
                             tint = colors.versionDetected,
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
                         )
                     }
                 }
@@ -444,7 +466,12 @@ private fun DependencyDetailContent(
                 ).background(categoryColor.copy(0.15f)),
                 Alignment.Center,
             ) {
-                Icon(Icons.Default.Code, null, tint = categoryColor, modifier = Modifier.size(24.dp))
+                Icon(
+                    Icons.Default.Code,
+                    null,
+                    tint = categoryColor,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                )
             }
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -531,7 +558,12 @@ private fun DependencyDetailContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
-                Icon(Icons.Default.Language, null, tint = colors.link, modifier = Modifier.size(20.dp))
+                Icon(
+                    Icons.Default.Language,
+                    stringResource(R.string.dependenciesinspector_detail_section_details),
+                    tint = colors.link,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                )
                 Text(
                     url,
                     style = MaterialTheme.typography.bodyMedium,
@@ -554,6 +586,7 @@ private fun DetailSection(title: String, items: List<Pair<String, String>>, colo
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
             title,
+            modifier = Modifier.semantics { heading() },
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
@@ -579,33 +612,6 @@ private fun DetailSection(title: String, items: List<Pair<String, String>>, colo
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun EmptyState(colors: DependenciesInspectorColors, modifier: Modifier) {
-    Box(modifier, Alignment.Center) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Icon(
-                Icons.Default.HelpOutline,
-                null,
-                tint = colors.labelSecondary,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-            )
-            Text(
-                stringResource(R.string.dependenciesinspector_empty_title),
-                style = MaterialTheme.typography.bodyLarge,
-                color = colors.labelSecondary,
-            )
-            Text(
-                stringResource(R.string.dependenciesinspector_empty_subtitle),
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.labelSecondary,
-            )
         }
     }
 }

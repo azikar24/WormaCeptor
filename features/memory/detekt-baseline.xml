@@ -3,18 +3,14 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>LongMethod:MemoryScreen.kt$@Composable private fun HeapUsageCard( currentMemory: MemoryInfo, isWarning: Boolean, colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MemoryScreen.kt$@Composable private fun MemoryChartCard( history: ImmutableList&lt;MemoryInfo&gt;, colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MemoryScreen.kt$@Composable private fun MemoryLineChart( history: ImmutableList&lt;MemoryInfo&gt;, colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MemoryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MemoryScreen( currentMemory: MemoryInfo, memoryHistory: ImmutableList&lt;MemoryInfo&gt;, isMonitoring: Boolean, isHeapWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onForceGc: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:MemoryScreen.kt$( currentMemory: MemoryInfo, memoryHistory: ImmutableList&lt;MemoryInfo&gt;, isMonitoring: Boolean, isHeapWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onForceGc: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:MemoryColors.kt$MemoryColors$60f</ID>
     <ID>MagicNumber:MemoryColors.kt$MemoryColors$80f</ID>
     <ID>MagicNumber:MemoryScreen.kt$100f</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_024</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_024.0</ID>
     <ID>MagicNumber:MemoryScreen.kt$1_048_576</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_048_576.0</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_073_741_824</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_073_741_824.0</ID>
     <ID>MagicNumber:MemoryScreen.kt$4</ID>
     <ID>MagicNumber:MemoryViewModel.kt$MemoryViewModel$5000</ID>
     <ID>MaxLineLength:MemoryFeature.kt$*</ID>

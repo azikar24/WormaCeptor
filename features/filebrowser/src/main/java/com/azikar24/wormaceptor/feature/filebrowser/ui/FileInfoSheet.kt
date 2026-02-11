@@ -1,8 +1,5 @@
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.FileInfo
 import com.azikar24.wormaceptor.feature.filebrowser.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * Bottom sheet showing detailed file information.
@@ -110,7 +107,7 @@ fun FileInfoSheet(
             InfoRow(stringResource(R.string.filebrowser_label_size), formatBytes(fileInfo.sizeBytes))
 
             // Last modified
-            InfoRow(stringResource(R.string.filebrowser_label_modified), formatTimestamp(fileInfo.lastModified))
+            InfoRow(stringResource(R.string.filebrowser_label_modified), formatTimestampFull(fileInfo.lastModified))
 
             // MIME type
             val typeLabel = stringResource(R.string.filebrowser_label_type)
@@ -198,26 +195,4 @@ private fun InfoRow(label: String, value: String) {
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
-}
-
-private fun formatBytes(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
-}
-
-private fun formatTimestamp(millis: Long): String {
-    val dateFormat = SimpleDateFormat("MMM dd, yyyy HH:mm:ss", Locale.getDefault())
-    return dateFormat.format(Date(millis))
-}
-
-private fun copyToClipboard(context: Context, label: String, text: String): String {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(label, text)
-    clipboard.setPrimaryClip(clip)
-    return "$label copied to clipboard"
 }

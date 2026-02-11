@@ -1,9 +1,8 @@
-public final class com/azikar24/wormaceptor/infra/parser/form/FormBodyParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+public final class com/azikar24/wormaceptor/infra/parser/form/FormBodyParser : com/azikar24/wormaceptor/domain/contracts/BaseBodyParser {
 	public fun <init> ()V
 	public fun canParse (Ljava/lang/String;[B)Z
 	public fun getPriority ()I
 	public fun getSupportedContentTypes ()Ljava/util/List;
-	public fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 }
 
 public final class com/azikar24/wormaceptor/infra/parser/form/FormParameter {

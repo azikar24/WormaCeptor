@@ -1,10 +1,7 @@
 package com.azikar24.wormaceptor.feature.deviceinfo
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -73,15 +70,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatDateFull
 import com.azikar24.wormaceptor.domain.entities.AppDetails
 import com.azikar24.wormaceptor.domain.entities.DeviceDetails
 import com.azikar24.wormaceptor.domain.entities.DeviceInfo
@@ -94,46 +96,40 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreen(onBack: () -> Unit) {
     val context = LocalContext.current
-    val view = LocalView.current
     val scope = rememberCoroutineScope()
-    var deviceInfo by remember { mutableStateOf<DeviceInfo?>(null) }
-    var isInitialLoading by remember { mutableStateOf(true) }
-    var isRefreshing by remember { mutableStateOf(false) }
+    var uiState by remember { mutableStateOf(DeviceInfoUiState()) }
     val snackbarHostState = remember { SnackbarHostState() }
     val pullToRefreshState = rememberPullToRefreshState()
-    var hasTriggeredHaptic by remember { mutableStateOf(false) }
+    val haptic = rememberHapticOnce()
 
     // Initial load
     LaunchedEffect(Unit) {
-        isInitialLoading = true
-        deviceInfo = withContext(Dispatchers.IO) {
+        uiState = uiState.copy(isInitialLoading = true)
+        val info = withContext(Dispatchers.IO) {
             GetDeviceInfoUseCase(context).execute()
         }
-        isInitialLoading = false
+        uiState = uiState.copy(deviceInfo = info, isInitialLoading = false)
     }
 
     // Trigger haptic feedback when pull threshold is reached
     LaunchedEffect(pullToRefreshState.distanceFraction) {
-        if (pullToRefreshState.distanceFraction >= 1f && !hasTriggeredHaptic) {
-            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            hasTriggeredHaptic = true
+        if (pullToRefreshState.distanceFraction >= 1f && !haptic.isTriggered) {
+            haptic.triggerHaptic()
         } else if (pullToRefreshState.distanceFraction < 1f) {
-            hasTriggeredHaptic = false
+            haptic.resetHaptic()
         }
     }
 
     // Reset haptic state when refreshing ends
-    LaunchedEffect(isRefreshing) {
-        if (!isRefreshing) {
-            hasTriggeredHaptic = false
+    LaunchedEffect(uiState.isRefreshing) {
+        if (!uiState.isRefreshing) {
+            haptic.resetHaptic()
         }
     }
 
@@ -151,7 +147,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                     }
                 },
                 actions = {
-                    deviceInfo?.let { info ->
+                    uiState.deviceInfo?.let { info ->
                         IconButton(onClick = {
                             val message = copyAllToClipboard(context, info)
                             scope.launch { snackbarHostState.showSnackbar(message) }
@@ -174,7 +170,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
     ) { padding ->
         val scrollState = rememberScrollState()
 
-        if (isInitialLoading && deviceInfo == null) {
+        if (uiState.isInitialLoading && uiState.deviceInfo == null) {
             // Initial loading state - show centered spinner
             Box(
                 modifier = Modifier
@@ -186,15 +182,15 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
             }
         } else {
             PullToRefreshBox(
-                isRefreshing = isRefreshing,
+                isRefreshing = uiState.isRefreshing,
                 onRefresh = {
-                    isRefreshing = true
+                    uiState = uiState.copy(isRefreshing = true)
                     scope.launch {
                         delay(200)
-                        deviceInfo = withContext(Dispatchers.IO) {
+                        val info = withContext(Dispatchers.IO) {
                             GetDeviceInfoUseCase(context).execute()
                         }
-                        isRefreshing = false
+                        uiState = uiState.copy(deviceInfo = info, isRefreshing = false)
                     }
                 },
                 state = pullToRefreshState,
@@ -204,14 +200,14 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                 indicator = {
                     Indicator(
                         modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isRefreshing,
+                        isRefreshing = uiState.isRefreshing,
                         state = pullToRefreshState,
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 },
             ) {
-                deviceInfo?.let { info ->
+                uiState.deviceInfo?.let { info ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -246,7 +242,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 
                         // Timestamp footer
                         Text(
-                            text = stringResource(R.string.deviceinfo_collected, formatTimestamp(info.timestamp)),
+                            text = stringResource(R.string.deviceinfo_collected, formatDateFull(info.timestamp)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
@@ -496,8 +492,8 @@ private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
         InfoRow(stringResource(R.string.deviceinfo_app_version_code), app.versionCode.toString())
         InfoRow(stringResource(R.string.deviceinfo_app_target_sdk), app.targetSdk.toString())
         InfoRow(stringResource(R.string.deviceinfo_app_min_sdk), app.minSdk.toString())
-        InfoRow(stringResource(R.string.deviceinfo_app_first_install), formatTimestamp(app.firstInstallTime))
-        InfoRow(stringResource(R.string.deviceinfo_app_last_update), formatTimestamp(app.lastUpdateTime))
+        InfoRow(stringResource(R.string.deviceinfo_app_first_install), formatDateFull(app.firstInstallTime))
+        InfoRow(stringResource(R.string.deviceinfo_app_last_update), formatDateFull(app.lastUpdateTime))
         InfoRow(stringResource(R.string.deviceinfo_app_debuggable), if (app.isDebuggable) yes else no)
     }
 }
@@ -570,13 +566,14 @@ private fun InfoCard(
                         imageVector = icon,
                         contentDescription = title,
                         tint = iconTint,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                     )
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.semantics { heading() },
                     )
                 }
                 IconButton(
@@ -585,7 +582,7 @@ private fun InfoCard(
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.deviceinfo_copy_section, title),
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -652,7 +649,7 @@ private fun CollapsibleInfoRow(label: String, value: String) {
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                 contentDescription = if (isExpanded) collapse else expand,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -682,7 +679,9 @@ private fun CollapsibleInfoRow(label: String, value: String) {
                         .fillMaxWidth()
                         .padding(top = WormaCeptorDesignSystem.Spacing.xs)
                         .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            ),
                             RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                         )
                         .padding(WormaCeptorDesignSystem.Spacing.sm),
@@ -702,29 +701,11 @@ private fun getUsageColor(percentage: Float): Color {
     }
 }
 
-// Utility functions
-
-private fun formatBytes(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
-    }
-}
-
-private fun formatTimestamp(millis: Long): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    return dateFormat.format(Date(millis))
-}
-
-private fun copyToClipboard(context: Context, label: String, text: String): String {
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(label, text)
-    clipboard.setPrimaryClip(clip)
-    return "$label copied to clipboard"
-}
+private data class DeviceInfoUiState(
+    val deviceInfo: DeviceInfo? = null,
+    val isInitialLoading: Boolean = true,
+    val isRefreshing: Boolean = false,
+)
 
 private fun copyAllToClipboard(context: Context, info: DeviceInfo): String {
     val text = generateCompactReport(info)
@@ -791,7 +772,7 @@ private fun generateCompactReport(info: DeviceInfo): String = buildString {
 private fun generateFullReport(info: DeviceInfo): String = buildString {
     appendLine("=== WormaCeptor Device Information Report ===")
     appendLine()
-    appendLine("Collected: ${formatTimestamp(info.timestamp)}")
+    appendLine("Collected: ${formatDateFull(info.timestamp)}")
     appendLine()
 
     appendLine("--- DEVICE ---")
@@ -882,8 +863,8 @@ private fun formatAppDetails(app: AppDetails): String = buildString {
     appendLine("Version Code: ${app.versionCode}")
     appendLine("Target SDK: ${app.targetSdk}")
     appendLine("Min SDK: ${app.minSdk}")
-    appendLine("First Install: ${formatTimestamp(app.firstInstallTime)}")
-    appendLine("Last Update: ${formatTimestamp(app.lastUpdateTime)}")
+    appendLine("First Install: ${formatDateFull(app.firstInstallTime)}")
+    appendLine("Last Update: ${formatDateFull(app.lastUpdateTime)}")
     appendLine("Debuggable: ${if (app.isDebuggable) "Yes" else "No"}")
 }
 

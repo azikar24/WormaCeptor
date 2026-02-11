@@ -1,3 +1,11 @@
+public abstract class com/azikar24/wormaceptor/domain/contracts/BaseBodyParser : com/azikar24/wormaceptor/domain/contracts/BodyParser {
+	public fun <init> ()V
+	protected abstract fun getDefaultContentType ()Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	protected fun getEmptyBodyFormatted ()Ljava/lang/String;
+	public final fun parse ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+	protected abstract fun parseBody ([B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
+}
+
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/BlobStorage {
 	public abstract fun deleteBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun readBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

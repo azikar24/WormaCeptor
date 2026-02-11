@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
-import android.annotation.SuppressLint
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
 import android.os.ParcelFileDescriptor
@@ -38,7 +37,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -48,7 +46,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import androidx.core.graphics.createBitmap
 import coil.ImageLoader
 import coil.compose.AsyncImage
@@ -56,8 +53,10 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.feature.filebrowser.R
+import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
 import java.io.File
 import java.util.Locale
 
@@ -150,6 +149,8 @@ private fun JsonFileContent(content: FileContent.Json) {
     val invalidJsonDesc = stringResource(R.string.filebrowser_invalid_json)
     val validText = stringResource(R.string.filebrowser_valid)
     val invalidText = stringResource(R.string.filebrowser_invalid)
+    val validColor = WormaCeptorDesignSystem.ThemeColors.Success
+    val invalidColor = WormaCeptorDesignSystem.ThemeColors.Warning
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
@@ -168,13 +169,13 @@ private fun JsonFileContent(content: FileContent.Json) {
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
                 contentDescription = if (content.isValid) validJsonDesc else invalidJsonDesc,
-                tint = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
-                modifier = Modifier.size(20.dp),
+                tint = if (content.isValid) validColor else invalidColor,
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
             )
             Text(
                 text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
-                color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
+                color = if (content.isValid) validColor else invalidColor,
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
             )
         }
@@ -202,6 +203,8 @@ private fun XmlFileContent(content: FileContent.Xml) {
     val invalidXmlDesc = stringResource(R.string.filebrowser_invalid_xml)
     val validText = stringResource(R.string.filebrowser_valid)
     val invalidText = stringResource(R.string.filebrowser_invalid)
+    val validColor = WormaCeptorDesignSystem.ThemeColors.Success
+    val invalidColor = WormaCeptorDesignSystem.ThemeColors.Warning
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
@@ -220,13 +223,13 @@ private fun XmlFileContent(content: FileContent.Xml) {
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
                 contentDescription = if (content.isValid) validXmlDesc else invalidXmlDesc,
-                tint = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
-                modifier = Modifier.size(20.dp),
+                tint = if (content.isValid) validColor else invalidColor,
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
             )
             Text(
                 text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
-                color = if (content.isValid) Color(0xFF4CAF50) else Color(0xFFFF9800),
+                color = if (content.isValid) validColor else invalidColor,
                 modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
             )
         }
@@ -248,20 +251,9 @@ private fun XmlFileContent(content: FileContent.Xml) {
     }
 }
 
-// Syntax highlighting colors
-private val JsonKeyColor = Color(0xFF9C27B0) // Purple for keys
-private val JsonStringColor = Color(0xFF4CAF50) // Green for string values
-private val JsonNumberColor = Color(0xFF2196F3) // Blue for numbers
-private val JsonBoolNullColor = Color(0xFFFF5722) // Orange for booleans/null
-private val JsonBracketColor = Color(0xFF757575) // Gray for brackets
-
-private val XmlTagColor = Color(0xFF2196F3) // Blue for tags
-private val XmlAttrNameColor = Color(0xFF9C27B0) // Purple for attribute names
-private val XmlAttrValueColor = Color(0xFF4CAF50) // Green for attribute values
-private val XmlContentColor = Color(0xFF212121) // Dark for content
-
 @Composable
 private fun highlightJson(json: String): AnnotatedString {
+    val colors = FileBrowserDesignSystem.syntaxColors()
     return buildAnnotatedString {
         var i = 0
         val text = json
@@ -283,7 +275,7 @@ private fun highlightJson(json: String): AnnotatedString {
                     while (j < text.length && text[j].isWhitespace()) j++
                     val isKey = j < text.length && text[j] == ':'
 
-                    withStyle(SpanStyle(color = if (isKey) JsonKeyColor else JsonStringColor)) {
+                    withStyle(SpanStyle(color = if (isKey) colors.jsonKey else colors.jsonString)) {
                         append(str)
                     }
                 }
@@ -294,32 +286,32 @@ private fun highlightJson(json: String): AnnotatedString {
                     while (i < text.length && (text[i].isDigit() || text[i] == '.' || text[i] == 'e' || text[i] == 'E' || text[i] == '+' || text[i] == '-')) {
                         i++
                     }
-                    withStyle(SpanStyle(color = JsonNumberColor)) {
+                    withStyle(SpanStyle(color = colors.jsonNumber)) {
                         append(text.substring(start, i))
                     }
                 }
                 // Boolean or null
                 text.substring(i).startsWith("true") -> {
-                    withStyle(SpanStyle(color = JsonBoolNullColor, fontWeight = FontWeight.Bold)) {
+                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("true")
                     }
                     i += 4
                 }
                 text.substring(i).startsWith("false") -> {
-                    withStyle(SpanStyle(color = JsonBoolNullColor, fontWeight = FontWeight.Bold)) {
+                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("false")
                     }
                     i += 5
                 }
                 text.substring(i).startsWith("null") -> {
-                    withStyle(SpanStyle(color = JsonBoolNullColor, fontWeight = FontWeight.Bold)) {
+                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("null")
                     }
                     i += 4
                 }
                 // Brackets and braces
                 text[i] in "{}[]" -> {
-                    withStyle(SpanStyle(color = JsonBracketColor, fontWeight = FontWeight.Bold)) {
+                    withStyle(SpanStyle(color = colors.jsonBracket, fontWeight = FontWeight.Bold)) {
                         append(text[i])
                     }
                     i++
@@ -335,6 +327,7 @@ private fun highlightJson(json: String): AnnotatedString {
 
 @Composable
 private fun highlightXml(xml: String): AnnotatedString {
+    val colors = FileBrowserDesignSystem.syntaxColors()
     return buildAnnotatedString {
         var i = 0
         val text = xml
@@ -350,25 +343,25 @@ private fun highlightXml(xml: String): AnnotatedString {
                         // Comment or CDATA
                         while (i < text.length && text[i] != '>') i++
                         i++
-                        withStyle(SpanStyle(color = Color.Gray)) {
+                        withStyle(SpanStyle(color = colors.xmlComment)) {
                             append(text.substring(start, minOf(i, text.length)))
                         }
                     } else if (i < text.length && text[i] == '?') {
                         // Processing instruction
                         while (i < text.length && !(text[i - 1] == '?' && text[i] == '>')) i++
                         i++
-                        withStyle(SpanStyle(color = Color.Gray)) {
+                        withStyle(SpanStyle(color = colors.xmlComment)) {
                             append(text.substring(start, minOf(i, text.length)))
                         }
                     } else {
                         // Regular tag
-                        withStyle(SpanStyle(color = XmlTagColor)) {
+                        withStyle(SpanStyle(color = colors.xmlTag)) {
                             append("<")
                         }
 
                         // Closing tag slash
                         if (i < text.length && text[i] == '/') {
-                            withStyle(SpanStyle(color = XmlTagColor)) {
+                            withStyle(SpanStyle(color = colors.xmlTag)) {
                                 append("/")
                             }
                             i++
@@ -377,7 +370,7 @@ private fun highlightXml(xml: String): AnnotatedString {
                         // Tag name
                         val nameStart = i
                         while (i < text.length && !text[i].isWhitespace() && text[i] != '>' && text[i] != '/') i++
-                        withStyle(SpanStyle(color = XmlTagColor, fontWeight = FontWeight.Bold)) {
+                        withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
                             append(text.substring(nameStart, i))
                         }
 
@@ -387,7 +380,7 @@ private fun highlightXml(xml: String): AnnotatedString {
                                 append(text[i])
                                 i++
                             } else if (text[i] == '/') {
-                                withStyle(SpanStyle(color = XmlTagColor)) {
+                                withStyle(SpanStyle(color = colors.xmlTag)) {
                                     append("/")
                                 }
                                 i++
@@ -400,21 +393,21 @@ private fun highlightXml(xml: String): AnnotatedString {
                                 i++
                                 while (i < text.length && text[i] != quote) i++
                                 i++
-                                withStyle(SpanStyle(color = XmlAttrValueColor)) {
+                                withStyle(SpanStyle(color = colors.xmlAttrValue)) {
                                     append(text.substring(attrStart, minOf(i, text.length)))
                                 }
                             } else {
                                 // Attribute name
                                 val attrNameStart = i
                                 while (i < text.length && !text[i].isWhitespace() && text[i] != '=' && text[i] != '>' && text[i] != '/') i++
-                                withStyle(SpanStyle(color = XmlAttrNameColor)) {
+                                withStyle(SpanStyle(color = colors.xmlAttrName)) {
                                     append(text.substring(attrNameStart, i))
                                 }
                             }
                         }
 
                         if (i < text.length && text[i] == '>') {
-                            withStyle(SpanStyle(color = XmlTagColor)) {
+                            withStyle(SpanStyle(color = colors.xmlTag)) {
                                 append(">")
                             }
                             i++
@@ -427,7 +420,7 @@ private fun highlightXml(xml: String): AnnotatedString {
                     while (i < text.length && text[i] != '<') i++
                     val content = text.substring(contentStart, i)
                     if (content.isNotBlank()) {
-                        withStyle(SpanStyle(color = XmlContentColor)) {
+                        withStyle(SpanStyle(color = colors.xmlContent)) {
                             append(content)
                         }
                     } else {
@@ -696,16 +689,5 @@ private fun ErrorContent(message: String) {
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.error,
         )
-    }
-}
-
-@SuppressLint("DefaultLocale")
-private fun formatBytes(bytes: Long): String {
-    if (bytes <= 0) return "0 B"
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }

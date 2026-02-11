@@ -14,29 +14,16 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
-/**
- * Unified SearchBar component for WormaCeptor.
- *
- * A filled-style search bar with consistent styling across all feature modules.
- * Uses a subtle background color with no border indicator for a clean, modern look.
- *
- * @param query Current search query text
- * @param onQueryChange Callback when query text changes
- * @param modifier Modifier for the search bar
- * @param placeholder Placeholder text shown when query is empty
- * @param onSearch Optional callback when search action is triggered (IME search button)
- * @param enabled Whether the search bar is enabled
- */
+/** Reusable search bar with clear button and configurable keyboard action. */
 @Composable
 fun WormaCeptorSearchBar(
     query: String,
@@ -46,50 +33,49 @@ fun WormaCeptorSearchBar(
     onSearch: (() -> Unit)? = null,
     enabled: Boolean = true,
 ) {
-    val shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg)
-    val backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-        alpha = WormaCeptorDesignSystem.Alpha.strong,
+    val keyboardOptions = KeyboardOptions(
+        imeAction = if (onSearch != null) ImeAction.Search else ImeAction.Done,
     )
+    val keyboardActions = KeyboardActions(
+        onSearch = { onSearch?.invoke() },
+    )
+    val leadingIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "Search",
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+    val trailingIcon: @Composable () -> Unit = {
+        ClearButton(
+            visible = query.isNotEmpty(),
+            onClick = { onQueryChange("") },
+        )
+    }
+    val placeholderContent: @Composable () -> Unit = {
+        Text(
+            text = placeholder,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+        )
+    }
 
-    TextField(
+    OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
         enabled = enabled,
-        placeholder = {
-            Text(
-                text = placeholder,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        },
-        trailingIcon = {
-            ClearButton(
-                visible = query.isNotEmpty(),
-                onClick = { onQueryChange("") },
-            )
-        },
+        placeholder = placeholderContent,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
         singleLine = true,
-        shape = shape,
-        keyboardOptions = KeyboardOptions(
-            imeAction = if (onSearch != null) ImeAction.Search else ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = { onSearch?.invoke() },
-        ),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = backgroundColor,
-            unfocusedContainerColor = backgroundColor,
-            disabledContainerColor = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                alpha = WormaCeptorDesignSystem.Alpha.bold,
+            ),
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
         ),
     )
 }

@@ -20,25 +20,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,11 +55,11 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
@@ -111,9 +104,10 @@ fun FilterBottomSheetContent(
                 .verticalScroll(rememberScrollState())
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            MinimalSearchField(
-                value = localSearchQuery,
-                onValueChange = { localSearchQuery = it },
+            WormaCeptorSearchBar(
+                query = localSearchQuery,
+                onQueryChange = { localSearchQuery = it },
+                placeholder = stringResource(R.string.viewer_filter_search_placeholder),
                 onSearch = { focusManager.clearFocus() },
             )
 
@@ -240,63 +234,6 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
             )
         }
     }
-}
-
-@Composable
-private fun MinimalSearchField(value: String, onValueChange: (String) -> Unit, onSearch: () -> Unit) {
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-            .border(
-                width = WormaCeptorDesignSystem.BorderWidth.thin,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-            ),
-        placeholder = {
-            Text(
-                text = stringResource(R.string.viewer_filter_search_placeholder),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.viewer_filter_search),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-            )
-        },
-        trailingIcon = {
-            if (value.isNotEmpty()) {
-                IconButton(
-                    onClick = { onValueChange("") },
-                    modifier = Modifier.size(32.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.viewer_filter_clear),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                    )
-                }
-            }
-        },
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = MaterialTheme.colorScheme.primary,
-        ),
-        textStyle = MaterialTheme.typography.bodyMedium,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-    )
 }
 
 @Composable

@@ -55,20 +55,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
+import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
 import com.azikar24.wormaceptor.feature.leakdetection.R
 import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.leakDetectionColors
 import kotlinx.collections.immutable.ImmutableList
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * Main screen for Memory Leak Detection.
@@ -110,7 +113,7 @@ fun LeakDetectionScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.BugReport,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.leakdetection_title),
                             tint = colors.critical,
                         )
                         Text(
@@ -176,12 +179,21 @@ fun LeakDetectionScreen(
 
             // Leak list
             if (leaks.isEmpty()) {
-                EmptyState(
-                    isRunning = isRunning,
-                    colors = colors,
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks,
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
+                    subtitle = stringResource(
+                        if (isRunning) {
+                            R.string.leakdetection_empty_hint_monitoring
+                        } else {
+                            R.string.leakdetection_empty_hint_start
+                        },
+                    ),
+                    icon = Icons.Default.BugReport,
                 )
             } else {
                 LazyColumn(
@@ -344,13 +356,16 @@ private fun SeverityFilterChips(
             selected = selectedSeverity == null,
             onClick = { onSeveritySelected(null) },
             label = { Text(stringResource(R.string.leakdetection_filter_all)) },
+            modifier = Modifier.semantics { selected = selectedSeverity == null },
         )
         LeakSeverity.entries.forEach { severity ->
             val color = colors.colorForSeverity(severity)
+            val isSelected = selectedSeverity == severity
             FilterChip(
-                selected = selectedSeverity == severity,
-                onClick = { onSeveritySelected(if (selectedSeverity == severity) null else severity) },
+                selected = isSelected,
+                onClick = { onSeveritySelected(if (isSelected) null else severity) },
                 label = { Text(severity.name) },
+                modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
                     selectedLabelColor = color,
@@ -388,16 +403,16 @@ private fun LeakCard(
             // Severity indicator
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                     .background(severityBackground),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.Warning,
-                    contentDescription = null,
+                    contentDescription = leak.severity.name,
                     tint = severityColor,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
             }
 
@@ -429,7 +444,7 @@ private fun LeakCard(
                         color = colors.labelSecondary,
                     )
                     Text(
-                        text = formatSize(leak.retainedSize),
+                        text = formatBytes(leak.retainedSize),
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Monospace,
                         color = severityColor,
@@ -485,9 +500,9 @@ private fun LeakDetailContent(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Memory,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.leakdetection_title),
                         tint = severityColor,
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
                     )
                 }
                 Column {
@@ -517,7 +532,7 @@ private fun LeakDetailContent(
                             )
                         }
                         Text(
-                            text = formatSize(leak.retainedSize),
+                            text = formatBytes(leak.retainedSize),
                             style = MaterialTheme.typography.labelSmall,
                             fontFamily = FontFamily.Monospace,
                             color = severityColor,
@@ -534,7 +549,7 @@ private fun LeakDetailContent(
                 items = listOf(
                     stringResource(R.string.leakdetection_detail_class) to leak.objectClass,
                     stringResource(R.string.leakdetection_detail_description) to leak.leakDescription,
-                    stringResource(R.string.leakdetection_detail_retained_size) to formatSize(leak.retainedSize),
+                    stringResource(R.string.leakdetection_detail_retained_size) to formatBytes(leak.retainedSize),
                     stringResource(R.string.leakdetection_detail_detected) to formatTimestampFull(leak.timestamp),
                 ),
                 colors = colors,
@@ -552,6 +567,7 @@ private fun LeakDetailContent(
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.labelSecondary,
+                        modifier = Modifier.semantics { heading() },
                     )
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -598,6 +614,7 @@ private fun DetailSection(
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = colors.labelSecondary,
+            modifier = Modifier.semantics { heading() },
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -625,66 +642,5 @@ private fun DetailSection(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun EmptyState(
-    isRunning: Boolean,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            Icon(
-                imageVector = Icons.Default.BugReport,
-                contentDescription = null,
-                tint = if (isRunning) colors.monitoring else colors.labelSecondary,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-            )
-            Text(
-                text = stringResource(
-                    if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks,
-                ),
-                style = MaterialTheme.typography.bodyLarge,
-                color = colors.labelSecondary,
-            )
-            Text(
-                text = stringResource(
-                    if (isRunning) {
-                        R.string.leakdetection_empty_hint_monitoring
-                    } else {
-                        R.string.leakdetection_empty_hint_start
-                    },
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.labelSecondary,
-            )
-        }
-    }
-}
-
-private fun formatTimestamp(timestamp: Long): String {
-    val sdf = SimpleDateFormat("HH:mm:ss", Locale.US)
-    return sdf.format(Date(timestamp))
-}
-
-private fun formatTimestampFull(timestamp: Long): String {
-    val sdf = SimpleDateFormat("MMM d, yyyy 'at' HH:mm:ss", Locale.US)
-    return sdf.format(Date(timestamp))
-}
-
-private fun formatSize(bytes: Long): String {
-    return when {
-        bytes >= 1_073_741_824 -> String.format(Locale.US, "%.1f GB", bytes / 1_073_741_824.0)
-        bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
-        bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
-        else -> "$bytes B"
     }
 }

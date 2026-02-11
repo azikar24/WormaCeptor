@@ -26,14 +26,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -44,8 +42,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
@@ -68,9 +64,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
@@ -192,37 +189,13 @@ fun PreferenceDetailScreen(
                 .padding(padding),
         ) {
             // Search bar
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = onSearchQueryChanged,
-                placeholder = { Text(stringResource(R.string.preferences_search_keys_values_placeholder)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(R.string.preferences_search),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                },
-                trailingIcon = {
-                    if (searchQuery.isNotBlank()) {
-                        IconButton(onClick = { onSearchQueryChanged("") }) {
-                            Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.preferences_clear))
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                singleLine = true,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.bold,
-                    ),
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+            WormaCeptorSearchBar(
+                query = searchQuery,
+                onQueryChange = onSearchQueryChanged,
+                placeholder = stringResource(R.string.preferences_search_keys_values_placeholder),
+                modifier = Modifier.padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.md,
+                    vertical = WormaCeptorDesignSystem.Spacing.sm,
                 ),
             )
 
@@ -263,9 +236,19 @@ fun PreferenceDetailScreen(
             }
 
             if (items.isEmpty()) {
-                EmptyItemsState(
-                    hasFilters = searchQuery.isNotBlank() || typeFilter != null,
+                WormaCeptorEmptyState(
+                    title = if (searchQuery.isNotBlank() || typeFilter != null) {
+                        stringResource(R.string.preferences_empty_no_matches)
+                    } else {
+                        stringResource(R.string.preferences_empty_no_preferences)
+                    },
                     modifier = Modifier.fillMaxSize(),
+                    subtitle = if (searchQuery.isNotBlank() || typeFilter != null) {
+                        stringResource(R.string.preferences_empty_try_adjusting_filters)
+                    } else {
+                        stringResource(R.string.preferences_empty_add_using_button)
+                    },
+                    icon = Icons.Default.Key,
                 )
             } else {
                 LazyColumn(
@@ -435,7 +418,7 @@ private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, mod
             Box(
                 modifier = Modifier
                     .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                    .height(48.dp)
+                    .height(WormaCeptorDesignSystem.TouchTarget.comfortable)
                     .background(
                         typeColor,
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
@@ -452,7 +435,7 @@ private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, mod
                     Icon(
                         imageVector = Icons.Default.Key,
                         contentDescription = null,
-                        modifier = Modifier.size(14.dp),
+                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
@@ -490,7 +473,7 @@ private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, mod
             ) {
                 Text(
                     text = item.value.typeName,
-                    fontSize = 10.sp,
+                    style = WormaCeptorDesignSystem.Typography.overline,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
@@ -499,59 +482,5 @@ private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, mod
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun EmptyItemsState(hasFilters: Boolean, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-            modifier = Modifier.size(64.dp),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Key,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
-                    ),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-        Text(
-            text = if (hasFilters) {
-                stringResource(R.string.preferences_empty_no_matches)
-            } else {
-                stringResource(R.string.preferences_empty_no_preferences)
-            },
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-        Text(
-            text = if (hasFilters) {
-                stringResource(R.string.preferences_empty_try_adjusting_filters)
-            } else {
-                stringResource(R.string.preferences_empty_add_using_button)
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-        )
     }
 }

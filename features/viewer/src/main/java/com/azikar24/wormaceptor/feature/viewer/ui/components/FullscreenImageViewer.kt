@@ -82,6 +82,7 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import java.io.File
@@ -486,7 +487,7 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     MetadataChip(
                         icon = Icons.Outlined.Memory,
-                        text = formatFileSize(meta.fileSize),
+                        text = formatBytes(meta.fileSize),
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     Surface(
@@ -583,18 +584,6 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
                 color = Color.White,
             )
         }
-    }
-}
-
-/**
- * Formats file size in human-readable format
- */
-private fun formatFileSize(bytes: Long): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-        bytes < 1024 * 1024 * 1024 -> String.format(Locale.US, "%.2f MB", bytes / (1024.0 * 1024.0))
-        else -> String.format(Locale.US, "%.2f GB", bytes / (1024.0 * 1024.0 * 1024.0))
     }
 }
 

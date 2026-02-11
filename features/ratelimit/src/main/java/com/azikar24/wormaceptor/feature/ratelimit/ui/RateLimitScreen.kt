@@ -55,10 +55,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
@@ -192,7 +195,7 @@ private fun EnableToggleCard(
 ) {
     val statusColor by animateColorAsState(
         targetValue = if (enabled) colors.enabled else colors.disabled,
-        animationSpec = tween(300),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
         label = "status",
     )
 
@@ -223,7 +226,7 @@ private fun EnableToggleCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Speed,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.ratelimit_title),
                         tint = statusColor,
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
@@ -287,6 +290,7 @@ private fun NetworkPresetsCard(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
+                modifier = Modifier.semantics { heading() },
             )
 
             FlowRow(
@@ -386,8 +390,8 @@ private fun PresetChip(
         leadingIcon = {
             Icon(
                 imageVector = presetIcon,
-                contentDescription = null,
-                modifier = Modifier.size(18.dp), // Material spec for chip icons
+                contentDescription = preset.displayName,
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
         },
         colors = FilterChipDefaults.filterChipColors(
@@ -413,7 +417,7 @@ private fun PresetInfoItem(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = label,
             tint = color,
             modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
         )
@@ -459,6 +463,7 @@ private fun ConfigurationCard(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
+                modifier = Modifier.semantics { heading() },
             )
 
             // Download speed slider
@@ -549,9 +554,9 @@ private fun ConfigSlider(
             ) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = null,
+                    contentDescription = label,
                     tint = if (enabled) color else colors.disabled,
-                    modifier = Modifier.size(20.dp), // Material spec for list icon
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
                 Text(
                     text = label,
@@ -612,12 +617,13 @@ private fun StatisticsCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.labelPrimary,
+                    modifier = Modifier.semantics { heading() },
                 )
                 Icon(
                     imageVector = Icons.Default.NetworkCheck,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.ratelimit_stats_title),
                     tint = colors.primary,
-                    modifier = Modifier.size(20.dp), // Material spec for list icon
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
             }
 
@@ -695,28 +701,5 @@ private fun formatSpeed(kbps: Long): String {
         String.format(Locale.US, "%.1f Mbps", kbps / 1000.0)
     } else {
         "$kbps Kbps"
-    }
-}
-
-/**
- * Formats bytes to a human-readable string.
- */
-private fun formatBytes(bytes: Long): String {
-    return when {
-        bytes >= 1_073_741_824 -> String.format(Locale.US, "%.1f GB", bytes / 1_073_741_824.0)
-        bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
-        bytes >= 1_024 -> String.format(Locale.US, "%.1f KB", bytes / 1_024.0)
-        else -> "$bytes B"
-    }
-}
-
-/**
- * Formats duration in milliseconds to a human-readable string.
- */
-private fun formatDuration(ms: Long): String {
-    return when {
-        ms >= 60000 -> String.format(Locale.US, "%.1f min", ms / 60000.0)
-        ms >= 1000 -> String.format(Locale.US, "%.1f s", ms / 1000.0)
-        else -> "$ms ms"
     }
 }

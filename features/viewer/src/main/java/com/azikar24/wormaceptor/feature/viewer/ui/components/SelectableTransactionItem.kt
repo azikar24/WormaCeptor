@@ -35,11 +35,11 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatDuration
-import com.azikar24.wormaceptor.feature.viewer.ui.util.getMethodColor
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
 
 /**
@@ -98,7 +98,7 @@ fun SelectableTransactionItem(
                 )
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
                     } else {
                         statusColor.asSubtleBackground()
                     },
@@ -131,7 +131,7 @@ fun SelectableTransactionItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
-                    MethodBadge(transaction.method)
+                    WormaCeptorMethodBadge(transaction.method)
                     TextWithStartEllipsis(
                         text = transaction.path,
                         fontSize = 15.sp,
@@ -169,7 +169,9 @@ fun SelectableTransactionItem(
                 Text(
                     text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
@@ -186,26 +188,6 @@ fun SelectableTransactionItem(
             offset = DpOffset(
                 x = WormaCeptorDesignSystem.Spacing.lg,
                 y = (-WormaCeptorDesignSystem.Spacing.sm),
-            ),
-        )
-    }
-}
-
-@Composable
-private fun MethodBadge(method: String) {
-    val color = getMethodColor(method)
-    Surface(
-        color = color.copy(alpha = 0.15f),
-        contentColor = color,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-    ) {
-        Text(
-            text = method.uppercase(),
-            fontSize = 8.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
             ),
         )
     }

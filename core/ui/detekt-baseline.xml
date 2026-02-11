@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>ComposableParamOrder:WormaCeptorStatItem.kt$WormaCeptorStatItem</ID>
     <ID>CompositionLocalAllowlist:SyntaxColors.kt$LocalSyntaxColors</ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Disabled, inactive, neutral states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Error, failure, critical, destructive states </ID>
@@ -78,6 +79,7 @@
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Floating action button </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Modal/dialog elevation </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$* Elevation - Minimal, subtle elevation with layered depth</ID>
+    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Empty state illustration icons </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Feature/category icons </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Inline icons in text </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Navigation icons </ID>
@@ -97,6 +99,12 @@
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Overline - Category labels </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Title - Component headers </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$* Typography - Text styles for consistent hierarchy</ID>
+    <ID>Filename:HapticHelpers.kt$com.azikar24.wormaceptor.core.ui.components.HapticHelpers.kt</ID>
+    <ID>LongMethod:WormaCeptorSearchBar.kt$@Composable fun WormaCeptorSearchBar( query: String, onQueryChange: (String) -&gt; Unit, modifier: Modifier = Modifier, style: SearchBarStyle = SearchBarStyle.Filled, placeholder: String = "Search...", onSearch: (() -&gt; Unit)? = null, enabled: Boolean = true, )</ID>
+    <ID>MagicNumber:DurationFormatter.kt$1000</ID>
+    <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
+    <ID>MagicNumber:FormatUtils.kt$1024</ID>
+    <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
     <ID>MagicNumber:SyntaxColors.kt$0xFF000000</ID>
     <ID>MagicNumber:SyntaxColors.kt$0xFF0000FF</ID>
     <ID>MagicNumber:SyntaxColors.kt$0xFF098658</ID>
@@ -266,14 +274,29 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
+    <ID>MatchingDeclarationName:WormaCeptorSearchBar.kt$SearchBarStyle</ID>
+    <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
+    <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$Success : ClipboardResult</ID>
+    <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$TooLarge : ClipboardResult</ID>
+    <ID>UndocumentedPublicClass:HapticHelpers.kt$HapticOnceState</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Accent</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Category</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Chart</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$ContentType</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$HttpMethod</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Surfaces</ID>
+    <ID>UndocumentedPublicClass:WormaCeptorSearchBar.kt$SearchBarStyle</ID>
+    <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun resetHaptic()</ID>
+    <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun triggerHaptic()</ID>
+    <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component1(): Boolean</ID>
+    <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component2(): () -&gt; Unit</ID>
+    <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component3(): () -&gt; Unit</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Cpu$fun forCore(index: Int): Color</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Database$fun forDataType(type: String): Color</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorSearchBar.kt$@Composable fun WormaCeptorSearchBar( query: String, onQueryChange: (String) -&gt; Unit, modifier: Modifier = Modifier, style: SearchBarStyle = SearchBarStyle.Filled, placeholder: String = "Search...", onSearch: (() -&gt; Unit)? = null, enabled: Boolean = true, )</ID>
+    <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.Success$val message: String</ID>
+    <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.TooLarge$val message: String</ID>
+    <ID>UndocumentedPublicProperty:HapticHelpers.kt$HapticOnceState$val isTriggered: Boolean get() = hasTriggered()</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val boolean: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val comment: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val default: Color</ID>
@@ -483,5 +506,9 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val titleSmall = TextStyle( fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.1.sp, )</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorLoadingStates.kt$ErrorType$val icon: ImageVector</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorLoadingStates.kt$ErrorType$val title: String</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val enterTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; EnterTransition = { slideIntoContainer( AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val exitTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; ExitTransition = { slideOutOfContainer( AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val popEnterTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; EnterTransition = { slideIntoContainer( AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val popExitTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; ExitTransition = { slideOutOfContainer( AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
   </CurrentIssues>
 </SmellBaseline>

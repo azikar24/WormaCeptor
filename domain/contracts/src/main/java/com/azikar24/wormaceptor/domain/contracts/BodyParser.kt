@@ -95,3 +95,40 @@ fun emptyParsedBody(contentType: ContentType, formatted: String = ""): ParsedBod
     contentType = contentType,
     isValid = true,
 )
+
+/**
+ * Abstract base class for [BodyParser] implementations that provides
+ * consistent empty body handling.
+ *
+ * Subclasses implement [parseBody] for non-empty content. The empty body
+ * check is handled automatically using [defaultContentType] and
+ * [emptyBodyFormatted].
+ */
+abstract class BaseBodyParser : BodyParser {
+
+    /**
+     * The content type returned when the body is empty.
+     */
+    protected abstract val defaultContentType: ContentType
+
+    /**
+     * Optional formatted text for the empty body response.
+     * Override to provide a custom placeholder (e.g. "[Empty PDF]").
+     */
+    protected open val emptyBodyFormatted: String = ""
+
+    final override fun parse(body: ByteArray): ParsedBody {
+        if (body.isEmpty()) {
+            return emptyParsedBody(defaultContentType, emptyBodyFormatted)
+        }
+        return parseBody(body)
+    }
+
+    /**
+     * Parses a non-empty body. Called only when [body] is not empty.
+     *
+     * @param body The raw body bytes (guaranteed non-empty)
+     * @return Parsed and formatted body with metadata
+     */
+    protected abstract fun parseBody(body: ByteArray): ParsedBody
+}

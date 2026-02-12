@@ -1,13 +1,14 @@
 package com.azikar24.wormaceptor.feature.preferences.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -25,48 +26,45 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
@@ -79,6 +77,7 @@ import kotlinx.collections.immutable.ImmutableList
  * Screen displaying key-value pairs for a specific SharedPreferences file.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun PreferenceDetailScreen(
     fileName: String,
@@ -99,7 +98,7 @@ fun PreferenceDetailScreen(
     var showMenu by remember { mutableStateOf(false) }
     var showClearConfirmDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf<String?>(null) }
-    var showFilters by remember { mutableStateOf(false) }
+    var searchActive by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -134,15 +133,17 @@ fun PreferenceDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { showFilters = !showFilters }) {
+                    IconButton(
+                        onClick = {
+                            searchActive = !searchActive
+                            if (!searchActive) onSearchQueryChanged("")
+                        },
+                    ) {
                         Icon(
-                            imageVector = Icons.Default.FilterList,
-                            contentDescription = stringResource(R.string.preferences_filter),
-                            tint = if (typeFilter != null) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
+                            imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                            contentDescription = stringResource(
+                                R.string.preferences_search_keys_values_placeholder,
+                            ),
                         )
                     }
                     IconButton(onClick = { showMenu = true }) {
@@ -173,13 +174,10 @@ fun PreferenceDetailScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            WormaCeptorFAB(
                 onClick = onCreateItem,
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.preferences_add_preference))
-            }
+                contentDescription = stringResource(R.string.preferences_add_preference),
+            )
         },
         modifier = modifier,
     ) { padding ->
@@ -188,23 +186,29 @@ fun PreferenceDetailScreen(
                 .fillMaxSize()
                 .padding(padding),
         ) {
-            // Search bar
-            WormaCeptorSearchBar(
-                query = searchQuery,
-                onQueryChange = onSearchQueryChanged,
-                placeholder = stringResource(R.string.preferences_search_keys_values_placeholder),
-                modifier = Modifier.padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
-                ),
-            )
-
-            // Type filter chips
+            // Animated search bar
             AnimatedVisibility(
-                visible = showFilters && availableTypes.isNotEmpty(),
-                enter = fadeIn() + slideInVertically(),
-                exit = fadeOut() + slideOutVertically(),
+                visible = searchActive,
+                enter = expandVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                exit = shrinkVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
             ) {
+                WormaCeptorSearchBar(
+                    query = searchQuery,
+                    onQueryChange = onSearchQueryChanged,
+                    placeholder = stringResource(R.string.preferences_search_keys_values_placeholder),
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorDesignSystem.Spacing.md,
+                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
+                )
+            }
+
+            // Type filter chips - always visible when types available
+            if (availableTypes.isNotEmpty()) {
                 FlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -227,7 +231,9 @@ fun PreferenceDetailScreen(
                             onClick = { onTypeFilterChanged(type) },
                             label = { Text(type) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                                selectedContainerColor = typeColor.copy(
+                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                ),
                                 selectedLabelColor = typeColor,
                             ),
                         )
@@ -260,10 +266,10 @@ fun PreferenceDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
                     items(items, key = { it.key }) { item ->
-                        SwipeablePreferenceItem(
+                        PreferenceItemContent(
                             item = item,
-                            onEdit = { onEditItem(item) },
-                            onDelete = { showDeleteConfirmDialog = item.key },
+                            onClick = { onEditItem(item) },
+                            onLongClick = { showDeleteConfirmDialog = item.key },
                             modifier = Modifier.animateItem(),
                         )
                     }
@@ -331,156 +337,93 @@ fun PreferenceDetailScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SwipeablePreferenceItem(
+private fun PreferenceItemContent(
     item: PreferenceItem,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { dismissValue ->
-            when (dismissValue) {
-                SwipeToDismissBoxValue.EndToStart -> {
-                    onDelete()
-                    false // Don't dismiss, let the dialog handle it
-                }
-                SwipeToDismissBoxValue.StartToEnd -> {
-                    onEdit()
-                    false
-                }
-                SwipeToDismissBoxValue.Settled -> false
-            }
-        },
-    )
-
-    SwipeToDismissBox(
-        state = dismissState,
-        modifier = modifier,
-        backgroundContent = {
-            val direction = dismissState.dismissDirection
-            val color = when (direction) {
-                SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
-                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primaryContainer
-                else -> Color.Transparent
-            }
-            val icon = when (direction) {
-                SwipeToDismissBoxValue.EndToStart -> Icons.Default.Delete
-                SwipeToDismissBoxValue.StartToEnd -> Icons.Default.Edit
-                else -> null
-            }
-            val alignment = when (direction) {
-                SwipeToDismissBoxValue.EndToStart -> Alignment.CenterEnd
-                else -> Alignment.CenterStart
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .padding(horizontal = 20.dp),
-                contentAlignment = alignment,
-            ) {
-                icon?.let {
-                    Icon(
-                        imageVector = it,
-                        contentDescription = null,
-                        tint = when (direction) {
-                            SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.onErrorContainer
-                            else -> MaterialTheme.colorScheme.onPrimaryContainer
-                        },
-                    )
-                }
-            }
-        },
-        content = {
-            PreferenceItemContent(item = item, onClick = onEdit)
-        },
-    )
-}
-
-@Composable
-private fun PreferenceItemContent(item: PreferenceItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val haptic = LocalHapticFeedback.current
     val typeColor = PreferencesDesignSystem.TypeColors.forTypeName(item.value.typeName)
 
     WormaCeptorContainer(
         onClick = onClick,
         style = ContainerStyle.Outlined,
         backgroundColor = typeColor.asSubtleBackground(),
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onLongClick()
+                },
+            ),
     ) {
-        Row(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Type indicator
-            Box(
-                modifier = Modifier
-                    .width(WormaCeptorDesignSystem.BorderWidth.thick)
-                    .height(WormaCeptorDesignSystem.TouchTarget.comfortable)
-                    .background(
-                        typeColor,
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                    ),
-            )
+        PreferenceItemRow(item = item, typeColor = typeColor)
+    }
+}
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Key,
-                        contentDescription = null,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Text(
-                        text = item.key,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = FontFamily.Monospace,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
+@Composable
+private fun PreferenceItemRow(item: PreferenceItem, typeColor: Color) {
+    Row(
+        modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Key,
+                    contentDescription = null,
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 Text(
-                    text = item.value.displayValue,
-                    style = MaterialTheme.typography.bodySmall.copy(
+                    text = item.key,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
                         fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
-            // Type badge
-            Surface(
-                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-                contentColor = typeColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-            ) {
-                Text(
-                    text = item.value.typeName,
-                    style = WormaCeptorDesignSystem.Typography.overline,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                    ),
-                )
-            }
+            Text(
+                text = item.value.displayValue,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontFamily = FontFamily.Monospace,
+                ),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+
+        Surface(
+            color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            contentColor = typeColor,
+            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+        ) {
+            Text(
+                text = item.value.typeName,
+                style = WormaCeptorDesignSystem.Typography.overline,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(
+                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                ),
+            )
         }
     }
 }

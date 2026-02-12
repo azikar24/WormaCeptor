@@ -192,7 +192,10 @@ fun ToolsTab(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                    .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                    .padding(
+                        top = WormaCeptorDesignSystem.Spacing.sm,
+                        bottom = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
             )
         }
 

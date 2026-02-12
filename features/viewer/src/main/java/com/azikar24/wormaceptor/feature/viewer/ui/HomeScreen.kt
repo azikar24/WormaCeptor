@@ -161,6 +161,8 @@ fun HomeScreen(
     }
     var showFilterSheet by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
+    var toolsSearchActive by remember { mutableStateOf(false) }
+    var toolsSearchQuery by remember { mutableStateOf("") }
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     var showDeleteSelectedDialog by remember { mutableStateOf(false) }
@@ -335,6 +337,27 @@ fun HomeScreen(
                                             )
                                         }
                                     }
+                                }
+                            }
+
+                            // Search toggle - only show on Tools tab
+                            if (pagerState.currentPage == 2) {
+                                IconButton(
+                                    onClick = {
+                                        toolsSearchActive = !toolsSearchActive
+                                        if (!toolsSearchActive) toolsSearchQuery = ""
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = if (toolsSearchActive) {
+                                            Icons.Default.Close
+                                        } else {
+                                            Icons.Default.Search
+                                        },
+                                        contentDescription = stringResource(
+                                            R.string.viewer_tools_search_placeholder,
+                                        ),
+                                    )
                                 }
                             }
                         },
@@ -558,6 +581,9 @@ fun HomeScreen(
                                     snackbarHostState.showSnackbar(message)
                                 }
                             },
+                            searchActive = toolsSearchActive,
+                            searchQuery = toolsSearchQuery,
+                            onSearchQueryChanged = { toolsSearchQuery = it },
                             modifier = Modifier.fillMaxSize(),
                         )
                     }

@@ -33,7 +33,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Explore
@@ -42,7 +41,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,7 +52,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,11 +113,21 @@ private object CategoryHelper {
  *
  * @param onNavigate Callback when a tool is selected
  * @param onShowMessage Callback to show a snackbar message
+ * @param searchActive Whether the search bar is currently visible
+ * @param searchQuery Current search query text
+ * @param onSearchQueryChanged Callback when search query changes
  * @param modifier Modifier for this composable
  */
-@Suppress("LongMethod")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
-fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ToolsTab(
+    onNavigate: (String) -> Unit,
+    onShowMessage: (String) -> Unit,
+    searchActive: Boolean,
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
     val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -128,8 +135,6 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
     LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
     val favorites by favoritesRepository.favorites.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
-    var searchActive by rememberSaveable { mutableStateOf(false) }
     val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
@@ -170,27 +175,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        // Search toggle row + animated search bar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            IconButton(
-                onClick = {
-                    searchActive = !searchActive
-                    if (!searchActive) searchQuery = ""
-                },
-            ) {
-                Icon(
-                    imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                    contentDescription = stringResource(R.string.viewer_tools_search_placeholder),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
+        // Animated search bar (toggle is in parent TopAppBar)
         AnimatedVisibility(
             visible = searchActive,
             enter = expandVertically(
@@ -202,7 +187,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
         ) {
             WormaCeptorSearchBar(
                 query = searchQuery,
-                onQueryChange = { searchQuery = it },
+                onQueryChange = onSearchQueryChanged,
                 placeholder = stringResource(R.string.viewer_tools_search_placeholder),
                 modifier = Modifier
                     .fillMaxWidth()

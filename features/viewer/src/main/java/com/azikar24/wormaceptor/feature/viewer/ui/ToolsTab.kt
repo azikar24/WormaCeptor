@@ -10,9 +10,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +33,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Explore
@@ -42,9 +41,8 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,6 +54,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,13 +63,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -80,6 +76,7 @@ import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorToolTile
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -132,6 +129,7 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
 
     val favorites by favoritesRepository.favorites.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
+    var searchActive by rememberSaveable { mutableStateOf(false) }
     val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
@@ -172,18 +170,46 @@ fun ToolsTab(onNavigate: (String) -> Unit, onShowMessage: (String) -> Unit, modi
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        // Search Bar
-        WormaCeptorSearchBar(
-            query = searchQuery,
-            onQueryChange = { searchQuery = it },
-            placeholder = stringResource(R.string.viewer_tools_search_placeholder),
+        // Search toggle row + animated search bar
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    vertical = WormaCeptorDesignSystem.Spacing.md,
-                ),
-        )
+                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            IconButton(
+                onClick = {
+                    searchActive = !searchActive
+                    if (!searchActive) searchQuery = ""
+                },
+            ) {
+                Icon(
+                    imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                    contentDescription = stringResource(R.string.viewer_tools_search_placeholder),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = searchActive,
+            enter = expandVertically(
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            exit = shrinkVertically(
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+        ) {
+            WormaCeptorSearchBar(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholder = stringResource(R.string.viewer_tools_search_placeholder),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+            )
+        }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -305,77 +331,15 @@ private fun FavoritesStrip(
                 items = favorites,
                 key = { tool -> "fav_${tool.feature}" },
             ) { tool ->
-                FavoriteTile(
-                    tool = tool,
+                WormaCeptorToolTile(
+                    label = tool.name,
+                    icon = tool.icon,
+                    accentColor = MaterialTheme.colorScheme.primary,
                     onClick = { onToolClick(tool.route) },
                     onLongClick = { onToolLongClick(tool) },
+                    modifier = Modifier.width(116.dp),
                 )
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun FavoriteTile(tool: ToolItem, onClick: () -> Unit, onLongClick: () -> Unit, modifier: Modifier = Modifier) {
-    val haptic = LocalHapticFeedback.current
-
-    Surface(
-        modifier = modifier
-            .width(88.dp)
-            .height(88.dp)
-            .clip(WormaCeptorDesignSystem.Shapes.cardLarge)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onLongClick()
-                },
-            ),
-        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.md,
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
-                        shape = CircleShape,
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = tool.icon,
-                    contentDescription = tool.name,
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-            Text(
-                text = tool.name,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 10.sp,
-            )
         }
     }
 }
@@ -530,12 +494,13 @@ private fun ToolCategorySection(
                             horizontalArrangement = Arrangement.spacedBy(spacing),
                         ) {
                             rowTools.forEach { tool ->
-                                ToolTile(
-                                    tool = tool,
-                                    isFavorite = tool.feature in favorites,
-                                    categoryColor = categoryColor,
+                                WormaCeptorToolTile(
+                                    label = tool.name,
+                                    icon = tool.icon,
+                                    accentColor = categoryColor,
                                     onClick = { onToolClick(tool.route) },
                                     onLongClick = { onToolLongClick(tool) },
+                                    isFavorite = tool.feature in favorites,
                                     modifier = Modifier.weight(1f),
                                 )
                             }
@@ -546,90 +511,6 @@ private fun ToolCategorySection(
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun ToolTile(
-    tool: ToolItem,
-    isFavorite: Boolean,
-    categoryColor: Color,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val haptic = LocalHapticFeedback.current
-    val tileBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
-    val tileBorder = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-    Card(
-        modifier = modifier
-            .height(116.dp)
-            .clip(WormaCeptorDesignSystem.Shapes.cardLarge)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onLongClick()
-                },
-            ),
-        colors = CardDefaults.cardColors(containerColor = tileBackground),
-        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-        border = androidx.compose.foundation.BorderStroke(1.dp, tileBorder),
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                // Icon with category-colored background
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(
-                            color = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-                            shape = WormaCeptorDesignSystem.Shapes.card,
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        imageVector = tool.icon,
-                        contentDescription = tool.name,
-                        modifier = Modifier.size(22.dp),
-                        tint = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-                Text(
-                    text = tool.name,
-                    style = MaterialTheme.typography.labelSmall,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    lineHeight = 14.sp,
-                )
-            }
-
-            // Favorite indicator
-            if (isFavorite) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = stringResource(R.string.viewer_tools_favorite),
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(WormaCeptorDesignSystem.Spacing.sm)
-                        .size(WormaCeptorDesignSystem.IconSize.xxs),
-                    tint = WormaCeptorColors.Category.Favorites,
-                )
             }
         }
     }

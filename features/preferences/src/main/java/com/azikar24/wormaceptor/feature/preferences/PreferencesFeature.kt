@@ -20,7 +20,7 @@ import com.azikar24.wormaceptor.feature.preferences.data.PreferencesDataSource
 import com.azikar24.wormaceptor.feature.preferences.data.PreferencesRepositoryImpl
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferenceDetailScreen
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferencesListScreen
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditDialog
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditSheet
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewModel
 
 /**
@@ -152,9 +152,9 @@ private fun PreferencesNavHost(
         }
     }
 
-    // Edit/Create dialog
+    // Edit/Create bottom sheet
     if (showEditDialog) {
-        PreferenceEditDialog(
+        PreferenceEditSheet(
             item = editingItem,
             onDismiss = {
                 showEditDialog = false

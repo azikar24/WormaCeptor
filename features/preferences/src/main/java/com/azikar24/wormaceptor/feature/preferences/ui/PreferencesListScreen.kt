@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.feature.preferences.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +23,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +36,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,6 +66,8 @@ fun PreferencesListScreen(
     onNavigateBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
+    var searchActive by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -68,18 +82,41 @@ fun PreferencesListScreen(
                         }
                     }
                 },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            searchActive = !searchActive
+                            if (!searchActive) onSearchQueryChanged("")
+                        },
+                    ) {
+                        Icon(
+                            imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                            contentDescription = stringResource(R.string.preferences_search_placeholder),
+                        )
+                    }
+                },
             )
         },
         modifier = modifier,
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            // Search bar
-            WormaCeptorSearchBar(
-                query = searchQuery,
-                onQueryChange = onSearchQueryChanged,
-                placeholder = stringResource(R.string.preferences_search_placeholder),
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
-            )
+            // Animated search bar
+            AnimatedVisibility(
+                visible = searchActive,
+                enter = expandVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                exit = shrinkVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            ) {
+                WormaCeptorSearchBar(
+                    query = searchQuery,
+                    onQueryChange = onSearchQueryChanged,
+                    placeholder = stringResource(R.string.preferences_search_placeholder),
+                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                )
+            }
 
             if (files.isEmpty()) {
                 WormaCeptorEmptyState(
@@ -128,13 +165,15 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
     ) {
         Row(
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
         ) {
             // File icon
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
                 color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                modifier = Modifier.size(WormaCeptorDesignSystem.TouchTarget.minimum),
+                modifier = Modifier
+                    .padding(top = WormaCeptorDesignSystem.Spacing.xxs)
+                    .size(WormaCeptorDesignSystem.TouchTarget.minimum),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,

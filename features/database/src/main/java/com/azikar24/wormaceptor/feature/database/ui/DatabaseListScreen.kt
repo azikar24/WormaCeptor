@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.feature.database.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -91,7 +97,15 @@ fun DatabaseListScreen(
                     },
                 )
 
-                if (searchActive) {
+                AnimatedVisibility(
+                    visible = searchActive,
+                    enter = expandVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
@@ -165,7 +179,10 @@ fun DatabaseListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
+                    contentPadding = PaddingValues(
+                        top = WormaCeptorDesignSystem.Spacing.xs,
+                        bottom = WormaCeptorDesignSystem.Spacing.lg,
+                    ),
                 ) {
                     items(
                         items = databases,

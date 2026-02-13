@@ -153,6 +153,12 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period : 
 	public static fun values ()[Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period;
 }
 
+public final class com/azikar24/wormaceptor/api/WormaCeptorWebView {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/api/WormaCeptorWebView;
+	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
+	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/api/WormaCeptorWebView;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
+}
+
 public final class com/azikar24/wormaceptor/api/WormaCeptorWebSocket {
 	public static final field Companion Lcom/azikar24/wormaceptor/api/WormaCeptorWebSocket$Companion;
 	public synthetic fun <init> (Lokhttp3/WebSocketListener;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V

@@ -161,6 +161,32 @@ monitor.recordSentMessage(message)
 
 ---
 
+### WormaCeptorWebView
+
+**Package:** `com.azikar24.wormaceptor.api`
+
+Wrapper for monitoring WebView network requests.
+
+#### Usage
+
+```kotlin
+val webView: WebView = ...
+webView.webViewClient = WormaCeptorWebView.createMonitoringClient(
+    webViewId = "my_webview",
+    delegate = myWebViewClient,
+)
+```
+
+#### Factory Methods
+
+| Method | Description |
+|--------|-------------|
+| `createMonitoringClient(webViewId: String, delegate: WebViewClient?)` | Create a monitoring WebViewClient |
+
+When the WormaCeptor implementation is not available (e.g. release builds), the delegate is returned as-is (or a no-op `WebViewClient` if no delegate is provided).
+
+---
+
 ### RedactionConfig
 
 **Package:** `com.azikar24.wormaceptor.api`

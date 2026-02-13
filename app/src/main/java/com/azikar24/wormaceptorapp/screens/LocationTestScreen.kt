@@ -19,7 +19,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -67,7 +65,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
-private val LocationBlue = Color(0xFF2196F3)
 private val LocationGreen = Color(0xFF4CAF50)
 
 /**
@@ -154,26 +151,16 @@ fun LocationTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = null,
-                            tint = if (isLocationMocked) LocationGreen else LocationBlue,
+                    Column {
+                        Text(
+                            text = "Current Location",
+                            fontWeight = FontWeight.SemiBold,
                         )
-                        Column {
-                            Text(
-                                text = "Current Location",
-                                fontWeight = FontWeight.SemiBold,
-                            )
-                            Text(
-                                text = if (isLocationMocked) "Mock Active" else "Real Location",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
+                        Text(
+                            text = if (isLocationMocked) "Mock Active" else "Real Location",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 },
                 navigationIcon = {

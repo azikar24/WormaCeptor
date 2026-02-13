@@ -51,9 +51,7 @@
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFC107</ID>
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFD54F</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.15f</ID>
-    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.1f</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
-    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.3f</ID>
     <ID>MagicNumber:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$5000</ID>
     <ID>ModifierWithoutDefault:DependenciesInspectorScreen.kt$modifier</ID>
     <ID>UndocumentedPublicFunction:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>

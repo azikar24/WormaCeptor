@@ -35,7 +35,6 @@ import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import kotlinx.coroutines.flow.StateFlow
 
 object PushTokenFeature {
-    fun createEngine(context: Context) = PushTokenEngine(context.applicationContext)
     fun createViewModelFactory(engine: PushTokenEngine) = PushTokenViewModelFactory(engine)
 }
 
@@ -61,8 +60,7 @@ class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { PushTokenFeature.createEngine(context) }
+fun PushTokenManager(engine: PushTokenEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
     val factory = remember { PushTokenFeature.createViewModelFactory(engine) }
     val viewModel: PushTokenViewModel = viewModel(factory = factory)
 
@@ -81,13 +79,7 @@ fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigate
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(Icons.Default.Notifications, null, tint = WormaCeptorColors.StatusAmber)
-                        Text(stringResource(R.string.pushtoken_title), fontWeight = FontWeight.SemiBold)
-                    }
+                    Text(stringResource(R.string.pushtoken_title), fontWeight = FontWeight.SemiBold)
                 },
                 navigationIcon = {
                     onNavigateBack?.let {

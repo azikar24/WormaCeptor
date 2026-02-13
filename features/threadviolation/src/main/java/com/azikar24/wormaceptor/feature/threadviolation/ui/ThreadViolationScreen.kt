@@ -1,12 +1,5 @@
 package com.azikar24.wormaceptor.feature.threadviolation.ui
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,15 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.SlowMotionVideo
 import androidx.compose.material.icons.filled.Speed
@@ -58,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
@@ -68,6 +57,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
@@ -109,16 +101,15 @@ fun ThreadViolationScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Warning,
-                            contentDescription = stringResource(R.string.threadviolation_title),
-                            tint = colors.primary,
-                        )
                         Text(
                             text = stringResource(R.string.threadviolation_title),
                             fontWeight = FontWeight.SemiBold,
                         )
-                        MonitoringIndicator(isMonitoring = isMonitoring, colors = colors)
+                        WormaCeptorMonitoringIndicator(
+                            isActive = isMonitoring,
+                            activeColor = colors.monitoring,
+                            inactiveColor = colors.idle,
+                        )
                     }
                 },
                 navigationIcon = {
@@ -132,19 +123,12 @@ fun ThreadViolationScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onToggleMonitoring) {
-                        Icon(
-                            imageVector = if (isMonitoring) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = stringResource(
-                                if (isMonitoring) {
-                                    R.string.threadviolation_action_stop
-                                } else {
-                                    R.string.threadviolation_action_start
-                                },
-                            ),
-                            tint = if (isMonitoring) colors.monitoring else colors.idle,
-                        )
-                    }
+                    WormaCeptorPlayPauseButton(
+                        isActive = isMonitoring,
+                        onToggle = onToggleMonitoring,
+                        activeContentDescription = stringResource(R.string.threadviolation_action_stop),
+                        inactiveContentDescription = stringResource(R.string.threadviolation_action_start),
+                    )
                     IconButton(onClick = onClearViolations) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -185,7 +169,7 @@ fun ThreadViolationScreen(
                             R.string.threadviolation_empty_no_violations
                         },
                     ),
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.fillMaxWidth().weight(1f),
                     subtitle = stringResource(
                         if (isMonitoring) {
                             R.string.threadviolation_empty_hint_monitoring
@@ -229,32 +213,6 @@ fun ThreadViolationScreen(
 }
 
 @Composable
-private fun MonitoringIndicator(
-    isMonitoring: Boolean,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
-) {
-    val color by animateColorAsState(
-        targetValue = if (isMonitoring) colors.monitoring else colors.idle,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.slow),
-        label = "monitoring",
-    )
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = if (isMonitoring) 0.5f else 1f,
-        animationSpec = infiniteRepeatable(tween(1000, easing = LinearEasing), RepeatMode.Reverse),
-        label = "pulse_alpha",
-    )
-
-    Box(
-        modifier = Modifier
-            .size(WormaCeptorDesignSystem.Spacing.sm)
-            .clip(CircleShape)
-            .background(color.copy(alpha = if (isMonitoring) alpha else 1f)),
-    )
-}
-
-@Composable
 private fun SummarySection(
     stats: ViolationStats,
     colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
@@ -263,53 +221,38 @@ private fun SummarySection(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        SummaryCard(
-            stringResource(R.string.threadviolation_summary_disk_read),
-            stats.diskReadCount,
-            colors.diskRead,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = stats.diskReadCount.toString(),
+            label = stringResource(R.string.threadviolation_summary_disk_read),
+            color = colors.diskRead,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.threadviolation_summary_disk_write),
-            stats.diskWriteCount,
-            colors.diskWrite,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = stats.diskWriteCount.toString(),
+            label = stringResource(R.string.threadviolation_summary_disk_write),
+            color = colors.diskWrite,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.threadviolation_summary_network),
-            stats.networkCount,
-            colors.network,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = stats.networkCount.toString(),
+            label = stringResource(R.string.threadviolation_summary_network),
+            color = colors.network,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.threadviolation_summary_slow),
-            stats.slowCallCount + stats.customSlowCodeCount,
-            colors.slowCall,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = (stats.slowCallCount + stats.customSlowCodeCount).toString(),
+            label = stringResource(R.string.threadviolation_summary_slow),
+            color = colors.slowCall,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-    }
-}
-
-@Composable
-private fun SummaryCard(label: String, count: Int, color: Color, modifier: Modifier = Modifier) {
-    val colors = threadViolationColors()
-    Card(
-        modifier = modifier,
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        colors = CardDefaults.cardColors(containerColor = colors.cardBackground),
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = count.toString(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-            Text(text = label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-        }
     }
 }
 

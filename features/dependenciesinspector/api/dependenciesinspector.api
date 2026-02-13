@@ -1,12 +1,11 @@
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeature;
-	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)Lcom/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeatureKt {
-	public static final fun DependenciesInspector (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DependenciesInspector (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -19,9 +18,11 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/Com
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/ComposableSingletons$DependenciesInspectorScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/DependenciesInspectorScreenKt {

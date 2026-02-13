@@ -40,7 +40,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -72,6 +71,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
@@ -1176,7 +1176,7 @@ private fun RequestTab(
                 .align(Alignment.BottomEnd)
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            FloatingActionButton(
+            WormaCeptorFAB(
                 onClick = {
                     val fullContent = buildString {
                         appendLine("=== REQUEST HEADERS ===")
@@ -1189,11 +1189,9 @@ private fun RequestTab(
                     }
                     copyToClipboard(context, "Request Content", fullContent)
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ) {
-                Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
-            }
+                icon = Icons.Default.ContentCopy,
+                contentDescription = stringResource(R.string.viewer_body_copy_all),
+            )
         }
     }
 }
@@ -1567,7 +1565,7 @@ private fun ResponseTab(
                 .align(Alignment.BottomEnd)
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            FloatingActionButton(
+            WormaCeptorFAB(
                 onClick = {
                     val fullContent = buildString {
                         transaction.response?.headers?.let {
@@ -1582,11 +1580,9 @@ private fun ResponseTab(
                     }
                     copyToClipboard(context, "Response Content", fullContent)
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ) {
-                Icon(Icons.Default.ContentCopy, contentDescription = stringResource(R.string.viewer_body_copy_all))
-            }
+                icon = Icons.Default.ContentCopy,
+                contentDescription = stringResource(R.string.viewer_body_copy_all),
+            )
         }
 
         // Fullscreen Image Viewer dialog

@@ -6,6 +6,7 @@
     <!-- Navigation -->
     <string name="securestorage_back">Back</string>
     <string name="securestorage_refresh">Refresh</string>
+    <string name="securestorage_search">Search</string>
 
     <!-- Search -->
     <string name="securestorage_search_placeholder">Search keys and values…</string>

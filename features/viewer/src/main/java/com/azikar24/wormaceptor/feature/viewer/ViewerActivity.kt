@@ -27,21 +27,29 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
+import com.azikar24.wormaceptor.core.engine.CryptoEngine
+import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
+import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
+import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
+import com.azikar24.wormaceptor.core.engine.PushTokenEngine
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
+import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
+import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
-import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoHistoryScreen
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoTool
 import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
@@ -90,6 +98,15 @@ class ViewerActivity : ComponentActivity() {
     private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
     private val rateLimitEngine: RateLimitEngine by inject()
     private val webViewMonitorEngine: WebViewMonitorEngine by inject()
+    private val cryptoEngine: CryptoEngine by inject()
+    private val secureStorageEngine: SecureStorageEngine by inject()
+    private val loadedLibrariesEngine: LoadedLibrariesEngine by inject()
+    private val dependenciesInspectorEngine: DependenciesInspectorEngine by inject()
+    private val pushTokenEngine: PushTokenEngine by inject()
+    private val locationSimulatorEngine: LocationSimulatorEngine by inject()
+    private val pushSimulatorEngine: PushSimulatorEngine by inject()
+    private val locationSimulatorRepository: LocationSimulatorRepository by inject()
+    private val pushSimulatorRepository: PushSimulatorRepository by inject()
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -136,6 +153,7 @@ class ViewerActivity : ComponentActivity() {
             val filterMethods by viewModel.filterMethods.collectAsState()
             val filterStatusRanges by viewModel.filterStatusRanges.collectAsState()
             val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
+            val isInitialLoading by viewModel.isInitialLoading.collectAsState()
             val isRefreshingTransactions by viewModel.isRefreshingTransactions.collectAsState()
             val isRefreshingCrashes by viewModel.isRefreshingCrashes.collectAsState()
             val selectedIds by viewModel.selectedIds.collectAsState()
@@ -230,6 +248,7 @@ class ViewerActivity : ComponentActivity() {
                                 selectedTabIndex = selectedTabIndex,
                                 onTabSelected = viewModel::updateSelectedTab,
                                 allTransactions = allTransactions,
+                                isInitialLoading = isInitialLoading,
                                 isRefreshingTransactions = isRefreshingTransactions,
                                 isRefreshingCrashes = isRefreshingCrashes,
                                 onRefreshTransactions = viewModel::refreshTransactions,
@@ -425,6 +444,8 @@ class ViewerActivity : ComponentActivity() {
                         // Location Simulator route
                         composable("location") {
                             LocationSimulator(
+                                engine = locationSimulatorEngine,
+                                repository = locationSimulatorRepository,
                                 context = this@ViewerActivity,
                                 onNavigateBack = { navController.popBackStack() },
                             )
@@ -433,7 +454,8 @@ class ViewerActivity : ComponentActivity() {
                         // Push Notification Simulator route
                         composable("pushsimulator") {
                             PushSimulator(
-                                context = this@ViewerActivity,
+                                engine = pushSimulatorEngine,
+                                repository = pushSimulatorRepository,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -466,8 +488,6 @@ class ViewerActivity : ComponentActivity() {
 
                         // Crypto routes with shared engine
                         composable("crypto") { backStackEntry ->
-                            // Use backStackEntry as key to preserve engine during history navigation
-                            val cryptoEngine = remember { CryptoFeature.createEngine() }
                             var showHistory by remember { mutableStateOf(false) }
 
                             if (showHistory) {
@@ -488,7 +508,7 @@ class ViewerActivity : ComponentActivity() {
                         // Secure Storage Viewer route
                         composable("securestorage") {
                             SecureStorageViewer(
-                                context = this@ViewerActivity,
+                                engine = secureStorageEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -504,7 +524,7 @@ class ViewerActivity : ComponentActivity() {
                         // Push Token Manager route
                         composable("pushtoken") {
                             PushTokenManager(
-                                context = this@ViewerActivity,
+                                engine = pushTokenEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -512,7 +532,7 @@ class ViewerActivity : ComponentActivity() {
                         // Loaded Libraries Inspector route
                         composable("loadedlibraries") {
                             LoadedLibrariesInspector(
-                                context = this@ViewerActivity,
+                                engine = loadedLibrariesEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }
@@ -520,7 +540,7 @@ class ViewerActivity : ComponentActivity() {
                         // Dependencies Inspector route
                         composable("dependencies") {
                             DependenciesInspector(
-                                context = this@ViewerActivity,
+                                engine = dependenciesInspectorEngine,
                                 onNavigateBack = { navController.popBackStack() },
                             )
                         }

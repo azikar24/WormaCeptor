@@ -4,6 +4,7 @@
     <string name="dependenciesinspector_filter_all">All</string>
     <string name="dependenciesinspector_navigation_back">Back</string>
     <string name="dependenciesinspector_action_refresh">Refresh</string>
+    <string name="dependenciesinspector_action_search">Search</string>
     <string name="dependenciesinspector_search_placeholder">Search dependencies…</string>
     <string name="dependenciesinspector_summary_detected">Detected</string>
     <string name="dependenciesinspector_summary_versioned">Versioned</string>

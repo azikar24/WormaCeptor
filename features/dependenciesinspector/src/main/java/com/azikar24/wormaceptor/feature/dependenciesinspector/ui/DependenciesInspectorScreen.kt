@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.feature.dependenciesinspector.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -22,11 +28,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,10 +52,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -60,6 +70,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
@@ -92,67 +103,85 @@ fun DependenciesInspectorScreen(
 ) {
     val colors = dependenciesInspectorColors()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var searchActive by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(
-                            Icons.Default.Extension,
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
                             stringResource(R.string.dependenciesinspector_title),
-                            tint = colors.primary,
+                            fontWeight = FontWeight.SemiBold,
                         )
-                        Text(stringResource(R.string.dependenciesinspector_title), fontWeight = FontWeight.SemiBold)
-                    }
-                },
-                navigationIcon = {
-                    onBack?.let {
-                        IconButton(onClick = it) {
+                    },
+                    navigationIcon = {
+                        onBack?.let {
+                            IconButton(onClick = it) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    stringResource(R.string.dependenciesinspector_navigation_back),
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {
+                            searchActive = !searchActive
+                            if (!searchActive) onSearchQueryChanged("")
+                        }) {
                             Icon(
-                                Icons.AutoMirrored.Filled.ArrowBack,
-                                stringResource(R.string.dependenciesinspector_navigation_back),
+                                if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                                stringResource(R.string.dependenciesinspector_action_search),
                             )
                         }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onRefresh, enabled = !isLoading) {
-                        if (isLoading) {
-                            CircularProgressIndicator(
-                                Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
-                                strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
-                            )
-                        } else {
-                            Icon(Icons.Default.Refresh, stringResource(R.string.dependenciesinspector_action_refresh))
+                        IconButton(onClick = onRefresh, enabled = !isLoading) {
+                            if (isLoading) {
+                                CircularProgressIndicator(
+                                    Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                                    strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
+                                )
+                            } else {
+                                Icon(
+                                    Icons.Default.Refresh,
+                                    stringResource(R.string.dependenciesinspector_action_refresh),
+                                )
+                            }
                         }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
-            )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
+                )
+                AnimatedVisibility(
+                    visible = searchActive,
+                    enter = expandVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                ) {
+                    WormaCeptorSearchBar(
+                        query = searchQuery,
+                        onQueryChange = onSearchQueryChanged,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                            .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                        placeholder = stringResource(R.string.dependenciesinspector_search_placeholder),
+                    )
+                }
+            }
         },
     ) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
-            WormaCeptorSearchBar(
-                query = searchQuery,
-                onQueryChange = onSearchQueryChanged,
-                modifier = Modifier.fillMaxWidth().padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                ).padding(
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.sm,
-                ),
-                placeholder = stringResource(R.string.dependenciesinspector_search_placeholder),
-            )
-
             SummarySection(
                 summary,
                 colors,
-                Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
             )
 
             Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -220,55 +249,30 @@ fun DependenciesInspectorScreen(
 @Composable
 private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        SummaryCard(
-            stringResource(R.string.dependenciesinspector_summary_detected),
-            summary.totalDetected,
-            colors.primary,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.totalDetected.toString(),
+            label = stringResource(R.string.dependenciesinspector_summary_detected),
+            color = colors.primary,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.dependenciesinspector_summary_versioned),
-            summary.withVersion,
-            colors.versionDetected,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.withVersion.toString(),
+            label = stringResource(R.string.dependenciesinspector_summary_versioned),
+            color = colors.versionDetected,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.dependenciesinspector_summary_unknown),
-            summary.withoutVersion,
-            colors.versionUnknown,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.withoutVersion.toString(),
+            label = stringResource(R.string.dependenciesinspector_summary_unknown),
+            color = colors.versionUnknown,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-    }
-}
-
-@Composable
-private fun SummaryCard(
-    label: String,
-    count: Int,
-    color: Color,
-    colors: DependenciesInspectorColors,
-    modifier: Modifier,
-) {
-    Card(
-        modifier,
-        RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        CardDefaults.cardColors(colors.cardBackground),
-    ) {
-        Column(
-            Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                count.toString(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-            Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-        }
     }
 }
 
@@ -293,6 +297,9 @@ private fun FilterSection(
                 selected = selectedCategory == null,
                 onClick = { onCategorySelected(null) },
                 label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                ),
             )
 
             // Show categories that have detected dependencies, sorted by count
@@ -307,9 +314,7 @@ private fun FilterSection(
                         },
                         label = { Text("${category.shortLabel()} ($count)") },
                         colors = FilterChipDefaults.filterChipColors(
-                            containerColor = color.copy(0.1f),
-                            selectedContainerColor = color.copy(0.3f),
-                            labelColor = color,
+                            selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
                             selectedLabelColor = color,
                         ),
                     )

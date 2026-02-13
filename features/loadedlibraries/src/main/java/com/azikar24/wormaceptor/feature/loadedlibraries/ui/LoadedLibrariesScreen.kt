@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.feature.loadedlibraries.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,10 +27,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -43,10 +51,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -56,6 +67,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
@@ -87,63 +99,81 @@ fun LoadedLibrariesScreen(
 ) {
     val colors = loadedLibrariesColors()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var searchActive by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(
-                            Icons.Default.Extension,
-                            stringResource(R.string.loadedlibraries_title),
-                            tint = colors.primary,
-                        )
+            Column {
+                TopAppBar(
+                    title = {
                         Text(stringResource(R.string.loadedlibraries_title), fontWeight = FontWeight.SemiBold)
-                    }
-                },
-                navigationIcon = {
-                    onBack?.let {
-                        IconButton(
-                            onClick = it,
-                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.loadedlibraries_back)) }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onRefresh, enabled = !isLoading) {
-                        if (isLoading) {
-                            CircularProgressIndicator(
-                                Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
-                                strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
-                            )
-                        } else {
-                            Icon(Icons.Default.Refresh, stringResource(R.string.loadedlibraries_refresh))
+                    },
+                    navigationIcon = {
+                        onBack?.let {
+                            IconButton(
+                                onClick = it,
+                            ) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    stringResource(R.string.loadedlibraries_back),
+                                )
+                            }
                         }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
-            )
+                    },
+                    actions = {
+                        IconButton(onClick = {
+                            searchActive = !searchActive
+                            if (!searchActive) onSearchQueryChanged("")
+                        }) {
+                            Icon(
+                                if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                                stringResource(R.string.loadedlibraries_search),
+                            )
+                        }
+                        IconButton(onClick = onRefresh, enabled = !isLoading) {
+                            if (isLoading) {
+                                CircularProgressIndicator(
+                                    Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
+                                    strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
+                                )
+                            } else {
+                                Icon(Icons.Default.Refresh, stringResource(R.string.loadedlibraries_refresh))
+                            }
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
+                )
+                AnimatedVisibility(
+                    visible = searchActive,
+                    enter = expandVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                ) {
+                    WormaCeptorSearchBar(
+                        query = searchQuery,
+                        onQueryChange = onSearchQueryChanged,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                            .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                        placeholder = stringResource(R.string.loadedlibraries_search_placeholder),
+                    )
+                }
+            }
         },
     ) { paddingValues ->
         Column(Modifier.fillMaxSize().padding(paddingValues)) {
-            WormaCeptorSearchBar(
-                query = searchQuery,
-                onQueryChange = onSearchQueryChanged,
-                modifier = Modifier.fillMaxWidth().padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                ).padding(
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.sm,
-                ),
-                placeholder = stringResource(R.string.loadedlibraries_search_placeholder),
-            )
             SummarySection(
                 summary,
                 colors,
-                Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
             )
             Spacer(Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
             FilterSection(
@@ -209,58 +239,38 @@ private fun SummarySection(
     modifier: Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        SummaryCard(
-            stringResource(R.string.loadedlibraries_summary_native),
-            summary.nativeSoCount,
-            colors.nativeSo,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.nativeSoCount.toString(),
+            label = stringResource(R.string.loadedlibraries_summary_native),
+            color = colors.nativeSo,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.loadedlibraries_summary_dex),
-            summary.dexCount,
-            colors.dex,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.dexCount.toString(),
+            label = stringResource(R.string.loadedlibraries_summary_dex),
+            color = colors.dex,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.loadedlibraries_summary_jar),
-            summary.jarCount,
-            colors.jar,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.jarCount.toString(),
+            label = stringResource(R.string.loadedlibraries_summary_jar),
+            color = colors.jar,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-        SummaryCard(
-            stringResource(R.string.loadedlibraries_summary_total),
-            summary.totalLibraries,
-            colors.primary,
-            colors,
-            Modifier.weight(1f),
+        WormaCeptorSummaryCard(
+            count = summary.totalLibraries.toString(),
+            label = stringResource(R.string.loadedlibraries_summary_total),
+            color = colors.primary,
+            modifier = Modifier.weight(1f),
+            backgroundColor = colors.cardBackground,
+            labelColor = colors.labelSecondary,
         )
-    }
-}
-
-@Composable
-private fun SummaryCard(
-    label: String,
-    count: Int,
-    color: Color,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
-) {
-    Card(modifier, WormaCeptorDesignSystem.Shapes.card, CardDefaults.cardColors(colors.cardBackground)) {
-        Column(
-            Modifier.fillMaxWidth().padding(WormaCeptorDesignSystem.Spacing.md),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                count.toString(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-            Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-        }
     }
 }
 
@@ -276,9 +286,14 @@ private fun FilterSection(
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-            FilterChip(selectedType == null, {
-                onTypeSelected(null)
-            }, { Text(stringResource(R.string.loadedlibraries_filter_all)) })
+            FilterChip(
+                selected = selectedType == null,
+                onClick = { onTypeSelected(null) },
+                label = { Text(stringResource(R.string.loadedlibraries_filter_all)) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                ),
+            )
             LibraryType.entries.filter { it != LibraryType.AAR_RESOURCE }.forEach { type ->
                 val (icon, labelRes, color) = when (type) {
                     LibraryType.NATIVE_SO -> Triple(
@@ -291,14 +306,14 @@ private fun FilterSection(
                     else -> Triple(Icons.Default.Extension, R.string.loadedlibraries_filter_other, colors.primary)
                 }
                 FilterChip(
-                    selectedType == type,
-                    { onTypeSelected(if (selectedType == type) null else type) },
-                    { Text(stringResource(labelRes)) },
+                    selected = selectedType == type,
+                    onClick = { onTypeSelected(if (selectedType == type) null else type) },
+                    label = { Text(stringResource(labelRes)) },
                     leadingIcon = { Icon(icon, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm)) },
                     colors = FilterChipDefaults.filterChipColors(
-                        color.copy(WormaCeptorDesignSystem.Alpha.medium),
-                        color,
-                        color,
+                        selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
+                        selectedLabelColor = color,
+                        selectedLeadingIconColor = color,
                     ),
                 )
             }
@@ -379,6 +394,7 @@ private fun LibraryCard(
                     }
                 }
             }
+            Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Surface(
                 shape = WormaCeptorDesignSystem.Shapes.chip,
                 color = color.copy(WormaCeptorDesignSystem.Alpha.light),

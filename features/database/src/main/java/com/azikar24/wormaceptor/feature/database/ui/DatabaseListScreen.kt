@@ -114,7 +114,7 @@ fun DatabaseListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                            .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
                     )
                 }
             }
@@ -180,7 +180,6 @@ fun DatabaseListScreen(
                         .fillMaxSize()
                         .padding(padding),
                     contentPadding = PaddingValues(
-                        top = WormaCeptorDesignSystem.Spacing.xs,
                         bottom = WormaCeptorDesignSystem.Spacing.lg,
                     ),
                 ) {

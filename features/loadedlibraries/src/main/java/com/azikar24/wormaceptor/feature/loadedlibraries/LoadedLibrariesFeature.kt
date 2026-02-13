@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.loadedlibraries
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,13 +16,6 @@ import com.azikar24.wormaceptor.feature.loadedlibraries.vm.LoadedLibrariesViewMo
  * Entry point for the Loaded Libraries Inspector feature.
  */
 object LoadedLibrariesFeature {
-
-    /**
-     * Creates a LoadedLibrariesEngine instance.
-     */
-    fun createEngine(context: Context): LoadedLibrariesEngine {
-        return LoadedLibrariesEngine(context.applicationContext)
-    }
 
     /**
      * Creates a LoadedLibrariesViewModel factory.
@@ -52,8 +44,11 @@ class LoadedLibrariesViewModelFactory(
  * Main composable for the Loaded Libraries Inspector feature.
  */
 @Composable
-fun LoadedLibrariesInspector(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { LoadedLibrariesFeature.createEngine(context) }
+fun LoadedLibrariesInspector(
+    engine: LoadedLibrariesEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember { LoadedLibrariesFeature.createViewModelFactory(engine) }
     val viewModel: LoadedLibrariesViewModel = viewModel(factory = factory)
 

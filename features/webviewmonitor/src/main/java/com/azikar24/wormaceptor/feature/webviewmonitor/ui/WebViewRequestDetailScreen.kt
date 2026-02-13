@@ -2,24 +2,24 @@ package com.azikar24.wormaceptor.feature.webviewmonitor.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.HourglassEmpty
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,17 +30,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
@@ -50,26 +51,42 @@ import com.azikar24.wormaceptor.feature.webviewmonitor.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -> Unit) {
+    val statusColor = getStatusColor(request)
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            request.method,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
-                        )
-                        Text(
-                            request.host,
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    ) {
+                        WormaCeptorMethodBadge(request.method)
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = request.path,
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Text(
+                                text = request.host,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                        DetailStatusBadge(request, statusColor)
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.webviewmonitor_action_back))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.webviewmonitor_action_back),
+                        )
                     }
                 },
             )
@@ -83,176 +100,177 @@ internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack:
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
-            // Status card
-            Card(
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(WormaCeptorDesignSystem.Spacing.lg),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(getStatusColor(request).copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(
-                                imageVector = when {
-                                    request.isPending -> Icons.Default.HourglassEmpty
-                                    request.isSuccess -> Icons.Default.CheckCircle
-                                    else -> Icons.Default.Error
-                                },
-                                contentDescription = null,
-                                tint = getStatusColor(request),
-                                modifier = Modifier.size(24.dp),
-                            )
-                        }
-                        Column {
-                            Text(
-                                when {
-                                    request.isPending -> stringResource(R.string.webviewmonitor_status_pending)
-                                    request.isSuccess -> stringResource(R.string.webviewmonitor_status_success)
-                                    else -> stringResource(R.string.webviewmonitor_status_failed)
-                                },
-                                fontWeight = FontWeight.SemiBold,
-                            )
-                            val statusText = request.statusCode?.let {
-                                stringResource(
-                                    R.string.webviewmonitor_detail_status_prefix,
-                                    it,
-                                )
-                            }
-                                ?: request.errorMessage
-                                ?: stringResource(R.string.webviewmonitor_status_waiting)
-                            Text(
-                                statusText,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-
-                    request.duration?.let { duration ->
-                        Column(horizontalAlignment = Alignment.End) {
-                            Text(
-                                formatDuration(duration),
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF2196F3),
-                            )
-                            Text(
-                                stringResource(R.string.webviewmonitor_detail_duration),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-            }
-
-            // URL card
-            DetailCard(title = stringResource(R.string.webviewmonitor_detail_url)) {
-                Text(
-                    text = request.url,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-
-            // Request info
-            val yesString = stringResource(R.string.webviewmonitor_yes)
-            val noString = stringResource(R.string.webviewmonitor_no)
-            DetailCard(title = stringResource(R.string.webviewmonitor_detail_request_info)) {
-                DetailRow(stringResource(R.string.webviewmonitor_label_method), request.method)
-                DetailRow(stringResource(R.string.webviewmonitor_label_resource_type), request.resourceType.displayName)
-                DetailRow(
-                    stringResource(R.string.webviewmonitor_label_main_frame),
-                    if (request.isForMainFrame) yesString else noString,
-                )
-                DetailRow(
-                    stringResource(R.string.webviewmonitor_label_has_gesture),
-                    if (request.hasGesture) yesString else noString,
-                )
-                DetailRow(
-                    stringResource(R.string.webviewmonitor_label_is_redirect),
-                    if (request.isRedirect) yesString else noString,
-                )
-                DetailRow(stringResource(R.string.webviewmonitor_label_webview_id), request.webViewId)
-                DetailRow(
-                    stringResource(R.string.webviewmonitor_label_timestamp),
-                    formatTimestampFull(request.timestamp),
-                )
-            }
-
-            // Request headers
+            StatusCard(request)
+            UrlCard(request)
+            RequestInfoCard(request)
             if (request.headers.isNotEmpty()) {
-                DetailCard(
+                HeadersCard(
                     title = stringResource(R.string.webviewmonitor_detail_request_headers, request.headers.size),
-                ) {
-                    request.headers.forEach { (key, value) ->
-                        DetailRow(key, value)
-                    }
-                }
+                    headers = request.headers,
+                    icon = Icons.Default.Code,
+                    iconTint = WormaCeptorColors.StatusBlue,
+                )
             }
-
-            // Response info
-            if (request.statusCode != null || request.mimeType != null || request.contentLength != null) {
-                DetailCard(title = stringResource(R.string.webviewmonitor_detail_response_info)) {
-                    request.statusCode?.let {
-                        DetailRow(
-                            stringResource(R.string.webviewmonitor_label_status_code),
-                            it.toString(),
-                        )
-                    }
-                    request.mimeType?.let { DetailRow(stringResource(R.string.webviewmonitor_label_mime_type), it) }
-                    request.encoding?.let { DetailRow(stringResource(R.string.webviewmonitor_label_encoding), it) }
-                    request.contentLength?.let {
-                        DetailRow(
-                            stringResource(R.string.webviewmonitor_label_content_length),
-                            formatBytes(it),
-                        )
-                    }
-                    request.duration?.let {
-                        DetailRow(
-                            stringResource(R.string.webviewmonitor_detail_duration),
-                            formatDuration(it),
-                        )
-                    }
-                }
-            }
-
-            // Response headers
+            ResponseInfoCard(request)
             if (request.responseHeaders.isNotEmpty()) {
-                DetailCard(
+                HeadersCard(
                     title = stringResource(
                         R.string.webviewmonitor_detail_response_headers,
                         request.responseHeaders.size,
                     ),
-                ) {
-                    request.responseHeaders.forEach { (key, value) ->
-                        DetailRow(key, value)
-                    }
-                }
+                    headers = request.responseHeaders,
+                    icon = Icons.Default.Code,
+                    iconTint = WormaCeptorColors.StatusGreen,
+                )
             }
+            request.errorMessage?.let { ErrorCard(it) }
+        }
+    }
+}
 
-            // Error message
-            request.errorMessage?.let { error ->
-                DetailCard(title = stringResource(R.string.webviewmonitor_detail_error)) {
+@Composable
+private fun DetailStatusBadge(request: WebViewRequest, statusColor: Color) {
+    val statusText = when {
+        request.isPending -> "..."
+        request.statusCode != null -> request.statusCode.toString()
+        request.isFailed -> "ERR"
+        else -> "?"
+    }
+    Text(
+        text = statusText,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        color = statusColor,
+        modifier = Modifier
+            .background(
+                statusColor.asSubtleBackground(),
+                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+            )
+            .padding(
+                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+            ),
+    )
+}
+
+@Composable
+private fun StatusCard(request: WebViewRequest) {
+    val statusColor = getStatusColor(request)
+    val statusIcon = when {
+        request.isPending -> Icons.Default.HourglassEmpty
+        request.isSuccess -> Icons.Default.CheckCircle
+        else -> Icons.Default.Error
+    }
+    val statusTitle = when {
+        request.isPending -> stringResource(R.string.webviewmonitor_status_pending)
+        request.isSuccess -> stringResource(R.string.webviewmonitor_status_success)
+        else -> stringResource(R.string.webviewmonitor_status_failed)
+    }
+
+    WormaCeptorInfoCard(
+        title = statusTitle,
+        icon = statusIcon,
+        iconTint = statusColor,
+    ) {
+        val statusText = request.statusCode?.let {
+            stringResource(R.string.webviewmonitor_detail_status_prefix, it)
+        } ?: request.errorMessage ?: stringResource(R.string.webviewmonitor_status_waiting)
+
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_status_code),
+            value = statusText,
+        )
+        request.duration?.let { duration ->
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_detail_duration),
+                value = formatDuration(duration),
+            )
+        }
+    }
+}
+
+@Composable
+private fun UrlCard(request: WebViewRequest) {
+    WormaCeptorInfoCard(
+        title = stringResource(R.string.webviewmonitor_detail_url),
+        icon = Icons.Default.Link,
+        iconTint = MaterialTheme.colorScheme.primary,
+    ) {
+        SelectionContainer {
+            Text(
+                text = request.url,
+                style = WormaCeptorDesignSystem.Typography.codeMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun RequestInfoCard(request: WebViewRequest) {
+    val yesString = stringResource(R.string.webviewmonitor_yes)
+    val noString = stringResource(R.string.webviewmonitor_no)
+
+    WormaCeptorInfoCard(
+        title = stringResource(R.string.webviewmonitor_detail_request_info),
+        icon = Icons.Default.Description,
+        iconTint = WormaCeptorColors.StatusBlue,
+    ) {
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_method),
+            value = request.method,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_resource_type),
+            value = request.resourceType.displayName,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_main_frame),
+            value = if (request.isForMainFrame) yesString else noString,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_has_gesture),
+            value = if (request.hasGesture) yesString else noString,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_is_redirect),
+            value = if (request.isRedirect) yesString else noString,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_webview_id),
+            value = request.webViewId,
+        )
+        WormaCeptorDetailRow(
+            label = stringResource(R.string.webviewmonitor_label_timestamp),
+            value = formatTimestampFull(request.timestamp),
+        )
+    }
+}
+
+@Composable
+private fun HeadersCard(title: String, headers: Map<String, String>, icon: ImageVector, iconTint: Color) {
+    WormaCeptorInfoCard(
+        title = title,
+        icon = icon,
+        iconTint = iconTint,
+    ) {
+        headers.entries.forEachIndexed { index, (key, value) ->
+            if (index > 0) {
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+            }
+            Column {
+                Text(
+                    text = key,
+                    style = WormaCeptorDesignSystem.Typography.codeSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = iconTint,
+                )
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                SelectionContainer {
                     Text(
-                        text = error,
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 13.sp,
-                        color = Color(0xFFF44336),
+                        text = value,
+                        style = WormaCeptorDesignSystem.Typography.codeSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -261,47 +279,58 @@ internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack:
 }
 
 @Composable
-internal fun DetailCard(title: String, content: @Composable () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.Spacing.lg),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+private fun ResponseInfoCard(request: WebViewRequest) {
+    if (request.statusCode == null && request.mimeType == null && request.contentLength == null) return
+
+    WormaCeptorInfoCard(
+        title = stringResource(R.string.webviewmonitor_detail_response_info),
+        icon = Icons.Default.CheckCircle,
+        iconTint = WormaCeptorColors.StatusGreen,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-        ) {
-            Text(
-                text = title,
-                modifier = Modifier.semantics { heading() },
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+        request.statusCode?.let {
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_label_status_code),
+                value = it.toString(),
             )
-            content()
+        }
+        request.mimeType?.let {
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_label_mime_type),
+                value = it,
+            )
+        }
+        request.encoding?.let {
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_label_encoding),
+                value = it,
+            )
+        }
+        request.contentLength?.let {
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_label_content_length),
+                value = formatBytes(it),
+            )
+        }
+        request.duration?.let {
+            WormaCeptorDetailRow(
+                label = stringResource(R.string.webviewmonitor_detail_duration),
+                value = formatDuration(it),
+            )
         }
     }
 }
 
 @Composable
-internal fun DetailRow(label: String, value: String) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
+private fun ErrorCard(errorMessage: String) {
+    WormaCeptorInfoCard(
+        title = stringResource(R.string.webviewmonitor_detail_error),
+        icon = Icons.Default.Error,
+        iconTint = WormaCeptorColors.StatusRed,
     ) {
         Text(
-            text = label,
-            fontSize = 11.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = value,
-            fontSize = 13.sp,
-            fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        WormaCeptorDivider(
-            modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
+            text = errorMessage,
+            style = WormaCeptorDesignSystem.Typography.codeMedium,
+            color = WormaCeptorColors.StatusRed,
         )
     }
 }

@@ -18,7 +18,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -139,6 +145,7 @@ private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, mo
 fun SelectableTransactionListScreen(
     transactions: ImmutableList<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
+    isInitialLoading: Boolean = false,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
     isRefreshing: Boolean = false,
@@ -216,8 +223,16 @@ fun SelectableTransactionListScreen(
     }
 
     if (transactions.isEmpty()) {
-        // Empty state with pull-to-refresh
-        if (onRefresh != null) {
+        if (isInitialLoading) {
+            // Show loading state while data is being fetched
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (onRefresh != null) {
+            // Empty state with pull-to-refresh
             PullToRefreshBox(
                 isRefreshing = isRefreshing,
                 onRefresh = onRefresh,

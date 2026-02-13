@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -31,7 +30,6 @@ dependencies {
     implementation(project(":domain:contracts"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.datastore.preferences)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -41,7 +39,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.kotlin.serialization)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

@@ -4,13 +4,8 @@
   <CurrentIssues>
     <ID>ClassOrdering:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$Companion</ID>
     <ID>ComposableParamOrder:PreferencesListScreen.kt$PreferencesListScreen</ID>
-    <ID>CyclomaticComplexMethod:PreferenceEditDialog.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceEditDialog( item: PreferenceItem?, onDismiss: () -&gt; Unit, onSave: (String, PreferenceValue) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:PreferenceDetailScreen.kt$@Composable private fun PreferenceItemContent(item: PreferenceItem, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun PreferenceDetailScreen( fileName: String, items: ImmutableList&lt;PreferenceItem&gt;, totalCount: Int, searchQuery: String, typeFilter: String?, availableTypes: ImmutableList&lt;String&gt;, onSearchQueryChanged: (String) -&gt; Unit, onTypeFilterChanged: (String?) -&gt; Unit, onBack: () -&gt; Unit, onEditItem: (PreferenceItem) -&gt; Unit, onDeleteItem: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onCreateItem: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:PreferenceEditDialog.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceEditDialog( item: PreferenceItem?, onDismiss: () -&gt; Unit, onSave: (String, PreferenceValue) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PreferencesFeature.kt$@Composable private fun PreferencesNavHost( navController: NavHostController, viewModel: PreferencesViewModel, onNavigateBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PreferencesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferencesListScreen( files: ImmutableList&lt;PreferenceFile&gt;, searchQuery: String, onSearchQueryChanged: (String) -&gt; Unit, onFileClick: (PreferenceFile) -&gt; Unit, onNavigateBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:PreferenceDetailScreen.kt$( fileName: String, items: ImmutableList&lt;PreferenceItem&gt;, totalCount: Int, searchQuery: String, typeFilter: String?, availableTypes: ImmutableList&lt;String&gt;, onSearchQueryChanged: (String) -&gt; Unit, onTypeFilterChanged: (String?) -&gt; Unit, onBack: () -&gt; Unit, onEditItem: (PreferenceItem) -&gt; Unit, onDeleteItem: (String) -&gt; Unit, onClearAll: () -&gt; Unit, onCreateItem: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF00BCD4</ID>
     <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF2196F3</ID>
     <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF3F51B5</ID>
@@ -44,8 +39,6 @@
     <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val itemSearchQuery: StateFlow&lt;String&gt; = _itemSearchQuery</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val selectedFileName: StateFlow&lt;String?&gt; = _selectedFileName</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewModel.kt$PreferencesViewModel$val typeFilter: StateFlow&lt;String?&gt; = _typeFilter</ID>
-    <ID>UseIfInsteadOfWhen:PreferenceDetailScreen.kt$when (direction) { SwipeToDismissBoxValue.EndToStart -&gt; Alignment.CenterEnd else -&gt; Alignment.CenterStart }</ID>
-    <ID>UseIfInsteadOfWhen:PreferenceDetailScreen.kt$when (direction) { SwipeToDismissBoxValue.EndToStart -&gt; MaterialTheme.colorScheme.onErrorContainer else -&gt; MaterialTheme.colorScheme.onPrimaryContainer }</ID>
     <ID>ViewModelInjection:PreferencesFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

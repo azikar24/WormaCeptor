@@ -1,44 +1,17 @@
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorFeature;
-	public final fun createDataSource (Landroid/content/Context;)Lcom/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorDataSource;
-	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;
-	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;)Lcom/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorFeatureKt {
-	public static final fun PushSimulator (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PushSimulator (Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
-}
-
-public final class com/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorDataSource {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorDataSource$Companion;
-	public fun <init> (Landroid/content/Context;)V
-	public final fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun initializePresets (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun observeTemplates ()Lkotlinx/coroutines/flow/Flow;
-	public final fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorDataSource$Companion {
-	public final fun getPresetTemplates ()Ljava/util/List;
-}
-
-public final class com/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorRepositoryImpl : com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
-	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/feature/pushsimulator/data/PushSimulatorDataSource;Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;)V
-	public fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun getNotificationChannels (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun getTemplates ()Lkotlinx/coroutines/flow/Flow;
-	public fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/ui/ComposableSingletons$PushSimulatorFormSectionKt {

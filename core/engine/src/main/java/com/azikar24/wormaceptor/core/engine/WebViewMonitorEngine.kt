@@ -9,13 +9,18 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.azikar24.wormaceptor.domain.contracts.WebViewMonitorRepository
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -27,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap
  * - Supports filtering by WebView instance, URL pattern, or resource type
  * - Tracks request/response timing and status
  * - Provides statistics about captured requests
+ * - Optional persistence via [configure] with a [WebViewMonitorRepository]
  *
  * Usage:
  * 1. Create an instance of WebViewMonitorEngine
@@ -48,6 +54,8 @@ import java.util.concurrent.ConcurrentHashMap
 class WebViewMonitorEngine(
     private val maxRequests: Int = DEFAULT_MAX_REQUESTS,
 ) {
+    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
     // Whether monitoring is enabled (default: true)
     private val _isEnabled = MutableStateFlow(true)
     val isEnabled: StateFlow<Boolean> = _isEnabled.asStateFlow()
@@ -63,6 +71,9 @@ class WebViewMonitorEngine(
     // Track pending requests for timing
     private val pendingRequests = ConcurrentHashMap<String, Long>()
 
+    // Persistence repository (null = in-memory fallback)
+    private var repository: WebViewMonitorRepository? = null
+
     // URL pattern filter
     private val _urlFilter = MutableStateFlow<String?>(null)
     val urlFilter: StateFlow<String?> = _urlFilter.asStateFlow()
@@ -74,6 +85,25 @@ class WebViewMonitorEngine(
     // WebView ID filter
     private val _webViewIdFilter = MutableStateFlow<String?>(null)
     val webViewIdFilter: StateFlow<String?> = _webViewIdFilter.asStateFlow()
+
+    /**
+     * Configures the engine with a persistence repository.
+     *
+     * When configured, all request data is delegated to the repository and the
+     * [requests] StateFlow is driven by [WebViewMonitorRepository.observeRequests].
+     * Without a repository the engine falls back to in-memory storage.
+     *
+     * @param repository Repository for persisting WebView requests
+     */
+    fun configure(repository: WebViewMonitorRepository) {
+        this.repository = repository
+        scope.launch {
+            repository.observeRequests().collect { repoRequests ->
+                _requests.value = repoRequests
+                _stats.value = WebViewRequestStats.from(repoRequests)
+            }
+        }
+    }
 
     /**
      * Enables WebView network monitoring.
@@ -149,9 +179,14 @@ class WebViewMonitorEngine(
      * Clears all captured requests.
      */
     fun clearRequests() {
-        _requests.value = emptyList()
         pendingRequests.clear()
-        updateStats()
+        val repo = repository
+        if (repo != null) {
+            scope.launch { repo.clearRequests() }
+        } else {
+            _requests.value = emptyList()
+            updateStats()
+        }
     }
 
     /**
@@ -160,10 +195,15 @@ class WebViewMonitorEngine(
      * @param webViewId ID of the WebView to clear requests for
      */
     fun clearRequestsForWebView(webViewId: String) {
-        _requests.update { current ->
-            current.filter { it.webViewId != webViewId }
+        val repo = repository
+        if (repo != null) {
+            scope.launch { repo.clearRequestsForWebView(webViewId) }
+        } else {
+            _requests.update { current ->
+                current.filter { it.webViewId != webViewId }
+            }
+            updateStats()
         }
-        updateStats()
     }
 
     /**
@@ -207,16 +247,25 @@ class WebViewMonitorEngine(
         if (!_isEnabled.value) return
         if (!shouldCaptureRequest(request)) return
 
-        _requests.update { current ->
-            val updated = listOf(request) + current
-            if (updated.size > maxRequests) {
-                updated.dropLast(updated.size - maxRequests)
-            } else {
-                updated
-            }
-        }
         pendingRequests[request.id] = request.timestamp
-        updateStats()
+
+        val repo = repository
+        if (repo != null) {
+            scope.launch {
+                repo.saveRequest(request)
+                repo.deleteOldest(maxRequests)
+            }
+        } else {
+            _requests.update { current ->
+                val updated = listOf(request) + current
+                if (updated.size > maxRequests) {
+                    updated.dropLast(updated.size - maxRequests)
+                } else {
+                    updated
+                }
+            }
+            updateStats()
+        }
     }
 
     /**
@@ -234,24 +283,41 @@ class WebViewMonitorEngine(
         val startTime = pendingRequests.remove(requestId)
         val duration = if (startTime != null) System.currentTimeMillis() - startTime else null
 
-        _requests.update { current ->
-            current.map { request ->
-                if (request.id == requestId) {
-                    request.copy(
-                        statusCode = statusCode,
-                        responseHeaders = responseHeaders,
-                        mimeType = mimeType,
-                        encoding = encoding,
-                        contentLength = contentLength,
-                        duration = duration,
-                        errorMessage = errorMessage,
-                    )
-                } else {
-                    request
+        val repo = repository
+        if (repo != null) {
+            scope.launch {
+                val existing = _requests.value.find { it.id == requestId } ?: return@launch
+                val updated = existing.copy(
+                    statusCode = statusCode,
+                    responseHeaders = responseHeaders,
+                    mimeType = mimeType,
+                    encoding = encoding,
+                    contentLength = contentLength,
+                    duration = duration,
+                    errorMessage = errorMessage,
+                )
+                repo.updateRequest(updated)
+            }
+        } else {
+            _requests.update { current ->
+                current.map { request ->
+                    if (request.id == requestId) {
+                        request.copy(
+                            statusCode = statusCode,
+                            responseHeaders = responseHeaders,
+                            mimeType = mimeType,
+                            encoding = encoding,
+                            contentLength = contentLength,
+                            duration = duration,
+                            errorMessage = errorMessage,
+                        )
+                    } else {
+                        request
+                    }
                 }
             }
+            updateStats()
         }
-        updateStats()
     }
 
     private fun shouldCaptureRequest(request: WebViewRequest): Boolean {

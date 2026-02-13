@@ -209,8 +209,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingleto
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
@@ -221,8 +219,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingleto
 	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
@@ -290,7 +286,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/FilterBottomSheetC
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
-	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/SharedFlow;Landroidx/compose/runtime/Composer;IIIIII)V
+	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/SharedFlow;Landroidx/compose/runtime/Composer;IIIIII)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
@@ -348,7 +344,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolItem {
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolsTabKt {
-	public static final fun ToolsTab (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ToolsTab (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/TransactionDetailScreenKt {
@@ -357,7 +353,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/TransactionDetailS
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/TransactionListScreenKt {
-	public static final fun SelectableTransactionListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun SelectableTransactionListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;ZZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/BulkActionBarKt {
@@ -934,6 +930,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel : 
 	public final fun getTotalCount ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getTransactionIds ()Ljava/util/List;
 	public final fun getTransactions ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun isInitialLoading ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun isRefreshingCrashes ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun isRefreshingTransactions ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun isSelectionMode ()Lkotlinx/coroutines/flow/StateFlow;

@@ -1,7 +1,6 @@
 public final class com/azikar24/wormaceptor/feature/crypto/CryptoFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/CryptoFeature;
-	public final fun createEngine ()Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)Lcom/azikar24/wormaceptor/feature/crypto/CryptoViewModelFactory;
 }
 
@@ -73,6 +72,6 @@ public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingleto
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/CryptoScreenKt {
 	public static final fun CryptoHistoryScreen (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun CryptoTool (Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun CryptoTool (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 

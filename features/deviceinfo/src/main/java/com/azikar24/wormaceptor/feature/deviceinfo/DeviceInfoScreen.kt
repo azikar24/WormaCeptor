@@ -9,7 +9,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -40,8 +38,6 @@ import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.SystemUpdate
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -56,7 +52,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,16 +63,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -262,23 +256,24 @@ private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit
     val sectionTitle = stringResource(R.string.deviceinfo_section_device)
     val yes = stringResource(R.string.deviceinfo_yes)
     val no = stringResource(R.string.deviceinfo_no)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.PhoneAndroid,
         iconTint = MaterialTheme.colorScheme.primary,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatDeviceDetails(device))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_device_manufacturer), device.manufacturer)
-        InfoRow(stringResource(R.string.deviceinfo_device_model), device.model)
-        InfoRow(stringResource(R.string.deviceinfo_device_brand), device.brand)
-        InfoRow(stringResource(R.string.deviceinfo_device_device), device.device)
-        InfoRow(stringResource(R.string.deviceinfo_device_hardware), device.hardware)
-        InfoRow(stringResource(R.string.deviceinfo_device_board), device.board)
-        InfoRow(stringResource(R.string.deviceinfo_device_product), device.product)
-        InfoRow(stringResource(R.string.deviceinfo_device_emulator), if (device.isEmulator) yes else no)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_manufacturer), device.manufacturer)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_model), device.model)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_brand), device.brand)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_device), device.device)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_hardware), device.hardware)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_board), device.board)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_product), device.product)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_device_emulator), if (device.isEmulator) yes else no)
     }
 }
 
@@ -286,21 +281,22 @@ private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit
 private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_os)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.SystemUpdate,
         iconTint = WormaCeptorColors.StatusGreen,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatOsDetails(os))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_os_android_version), os.androidVersion)
-        InfoRow(stringResource(R.string.deviceinfo_os_sdk_level), os.sdkLevel.toString())
-        InfoRow(stringResource(R.string.deviceinfo_os_build_id), os.buildId)
-        os.securityPatch?.let { InfoRow(stringResource(R.string.deviceinfo_os_security_patch), it) }
-        InfoRow(stringResource(R.string.deviceinfo_os_bootloader), os.bootloader)
-        InfoRow(stringResource(R.string.deviceinfo_os_incremental), os.incremental)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_android_version), os.androidVersion)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_sdk_level), os.sdkLevel.toString())
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_build_id), os.buildId)
+        os.securityPatch?.let { WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_security_patch), it) }
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_bootloader), os.bootloader)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_os_incremental), os.incremental)
         CollapsibleInfoRow(stringResource(R.string.deviceinfo_os_fingerprint), os.fingerprint)
     }
 }
@@ -309,25 +305,35 @@ private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
 private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_display)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.ScreenRotation,
         iconTint = WormaCeptorColors.StatusBlue,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatScreenDetails(screen))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_screen_resolution), "${screen.widthPixels} x ${screen.heightPixels}")
-        InfoRow(stringResource(R.string.deviceinfo_screen_density_dpi), screen.densityDpi.toString())
-        InfoRow(stringResource(R.string.deviceinfo_screen_density), String.format(Locale.US, "%.2f", screen.density))
-        InfoRow(
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_screen_resolution),
+            "${screen.widthPixels} x ${screen.heightPixels}",
+        )
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_screen_density_dpi), screen.densityDpi.toString())
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_screen_density),
+            String.format(Locale.US, "%.2f", screen.density),
+        )
+        WormaCeptorDetailRow(
             stringResource(R.string.deviceinfo_screen_scaled_density),
             String.format(Locale.US, "%.2f", screen.scaledDensity),
         )
-        InfoRow(stringResource(R.string.deviceinfo_screen_size_category), screen.sizeCategory)
-        InfoRow(stringResource(R.string.deviceinfo_screen_orientation), screen.orientation)
-        InfoRow(stringResource(R.string.deviceinfo_screen_refresh_rate), "${screen.refreshRate.toInt()} Hz")
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_screen_size_category), screen.sizeCategory)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_screen_orientation), screen.orientation)
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_screen_refresh_rate),
+            "${screen.refreshRate.toInt()} Hz",
+        )
     }
 }
 
@@ -337,18 +343,19 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
     val sectionTitle = stringResource(R.string.deviceinfo_section_memory)
     val yes = stringResource(R.string.deviceinfo_yes)
     val no = stringResource(R.string.deviceinfo_no)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.Memory,
         iconTint = WormaCeptorColors.StatusAmber,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatMemoryDetails(memory))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_memory_total_ram), formatBytes(memory.totalRam))
-        InfoRow(stringResource(R.string.deviceinfo_memory_available_ram), formatBytes(memory.availableRam))
-        InfoRow(stringResource(R.string.deviceinfo_memory_used_ram), formatBytes(memory.usedRam))
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_memory_total_ram), formatBytes(memory.totalRam))
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_memory_available_ram), formatBytes(memory.availableRam))
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_memory_used_ram), formatBytes(memory.usedRam))
 
         // Memory usage progress bar
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -382,8 +389,11 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
         }
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-        InfoRow(stringResource(R.string.deviceinfo_memory_low_threshold), formatBytes(memory.lowMemoryThreshold))
-        InfoRow(stringResource(R.string.deviceinfo_memory_low_memory), if (memory.isLowMemory) yes else no)
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_memory_low_threshold),
+            formatBytes(memory.lowMemoryThreshold),
+        )
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_memory_low_memory), if (memory.isLowMemory) yes else no)
     }
 }
 
@@ -394,14 +404,15 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
     val totalLabel = stringResource(R.string.deviceinfo_label_total)
     val availableLabel = stringResource(R.string.deviceinfo_label_available)
     val usedLabel = stringResource(R.string.deviceinfo_label_used)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.Storage,
         iconTint = WormaCeptorColors.Category.Simulation,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatStorageDetails(storage))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
         // Internal Storage
         Text(
@@ -411,9 +422,9 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
             color = MaterialTheme.colorScheme.primary,
         )
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-        InfoRow(totalLabel, formatBytes(storage.internalTotal))
-        InfoRow(availableLabel, formatBytes(storage.internalAvailable))
-        InfoRow(usedLabel, formatBytes(storage.internalUsed))
+        WormaCeptorDetailRow(totalLabel, formatBytes(storage.internalTotal))
+        WormaCeptorDetailRow(availableLabel, formatBytes(storage.internalAvailable))
+        WormaCeptorDetailRow(usedLabel, formatBytes(storage.internalUsed))
 
         val internalUsagePercent = if (storage.internalTotal > 0) {
             (storage.internalUsed.toFloat() / storage.internalTotal.toFloat()) * 100f
@@ -448,9 +459,9 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-            InfoRow(totalLabel, formatBytes(extTotal))
-            storage.externalAvailable?.let { InfoRow(availableLabel, formatBytes(it)) }
-            storage.externalUsed?.let { InfoRow(usedLabel, formatBytes(it)) }
+            WormaCeptorDetailRow(totalLabel, formatBytes(extTotal))
+            storage.externalAvailable?.let { WormaCeptorDetailRow(availableLabel, formatBytes(it)) }
+            storage.externalUsed?.let { WormaCeptorDetailRow(usedLabel, formatBytes(it)) }
 
             val externalUsagePercent = if (extTotal > 0) {
                 (extUsed.toFloat() / extTotal.toFloat()) * 100f
@@ -478,23 +489,27 @@ private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
     val sectionTitle = stringResource(R.string.deviceinfo_section_application)
     val yes = stringResource(R.string.deviceinfo_yes)
     val no = stringResource(R.string.deviceinfo_no)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.Apps,
         iconTint = WormaCeptorColors.Accent.Tertiary,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatAppDetails(app))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_app_package_name), app.packageName)
-        InfoRow(stringResource(R.string.deviceinfo_app_version_name), app.versionName)
-        InfoRow(stringResource(R.string.deviceinfo_app_version_code), app.versionCode.toString())
-        InfoRow(stringResource(R.string.deviceinfo_app_target_sdk), app.targetSdk.toString())
-        InfoRow(stringResource(R.string.deviceinfo_app_min_sdk), app.minSdk.toString())
-        InfoRow(stringResource(R.string.deviceinfo_app_first_install), formatDateFull(app.firstInstallTime))
-        InfoRow(stringResource(R.string.deviceinfo_app_last_update), formatDateFull(app.lastUpdateTime))
-        InfoRow(stringResource(R.string.deviceinfo_app_debuggable), if (app.isDebuggable) yes else no)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_package_name), app.packageName)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_version_name), app.versionName)
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_version_code), app.versionCode.toString())
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_target_sdk), app.targetSdk.toString())
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_min_sdk), app.minSdk.toString())
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_app_first_install),
+            formatDateFull(app.firstInstallTime),
+        )
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_last_update), formatDateFull(app.lastUpdateTime))
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_app_debuggable), if (app.isDebuggable) yes else no)
     }
 }
 
@@ -506,118 +521,34 @@ private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> U
     val no = stringResource(R.string.deviceinfo_no)
     val connected = stringResource(R.string.deviceinfo_connected)
     val notConnected = stringResource(R.string.deviceinfo_not_connected)
-    InfoCard(
+    WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.NetworkCheck,
         iconTint = if (network.isConnected) WormaCeptorColors.StatusGreen else WormaCeptorColors.StatusRed,
-        onCopy = {
+        onAction = {
             val message = copyToClipboard(context, sectionTitle, formatNetworkDetails(network))
             onShowMessage(message)
         },
+        actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {
-        InfoRow(stringResource(R.string.deviceinfo_network_connection_type), network.connectionType)
-        InfoRow(stringResource(R.string.deviceinfo_network_connected), if (network.isConnected) yes else no)
-        InfoRow(
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_network_connection_type), network.connectionType)
+        WormaCeptorDetailRow(
+            stringResource(R.string.deviceinfo_network_connected),
+            if (network.isConnected) yes else no,
+        )
+        WormaCeptorDetailRow(
             stringResource(R.string.deviceinfo_network_wifi),
             if (network.isWifiConnected) connected else notConnected,
         )
-        InfoRow(
+        WormaCeptorDetailRow(
             stringResource(R.string.deviceinfo_network_cellular),
             if (network.isCellularConnected) connected else notConnected,
         )
-        InfoRow(stringResource(R.string.deviceinfo_network_metered), if (network.isMetered) yes else no)
-        network.cellularNetworkType?.let { InfoRow(stringResource(R.string.deviceinfo_network_cellular_type), it) }
-    }
-}
-
-@Composable
-private fun InfoCard(
-    title: String,
-    icon: ImageVector,
-    iconTint: Color,
-    onCopy: () -> Unit,
-    content: @Composable () -> Unit,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm),
-        ),
-        border = BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
-        ),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-    ) {
-        Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = title,
-                        tint = iconTint,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                    )
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.semantics { heading() },
-                    )
-                }
-                IconButton(
-                    onClick = onCopy,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ContentCopy,
-                        contentDescription = stringResource(R.string.deviceinfo_copy_section, title),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
-
-            content()
-        }
-    }
-}
-
-@Composable
-private fun InfoRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(0.4f),
-        )
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-        SelectionContainer {
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(0.6f),
-                fontFamily = if (value.length > 20) FontFamily.Monospace else FontFamily.Default,
+        WormaCeptorDetailRow(stringResource(R.string.deviceinfo_network_metered), if (network.isMetered) yes else no)
+        network.cellularNetworkType?.let {
+            WormaCeptorDetailRow(
+                stringResource(R.string.deviceinfo_network_cellular_type),
+                it,
             )
         }
     }

@@ -1,12 +1,5 @@
 package com.azikar24.wormaceptor.feature.leakdetection.ui
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -53,7 +45,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.selected
@@ -62,6 +53,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
@@ -111,19 +104,14 @@ fun LeakDetectionScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.BugReport,
-                            contentDescription = stringResource(R.string.leakdetection_title),
-                            tint = colors.critical,
-                        )
                         Text(
                             text = stringResource(R.string.leakdetection_title),
                             fontWeight = FontWeight.SemiBold,
                         )
-                        // Monitoring indicator
-                        MonitoringIndicator(
-                            isRunning = isRunning,
-                            colors = colors,
+                        WormaCeptorMonitoringIndicator(
+                            isActive = isRunning,
+                            activeColor = colors.monitoring,
+                            inactiveColor = colors.idle,
                         )
                     }
                 },
@@ -228,37 +216,6 @@ fun LeakDetectionScreen(
 }
 
 @Composable
-private fun MonitoringIndicator(
-    isRunning: Boolean,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
-    modifier: Modifier = Modifier,
-) {
-    val color by animateColorAsState(
-        targetValue = if (isRunning) colors.monitoring else colors.idle,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.slow),
-        label = "monitoring",
-    )
-
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = if (isRunning) 0.5f else 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "pulse_alpha",
-    )
-
-    Box(
-        modifier = modifier
-            .size(WormaCeptorDesignSystem.Spacing.sm)
-            .clip(CircleShape)
-            .background(color.copy(alpha = if (isRunning) alpha else 1f)),
-    )
-}
-
-@Composable
 private fun SummarySection(
     summary: LeakSummary,
     colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
@@ -268,75 +225,38 @@ private fun SummarySection(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
-        SummaryCard(
-            count = summary.criticalCount,
+        WormaCeptorSummaryCard(
+            count = summary.criticalCount.toString(),
             label = stringResource(R.string.leakdetection_severity_critical),
             color = colors.critical,
-            backgroundColor = colors.criticalBackground,
-            colors = colors,
             modifier = Modifier.weight(1f),
+            backgroundColor = colors.criticalBackground,
+            labelColor = colors.critical.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
         )
-        SummaryCard(
-            count = summary.highCount,
+        WormaCeptorSummaryCard(
+            count = summary.highCount.toString(),
             label = stringResource(R.string.leakdetection_severity_high),
             color = colors.high,
-            backgroundColor = colors.highBackground,
-            colors = colors,
             modifier = Modifier.weight(1f),
+            backgroundColor = colors.highBackground,
+            labelColor = colors.high.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
         )
-        SummaryCard(
-            count = summary.mediumCount,
+        WormaCeptorSummaryCard(
+            count = summary.mediumCount.toString(),
             label = stringResource(R.string.leakdetection_severity_medium),
             color = colors.medium,
-            backgroundColor = colors.mediumBackground,
-            colors = colors,
             modifier = Modifier.weight(1f),
+            backgroundColor = colors.mediumBackground,
+            labelColor = colors.medium.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
         )
-        SummaryCard(
-            count = summary.lowCount,
+        WormaCeptorSummaryCard(
+            count = summary.lowCount.toString(),
             label = stringResource(R.string.leakdetection_severity_low),
             color = colors.low,
-            backgroundColor = colors.lowBackground,
-            colors = colors,
             modifier = Modifier.weight(1f),
+            backgroundColor = colors.lowBackground,
+            labelColor = colors.low.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
         )
-    }
-}
-
-@Composable
-private fun SummaryCard(
-    count: Int,
-    label: String,
-    color: Color,
-    backgroundColor: Color,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        colors = CardDefaults.cardColors(
-            containerColor = backgroundColor,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = count.toString(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = color,
-            )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = color.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
-            )
-        }
     }
 }
 

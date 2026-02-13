@@ -36,7 +36,6 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -103,13 +102,12 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CryptoTool(
+    engine: CryptoEngine,
     modifier: Modifier = Modifier,
-    engine: CryptoEngine? = null,
     onNavigateBack: (() -> Unit)? = null,
     onNavigateToHistory: (() -> Unit)? = null,
 ) {
-    val cryptoEngine = engine ?: remember { CryptoFeature.createEngine() }
-    val factory = remember(cryptoEngine) { CryptoFeature.createViewModelFactory(cryptoEngine) }
+    val factory = remember(engine) { CryptoFeature.createViewModelFactory(engine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
 
     val config by viewModel.config.collectAsState()
@@ -130,13 +128,7 @@ fun CryptoTool(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(Icons.Default.Security, null, tint = Color(0xFF673AB7))
-                        Text(stringResource(R.string.crypto_title), fontWeight = FontWeight.SemiBold)
-                    }
+                    Text(stringResource(R.string.crypto_title), fontWeight = FontWeight.SemiBold)
                 },
                 navigationIcon = {
                     onNavigateBack?.let {
@@ -628,13 +620,7 @@ fun CryptoHistoryScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(Icons.Default.History, null, tint = Color(0xFF673AB7))
-                        Text(stringResource(R.string.crypto_history_title), fontWeight = FontWeight.SemiBold)
-                    }
+                    Text(stringResource(R.string.crypto_history_title), fontWeight = FontWeight.SemiBold)
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {

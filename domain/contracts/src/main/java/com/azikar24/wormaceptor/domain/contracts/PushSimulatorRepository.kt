@@ -1,11 +1,11 @@
 package com.azikar24.wormaceptor.domain.contracts
 
-import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository interface for managing notification templates and channels.
+ * Repository interface for managing notification templates.
+ * Channel access is handled directly by the engine, not the repository.
  */
 interface PushSimulatorRepository {
 
@@ -26,10 +26,4 @@ interface PushSimulatorRepository {
      * @param id The ID of the template to delete
      */
     suspend fun deleteTemplate(id: String)
-
-    /**
-     * Gets all notification channels registered by the app.
-     * @return List of notification channel information
-     */
-    suspend fun getNotificationChannels(): List<NotificationChannelInfo>
 }

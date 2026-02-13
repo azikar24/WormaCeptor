@@ -169,6 +169,15 @@ private fun PreferencesNavHost(
                 showEditDialog = false
                 editingItem = null
             },
+            onDelete = if (editingItem != null) {
+                { key: String ->
+                    viewModel.deletePreference(key)
+                    showEditDialog = false
+                    editingItem = null
+                }
+            } else {
+                null
+            },
         )
     }
 }

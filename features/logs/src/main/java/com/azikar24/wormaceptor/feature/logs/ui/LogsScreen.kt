@@ -5,10 +5,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,25 +15,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.VerticalAlignBottom
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,7 +45,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -61,7 +53,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
@@ -141,20 +136,14 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                         }
                     },
                     actions = {
-                        // Capture toggle
-                        IconButton(onClick = {
-                            if (isCapturing) viewModel.stopCapture() else viewModel.startCapture()
-                        }) {
-                            Icon(
-                                imageVector = if (isCapturing) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = if (isCapturing) "Pause capture" else "Start capture",
-                                tint = if (isCapturing) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                },
-                            )
-                        }
+                        WormaCeptorPlayPauseButton(
+                            isActive = isCapturing,
+                            onToggle = {
+                                if (isCapturing) viewModel.stopCapture() else viewModel.startCapture()
+                            },
+                            activeContentDescription = "Pause capture",
+                            inactiveContentDescription = "Start capture",
+                        )
 
                         // Clear logs
                         IconButton(onClick = { viewModel.clearLogs() }) {
@@ -213,18 +202,15 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                 enter = fadeIn() + slideInVertically { it },
                 exit = fadeOut() + slideOutVertically { it },
             ) {
-                FloatingActionButton(
+                WormaCeptorFAB(
                     onClick = {
                         viewModel.setAutoScroll(true)
                     },
+                    icon = Icons.Default.KeyboardArrowDown,
+                    contentDescription = stringResource(R.string.logs_scroll_to_bottom),
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = stringResource(R.string.logs_scroll_to_bottom),
-                    )
-                }
+                )
             }
         },
     ) { paddingValues ->
@@ -348,17 +334,12 @@ private fun StatsBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(WormaCeptorDesignSystem.Spacing.sm)
-                        .clip(CircleShape)
-                        .background(
-                            if (isCapturing) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.outline
-                            },
-                        ),
+                WormaCeptorStatusDot(
+                    color = if (isCapturing) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.outline
+                    },
                 )
                 Text(
                     text = if (isCapturing) "Capturing" else "Paused",

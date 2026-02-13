@@ -3,7 +3,6 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>CompositionLocalAllowlist:LogColors.kt$LocalLogLevelColors</ID>
-    <ID>CyclomaticComplexMethod:LogsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null)</ID>
     <ID>LongMethod:LogsScreen.kt$@Composable private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:LogsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null)</ID>
     <ID>MagicNumber:LogColors.kt$0xFFC2185B</ID>

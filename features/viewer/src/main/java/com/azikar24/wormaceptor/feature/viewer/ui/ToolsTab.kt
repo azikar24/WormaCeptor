@@ -135,7 +135,15 @@ fun ToolsTab(
     LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
     val favorites by favoritesRepository.favorites.collectAsState()
-    val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
+    val collapsedPrefs = remember {
+        context.getSharedPreferences("wormaceptor_tools_collapse", android.content.Context.MODE_PRIVATE)
+    }
+    val collapsedCategories = remember {
+        val saved = collapsedPrefs.getStringSet("collapsed", emptySet()) ?: emptySet()
+        mutableStateMapOf<String, Boolean>().apply {
+            saved.forEach { put(it, true) }
+        }
+    }
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
     val filteredCategories = remember(enabledFeatures) {
@@ -192,16 +200,16 @@ fun ToolsTab(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                    .padding(
-                        top = WormaCeptorDesignSystem.Spacing.sm,
-                        bottom = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
+                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
             )
         }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.xxl + navigationBarPadding),
+            contentPadding = PaddingValues(
+                top = WormaCeptorDesignSystem.Spacing.sm,
+                bottom = WormaCeptorDesignSystem.Spacing.xxl + navigationBarPadding,
+            ),
         ) {
             // Favorites horizontal strip
             if (filteredFavorites.isNotEmpty()) {
@@ -229,7 +237,10 @@ fun ToolsTab(
                     tools = category.tools,
                     isCollapsed = collapsedCategories[category.name] == true,
                     onToggleCollapse = {
-                        collapsedCategories[category.name] = !(collapsedCategories[category.name] ?: false)
+                        val newState = !(collapsedCategories[category.name] ?: false)
+                        collapsedCategories[category.name] = newState
+                        val collapsed = collapsedCategories.filter { it.value }.keys
+                        collapsedPrefs.edit().putStringSet("collapsed", collapsed).apply()
                     },
                     onToolClick = onNavigate,
                     onToolLongClick = { tool ->

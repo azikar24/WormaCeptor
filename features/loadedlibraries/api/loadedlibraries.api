@@ -1,12 +1,11 @@
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeature;
-	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;)Lcom/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeatureKt {
-	public static final fun LoadedLibrariesInspector (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LoadedLibrariesInspector (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -19,9 +18,11 @@ public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/Composabl
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/ComposableSingletons$LoadedLibrariesScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/LoadedLibrariesScreenKt {

@@ -32,6 +32,7 @@ import com.azikar24.wormaceptor.core.ui.components.CompactLoadingSpinner
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.SkeletonBox
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorExtendedFAB
 import com.azikar24.wormaceptor.core.ui.components.rememberShimmerBrush
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -451,10 +452,8 @@ fun ScrollToTopExtendedFab(
             ),
         ) + fadeOut(),
     ) {
-        ExtendedFloatingActionButton(
+        WormaCeptorExtendedFAB(
             onClick = onClick,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             icon = {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,

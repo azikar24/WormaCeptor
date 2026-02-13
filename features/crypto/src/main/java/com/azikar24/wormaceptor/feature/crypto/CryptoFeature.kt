@@ -21,11 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
  */
 object CryptoFeature {
     /**
-     * Creates a CryptoEngine instance.
-     */
-    fun createEngine(): CryptoEngine = CryptoEngine()
-
-    /**
      * Creates a CryptoViewModel factory for use with viewModel().
      */
     fun createViewModelFactory(engine: CryptoEngine): CryptoViewModelFactory = CryptoViewModelFactory(engine)

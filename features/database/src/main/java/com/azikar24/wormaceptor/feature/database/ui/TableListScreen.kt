@@ -109,7 +109,7 @@ fun TableListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                            .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
                     )
                 }
             }
@@ -174,7 +174,7 @@ fun TableListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
+                    contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.lg),
                 ) {
                     items(
                         items = tables,

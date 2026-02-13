@@ -1,13 +1,7 @@
 package com.azikar24.wormaceptor.feature.cpu.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,15 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.Warning
@@ -66,6 +57,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorChartLegendItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
@@ -122,7 +117,9 @@ fun CpuScreen(
                             enter = fadeIn(),
                             exit = fadeOut(),
                         ) {
-                            WarningBadge()
+                            WormaCeptorWarningBadge(
+                                contentDescription = stringResource(R.string.cpu_warning),
+                            )
                         }
                     }
                 },
@@ -137,20 +134,10 @@ fun CpuScreen(
                     }
                 },
                 actions = {
-                    // Monitoring toggle
-                    IconButton(onClick = {
-                        if (isMonitoring) onStopMonitoring() else onStartMonitoring()
-                    }) {
-                        Icon(
-                            imageVector = if (isMonitoring) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = if (isMonitoring) "Pause monitoring" else "Start monitoring",
-                            tint = if (isMonitoring) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
-                    }
+                    WormaCeptorPlayPauseButton(
+                        isActive = isMonitoring,
+                        onToggle = { if (isMonitoring) onStopMonitoring() else onStartMonitoring() },
+                    )
 
                     // Clear history
                     IconButton(onClick = onClearHistory) {
@@ -175,7 +162,7 @@ fun CpuScreen(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Status bar
-            StatusBar(
+            WormaCeptorMonitoringStatusBar(
                 isMonitoring = isMonitoring,
                 sampleCount = cpuHistory.size,
             )
@@ -205,51 +192,6 @@ fun CpuScreen(
                 colors = colors,
             )
         }
-    }
-}
-
-@Composable
-private fun StatusBar(isMonitoring: Boolean, sampleCount: Int, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            // Monitoring indicator
-            val indicatorColor by animateColorAsState(
-                targetValue = if (isMonitoring) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.outline
-                },
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-                label = "indicator",
-            )
-
-            Box(
-                modifier = Modifier
-                    .size(WormaCeptorDesignSystem.Spacing.sm)
-                    .clip(CircleShape)
-                    .background(indicatorColor),
-            )
-
-            Text(
-                text = if (isMonitoring) "Monitoring" else "Paused",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        Text(
-            text = "$sampleCount samples",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontFamily = FontFamily.Monospace,
-        )
     }
 }
 
@@ -565,7 +507,7 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
-                ChartLegendItem(
+                WormaCeptorChartLegendItem(
                     label = stringResource(R.string.cpu_usage_label),
                     color = colors.cpuUsage,
                 )
@@ -662,27 +604,6 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         drawPath(
             path = areaPath,
             color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        )
-    }
-}
-
-@Composable
-private fun ChartLegendItem(label: String, color: Color, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-    ) {
-        Box(
-            modifier = Modifier
-                .size(WormaCeptorDesignSystem.Spacing.md)
-                .clip(CircleShape)
-                .background(color),
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -800,35 +721,6 @@ private fun SystemInfoItem(
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily.Monospace,
             color = colors.labelPrimary,
-        )
-    }
-}
-
-@Composable
-private fun WarningBadge(modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition(label = "warning")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = WormaCeptorDesignSystem.Alpha.bold,
-        animationSpec = infiniteRepeatable(
-            animation = tween(WormaCeptorDesignSystem.AnimationDuration.verySlow, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "warning_alpha",
-    )
-
-    Surface(
-        modifier = modifier,
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.error.copy(alpha = alpha),
-    ) {
-        Icon(
-            imageVector = Icons.Default.Warning,
-            contentDescription = stringResource(R.string.cpu_warning),
-            tint = MaterialTheme.colorScheme.onError,
-            modifier = Modifier
-                .padding(WormaCeptorDesignSystem.Spacing.xs)
-                .size(WormaCeptorDesignSystem.Spacing.lg),
         )
     }
 }

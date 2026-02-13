@@ -15,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
-import com.azikar24.wormaceptor.feature.location.data.LocationDataSource
-import com.azikar24.wormaceptor.feature.location.data.LocationRepositoryImpl
 import com.azikar24.wormaceptor.feature.location.ui.LocationScreen
 import com.azikar24.wormaceptor.feature.location.vm.LocationViewModel
 import org.osmdroid.util.GeoPoint
@@ -26,23 +24,6 @@ import org.osmdroid.util.GeoPoint
  * Provides factory methods and the main composable.
  */
 object LocationFeature {
-
-    /**
-     * Creates a LocationSimulatorEngine instance for the given context.
-     * This engine handles the actual mock location setting via Android APIs.
-     */
-    fun createEngine(context: Context): LocationSimulatorEngine {
-        return LocationSimulatorEngine(context.applicationContext)
-    }
-
-    /**
-     * Creates a LocationSimulatorRepository instance.
-     * The repository coordinates between persistence and the engine.
-     */
-    fun createRepository(context: Context, engine: LocationSimulatorEngine): LocationSimulatorRepository {
-        val dataSource = LocationDataSource(context.applicationContext)
-        return LocationRepositoryImpl(dataSource, engine)
-    }
 
     /**
      * Creates a LocationViewModel factory for use with viewModel().
@@ -78,9 +59,13 @@ class LocationViewModelFactory(
  * Call this from your navigation host with route "location".
  */
 @Composable
-fun LocationSimulator(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { LocationFeature.createEngine(context) }
-    val repository = remember { LocationFeature.createRepository(context, engine) }
+fun LocationSimulator(
+    engine: LocationSimulatorEngine,
+    repository: LocationSimulatorRepository,
+    context: Context,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember { LocationFeature.createViewModelFactory(repository, engine, context) }
     val viewModel: LocationViewModel = viewModel(factory = factory)
 

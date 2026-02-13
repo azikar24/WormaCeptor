@@ -2,11 +2,6 @@ package com.azikar24.wormaceptor.feature.fps.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,12 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
@@ -50,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
@@ -61,6 +53,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.FpsInfo
 import com.azikar24.wormaceptor.feature.fps.R
@@ -104,7 +99,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                             text = "FPS Monitor",
                             fontWeight = FontWeight.SemiBold,
                         )
-                        MonitoringIndicator(isMonitoring = isMonitoring)
+                        WormaCeptorMonitoringIndicator(isActive = isMonitoring)
                     }
                 },
                 navigationIcon = {
@@ -126,18 +121,10 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                         )
                     }
 
-                    // Play/Pause toggle
-                    IconButton(onClick = { viewModel.toggleMonitoring() }) {
-                        Icon(
-                            imageVector = if (isMonitoring) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = if (isMonitoring) "Pause monitoring" else "Start monitoring",
-                            tint = if (isMonitoring) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
-                    }
+                    WormaCeptorPlayPauseButton(
+                        isActive = isMonitoring,
+                        onToggle = { viewModel.toggleMonitoring() },
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
@@ -145,84 +132,52 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
             )
         },
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Current FPS Display
-            CurrentFpsCard(
-                fpsInfo = currentInfo,
-                isMonitoring = isMonitoring,
-                colors = colors,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            // Statistics Cards
-            StatisticsRow(
-                fpsInfo = currentInfo,
-                colors = colors,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            // Dropped Frames Card
-            DroppedFramesCard(
-                droppedFrames = currentInfo.droppedFrames,
-                jankFrames = currentInfo.jankFrames,
-                colors = colors,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            // FPS Chart
-            FpsChartCard(
-                history = history,
-                colors = colors,
+        if (!isMonitoring && history.isEmpty()) {
+            EmptyState(
+                onStartMonitoring = { viewModel.startMonitoring() },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
+                    .fillMaxSize()
+                    .padding(paddingValues),
             )
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(scrollState)
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+            ) {
+                CurrentFpsCard(
+                    fpsInfo = currentInfo,
+                    isMonitoring = isMonitoring,
+                    colors = colors,
+                    modifier = Modifier.fillMaxWidth(),
+                )
 
-            // Empty state when not monitoring
-            if (!isMonitoring && history.isEmpty()) {
-                EmptyState(
-                    onStartMonitoring = { viewModel.startMonitoring() },
+                StatisticsRow(
+                    fpsInfo = currentInfo,
+                    colors = colors,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                DroppedFramesCard(
+                    droppedFrames = currentInfo.droppedFrames,
+                    jankFrames = currentInfo.jankFrames,
+                    colors = colors,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                FpsChartCard(
+                    history = history,
+                    colors = colors,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = WormaCeptorDesignSystem.Spacing.xxl),
+                        .height(200.dp),
                 )
             }
         }
     }
-}
-
-@Composable
-private fun MonitoringIndicator(isMonitoring: Boolean, modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = WormaCeptorDesignSystem.Alpha.moderate,
-        animationSpec = infiniteRepeatable(
-            animation = tween(WormaCeptorDesignSystem.AnimationDuration.verySlow, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "pulse_alpha",
-    )
-
-    Box(
-        modifier = modifier
-            .size(WormaCeptorDesignSystem.Spacing.sm)
-            .clip(CircleShape)
-            .background(
-                if (isMonitoring) {
-                    MaterialTheme.colorScheme.primary.copy(alpha = alpha)
-                } else {
-                    MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
-                },
-            ),
-    )
 }
 
 @Composable
@@ -302,9 +257,9 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
     ) {
-        StatCard(
+        WormaCeptorSummaryCard(
+            count = if (fpsInfo.minFps > 0) fpsInfo.minFps.roundToInt().toString() else "--",
             label = stringResource(R.string.fps_min),
-            value = if (fpsInfo.minFps > 0) fpsInfo.minFps.roundToInt().toString() else "--",
             color = if (fpsInfo.minFps > 0) {
                 colors.forFps(
                     fpsInfo.minFps,
@@ -315,9 +270,9 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
             modifier = Modifier.weight(1f),
         )
 
-        StatCard(
+        WormaCeptorSummaryCard(
+            count = if (fpsInfo.averageFps > 0) fpsInfo.averageFps.roundToInt().toString() else "--",
             label = stringResource(R.string.fps_avg),
-            value = if (fpsInfo.averageFps > 0) fpsInfo.averageFps.roundToInt().toString() else "--",
             color = if (fpsInfo.averageFps > 0) {
                 colors.forFps(
                     fpsInfo.averageFps,
@@ -328,9 +283,9 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
             modifier = Modifier.weight(1f),
         )
 
-        StatCard(
+        WormaCeptorSummaryCard(
+            count = if (fpsInfo.maxFps > 0) fpsInfo.maxFps.roundToInt().toString() else "--",
             label = stringResource(R.string.fps_max),
-            value = if (fpsInfo.maxFps > 0) fpsInfo.maxFps.roundToInt().toString() else "--",
             color = if (fpsInfo.maxFps > 0) {
                 colors.forFps(
                     fpsInfo.maxFps,
@@ -340,39 +295,6 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
             },
             modifier = Modifier.weight(1f),
         )
-    }
-}
-
-@Composable
-private fun StatCard(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-            Text(
-                text = value,
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Monospace,
-                ),
-                color = color,
-            )
-        }
     }
 }
 

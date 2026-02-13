@@ -41,13 +41,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -74,6 +72,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSmallFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import kotlinx.coroutines.launch
 import java.security.KeyStore
@@ -699,13 +699,12 @@ private fun SpeedDialFab(
             icon = Icons.Default.VpnKey,
             onClick = onAddEntry,
         )
-        FloatingActionButton(onClick = { onExpandedChange(!expanded) }) {
-            Icon(
-                imageVector = if (expanded) Icons.Default.Close else Icons.Default.Add,
-                contentDescription = if (expanded) "Close" else "Add",
-                modifier = Modifier.rotate(rotation),
-            )
-        }
+        WormaCeptorFAB(
+            onClick = { onExpandedChange(!expanded) },
+            icon = if (expanded) Icons.Default.Close else Icons.Default.Add,
+            contentDescription = if (expanded) "Close" else "Add",
+            iconModifier = Modifier.rotate(rotation),
+        )
     }
 }
 
@@ -740,12 +739,11 @@ private fun SpeedDialItem(
                     style = MaterialTheme.typography.labelMedium,
                 )
             }
-            SmallFloatingActionButton(
+            WormaCeptorSmallFAB(
                 onClick = onClick,
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ) {
-                Icon(icon, contentDescription = label)
-            }
+                icon = icon,
+                contentDescription = label,
+            )
         }
     }
 }

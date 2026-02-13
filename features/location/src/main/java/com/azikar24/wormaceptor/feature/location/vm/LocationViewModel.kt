@@ -84,9 +84,13 @@ class LocationViewModel(
     private val _isMockLocationAvailable = MutableStateFlow(engine.isMockLocationAvailable())
     val isMockLocationAvailable: StateFlow<Boolean> = _isMockLocationAvailable.asStateFlow()
 
-    // Current mock location state
-    val currentMockLocation: StateFlow<MockLocation?> = repository.getCurrentMockLocation()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    // Current mock location state - combine engine (active) with repo (persisted)
+    val currentMockLocation: StateFlow<MockLocation?> = combine(
+        repository.getCurrentMockLocation(),
+        engine.currentMockLocation,
+    ) { persisted, active ->
+        active ?: persisted
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     // Mock location enabled state
     val isMockEnabled: StateFlow<Boolean> = engine.isEnabled
@@ -166,11 +170,12 @@ class LocationViewModel(
             _isLoading.value = true
             _errorMessage.value = null
             try {
-                repository.setMockLocation(location)
-                if (engine.lastError.value == null) {
+                val success = engine.setLocation(location)
+                if (success) {
+                    repository.setMockLocation(location)
                     _successMessage.value = "Mock location set successfully"
                 } else {
-                    _errorMessage.value = engine.lastError.value
+                    _errorMessage.value = engine.lastError.value ?: "Failed to set mock location"
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to set mock location", e)
@@ -188,6 +193,7 @@ class LocationViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                engine.clearMockLocation()
                 repository.setMockLocation(null)
                 _successMessage.value = "Mock location cleared"
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {

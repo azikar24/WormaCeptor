@@ -108,6 +108,8 @@ fun HomeScreen(
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
     allTransactions: ImmutableList<TransactionSummary> = transactions,
+    // Loading state
+    isInitialLoading: Boolean = false,
     // Pull-to-refresh parameters
     isRefreshingTransactions: Boolean = false,
     isRefreshingCrashes: Boolean = false,
@@ -545,6 +547,7 @@ fun HomeScreen(
                     0 -> SelectableTransactionListScreen(
                         transactions = transactions,
                         onItemClick = onTransactionClick,
+                        isInitialLoading = isInitialLoading,
                         hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank(),
                         onClearFilters = {
                             onClearFilters()

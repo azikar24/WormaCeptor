@@ -2,22 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -&gt; Unit)</ID>
-    <ID>LongMethod:WebViewMonitorScreen.kt$@Composable fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
-    <ID>LongMethod:WebViewMonitorScreen.kt$@Composable private fun WebViewRequestItem(request: WebViewRequest, onClick: () -&gt; Unit)</ID>
-    <ID>LongMethod:WebViewMonitorScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable private fun WebViewMonitorListScreen( isEnabled: Boolean, requests: List&lt;WebViewRequest&gt;, totalCount: Int, stats: WebViewRequestStats, searchQuery: String, resourceTypeFilter: Set&lt;WebViewResourceType&gt;, showFilters: Boolean, onToggleEnabled: () -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onToggleResourceTypeFilter: (WebViewResourceType) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearRequests: () -&gt; Unit, onToggleFilters: () -&gt; Unit, onRequestClick: (WebViewRequest) -&gt; Unit, onNavigateBack: (() -&gt; Unit)?, )</ID>
     <ID>LongMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -&gt; Unit)</ID>
-    <ID>LongParameterList:WebViewMonitorScreen.kt$( isEnabled: Boolean, requests: List&lt;WebViewRequest&gt;, totalCount: Int, stats: WebViewRequestStats, searchQuery: String, resourceTypeFilter: Set&lt;WebViewResourceType&gt;, showFilters: Boolean, onToggleEnabled: () -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onToggleResourceTypeFilter: (WebViewResourceType) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearRequests: () -&gt; Unit, onToggleFilters: () -&gt; Unit, onRequestClick: (WebViewRequest) -&gt; Unit, onNavigateBack: (() -&gt; Unit)?, )</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF607D8B</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF757575</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF795548</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFFF44336</ID>
-    <ID>MagicNumber:WebViewMonitorScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:WebViewRequestDetailScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:WebViewRequestDetailScreen.kt$0xFFF44336</ID>
     <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearFilters()</ID>
     <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearRequests()</ID>
     <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearSelection()</ID>
@@ -35,6 +20,7 @@
     <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val stats: StateFlow&lt;WebViewRequestStats&gt; = engine.stats</ID>
     <ID>UnstableCollections:WebViewMonitorScreen.kt$List&lt;WebViewRequest&gt;</ID>
     <ID>UnstableCollections:WebViewMonitorScreen.kt$Set&lt;WebViewResourceType&gt;</ID>
+    <ID>UnstableCollections:WebViewRequestDetailScreen.kt$Map&lt;String, String&gt;</ID>
     <ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

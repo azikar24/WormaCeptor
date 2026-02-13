@@ -61,7 +61,12 @@ import kotlinx.collections.immutable.toImmutableList
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongMethod", "CyclomaticComplexMethod", "ModifierMissing")
 @Composable
-fun PreferenceEditSheet(item: PreferenceItem?, onDismiss: () -> Unit, onSave: (String, PreferenceValue) -> Unit) {
+fun PreferenceEditSheet(
+    item: PreferenceItem?,
+    onDismiss: () -> Unit,
+    onSave: (String, PreferenceValue) -> Unit,
+    onDelete: ((String) -> Unit)? = null,
+) {
     val isCreating = item == null
     val focusRequester = remember { FocusRequester() }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -185,8 +190,19 @@ fun PreferenceEditSheet(item: PreferenceItem?, onDismiss: () -> Unit, onSave: (S
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
+                if (!isCreating && onDelete != null) {
+                    TextButton(
+                        onClick = { onDelete(key) },
+                    ) {
+                        Text(
+                            stringResource(R.string.preferences_dialog_delete_confirm),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.weight(1f))
                 TextButton(onClick = onDismiss) {
                     Text(stringResource(R.string.preferences_dialog_cancel))
                 }

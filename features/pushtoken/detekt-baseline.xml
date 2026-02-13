@@ -2,7 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>LongMethod:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager(engine: PushTokenEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
     <ID>MagicNumber:PushTokenFeature.kt$20</ID>
     <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.material.icons.filled.*</ID>
@@ -11,8 +11,7 @@
     <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenFeature</ID>
     <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenViewModel : ViewModel</ID>
     <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenViewModelFactory : Factory</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenFeature$fun createEngine(context: Context)</ID>
+    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager(engine: PushTokenEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
     <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenFeature$fun createViewModelFactory(engine: PushTokenEngine)</ID>
     <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun clearError()</ID>
     <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun clearHistory()</ID>

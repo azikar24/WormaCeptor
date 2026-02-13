@@ -24,12 +24,11 @@ public final class com/azikar24/wormaceptor/feature/pushtoken/ComposableSingleto
 public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushtoken/PushTokenFeature;
-	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/PushTokenEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/PushTokenEngine;)Lcom/azikar24/wormaceptor/feature/pushtoken/PushTokenViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenFeatureKt {
-	public static final fun PushTokenManager (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PushTokenManager (Lcom/azikar24/wormaceptor/core/engine/PushTokenEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenViewModel : androidx/lifecycle/ViewModel {

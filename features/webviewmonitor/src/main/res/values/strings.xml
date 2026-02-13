@@ -6,6 +6,7 @@
 
     <!-- Navigation -->
     <string name="webviewmonitor_action_back">Back</string>
+    <string name="webviewmonitor_action_search">Search</string>
     <string name="webviewmonitor_action_filters">Filters</string>
     <string name="webviewmonitor_action_clear">Clear</string>
     <string name="webviewmonitor_action_clear_filters">Clear</string>
@@ -36,6 +37,7 @@
     <!-- Empty state -->
     <string name="webviewmonitor_empty_state_enabled">No requests captured yet</string>
     <string name="webviewmonitor_empty_state_disabled">Enable monitoring to capture requests</string>
+    <string name="webviewmonitor_empty_subtitle">WebView requests will appear here</string>
 
     <!-- Detail screen sections -->
     <string name="webviewmonitor_detail_url">URL</string>

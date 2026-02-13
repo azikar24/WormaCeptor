@@ -23,9 +23,7 @@
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$3</ID>
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$5000</ID>
     <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$8</ID>
-    <ID>SwallowedException:PushSimulatorDataSource.kt$PushSimulatorDataSource$e: Exception</ID>
     <ID>SwallowedException:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: NotificationPermissionException</ID>
-    <ID>TooGenericExceptionCaught:PushSimulatorDataSource.kt$PushSimulatorDataSource$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: Exception</ID>
     <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$Error : PushSimulatorEvent</ID>
     <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$NotificationSent : PushSimulatorEvent</ID>

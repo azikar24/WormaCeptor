@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>ComposableParamOrder:WormaCeptorFAB.kt$WormaCeptorFAB</ID>
     <ID>ComposableParamOrder:WormaCeptorStatItem.kt$WormaCeptorStatItem</ID>
     <ID>CompositionLocalAllowlist:SyntaxColors.kt$LocalSyntaxColors</ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Disabled, inactive, neutral states </ID>
@@ -100,7 +101,6 @@
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Title - Component headers </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$* Typography - Text styles for consistent hierarchy</ID>
     <ID>Filename:HapticHelpers.kt$com.azikar24.wormaceptor.core.ui.components.HapticHelpers.kt</ID>
-    <ID>LongMethod:WormaCeptorSearchBar.kt$@Composable fun WormaCeptorSearchBar( query: String, onQueryChange: (String) -&gt; Unit, modifier: Modifier = Modifier, style: SearchBarStyle = SearchBarStyle.Filled, placeholder: String = "Search...", onSearch: (() -&gt; Unit)? = null, enabled: Boolean = true, )</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
@@ -274,7 +274,6 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
-    <ID>MatchingDeclarationName:WormaCeptorSearchBar.kt$SearchBarStyle</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$Success : ClipboardResult</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$TooLarge : ClipboardResult</ID>
@@ -285,7 +284,6 @@
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$ContentType</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$HttpMethod</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Surfaces</ID>
-    <ID>UndocumentedPublicClass:WormaCeptorSearchBar.kt$SearchBarStyle</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun resetHaptic()</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun triggerHaptic()</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component1(): Boolean</ID>
@@ -293,7 +291,9 @@
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component3(): () -&gt; Unit</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Cpu$fun forCore(index: Int): Color</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Database$fun forDataType(type: String): Color</ID>
-    <ID>UndocumentedPublicFunction:WormaCeptorSearchBar.kt$@Composable fun WormaCeptorSearchBar( query: String, onQueryChange: (String) -&gt; Unit, modifier: Modifier = Modifier, style: SearchBarStyle = SearchBarStyle.Filled, placeholder: String = "Search...", onSearch: (() -&gt; Unit)? = null, enabled: Boolean = true, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorExtendedFAB( onClick: () -&gt; Unit, text: @Composable () -&gt; Unit, modifier: Modifier = Modifier, icon: (@Composable () -&gt; Unit)? = null, containerColor: Color = MaterialTheme.colorScheme.primaryContainer, contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorFAB( onClick: () -&gt; Unit, modifier: Modifier = Modifier, contentDescription: String? = null, icon: ImageVector = Icons.Default.Add, iconModifier: Modifier = Modifier, containerColor: Color = MaterialTheme.colorScheme.primary, contentColor: Color = MaterialTheme.colorScheme.onPrimary, shape: Shape = WormaCeptorDesignSystem.Shapes.fab, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorSmallFAB( onClick: () -&gt; Unit, modifier: Modifier = Modifier, contentDescription: String? = null, icon: ImageVector = Icons.Default.Add, containerColor: Color = MaterialTheme.colorScheme.secondaryContainer, contentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer, )</ID>
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.Success$val message: String</ID>
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.TooLarge$val message: String</ID>
     <ID>UndocumentedPublicProperty:HapticHelpers.kt$HapticOnceState$val isTriggered: Boolean get() = hasTriggered()</ID>

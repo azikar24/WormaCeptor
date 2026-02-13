@@ -6,6 +6,7 @@
     <string name="loadedlibraries_empty">No libraries found</string>
     <string name="loadedlibraries_back">Back</string>
     <string name="loadedlibraries_refresh">Refresh</string>
+    <string name="loadedlibraries_search">Search</string>
     <string name="loadedlibraries_search_placeholder">Search libraries…</string>
     <string name="loadedlibraries_summary_native">Native</string>
     <string name="loadedlibraries_summary_dex">DEX</string>

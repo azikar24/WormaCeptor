@@ -27,3 +27,4 @@ keystore.properties
 # Release builds
 app/release/
 
+/.stfolder/syncthing-folder-0fa0bc.txt

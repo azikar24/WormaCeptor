@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.securestorage
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,14 +21,6 @@ import com.azikar24.wormaceptor.feature.securestorage.vm.SecureStorageViewModel
  * information about secure storage.
  */
 object SecureStorageFeature {
-
-    /**
-     * Creates a SecureStorageEngine instance.
-     * Use this in your dependency injection setup or as a singleton.
-     */
-    fun createEngine(context: Context): SecureStorageEngine {
-        return SecureStorageEngine(context.applicationContext)
-    }
 
     /**
      * Creates a SecureStorageViewModel factory for use with viewModel().
@@ -58,13 +49,16 @@ class SecureStorageViewModelFactory(
  * Main composable for the Secure Storage Viewer feature.
  * Displays secure storage entries with filtering and search capabilities.
  *
- * @param context Android context for accessing storage
+ * @param engine SecureStorageEngine instance from Koin
  * @param modifier Modifier for the root layout
  * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun SecureStorageViewer(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { SecureStorageFeature.createEngine(context) }
+fun SecureStorageViewer(
+    engine: SecureStorageEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember { SecureStorageFeature.createViewModelFactory(engine) }
     val viewModel: SecureStorageViewModel = viewModel(factory = factory)
 

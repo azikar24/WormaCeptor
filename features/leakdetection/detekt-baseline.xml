@@ -6,7 +6,6 @@
     <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakDetailContent( leak: LeakInfo, colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LeakDetectionScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LeakDetectionScreen( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:LeakDetectionScreen.kt$( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:LeakDetectionScreen.kt$1000</ID>
     <ID>MagicNumber:LeakDetectionViewModel.kt$LeakDetectionViewModel$5000</ID>
     <ID>MaxLineLength:LeakDetectionScreen.kt$if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks</ID>
     <ID>MaximumLineLength:LeakDetectionScreen.kt$ </ID>
@@ -38,7 +37,6 @@
     <ID>UndocumentedPublicProperty:LeakDetectionViewModel.kt$LeakDetectionViewModel$val selectedSeverity: StateFlow&lt;LeakSeverity?&gt; = _selectedSeverity.asStateFlow()</ID>
     <ID>UnstableCollections:LeakDetectionScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
     <ID>UnusedParameter:LeakDetectionColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
-    <ID>UnusedParameter:LeakDetectionScreen.kt$colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors</ID>
     <ID>ViewModelInjection:LeakDetectionFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

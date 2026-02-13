@@ -38,7 +38,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.androidx.datastore.preferences)
 
     // Google Play Services Location for getting real location
     implementation("com.google.android.gms:play-services-location:21.2.0")

@@ -201,8 +201,9 @@ fun PreferenceDetailScreen(
                     onQueryChange = onSearchQueryChanged,
                     placeholder = stringResource(R.string.preferences_search_keys_values_placeholder),
                     modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        start = WormaCeptorDesignSystem.Spacing.md,
+                        end = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorDesignSystem.Spacing.sm,
                     ),
                 )
             }
@@ -260,8 +261,10 @@ fun PreferenceDetailScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        start = WormaCeptorDesignSystem.Spacing.md,
+                        end = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorDesignSystem.Spacing.sm,
+                        bottom = WormaCeptorDesignSystem.Spacing.xs,
                     ),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {

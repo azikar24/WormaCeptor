@@ -18,13 +18,27 @@
     <ID>UndocumentedPublicClass:InMemoryBlobStorage.kt$InMemoryBlobStorage : BlobStorage</ID>
     <ID>UndocumentedPublicClass:InMemoryCrashRepository.kt$InMemoryCrashRepository : CrashRepository</ID>
     <ID>UndocumentedPublicClass:InMemoryLeakRepository.kt$InMemoryLeakRepository : LeakRepository</ID>
+    <ID>UndocumentedPublicClass:InMemoryLocationSimulatorRepository.kt$InMemoryLocationSimulatorRepository : LocationSimulatorRepository</ID>
+    <ID>UndocumentedPublicClass:InMemoryPushSimulatorRepository.kt$InMemoryPushSimulatorRepository : PushSimulatorRepository</ID>
     <ID>UndocumentedPublicClass:InMemoryTransactionRepository.kt$InMemoryTransactionRepository : TransactionRepository</ID>
+    <ID>UndocumentedPublicClass:InMemoryWebViewMonitorRepository.kt$InMemoryWebViewMonitorRepository : WebViewMonitorRepository</ID>
     <ID>UndocumentedPublicClass:LeakDao.kt$LeakDao</ID>
     <ID>UndocumentedPublicClass:LeakEntity.kt$LeakEntity</ID>
+    <ID>UndocumentedPublicClass:LocationPresetDao.kt$LocationPresetDao</ID>
+    <ID>UndocumentedPublicClass:LocationPresetEntity.kt$LocationPresetEntity</ID>
+    <ID>UndocumentedPublicClass:MockLocationDao.kt$MockLocationDao</ID>
+    <ID>UndocumentedPublicClass:MockLocationEntity.kt$MockLocationEntity</ID>
+    <ID>UndocumentedPublicClass:PushTemplateDao.kt$PushTemplateDao</ID>
+    <ID>UndocumentedPublicClass:PushTemplateEntity.kt$PushTemplateEntity</ID>
     <ID>UndocumentedPublicClass:RoomCrashRepository.kt$RoomCrashRepository : CrashRepository</ID>
     <ID>UndocumentedPublicClass:RoomLeakRepository.kt$RoomLeakRepository : LeakRepository</ID>
+    <ID>UndocumentedPublicClass:RoomLocationSimulatorRepository.kt$RoomLocationSimulatorRepository : LocationSimulatorRepository</ID>
+    <ID>UndocumentedPublicClass:RoomPushSimulatorRepository.kt$RoomPushSimulatorRepository : PushSimulatorRepository</ID>
     <ID>UndocumentedPublicClass:RoomTransactionRepository.kt$RoomTransactionRepository : TransactionRepository</ID>
+    <ID>UndocumentedPublicClass:RoomWebViewMonitorRepository.kt$RoomWebViewMonitorRepository : WebViewMonitorRepository</ID>
     <ID>UndocumentedPublicClass:TransactionDao.kt$TransactionDao</ID>
+    <ID>UndocumentedPublicClass:WebViewRequestDao.kt$WebViewRequestDao</ID>
+    <ID>UndocumentedPublicClass:WebViewRequestEntity.kt$WebViewRequestEntity</ID>
     <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun dateToTimestamp(date: Date?): Long?</ID>
     <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromExtensions(ext: Map&lt;String, String&gt;?): String?</ID>
     <ID>UndocumentedPublicFunction:Converters.kt$Converters$@TypeConverter fun fromHeaders(headers: Map&lt;String, List&lt;String&gt;&gt;?): String?</ID>
@@ -48,6 +62,24 @@
     <ID>UndocumentedPublicFunction:LeakDao.kt$LeakDao$@Query("SELECT COUNT(*) FROM leaks") suspend fun getCount(): Int</ID>
     <ID>UndocumentedPublicFunction:LeakEntity.kt$LeakEntity$fun toDomain()</ID>
     <ID>UndocumentedPublicFunction:LeakEntity.kt$LeakEntity.Companion$fun fromDomain(leak: LeakInfo)</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetDao.kt$LocationPresetDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(preset: LocationPresetEntity)</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetDao.kt$LocationPresetDao$@Query("DELETE FROM location_presets WHERE id = :id AND isBuiltIn = 0") suspend fun deleteById(id: String)</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetDao.kt$LocationPresetDao$@Query("DELETE FROM location_presets WHERE isBuiltIn = 0") suspend fun deleteAllUserPresets()</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetDao.kt$LocationPresetDao$@Query("SELECT * FROM location_presets ORDER BY isBuiltIn DESC, name ASC") fun observeAll(): Flow&lt;List&lt;LocationPresetEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetEntity.kt$LocationPresetEntity$fun toDomain()</ID>
+    <ID>UndocumentedPublicFunction:LocationPresetEntity.kt$LocationPresetEntity.Companion$fun fromDomain(preset: LocationPreset)</ID>
+    <ID>UndocumentedPublicFunction:MockLocationDao.kt$MockLocationDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(entity: MockLocationEntity)</ID>
+    <ID>UndocumentedPublicFunction:MockLocationDao.kt$MockLocationDao$@Query("DELETE FROM mock_location") suspend fun clear()</ID>
+    <ID>UndocumentedPublicFunction:MockLocationDao.kt$MockLocationDao$@Query("SELECT * FROM mock_location WHERE id = 1") fun observe(): Flow&lt;MockLocationEntity?&gt;</ID>
+    <ID>UndocumentedPublicFunction:MockLocationEntity.kt$MockLocationEntity$fun toDomain()</ID>
+    <ID>UndocumentedPublicFunction:MockLocationEntity.kt$MockLocationEntity.Companion$fun fromDomain(location: MockLocation)</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateDao.kt$PushTemplateDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(template: PushTemplateEntity)</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateDao.kt$PushTemplateDao$@Query("DELETE FROM push_templates WHERE id = :id") suspend fun deleteById(id: String)</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateDao.kt$PushTemplateDao$@Query("DELETE FROM push_templates") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateDao.kt$PushTemplateDao$@Query("SELECT * FROM push_templates ORDER BY timestamp DESC") fun observeAll(): Flow&lt;List&lt;PushTemplateEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateDao.kt$PushTemplateDao$@Query("SELECT COUNT(*) FROM push_templates") suspend fun count(): Int</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateEntity.kt$PushTemplateEntity$fun toDomain(): NotificationTemplate</ID>
+    <ID>UndocumentedPublicFunction:PushTemplateEntity.kt$PushTemplateEntity.Companion$fun fromDomain(template: NotificationTemplate): PushTemplateEntity</ID>
     <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(transaction: TransactionEntity)</ID>
     <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query( """ SELECT * FROM transactions WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%') AND (:statusMin IS NULL OR resCode &gt;= :statusMin) AND (:statusMax IS NULL OR resCode &lt;= :statusMax) AND (:method IS NULL OR reqMethod = :method) ORDER BY timestamp DESC LIMIT :limit OFFSET :offset """, ) suspend fun getTransactionsPaged( offset: Int, limit: Int, searchQuery: String?, statusMin: Int?, statusMax: Int?, method: String?, ): List&lt;TransactionEntity&gt;</ID>
     <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query( """ SELECT COUNT(*) FROM transactions WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%') """, ) suspend fun getTransactionCount(searchQuery: String?): Int</ID>
@@ -61,9 +93,20 @@
     <ID>UndocumentedPublicFunction:TransactionDao.kt$TransactionDao$@Query("SELECT * FROM transactions WHERE id = :id") suspend fun getById(id: UUID): TransactionEntity?</ID>
     <ID>UndocumentedPublicFunction:TransactionEntity.kt$TransactionEntity$fun toDomain(): NetworkTransaction</ID>
     <ID>UndocumentedPublicFunction:TransactionEntity.kt$TransactionEntity.Companion$fun fromDomain(domain: NetworkTransaction): TransactionEntity</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestDao.kt$WebViewRequestDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertOrUpdate(request: WebViewRequestEntity)</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestDao.kt$WebViewRequestDao$@Query( "DELETE FROM webview_requests WHERE id NOT IN " + "(SELECT id FROM webview_requests ORDER BY timestamp DESC LIMIT :keepCount)", ) suspend fun deleteOldest(keepCount: Int)</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestDao.kt$WebViewRequestDao$@Query("DELETE FROM webview_requests WHERE webViewId = :webViewId") suspend fun deleteByWebViewId(webViewId: String)</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestDao.kt$WebViewRequestDao$@Query("DELETE FROM webview_requests") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestDao.kt$WebViewRequestDao$@Query("SELECT * FROM webview_requests ORDER BY timestamp DESC") fun observeAll(): Flow&lt;List&lt;WebViewRequestEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestEntity.kt$WebViewRequestEntity$fun toDomain(): WebViewRequest</ID>
+    <ID>UndocumentedPublicFunction:WebViewRequestEntity.kt$WebViewRequestEntity.Companion$fun fromDomain(request: WebViewRequest): WebViewRequestEntity</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun crashDao(): CrashDao</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun leakDao(): LeakDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun locationPresetDao(): LocationPresetDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun mockLocationDao(): MockLocationDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun pushTemplateDao(): PushTemplateDao</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun transactionDao(): TransactionDao</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDatabase.kt$WormaCeptorDatabase$abstract fun webViewRequestDao(): WebViewRequestDao</ID>
     <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$@PrimaryKey(autoGenerate = true) val id: Long = 0</ID>
     <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val exceptionType: String</ID>
     <ID>UndocumentedPublicProperty:CrashEntity.kt$CrashEntity$val message: String?</ID>
@@ -76,6 +119,39 @@
     <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val retainedSize: Long</ID>
     <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val severity: String</ID>
     <ID>UndocumentedPublicProperty:LeakEntity.kt$LeakEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$@PrimaryKey val id: String</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val accuracy: Float = 1.0f</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val altitude: Double = 0.0</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val bearing: Float = 0f</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val isBuiltIn: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val latitude: Double</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val locationName: String? = null</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val longitude: Double</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val name: String</ID>
+    <ID>UndocumentedPublicProperty:LocationPresetEntity.kt$LocationPresetEntity$val speed: Float = 0f</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$@PrimaryKey val id: Int = 1</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val accuracy: Float = 1.0f</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val altitude: Double = 0.0</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val bearing: Float = 0f</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val latitude: Double</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val longitude: Double</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val name: String? = null</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val speed: Float = 0f</ID>
+    <ID>UndocumentedPublicProperty:MockLocationEntity.kt$MockLocationEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$@PrimaryKey val id: String</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val actionsJson: String = "[]"</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val body: String</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val channelId: String</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val extrasJson: String = "{}"</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val largeIconUri: String? = null</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val name: String</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val notificationId: String</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val priority: String = "DEFAULT"</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val smallIconRes: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val timestamp: Long = 0L</ID>
+    <ID>UndocumentedPublicProperty:PushTemplateEntity.kt$PushTemplateEntity$val title: String</ID>
+    <ID>UndocumentedPublicProperty:RoomLocationSimulatorRepository.kt$RoomLocationSimulatorRepository.Companion$val builtInPresets: List&lt;LocationPreset&gt; = listOf( LocationPreset( id = "builtin_new_york", name = "New York", location = MockLocation.from(40.7128, -74.0060, "New York"), isBuiltIn = true, ), LocationPreset( id = "builtin_london", name = "London", location = MockLocation.from(51.5074, -0.1278, "London"), isBuiltIn = true, ), LocationPreset( id = "builtin_tokyo", name = "Tokyo", location = MockLocation.from(35.6762, 139.6503, "Tokyo"), isBuiltIn = true, ), LocationPreset( id = "builtin_sydney", name = "Sydney", location = MockLocation.from(-33.8688, 151.2093, "Sydney"), isBuiltIn = true, ), LocationPreset( id = "builtin_paris", name = "Paris", location = MockLocation.from(48.8566, 2.3522, "Paris"), isBuiltIn = true, ), )</ID>
+    <ID>UndocumentedPublicProperty:RoomPushSimulatorRepository.kt$RoomPushSimulatorRepository.Companion$val presetTemplates: List&lt;NotificationTemplate&gt; = listOf( NotificationTemplate( id = "preset_simple_alert", name = "Simple Alert", notification = SimulatedNotification( id = "simple_alert", title = "Alert", body = "This is a test notification", channelId = "wormaceptor_test_channel", priority = NotificationPriority.DEFAULT, ), ), NotificationTemplate( id = "preset_message", name = "Message Style", notification = SimulatedNotification( id = "message_style", title = "New Message", body = "You have a new message from John", channelId = "wormaceptor_test_channel", priority = NotificationPriority.HIGH, ), ), NotificationTemplate( id = "preset_actions", name = "Action Buttons", notification = SimulatedNotification( id = "action_buttons", title = "Download Complete", body = "Your file is ready", channelId = "wormaceptor_test_channel", priority = NotificationPriority.DEFAULT, actions = listOf( NotificationAction(title = "Open", actionId = "action_open"), NotificationAction(title = "Share", actionId = "action_share"), ), ), ), )</ID>
     <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$@PrimaryKey val id: UUID</ID>
     <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val durationMs: Long?</ID>
     <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val extensions: Map&lt;String, String&gt;</ID>
@@ -95,6 +171,23 @@
     <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val status: TransactionStatus</ID>
     <ID>UndocumentedPublicProperty:TransactionEntity.kt$TransactionEntity$val timestamp: Long</ID>
     <ID>UndocumentedPublicProperty:TransactionPagingSource.kt$TransactionPagingSource.Companion$const val PAGE_SIZE = 30</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$@PrimaryKey val id: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val contentLength: Long?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val duration: Long?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val encoding: String?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val errorMessage: String?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val hasGesture: Boolean</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val headersJson: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val isForMainFrame: Boolean</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val isRedirect: Boolean</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val method: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val mimeType: String?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val resourceType: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val responseHeadersJson: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val statusCode: Int?</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val timestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val url: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewRequestEntity.kt$WebViewRequestEntity$val webViewId: String</ID>
     <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository$(response?.bodySize ?: 0)</ID>
     <ID>UnnecessaryParentheses:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$(tx.response?.code?.let { it in statusRange } ?: false)</ID>
   </CurrentIssues>

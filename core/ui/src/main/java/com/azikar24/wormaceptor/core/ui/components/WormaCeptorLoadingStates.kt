@@ -39,7 +39,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -456,20 +455,17 @@ fun ScrollToTopFab(visible: Boolean, onClick: () -> Unit, modifier: Modifier = M
             ),
         ) + fadeOut(),
     ) {
-        FloatingActionButton(
+        WormaCeptorFAB(
             onClick = onClick,
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             shape = CircleShape,
             modifier = Modifier.size(48.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowUp,
-                contentDescription = "Scroll to top",
-                modifier = Modifier
-                    .size(24.dp)
-                    .rotate(rotation),
-            )
-        }
+            icon = Icons.Default.KeyboardArrowUp,
+            contentDescription = "Scroll to top",
+            iconModifier = Modifier
+                .size(24.dp)
+                .rotate(rotation),
+        )
     }
 }

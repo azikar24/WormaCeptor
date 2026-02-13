@@ -1,12 +1,19 @@
 package com.azikar24.wormaceptor.core.engine.di
 
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
+import com.azikar24.wormaceptor.core.engine.CryptoEngine
+import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
+import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
+import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
+import com.azikar24.wormaceptor.core.engine.PushTokenEngine
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
+import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
@@ -45,4 +52,13 @@ val engineModule = module {
     // Network engines
     single { RateLimitEngine() }
     single { WebViewMonitorEngine() }
+
+    // Tool engines (previously created by Feature objects)
+    single { CryptoEngine() }
+    single { SecureStorageEngine(androidContext()) }
+    single { LoadedLibrariesEngine(androidContext()) }
+    single { DependenciesInspectorEngine(androidContext()) }
+    single { PushTokenEngine(androidContext()) }
+    single { LocationSimulatorEngine(androidContext()) }
+    single { PushSimulatorEngine(androidContext()) }
 }

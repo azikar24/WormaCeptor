@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Search
@@ -114,7 +115,11 @@ fun PreferencesListScreen(
                     query = searchQuery,
                     onQueryChange = onSearchQueryChanged,
                     placeholder = stringResource(R.string.preferences_search_placeholder),
-                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                    modifier = Modifier.padding(
+                        start = WormaCeptorDesignSystem.Spacing.md,
+                        end = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorDesignSystem.Spacing.sm,
+                    ),
                 )
             }
 
@@ -137,8 +142,10 @@ fun PreferencesListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs,
+                        start = WormaCeptorDesignSystem.Spacing.md,
+                        end = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorDesignSystem.Spacing.sm,
+                        bottom = WormaCeptorDesignSystem.Spacing.xs,
                     ),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 ) {
@@ -167,27 +174,7 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
             modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
             verticalAlignment = Alignment.Top,
         ) {
-            // File icon
-            Surface(
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                modifier = Modifier
-                    .padding(top = WormaCeptorDesignSystem.Spacing.xxs)
-                    .size(WormaCeptorDesignSystem.TouchTarget.minimum),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Folder,
-                        contentDescription = stringResource(R.string.preferences_list_title),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            }
-
+            PreferenceFileIcon()
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
@@ -210,11 +197,40 @@ private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifi
                 )
             }
 
-            // Chevron indicator
-            Text(
-                text = ">",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(WormaCeptorDesignSystem.IconSize.sm),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PreferenceFileIcon() {
+    Surface(
+        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        modifier = Modifier
+            .padding(top = WormaCeptorDesignSystem.Spacing.xxs)
+            .size(WormaCeptorDesignSystem.TouchTarget.minimum),
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Folder,
+                contentDescription = stringResource(R.string.preferences_list_title),
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                tint = MaterialTheme.colorScheme.primary,
             )
         }
     }

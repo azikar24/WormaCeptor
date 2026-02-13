@@ -247,7 +247,17 @@ class PushSimulatorViewModel(
 
     private fun loadChannels() {
         viewModelScope.launch {
-            val channelList = repository.getNotificationChannels()
+            engine.createDefaultChannel()
+            val channelList = engine.getNotificationChannels().ifEmpty {
+                listOf(
+                    NotificationChannelInfo(
+                        id = PushSimulatorEngine.DEFAULT_CHANNEL_ID,
+                        name = PushSimulatorEngine.DEFAULT_CHANNEL_NAME,
+                        description = PushSimulatorEngine.DEFAULT_CHANNEL_DESCRIPTION,
+                        importance = android.app.NotificationManager.IMPORTANCE_DEFAULT,
+                    ),
+                )
+            }
             _channels.value = channelList
 
             // Set default channel if none selected

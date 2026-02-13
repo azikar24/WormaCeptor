@@ -7,20 +7,14 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.DataUsage
@@ -38,24 +32,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDistributionBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatDurationAvg
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
-import kotlin.math.roundToInt
 
 @Composable
 fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modifier = Modifier) {
@@ -194,13 +188,13 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
                     // Response Time Distribution
-                    SectionHeader(
-                        icon = Icons.Outlined.Speed,
+                    WormaCeptorSectionHeader(
                         title = stringResource(R.string.viewer_metrics_response_time_distribution),
+                        icon = Icons.Outlined.Speed,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
-                    DistributionBar(
+                    WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_fast),
                         count = fastCount,
                         total = totalRequests,
@@ -208,7 +202,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
-                    DistributionBar(
+                    WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_medium),
                         count = mediumCount,
                         total = totalRequests,
@@ -216,7 +210,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
-                    DistributionBar(
+                    WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_slow),
                         count = slowCount,
                         total = totalRequests,
@@ -226,14 +220,14 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
                     // Status Code Breakdown
-                    SectionHeader(
-                        icon = Icons.Outlined.DataUsage,
+                    WormaCeptorSectionHeader(
                         title = stringResource(R.string.viewer_metrics_status_code_breakdown),
+                        icon = Icons.Outlined.DataUsage,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
                     if (status2xx > 0) {
-                        StatusCodeBar(
+                        WormaCeptorDistributionBar(
                             label = stringResource(R.string.viewer_metrics_status_2xx_success),
                             count = status2xx,
                             total = totalRequests,
@@ -243,7 +237,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     }
 
                     if (status3xx > 0) {
-                        StatusCodeBar(
+                        WormaCeptorDistributionBar(
                             label = stringResource(R.string.viewer_metrics_status_3xx_redirect),
                             count = status3xx,
                             total = totalRequests,
@@ -253,7 +247,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     }
 
                     if (status4xx > 0) {
-                        StatusCodeBar(
+                        WormaCeptorDistributionBar(
                             label = stringResource(R.string.viewer_metrics_status_4xx_client_error),
                             count = status4xx,
                             total = totalRequests,
@@ -263,7 +257,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     }
 
                     if (status5xx > 0) {
-                        StatusCodeBar(
+                        WormaCeptorDistributionBar(
                             label = stringResource(R.string.viewer_metrics_status_5xx_server_error),
                             count = status5xx,
                             total = totalRequests,
@@ -295,15 +289,11 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(6.dp)
-                                            .clip(CircleShape)
-                                            .background(
-                                                MaterialTheme.colorScheme.primary.copy(
-                                                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
-                                                ),
-                                            ),
+                                    WormaCeptorStatusDot(
+                                        color = MaterialTheme.colorScheme.primary.copy(
+                                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                        ),
+                                        size = 6.dp,
                                     )
                                     Text(
                                         text = method,
@@ -322,146 +312,6 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun SectionHeader(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.semantics { heading() },
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = title,
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
-
-@Composable
-private fun DistributionBar(label: String, count: Int, total: Int, color: Color) {
-    val percentage = if (total > 0) (count.toFloat() / total.toFloat()) * 100f else 0f
-    val animatedPercentage by animateFloatAsState(
-        targetValue = percentage,
-        animationSpec = tween(durationMillis = 600),
-        label = "bar_animation",
-    )
-
-    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(color),
-                )
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-            Text(
-                text = "$count (${animatedPercentage.roundToInt()}%)",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                ),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(animatedPercentage / 100f)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                    .background(color),
-            )
-        }
-    }
-}
-
-@Composable
-private fun StatusCodeBar(label: String, count: Int, total: Int, color: Color) {
-    val percentage = if (total > 0) (count.toFloat() / total.toFloat()) * 100f else 0f
-    val animatedPercentage by animateFloatAsState(
-        targetValue = percentage,
-        animationSpec = tween(durationMillis = 600),
-        label = "status_bar_animation",
-    )
-
-    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(color),
-                )
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-            Text(
-                text = "$count (${animatedPercentage.roundToInt()}%)",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                ),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(animatedPercentage / 100f)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
-                    .background(color),
-            )
         }
     }
 }

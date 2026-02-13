@@ -1,40 +1,17 @@
 public final class com/azikar24/wormaceptor/feature/location/LocationFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/LocationFeature;
-	public final fun createEngine (Landroid/content/Context;)Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;
-	public final fun createRepository (Landroid/content/Context;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;)Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Landroid/content/Context;)Lcom/azikar24/wormaceptor/feature/location/LocationViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/LocationFeatureKt {
-	public static final fun LocationSimulator (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LocationSimulator (Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/location/LocationViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Landroid/content/Context;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
-}
-
-public final class com/azikar24/wormaceptor/feature/location/data/LocationDataSource {
-	public static final field $stable I
-	public fun <init> (Landroid/content/Context;)V
-	public final fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun getBuiltInPresets ()Ljava/util/List;
-	public final fun observeCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
-	public final fun observePresets ()Lkotlinx/coroutines/flow/Flow;
-	public final fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun setCurrentMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/azikar24/wormaceptor/feature/location/data/LocationRepositoryImpl : com/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository {
-	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/feature/location/data/LocationDataSource;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;)V
-	public fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
-	public fun getPresets ()Lkotlinx/coroutines/flow/Flow;
-	public fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationInputSectionKt {

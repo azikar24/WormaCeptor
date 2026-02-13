@@ -13,15 +13,20 @@ import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
+import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
+import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
+import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
+import com.azikar24.wormaceptor.domain.contracts.WebViewMonitorRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
 import java.io.InputStream
 import java.util.UUID
@@ -42,6 +47,9 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         val crashRepository: CrashRepository,
         val blobStorage: BlobStorage,
         val leakRepository: LeakRepository,
+        val locationSimulatorRepository: LocationSimulatorRepository,
+        val pushSimulatorRepository: PushSimulatorRepository,
+        val webViewMonitorRepository: WebViewMonitorRepository,
     )
 
     protected abstract fun createDependencies(context: Context): StorageDependencies
@@ -74,11 +82,25 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
         notificationHelper = WormaCeptorNotificationHelper(context, getNotificationTitle())
 
+        // Register storage repositories in Koin for feature access
+        val koin = WormaCeptorKoin.getKoin()
+        koin.loadModules(
+            listOf(
+                module {
+                    single<LocationSimulatorRepository> { deps.locationSimulatorRepository }
+                    single<PushSimulatorRepository> { deps.pushSimulatorRepository }
+                },
+            ),
+        )
+
         // Configure leak detection engine with persistence and notifications
         configureLeakDetection(context, deps.leakRepository, leakNotifications)
 
         // Configure thread violation engine with notifications
         configureThreadViolation(context)
+
+        // Configure WebView monitor engine with persistence
+        configureWebViewMonitor(deps.webViewMonitorRepository)
     }
 
     private fun configureLeakDetection(context: Context, leakRepository: LeakRepository, leakNotifications: Boolean) {
@@ -98,6 +120,15 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
             )
         } catch (e: RuntimeException) {
             Log.d(TAG, "LeakDetectionEngine not available in Koin", e)
+        }
+    }
+
+    private fun configureWebViewMonitor(webViewMonitorRepository: WebViewMonitorRepository) {
+        try {
+            val webViewMonitorEngine: WebViewMonitorEngine = get(WebViewMonitorEngine::class.java)
+            webViewMonitorEngine.configure(repository = webViewMonitorRepository)
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "WebViewMonitorEngine not available in Koin", e)
         }
     }
 

@@ -6,8 +6,6 @@
     <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -&gt; Unit)</ID>
     <ID>LongMethod:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
     <ID>LongMethod:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$@SuppressLint("MissingPermission") private fun getNetworkDetails(): NetworkDetails</ID>
-    <ID>MagicNumber:DeviceInfoScreen.kt$0.4f</ID>
-    <ID>MagicNumber:DeviceInfoScreen.kt$0.6f</ID>
     <ID>MagicNumber:DeviceInfoScreen.kt$100f</ID>
     <ID>MagicNumber:DeviceInfoScreen.kt$200</ID>
     <ID>MagicNumber:DeviceInfoScreen.kt$50</ID>

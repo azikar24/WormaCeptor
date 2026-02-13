@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.dependenciesinspector
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,13 +19,6 @@ import com.azikar24.wormaceptor.feature.dependenciesinspector.vm.DependenciesIns
  * and displays their versions when available.
  */
 object DependenciesInspectorFeature {
-
-    /**
-     * Creates a DependenciesInspectorEngine instance.
-     */
-    fun createEngine(context: Context): DependenciesInspectorEngine {
-        return DependenciesInspectorEngine(context.applicationContext)
-    }
 
     /**
      * Creates a DependenciesInspectorViewModel factory.
@@ -55,8 +47,11 @@ class DependenciesInspectorViewModelFactory(
  * Main composable for the Dependencies Inspector feature.
  */
 @Composable
-fun DependenciesInspector(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { DependenciesInspectorFeature.createEngine(context) }
+fun DependenciesInspector(
+    engine: DependenciesInspectorEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember { DependenciesInspectorFeature.createViewModelFactory(engine) }
     val viewModel: DependenciesInspectorViewModel = viewModel(factory = factory)
 

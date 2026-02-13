@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.feature.securestorage.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DataObject
 import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.Error
@@ -29,7 +36,7 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +55,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -105,56 +116,77 @@ fun SecureStorageScreen(
 ) {
     val colors = secureStorageColors()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var searchActive by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Security,
-                            contentDescription = stringResource(R.string.securestorage_title),
-                            tint = colors.primary,
-                        )
+            Column {
+                TopAppBar(
+                    title = {
                         Text(
                             text = stringResource(R.string.securestorage_title),
                             fontWeight = FontWeight.SemiBold,
                         )
-                    }
-                },
-                navigationIcon = {
-                    onBack?.let { back ->
-                        IconButton(onClick = back) {
+                    },
+                    navigationIcon = {
+                        onBack?.let { back ->
+                            IconButton(onClick = back) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.securestorage_back),
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {
+                            searchActive = !searchActive
+                            if (!searchActive) onSearchQueryChanged("")
+                        }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.securestorage_back),
+                                imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                                contentDescription = stringResource(R.string.securestorage_search),
                             )
                         }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onRefresh, enabled = !isLoading) {
-                        if (isLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
-                                strokeWidth = 2.dp,
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = stringResource(R.string.securestorage_refresh),
-                            )
+                        IconButton(onClick = onRefresh, enabled = !isLoading) {
+                            if (isLoading) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                                    strokeWidth = 2.dp,
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = stringResource(R.string.securestorage_refresh),
+                                )
+                            }
                         }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-            )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                )
+                AnimatedVisibility(
+                    visible = searchActive,
+                    enter = expandVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                ) {
+                    WormaCeptorSearchBar(
+                        query = searchQuery,
+                        onQueryChange = onSearchQueryChanged,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                            .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                        placeholder = stringResource(R.string.securestorage_search_placeholder),
+                    )
+                }
+            }
         },
     ) { paddingValues ->
         Column(
@@ -162,22 +194,6 @@ fun SecureStorageScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            // Search bar
-            WormaCeptorSearchBar(
-                query = searchQuery,
-                onQueryChange = onSearchQueryChanged,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    )
-                    .padding(
-                        top = WormaCeptorDesignSystem.Spacing.lg,
-                        bottom = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                placeholder = stringResource(R.string.securestorage_search_placeholder),
-            )
-
             // Summary cards with integrated status
             SummarySection(
                 summary = summary,
@@ -187,7 +203,8 @@ fun SecureStorageScreen(
                 colors = colors,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
+                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
@@ -535,6 +552,8 @@ private fun EntryCard(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             // Type badge
             Surface(

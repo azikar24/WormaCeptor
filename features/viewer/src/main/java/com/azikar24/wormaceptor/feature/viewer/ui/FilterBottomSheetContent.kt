@@ -42,7 +42,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -60,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
@@ -113,9 +113,9 @@ fun FilterBottomSheetContent(
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
-            FilterSectionHeader(
-                icon = Icons.Outlined.Code,
+            WormaCeptorSectionHeader(
                 title = stringResource(R.string.viewer_filter_http_method),
+                icon = Icons.Outlined.Code,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -134,9 +134,9 @@ fun FilterBottomSheetContent(
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
-            FilterSectionHeader(
-                icon = Icons.Outlined.DataUsage,
+            WormaCeptorSectionHeader(
                 title = stringResource(R.string.viewer_filter_status_code),
+                icon = Icons.Outlined.DataUsage,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -233,27 +233,6 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
                 ),
             )
         }
-    }
-}
-
-@Composable
-private fun FilterSectionHeader(icon: ImageVector, title: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = title,
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-            tint = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
     }
 }
 

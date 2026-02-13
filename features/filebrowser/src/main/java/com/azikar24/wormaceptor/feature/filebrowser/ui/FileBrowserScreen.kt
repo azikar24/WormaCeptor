@@ -1,6 +1,12 @@
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +40,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +80,7 @@ fun FileBrowserScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var showSortMenu by remember { mutableStateOf(false) }
-    var searchActive by remember { mutableStateOf(false) }
+    var searchActive by rememberSaveable { mutableStateOf(false) }
 
     // Handle system back button: navigate up directory or exit if at home
     BackHandler {
@@ -110,7 +117,12 @@ fun FileBrowserScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { searchActive = !searchActive }) {
+                        IconButton(
+                            onClick = {
+                                searchActive = !searchActive
+                                if (!searchActive) onSearchQueryChanged("")
+                            },
+                        ) {
                             Icon(
                                 imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
                                 contentDescription = stringResource(R.string.filebrowser_search),
@@ -156,7 +168,15 @@ fun FileBrowserScreen(
                 )
 
                 // Search bar
-                if (searchActive) {
+                AnimatedVisibility(
+                    visible = searchActive,
+                    enter = expandVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    exit = shrinkVertically(
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
                         onQueryChange = onSearchQueryChanged,
@@ -165,7 +185,7 @@ fun FileBrowserScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                            .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
                     )
                 }
 

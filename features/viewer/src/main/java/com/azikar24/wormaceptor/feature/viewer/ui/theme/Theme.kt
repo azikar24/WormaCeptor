@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -45,6 +46,13 @@ private val LightColorScheme = lightColorScheme(
     surfaceTint = md_theme_light_surfaceTint,
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
+    surfaceDim = ThemeColors.LightSurfaceVariant,
+    surfaceBright = ThemeColors.LightBackground,
+    surfaceContainerLowest = ThemeColors.LightBackground,
+    surfaceContainerLow = ThemeColors.LightSurface,
+    surfaceContainer = ThemeColors.LightSurface,
+    surfaceContainerHigh = ThemeColors.LightSurfaceVariant,
+    surfaceContainerHighest = ThemeColors.LightSurfaceVariant,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -77,6 +85,13 @@ private val DarkColorScheme = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
+    surfaceDim = ThemeColors.DarkBackground,
+    surfaceBright = ThemeColors.DarkSurfaceVariant,
+    surfaceContainerLowest = ThemeColors.DarkBackground,
+    surfaceContainerLow = ThemeColors.DarkSurface,
+    surfaceContainer = ThemeColors.DarkSurface,
+    surfaceContainerHigh = ThemeColors.DarkSurfaceVariant,
+    surfaceContainerHighest = ThemeColors.DarkSurfaceVariant,
 )
 
 @Composable

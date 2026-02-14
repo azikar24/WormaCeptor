@@ -202,7 +202,7 @@ fun SwipeBackContainer(
                 .fillMaxSize()
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
-                    elevation = (16.dp * progress),
+                    elevation = 16.dp * progress,
                     ambientColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                     spotColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 )

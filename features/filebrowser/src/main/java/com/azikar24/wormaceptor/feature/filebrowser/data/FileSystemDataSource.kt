@@ -26,30 +26,6 @@ import javax.xml.transform.stream.StreamResult
  */
 class FileSystemDataSource(private val context: Context) {
 
-    companion object {
-        private const val MAX_TEXT_FILE_SIZE = 1_048_576L // 1MB
-        private const val MAX_BINARY_PREVIEW_SIZE = 5_242_880L // 5MB
-
-        private val TEXT_EXTENSIONS = setOf(
-            "txt", "log", "html", "css", "js", "kt", "java",
-            "md", "gradle", "properties", "yml", "yaml", "sql", "csv",
-        )
-
-        private const val JSON_EXTENSION = "json"
-        private const val XML_EXTENSION = "xml"
-
-        private val IMAGE_EXTENSIONS = setOf(
-            "png",
-            "jpg",
-            "jpeg",
-            "gif",
-            "webp",
-            "bmp",
-        )
-
-        private const val PDF_EXTENSION = "pdf"
-    }
-
     /**
      * Gets the root directories accessible to the app.
      */
@@ -362,5 +338,29 @@ class FileSystemDataSource(private val context: Context) {
 
     private fun getMimeType(extension: String): String? {
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.lowercase())
+    }
+
+    companion object {
+        private const val MAX_TEXT_FILE_SIZE = 1_048_576L // 1MB
+        private const val MAX_BINARY_PREVIEW_SIZE = 5_242_880L // 5MB
+
+        private val TEXT_EXTENSIONS = setOf(
+            "txt", "log", "html", "css", "js", "kt", "java",
+            "md", "gradle", "properties", "yml", "yaml", "sql", "csv",
+        )
+
+        private const val JSON_EXTENSION = "json"
+        private const val XML_EXTENSION = "xml"
+
+        private val IMAGE_EXTENSIONS = setOf(
+            "png",
+            "jpg",
+            "jpeg",
+            "gif",
+            "webp",
+            "bmp",
+        )
+
+        private const val PDF_EXTENSION = "pdf"
     }
 }

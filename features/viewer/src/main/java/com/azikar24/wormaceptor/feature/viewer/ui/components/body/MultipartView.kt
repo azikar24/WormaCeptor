@@ -378,7 +378,7 @@ private fun parseMultipartPart(section: String): MultipartPart? {
 
     val headerSection = section.substring(0, headerBodySplit)
     val body = section.substring(
-        headerBodySplit + (if (section.contains("\r\n\r\n")) 4 else 2),
+        headerBodySplit + if (section.contains("\r\n\r\n")) 4 else 2,
     ).trimEnd()
 
     val headers = mutableMapOf<String, String>()

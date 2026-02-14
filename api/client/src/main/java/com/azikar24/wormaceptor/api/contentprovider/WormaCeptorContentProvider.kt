@@ -21,22 +21,6 @@ import java.io.FileOutputStream
  */
 class WormaCeptorContentProvider : ContentProvider() {
 
-    companion object {
-        private const val TAG = "WormaCeptorProvider"
-        private const val CODE_TRANSACTIONS = 1
-        private const val CODE_TRANSACTION_ID = 2
-        private const val CODE_STATUS = 3
-        private const val CODE_TRANSACTION_DETAIL = 4
-
-        private val TRANSACTION_COLUMNS = arrayOf(
-            "id", "method", "host", "path", "code", "duration",
-            "status", "timestamp", "has_request_body", "has_response_body",
-            "request_size", "response_size", "content_type",
-        )
-
-        private val STATUS_COLUMNS = arrayOf("capturing", "count")
-    }
-
     private lateinit var uriMatcher: UriMatcher
 
     override fun onCreate(): Boolean {
@@ -298,5 +282,21 @@ class WormaCeptorContentProvider : ContentProvider() {
             json.put(key, JSONArray(values))
         }
         return json
+    }
+
+    companion object {
+        private const val TAG = "WormaCeptorProvider"
+        private const val CODE_TRANSACTIONS = 1
+        private const val CODE_TRANSACTION_ID = 2
+        private const val CODE_STATUS = 3
+        private const val CODE_TRANSACTION_DETAIL = 4
+
+        private val TRANSACTION_COLUMNS = arrayOf(
+            "id", "method", "host", "path", "code", "duration",
+            "status", "timestamp", "has_request_body", "has_response_body",
+            "request_size", "response_size", "content_type",
+        )
+
+        private val STATUS_COLUMNS = arrayOf("capturing", "count")
     }
 }

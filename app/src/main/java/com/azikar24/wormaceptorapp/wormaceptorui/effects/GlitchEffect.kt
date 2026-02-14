@@ -271,7 +271,7 @@ private fun GlitchMeltdownEffectFallback(
                         GlitchConstants.Scanlines.MAX_ALPHA
                     ).coerceIn(0f, GlitchConstants.Scanlines.MAX_ALPHA)
                 for (i in 0 until scanLineCount) {
-                    val y = (i.toFloat() / scanLineCount) * size.height
+                    val y = i.toFloat() / scanLineCount * size.height
                     if (i % 2 == 0) {
                         drawRect(
                             color = Color.Black.copy(alpha = scanLineAlpha),
@@ -292,7 +292,7 @@ private fun GlitchMeltdownEffectFallback(
                         GlitchConstants.Noise.MAX_ALPHA
                     ).coerceIn(0f, GlitchConstants.Noise.MAX_ALPHA)
                 val pixelSize = GlitchConstants.Noise.PIXEL_SIZE
-                val pixelArea = (size.width / pixelSize) * (size.height / pixelSize)
+                val pixelArea = size.width / pixelSize * (size.height / pixelSize)
                 val noiseCount = (pixelArea * GlitchConstants.Noise.DENSITY).toInt()
 
                 repeat(noiseCount) {

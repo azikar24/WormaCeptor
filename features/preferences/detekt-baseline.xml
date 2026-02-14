@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$Companion</ID>
     <ID>ComposableParamOrder:PreferencesListScreen.kt$PreferencesListScreen</ID>
     <ID>LongMethod:PreferencesFeature.kt$@Composable private fun PreferencesNavHost( navController: NavHostController, viewModel: PreferencesViewModel, onNavigateBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PreferencesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferencesListScreen( files: ImmutableList&lt;PreferenceFile&gt;, searchQuery: String, onSearchQueryChanged: (String) -&gt; Unit, onFileClick: (PreferenceFile) -&gt; Unit, onNavigateBack: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>

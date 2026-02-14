@@ -100,15 +100,15 @@ object ImageMetadataExtractor {
 
                 // Read segment length
                 if (offset + 2 > data.size) break
-                val length = ((data[offset].toInt() and 0xFF) shl 8) or (data[offset + 1].toInt() and 0xFF)
+                val length = data[offset].toInt() and 0xFF shl 8 or (data[offset + 1].toInt() and 0xFF)
 
                 // SOF markers (Start of Frame) - contain dimensions
                 // SOF0 (baseline), SOF1 (extended), SOF2 (progressive), etc.
                 if (marker in 0xC0..0xCF && marker !in listOf(0xC4, 0xC8, 0xCC)) {
                     if (offset + 7 <= data.size) {
                         val precision = data[offset + 2].toInt() and 0xFF
-                        val height = ((data[offset + 3].toInt() and 0xFF) shl 8) or (data[offset + 4].toInt() and 0xFF)
-                        val width = ((data[offset + 5].toInt() and 0xFF) shl 8) or (data[offset + 6].toInt() and 0xFF)
+                        val height = data[offset + 3].toInt() and 0xFF shl 8 or (data[offset + 4].toInt() and 0xFF)
+                        val width = data[offset + 5].toInt() and 0xFF shl 8 or (data[offset + 6].toInt() and 0xFF)
                         val components = data[offset + 7].toInt() and 0xFF
 
                         val colorSpace = when (components) {
@@ -148,8 +148,8 @@ object ImageMetadataExtractor {
 
         try {
             // Width and height are at offset 6-9, little-endian
-            val width = ((data[7].toInt() and 0xFF) shl 8) or (data[6].toInt() and 0xFF)
-            val height = ((data[9].toInt() and 0xFF) shl 8) or (data[8].toInt() and 0xFF)
+            val width = data[7].toInt() and 0xFF shl 8 or (data[6].toInt() and 0xFF)
+            val height = data[9].toInt() and 0xFF shl 8 or (data[8].toInt() and 0xFF)
 
             return ImageMetadata(
                 width = width,
@@ -206,8 +206,8 @@ object ImageMetadataExtractor {
             }
 
             // Width and height follow (little-endian, 16 bits each, but only 14 bits used)
-            val width = ((data[offset + 4].toInt() and 0xFF) shl 8) or (data[offset + 3].toInt() and 0xFF)
-            val height = ((data[offset + 6].toInt() and 0xFF) shl 8) or (data[offset + 5].toInt() and 0xFF)
+            val width = data[offset + 4].toInt() and 0xFF shl 8 or (data[offset + 3].toInt() and 0xFF)
+            val height = data[offset + 6].toInt() and 0xFF shl 8 or (data[offset + 5].toInt() and 0xFF)
 
             return ImageMetadata(
                 width = width and 0x3FFF, // 14-bit value
@@ -238,8 +238,8 @@ object ImageMetadataExtractor {
             val bits = ByteBuffer.wrap(data, 21, 4).order(ByteOrder.LITTLE_ENDIAN).int
 
             val width = (bits and 0x3FFF) + 1 // 14 bits
-            val height = ((bits shr 14) and 0x3FFF) + 1 // 14 bits
-            val hasAlpha = ((bits shr 28) and 1) == 1
+            val height = (bits shr 14 and 0x3FFF) + 1 // 14 bits
+            val hasAlpha = bits shr 28 and 1 == 1
 
             return ImageMetadata(
                 width = width,
@@ -263,20 +263,20 @@ object ImageMetadataExtractor {
         try {
             // Flags at offset 20
             val flags = data[20].toInt() and 0xFF
-            val hasAlpha = (flags and 0x10) != 0
+            val hasAlpha = flags and 0x10 != 0
 
             // Canvas width (24 bits, little-endian) at offset 24
             val width = (
-                (data[24].toInt() and 0xFF) or
-                    ((data[25].toInt() and 0xFF) shl 8) or
-                    ((data[26].toInt() and 0xFF) shl 16)
+                data[24].toInt() and 0xFF or
+                    (data[25].toInt() and 0xFF shl 8) or
+                    (data[26].toInt() and 0xFF shl 16)
                 ) + 1
 
             // Canvas height (24 bits, little-endian) at offset 27
             val height = (
-                (data[27].toInt() and 0xFF) or
-                    ((data[28].toInt() and 0xFF) shl 8) or
-                    ((data[29].toInt() and 0xFF) shl 16)
+                data[27].toInt() and 0xFF or
+                    (data[28].toInt() and 0xFF shl 8) or
+                    (data[29].toInt() and 0xFF shl 16)
                 ) + 1
 
             return ImageMetadata(

@@ -218,8 +218,8 @@ class ProtobufBodyParser : BaseBodyParser() {
 
         while (buffer.hasRemaining() && shift < 64) {
             val b = buffer.get().toInt() and 0xFF
-            result = result or ((b.toLong() and 0x7F) shl shift)
-            if ((b and 0x80) == 0) {
+            result = result or (b.toLong() and 0x7F shl shift)
+            if (b and 0x80 == 0) {
                 return result
             }
             shift += 7
@@ -239,7 +239,7 @@ class ProtobufBodyParser : BaseBodyParser() {
                 }
             }
             // Show as zigzag decoded for potential sint types
-            val zigzag = (value shr 1) xor -(value and 1)
+            val zigzag = value shr 1 xor -(value and 1)
             if (zigzag != value && zigzag != 0L) {
                 append(" [zigzag: $zigzag]")
             }

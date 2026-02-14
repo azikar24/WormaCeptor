@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$Companion</ID>
     <ID>CyclomaticComplexMethod:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private fun addTransactionToCursor(cursor: MatrixCursor, item: Any)</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${ }</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${}</ID>

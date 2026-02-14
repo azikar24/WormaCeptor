@@ -134,7 +134,14 @@ class LogCaptureEngine(
     private fun parseLine(line: String): LogEntry? {
         val match = threadtimePattern.matchEntire(line) ?: return null
 
-        val (dateStr, timeStr, pidStr, tidStr, levelStr, tag, message) = match.destructured
+        val groups = match.groupValues
+        val dateStr = groups[1]
+        val timeStr = groups[2]
+        val pidStr = groups[3]
+        val tidStr = groups[4]
+        val levelStr = groups[5]
+        val tag = groups[6]
+        val message = groups[7]
 
         val timestamp = try {
             val calendar = Calendar.getInstance()

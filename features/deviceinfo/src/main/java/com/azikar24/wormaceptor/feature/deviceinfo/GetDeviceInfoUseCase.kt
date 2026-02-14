@@ -65,7 +65,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
             Build.MODEL.contains("Emulator") ||
             Build.MODEL.contains("Android SDK built for x86") ||
             Build.MANUFACTURER.contains("Genymotion") ||
-            (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")) ||
+            Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||
             Build.PRODUCT == "google_sdk" ||
             Build.HARDWARE.contains("goldfish") ||
             Build.HARDWARE.contains("ranchu")
@@ -145,7 +145,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
         val availableRam = memoryInfo.availMem
         val usedRam = totalRam - availableRam
         val usagePercentage = if (totalRam > 0) {
-            (usedRam.toFloat() / totalRam.toFloat()) * 100f
+            usedRam.toFloat() / totalRam.toFloat() * 100f
         } else {
             0f
         }

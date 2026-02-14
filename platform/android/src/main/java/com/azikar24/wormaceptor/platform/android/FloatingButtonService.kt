@@ -79,50 +79,6 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     // Animation state for pressed effect - using MutableState wrapper
     private val pressedScaleState: MutableState<Float> = mutableStateOf(1f)
 
-    companion object {
-        private const val NOTIFICATION_CHANNEL_ID = "wormaceptor_floating_channel"
-        private const val NOTIFICATION_ID = 9999
-        private const val TAP_THRESHOLD_MS = 200L
-        private const val MOVEMENT_THRESHOLD_PX = 20f
-        private const val BUTTON_SIZE_DP = 56
-        private const val EDGE_MARGIN_DP = 8
-
-        // Preference keys for persisting position
-        private const val PREFS_NAME = "wormaceptor_floating_prefs"
-        private const val PREF_X = "floating_x"
-        private const val PREF_Y = "floating_y"
-
-        /**
-         * Check if the app can draw overlays.
-         */
-        fun canDrawOverlays(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                android.provider.Settings.canDrawOverlays(context)
-            } else {
-                true
-            }
-        }
-
-        /**
-         * Start the floating button service.
-         */
-        fun start(context: Context) {
-            val intent = Intent(context, FloatingButtonService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent)
-            } else {
-                context.startService(intent)
-            }
-        }
-
-        /**
-         * Stop the floating button service.
-         */
-        fun stop(context: Context) {
-            context.stopService(Intent(context, FloatingButtonService::class.java))
-        }
-    }
-
     override fun onCreate() {
         super.onCreate()
 
@@ -413,6 +369,50 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
             } catch (_: Exception) {
                 Intent()
             }
+        }
+    }
+
+    companion object {
+        private const val NOTIFICATION_CHANNEL_ID = "wormaceptor_floating_channel"
+        private const val NOTIFICATION_ID = 9999
+        private const val TAP_THRESHOLD_MS = 200L
+        private const val MOVEMENT_THRESHOLD_PX = 20f
+        private const val BUTTON_SIZE_DP = 56
+        private const val EDGE_MARGIN_DP = 8
+
+        // Preference keys for persisting position
+        private const val PREFS_NAME = "wormaceptor_floating_prefs"
+        private const val PREF_X = "floating_x"
+        private const val PREF_Y = "floating_y"
+
+        /**
+         * Check if the app can draw overlays.
+         */
+        fun canDrawOverlays(context: Context): Boolean {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                android.provider.Settings.canDrawOverlays(context)
+            } else {
+                true
+            }
+        }
+
+        /**
+         * Start the floating button service.
+         */
+        fun start(context: Context) {
+            val intent = Intent(context, FloatingButtonService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
+        }
+
+        /**
+         * Stop the floating button service.
+         */
+        fun stop(context: Context) {
+            context.stopService(Intent(context, FloatingButtonService::class.java))
         }
     }
 }

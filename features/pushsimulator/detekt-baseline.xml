@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:PushSimulatorFormSection.kt$@Composable internal fun NotificationFormCard( uiState: PushSimulatorUiState, channels: List&lt;NotificationChannelInfo&gt;, previewTitlePlaceholder: String, previewBodyPlaceholder: String, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorFormSection.kt$@Composable private fun ChannelSelector( selectedChannelId: String, channels: List&lt;NotificationChannelInfo&gt;, onChannelSelected: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorFormSection.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ActionButtonsSection( actions: List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;, newActionTitle: String, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
@@ -54,7 +53,6 @@
     <ID>UnstableCollections:PushSimulatorFormSection.kt$List&lt;NotificationChannelInfo&gt;</ID>
     <ID>UnstableCollections:PushSimulatorFormSection.kt$List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;</ID>
     <ID>UnstableCollections:PushSimulatorPreviewSection.kt$List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;</ID>
-    <ID>UseIfInsteadOfWhen:PushSimulatorScreen.kt$when { ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED -&gt; { viewModel.sendNotification() } else -&gt; { permissionLauncher.launch(permission) } }</ID>
     <ID>ViewModelInjection:PushSimulatorFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

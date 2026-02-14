@@ -295,8 +295,8 @@ private fun TransactionDetailContent(
 
     // Check if current tab has searchable content
     val requestHasContent = transaction.request.headers.isNotEmpty() || transaction.request.bodyRef != null
-    val responseHasContent = (transaction.response?.headers?.isNotEmpty() == true) ||
-        (transaction.response?.bodyRef != null)
+    val responseHasContent = transaction.response?.headers?.isNotEmpty() == true ||
+        transaction.response?.bodyRef != null
     val currentTabHasContent = when (tabPagerState.currentPage) {
         1 -> requestHasContent
         2 -> responseHasContent
@@ -838,7 +838,7 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
                 modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
             Text(
-                text = if (isSsl) (tlsVersion ?: "Secure Connection") else "Insecure Connection",
+                text = if (isSsl) tlsVersion ?: "Secure Connection" else "Insecure Connection",
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
@@ -953,7 +953,7 @@ private fun RequestTab(
         if (copyRequested) {
             isCopying = true
             try {
-                val bodyContent = if (isPrettyMode) (requestBody ?: rawBody) else (rawBody ?: requestBody)
+                val bodyContent = if (isPrettyMode) requestBody ?: rawBody else rawBody ?: requestBody
                 if (bodyContent != null) {
                     if (isContentTooLargeForClipboard(bodyContent)) {
                         val (ext, mime) = getFileInfoForContentType(requestContentType)
@@ -1183,7 +1183,7 @@ private fun RequestTab(
                         appendLine(formatHeaders(transaction.request.headers))
                         if (requestBody != null || rawBody != null) {
                             appendLine("\n=== REQUEST BODY ===")
-                            val body = if (isPrettyMode) (requestBody ?: rawBody) else (rawBody ?: requestBody)
+                            val body = if (isPrettyMode) requestBody ?: rawBody else rawBody ?: requestBody
                             body?.let { appendLine(it) }
                         }
                     }
@@ -1237,7 +1237,7 @@ private fun ResponseTab(
         if (copyRequested) {
             isCopying = true
             try {
-                val bodyContent = if (isPrettyMode) (responseBody ?: rawBody) else (rawBody ?: responseBody)
+                val bodyContent = if (isPrettyMode) responseBody ?: rawBody else rawBody ?: responseBody
                 if (bodyContent != null) {
                     if (isContentTooLargeForClipboard(bodyContent)) {
                         val (ext, mime) = getFileInfoForContentType(contentType)
@@ -1574,7 +1574,7 @@ private fun ResponseTab(
                         }
                         if (responseBody != null || rawBody != null) {
                             appendLine("\n=== RESPONSE BODY ===")
-                            val body = if (isPrettyMode) (responseBody ?: rawBody) else (rawBody ?: responseBody)
+                            val body = if (isPrettyMode) responseBody ?: rawBody else rawBody ?: responseBody
                             body?.let { appendLine(it) }
                         }
                     }
@@ -1820,7 +1820,7 @@ private fun findMatchRanges(text: String, query: String): List<IntRange> {
     while (true) {
         index = text.indexOf(query, index, ignoreCase = true)
         if (index < 0) break
-        matches.add(index until (index + query.length))
+        matches.add(index until index + query.length)
         index++
     }
     return matches

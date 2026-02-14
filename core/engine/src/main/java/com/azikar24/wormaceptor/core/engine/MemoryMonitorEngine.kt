@@ -119,7 +119,7 @@ class MemoryMonitorEngine(
 
         // Calculate heap usage percentage
         val heapUsagePercent = if (maxMemory > 0) {
-            (usedMemory.toFloat() / maxMemory.toFloat()) * 100f
+            usedMemory.toFloat() / maxMemory.toFloat() * 100f
         } else {
             0f
         }

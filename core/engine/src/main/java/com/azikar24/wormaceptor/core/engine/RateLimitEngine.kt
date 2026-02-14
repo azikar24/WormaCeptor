@@ -224,7 +224,7 @@ class RateLimitEngine {
         val bytesPerSecond = speedKbps * 1000 / 8
 
         // Calculate how long it should take to transfer the bytes
-        val transferTimeMs = (bytes * 1000) / bytesPerSecond
+        val transferTimeMs = bytes * 1000 / bytesPerSecond
 
         return transferTimeMs
     }
@@ -269,7 +269,7 @@ class RateLimitEngine {
                 // Calculate expected time based on throughput
                 val bytesPerSecond = downloadSpeedKbps * 1000 / 8
                 if (bytesPerSecond > 0) {
-                    val expectedTimeMs = (bytesRead * 1000) / bytesPerSecond
+                    val expectedTimeMs = bytesRead * 1000 / bytesPerSecond
                     val elapsedTime = System.currentTimeMillis() - startTime
                     val sleepTime = expectedTimeMs - elapsedTime
 

@@ -33,10 +33,6 @@ import java.util.UUID
 
 abstract class BaseServiceProviderImpl : ServiceProvider {
 
-    private companion object {
-        private const val TAG = "BaseServiceProvider"
-    }
-
     protected var captureEngine: CaptureEngine? = null
     protected var queryEngine: QueryEngine? = null
     protected var extensionRegistry: ExtensionRegistry? = null
@@ -260,5 +256,9 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         } catch (_: Exception) {
             null
         }
+    }
+
+    private companion object {
+        private const val TAG = "BaseServiceProvider"
     }
 }

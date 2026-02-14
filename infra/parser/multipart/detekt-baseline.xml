@@ -19,6 +19,5 @@
     <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val headers: Map&lt;String, String&gt;</ID>
     <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val isBinary: Boolean</ID>
     <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val name: String?</ID>
-    <ID>UnnecessaryParentheses:MultipartBodyParser.kt$MultipartBodyParser$(code in 14..31)</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -23,18 +23,24 @@ public abstract class com/azikar24/wormaceptor/api/internal/BaseServiceProviderI
 }
 
 protected final class com/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies {
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;
 	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;
 	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;
 	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;
-	public final fun copy (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;
+	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlobStorage ()Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;
 	public final fun getCrashRepository ()Lcom/azikar24/wormaceptor/domain/contracts/CrashRepository;
 	public final fun getLeakRepository ()Lcom/azikar24/wormaceptor/domain/contracts/LeakRepository;
+	public final fun getLocationSimulatorRepository ()Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;
+	public final fun getPushSimulatorRepository ()Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;
 	public final fun getTransactionRepository ()Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;
+	public final fun getWebViewMonitorRepository ()Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

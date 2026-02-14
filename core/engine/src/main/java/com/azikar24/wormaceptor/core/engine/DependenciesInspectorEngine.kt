@@ -363,10 +363,7 @@ class DependenciesInspectorEngine(
      */
     private fun inferGroupId(packageName: String): String {
         val parts = packageName.split(".")
-        return when {
-            parts.size >= 2 -> parts.take(2).joinToString(".")
-            else -> packageName
-        }
+        return if (parts.size >= 2) parts.take(2).joinToString(".") else packageName
     }
 
     /**
@@ -524,20 +521,6 @@ class DependenciesInspectorEngine(
             field.isAccessible = true
             val value = field.get(null)
             value?.toString()
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    /**
-     * Tries to invoke a static method and get version.
-     */
-    private fun tryGetStaticMethod(className: String, methodName: String): String? {
-        return try {
-            val clazz = Class.forName(className)
-            val method = clazz.getDeclaredMethod(methodName)
-            method.isAccessible = true
-            method.invoke(null)?.toString()
         } catch (e: Exception) {
             null
         }

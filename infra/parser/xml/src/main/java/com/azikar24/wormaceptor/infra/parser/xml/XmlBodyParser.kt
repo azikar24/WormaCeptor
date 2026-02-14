@@ -52,7 +52,7 @@ class XmlBodyParser(
 
         val trimmed = String(body, Charsets.UTF_8).trimStart()
         return trimmed.startsWith("<?xml") ||
-            (trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true))
+            trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true)
     }
 
     override fun parseBody(body: ByteArray): ParsedBody {

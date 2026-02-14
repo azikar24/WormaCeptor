@@ -534,27 +534,10 @@
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$val snackbarMessage: SharedFlow&lt;String&gt; = _snackbarMessage.asSharedFlow()</ID>
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$val totalCount: StateFlow&lt;Int&gt; = _totalCount</ID>
     <ID>UndocumentedPublicProperty:ViewerViewModel.kt$ViewerViewModel$val transactions: StateFlow&lt;ImmutableList&lt;TransactionSummary&gt;&gt; = combine( _searchQuery.debounce(150), _filterMethods, _filterStatusRanges, _quickFilters, allTransactions, ) { query, methods, statusRanges, quickFilters, list -&gt; list.filter { transaction -&gt; val matchesSearch = if (query.isBlank()) { true } else { transaction.host.contains(query, ignoreCase = true) || transaction.path.contains(query, ignoreCase = true) || transaction.method.contains(query, ignoreCase = true) || transaction.status.name.contains(query, ignoreCase = true) } val matchesMethod = methods.isEmpty() || methods.any { transaction.method.equals(it, ignoreCase = true) } val matchesStatus = statusRanges.isEmpty() || (transaction.code?.let { code -&gt; statusRanges.any { code in it } } ?: false) matchesSearch &amp;&amp; matchesMethod &amp;&amp; matchesStatus }.applyQuickFilters(quickFilters).toImmutableList() }.flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
-    <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$( trimmed.startsWith("&lt;") &amp;&amp; !trimmed.startsWith("&lt;!DOCTYPE html") &amp;&amp; !trimmed.lowercase().startsWith("&lt;html") )</ID>
-    <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$(trimmed.startsWith("[") &amp;&amp; trimmed.endsWith("]"))</ID>
-    <ID>UnnecessaryParentheses:BodyParsingUtils.kt$BodyParsingUtils$(trimmed.startsWith("{") &amp;&amp; trimmed.endsWith("}"))</ID>
     <ID>UnnecessaryParentheses:HighlightedText.kt$(index + searchQuery.length)</ID>
     <ID>UnnecessaryParentheses:HomeScreen.kt$(it.code ?: 0)</ID>
-    <ID>UnnecessaryParentheses:ImagePreviewCard.kt$(16f / 9f)</ID>
     <ID>UnnecessaryParentheses:MetricsCard.kt$(it.code ?: 0)</ID>
     <ID>UnnecessaryParentheses:MetricsCard.kt$(it.tookMs ?: 0)</ID>
-    <ID>UnnecessaryParentheses:MultipartView.kt$(if (section.contains("\r\n\r\n")) 4 else 2)</ID>
-    <ID>UnnecessaryParentheses:PdfViewerScreen.kt$(size.height * (scale - 1))</ID>
-    <ID>UnnecessaryParentheses:PdfViewerScreen.kt$(size.width * (scale - 1))</ID>
-    <ID>UnnecessaryParentheses:SelectableTransactionItem.kt$(-WormaCeptorDesignSystem.Spacing.sm)</ID>
-    <ID>UnnecessaryParentheses:SwipeBackContainer.kt$(16.dp * progress)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(index + query.length)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(rawBody ?: requestBody)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(rawBody ?: responseBody)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(requestBody ?: rawBody)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(responseBody ?: rawBody)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(tlsVersion ?: "Secure Connection")</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(transaction.response?.bodyRef != null)</ID>
-    <ID>UnnecessaryParentheses:TransactionDetailScreen.kt$(transaction.response?.headers?.isNotEmpty() == true)</ID>
     <ID>UnnecessaryParentheses:ViewerViewModel.kt$ViewerViewModel$(transaction.code?.let { code -&gt; statusRanges.any { code in it } } ?: false)</ID>
     <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;Crash&gt;</ID>
     <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;CrashUtils.StackFrame&gt;</ID>
@@ -569,12 +552,10 @@
     <ID>UnstableCollections:TransactionDetailScreen.kt$List&lt;UUID&gt;</ID>
     <ID>UnstableCollections:TransactionDetailScreen.kt$Map&lt;String, List&lt;String&gt;&gt;</ID>
     <ID>UnstableCollections:TransactionListScreen.kt$Set&lt;UUID&gt;</ID>
-    <ID>UnusedParameter:CrashListScreen.kt$message: String</ID>
     <ID>UnusedParameter:LoadingStates.kt$title: String</ID>
     <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
     <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
-    <ID>UnusedPrivateMember:CrashListScreen.kt$@Composable @Deprecated("Use EnhancedEmptyState instead") private fun EmptyState(message: String, modifier: Modifier = Modifier)</ID>
     <ID>UseIfInsteadOfWhen:XmlTreeView.kt$when { c == '&lt;' -&gt; { val text = builder.toString().trim() if (text.isNotEmpty()) { result.add(indentString.repeat(indent) + text) } builder.clear() val tagEnd = xml.indexOf('&gt;', i) if (tagEnd == -1) { builder.append(c) i++ continue } val tag = xml.substring(i, tagEnd + 1) when { tag.startsWith("&lt;?") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.startsWith("&lt;!--") -&gt; { val commentEnd = xml.indexOf("--&gt;", i) if (commentEnd != -1) { val comment = xml.substring(i, commentEnd + 3) result.add(indentString.repeat(indent) + comment) i = commentEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;![CDATA[") -&gt; { val cdataEnd = xml.indexOf("]]&gt;", i) if (cdataEnd != -1) { val cdata = xml.substring(i, cdataEnd + 3) result.add(indentString.repeat(indent) + cdata) i = cdataEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;/") -&gt; { indent = maxOf(0, indent - 1) result.add(indentString.repeat(indent) + tag) } tag.endsWith("/&gt;") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.uppercase().startsWith("&lt;!DOCTYPE") -&gt; { result.add(indentString.repeat(indent) + tag) } else -&gt; { result.add(indentString.repeat(indent) + tag) indent++ } } i = tagEnd } else -&gt; { builder.append(c) } }</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>

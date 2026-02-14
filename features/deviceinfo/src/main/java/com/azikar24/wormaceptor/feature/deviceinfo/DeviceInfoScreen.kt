@@ -429,7 +429,7 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
         WormaCeptorDetailRow(usedLabel, formatBytes(storage.internalUsed))
 
         val internalUsagePercent = if (storage.internalTotal > 0) {
-            (storage.internalUsed.toFloat() / storage.internalTotal.toFloat()) * 100f
+            storage.internalUsed.toFloat() / storage.internalTotal.toFloat() * 100f
         } else {
             0f
         }
@@ -466,7 +466,7 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
             storage.externalUsed?.let { WormaCeptorDetailRow(usedLabel, formatBytes(it)) }
 
             val externalUsagePercent = if (extTotal > 0) {
-                (extUsed.toFloat() / extTotal.toFloat()) * 100f
+                extUsed.toFloat() / extTotal.toFloat() * 100f
             } else {
                 0f
             }

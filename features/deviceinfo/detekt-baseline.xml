@@ -19,10 +19,6 @@
     <ID>TooGenericExceptionCaught:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
     <ID>TooManyFunctions:DeviceInfoScreen.kt$com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen.kt</ID>
     <ID>UndocumentedPublicFunction:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
-    <ID>UnnecessaryParentheses:DeviceInfoScreen.kt$(extUsed.toFloat() / extTotal.toFloat())</ID>
-    <ID>UnnecessaryParentheses:DeviceInfoScreen.kt$(storage.internalUsed.toFloat() / storage.internalTotal.toFloat())</ID>
-    <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(Build.BRAND.startsWith("generic") &amp;&amp; Build.DEVICE.startsWith("generic"))</ID>
     <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)</ID>
-    <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(usedRam.toFloat() / totalRam.toFloat())</ID>
   </CurrentIssues>
 </SmellBaseline>

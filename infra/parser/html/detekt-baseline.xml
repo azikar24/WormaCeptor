@@ -9,7 +9,5 @@
     <ID>MagicNumber:HtmlBodyParser.kt$HtmlBodyParser$3</ID>
     <ID>NestedBlockDepth:HtmlBodyParser.kt$HtmlBodyParser$private fun formatHtml(html: String): String</ID>
     <ID>TooGenericExceptionCaught:HtmlBodyParser.kt$HtmlBodyParser$e: Exception</ID>
-    <ID>UnnecessaryParentheses:HtmlBodyParser.kt$HtmlBodyParser$(content.contains("&lt;html") &amp;&amp; content.contains("&lt;/html&gt;"))</ID>
-    <ID>UnusedPrivateProperty:HtmlBodyParser.kt$HtmlBodyParser$// Inline elements private val inlineElements = setOf( "a", "abbr", "acronym", "b", "bdo", "big", "br", "button", "cite", "code", "dfn", "em", "i", "img", "input", "kbd", "label", "map", "object", "output", "q", "samp", "script", "select", "small", "span", "strong", "sub", "sup", "textarea", "time", "tt", "var", )</ID>
   </CurrentIssues>
 </SmellBaseline>

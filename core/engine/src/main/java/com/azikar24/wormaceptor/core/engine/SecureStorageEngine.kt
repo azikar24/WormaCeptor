@@ -458,8 +458,4 @@ class SecureStorageEngine(
             else -> "$bytes B"
         }
     }
-
-    companion object {
-        private const val TAG = "SecureStorageEngine"
-    }
 }

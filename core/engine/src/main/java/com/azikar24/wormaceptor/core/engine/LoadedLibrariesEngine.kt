@@ -59,14 +59,6 @@ class LoadedLibrariesEngine(
             ""
         }
     }
-    private val appNativeLibDir: String by lazy {
-        try {
-            context.packageManager.getApplicationInfo(packageName, 0).nativeLibraryDir ?: ""
-        } catch (e: PackageManager.NameNotFoundException) {
-            ""
-        }
-    }
-
     init {
         // Initial scan
         refresh()
@@ -221,7 +213,7 @@ class LoadedLibrariesEngine(
                 zipFile.entries().asSequence()
                     .filter { entry ->
                         entry.name.endsWith(".dex") ||
-                            (entry.name.startsWith("classes") && entry.name.endsWith(".dex"))
+                            entry.name.startsWith("classes") && entry.name.endsWith(".dex")
                     }
                     .forEach { entry ->
                         dexFiles.add(

@@ -2,10 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:PerformanceOverlayState.kt$PerformanceOverlayState$Companion</ID>
-    <ID>ClassOrdering:PushSimulatorEngine.kt$PushSimulatorEngine$Companion</ID>
     <ID>CyclomaticComplexMethod:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun categorizePackage(packageName: String): Pair&lt;String, DependencyCategory&gt;</ID>
-    <ID>DestructuringDeclarationWithTooManyEntries:LogCaptureEngine.kt$LogCaptureEngine$val (dateStr, timeStr, pidStr, tidStr, levelStr, tag, message) = match.destructured</ID>
     <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
     <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default sampling interval: 1 second </ID>
     <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Medium threshold for CPU usage percentage </ID>
@@ -64,6 +61,11 @@
     <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$5</ID>
     <ID>MagicNumber:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$6</ID>
     <ID>MagicNumber:LocationSimulatorEngine.kt$LocationSimulatorEngine$0.1f</ID>
+    <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$3</ID>
+    <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$4</ID>
+    <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$5</ID>
+    <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$6</ID>
+    <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$7</ID>
     <ID>MagicNumber:MemoryMonitorEngine.kt$MemoryMonitorEngine$100f</ID>
     <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0.1f</ID>
     <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0xFF</ID>
@@ -117,7 +119,6 @@
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>
     <ID>OutdatedDocumentation:WebSocketMonitorEngine.kt$WebSocketMonitorEngine</ID>
     <ID>PrintStackTrace:CrashReporter.kt$CrashReporter$e</ID>
-    <ID>RethrowCaughtException:LocationSimulatorEngine.kt$LocationSimulatorEngine$throw e</ID>
     <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
     <ID>SwallowedException:CpuMonitorEngine.kt$CpuMonitorEngine$e: Exception</ID>
     <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: ClassNotFoundException</ID>
@@ -219,7 +220,6 @@
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveCpu: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveFps: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveMemory: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceOverlaySettings.Companion$val DEFAULT = PerformanceOverlaySettings()</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// CPU usage thresholds (percentage) const val CPU_GOOD = 50</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// FPS thresholds const val FPS_GOOD = 55</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// Memory usage thresholds (percentage) const val MEMORY_GOOD = 60</ID>
@@ -254,23 +254,5 @@
     <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val stats: StateFlow&lt;WebViewRequestStats&gt; = _stats.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val urlFilter: StateFlow&lt;String?&gt; = _urlFilter.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val webViewIdFilter: StateFlow&lt;String?&gt; = _webViewIdFilter.asStateFlow()</ID>
-    <ID>UnnecessaryParentheses:CpuMonitorEngine.kt$CpuMonitorEngine$((totalDelta - idleDelta).toFloat() / totalDelta.toFloat())</ID>
-    <ID>UnnecessaryParentheses:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$(entry.name.startsWith("classes") &amp;&amp; entry.name.endsWith(".dex"))</ID>
-    <ID>UnnecessaryParentheses:MemoryMonitorEngine.kt$MemoryMonitorEngine$(usedMemory.toFloat() / maxMemory.toFloat())</ID>
-    <ID>UnnecessaryParentheses:ParserRegistry.kt$DefaultParserRegistry$(b in 14..31)</ID>
-    <ID>UnnecessaryParentheses:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$(overlayWidthPx / 2)</ID>
-    <ID>UnnecessaryParentheses:RateLimitEngine.kt$RateLimitEngine$(bytes * 1000)</ID>
-    <ID>UnnecessaryParentheses:RateLimitEngine.kt$RateLimitEngine.ThrottledSource$(bytesRead * 1000)</ID>
-    <ID>UnusedPrivateMember:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryGetStaticMethod(className: String, methodName: String): String?</ID>
-    <ID>UnusedPrivateMember:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$private fun hideOverlayOnly()</ID>
-    <ID>UnusedPrivateProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$private val appNativeLibDir: String by lazy { try { context.packageManager.getApplicationInfo(packageName, 0).nativeLibraryDir ?: "" } catch (e: PackageManager.NameNotFoundException) { "" } }</ID>
-    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val OVERLAY_HEIGHT_COLLAPSED_DP = 40</ID>
-    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val OVERLAY_HEIGHT_EXPANDED_DP = 180</ID>
-    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val PREF_ENABLED = "overlay_enabled"</ID>
-    <ID>UnusedPrivateProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.Companion$private const val TAG = "PerformanceOverlayEngine"</ID>
-    <ID>UnusedPrivateProperty:SecureStorageEngine.kt$SecureStorageEngine.Companion$private const val TAG = "SecureStorageEngine"</ID>
-    <ID>UseIfInsteadOfWhen:CryptoEngine.kt$CryptoEngine$when (_config.value.mode) { CipherMode.GCM -&gt; GCM_IV_LENGTH_BYTES else -&gt; IV_LENGTH_BYTES }</ID>
-    <ID>UseIfInsteadOfWhen:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$when { parts.size &gt;= 2 -&gt; parts.take(2).joinToString(".") else -&gt; packageName }</ID>
-    <ID>UseIfInsteadOfWhen:LeakDetectionEngine.kt$LeakDetectionEngine$when (obj) { is Activity -&gt; ESTIMATED_ACTIVITY_SIZE else -&gt; ESTIMATED_DEFAULT_SIZE }</ID>
   </CurrentIssues>
 </SmellBaseline>

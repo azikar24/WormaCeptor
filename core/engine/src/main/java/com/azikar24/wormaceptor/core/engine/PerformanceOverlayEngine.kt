@@ -219,26 +219,6 @@ class PerformanceOverlayEngine(
     }
 
     /**
-     * Hides the overlay view only, without clearing state.
-     * Used when app goes to background temporarily.
-     */
-    private fun hideOverlayOnly() {
-        if (!_isVisible.value) return
-
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-
-        // Stop metrics collection
-        stopMetricsCollection()
-
-        // Remove overlay view but keep references
-        removeOverlayView()
-
-        _isVisible.value = false
-    }
-
-    /**
      * Updates the position of the overlay (as screen percentage).
      *
      * @param positionPercent New position as percentage (0.0-1.0) of screen dimensions
@@ -727,7 +707,7 @@ class PerformanceOverlayEngine(
         val initialX = when (direction) {
             PositionDirection.LEFT -> (savedPosition.x * screenWidth).toInt() - overlayWidthPx
             PositionDirection.RIGHT -> (savedPosition.x * screenWidth).toInt()
-            PositionDirection.CENTER -> (savedPosition.x * screenWidth).toInt() - (overlayWidthPx / 2)
+            PositionDirection.CENTER -> (savedPosition.x * screenWidth).toInt() - overlayWidthPx / 2
         }.coerceIn(0, screenWidth - overlayWidthPx)
         val initialY = (savedPosition.y * screenHeight).toInt()
 
@@ -851,7 +831,7 @@ class PerformanceOverlayEngine(
             }
             PositionDirection.CENTER -> {
                 // Center: anchor at center
-                (position.x * screenWidth).toInt() - (overlayWidthPx / 2)
+                (position.x * screenWidth).toInt() - overlayWidthPx / 2
             }
         }
         val newY = (position.y * screenHeight).toInt()
@@ -938,13 +918,10 @@ class PerformanceOverlayEngine(
     }
 
     companion object {
-        private const val TAG = "PerformanceOverlayEngine"
-
         // SharedPreferences keys
         private const val PREFS_NAME = "wormaceptor_performance_overlay_prefs"
         private const val PREF_POSITION_X = "overlay_position_x"
         private const val PREF_POSITION_Y = "overlay_position_y"
-        private const val PREF_ENABLED = "overlay_enabled"
         private const val PREF_OVERLAY_ENABLED = "overlay_master_enabled"
         private const val PREF_FPS_ENABLED = "fps_enabled"
         private const val PREF_MEMORY_ENABLED = "memory_enabled"
@@ -952,8 +929,6 @@ class PerformanceOverlayEngine(
 
         // Overlay dimensions
         private const val OVERLAY_WIDTH_DP = 120
-        private const val OVERLAY_HEIGHT_COLLAPSED_DP = 40
-        private const val OVERLAY_HEIGHT_EXPANDED_DP = 180
 
         /**
          * Check if the app can draw overlays.

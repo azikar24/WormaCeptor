@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:MainActivity.kt$MainActivity$Companion</ID>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
     <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
@@ -328,12 +327,9 @@
     <ID>UnderscoresInNumericLiterals:SampleContentService.kt$SampleContentService$500000L</ID>
     <ID>UnderscoresInNumericLiterals:SampleWebSocketService.kt$SampleWebSocketService$250000L</ID>
     <ID>UnderscoresInNumericLiterals:VeryLargeData.kt$VeryLargeData$1000000</ID>
-    <ID>UnnecessaryParentheses:GlitchEffect.kt$(i.toFloat() / scanLineCount)</ID>
-    <ID>UnnecessaryParentheses:GlitchEffect.kt$(size.width / pixelSize)</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
     <ID>UnusedParameter:MainActivityViewModel.kt$MainActivityViewModel$context: Context</ID>
-    <ID>UnusedPrivateProperty:VeryLargeData.kt$VeryLargeData$i</ID>
     <ID>WildcardImport:HttpBinApi.kt$import retrofit2.http.*</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -289,7 +289,7 @@ fun ImagePreviewCard(
                 }
 
                 // Image Preview Container
-                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: (16f / 9f)
+                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: 16f / 9f
                 val constrainedAspectRatio = aspectRatio.coerceIn(0.5f, 2.5f)
 
                 Box(

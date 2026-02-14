@@ -181,14 +181,12 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                     onSendClick = {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             val permission = Manifest.permission.POST_NOTIFICATIONS
-                            when {
-                                ContextCompat.checkSelfPermission(context, permission) ==
-                                    PackageManager.PERMISSION_GRANTED -> {
-                                    viewModel.sendNotification()
-                                }
-                                else -> {
-                                    permissionLauncher.launch(permission)
-                                }
+                            if (ContextCompat.checkSelfPermission(context, permission) ==
+                                PackageManager.PERMISSION_GRANTED
+                            ) {
+                                viewModel.sendNotification()
+                            } else {
+                                permissionLauncher.launch(permission)
                             }
                         } else {
                             viewModel.sendNotification()

@@ -24,7 +24,7 @@ class DatabaseDataSource(private val context: Context) {
                 .filter {
                     it.endsWith(
                         ".db",
-                    ) || (!it.contains("-journal") && !it.contains("-wal") && !it.contains("-shm"))
+                    ) || !it.contains("-journal") && !it.contains("-wal") && !it.contains("-shm")
                 }
                 .mapNotNull { dbName ->
                     try {

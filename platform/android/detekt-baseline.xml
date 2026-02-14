@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:FloatingButtonService.kt$FloatingButtonService$Companion</ID>
     <ID>CyclomaticComplexMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton()</ID>
     <ID>EmptyFunctionBlock:FloatingButtonService.kt$FloatingButtonService.&lt;no name provided&gt;${}</ID>
     <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var layoutParams: WindowManager.LayoutParams</ID>

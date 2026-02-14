@@ -368,10 +368,7 @@ class CryptoEngine {
      * @return The generated IV in the current key format
      */
     fun generateIv(): String {
-        val ivLengthBytes = when (_config.value.mode) {
-            CipherMode.GCM -> GCM_IV_LENGTH_BYTES
-            else -> IV_LENGTH_BYTES
-        }
+        val ivLengthBytes = if (_config.value.mode == CipherMode.GCM) GCM_IV_LENGTH_BYTES else IV_LENGTH_BYTES
         val ivBytes = ByteArray(ivLengthBytes)
         SecureRandom().nextBytes(ivBytes)
         return formatBytes(ivBytes, _config.value.keyFormat)

@@ -43,8 +43,8 @@ object BodyParsingUtils {
 
         return when {
             // JSON detection
-            (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-                (trimmed.startsWith("[") && trimmed.endsWith("]")) -> {
+            trimmed.startsWith("{") && trimmed.endsWith("}") ||
+                trimmed.startsWith("[") && trimmed.endsWith("]") -> {
                 try {
                     if (trimmed.startsWith("{")) {
                         JSONObject(trimmed)
@@ -59,10 +59,8 @@ object BodyParsingUtils {
 
             // XML detection
             trimmed.startsWith("<?xml") ||
-                (
-                    trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html") &&
-                        !trimmed.lowercase().startsWith("<html")
-                    ) -> ContentType.XML
+                trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html") &&
+                !trimmed.lowercase().startsWith("<html") -> ContentType.XML
 
             // HTML detection
             trimmed.lowercase().contains("<!doctype html") ||

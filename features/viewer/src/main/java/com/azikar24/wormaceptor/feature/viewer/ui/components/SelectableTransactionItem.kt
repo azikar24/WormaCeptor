@@ -187,7 +187,7 @@ fun SelectableTransactionItem(
             onCopyAsCurl = onCopyAsCurl,
             offset = DpOffset(
                 x = WormaCeptorDesignSystem.Spacing.lg,
-                y = (-WormaCeptorDesignSystem.Spacing.sm),
+                y = -WormaCeptorDesignSystem.Spacing.sm,
             ),
         )
     }

@@ -463,7 +463,7 @@ private fun MemoryLineChart(
         // Draw grid lines
         val gridLineCount = 4
         for (i in 0..gridLineCount) {
-            val y = padding + (chartHeight / gridLineCount) * i
+            val y = padding + chartHeight / gridLineCount * i
             drawLine(
                 color = colors.gridLines,
                 start = Offset(padding, y),
@@ -477,8 +477,8 @@ private fun MemoryLineChart(
         // Draw heap usage line
         val heapPath = Path()
         history.forEachIndexed { index, info ->
-            val x = padding + (chartWidth / (history.size - 1)) * index
-            val y = padding + chartHeight - (info.usedMemory.toFloat() / maxMemory * chartHeight)
+            val x = padding + chartWidth / (history.size - 1) * index
+            val y = padding + chartHeight - info.usedMemory.toFloat() / maxMemory * chartHeight
 
             if (index == 0) {
                 heapPath.moveTo(x, y)
@@ -498,8 +498,8 @@ private fun MemoryLineChart(
         // Draw native heap line
         val nativePath = Path()
         history.forEachIndexed { index, info ->
-            val x = padding + (chartWidth / (history.size - 1)) * index
-            val y = padding + chartHeight - (info.nativeHeapAllocated.toFloat() / maxMemory * chartHeight)
+            val x = padding + chartWidth / (history.size - 1) * index
+            val y = padding + chartHeight - info.nativeHeapAllocated.toFloat() / maxMemory * chartHeight
 
             if (index == 0) {
                 nativePath.moveTo(x, y)
@@ -519,8 +519,8 @@ private fun MemoryLineChart(
         // Draw area fill for heap usage
         val areaPath = Path()
         history.forEachIndexed { index, info ->
-            val x = padding + (chartWidth / (history.size - 1)) * index
-            val y = padding + chartHeight - (info.usedMemory.toFloat() / maxMemory * chartHeight)
+            val x = padding + chartWidth / (history.size - 1) * index
+            val y = padding + chartHeight - info.usedMemory.toFloat() / maxMemory * chartHeight
 
             if (index == 0) {
                 areaPath.moveTo(x, padding + chartHeight)
@@ -546,7 +546,7 @@ private fun NativeHeapCard(
     modifier: Modifier = Modifier,
 ) {
     val usagePercent = if (currentMemory.nativeHeapSize > 0) {
-        (currentMemory.nativeHeapAllocated.toFloat() / currentMemory.nativeHeapSize.toFloat()) * 100f
+        currentMemory.nativeHeapAllocated.toFloat() / currentMemory.nativeHeapSize.toFloat() * 100f
     } else {
         0f
     }

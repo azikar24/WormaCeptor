@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:FileSystemDataSource.kt$FileSystemDataSource$Companion</ID>
     <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/'</ID>
     <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/'</ID>
     <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; (text[i].isDigit() || text[i] == '.' || text[i] == 'e' || text[i] == 'E' || text[i] == '+' || text[i] == '-')</ID>

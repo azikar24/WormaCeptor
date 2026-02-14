@@ -414,8 +414,8 @@ private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
                     scale = (scale * zoom).coerceIn(minScale, maxScale)
 
                     if (scale > 1f) {
-                        val maxX = (size.width * (scale - 1)) / 2
-                        val maxY = (size.height * (scale - 1)) / 2
+                        val maxX = size.width * (scale - 1) / 2
+                        val maxY = size.height * (scale - 1) / 2
                         offset = Offset(
                             x = (offset.x + pan.x).coerceIn(-maxX, maxX),
                             y = (offset.y + pan.y).coerceIn(-maxY, maxY),

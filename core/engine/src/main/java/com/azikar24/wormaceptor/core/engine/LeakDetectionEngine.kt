@@ -297,10 +297,7 @@ class LeakDetectionEngine(
      * This is an approximation based on object type and known patterns.
      */
     private fun estimateRetainedSize(obj: Any): Long {
-        return when (obj) {
-            is Activity -> ESTIMATED_ACTIVITY_SIZE
-            else -> ESTIMATED_DEFAULT_SIZE
-        }
+        return if (obj is Activity) ESTIMATED_ACTIVITY_SIZE else ESTIMATED_DEFAULT_SIZE
     }
 
     /**

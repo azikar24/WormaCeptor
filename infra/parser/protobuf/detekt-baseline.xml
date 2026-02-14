@@ -28,8 +28,5 @@
     <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val value: String</ID>
     <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val wireType: Int</ID>
     <ID>UndocumentedPublicProperty:ProtobufBodyParser.kt$ProtobufField$val wireTypeName: String</ID>
-    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(b and 0x80)</ID>
-    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(b.toLong() and 0x7F)</ID>
-    <ID>UnnecessaryParentheses:ProtobufBodyParser.kt$ProtobufBodyParser$(value shr 1)</ID>
   </CurrentIssues>
 </SmellBaseline>

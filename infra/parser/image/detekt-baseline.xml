@@ -2,7 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CollapsibleIfStatements:ImageMetadataExtractor.kt$ImageMetadataExtractor$if (marker in 0xC0..0xCF &amp;&amp; marker !in listOf(0xC4, 0xC8, 0xCC)) { if (offset + 7 &lt;= data.size) { val precision = data[offset + 2].toInt() and 0xFF val height = ((data[offset + 3].toInt() and 0xFF) shl 8) or (data[offset + 4].toInt() and 0xFF) val width = ((data[offset + 5].toInt() and 0xFF) shl 8) or (data[offset + 6].toInt() and 0xFF) val components = data[offset + 7].toInt() and 0xFF val colorSpace = when (components) { 1 -&gt; "Grayscale" 3 -&gt; "YCbCr" // Usually converted to RGB 4 -&gt; "CMYK" else -&gt; null } return ImageMetadata( width = width, height = height, format = "JPEG", colorSpace = colorSpace, hasAlpha = false, // JPEG doesn't support alpha bitDepth = precision, fileSize = data.size.toLong(), ) } }</ID>
+    <ID>CollapsibleIfStatements:ImageMetadataExtractor.kt$ImageMetadataExtractor$if (marker in 0xC0..0xCF &amp;&amp; marker !in listOf(0xC4, 0xC8, 0xCC)) { if (offset + 7 &lt;= data.size) { val precision = data[offset + 2].toInt() and 0xFF val height = data[offset + 3].toInt() and 0xFF shl 8 or (data[offset + 4].toInt() and 0xFF) val width = data[offset + 5].toInt() and 0xFF shl 8 or (data[offset + 6].toInt() and 0xFF) val components = data[offset + 7].toInt() and 0xFF val colorSpace = when (components) { 1 -&gt; "Grayscale" 3 -&gt; "YCbCr" // Usually converted to RGB 4 -&gt; "CMYK" else -&gt; null } return ImageMetadata( width = width, height = height, format = "JPEG", colorSpace = colorSpace, hasAlpha = false, // JPEG doesn't support alpha bitDepth = precision, fileSize = data.size.toLong(), ) } }</ID>
     <ID>CyclomaticComplexMethod:ImageMetadataExtractor.kt$ImageMetadataExtractor$private fun extractJpegMetadata(data: ByteArray): ImageMetadata</ID>
     <ID>LoopWithTooManyJumpStatements:ImageMetadataExtractor.kt$ImageMetadataExtractor$while</ID>
     <ID>MagicNumber:ImageMetadata.kt$ImageMetadata$1024</ID>
@@ -82,30 +82,6 @@
     <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val contentType: ContentType</ID>
     <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val displayName: String</ID>
     <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$val mimeTypes: List&lt;String&gt;</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((bits shr 28) and 1)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[7].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[9].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 3].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 4].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 5].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset + 6].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$((data[offset].toInt() and 0xFF) shl 8)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(bits shr 14)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(bits shr 28)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[24].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[25].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[26].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[27].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[28].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[29].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[7].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[9].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 3].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 4].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 5].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset + 6].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(data[offset].toInt() and 0xFF)</ID>
-    <ID>UnnecessaryParentheses:ImageMetadataExtractor.kt$ImageMetadataExtractor$(flags and 0x10)</ID>
     <ID>UnnecessaryParentheses:MagicByteDetector.kt$MagicByteDetector$(lowercasePreview.contains(XML_DECLARATION) &amp;&amp; lowercasePreview.contains("svg"))</ID>
   </CurrentIssues>
 </SmellBaseline>

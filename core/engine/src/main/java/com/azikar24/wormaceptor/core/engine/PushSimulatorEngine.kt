@@ -29,13 +29,6 @@ class PushSimulatorEngine(private val context: Context) {
         NotificationManagerCompat.from(context)
     }
 
-    companion object {
-        const val DEFAULT_CHANNEL_ID = "wormaceptor_test_channel"
-        const val DEFAULT_CHANNEL_NAME = "WormaCeptor Test Notifications"
-        const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"
-        private const val ACTION_BROADCAST_PREFIX = "com.azikar24.wormaceptor.NOTIFICATION_ACTION_"
-    }
-
     /**
      * Sends a notification based on the provided SimulatedNotification.
      * Creates default channel if the specified channel does not exist.
@@ -264,6 +257,13 @@ class PushSimulatorEngine(private val context: Context) {
             NotificationPriority.HIGH -> NotificationCompat.PRIORITY_HIGH
             NotificationPriority.MAX -> NotificationCompat.PRIORITY_MAX
         }
+    }
+
+    companion object {
+        const val DEFAULT_CHANNEL_ID = "wormaceptor_test_channel"
+        const val DEFAULT_CHANNEL_NAME = "WormaCeptor Test Notifications"
+        const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"
+        private const val ACTION_BROADCAST_PREFIX = "com.azikar24.wormaceptor.NOTIFICATION_ACTION_"
     }
 }
 

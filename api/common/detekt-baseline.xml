@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:BaseServiceProviderImpl.kt$BaseServiceProviderImpl$Companion</ID>
     <ID>MagicNumber:LeakNotificationHelper.kt$LeakNotificationHelper$1024</ID>
     <ID>MagicNumber:LeakNotificationHelper.kt$LeakNotificationHelper$1024.0</ID>
     <ID>MagicNumber:LeakNotificationHelper.kt$LeakNotificationHelper$1_048_576</ID>

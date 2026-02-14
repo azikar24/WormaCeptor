@@ -343,12 +343,6 @@ private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-@Deprecated("Use EnhancedEmptyState instead")
-private fun EmptyState(message: String, modifier: Modifier = Modifier) {
-    EnhancedEmptyState(modifier = modifier)
-}
-
 // Helper functions
 private fun formatRelativeTime(timestamp: Long): String {
     val now = System.currentTimeMillis()

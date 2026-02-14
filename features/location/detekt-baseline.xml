@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ClassOrdering:LocationViewModel.kt$LocationViewModel$Companion</ID>
     <ID>ComposableParamOrder:LocationScreen.kt$LocationScreen</ID>
     <ID>CyclomaticComplexMethod:LocationStatusSection.kt$@Composable internal fun MockLocationStatusCard( currentMockLocation: MockLocation?, isMockEnabled: Boolean, onToggle: () -&gt; Unit, isEnabled: Boolean, canEnable: Boolean, )</ID>
     <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator( engine: LocationSimulatorEngine, repository: LocationSimulatorRepository, context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
@@ -58,7 +57,6 @@
     <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val realDeviceLocation: StateFlow&lt;Location?&gt; = _realDeviceLocation.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:LocationViewModel.kt$LocationViewModel$val successMessage: StateFlow&lt;String?&gt; = _successMessage.asStateFlow()</ID>
-    <ID>UseIfInsteadOfWhen:LocationMapView.kt$when { meters &lt; 1000 -&gt; "%.0f m".format(meters) else -&gt; "%.2f km".format(meters / 1000) }</ID>
     <ID>ViewModelInjection:LocationFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

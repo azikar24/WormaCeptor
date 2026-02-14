@@ -43,10 +43,6 @@ class LocationViewModel(
     context: Context,
 ) : ViewModel() {
 
-    private companion object {
-        private const val TAG = "LocationViewModel"
-    }
-
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
@@ -385,5 +381,9 @@ class LocationViewModel(
     override fun onCleared() {
         super.onCleared()
         stopRealLocationUpdates()
+    }
+
+    private companion object {
+        private const val TAG = "LocationViewModel"
     }
 }

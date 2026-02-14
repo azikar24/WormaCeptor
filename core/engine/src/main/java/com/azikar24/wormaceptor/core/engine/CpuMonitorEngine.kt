@@ -314,7 +314,7 @@ class CpuMonitorEngine(
         val idleDelta = currIdle - prevIdle
 
         return if (totalDelta > 0) {
-            ((totalDelta - idleDelta).toFloat() / totalDelta.toFloat()) * 100f
+            (totalDelta - idleDelta).toFloat() / totalDelta.toFloat() * 100f
         } else {
             0f
         }.coerceIn(0f, 100f)

@@ -206,8 +206,9 @@ fun calculateDistance(point1: GeoPoint, point2: GeoPoint): Double {
  * Format distance for display.
  */
 fun formatDistance(meters: Double): String {
-    return when {
-        meters < 1000 -> "%.0f m".format(meters)
-        else -> "%.2f km".format(meters / 1000)
+    return if (meters < 1000) {
+        "%.0f m".format(meters)
+    } else {
+        "%.2f km".format(meters / 1000)
     }
 }

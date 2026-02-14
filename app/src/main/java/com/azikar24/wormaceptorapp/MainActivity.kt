@@ -62,33 +62,6 @@ import java.io.File
 
 class MainActivity : ComponentActivity() {
 
-    companion object {
-        // Intentional memory leak for testing leak detection tools
-        // This list holds strong references to Activity instances, preventing GC
-        private val _leakedActivities = mutableListOf<MainActivity>()
-
-        // Flag to detect rotation after leak was triggered
-        private var _leakAwaitingRotation = false
-
-        // Inline status feedback durations
-        private const val STATUS_RUNNING_DURATION = 800L
-        private const val STATUS_DONE_DURATION = 1500L
-
-        // Navigation transition durations
-        private const val NAV_TRANSITION_DURATION = 200
-        private const val SHEET_DISMISS_DELAY = 100L
-
-        /**
-         * Check if a leak was triggered and rotation occurred.
-         * Clears the flag after checking.
-         */
-        fun checkLeakRotationDetected(): Boolean {
-            val detected = _leakAwaitingRotation
-            _leakAwaitingRotation = false
-            return detected
-        }
-    }
-
     /**
      * Intentionally leaks this Activity by storing it in a static list.
      * Use this to test memory leak detection tools like LeakCanary.
@@ -408,5 +381,32 @@ class MainActivity : ComponentActivity() {
                 }
             },
         )
+    }
+
+    companion object {
+        // Intentional memory leak for testing leak detection tools
+        // This list holds strong references to Activity instances, preventing GC
+        private val _leakedActivities = mutableListOf<MainActivity>()
+
+        // Flag to detect rotation after leak was triggered
+        private var _leakAwaitingRotation = false
+
+        // Inline status feedback durations
+        private const val STATUS_RUNNING_DURATION = 800L
+        private const val STATUS_DONE_DURATION = 1500L
+
+        // Navigation transition durations
+        private const val NAV_TRANSITION_DURATION = 200
+        private const val SHEET_DISMISS_DELAY = 100L
+
+        /**
+         * Check if a leak was triggered and rotation occurred.
+         * Clears the flag after checking.
+         */
+        fun checkLeakRotationDetected(): Boolean {
+            val detected = _leakAwaitingRotation
+            _leakAwaitingRotation = false
+            return detected
+        }
     }
 }

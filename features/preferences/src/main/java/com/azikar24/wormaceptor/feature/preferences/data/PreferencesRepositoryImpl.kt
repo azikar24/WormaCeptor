@@ -22,10 +22,6 @@ class PreferencesRepositoryImpl(
     private val dataSource: PreferencesDataSource,
 ) : PreferencesRepository {
 
-    companion object {
-        private const val POLL_INTERVAL_MS = 2000L
-    }
-
     override fun observePreferenceFiles(): Flow<List<PreferenceFile>> = flow {
         while (true) {
             emit(dataSource.getPreferenceFiles())
@@ -64,5 +60,9 @@ class PreferencesRepositoryImpl(
 
     override suspend fun clearFile(fileName: String) = withContext(Dispatchers.IO) {
         dataSource.clearFile(fileName)
+    }
+
+    companion object {
+        private const val POLL_INTERVAL_MS = 2000L
     }
 }

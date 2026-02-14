@@ -354,35 +354,6 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings {
-	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings$Companion;
-	public fun <init> ()V
-	public fun <init> (ZFFZZZ)V
-	public synthetic fun <init> (ZFFZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Z
-	public final fun component2 ()F
-	public final fun component3 ()F
-	public final fun component4 ()Z
-	public final fun component5 ()Z
-	public final fun component6 ()Z
-	public final fun copy (ZFFZZZ)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings;ZFFZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getEnabled ()Z
-	public final fun getPositionXPercent ()F
-	public final fun getPositionYPercent ()F
-	public final fun getShowCpu ()Z
-	public final fun getShowFps ()Z
-	public final fun getShowMemory ()Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings$Companion {
-	public final fun getDEFAULT ()Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlaySettings;
-}
-
 public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayState {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState$Companion;
@@ -407,7 +378,6 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayState 
 	public final fun component9 ()Z
 	public final fun copy-H2Vzq_w (ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;Z)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
 	public static synthetic fun copy-H2Vzq_w$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
-	public final fun enabledMetricCount ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCpuEnabled ()Z
 	public final fun getCpuHistory ()Ljava/util/List;
@@ -533,7 +503,6 @@ public final class com/azikar24/wormaceptor/core/engine/RateLimitEngine$Companio
 
 public final class com/azikar24/wormaceptor/core/engine/SecureStorageEngine {
 	public static final field $stable I
-	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/SecureStorageEngine$Companion;
 	public fun <init> (Landroid/content/Context;)V
 	public final fun getEncryptedPrefsAccessible ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getEntries ()Lkotlinx/coroutines/flow/StateFlow;
@@ -545,9 +514,6 @@ public final class com/azikar24/wormaceptor/core/engine/SecureStorageEngine {
 	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun refresh ()V
 	public final fun searchEntries (Ljava/lang/String;)Ljava/util/List;
-}
-
-public final class com/azikar24/wormaceptor/core/engine/SecureStorageEngine$Companion {
 }
 
 public final class com/azikar24/wormaceptor/core/engine/ThreadViolationEngine {
@@ -619,6 +585,7 @@ public final class com/azikar24/wormaceptor/core/engine/WebViewMonitorEngine {
 	public final fun clearFilters ()V
 	public final fun clearRequests ()V
 	public final fun clearRequestsForWebView (Ljava/lang/String;)V
+	public final fun configure (Lcom/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository;)V
 	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
 	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
 	public final fun disable ()V

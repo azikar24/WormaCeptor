@@ -239,19 +239,15 @@ class LocationSimulatorEngine(private val context: Context) {
 
     @SuppressLint("MissingPermission")
     private fun addTestProviders() {
-        try {
-            // Add GPS test provider
-            addTestProvider(LocationManager.GPS_PROVIDER)
-            locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true)
+        // Add GPS test provider
+        addTestProvider(LocationManager.GPS_PROVIDER)
+        locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true)
 
-            // Add Network test provider
-            addTestProvider(LocationManager.NETWORK_PROVIDER)
-            locationManager.setTestProviderEnabled(LocationManager.NETWORK_PROVIDER, true)
+        // Add Network test provider
+        addTestProvider(LocationManager.NETWORK_PROVIDER)
+        locationManager.setTestProviderEnabled(LocationManager.NETWORK_PROVIDER, true)
 
-            isProviderAdded = true
-        } catch (e: Exception) {
-            throw e
-        }
+        isProviderAdded = true
     }
 
     private fun addTestProvider(provider: String) {

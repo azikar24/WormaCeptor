@@ -112,7 +112,7 @@ class DefaultParserRegistry : ParserRegistry {
         for (i in 0 until sampleSize) {
             val b = body[i].toInt() and 0xFF
             // Allow common control chars (tab, newline, carriage return) and printable ASCII
-            if (b < 9 || (b in 14..31) || b == 127) {
+            if (b < 9 || b in 14..31 || b == 127) {
                 nonPrintableCount++
             }
         }

@@ -12,6 +12,5 @@
     <ID>NestedBlockDepth:XmlBodyParser.kt$XmlBodyParser$private fun formatXml(xml: String): String</ID>
     <ID>SwallowedException:XmlBodyParser.kt$XmlBodyParser$e: Exception</ID>
     <ID>TooGenericExceptionCaught:XmlBodyParser.kt$XmlBodyParser$e: Exception</ID>
-    <ID>UnnecessaryParentheses:XmlBodyParser.kt$XmlBodyParser$(trimmed.startsWith("&lt;") &amp;&amp; !trimmed.startsWith("&lt;!DOCTYPE html", ignoreCase = true))</ID>
   </CurrentIssues>
 </SmellBaseline>

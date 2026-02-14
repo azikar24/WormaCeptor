@@ -194,7 +194,7 @@ class MultipartBodyParser : BaseBodyParser() {
         // Check for non-printable characters
         val nonPrintable = content.count { c ->
             val code = c.code
-            code < 9 || (code in 14..31) || code == 127
+            code < 9 || code in 14..31 || code == 127
         }
         return nonPrintable.toFloat() / content.length > 0.1f
     }

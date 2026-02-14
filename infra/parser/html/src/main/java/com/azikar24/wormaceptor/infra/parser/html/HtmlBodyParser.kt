@@ -40,15 +40,6 @@ class HtmlBodyParser(
         "link", "meta", "param", "source", "track", "wbr",
     )
 
-    // Inline elements
-    private val inlineElements = setOf(
-        "a", "abbr", "acronym", "b", "bdo", "big", "br", "button",
-        "cite", "code", "dfn", "em", "i", "img", "input", "kbd",
-        "label", "map", "object", "output", "q", "samp", "script",
-        "select", "small", "span", "strong", "sub", "sup", "textarea",
-        "time", "tt", "var",
-    )
-
     override fun canParse(contentType: String?, body: ByteArray): Boolean {
         // Check content type first
         if (contentType != null) {
@@ -64,7 +55,7 @@ class HtmlBodyParser(
         val content = String(body, Charsets.UTF_8).trim().lowercase()
         return content.startsWith("<!doctype html") ||
             content.startsWith("<html") ||
-            (content.contains("<html") && content.contains("</html>"))
+            content.contains("<html") && content.contains("</html>")
     }
 
     override fun parseBody(body: ByteArray): ParsedBody {

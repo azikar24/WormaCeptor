@@ -47,14 +47,14 @@ class TransactionPagingSource(
         }
     }
 
-    companion object {
-        const val PAGE_SIZE = 30
-    }
-
     override fun getRefreshKey(state: PagingState<Int, TransactionSummary>): Int? {
         return state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(1)
         }
+    }
+
+    companion object {
+        const val PAGE_SIZE = 30
     }
 }

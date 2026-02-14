@@ -85,7 +85,6 @@
     <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tableSchema: StateFlow&lt;ImmutableList&lt;ColumnInfo&gt;&gt; = _tableSchema</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tableSearchQuery: StateFlow&lt;String&gt; = _tableSearchQuery</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tablesError: StateFlow&lt;String?&gt; = _tablesError</ID>
-    <ID>UnnecessaryParentheses:DatabaseDataSource.kt$DatabaseDataSource$(!it.contains("-journal") &amp;&amp; !it.contains("-wal") &amp;&amp; !it.contains("-shm"))</ID>
     <ID>ViewModelInjection:DatabaseFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

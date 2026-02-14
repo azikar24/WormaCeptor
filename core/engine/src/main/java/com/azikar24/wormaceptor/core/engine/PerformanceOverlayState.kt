@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.core.engine
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Offset
 
@@ -45,6 +44,16 @@ data class PerformanceOverlayState(
     val cpuHistory: List<Float> = emptyList(),
     val cpuMonitorRunning: Boolean = false,
 ) {
+    /**
+     * Returns true if at least one metric is enabled.
+     */
+    fun hasAnyMetricEnabled(): Boolean = fpsEnabled || memoryEnabled || cpuEnabled
+
+    /**
+     * Returns true if the overlay is currently in the dismiss zone (bottom of screen).
+     */
+    fun isInDismissZone(): Boolean = positionPercent.y >= DISMISS_ZONE_THRESHOLD
+
     companion object {
         /**
          * Default position: top-right corner with some margin.
@@ -69,21 +78,6 @@ data class PerformanceOverlayState(
          */
         val EMPTY = PerformanceOverlayState()
     }
-
-    /**
-     * Returns true if at least one metric is enabled.
-     */
-    fun hasAnyMetricEnabled(): Boolean = fpsEnabled || memoryEnabled || cpuEnabled
-
-    /**
-     * Returns the count of enabled metrics.
-     */
-    fun enabledMetricCount(): Int = listOf(fpsEnabled, memoryEnabled, cpuEnabled).count { it }
-
-    /**
-     * Returns true if the overlay is currently in the dismiss zone (bottom of screen).
-     */
-    fun isInDismissZone(): Boolean = positionPercent.y >= DISMISS_ZONE_THRESHOLD
 }
 
 /**
@@ -158,30 +152,5 @@ enum class MetricStatus {
             percent <= PerformanceThresholds.CPU_WARNING -> WARNING
             else -> CRITICAL
         }
-    }
-}
-
-/**
- * Persisted settings for the performance overlay.
- * These values survive app restarts via SharedPreferences.
- *
- * @property enabled Whether the overlay is currently enabled
- * @property positionXPercent X position as percentage (0.0-1.0)
- * @property positionYPercent Y position as percentage (0.0-1.0)
- * @property showFps Whether to show FPS metric
- * @property showMemory Whether to show memory metric
- * @property showCpu Whether to show CPU metric
- */
-@Immutable
-data class PerformanceOverlaySettings(
-    val enabled: Boolean = false,
-    val positionXPercent: Float = PerformanceOverlayState.DEFAULT_POSITION_PERCENT.x,
-    val positionYPercent: Float = PerformanceOverlayState.DEFAULT_POSITION_PERCENT.y,
-    val showFps: Boolean = true,
-    val showMemory: Boolean = true,
-    val showCpu: Boolean = true,
-) {
-    companion object {
-        val DEFAULT = PerformanceOverlaySettings()
     }
 }

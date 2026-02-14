@@ -534,7 +534,7 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         // Draw grid lines
         val gridLineCount = 4
         for (i in 0..gridLineCount) {
-            val y = padding + (chartHeight / gridLineCount) * i
+            val y = padding + chartHeight / gridLineCount * i
             drawLine(
                 color = colors.gridLines,
                 start = Offset(padding, y),
@@ -567,8 +567,8 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         // Draw CPU usage line
         val cpuPath = Path()
         history.forEachIndexed { index, info ->
-            val x = padding + (chartWidth / (history.size - 1)) * index
-            val y = padding + chartHeight - (info.overallUsagePercent / 100f * chartHeight)
+            val x = padding + chartWidth / (history.size - 1) * index
+            val y = padding + chartHeight - info.overallUsagePercent / 100f * chartHeight
 
             if (index == 0) {
                 cpuPath.moveTo(x, y)
@@ -588,8 +588,8 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
         // Draw area fill
         val areaPath = Path()
         history.forEachIndexed { index, info ->
-            val x = padding + (chartWidth / (history.size - 1)) * index
-            val y = padding + chartHeight - (info.overallUsagePercent / 100f * chartHeight)
+            val x = padding + chartWidth / (history.size - 1) * index
+            val y = padding + chartHeight - info.overallUsagePercent / 100f * chartHeight
 
             if (index == 0) {
                 areaPath.moveTo(x, padding + chartHeight)

@@ -568,7 +568,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
     val overlayState by performanceOverlayEngine.state.collectAsState()
     val isOverlayEnabled = overlayState.isOverlayEnabled
 
-    // Load saved metric states on first composition
+    // Load saved metric toggle states (FPS, Memory, CPU) from preferences
     LaunchedEffect(Unit) {
         performanceOverlayEngine.loadSavedMetricStates()
     }

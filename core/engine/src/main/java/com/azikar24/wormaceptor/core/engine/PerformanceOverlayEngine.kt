@@ -22,6 +22,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.azikar24.wormaceptor.core.engine.ui.DismissZoneContent
 import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,6 +72,7 @@ class PerformanceOverlayEngine(
     // WindowManager for overlay
     private var windowManager: WindowManager? = null
     private var overlayView: ComposeView? = null
+    private var dismissZoneView: ComposeView? = null
     private var activityRef: WeakReference<Activity>? = null
 
     // Activity lifecycle observer - keeps overlay visible across activities
@@ -397,12 +399,16 @@ class PerformanceOverlayEngine(
 
     /**
      * Loads and applies saved metric enabled states from SharedPreferences.
-     * This is a suspend function to avoid blocking the main thread during disk I/O.
+     * The overlay master toggle is always reset to OFF on app restart since the overlay
+     * window cannot survive process death. Individual metric toggles are preserved so
+     * re-enabling the overlay restores the same configuration.
      */
     suspend fun loadSavedMetricStates() {
-        val (overlayEnabled, fpsEnabled, memoryEnabled, cpuEnabled) = withContext(Dispatchers.IO) {
-            PrefsState(
-                overlayEnabled = prefs.getBoolean(PREF_OVERLAY_ENABLED, false),
+        val (fpsEnabled, memoryEnabled, cpuEnabled) = withContext(Dispatchers.IO) {
+            // Clear persisted overlay enabled state since it can't be restored without an Activity
+            prefs.edit().putBoolean(PREF_OVERLAY_ENABLED, false).apply()
+
+            MetricPrefsState(
                 fpsEnabled = prefs.getBoolean(PREF_FPS_ENABLED, false),
                 memoryEnabled = prefs.getBoolean(PREF_MEMORY_ENABLED, false),
                 cpuEnabled = prefs.getBoolean(PREF_CPU_ENABLED, false),
@@ -410,15 +416,14 @@ class PerformanceOverlayEngine(
         }
 
         _state.value = _state.value.copy(
-            isOverlayEnabled = overlayEnabled,
+            isOverlayEnabled = false,
             fpsEnabled = fpsEnabled,
             memoryEnabled = memoryEnabled,
             cpuEnabled = cpuEnabled,
         )
     }
 
-    private data class PrefsState(
-        val overlayEnabled: Boolean,
+    private data class MetricPrefsState(
         val fpsEnabled: Boolean,
         val memoryEnabled: Boolean,
         val cpuEnabled: Boolean,
@@ -665,6 +670,11 @@ class PerformanceOverlayEngine(
     }
 
     private fun createOverlayView(activity: Activity) {
+        val windowType = getOverlayWindowType()
+
+        // Create dismiss zone view first (renders below the pill in z-order)
+        createDismissZoneView(windowType)
+
         // Use application context so the overlay survives activity changes
         val composeView = ComposeView(context.applicationContext).apply {
             setViewTreeLifecycleOwner(this@PerformanceOverlayEngine)
@@ -692,33 +702,39 @@ class PerformanceOverlayEngine(
             }
         }
 
-        // Calculate initial position in pixels
-        // Use position from state (may be default, will update when loadSavedPosition completes)
+        val layoutParams = createOverlayLayoutParams(activity, windowType)
+        overlayView = composeView
+
+        try {
+            windowManager?.addView(composeView, layoutParams)
+            // Re-calculate position after layout with actual measured width
+            composeView.post { updateWindowPosition() }
+        } catch (e: Exception) {
+            // Failed to add overlay view - likely missing permission
+            overlayView = null
+        }
+    }
+
+    private fun getOverlayWindowType(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+    } else {
+        @Suppress("DEPRECATION")
+        WindowManager.LayoutParams.TYPE_PHONE
+    }
+
+    private fun createOverlayLayoutParams(activity: Activity, windowType: Int): WindowManager.LayoutParams {
         val displayMetrics = activity.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         val screenHeight = displayMetrics.heightPixels
 
         val savedPosition = _state.value.positionPercent
-        val overlayWidthPx = (OVERLAY_WIDTH_DP * displayMetrics.density).toInt()
+        val overlayWidthPx = getEstimatedOverlayWidthPx()
 
-        // Determine position direction based on saved position
-        val direction = getPositionDirection(savedPosition.x)
+        val initialX = ((savedPosition.x * screenWidth).toInt() - overlayWidthPx / 2)
+            .coerceIn(0, (screenWidth - overlayWidthPx).coerceAtLeast(0))
+        val initialY = (savedPosition.y * screenHeight).toInt().coerceAtLeast(0)
 
-        val initialX = when (direction) {
-            PositionDirection.LEFT -> (savedPosition.x * screenWidth).toInt() - overlayWidthPx
-            PositionDirection.RIGHT -> (savedPosition.x * screenWidth).toInt()
-            PositionDirection.CENTER -> (savedPosition.x * screenWidth).toInt() - overlayWidthPx / 2
-        }.coerceIn(0, screenWidth - overlayWidthPx)
-        val initialY = (savedPosition.y * screenHeight).toInt()
-
-        val windowType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            @Suppress("DEPRECATION")
-            WindowManager.LayoutParams.TYPE_PHONE
-        }
-
-        val layoutParams = WindowManager.LayoutParams().apply {
+        return WindowManager.LayoutParams().apply {
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
             type = windowType
@@ -726,17 +742,41 @@ class PerformanceOverlayEngine(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             format = PixelFormat.TRANSLUCENT
             gravity = Gravity.TOP or Gravity.START
-            x = initialX.coerceAtLeast(0)
-            y = initialY.coerceAtLeast(0)
+            x = initialX
+            y = initialY
+        }
+    }
+
+    private fun createDismissZoneView(windowType: Int) {
+        val dismissView = ComposeView(context.applicationContext).apply {
+            setViewTreeLifecycleOwner(this@PerformanceOverlayEngine)
+            setViewTreeSavedStateRegistryOwner(this@PerformanceOverlayEngine)
+
+            setContent {
+                val currentState by state.collectAsState()
+                DismissZoneContent(
+                    isDragging = currentState.isDragging,
+                    isInDismissZone = currentState.isDragging && currentState.isInDismissZone(),
+                )
+            }
         }
 
-        overlayView = composeView
+        val layoutParams = WindowManager.LayoutParams().apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.MATCH_PARENT
+            type = windowType
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            format = PixelFormat.TRANSLUCENT
+        }
+
+        dismissZoneView = dismissView
 
         try {
-            windowManager?.addView(composeView, layoutParams)
+            windowManager?.addView(dismissView, layoutParams)
         } catch (e: Exception) {
-            // Failed to add overlay view - likely missing permission
-            overlayView = null
+            dismissZoneView = null
         }
     }
 
@@ -749,6 +789,15 @@ class PerformanceOverlayEngine(
             }
         }
         overlayView = null
+
+        dismissZoneView?.let { view ->
+            try {
+                windowManager?.removeView(view)
+            } catch (e: Exception) {
+                // View might already be removed
+            }
+        }
+        dismissZoneView = null
     }
 
     /**
@@ -816,49 +865,48 @@ class PerformanceOverlayEngine(
         val screenHeight = displayMetrics.heightPixels
 
         val position = _state.value.positionPercent
-        val overlayWidthPx = (OVERLAY_WIDTH_DP * displayMetrics.density).toInt()
+        val overlayWidthPx = getOverlayWidthPx()
 
-        // Calculate X based on position to prevent clipping
-        val direction = getPositionDirection(position.x)
-        val newX = when (direction) {
-            PositionDirection.LEFT -> {
-                // Near right edge: anchor content to right
-                (position.x * screenWidth).toInt() - overlayWidthPx
-            }
-            PositionDirection.RIGHT -> {
-                // Near left edge: anchor content to left
-                (position.x * screenWidth).toInt()
-            }
-            PositionDirection.CENTER -> {
-                // Center: anchor at center
-                (position.x * screenWidth).toInt() - overlayWidthPx / 2
-            }
-        }
-        val newY = (position.y * screenHeight).toInt()
+        // Always center-anchor: positionPercent represents the overlay center.
+        // coerceIn handles edge clamping so the pill stays fully on screen.
+        val newX = ((position.x * screenWidth).toInt() - overlayWidthPx / 2)
+            .coerceIn(0, (screenWidth - overlayWidthPx).coerceAtLeast(0))
+        val newY = (position.y * screenHeight).toInt().coerceAtLeast(0)
 
         try {
             val params = view.layoutParams as WindowManager.LayoutParams
-            params.x = newX.coerceIn(0, screenWidth - overlayWidthPx)
-            params.y = newY.coerceAtLeast(0)
+            params.x = newX
+            params.y = newY
             wm.updateViewLayout(view, params)
         } catch (e: Exception) {
             // View might have been removed
         }
     }
 
-    private fun getPositionDirection(xPercent: Float): PositionDirection = when {
-        xPercent > 0.7f -> PositionDirection.LEFT
-        xPercent < 0.3f -> PositionDirection.RIGHT
-        else -> PositionDirection.CENTER
+    /**
+     * Returns the overlay width in pixels, using the actual measured width when available.
+     */
+    private fun getOverlayWidthPx(): Int {
+        val measuredWidth = overlayView?.width?.takeIf { it > 0 }
+        if (measuredWidth != null) return measuredWidth
+        return getEstimatedOverlayWidthPx()
     }
 
     /**
-     * Direction for positioning the overlay to avoid screen clipping.
+     * Estimates the overlay width based on the number of enabled metrics.
      */
-    private enum class PositionDirection {
-        LEFT,
-        RIGHT,
-        CENTER,
+    private fun getEstimatedOverlayWidthPx(): Int {
+        val enabledCount = listOf(
+            _state.value.fpsEnabled,
+            _state.value.memoryEnabled,
+            _state.value.cpuEnabled,
+        ).count { it }
+
+        val density = context.resources.displayMetrics.density
+        val contentDp = ESTIMATED_METRIC_WIDTH_DP * enabledCount +
+            METRIC_SPACING_DP * (enabledCount - 1).coerceAtLeast(0) +
+            PILL_PADDING_HORIZONTAL_DP * 2
+        return (contentDp * density).toInt()
     }
 
     // Deep link handlers to open specific screens
@@ -927,8 +975,10 @@ class PerformanceOverlayEngine(
         private const val PREF_MEMORY_ENABLED = "memory_enabled"
         private const val PREF_CPU_ENABLED = "cpu_enabled"
 
-        // Overlay dimensions
-        private const val OVERLAY_WIDTH_DP = 120
+        // Overlay width estimation constants (dp)
+        private const val ESTIMATED_METRIC_WIDTH_DP = 70
+        private const val METRIC_SPACING_DP = 12
+        private const val PILL_PADDING_HORIZONTAL_DP = 12
 
         /**
          * Check if the app can draw overlays.

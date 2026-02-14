@@ -37,7 +37,6 @@
     <ID>InstanceOfCheckForException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e is SecurityException</ID>
     <ID>LargeClass:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$Companion</ID>
     <ID>LongMethod:CryptoEngine.kt$CryptoEngine$fun decrypt(ciphertext: String): CryptoResult</ID>
-    <ID>LongMethod:PerformanceOverlayContent.kt$@Composable fun PerformanceOverlayContent( state: PerformanceOverlayState, callbacks: PerformanceOverlayEngine.OverlayCallbacks, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:CaptureEngine.kt$CaptureEngine$400</ID>
     <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000</ID>
     <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000f</ID>
@@ -78,11 +77,8 @@
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF1C1C1E</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF32D74B</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF8E8E93</ID>
-    <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF3B30</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF453A</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFFFF9F0A</ID>
-    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$0.3f</ID>
-    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$0.7f</ID>
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$3</ID>
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$4</ID>
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$5</ID>

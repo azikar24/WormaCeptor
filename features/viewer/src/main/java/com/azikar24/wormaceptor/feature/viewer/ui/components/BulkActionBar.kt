@@ -1,14 +1,10 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,6 +21,7 @@ import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +35,9 @@ import com.azikar24.wormaceptor.feature.viewer.R
 /**
  * Action bar that appears when items are selected in multi-select mode.
  * Provides bulk operations like share, export, and delete.
+ *
+ * Note: This composable renders its content unconditionally.
+ * The parent is responsible for controlling visibility (e.g., via Crossfade).
  */
 @Composable
 fun BulkActionBar(
@@ -51,11 +51,9 @@ fun BulkActionBar(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = selectedCount > 0,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut(),
-        modifier = modifier,
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+        modifier = modifier.defaultMinSize(minHeight = 64.dp),
     ) {
         Row(
             modifier = Modifier
@@ -76,7 +74,7 @@ fun BulkActionBar(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = stringResource(R.string.viewer_bulk_cancel_selection),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
 
@@ -86,7 +84,7 @@ fun BulkActionBar(
                     text = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
@@ -100,7 +98,7 @@ fun BulkActionBar(
                         Icon(
                             imageVector = Icons.Default.SelectAll,
                             contentDescription = stringResource(R.string.viewer_bulk_select_all),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -109,7 +107,7 @@ fun BulkActionBar(
                         Icon(
                             imageVector = Icons.Outlined.Deselect,
                             contentDescription = stringResource(R.string.viewer_bulk_deselect_all),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -119,7 +117,7 @@ fun BulkActionBar(
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = stringResource(R.string.viewer_bulk_share_selected),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp),
                     )
                 }
@@ -128,7 +126,7 @@ fun BulkActionBar(
                     Icon(
                         imageVector = Icons.Default.Download,
                         contentDescription = stringResource(R.string.viewer_bulk_export_selected),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp),
                     )
                 }

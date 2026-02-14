@@ -220,9 +220,7 @@
     <ID>MaxLineLength:FilterBottomSheetContent.kt$if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select</ID>
     <ID>MaxLineLength:FilterBottomSheetContent.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin</ID>
     <ID>MaxLineLength:HomeScreen.kt$hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
-    <ID>MaxLineLength:HomeScreen.kt$val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0</ID>
     <ID>MaxLineLength:HomeScreen.kt$val hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
-    <ID>MaxLineLength:HomeScreen.kt$val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
     <ID>MaxLineLength:SelectableTransactionItem.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
     <ID>MaxLineLength:TransactionDetailScreen.kt$fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal</ID>
     <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$"WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"</ID>

@@ -3,8 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -60,7 +59,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -72,6 +70,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
@@ -204,166 +203,162 @@ fun HomeScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            Column {
-                // Show bulk action bar when in selection mode
-                BulkActionBar(
-                    selectedCount = selectedIds.size,
-                    totalCount = transactions.size,
-                    onShare = onShareSelected,
-                    onDelete = { showDeleteSelectedDialog = true },
-                    onExport = onExportSelected,
-                    onSelectAll = onSelectAll,
-                    onDeselectAll = onClearSelection,
-                    onCancel = onClearSelection,
-                )
+        floatingActionButton = {
+            val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
+            val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
 
-                // Regular top bar when not in selection mode
-                AnimatedVisibility(
-                    visible = !isSelectionMode,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut(),
-                ) {
-                    TopAppBar(
-                        title = { Text(stringResource(R.string.viewer_home_title)) },
-                        navigationIcon = {
-                            IconButton(onClick = { (context as? Activity)?.finish() }) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(R.string.viewer_home_back),
+            AnimatedVisibility(
+                visible = pagerState.currentPage == 0 && !isSelectionMode,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                BadgedBox(
+                    badge = {
+                        if (isFiltering) {
+                            Badge(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                            ) {
+                                Text(
+                                    text = filterCount.toString(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
                                 )
                             }
-                        },
-                        actions = {
-                            if (pagerState.currentPage == 0) {
-                                val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
-                                val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
+                        }
+                    },
+                ) {
+                    WormaCeptorFAB(
+                        onClick = { showFilterSheet = true },
+                        icon = Icons.Default.FilterList,
+                        contentDescription = stringResource(R.string.viewer_home_filter),
+                    )
+                }
+            }
+        },
+        topBar = {
+            Column {
+                // Crossfade between BulkActionBar and TopAppBar to avoid height shift
+                Crossfade(targetState = isSelectionMode) { inSelectionMode ->
+                    if (inSelectionMode) {
+                        BulkActionBar(
+                            selectedCount = selectedIds.size,
+                            totalCount = transactions.size,
+                            onShare = onShareSelected,
+                            onDelete = { showDeleteSelectedDialog = true },
+                            onExport = onExportSelected,
+                            onSelectAll = onSelectAll,
+                            onDeselectAll = onClearSelection,
+                            onCancel = onClearSelection,
+                        )
+                    } else {
+                        TopAppBar(
+                            title = { Text(stringResource(R.string.viewer_home_title)) },
+                            navigationIcon = {
+                                IconButton(onClick = { (context as? Activity)?.finish() }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = stringResource(R.string.viewer_home_back),
+                                    )
+                                }
+                            },
+                            actions = {
+                                // Overflow Menu - only show on Transactions and Crashes tabs
+                                if (pagerState.currentPage < 2) {
+                                    IconButton(onClick = { showOverflowMenu = true }) {
+                                        Icon(
+                                            imageVector = Icons.Default.MoreVert,
+                                            contentDescription = stringResource(R.string.viewer_home_more_options),
+                                        )
+                                    }
 
-                                BadgedBox(
-                                    badge = {
-                                        if (isFiltering) {
-                                            Badge(
-                                                containerColor = MaterialTheme.colorScheme.primary,
-                                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.xs),
-                                            ) {
-                                                Text(
-                                                    text = filterCount.toString(),
-                                                    style = MaterialTheme.typography.labelSmall,
-                                                    fontWeight = FontWeight.Bold,
+                                    DropdownMenu(
+                                        expanded = showOverflowMenu,
+                                        onDismissRequest = { showOverflowMenu = false },
+                                        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
+                                    ) {
+                                        when (pagerState.currentPage) {
+                                            0 -> {
+                                                // Transactions tab menu
+                                                DropdownMenuItem(
+                                                    text = {
+                                                        Text(
+                                                            stringResource(R.string.viewer_home_export_transactions),
+                                                        )
+                                                    },
+                                                    leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                    onClick = {
+                                                        showOverflowMenu = false
+                                                        scope.launch { onExportTransactions() }
+                                                    },
+                                                )
+                                                DropdownMenuItem(
+                                                    text = {
+                                                        Text(
+                                                            stringResource(R.string.viewer_home_clear_all_transactions),
+                                                        )
+                                                    },
+                                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                    onClick = {
+                                                        showOverflowMenu = false
+                                                        showClearTransactionsDialog = true
+                                                    },
+                                                )
+                                            }
+                                            1 -> {
+                                                // Crashes tab menu
+                                                DropdownMenuItem(
+                                                    text = {
+                                                        Text(
+                                                            stringResource(R.string.viewer_home_export_crashes),
+                                                        )
+                                                    },
+                                                    leadingIcon = { Icon(Icons.Default.Share, null) },
+                                                    onClick = {
+                                                        showOverflowMenu = false
+                                                        scope.launch { onExportCrashes() }
+                                                    },
+                                                )
+                                                DropdownMenuItem(
+                                                    text = {
+                                                        Text(
+                                                            stringResource(R.string.viewer_home_clear_all_crashes),
+                                                        )
+                                                    },
+                                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
+                                                    onClick = {
+                                                        showOverflowMenu = false
+                                                        showClearCrashesDialog = true
+                                                    },
                                                 )
                                             }
                                         }
-                                    },
-                                ) {
-                                    IconButton(onClick = { showFilterSheet = true }) {
-                                        val iconScale by animateFloatAsState(
-                                            targetValue = if (isFiltering) 1.1f else 1f,
-                                            animationSpec = tween(
-                                                durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast,
+                                    }
+                                }
+
+                                // Search toggle - only show on Tools tab
+                                if (pagerState.currentPage == 2) {
+                                    IconButton(
+                                        onClick = {
+                                            toolsSearchActive = !toolsSearchActive
+                                            if (!toolsSearchActive) toolsSearchQuery = ""
+                                        },
+                                    ) {
+                                        Icon(
+                                            imageVector = if (toolsSearchActive) {
+                                                Icons.Default.Close
+                                            } else {
+                                                Icons.Default.Search
+                                            },
+                                            contentDescription = stringResource(
+                                                R.string.viewer_tools_search_placeholder,
                                             ),
                                         )
-                                        Icon(
-                                            imageVector = Icons.Default.FilterList,
-                                            contentDescription = stringResource(R.string.viewer_home_filter),
-                                            tint = if (isFiltering) {
-                                                MaterialTheme.colorScheme.primary
-                                            } else {
-                                                MaterialTheme.colorScheme.onSurface
-                                            },
-                                            modifier = Modifier.scale(iconScale),
-                                        )
                                     }
                                 }
-                            }
-
-                            // Overflow Menu - only show on Transactions and Crashes tabs
-                            if (pagerState.currentPage < 2) {
-                                IconButton(onClick = { showOverflowMenu = true }) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = stringResource(R.string.viewer_home_more_options),
-                                    )
-                                }
-
-                                DropdownMenu(
-                                    expanded = showOverflowMenu,
-                                    onDismissRequest = { showOverflowMenu = false },
-                                    shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-                                ) {
-                                    when (pagerState.currentPage) {
-                                        0 -> {
-                                            // Transactions tab menu
-                                            DropdownMenuItem(
-                                                text = {
-                                                    Text(
-                                                        stringResource(R.string.viewer_home_export_transactions),
-                                                    )
-                                                },
-                                                leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    scope.launch { onExportTransactions() }
-                                                },
-                                            )
-                                            DropdownMenuItem(
-                                                text = {
-                                                    Text(
-                                                        stringResource(R.string.viewer_home_clear_all_transactions),
-                                                    )
-                                                },
-                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    showClearTransactionsDialog = true
-                                                },
-                                            )
-                                        }
-                                        1 -> {
-                                            // Crashes tab menu
-                                            DropdownMenuItem(
-                                                text = { Text(stringResource(R.string.viewer_home_export_crashes)) },
-                                                leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    scope.launch { onExportCrashes() }
-                                                },
-                                            )
-                                            DropdownMenuItem(
-                                                text = { Text(stringResource(R.string.viewer_home_clear_all_crashes)) },
-                                                leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                onClick = {
-                                                    showOverflowMenu = false
-                                                    showClearCrashesDialog = true
-                                                },
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Search toggle - only show on Tools tab
-                            if (pagerState.currentPage == 2) {
-                                IconButton(
-                                    onClick = {
-                                        toolsSearchActive = !toolsSearchActive
-                                        if (!toolsSearchActive) toolsSearchQuery = ""
-                                    },
-                                ) {
-                                    Icon(
-                                        imageVector = if (toolsSearchActive) {
-                                            Icons.Default.Close
-                                        } else {
-                                            Icons.Default.Search
-                                        },
-                                        contentDescription = stringResource(
-                                            R.string.viewer_tools_search_placeholder,
-                                        ),
-                                    )
-                                }
-                            }
-                        },
-                    )
+                            },
+                        )
+                    }
                 }
 
                 TabRow(selectedTabIndex = pagerState.currentPage) {

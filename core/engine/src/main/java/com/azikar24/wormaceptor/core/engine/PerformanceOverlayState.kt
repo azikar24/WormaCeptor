@@ -56,11 +56,11 @@ data class PerformanceOverlayState(
 
     companion object {
         /**
-         * Default position: top-right corner with some margin.
-         * X = 0.95 means 95% from left (near right edge)
+         * Default position: top-right corner with safe margin.
+         * X = 0.80 means 80% from left (right side with room for content)
          * Y = 0.05 means 5% from top (near top edge)
          */
-        val DEFAULT_POSITION_PERCENT = Offset(0.95f, 0.05f)
+        val DEFAULT_POSITION_PERCENT = Offset(0.80f, 0.05f)
 
         /**
          * Maximum number of history points to keep for sparklines.

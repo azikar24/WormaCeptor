@@ -82,6 +82,30 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryLea
 	public fun saveLeak (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryLocationSimulatorRepository : com/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryLocationSimulatorRepository$Companion;
+	public fun <init> ()V
+	public fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
+	public fun getPresets ()Lkotlinx/coroutines/flow/Flow;
+	public fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryLocationSimulatorRepository$Companion {
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryPushSimulatorRepository : com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryPushSimulatorRepository$Companion;
+	public fun <init> ()V
+	public fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getTemplates ()Lkotlinx/coroutines/flow/Flow;
+	public fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryPushSimulatorRepository$Companion {
+}
+
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryTransactionRepository : com/azikar24/wormaceptor/domain/contracts/TransactionRepository {
 	public fun <init> ()V
 	public fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -94,6 +118,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryTra
 	public fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
+	public fun <init> ()V
+	public fun clearRequests (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun clearRequestsForWebView (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeRequests ()Lkotlinx/coroutines/flow/Flow;
+	public fun saveRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun updateRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao {
@@ -142,6 +176,164 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity$
 	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity;
 }
 
+public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao {
+	public abstract fun deleteAllUserPresets (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao {
+	public fun <init> (Landroidx/room/RoomDatabase;)V
+	public fun deleteAllUserPresets (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun getRequiredConverters ()Ljava/util/List;
+	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;DDDFFFLjava/lang/String;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;DDDFFFLjava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Z
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun component5 ()D
+	public final fun component6 ()F
+	public final fun component7 ()F
+	public final fun component8 ()F
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;DDDFFFLjava/lang/String;Z)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Ljava/lang/String;Ljava/lang/String;DDDFFFLjava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccuracy ()F
+	public final fun getAltitude ()D
+	public final fun getBearing ()F
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLatitude ()D
+	public final fun getLocationName ()Ljava/lang/String;
+	public final fun getLongitude ()D
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSpeed ()F
+	public fun hashCode ()I
+	public final fun isBuiltIn ()Z
+	public final fun toDomain ()Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity$Companion {
+	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;
+}
+
+public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao {
+	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observe ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun upsert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao {
+	public fun <init> (Landroidx/room/RoomDatabase;)V
+	public fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun getRequiredConverters ()Ljava/util/List;
+	public fun observe ()Lkotlinx/coroutines/flow/Flow;
+	public fun upsert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity$Companion;
+	public fun <init> (IDDDFFFJLjava/lang/String;)V
+	public synthetic fun <init> (IDDDFFFJLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun component5 ()F
+	public final fun component6 ()F
+	public final fun component7 ()F
+	public final fun component8 ()J
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (IDDDFFFJLjava/lang/String;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;IDDDFFFJLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccuracy ()F
+	public final fun getAltitude ()D
+	public final fun getBearing ()F
+	public final fun getId ()I
+	public final fun getLatitude ()D
+	public final fun getLongitude ()D
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSpeed ()F
+	public final fun getTimestamp ()J
+	public fun hashCode ()I
+	public final fun toDomain ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity$Companion {
+	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;
+}
+
+public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao {
+	public abstract fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao {
+	public fun <init> (Landroidx/room/RoomDatabase;)V
+	public fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun getRequiredConverters ()Ljava/util/List;
+	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()J
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()I
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionsJson ()Ljava/lang/String;
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getChannelId ()Ljava/lang/String;
+	public final fun getExtrasJson ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLargeIconUri ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNotificationId ()Ljava/lang/String;
+	public final fun getPriority ()Ljava/lang/String;
+	public final fun getSmallIconRes ()I
+	public final fun getTimestamp ()J
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun toDomain ()Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity$Companion {
+	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;
+}
+
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomCrashRepository : com/azikar24/wormaceptor/domain/contracts/CrashRepository {
 	public fun <init> (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao;)V
 	public fun clearCrashes (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -156,6 +348,32 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomLeakRep
 	public fun saveLeak (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomLocationSimulatorRepository : com/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/RoomLocationSimulatorRepository$Companion;
+	public fun <init> (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao;Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao;)V
+	public fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
+	public fun getPresets ()Lkotlinx/coroutines/flow/Flow;
+	public fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomLocationSimulatorRepository$Companion {
+	public final fun getBuiltInPresets ()Ljava/util/List;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomPushSimulatorRepository : com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/RoomPushSimulatorRepository$Companion;
+	public fun <init> (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao;)V
+	public fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getTemplates ()Lkotlinx/coroutines/flow/Flow;
+	public fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomPushSimulatorRepository$Companion {
+	public final fun getPresetTemplates ()Ljava/util/List;
+}
+
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomTransactionRepository : com/azikar24/wormaceptor/domain/contracts/TransactionRepository {
 	public fun <init> (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao;)V
 	public fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -168,6 +386,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomTransac
 	public fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
+	public fun <init> (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao;)V
+	public fun clearRequests (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun clearRequestsForWebView (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeRequests ()Lkotlinx/coroutines/flow/Flow;
+	public fun saveRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun updateRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao {
@@ -264,11 +492,82 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/Transaction
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionPagingSource$Companion {
 }
 
+public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao {
+	public abstract fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteByWebViewId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insertOrUpdate (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao {
+	public fun <init> (Landroidx/room/RoomDatabase;)V
+	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteByWebViewId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun getRequiredConverters ()Ljava/util/List;
+	public fun insertOrUpdate (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;ZZZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Z
+	public final fun component11 ()Ljava/lang/Integer;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Ljava/lang/Long;
+	public final fun component17 ()Ljava/lang/Long;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()J
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Z
+	public final fun component9 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;ZZZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;ZZZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentLength ()Ljava/lang/Long;
+	public final fun getDuration ()Ljava/lang/Long;
+	public final fun getEncoding ()Ljava/lang/String;
+	public final fun getErrorMessage ()Ljava/lang/String;
+	public final fun getHasGesture ()Z
+	public final fun getHeadersJson ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getResourceType ()Ljava/lang/String;
+	public final fun getResponseHeadersJson ()Ljava/lang/String;
+	public final fun getStatusCode ()Ljava/lang/Integer;
+	public final fun getTimestamp ()J
+	public final fun getUrl ()Ljava/lang/String;
+	public final fun getWebViewId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isForMainFrame ()Z
+	public final fun isRedirect ()Z
+	public final fun toDomain ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity$Companion {
+	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;
+}
+
 public abstract class com/azikar24/wormaceptor/infra/persistence/sqlite/WormaCeptorDatabase : androidx/room/RoomDatabase {
 	public fun <init> ()V
 	public abstract fun crashDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao;
 	public abstract fun leakDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao;
+	public abstract fun locationPresetDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao;
+	public abstract fun mockLocationDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao;
+	public abstract fun pushTemplateDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao;
 	public abstract fun transactionDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao;
+	public abstract fun webViewRequestDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WormaCeptorDatabase_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/WormaCeptorDatabase {
@@ -278,6 +577,10 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WormaCeptor
 	public fun getAutoMigrations (Ljava/util/Map;)Ljava/util/List;
 	public fun getRequiredAutoMigrationSpecs ()Ljava/util/Set;
 	public fun leakDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao;
+	public fun locationPresetDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao;
+	public fun mockLocationDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao;
+	public fun pushTemplateDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao;
 	public fun transactionDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao;
+	public fun webViewRequestDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao;
 }
 

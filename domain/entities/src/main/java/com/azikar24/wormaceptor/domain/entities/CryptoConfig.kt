@@ -69,30 +69,6 @@ data class CryptoConfig(
             iv = "",
             keyFormat = KeyFormat.BASE64,
         )
-
-        /**
-         * Creates a preset configuration for AES-256 GCM (recommended for most use cases).
-         */
-        fun aes256Gcm() = CryptoConfig(
-            algorithm = CryptoAlgorithm.AES_256,
-            mode = CipherMode.GCM,
-            padding = PaddingScheme.NO_PADDING,
-            key = "",
-            iv = "",
-            keyFormat = KeyFormat.BASE64,
-        )
-
-        /**
-         * Creates a preset configuration for AES-128 CBC.
-         */
-        fun aes128Cbc() = CryptoConfig(
-            algorithm = CryptoAlgorithm.AES_128,
-            mode = CipherMode.CBC,
-            padding = PaddingScheme.PKCS5,
-            key = "",
-            iv = "",
-            keyFormat = KeyFormat.BASE64,
-        )
     }
 }
 

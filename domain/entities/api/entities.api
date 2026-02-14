@@ -153,8 +153,6 @@ public final class com/azikar24/wormaceptor/domain/entities/CryptoConfig {
 }
 
 public final class com/azikar24/wormaceptor/domain/entities/CryptoConfig$Companion {
-	public final fun aes128Cbc ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
-	public final fun aes256Gcm ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
 	public final fun default ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
 }
 

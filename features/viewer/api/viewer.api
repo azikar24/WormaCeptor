@@ -188,15 +188,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingleto
 	public final fun getLambda-9$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$PagedTransactionListScreenKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$PagedTransactionListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function3;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$ToolsTabKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$ToolsTabKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -291,10 +282,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
 	public static final fun MetricsCard (Lkotlinx/collections/immutable/ImmutableList;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/PagedTransactionListScreenKt {
-	public static final fun PagedTransactionListScreen (Landroidx/paging/compose/LazyPagingItems;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolCategories {

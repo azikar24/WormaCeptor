@@ -74,7 +74,7 @@ data class CryptoResult(
         )
 
         /**
-         * Creates a failed result.
+         * Creates a failed operation result.
          */
         fun failure(
             id: String,

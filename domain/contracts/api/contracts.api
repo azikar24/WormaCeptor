@@ -214,7 +214,6 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Prefer
 
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
 	public abstract fun deleteTemplate (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun getNotificationChannels (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTemplates ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -311,5 +310,14 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Transa
 
 public final class com/azikar24/wormaceptor/domain/contracts/TransactionRepository$DefaultImpls {
 	public static synthetic fun getTransactionsPaged$default (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
+	public abstract fun clearRequests (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun clearRequestsForWebView (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeRequests ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun saveRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun updateRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 

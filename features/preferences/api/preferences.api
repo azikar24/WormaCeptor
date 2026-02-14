@@ -48,29 +48,27 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/ComposableSin
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferenceDetailScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-10 Lkotlin/jvm/functions/Function3;
-	public static field lambda-11 Lkotlin/jvm/functions/Function3;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function3;
 	public static field lambda-7 Lkotlin/jvm/functions/Function3;
-	public static field lambda-8 Lkotlin/jvm/functions/Function3;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
+	public static field lambda-8 Lkotlin/jvm/functions/Function2;
+	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-10$preferences_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-11$preferences_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-12$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$preferences_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-7$preferences_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-8$preferences_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-9$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-8$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-9$preferences_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferencesListScreenKt {
@@ -92,11 +90,10 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferencesLi
 	public static final fun PreferencesListScreen (Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditDialogKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditDialogKt;
+public final class com/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditSheetKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditSheetKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
@@ -106,8 +103,7 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/components/Co
 	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-10$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
@@ -117,8 +113,8 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/components/Co
 	public final fun getLambda-9$preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/preferences/ui/components/PreferenceEditDialogKt {
-	public static final fun PreferenceEditDialog (Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+public final class com/azikar24/wormaceptor/feature/preferences/ui/components/PreferenceEditSheetKt {
+	public static final fun PreferenceEditSheet (Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/theme/PreferencesDesignSystem {

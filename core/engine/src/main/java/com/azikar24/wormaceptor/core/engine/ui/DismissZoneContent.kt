@@ -41,8 +41,8 @@ private val DismissCircleActiveSize = WormaCeptorDesignSystem.TouchTarget.large
 private val DismissIconSize = 22.dp
 private val DismissCircleElevation = WormaCeptorDesignSystem.Elevation.xl
 
-private const val EnterDurationMs =
-    private const val ExitDurationMs = 150
+private const val EnterDurationMs = 200
+private const val ExitDurationMs = 150
 private const val ColorTransitionMs = 150
 
 /** Fraction of screen height used for the dismiss zone (bottom portion). */

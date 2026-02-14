@@ -598,7 +598,7 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
         Surface(
             onClick = onStartMonitoring,
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.surfaceContainerHighest,
             modifier = Modifier.clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg)),
         ) {
             Row(

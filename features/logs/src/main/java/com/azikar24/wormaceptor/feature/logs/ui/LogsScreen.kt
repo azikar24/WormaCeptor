@@ -208,8 +208,6 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     },
                     icon = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.logs_scroll_to_bottom),
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
         },

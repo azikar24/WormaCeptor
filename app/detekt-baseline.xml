@@ -4,7 +4,6 @@
   <CurrentIssues>
     <ID>ClassOrdering:MainActivity.kt$MainActivity$Companion</ID>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
-    <ID>ComposableParamOrder:WebViewTestScreen.kt$DetailRow</ID>
     <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
@@ -16,9 +15,6 @@
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
-    <ID>LongMethod:WebViewTestScreen.kt$@Composable private fun CapturedRequestItem(request: WebViewRequest, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:WebViewTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WebViewTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:WebViewTestScreen.kt$@SuppressLint("SetJavaScriptEnabled") @Composable private fun WebViewTestContent( viewModel: WebViewMonitorViewModel, requests: List&lt;WebViewRequest&gt;, stats: WebViewRequestStats, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
     <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>MagicNumber:Data.kt$Data$10</ID>
@@ -124,7 +120,6 @@
     <ID>MagicNumber:IcGithub.kt$9.466f</ID>
     <ID>MagicNumber:IcGithub.kt$9.81f</ID>
     <ID>MagicNumber:IcGithub.kt$9.954f</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$0xFF2196F3</ID>
     <ID>MagicNumber:LocationTestScreen.kt$0xFF4CAF50</ID>
     <ID>MagicNumber:LocationTestScreen.kt$1000L</ID>
     <ID>MagicNumber:LocationTestScreen.kt$15.0</ID>
@@ -167,19 +162,6 @@
     <ID>MagicNumber:TestToolsTab.kt$150</ID>
     <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$1000000</ID>
     <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$999</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFF757575</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFFF44336</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$200</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$299</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$300</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$399</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$400</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$499</ID>
-    <ID>MagicNumber:WebViewTestScreen.kt$500</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$0xFF000000</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$0xFFFFFFFF</ID>
     <ID>MagicNumber:WormaceptorLogo.kt$100.98f</ID>
@@ -336,8 +318,6 @@
     <ID>MagicNumber:WormaceptorLogo.kt$96.65f</ID>
     <ID>MatchingDeclarationName:TestToolsNavigation.kt$TestToolsRoutes</ID>
     <ID>MatchingDeclarationName:TestToolsTab.kt$ToolStatus</ID>
-    <ID>MaxLineLength:LocationTestScreen.kt$color = if (isLocationMocked) LocationGreen else MaterialTheme.colorScheme.onSurfaceVariant</ID>
-    <ID>MaximumLineLength:LocationTestScreen.kt$ </ID>
     <ID>ModifierReused:GlitchEffect.kt$Box( modifier = modifier.graphicsLayer { shader.setFloatUniform("resolution", screenWidthPx, screenHeightPx) shader.setFloatUniform("progress", progress) shader.setFloatUniform("time", time) renderEffect = RenderEffect .createRuntimeShaderEffect(shader, "content") .asComposeRenderEffect() }, ) { content() }</ID>
     <ID>ModifierReused:GlitchEffect.kt$Box(modifier = modifier) { content() }</ID>
     <ID>NoWildcardImports:HttpBinApi.kt$import retrofit2.http.*</ID>
@@ -352,10 +332,8 @@
     <ID>UnnecessaryParentheses:GlitchEffect.kt$(size.width / pixelSize)</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
-    <ID>UnstableCollections:WebViewTestScreen.kt$List&lt;WebViewRequest&gt;</ID>
     <ID>UnusedParameter:MainActivityViewModel.kt$MainActivityViewModel$context: Context</ID>
     <ID>UnusedPrivateProperty:VeryLargeData.kt$VeryLargeData$i</ID>
-    <ID>ViewModelInjection:WebViewTestScreen.kt$viewModel</ID>
     <ID>WildcardImport:HttpBinApi.kt$import retrofit2.http.*</ID>
   </CurrentIssues>
 </SmellBaseline>

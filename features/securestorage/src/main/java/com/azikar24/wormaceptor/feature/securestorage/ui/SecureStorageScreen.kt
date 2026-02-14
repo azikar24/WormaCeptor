@@ -228,7 +228,7 @@ fun SecureStorageScreen(
                         .fillMaxWidth()
                         .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                     shape = WormaCeptorDesignSystem.Shapes.card,
-                    color = MaterialTheme.colorScheme.errorContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
                 ) {
                     Text(
                         text = errorMessage,

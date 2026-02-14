@@ -119,7 +119,9 @@ fun PushTokenManager(engine: PushTokenEngine, modifier: Modifier = Modifier, onN
             error?.let {
                 item {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        ),
                         shape = WormaCeptorDesignSystem.Shapes.cardLarge,
                     ) {
                         Row(

@@ -27,7 +27,7 @@ minSdk = "23"
 #noinspection UnusedVersionCatalogEntry
 targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-compileSdk = "34"
+compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 versionCode = "35"
 #noinspection UnusedVersionCatalogEntry

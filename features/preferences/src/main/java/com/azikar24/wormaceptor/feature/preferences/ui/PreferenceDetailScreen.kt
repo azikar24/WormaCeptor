@@ -222,7 +222,7 @@ fun PreferenceDetailScreen(
                         onClick = { onTypeFilterChanged(null) },
                         label = { Text(stringResource(R.string.preferences_filter_all)) },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            selectedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         ),
                     )
                     availableTypes.forEach { type ->

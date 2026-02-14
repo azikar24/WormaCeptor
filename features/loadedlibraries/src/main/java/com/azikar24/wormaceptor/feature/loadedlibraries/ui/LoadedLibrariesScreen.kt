@@ -190,7 +190,7 @@ fun LoadedLibrariesScreen(
                 Surface(
                     Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                     WormaCeptorDesignSystem.Shapes.card,
-                    MaterialTheme.colorScheme.errorContainer,
+                    MaterialTheme.colorScheme.surfaceContainerHighest,
                 ) {
                     Text(
                         it,

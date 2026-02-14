@@ -103,7 +103,7 @@ fun CrashListScreen(
                         modifier = Modifier.align(Alignment.TopCenter),
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         color = MaterialTheme.colorScheme.error,
                     )
                 },
@@ -130,7 +130,7 @@ fun CrashListScreen(
                         modifier = Modifier.align(Alignment.TopCenter),
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         color = MaterialTheme.colorScheme.error,
                     )
                 },

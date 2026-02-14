@@ -11,7 +11,6 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
@@ -22,16 +21,13 @@ fun WormaCeptorFAB(
     contentDescription: String? = null,
     icon: ImageVector = Icons.Default.Add,
     iconModifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primary,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
-    shape: Shape = WormaCeptorDesignSystem.Shapes.fab,
 ) {
     FloatingActionButton(
         onClick = onClick,
         modifier = modifier,
-        shape = shape,
-        containerColor = containerColor,
-        contentColor = contentColor,
+        shape = WormaCeptorDesignSystem.Shapes.fab,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         elevation = FloatingActionButtonDefaults.elevation(
             defaultElevation = WormaCeptorDesignSystem.Elevation.fab,
         ),
@@ -50,8 +46,8 @@ fun WormaCeptorSmallFAB(
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     icon: ImageVector = Icons.Default.Add,
-    containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    contentColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     SmallFloatingActionButton(
         onClick = onClick,
@@ -75,15 +71,13 @@ fun WormaCeptorExtendedFAB(
     text: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
 ) {
     ExtendedFloatingActionButton(
         onClick = onClick,
         modifier = modifier,
         shape = WormaCeptorDesignSystem.Shapes.fab,
-        containerColor = containerColor,
-        contentColor = contentColor,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.primary,
         elevation = FloatingActionButtonDefaults.elevation(
             defaultElevation = WormaCeptorDesignSystem.Elevation.fab,
         ),

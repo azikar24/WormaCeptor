@@ -202,7 +202,7 @@ fun DependenciesInspectorScreen(
                 Surface(
                     Modifier.fillMaxWidth().padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
                     RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                    MaterialTheme.colorScheme.errorContainer,
+                    MaterialTheme.colorScheme.surfaceContainerHighest,
                 ) {
                     Text(
                         it,

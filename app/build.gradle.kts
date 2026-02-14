@@ -108,7 +108,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
 
     // Preferences for osmdroid configuration
-    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation(libs.androidx.preference.ktx)
 
     // osmdroid for location map
     implementation(libs.osmdroid.android)

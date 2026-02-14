@@ -119,7 +119,7 @@ fun LocationMapCard(
                     val distance = calculateDistance(realLocation, mockLocation)
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
                     ) {
                         Text(
                             text = stringResource(R.string.location_distance, formatDistance(distance)),

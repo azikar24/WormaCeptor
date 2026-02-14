@@ -243,7 +243,7 @@ fun SelectableTransactionListScreen(
                         modifier = Modifier.align(Alignment.TopCenter),
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 },
@@ -274,7 +274,7 @@ fun SelectableTransactionListScreen(
                         modifier = Modifier.align(Alignment.TopCenter),
                         isRefreshing = isRefreshing,
                         state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 },

@@ -120,7 +120,7 @@ internal fun NotificationPreview(
                             modifier = Modifier
                                 .size(44.dp)
                                 .background(
-                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
                                     shape = WormaCeptorDesignSystem.Shapes.card,
                                 ),
                             contentAlignment = Alignment.Center,

@@ -18,7 +18,6 @@
     <ID>CyclomaticComplexMethod:ImagePreviewCard.kt$fun detectImageFormat(data: ByteArray): String</ID>
     <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
-    <ID>CyclomaticComplexMethod:PagedTransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreen( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, hasActiveFilters: Boolean = false, hasSearchQuery: Boolean = false, onClearFilters: () -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>CyclomaticComplexMethod:PdfViewerScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit)</ID>
     <ID>CyclomaticComplexMethod:ToolsTab.kt$@Composable private fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@Composable private fun RequestTab( transaction: NetworkTransaction, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, modifier: Modifier = Modifier, )</ID>
@@ -74,8 +73,6 @@
     <ID>LongMethod:LoadingStates.kt$@Composable private fun CollapsibleSectionSkeleton( shimmerBrush: Brush, title: String, modifier: Modifier = Modifier, contentRowCount: Int = 0, isBodySection: Boolean = false, )</ID>
     <ID>LongMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
-    <ID>LongMethod:PagedTransactionListScreen.kt$@Composable private fun PagedTransactionItem(transaction: TransactionSummary, onClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:PagedTransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PagedTransactionListScreen( lazyPagingItems: LazyPagingItems&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, hasActiveFilters: Boolean = false, hasSearchQuery: Boolean = false, onClearFilters: () -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit = {}, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun PasswordProtectedContent( metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun SuccessContent( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
@@ -186,16 +183,6 @@
     <ID>MagicNumber:MultipartView.kt$1000</ID>
     <ID>MagicNumber:MultipartView.kt$20</ID>
     <ID>MagicNumber:MultipartView.kt$4</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$10</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$200</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$299</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$3</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$300</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$399</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$400</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$499</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$500</ID>
-    <ID>MagicNumber:PagedTransactionListScreen.kt$599</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$0.75f</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$20</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$5</ID>
@@ -236,14 +223,12 @@
     <ID>MaxLineLength:HomeScreen.kt$val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0</ID>
     <ID>MaxLineLength:HomeScreen.kt$val hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
     <ID>MaxLineLength:HomeScreen.kt$val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
-    <ID>MaxLineLength:PagedTransactionListScreen.kt$if</ID>
     <ID>MaxLineLength:SelectableTransactionItem.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
     <ID>MaxLineLength:TransactionDetailScreen.kt$fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal</ID>
     <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$"WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"</ID>
     <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$val</ID>
     <ID>MaximumLineLength:FilterBottomSheetContent.kt$ </ID>
     <ID>MaximumLineLength:HomeScreen.kt$ </ID>
-    <ID>MaximumLineLength:PagedTransactionListScreen.kt$ </ID>
     <ID>MaximumLineLength:SelectableTransactionItem.kt$ </ID>
     <ID>MaximumLineLength:TransactionDetailScreen.kt$ </ID>
     <ID>MaximumLineLength:ViewerActivity.kt$ViewerActivity$ </ID>
@@ -267,10 +252,6 @@
     <ID>NoWildcardImports:LoadingStates.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:LoadingStates.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:LoadingStates.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:PagedTransactionListScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:PagedTransactionListScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:PagedTransactionListScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:PagedTransactionListScreen.kt$import com.azikar24.wormaceptor.feature.viewer.ui.components.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>
@@ -594,7 +575,6 @@
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
     <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
     <ID>UnusedPrivateMember:CrashListScreen.kt$@Composable @Deprecated("Use EnhancedEmptyState instead") private fun EmptyState(message: String, modifier: Modifier = Modifier)</ID>
-    <ID>UseIfInsteadOfWhen:PagedTransactionListScreen.kt$when { message.contains( "network", ) || message.contains("connection") || message.contains("timeout") -&gt; ErrorType.NETWORK else -&gt; ErrorType.GENERIC }</ID>
     <ID>UseIfInsteadOfWhen:XmlTreeView.kt$when { c == '&lt;' -&gt; { val text = builder.toString().trim() if (text.isNotEmpty()) { result.add(indentString.repeat(indent) + text) } builder.clear() val tagEnd = xml.indexOf('&gt;', i) if (tagEnd == -1) { builder.append(c) i++ continue } val tag = xml.substring(i, tagEnd + 1) when { tag.startsWith("&lt;?") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.startsWith("&lt;!--") -&gt; { val commentEnd = xml.indexOf("--&gt;", i) if (commentEnd != -1) { val comment = xml.substring(i, commentEnd + 3) result.add(indentString.repeat(indent) + comment) i = commentEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;![CDATA[") -&gt; { val cdataEnd = xml.indexOf("]]&gt;", i) if (cdataEnd != -1) { val cdata = xml.substring(i, cdataEnd + 3) result.add(indentString.repeat(indent) + cdata) i = cdataEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;/") -&gt; { indent = maxOf(0, indent - 1) result.add(indentString.repeat(indent) + tag) } tag.endsWith("/&gt;") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.uppercase().startsWith("&lt;!DOCTYPE") -&gt; { result.add(indentString.repeat(indent) + tag) } else -&gt; { result.add(indentString.repeat(indent) + tag) indent++ } } i = tagEnd } else -&gt; { builder.append(c) } }</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>
@@ -605,10 +585,6 @@
     <ID>WildcardImport:LoadingStates.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:LoadingStates.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:LoadingStates.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:PagedTransactionListScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:PagedTransactionListScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:PagedTransactionListScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:PagedTransactionListScreen.kt$import com.azikar24.wormaceptor.feature.viewer.ui.components.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
     <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>

@@ -612,8 +612,8 @@ private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) 
         Button(
             onClick = onForceGc,
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                contentColor = MaterialTheme.colorScheme.secondary,
             ),
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
         ) {

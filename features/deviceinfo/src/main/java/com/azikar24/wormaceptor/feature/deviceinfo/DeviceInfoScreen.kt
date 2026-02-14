@@ -196,7 +196,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                         modifier = Modifier.align(Alignment.TopCenter),
                         isRefreshing = uiState.isRefreshing,
                         state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 },
@@ -239,7 +239,9 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                             text = stringResource(R.string.deviceinfo_collected, formatDateFull(info.timestamp)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                            modifier = Modifier.padding(
+                                top = WormaCeptorDesignSystem.Spacing.sm,
+                            ).align(Alignment.CenterHorizontally),
                         )
 
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))

@@ -671,7 +671,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                         }
                     },
                     shape = WormaCeptorDesignSystem.Shapes.button,
-                    color = MaterialTheme.colorScheme.errorContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
                 ) {
                     Text(
                         text = stringResource(R.string.viewer_tools_overlay_grant),

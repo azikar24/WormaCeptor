@@ -156,6 +156,12 @@ class RateLimitViewModel(
      * Resets configuration to defaults.
      */
     fun resetToDefaults() {
-        engine.setConfig(RateLimitConfig.default())
+        engine.setConfig(
+            RateLimitConfig
+                .default()
+                .copy(
+                    enabled = config.value.enabled,
+                ),
+        )
     }
 }

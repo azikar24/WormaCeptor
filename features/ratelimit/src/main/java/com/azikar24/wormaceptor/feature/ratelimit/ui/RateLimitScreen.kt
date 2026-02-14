@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.ratelimit.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -158,30 +159,36 @@ fun RateLimitScreen(
                 colors = colors,
             )
 
-            // Network presets
-            NetworkPresetsCard(
-                selectedPreset = selectedPreset,
-                enabled = config.enabled,
-                onPresetSelected = onPresetSelected,
-                colors = colors,
-            )
+            AnimatedVisibility(visible = config.enabled) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+                ) {
+                    // Statistics
+                    StatisticsCard(
+                        stats = stats,
+                        colors = colors,
+                    )
 
-            // Custom configuration
-            ConfigurationCard(
-                config = config,
-                enabled = config.enabled,
-                onDownloadSpeedChanged = onDownloadSpeedChanged,
-                onUploadSpeedChanged = onUploadSpeedChanged,
-                onLatencyChanged = onLatencyChanged,
-                onPacketLossChanged = onPacketLossChanged,
-                colors = colors,
-            )
+                    // Network presets
+                    NetworkPresetsCard(
+                        selectedPreset = selectedPreset,
+                        enabled = config.enabled,
+                        onPresetSelected = onPresetSelected,
+                        colors = colors,
+                    )
 
-            // Statistics
-            StatisticsCard(
-                stats = stats,
-                colors = colors,
-            )
+                    // Custom configuration
+                    ConfigurationCard(
+                        config = config,
+                        enabled = config.enabled,
+                        onDownloadSpeedChanged = onDownloadSpeedChanged,
+                        onUploadSpeedChanged = onUploadSpeedChanged,
+                        onLatencyChanged = onLatencyChanged,
+                        onPacketLossChanged = onPacketLossChanged,
+                        colors = colors,
+                    )
+                }
+            }
         }
     }
 }
@@ -201,6 +208,7 @@ private fun EnableToggleCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
+        onClick = onToggle,
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = colors.cardBackground,

@@ -605,9 +605,12 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                 (context as? ComponentActivity)?.let { activity ->
                     performanceOverlayEngine.toggleOverlayWithAllMetrics(activity)
                 }
+            } else {
+                WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
+                    context.startActivity(intent)
+                }
             }
         },
-        enabled = canDrawOverlays,
         modifier = modifier,
         shape = WormaCeptorDesignSystem.Shapes.cardLarge,
         color = backgroundColor,
@@ -665,11 +668,6 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
 
             if (!canDrawOverlays) {
                 Surface(
-                    onClick = {
-                        WormaCeptorApi.getOverlayPermissionIntent(context)?.let { intent ->
-                            context.startActivity(intent)
-                        }
-                    },
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
                 ) {

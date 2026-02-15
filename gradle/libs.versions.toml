@@ -52,9 +52,9 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "35"
+versionCode = "40"
 #noinspection UnusedVersionCatalogEntry
-versionName = "1.0.2"
+versionName = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

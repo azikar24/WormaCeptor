@@ -174,7 +174,7 @@ fun LocationScreen(
                             if (isMockEnabled) onClearMockLocation() else onSetMockLocation()
                         },
                         isEnabled = isMockLocationAvailable,
-                        canEnable = isInputValid,
+                        isInputValid = isInputValid,
                     )
                 }
 

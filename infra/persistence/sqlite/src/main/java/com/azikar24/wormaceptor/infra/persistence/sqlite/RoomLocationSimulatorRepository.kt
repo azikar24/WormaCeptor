@@ -40,7 +40,20 @@ class RoomLocationSimulatorRepository(
     }
 
     companion object {
+        /** Default location presets shipped with the app. */
         val builtInPresets: List<LocationPreset> = listOf(
+            LocationPreset(
+                id = "builtin_kuwait",
+                name = "Kuwait City",
+                location = MockLocation.from(29.3759, 47.9774, "Kuwait City"),
+                isBuiltIn = true,
+            ),
+            LocationPreset(
+                id = "builtin_cairo",
+                name = "Cairo",
+                location = MockLocation.from(30.0444, 31.2357, "Cairo"),
+                isBuiltIn = true,
+            ),
             LocationPreset(
                 id = "builtin_new_york",
                 name = "New York",

@@ -134,18 +134,33 @@ class LocationViewModel(
 
     /**
      * Sets a mock location from the current input fields.
+     * Falls back to the last used location or the first preset if no valid input.
      */
     fun setMockLocationFromInput() {
-        val latitude = _latitudeInput.value.toDoubleOrNull()
-        val longitude = _longitudeInput.value.toDoubleOrNull()
-
-        if (latitude == null || longitude == null) {
-            _errorMessage.value = "Please enter valid coordinates"
+        if (isInputValid.value) {
+            val latitude = _latitudeInput.value.toDouble()
+            val longitude = _longitudeInput.value.toDouble()
+            setMockLocation(MockLocation.from(latitude, longitude))
             return
         }
 
-        val mockLocation = MockLocation.from(latitude, longitude)
-        setMockLocation(mockLocation)
+        val lastUsed = currentMockLocation.value
+        if (lastUsed != null) {
+            _latitudeInput.value = "%.6f".format(lastUsed.latitude)
+            _longitudeInput.value = "%.6f".format(lastUsed.longitude)
+            setMockLocation(lastUsed)
+            return
+        }
+
+        val firstPreset = presets.value.firstOrNull()
+        if (firstPreset != null) {
+            _latitudeInput.value = firstPreset.location.latitude.toString()
+            _longitudeInput.value = firstPreset.location.longitude.toString()
+            setMockLocation(firstPreset.location)
+            return
+        }
+
+        _errorMessage.value = "Please enter valid coordinates"
     }
 
     /**

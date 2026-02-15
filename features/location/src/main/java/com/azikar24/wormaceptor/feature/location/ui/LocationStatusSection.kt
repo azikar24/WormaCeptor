@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
@@ -94,7 +96,6 @@ internal fun MockLocationWarningBanner() {
                             },
                         )
                     } catch (_: Exception) {
-                        // Fallback to general settings if dev options not available
                         context.startActivity(
                             Intent(Settings.ACTION_SETTINGS).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -125,97 +126,44 @@ internal fun MockLocationStatusCard(
     isMockEnabled: Boolean,
     onToggle: () -> Unit,
     isEnabled: Boolean,
-    canEnable: Boolean,
+    isInputValid: Boolean,
 ) {
+    val containerColor =
+        if (isMockEnabled) LocationColors.enabled.asSubtleBackground() else MaterialTheme.colorScheme.surface
+    val cardBorder = if (isMockEnabled) {
+        null
+    } else {
+        BorderStroke(
+            WormaCeptorDesignSystem.BorderWidth.regular,
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        )
+    }
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isMockEnabled) {
-                LocationColors.enabled.asSubtleBackground()
-            } else {
-                MaterialTheme.colorScheme.surface
-            },
-        ),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        border = if (isMockEnabled) {
-            null
-        } else {
-            BorderStroke(
-                WormaCeptorDesignSystem.BorderWidth.regular,
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-            )
-        },
+        border = cardBorder,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .toggleable(
+                        value = isMockEnabled,
+                        enabled = isEnabled,
+                        role = Role.Switch,
+                        onValueChange = { onToggle() },
+                    )
+                    .padding(WormaCeptorDesignSystem.Spacing.lg),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Status icon
-                Surface(
-                    shape = CircleShape,
-                    color = if (isMockEnabled) {
-                        LocationColors.enabled
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = stringResource(
-                                if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
-                            ),
-                            tint = if (isMockEnabled) {
-                                MaterialTheme.colorScheme.onPrimary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
-                        )
-                    }
-                }
-
+                MockLocationIcon(isMockEnabled)
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.lg))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(
-                            if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
-                        ),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (currentMockLocation != null && isMockEnabled) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-                        Text(
-                            text = currentMockLocation.formatCoordinates(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = LocationColors.coordinate,
-                            fontWeight = FontWeight.Medium,
-                        )
-                        currentMockLocation.name?.let { name ->
-                            Text(
-                                text = name,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-
+                MockLocationLabel(currentMockLocation, isMockEnabled, Modifier.weight(1f))
                 Switch(
                     checked = isMockEnabled,
-                    onCheckedChange = { onToggle() },
-                    enabled = isEnabled && (isMockEnabled || canEnable),
+                    onCheckedChange = null,
+                    enabled = isEnabled,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
                         checkedTrackColor = LocationColors.enabled,
@@ -223,11 +171,72 @@ internal fun MockLocationStatusCard(
                 )
             }
 
-            // Show hint when switch is disabled due to missing coordinates
-            if (isEnabled && !isMockEnabled && !canEnable) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            if (isEnabled && !isMockEnabled && !isInputValid) {
                 Text(
                     text = stringResource(R.string.location_enable_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(
+                        start = WormaCeptorDesignSystem.Spacing.lg,
+                        end = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorDesignSystem.Spacing.md,
+                    ),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MockLocationIcon(isMockEnabled: Boolean) {
+    Surface(
+        shape = CircleShape,
+        color = if (isMockEnabled) LocationColors.enabled else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+    ) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Icon(
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = stringResource(
+                    if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
+                ),
+                tint = if (isMockEnabled) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+            )
+        }
+    }
+}
+
+@Composable
+private fun MockLocationLabel(
+    currentMockLocation: MockLocation?,
+    isMockEnabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(
+                if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
+            ),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        if (currentMockLocation != null && isMockEnabled) {
+            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+            Text(
+                text = currentMockLocation.formatCoordinates(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = LocationColors.coordinate,
+                fontWeight = FontWeight.Medium,
+            )
+            currentMockLocation.name?.let { name ->
+                Text(
+                    text = name,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

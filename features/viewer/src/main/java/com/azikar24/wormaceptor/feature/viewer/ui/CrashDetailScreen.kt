@@ -338,6 +338,7 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
                     SelectionContainer {
                         Text(
                             text = location,
@@ -447,8 +448,11 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
                 )
-                appFrames.forEach { frame ->
+                appFrames.forEachIndexed { index, frame ->
                     StackFrameItem(frame, isHighlighted = true)
+                    if (index < appFrames.lastIndex) {
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                    }
                 }
             }
 
@@ -498,8 +502,11 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
                     ) + fadeOut(),
                 ) {
                     Column {
-                        frameworkFrames.forEach { frame ->
+                        frameworkFrames.forEachIndexed { index, frame ->
                             StackFrameItem(frame, isHighlighted = false)
+                            if (index < frameworkFrames.lastIndex) {
+                                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                            }
                         }
                     }
                 }

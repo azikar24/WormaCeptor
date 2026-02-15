@@ -241,13 +241,10 @@ class PushSimulatorEngine(private val context: Context) {
     }
 
     private fun getSmallIcon(iconRes: Int): Int {
-        // If no icon provided, use app icon
-        return if (iconRes != 0) {
-            iconRes
-        } else {
-            context.applicationInfo.icon.takeIf { it != 0 }
-                ?: android.R.drawable.ic_dialog_info
-        }
+        // If no icon provided, use a monochrome system icon.
+        // Using the app's launcher icon causes a white blob in the status bar
+        // because Android requires small icons to be monochrome (white + transparent).
+        return if (iconRes != 0) iconRes else android.R.drawable.ic_popup_reminder
     }
 
     private fun mapPriority(priority: NotificationPriority): Int {

@@ -33,57 +33,6 @@ object WormaCeptorColors {
     val StatusGrey = Color(0xFF6B7280) // Gray-500 - Subtle but readable
 
     // ============================================================
-    // SEMANTIC SURFACE COLORS - For backgrounds and containers
-    // ============================================================
-
-    object Surfaces {
-        /** Success surface tint at subtle alpha. */
-        val SuccessSubtle = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-        /** Success surface tint at light alpha. */
-        val SuccessLight = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-        /** Success surface tint at medium alpha. */
-        val SuccessMedium = Color(0xFF10B981).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-        /** Warning surface tint at subtle alpha. */
-        val WarningSubtle = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-        /** Warning surface tint at light alpha. */
-        val WarningLight = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-        /** Warning surface tint at medium alpha. */
-        val WarningMedium = Color(0xFFF59E0B).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-        /** Error surface tint at subtle alpha. */
-        val ErrorSubtle = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-        /** Error surface tint at light alpha. */
-        val ErrorLight = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-        /** Error surface tint at medium alpha. */
-        val ErrorMedium = Color(0xFFEF4444).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-        /** Info surface tint at subtle alpha. */
-        val InfoSubtle = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-        /** Info surface tint at light alpha. */
-        val InfoLight = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-        /** Info surface tint at medium alpha. */
-        val InfoMedium = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-        /** Neutral surface tint at subtle alpha. */
-        val NeutralSubtle = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
-
-        /** Neutral surface tint at light alpha. */
-        val NeutralLight = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.light)
-
-        /** Neutral surface tint at medium alpha. */
-        val NeutralMedium = Color(0xFF6B7280).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-    }
-
-    // ============================================================
     // CHART COLORS - For data visualization
     // ============================================================
 
@@ -108,9 +57,6 @@ object WormaCeptorColors {
 
         /** 5xx Server error responses */
         val ServerError5xx = Color(0xFFEF4444)
-
-        /** Pending/Unknown responses */
-        val Pending = Color(0xFF6B7280)
     }
 
     // ============================================================
@@ -231,23 +177,11 @@ object WormaCeptorColors {
     // ============================================================
 
     object Accent {
-        /** Primary accent - vibrant blue */
-        val Primary = Color(0xFF0061A4)
-
-        /** Secondary accent - muted purple */
-        val Secondary = Color(0xFF6B5778)
-
         /** Tertiary accent - teal */
         val Tertiary = Color(0xFF14B8A6)
 
         /** Highlight color for search results */
         val Highlight = Color(0xFFFBBF24) // Yellow-400
-
-        /** Selection color */
-        val Selection = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-
-        /** Focus ring color */
-        val FocusRing = Color(0xFF3B82F6).copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
     }
 
     // ============================================================
@@ -386,42 +320,4 @@ object WormaCeptorColors {
         val Keystore = Color(0xFF2196F3) // Blue
         val Datastore = Color(0xFF009688) // Teal
     }
-
-    /**
-     * File browser feature colors.
-     */
-    object FileBrowser {
-        val Folder = Color(0xFFFFC107) // Amber
-        val File = Color(0xFF2196F3) // Blue
-        val Image = Color(0xFF4CAF50) // Green
-        val Video = Color(0xFFE91E63) // Pink
-        val Audio = Color(0xFF9C27B0) // Purple
-        val Document = Color(0xFFFF5722) // Deep Orange
-        val Archive = Color(0xFF795548) // Brown
-        val Code = Color(0xFF00BCD4) // Cyan
-        val Database = Color(0xFF3F51B5) // Indigo
-    }
-
-    /**
-     * Preferences viewer feature colors.
-     */
-    object Preferences {
-        val StringValue = Color(0xFFFF9800) // Orange
-        val IntValue = Color(0xFF2196F3) // Blue
-        val BooleanTrue = Color(0xFF4CAF50) // Green
-        val BooleanFalse = Color(0xFFF44336) // Red
-        val FloatValue = Color(0xFF9C27B0) // Purple
-        val LongValue = Color(0xFF00BCD4) // Cyan
-        val SetValue = Color(0xFF607D8B) // Blue Grey
-    }
-
-    // ============================================================
-    // DEPRECATED - Use new semantic colors instead
-    // ============================================================
-
-    @Deprecated("Use ContentType.Xml or another appropriate color")
-    val ContentPurple = Color(0xFF6B5778)
-
-    @Deprecated("Use ContentType.Image")
-    val ContentCyan = Color(0xFF00838F)
 }

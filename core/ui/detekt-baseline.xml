@@ -10,11 +10,7 @@
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Info, in-progress, selected, link states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Success, healthy, completed, enabled states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Warning, pending, caution states </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Focus ring color </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Highlight color for search results </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Primary accent - vibrant blue </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Secondary accent - muted purple </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Selection color </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Accent$ Tertiary accent - teal </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Category$ Core tools - Blue (essential, foundational) </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Category$ Fallback/default category </ID>
@@ -29,7 +25,6 @@
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Chart$ 5xx Server error responses </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Chart$ Fast/Good performance </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Chart$ Medium/Acceptable performance </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Chart$ Pending/Unknown responses </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.Chart$ Slow/Poor performance </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.ContentType$ Binary data </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.ContentType$ Form data </ID>
@@ -54,51 +49,22 @@
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ PUT request - replacement </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$ TRACE request - debugging </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$* Apply subtle background tint with status color</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Disabled state opacity </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Dragged state overlay </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Focus state overlay </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Hover state overlay </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$ Pressed state overlay </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$* Opacity Levels - For subtle backgrounds and overlays</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$ Complex animations </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$ Micro-interactions like checkboxes, toggles </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$ Page transitions </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$ Standard transitions </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$* Animation Durations - Following Material Motion guidelines</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$* Animation Specs - Pre-configured animation specifications</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$* Border Width - Consistent border styling</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$* Card Padding Presets</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$ Get radius based on component size </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$* Corner Radius - Subtle rounded corners for modern feel</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$ Acceleration for exiting elements </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$ Deceleration for entering elements </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$ Emphasized easing for important transitions </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$ Linear for continuous animations </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$ Standard easing for most animations </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$* Animation Easing - Smooth, natural motion curves</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Elevated surface for cards </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Floating action button </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$ Modal/dialog elevation </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$* Elevation - Minimal, subtle elevation with layered depth</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Empty state illustration icons </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Feature/category icons </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Inline icons in text </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Navigation icons </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$ Standard action icons </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$* Icon Sizes - Consistent icon sizing</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$* Common Shapes</ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$ Safe area padding for edge-to-edge layouts </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Spacing$* Spacing Scale - 4px baseline grid for consistent spacing</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$* Theme Colors - Shared color palette for consistent theming across host app and library</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$* Touch Target - Minimum touch target sizes for accessibility</ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Body - Main content text </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Caption - Small descriptive text </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Code - Monospace for code display </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Display - Large, impactful text </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Headline - Section headers </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Label - UI labels and captions </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Overline - Category labels </ID>
-    <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$ Title - Component headers </ID>
     <ID>EndOfSentenceFormat:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$* Typography - Text styles for consistent hierarchy</ID>
     <ID>Filename:HapticHelpers.kt$com.azikar24.wormaceptor.core.ui.components.HapticHelpers.kt</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
@@ -120,17 +86,12 @@
     <ID>MagicNumber:SyntaxColors.kt$0xFFD19A66</ID>
     <ID>MagicNumber:SyntaxColors.kt$0xFFE06C75</ID>
     <ID>MagicNumber:SyntaxColors.kt$0xFFE5C07B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF00838F</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF6B5778</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF6B7280</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFEF4444</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF0061A4</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF14B8A6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF6B5778</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFFFBBF24</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF3B82F6</ID>
@@ -140,7 +101,6 @@
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFFF59E0B</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFF6B7280</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFFEF4444</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFFF59E0B</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF10B981</ID>
@@ -176,15 +136,6 @@
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFDCDCAA</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFFFB74D</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFFFD54F</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF00BCD4</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF3F51B5</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF795548</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFF9C27B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFFE91E63</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFFFF5722</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$0xFFFFC107</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF14B8A6</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF3B82F6</ID>
@@ -211,24 +162,12 @@
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFF4CAF50</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFF81C784</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFFC8E6C9</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFF00BCD4</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFF607D8B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFF9C27B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFFF44336</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Preferences$0xFFFF9800</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF009688</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF2196F3</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF4CAF50</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF5C6BC0</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF7C4DFF</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFFFF9800</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$0xFF6B7280</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$0xFFEF4444</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Surfaces$0xFFF59E0B</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF1565C0</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF2196F3</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF4CAF50</ID>
@@ -244,8 +183,6 @@
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF7B1FA2</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFFE65100</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFFF57C00</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$0.2f</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Easing$0.4f</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x120D9488</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x152DD4BF</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF0A0A0A</ID>
@@ -253,24 +190,16 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF141414</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF16A34A</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF1F1F1F</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2563EB</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2A2A2A</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2DD4BF</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF3A3A3A</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF4ADE80</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF525252</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF60A5FA</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF6B6B6B</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF8A8A8A</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF9CA3AF</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFD4D4D4</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFD97706</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFDC2626</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFE5E5E5</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF0F0F0</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFBBF24</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
@@ -283,7 +212,6 @@
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Chart</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$ContentType</ID>
     <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$HttpMethod</ID>
-    <ID>UndocumentedPublicClass:WormaCeptorColors.kt$WormaCeptorColors$Surfaces</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun resetHaptic()</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$fun triggerHaptic()</ID>
     <ID>UndocumentedPublicFunction:HapticHelpers.kt$HapticOnceState$operator fun component1(): Boolean</ID>
@@ -308,8 +236,6 @@
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val string: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val tag: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val type: Color</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors$@Deprecated("Use ContentType.Image") val ContentCyan = Color(0xFF00838F)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors$@Deprecated("Use ContentType.Xml or another appropriate color") val ContentPurple = Color(0xFF6B5778)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Cpu$val Usage = Color(0xFF2196F3) // Blue</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Cpu$val UsageLight = Color(0xFFBBDEFB) // Light Blue</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Database$// Data type colors val Integer = Color(0xFF4FC3F7) // Light Blue</ID>
@@ -325,15 +251,6 @@
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Database$val SqlString = Color(0xFFCE9178) // Orange</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Database$val SqlTable = Color(0xFF4EC9B0) // Cyan</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Database$val Text = Color(0xFFFFB74D) // Orange</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Archive = Color(0xFF795548) // Brown</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Audio = Color(0xFF9C27B0) // Purple</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Code = Color(0xFF00BCD4) // Cyan</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Database = Color(0xFF3F51B5) // Indigo</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Document = Color(0xFFFF5722) // Deep Orange</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val File = Color(0xFF2196F3) // Blue</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Folder = Color(0xFFFFC107) // Amber</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Image = Color(0xFF4CAF50) // Green</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.FileBrowser$val Video = Color(0xFFE91E63) // Pink</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$val Critical = Color(0xFFD32F2F) // Red 700</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$val High = Color(0xFFE65100) // Orange 800</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$val Idle = Color(0xFF9E9E9E) // Grey</ID>
@@ -351,13 +268,6 @@
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Memory$val HeapTotal = Color(0xFF81C784) // Medium Green</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Memory$val HeapUsed = Color(0xFF4CAF50) // Green</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Memory$val NativeHeap = Color(0xFF2196F3) // Blue</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val BooleanFalse = Color(0xFFF44336) // Red</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val BooleanTrue = Color(0xFF4CAF50) // Green</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val FloatValue = Color(0xFF9C27B0) // Purple</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val IntValue = Color(0xFF2196F3) // Blue</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val LongValue = Color(0xFF00BCD4) // Cyan</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val SetValue = Color(0xFF607D8B) // Blue Grey</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.Preferences$val StringValue = Color(0xFFFF9800) // Orange</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val Datastore = Color(0xFF009688) // Teal</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val Encrypted = Color(0xFF4CAF50) // Green</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$val EncryptedPrefs = Color(0xFF7C4DFF) // Deep Purple</ID>
@@ -384,7 +294,6 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val heavy = 0.72f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val hint = 0.04f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val intense = 0.60f</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val invisible = 0.0f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val light = 0.12f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val medium = 0.20f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val moderate = 0.32f</ID>
@@ -393,46 +302,26 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val soft = 0.16f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val strong = 0.40f</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Alpha$const val subtle = 0.08f</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val deliberate = 700</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val fast = 150</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val instant = 0</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val normal = 250</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val slow = 350</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val ultraFast = 100</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationDuration$const val verySlow = 500</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val fastSpring = spring&lt;Float&gt;( dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessHigh, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val fastTween = tween&lt;Float&gt;( durationMillis = AnimationDuration.fast, easing = FastOutSlowInEasing, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val gentleSpring = spring&lt;Float&gt;( dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val normalSpring = spring&lt;Float&gt;( dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessMedium, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val normalTween = tween&lt;Float&gt;( durationMillis = AnimationDuration.normal, easing = FastOutSlowInEasing, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val slowTween = tween&lt;Float&gt;( durationMillis = AnimationDuration.slow, easing = FastOutSlowInEasing, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.AnimationSpecs$val snappySpring = spring&lt;Float&gt;( dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessHigh, )</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val bold = 3.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val hairline = 0.5.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val medium = 1.5.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val regular = 1.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val thick = 2.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.BorderWidth$val thin = 0.5.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$val comfortable = PaddingValues(horizontal = Spacing.lg, vertical = Spacing.xl)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$val compact = PaddingValues(Spacing.md)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$val regular = PaddingValues(Spacing.lg)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$val spacious = PaddingValues(Spacing.xl)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CardPadding$val tight = PaddingValues(Spacing.sm)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val lg = 12.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val md = 8.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val none = 0.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val pill = 999.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val sm = 6.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val xl = 16.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val xs = 4.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.CornerRadius$val xxl = 20.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val lg = 6.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val md = 4.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val none = 0.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val sm = 2.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val xl = 8.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val xs = 1.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Elevation$val xxl = 12.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$val lg = 24.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$val md = 20.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$val sm = 16.dp</ID>
@@ -443,11 +332,9 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.IconSize$val xxxl = 48.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val badge = RoundedCornerShape(CornerRadius.xs)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val button = RoundedCornerShape(CornerRadius.sm)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val buttonLarge = RoundedCornerShape(CornerRadius.md)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val card = RoundedCornerShape(CornerRadius.md)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val cardLarge = RoundedCornerShape(CornerRadius.lg)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val chip = RoundedCornerShape(CornerRadius.xs)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val dialog = RoundedCornerShape(CornerRadius.xxl)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val fab = RoundedCornerShape(CornerRadius.lg)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val pill = RoundedCornerShape(CornerRadius.pill)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Shapes$val searchBar = RoundedCornerShape(CornerRadius.lg)</ID>
@@ -468,42 +355,24 @@
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentDark = Color(0xFF2DD4BF)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentSubtleDark = Color(0x152DD4BF)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val AccentSubtleLight = Color(0x120D9488)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkOutline = Color(0xFF2A2A2A)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkOutlineVariant = Color(0xFF3A3A3A)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkSurface = Color(0xFF141414)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkSurfaceVariant = Color(0xFF1F1F1F)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextPrimary = Color(0xFFFAFAFA)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextSecondary = Color(0xFF8A8A8A)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val DarkTextTertiary = Color(0xFF525252)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val ErrorDark = Color(0xFFF87171)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Info = Color(0xFF2563EB)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val InfoDark = Color(0xFF60A5FA)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightOutline = Color(0xFFE5E5E5)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightOutlineVariant = Color(0xFFD4D4D4)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightSurface = Color(0xFFFAFAFA)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightSurfaceVariant = Color(0xFFF0F0F0)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextPrimary = Color(0xFF0A0A0A)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextSecondary = Color(0xFF6B6B6B)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val LightTextTertiary = Color(0xFF9CA3AF)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Success = Color(0xFF16A34A)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val SuccessDark = Color(0xFF4ADE80)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val Warning = Color(0xFFD97706)</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$val WarningDark = Color(0xFFFBBF24)</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val comfortable = 48.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val large = 56.dp</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.TouchTarget$val minimum = 44.dp</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val bodyMedium = TextStyle( fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.Normal, letterSpacing = 0.25.sp, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val bodySmall = TextStyle( fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.Normal, letterSpacing = 0.4.sp, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val codeMedium = TextStyle( fontSize = 12.sp, lineHeight = 18.sp, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Normal, )</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val codeSmall = TextStyle( fontSize = 10.sp, lineHeight = 14.sp, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Normal, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val displayMedium = TextStyle( fontSize = 45.sp, lineHeight = 52.sp, fontWeight = FontWeight.Normal, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val displaySmall = TextStyle( fontSize = 36.sp, lineHeight = 44.sp, fontWeight = FontWeight.Normal, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val headlineMedium = TextStyle( fontSize = 28.sp, lineHeight = 36.sp, fontWeight = FontWeight.Medium, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val headlineSmall = TextStyle( fontSize = 24.sp, lineHeight = 32.sp, fontWeight = FontWeight.Medium, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val labelMedium = TextStyle( fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.5.sp, )</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val labelSmall = TextStyle( fontSize = 11.sp, lineHeight = 16.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.5.sp, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val titleMedium = TextStyle( fontSize = 16.sp, lineHeight = 24.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.15.sp, )</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.Typography$val titleSmall = TextStyle( fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 0.1.sp, )</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val enterTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; EnterTransition = { slideIntoContainer( AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val exitTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; ExitTransition = { slideOutOfContainer( AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>
     <ID>UndocumentedPublicProperty:WormaCeptorNavTransitions.kt$WormaCeptorNavTransitions$val popEnterTransition: AnimatedContentTransitionScope&lt;NavBackStackEntry&gt;.() -&gt; EnterTransition = { slideIntoContainer( AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page), ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page)) }</ID>

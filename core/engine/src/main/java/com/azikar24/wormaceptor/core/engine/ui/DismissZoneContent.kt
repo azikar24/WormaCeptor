@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayState
@@ -125,7 +124,7 @@ private fun DismissCircle(isActive: Boolean) {
         Icon(
             imageVector = Icons.Default.Close,
             contentDescription = stringResource(R.string.overlay_dismiss_remove),
-            tint = Color.White,
+            tint = WormaCeptorDesignSystem.ThemeColors.LightBackground,
             modifier = Modifier
                 .size(DismissIconSize)
                 .alpha(iconAlpha),

@@ -264,7 +264,11 @@ private fun SuccessContent(
                     .fillMaxWidth()
                     .height(80.dp)
                     .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)),
+                    .background(
+                        WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.medium,
+                        ),
+                    ),
             )
 
             // Page count badge - top right
@@ -303,7 +307,9 @@ private fun SuccessContent(
             Surface(
                 modifier = Modifier.align(Alignment.Center),
                 shape = CircleShape,
-                color = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                color = WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
+                    alpha = WormaCeptorDesignSystem.Alpha.intense,
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.Fullscreen,
@@ -311,7 +317,7 @@ private fun SuccessContent(
                     modifier = Modifier
                         .padding(WormaCeptorDesignSystem.Spacing.md)
                         .size(28.dp),
-                    tint = Color.White,
+                    tint = WormaCeptorDesignSystem.ThemeColors.LightBackground,
                 )
             }
         }

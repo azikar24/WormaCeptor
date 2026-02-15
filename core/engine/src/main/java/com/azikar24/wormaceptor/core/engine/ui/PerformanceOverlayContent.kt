@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.engine.MetricStatus
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayState
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 // Colors
 private val PillBackground = Color(0xFF1C1C1E)
@@ -131,7 +132,7 @@ private fun MetricDisplay(
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily.Monospace,
-            color = Color.White,
+            color = WormaCeptorDesignSystem.ThemeColors.LightBackground,
         )
     }
 }

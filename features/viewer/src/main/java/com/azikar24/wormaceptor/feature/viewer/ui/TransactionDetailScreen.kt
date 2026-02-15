@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
@@ -1840,7 +1841,7 @@ private fun buildBaseHighlightedText(
     return androidx.compose.ui.text.buildAnnotatedString {
         append(text)
         val defaultStyle = androidx.compose.ui.text.SpanStyle(
-            background = Color.Yellow.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
         )
         matchRanges.forEach { range ->
             addStyle(defaultStyle, range.first, range.last + 1)
@@ -1894,7 +1895,7 @@ private fun HighlightedBodyText(
         }
     }
 
-    val highlightColor = Color.Cyan.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
 
     Box(modifier = modifier) {
         // Current match overlay using Canvas to draw the actual path shape

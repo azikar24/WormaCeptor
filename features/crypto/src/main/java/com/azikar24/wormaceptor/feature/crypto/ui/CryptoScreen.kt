@@ -63,7 +63,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -76,6 +75,7 @@ import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.CipherMode
@@ -370,12 +370,14 @@ fun CryptoTool(
                             onClick = { viewModel.encrypt() },
                             modifier = Modifier.weight(1f),
                             enabled = !isProcessing && viewModel.inputText.isNotBlank() && config.key.isNotBlank(),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7)),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = WormaCeptorColors.SecureStorage.EncryptedPrefs,
+                            ),
                         ) {
                             if (isProcessing) {
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(18.dp),
-                                    color = Color.White,
+                                    color = WormaCeptorDesignSystem.ThemeColors.LightBackground,
                                     strokeWidth = 2.dp,
                                 )
                             } else {
@@ -389,12 +391,14 @@ fun CryptoTool(
                             onClick = { viewModel.decrypt() },
                             modifier = Modifier.weight(1f),
                             enabled = !isProcessing && viewModel.inputText.isNotBlank() && config.key.isNotBlank(),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009688)),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = WormaCeptorColors.SecureStorage.Datastore,
+                            ),
                         ) {
                             if (isProcessing) {
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(18.dp),
-                                    color = Color.White,
+                                    color = WormaCeptorDesignSystem.ThemeColors.LightBackground,
                                     strokeWidth = 2.dp,
                                 )
                             } else {
@@ -452,10 +456,10 @@ private fun ResultCard(
     onUseAsInput: (String) -> Unit,
 ) {
     val isSuccess = result.success
-    val accentColor = if (isSuccess) {
-        if (result.operation == CryptoOperation.ENCRYPT) Color(0xFF673AB7) else Color(0xFF009688)
-    } else {
-        Color(0xFFF44336)
+    val accentColor = when {
+        !isSuccess -> WormaCeptorDesignSystem.ThemeColors.Error
+        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorColors.SecureStorage.EncryptedPrefs
+        else -> WormaCeptorColors.SecureStorage.Datastore
     }
     val successText = stringResource(R.string.crypto_success)
     val failedText = stringResource(R.string.crypto_failed)
@@ -562,7 +566,7 @@ private fun ResultCard(
 
 @Composable
 private fun ErrorCard(message: String, onDismiss: () -> Unit) {
-    val errorColor = Color(0xFFF44336)
+    val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
         backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
@@ -707,10 +711,10 @@ fun CryptoHistoryScreen(
 @Composable
 private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
-    val accentColor = if (result.success) {
-        if (result.operation == CryptoOperation.ENCRYPT) Color(0xFF673AB7) else Color(0xFF009688)
-    } else {
-        Color(0xFFF44336)
+    val accentColor = when {
+        !result.success -> WormaCeptorDesignSystem.ThemeColors.Error
+        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorColors.SecureStorage.EncryptedPrefs
+        else -> WormaCeptorColors.SecureStorage.Datastore
     }
     val successText = stringResource(R.string.crypto_success)
     val failedText = stringResource(R.string.crypto_failed)

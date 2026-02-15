@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.preferences.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 
 /**
  * Feature-specific design tokens for the Preferences Inspector.
@@ -26,7 +27,7 @@ object PreferencesDesignSystem {
             "Float" -> float
             "Boolean" -> boolean
             "StringSet" -> stringSet
-            else -> Color.Gray
+            else -> WormaCeptorColors.StatusGrey
         }
     }
 }

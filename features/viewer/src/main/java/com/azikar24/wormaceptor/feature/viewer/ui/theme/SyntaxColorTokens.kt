@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /**
  * Color tokens for syntax highlighting UI components.
@@ -29,7 +30,7 @@ internal object SyntaxColorTokens {
         val SearchHighlightCurrent = Color(0xFF4DD0E1)
 
         /** Text color on search highlight. */
-        val SearchHighlightText: Color = Color.Black
+        val SearchHighlightText: Color = WormaCeptorDesignSystem.ThemeColors.LightTextPrimary
     }
 
     /**
@@ -52,6 +53,6 @@ internal object SyntaxColorTokens {
         val SearchHighlightCurrent = Color(0xFF264F78)
 
         /** Text color on search highlight. */
-        val SearchHighlightText: Color = Color.White
+        val SearchHighlightText: Color = WormaCeptorDesignSystem.ThemeColors.DarkTextPrimary
     }
 }

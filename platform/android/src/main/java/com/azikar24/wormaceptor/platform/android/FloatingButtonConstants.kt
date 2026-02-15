@@ -42,7 +42,7 @@ internal object FloatingButtonConstants {
         val BUTTON_COLOR: Color = WormaCeptorDesignSystem.ThemeColors.AccentLight
 
         /** Icon tint color. */
-        val ICON_TINT: Color = Color.White
+        val ICON_TINT: Color = WormaCeptorDesignSystem.ThemeColors.LightBackground
 
         /** Icon alpha/opacity. */
         val ICON_ALPHA = WormaCeptorDesignSystem.Alpha.prominent

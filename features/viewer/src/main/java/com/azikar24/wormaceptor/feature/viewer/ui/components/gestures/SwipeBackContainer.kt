@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -36,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -165,7 +165,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.3f * (1f - progress))),
+                    .background(ThemeColors.DarkBackground.copy(alpha = 0.3f * (1f - progress))),
             )
         }
 
@@ -203,8 +203,8 @@ fun SwipeBackContainer(
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
                     elevation = 16.dp * progress,
-                    ambientColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-                    spotColor = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    ambientColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    spotColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
                 )
                 .background(MaterialTheme.colorScheme.surface),
             content = content,

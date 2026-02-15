@@ -47,12 +47,11 @@
     <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$* Transaction detail content - the actual content without swipe-back wrapper * * UX Behavior: * - Swipe on toolbar/topBar area: Switch between transactions * - Swipe on content area (HorizontalPager): Switch between Overview/Request/Response tabs</ID>
     <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$MatchInfo$* Data class holding information about a single search match</ID>
     <ID>EndOfSentenceFormat:ViewerViewModel.kt$ViewerViewModel$* Get the list of all transaction IDs for pager navigation</ID>
-    <ID>LongMethod:BulkActionBar.kt$@Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:ContentTypeChip.kt$@Composable fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat)</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackTraceSection(stackFrames: List&lt;CrashUtils.StackFrame&gt;, fullStackTrace: String, context: Context)</ID>
-    <ID>LongMethod:CrashListScreen.kt$@Composable fun EnhancedCrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
+    <ID>LongMethod:CrashListScreen.kt$@Composable fun CrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
     <ID>LongMethod:CrashListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashListScreen( crashes: ImmutableList&lt;Crash&gt;, onCrashClick: (Crash) -&gt; Unit, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:ExportManager.kt$ExportManager$suspend fun exportTransactions(transactions: List&lt;NetworkTransaction&gt;)</ID>
     <ID>LongMethod:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
@@ -231,7 +230,7 @@
     <ID>MaximumLineLength:TransactionDetailScreen.kt$ </ID>
     <ID>MaximumLineLength:ViewerActivity.kt$ViewerActivity$ </ID>
     <ID>ModifierMissing:CrashDetailScreen.kt$CrashDetailPagerScreen</ID>
-    <ID>ModifierMissing:CrashListScreen.kt$EnhancedCrashItem</ID>
+    <ID>ModifierMissing:CrashListScreen.kt$CrashItem</ID>
     <ID>ModifierMissing:HomeScreen.kt$HomeScreen</ID>
     <ID>ModifierMissing:PdfViewerScreen.kt$PdfViewerScreen</ID>
     <ID>ModifierMissing:SwipeBackContainer.kt$SwipeBackContainer</ID>
@@ -345,8 +344,7 @@
     <ID>UndocumentedPublicClass:ViewerActivity.kt$ViewerActivity : ComponentActivity</ID>
     <ID>UndocumentedPublicClass:ViewerViewModel.kt$ViewerViewModel : ViewModel</ID>
     <ID>UndocumentedPublicFunction:CrashExport.kt$suspend fun exportCrashes(context: Context, crashes: List&lt;Crash&gt;, onMessage: (String) -&gt; Unit = {})</ID>
-    <ID>UndocumentedPublicFunction:CrashListScreen.kt$@Composable @Deprecated("Use EnhancedCrashItem instead") fun CrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
-    <ID>UndocumentedPublicFunction:CrashListScreen.kt$@Composable fun EnhancedCrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
+    <ID>UndocumentedPublicFunction:CrashListScreen.kt$@Composable fun CrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
     <ID>UndocumentedPublicFunction:ExportManager.kt$ExportManager$suspend fun exportTransactions(transactions: List&lt;NetworkTransaction&gt;)</ID>
     <ID>UndocumentedPublicFunction:FavoritesRepository.kt$FavoritesRepository.Companion$fun getInstance(context: Context): FavoritesRepository</ID>
     <ID>UndocumentedPublicFunction:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>

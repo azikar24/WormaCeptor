@@ -7,9 +7,6 @@
     <ID>LongMethod:CryptoScreen.kt$@Composable private fun ResultCard( result: CryptoResult, onCopy: (String) -&gt; Unit, onClear: () -&gt; Unit, onUseAsInput: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:CryptoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CryptoHistoryScreen( engine: CryptoEngine, modifier: Modifier = Modifier, onNavigateBack: () -&gt; Unit, onLoadResult: (CryptoResult) -&gt; Unit, )</ID>
     <ID>LongMethod:CryptoScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CryptoTool( engine: CryptoEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, onNavigateToHistory: (() -&gt; Unit)? = null, )</ID>
-    <ID>MagicNumber:CryptoScreen.kt$0xFF009688</ID>
-    <ID>MagicNumber:CryptoScreen.kt$0xFF673AB7</ID>
-    <ID>MagicNumber:CryptoScreen.kt$0xFFF44336</ID>
     <ID>MagicNumber:CryptoScreen.kt$50</ID>
     <ID>MagicNumber:CryptoScreen.kt$8</ID>
     <ID>MaxLineLength:CryptoScreen.kt$if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility</ID>

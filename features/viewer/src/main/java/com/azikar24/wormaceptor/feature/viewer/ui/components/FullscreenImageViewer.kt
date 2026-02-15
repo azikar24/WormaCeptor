@@ -64,7 +64,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -82,6 +81,7 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
@@ -177,7 +177,7 @@ private fun FullscreenImageContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = backgroundAlpha * 0.95f))
+            .background(ThemeColors.DarkBackground.copy(alpha = backgroundAlpha * 0.95f))
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -312,7 +312,7 @@ private fun FullscreenImageContent(
                 exit = fadeOut(),
             ) {
                 CircularProgressIndicator(
-                    color = Color.White,
+                    color = ThemeColors.LightBackground,
                     modifier = Modifier.size(48.dp),
                 )
             }
@@ -375,12 +375,12 @@ private fun FullscreenImageContent(
         ) {
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
             ) {
                 Text(
                     text = "${String.format(Locale.US, "%.1f", scale)}x",
                     style = MaterialTheme.typography.labelMedium,
-                    color = Color.White,
+                    color = ThemeColors.LightBackground,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorDesignSystem.Spacing.sm,
                         vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -395,7 +395,7 @@ private fun FullscreenImageContent(
 private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: () -> Unit, currentZoom: Float) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
     ) {
         Row(
             modifier = Modifier
@@ -409,8 +409,8 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
             FilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
-                    contentColor = Color.White,
+                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                    contentColor = ThemeColors.LightBackground,
                 ),
             ) {
                 Icon(
@@ -428,10 +428,14 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                     onClick = onZoomOut,
                     enabled = currentZoom > 1f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-                        disabledContentColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        contentColor = ThemeColors.LightBackground,
+                        disabledContainerColor = ThemeColors.LightBackground.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                        ),
+                        disabledContentColor = ThemeColors.LightBackground.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        ),
                     ),
                 ) {
                     Icon(
@@ -444,10 +448,14 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                     onClick = onZoomIn,
                     enabled = currentZoom < 5f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.hint),
-                        disabledContentColor = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        contentColor = ThemeColors.LightBackground,
+                        disabledContainerColor = ThemeColors.LightBackground.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                        ),
+                        disabledContentColor = ThemeColors.LightBackground.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                        ),
                     ),
                 ) {
                     Icon(
@@ -466,7 +474,7 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = Color.Black.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
     ) {
         Column(
             modifier = Modifier
@@ -492,14 +500,14 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
                     ) {
                         Text(
                             text = meta.format,
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.Medium,
                             ),
-                            color = Color.White,
+                            color = ThemeColors.LightBackground,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorDesignSystem.Spacing.sm,
                                 vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -544,13 +552,13 @@ private fun MetadataChip(icon: ImageVector, text: String) {
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
         )
     }
 }
@@ -560,7 +568,7 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-        color = Color.White.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
     ) {
         Row(
             modifier = Modifier.padding(
@@ -573,7 +581,7 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                tint = Color.White,
+                tint = ThemeColors.LightBackground,
                 modifier = Modifier.size(18.dp),
             )
             Text(
@@ -581,7 +589,7 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.Medium,
                 ),
-                color = Color.White,
+                color = ThemeColors.LightBackground,
             )
         }
     }

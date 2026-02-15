@@ -2,4 +2,4 @@ jdk:
   - openjdk17
 
 install:
-  - ./gradlew publishToMavenLocal -x javaDocReleaseGeneration
+  - ./gradlew publishToMavenLocal

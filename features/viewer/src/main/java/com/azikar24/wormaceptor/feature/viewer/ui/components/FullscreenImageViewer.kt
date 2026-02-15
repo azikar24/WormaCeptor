@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui.components
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.media.MediaScannerConnection.scanFile
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -649,9 +650,12 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
             FileOutputStream(file).use { it.write(imageData) }
 
             // Notify media scanner
-            val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            intent.data = android.net.Uri.fromFile(file)
-            context.sendBroadcast(intent)
+            scanFile(
+                context,
+                arrayOf(file.absolutePath),
+                arrayOf(mimeType),
+                null,
+            )
 
             "Image saved to gallery"
         }

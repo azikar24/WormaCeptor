@@ -1,30 +1,18 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -32,7 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
@@ -40,81 +28,6 @@ import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
 import kotlinx.collections.immutable.ImmutableList
 import java.util.UUID
-
-@Composable
-private fun EmptyState(hasActiveFilters: Boolean, onClearFilters: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        // Icon
-        Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.emptyState),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Wifi,
-                    contentDescription = stringResource(R.string.viewer_transaction_list_no_transactions),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
-                    ),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-        // Title
-        Text(
-            text = if (hasActiveFilters) {
-                stringResource(
-                    R.string.viewer_transaction_list_no_matches_title,
-                )
-            } else {
-                stringResource(R.string.viewer_transaction_list_no_transactions_title)
-            },
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-        // Description
-        Text(
-            text = if (hasActiveFilters) {
-                stringResource(R.string.viewer_transaction_list_no_matches_description)
-            } else {
-                stringResource(R.string.viewer_transaction_list_no_transactions_description)
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
-        )
-
-        if (hasActiveFilters) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
-            Button(
-                onClick = onClearFilters,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            ) {
-                Text(
-                    text = stringResource(R.string.viewer_transaction_list_clear_filters),
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                    ),
-                )
-            }
-        }
-    }
-}
 
 // ============================================================================
 // SELECTABLE VERSION WITH MULTI-SELECT AND QUICK FILTERS
@@ -248,16 +161,54 @@ fun SelectableTransactionListScreen(
                     )
                 },
             ) {
-                EmptyState(
-                    hasActiveFilters = hasActiveFilters,
-                    onClearFilters = onClearFilters,
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (hasActiveFilters) {
+                            R.string.viewer_transaction_list_no_matches_title
+                        } else {
+                            R.string.viewer_transaction_list_no_transactions_title
+                        },
+                    ),
+                    subtitle = stringResource(
+                        if (hasActiveFilters) {
+                            R.string.viewer_transaction_list_no_matches_description
+                        } else {
+                            R.string.viewer_transaction_list_no_transactions_description
+                        },
+                    ),
+                    icon = Icons.Default.Wifi,
+                    actionLabel = if (hasActiveFilters) {
+                        stringResource(R.string.viewer_transaction_list_clear_filters)
+                    } else {
+                        null
+                    },
+                    onAction = if (hasActiveFilters) onClearFilters else null,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
         } else {
-            EmptyState(
-                hasActiveFilters = hasActiveFilters,
-                onClearFilters = onClearFilters,
+            WormaCeptorEmptyState(
+                title = stringResource(
+                    if (hasActiveFilters) {
+                        R.string.viewer_transaction_list_no_matches_title
+                    } else {
+                        R.string.viewer_transaction_list_no_transactions_title
+                    },
+                ),
+                subtitle = stringResource(
+                    if (hasActiveFilters) {
+                        R.string.viewer_transaction_list_no_matches_description
+                    } else {
+                        R.string.viewer_transaction_list_no_transactions_description
+                    },
+                ),
+                icon = Icons.Default.Wifi,
+                actionLabel = if (hasActiveFilters) {
+                    stringResource(R.string.viewer_transaction_list_clear_filters)
+                } else {
+                    null
+                },
+                onAction = if (hasActiveFilters) onClearFilters else null,
                 modifier = modifier.fillMaxSize(),
             )
         }

@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,14 +37,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Alpha
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.CornerRadius
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.Spacing
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorColors
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -66,9 +63,9 @@ import java.util.concurrent.TimeUnit
 fun CrashListScreen(
     crashes: ImmutableList<Crash>,
     onCrashClick: (Crash) -> Unit,
+    modifier: Modifier = Modifier,
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -108,12 +105,18 @@ fun CrashListScreen(
                     )
                 },
             ) {
-                EnhancedEmptyState(
+                WormaCeptorEmptyState(
+                    title = stringResource(R.string.viewer_crash_list_no_crashes_title),
+                    subtitle = stringResource(R.string.viewer_crash_list_no_crashes_description),
+                    icon = Icons.Default.BugReport,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
         } else {
-            EnhancedEmptyState(
+            WormaCeptorEmptyState(
+                title = stringResource(R.string.viewer_crash_list_no_crashes_title),
+                subtitle = stringResource(R.string.viewer_crash_list_no_crashes_description),
+                icon = Icons.Default.BugReport,
                 modifier = modifier,
             )
         }
@@ -138,18 +141,18 @@ fun CrashListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        start = Spacing.md,
-                        top = Spacing.md,
-                        end = Spacing.md,
-                        bottom = Spacing.md + navigationBarPadding,
+                        start = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorDesignSystem.Spacing.md,
+                        end = WormaCeptorDesignSystem.Spacing.md,
+                        bottom = WormaCeptorDesignSystem.Spacing.md + navigationBarPadding,
                     ),
                 ) {
                     items(crashes, key = { it.id }) { crash ->
-                        EnhancedCrashItem(
+                        CrashItem(
                             crash = crash,
                             onClick = { onCrashClick(crash) },
                         )
-                        Spacer(modifier = Modifier.height(Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     }
                 }
             }
@@ -157,18 +160,18 @@ fun CrashListScreen(
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = Spacing.md,
-                    top = Spacing.md,
-                    end = Spacing.md,
-                    bottom = Spacing.md + navigationBarPadding,
+                    start = WormaCeptorDesignSystem.Spacing.md,
+                    top = WormaCeptorDesignSystem.Spacing.md,
+                    end = WormaCeptorDesignSystem.Spacing.md,
+                    bottom = WormaCeptorDesignSystem.Spacing.md + navigationBarPadding,
                 ),
             ) {
                 items(crashes, key = { it.id }) { crash ->
-                    EnhancedCrashItem(
+                    CrashItem(
                         crash = crash,
                         onClick = { onCrashClick(crash) },
                     )
-                    Spacer(modifier = Modifier.height(Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                 }
             }
         }
@@ -176,7 +179,7 @@ fun CrashListScreen(
 }
 
 @Composable
-fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
+fun CrashItem(crash: Crash, onClick: () -> Unit) {
     val location = remember(crash.stackTrace) { CrashUtils.extractCrashLocation(crash.stackTrace) }
     val relativeTime = remember(crash.timestamp) { formatRelativeTime(crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }
@@ -195,7 +198,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .alpha(alpha),
         shape = WormaCeptorDesignSystem.Shapes.card,
-        color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.subtle),
+        color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
         tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
     ) {
         Row(
@@ -206,10 +209,10 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
         ) {
             // Icon badge
             Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                color = WormaCeptorColors.StatusRed.copy(alpha = Alpha.light),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
                 contentColor = WormaCeptorColors.StatusRed,
-                modifier = Modifier.size(Spacing.xxl),
+                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -229,7 +232,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                 }
             }
 
-            Spacer(modifier = Modifier.width(Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
                 // Exception type - prominent
@@ -243,7 +246,7 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     letterSpacing = (-0.2).sp,
                 )
 
-                Spacer(modifier = Modifier.height(Spacing.xs))
+                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
 
                 // Error message
                 val message = crash.message
@@ -251,19 +254,25 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                     Text(
                         text = message,
                         style = WormaCeptorDesignSystem.Typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alpha.prominent),
+                        color = MaterialTheme.colorScheme.onSurface.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                        ),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
-                    Spacer(modifier = Modifier.height(Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                 }
 
                 // Stack trace location in monospace
                 if (location != null) {
                     Surface(
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.xs),
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alpha.strong),
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                            WormaCeptorDesignSystem.CornerRadius.xs,
+                        ),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(
+                            alpha = WormaCeptorDesignSystem.Alpha.strong,
+                        ),
                     ) {
                         Text(
                             text = location,
@@ -272,74 +281,26 @@ fun EnhancedCrashItem(crash: Crash, onClick: () -> Unit) {
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(horizontal = Spacing.sm, vertical = Spacing.xxs),
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            ),
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(Spacing.xs))
+                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
                 }
 
                 // Relative timestamp with better typography
                 Text(
                     text = relativeTime,
                     style = WormaCeptorDesignSystem.Typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.heavy),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    ),
                 )
             }
         }
-    }
-}
-
-@Composable
-@Deprecated("Use EnhancedCrashItem instead")
-fun CrashItem(crash: Crash, onClick: () -> Unit) {
-    EnhancedCrashItem(crash = crash, onClick = onClick)
-}
-
-@Composable
-private fun EnhancedEmptyState(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        // Icon
-        Surface(
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(CornerRadius.lg),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alpha.moderate),
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.emptyState),
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.BugReport,
-                    contentDescription = stringResource(R.string.viewer_crash_list_no_crashes),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.intense),
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(Spacing.lg))
-
-        // Title
-        Text(
-            text = stringResource(R.string.viewer_crash_list_no_crashes_title),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-
-        Spacer(modifier = Modifier.height(Spacing.xs))
-
-        // Description
-        Text(
-            text = stringResource(R.string.viewer_crash_list_no_crashes_description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = Alpha.heavy),
-        )
     }
 }
 

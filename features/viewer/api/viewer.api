@@ -237,7 +237,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashDetailScreenK
 public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashListScreenKt {
 	public static final fun CrashItem (Lcom/azikar24/wormaceptor/domain/entities/Crash;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
 	public static final fun CrashListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun EnhancedCrashItem (Lcom/azikar24/wormaceptor/domain/entities/Crash;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashUtils {

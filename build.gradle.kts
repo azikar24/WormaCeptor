@@ -259,7 +259,6 @@ subprojects {
                 publishing {
                     singleVariant("release") {
                         withSourcesJar()
-                        withJavadocJar()
                     }
                 }
             }
@@ -290,7 +289,6 @@ subprojects {
 
             extensions.configure<JavaPluginExtension> {
                 withSourcesJar()
-                withJavadocJar()
             }
 
             afterEvaluate {

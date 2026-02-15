@@ -129,7 +129,6 @@
     <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: SecurityException</ID>
     <ID>SwallowedException:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
     <ID>SwallowedException:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
-    <ID>SwallowedException:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$e: Exception</ID>
     <ID>SwallowedException:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
     <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: ClassNotFoundException</ID>
     <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
@@ -146,7 +145,6 @@
     <ID>TooGenericExceptionCaught:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SecureStorageEngine.kt$SecureStorageEngine$e: Exception</ID>
@@ -203,7 +201,6 @@
     <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val currentMemory: StateFlow&lt;MemoryInfo&gt; = _currentMemory.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val memoryHistory: StateFlow&lt;List&lt;MemoryInfo&gt;&gt; = _memoryHistory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$val isVisible: StateFlow&lt;Boolean&gt; = _isVisible.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$val state: StateFlow&lt;PerformanceOverlayState&gt; = _state.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDrag: (Offset) -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragEnd: () -&gt; Unit</ID>

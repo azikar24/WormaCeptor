@@ -2,11 +2,11 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton()</ID>
+    <ID>CyclomaticComplexMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton(savedX: Int, savedY: Int)</ID>
     <ID>EmptyFunctionBlock:FloatingButtonService.kt$FloatingButtonService.&lt;no name provided&gt;${}</ID>
     <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var layoutParams: WindowManager.LayoutParams</ID>
     <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var windowManager: WindowManager</ID>
-    <ID>LongMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton()</ID>
+    <ID>LongMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton(savedX: Int, savedY: Int)</ID>
     <ID>MagicNumber:FloatingButtonService.kt$FloatingButtonService$4</ID>
     <ID>MutableStateParam:FloatingButtonService.kt$pressedScaleState</ID>
     <ID>PrintStackTrace:FloatingButtonService.kt$FloatingButtonService$e</ID>

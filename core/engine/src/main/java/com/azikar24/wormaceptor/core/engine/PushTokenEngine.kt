@@ -32,8 +32,10 @@ import org.json.JSONObject
 class PushTokenEngine(
     private val context: Context,
 ) {
-    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val prefs: SharedPreferences by lazy {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
 
     // Current token state
     private val _currentToken = MutableStateFlow<PushTokenInfo?>(null)
@@ -52,9 +54,10 @@ class PushTokenEngine(
     val error: StateFlow<String?> = _error.asStateFlow()
 
     init {
-        // Load persisted history on init
-        loadPersistedHistory()
-        loadPersistedToken()
+        scope.launch {
+            loadPersistedHistory()
+            loadPersistedToken()
+        }
     }
 
     /**
@@ -155,7 +158,7 @@ class PushTokenEngine(
      */
     fun clearHistory() {
         _tokenHistory.value = emptyList()
-        persistHistory(emptyList())
+        scope.launch { persistHistory(emptyList()) }
     }
 
     /**

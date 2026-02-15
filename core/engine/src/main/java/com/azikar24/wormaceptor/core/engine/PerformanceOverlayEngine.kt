@@ -7,13 +7,17 @@ import android.content.SharedPreferences
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -52,12 +56,6 @@ import java.lang.ref.WeakReference
  * - Deep links to detailed performance screens
  * - Position stored as percentage for rotation handling
  *
- * Usage:
- * ```kotlin
- * val engine = PerformanceOverlayEngine(context)
- * engine.show(activity)
- * engine.hide()
- * ```
  */
 @Suppress("TooManyFunctions")
 class PerformanceOverlayEngine(
@@ -76,16 +74,33 @@ class PerformanceOverlayEngine(
     private var activityRef: WeakReference<Activity>? = null
 
     // Activity lifecycle observer - keeps overlay visible across activities
+    // and hides overlay when host app goes to background
     private var applicationRef: WeakReference<Application>? = null
+    private var startedActivityCount = 1
     private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
-        override fun onActivityStarted(activity: Activity) = Unit
+        override fun onActivityStarted(activity: Activity) {
+            startedActivityCount++
+            if (startedActivityCount == 1) {
+                overlayView?.visibility = View.VISIBLE
+                dismissZoneView?.visibility = View.VISIBLE
+            }
+        }
+
         override fun onActivityResumed(activity: Activity) {
             // Update activity reference to the currently resumed activity
             activityRef = WeakReference(activity)
         }
+
         override fun onActivityPaused(activity: Activity) = Unit
-        override fun onActivityStopped(activity: Activity) = Unit
+        override fun onActivityStopped(activity: Activity) {
+            startedActivityCount--
+            if (startedActivityCount == 0) {
+                overlayView?.visibility = View.GONE
+                dismissZoneView?.visibility = View.GONE
+            }
+        }
+
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
         override fun onActivityDestroyed(activity: Activity) = Unit
     }
@@ -109,7 +124,6 @@ class PerformanceOverlayEngine(
     val state: StateFlow<PerformanceOverlayState> = _state.asStateFlow()
 
     private val _isVisible = MutableStateFlow(false)
-    val isVisible: StateFlow<Boolean> = _isVisible.asStateFlow()
 
     // SharedPreferences for position persistence
     private val prefs: SharedPreferences by lazy {
@@ -135,16 +149,6 @@ class PerformanceOverlayEngine(
         val onRemoveMemory: () -> Unit,
         val onRemoveCpu: () -> Unit,
     )
-
-    /**
-     * Sets the Composable content provider for the overlay.
-     * This should be called before show() to customize the overlay appearance.
-     *
-     * @param provider Composable function that renders the overlay content
-     */
-    fun setContentProvider(provider: @Composable (PerformanceOverlayState, OverlayCallbacks) -> Unit) {
-        contentProvider = provider
-    }
 
     /**
      * Shows the performance overlay for the given activity.
@@ -221,31 +225,15 @@ class PerformanceOverlayEngine(
     }
 
     /**
-     * Updates the position of the overlay (as screen percentage).
-     *
-     * @param positionPercent New position as percentage (0.0-1.0) of screen dimensions
-     */
-    fun updatePosition(positionPercent: Offset) {
-        val clampedPosition = Offset(
-            positionPercent.x.coerceIn(0f, 1f),
-            positionPercent.y.coerceIn(0f, 1f),
-        )
-        _state.value = _state.value.copy(positionPercent = clampedPosition)
-
-        // Update window position
-        updateWindowPosition()
-    }
-
-    /**
      * Saves the current position to SharedPreferences.
      * Call this after drag operations complete.
      */
     fun savePosition() {
         val position = _state.value.positionPercent
-        prefs.edit()
-            .putFloat(PREF_POSITION_X, position.x)
-            .putFloat(PREF_POSITION_Y, position.y)
-            .apply()
+        prefs.edit {
+            putFloat(PREF_POSITION_X, position.x)
+            putFloat(PREF_POSITION_Y, position.y)
+        }
     }
 
     /**
@@ -278,21 +266,6 @@ class PerformanceOverlayEngine(
             savePosition()
         }
     }
-
-    /**
-     * Returns whether FPS metric is enabled.
-     */
-    fun isFpsEnabled(): Boolean = _state.value.fpsEnabled
-
-    /**
-     * Returns whether Memory metric is enabled.
-     */
-    fun isMemoryEnabled(): Boolean = _state.value.memoryEnabled
-
-    /**
-     * Returns whether CPU metric is enabled.
-     */
-    fun isCpuEnabled(): Boolean = _state.value.cpuEnabled
 
     /**
      * Toggles the FPS metric on/off.
@@ -367,18 +340,6 @@ class PerformanceOverlayEngine(
     }
 
     /**
-     * Sets individual metric enabled states.
-     * This is useful when restoring state from preferences.
-     */
-    fun setMetricEnabled(fps: Boolean? = null, memory: Boolean? = null, cpu: Boolean? = null) {
-        _state.value = _state.value.copy(
-            fpsEnabled = fps ?: _state.value.fpsEnabled,
-            memoryEnabled = memory ?: _state.value.memoryEnabled,
-            cpuEnabled = cpu ?: _state.value.cpuEnabled,
-        )
-    }
-
-    /**
      * Ensures the overlay is visible, showing it if not already visible.
      */
     private fun ensureOverlayVisible(activity: Activity? = null) {
@@ -404,9 +365,14 @@ class PerformanceOverlayEngine(
      * re-enabling the overlay restores the same configuration.
      */
     suspend fun loadSavedMetricStates() {
+        // If the overlay is already visible, skip resetting - this avoids
+        // toggling the state to OFF when recomposition triggers a re-load
+        // (e.g. returning from background while the overlay is showing).
+        if (_isVisible.value) return
+
         val (fpsEnabled, memoryEnabled, cpuEnabled) = withContext(Dispatchers.IO) {
             // Clear persisted overlay enabled state since it can't be restored without an Activity
-            prefs.edit().putBoolean(PREF_OVERLAY_ENABLED, false).apply()
+            prefs.edit { putBoolean(PREF_OVERLAY_ENABLED, false) }
 
             MetricPrefsState(
                 fpsEnabled = prefs.getBoolean(PREF_FPS_ENABLED, false),
@@ -428,28 +394,6 @@ class PerformanceOverlayEngine(
         val memoryEnabled: Boolean,
         val cpuEnabled: Boolean,
     )
-
-    /**
-     * Toggles the master overlay enabled state.
-     * When enabled, shows the overlay with any enabled metrics.
-     * When disabled, hides the overlay but preserves metric states.
-     *
-     * @param activity The activity to attach the overlay to (required when enabling)
-     */
-    fun toggleOverlay(activity: Activity? = null) {
-        val newEnabled = !_state.value.isOverlayEnabled
-        _state.value = _state.value.copy(isOverlayEnabled = newEnabled)
-        saveOverlayEnabled(newEnabled)
-
-        if (newEnabled) {
-            // Start any enabled monitoring engines
-            startMonitoringEngines()
-            val targetActivity = activity ?: activityRef?.get()
-            targetActivity?.let { show(it) }
-        } else {
-            hide()
-        }
-    }
 
     /**
      * Toggles the overlay with all metrics enabled/disabled together.
@@ -522,11 +466,6 @@ class PerformanceOverlayEngine(
     }
 
     /**
-     * Returns whether the overlay is enabled (master toggle).
-     */
-    fun isOverlayEnabled(): Boolean = _state.value.isOverlayEnabled
-
-    /**
      * Enables a specific metric and shows it in the overlay.
      * This is called when navigating to a monitor screen (FPS, Memory, CPU).
      * If the overlay is enabled, the metric will be automatically enabled and shown.
@@ -565,19 +504,19 @@ class PerformanceOverlayEngine(
     }
 
     private fun saveOverlayEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(PREF_OVERLAY_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(PREF_OVERLAY_ENABLED, enabled) }
     }
 
     private fun saveFpsEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(PREF_FPS_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(PREF_FPS_ENABLED, enabled) }
     }
 
     private fun saveMemoryEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(PREF_MEMORY_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(PREF_MEMORY_ENABLED, enabled) }
     }
 
     private fun saveCpuEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(PREF_CPU_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(PREF_CPU_ENABLED, enabled) }
     }
 
     private fun startMonitoringEngines() {
@@ -709,7 +648,7 @@ class PerformanceOverlayEngine(
             windowManager?.addView(composeView, layoutParams)
             // Re-calculate position after layout with actual measured width
             composeView.post { updateWindowPosition() }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Failed to add overlay view - likely missing permission
             overlayView = null
         }
@@ -775,7 +714,7 @@ class PerformanceOverlayEngine(
 
         try {
             windowManager?.addView(dismissView, layoutParams)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             dismissZoneView = null
         }
     }
@@ -784,7 +723,7 @@ class PerformanceOverlayEngine(
         overlayView?.let { view ->
             try {
                 windowManager?.removeView(view)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // View might already be removed
             }
         }
@@ -793,7 +732,7 @@ class PerformanceOverlayEngine(
         dismissZoneView?.let { view ->
             try {
                 windowManager?.removeView(view)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // View might already be removed
             }
         }
@@ -806,9 +745,17 @@ class PerformanceOverlayEngine(
     private fun registerActivityLifecycleCallbacks(activity: Activity) {
         if (isLifecycleCallbacksRegistered) return
 
+        // The calling activity is already started, so seed the counter at 1.
+        startedActivityCount = 1
+
         val application = activity.application
         applicationRef = WeakReference(application)
-        application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        val oldPolicy = StrictMode.allowThreadDiskReads()
+        try {
+            application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+        } finally {
+            StrictMode.setThreadPolicy(oldPolicy)
+        }
         isLifecycleCallbacksRegistered = true
     }
 
@@ -878,7 +825,7 @@ class PerformanceOverlayEngine(
             params.x = newX
             params.y = newY
             wm.updateViewLayout(view, params)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // View might have been removed
         }
     }
@@ -913,7 +860,7 @@ class PerformanceOverlayEngine(
     private fun openWormaCeptor() {
         val intent = android.content.Intent(
             android.content.Intent.ACTION_VIEW,
-            android.net.Uri.parse("wormaceptor://tools"),
+            "wormaceptor://tools".toUri(),
         ).apply {
             setPackage(context.packageName)
             addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -924,7 +871,7 @@ class PerformanceOverlayEngine(
     private fun openFpsDetail() {
         val intent = android.content.Intent(
             android.content.Intent.ACTION_VIEW,
-            android.net.Uri.parse("wormaceptor://tools/fps"),
+            "wormaceptor://tools/fps".toUri(),
         ).apply {
             setPackage(context.packageName)
             addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -935,7 +882,7 @@ class PerformanceOverlayEngine(
     private fun openMemoryDetail() {
         val intent = android.content.Intent(
             android.content.Intent.ACTION_VIEW,
-            android.net.Uri.parse("wormaceptor://tools/memory"),
+            "wormaceptor://tools/memory".toUri(),
         ).apply {
             setPackage(context.packageName)
             addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -946,7 +893,7 @@ class PerformanceOverlayEngine(
     private fun openCpuDetail() {
         val intent = android.content.Intent(
             android.content.Intent.ACTION_VIEW,
-            android.net.Uri.parse("wormaceptor://tools/cpu"),
+            "wormaceptor://tools/cpu".toUri(),
         ).apply {
             setPackage(context.packageName)
             addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -979,16 +926,5 @@ class PerformanceOverlayEngine(
         private const val ESTIMATED_METRIC_WIDTH_DP = 70
         private const val METRIC_SPACING_DP = 12
         private const val PILL_PADDING_HORIZONTAL_DP = 12
-
-        /**
-         * Check if the app can draw overlays.
-         */
-        fun canDrawOverlays(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                android.provider.Settings.canDrawOverlays(context)
-            } else {
-                true
-            }
-        }
     }
 }

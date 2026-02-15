@@ -1,6 +1,8 @@
 package com.azikar24.wormaceptor.platform.android
 
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.view.Gravity
 import android.view.MotionEvent
@@ -43,6 +46,12 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 
 /**
@@ -76,8 +85,32 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     private var touchStartTime = 0L
     private var totalMovement = 0f
 
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     // Animation state for pressed effect - using MutableState wrapper
     private val pressedScaleState: MutableState<Float> = mutableStateOf(1f)
+
+    // Foreground/background detection
+    private var startedActivityCount = 0
+    private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityStarted(activity: Activity) {
+            startedActivityCount++
+            if (startedActivityCount == 1) {
+                floatingView?.visibility = View.VISIBLE
+            }
+        }
+        override fun onActivityResumed(activity: Activity) = Unit
+        override fun onActivityPaused(activity: Activity) = Unit
+        override fun onActivityStopped(activity: Activity) {
+            startedActivityCount--
+            if (startedActivityCount == 0) {
+                floatingView?.visibility = View.GONE
+            }
+        }
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivityDestroyed(activity: Activity) = Unit
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -87,10 +120,20 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
+        // At least one activity is started when the service is launched, so seed the counter at 1.
+        startedActivityCount = 1
+        (applicationContext as Application).registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
+
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, createNotification())
 
-        setupFloatingButton()
+        serviceScope.launch {
+            val (savedX, savedY) = withContext(Dispatchers.IO) {
+                val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                prefs.getInt(PREF_X, Int.MIN_VALUE) to prefs.getInt(PREF_Y, Int.MIN_VALUE)
+            }
+            setupFloatingButton(savedX, savedY)
+        }
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -99,6 +142,8 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
+        (applicationContext as Application).unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks)
+
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -111,6 +156,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
             }
         }
         floatingView = null
+        serviceScope.cancel()
         super.onDestroy()
     }
 
@@ -160,7 +206,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         }
     }
 
-    private fun setupFloatingButton() {
+    private fun setupFloatingButton(savedX: Int, savedY: Int) {
         // Determine window type based on API level
         val windowType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -171,11 +217,6 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
 
         val density = resources.displayMetrics.density
         val buttonSizePx = (BUTTON_SIZE_DP * density).toInt()
-
-        // Restore saved position or use default
-        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val savedX = prefs.getInt(PREF_X, Int.MIN_VALUE)
-        val savedY = prefs.getInt(PREF_Y, Int.MIN_VALUE)
 
         layoutParams = WindowManager.LayoutParams(
             buttonSizePx,
@@ -330,11 +371,13 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     }
 
     private fun savePosition(x: Int, y: Int) {
-        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putInt(PREF_X, x)
-            .putInt(PREF_Y, y)
-            .apply()
+        serviceScope.launch(Dispatchers.IO) {
+            getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putInt(PREF_X, x)
+                .putInt(PREF_Y, y)
+                .apply()
+        }
     }
 
     private fun getStatusBarHeight(): Int {

@@ -283,5 +283,32 @@ subprojects {
                 }
             }
         }
+
+        // Also publish pure Kotlin/JVM modules (e.g. domain:entities)
+        plugins.withId("org.jetbrains.kotlin.jvm") {
+            apply(plugin = "maven-publish")
+
+            extensions.configure<JavaPluginExtension> {
+                withSourcesJar()
+                withJavadocJar()
+            }
+
+            afterEvaluate {
+                extensions.configure<PublishingExtension> {
+                    publications {
+                        create<MavenPublication>("release") {
+                            from(components.findByName("java"))
+
+                            groupId = "com.github.azikar24.WormaCeptor"
+                            artifactId =
+                                project.path
+                                    .removePrefix(":")
+                                    .replace(":", "-")
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.0.0"
+                        }
+                    }
+                }
+            }
+        }
     }
 }

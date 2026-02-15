@@ -52,6 +52,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,6 +67,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -78,6 +80,9 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.get
 
 private const val GridColumns = 3
@@ -135,15 +140,17 @@ fun ToolsTab(
     LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
     val favorites by favoritesRepository.favorites.collectAsState()
-    val collapsedPrefs = remember {
-        context.getSharedPreferences("wormaceptor_tools_collapse", android.content.Context.MODE_PRIVATE)
-    }
-    val collapsedCategories = remember {
-        val saved = collapsedPrefs.getStringSet("collapsed", emptySet()) ?: emptySet()
-        mutableStateMapOf<String, Boolean>().apply {
-            saved.forEach { put(it, true) }
+    val coroutineScope = rememberCoroutineScope()
+    val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
+
+    LaunchedEffect(Unit) {
+        val saved = withContext(Dispatchers.IO) {
+            val prefs = context.getSharedPreferences("wormaceptor_tools_collapse", android.content.Context.MODE_PRIVATE)
+            prefs.getStringSet("collapsed", emptySet()) ?: emptySet()
         }
+        saved.forEach { collapsedCategories[it] = true }
     }
+
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
     val filteredCategories = remember(enabledFeatures) {
@@ -239,8 +246,16 @@ fun ToolsTab(
                     onToggleCollapse = {
                         val newState = !(collapsedCategories[category.name] ?: false)
                         collapsedCategories[category.name] = newState
-                        val collapsed = collapsedCategories.filter { it.value }.keys
-                        collapsedPrefs.edit().putStringSet("collapsed", collapsed).apply()
+                        val collapsed = collapsedCategories.filter { it.value }.keys.toSet()
+                        coroutineScope.launch(Dispatchers.IO) {
+                            context
+                                .getSharedPreferences(
+                                    "wormaceptor_tools_collapse",
+                                    android.content.Context.MODE_PRIVATE,
+                                ).edit {
+                                    putStringSet("collapsed", collapsed)
+                                }
+                        }
                     },
                     onToolClick = onNavigate,
                     onToolLongClick = { tool ->

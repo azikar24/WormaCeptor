@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.edit
-import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -46,14 +45,11 @@ import java.lang.ref.WeakReference
  * Engine for displaying a floating performance overlay on top of the application.
  *
  * This engine uses a WindowManager overlay to display real-time performance metrics
- * including FPS, memory usage, and CPU usage. The overlay is draggable and can be
- * expanded to show sparkline charts.
+ * including FPS, memory usage, and CPU usage. The overlay is draggable.
  *
  * Features:
  * - Combines data from FpsMonitorEngine, MemoryMonitorEngine, and CpuMonitorEngine
  * - Draggable floating badge with position persistence
- * - Expandable view with sparkline charts
- * - Deep links to detailed performance screens
  * - Position stored as percentage for rotation handling
  *
  */
@@ -141,10 +137,6 @@ class PerformanceOverlayEngine(
         val onDrag: (Offset) -> Unit,
         val onDragEnd: () -> Unit,
         val onHideOverlay: () -> Unit,
-        val onOpenWormaCeptor: () -> Unit,
-        val onOpenFpsDetail: () -> Unit,
-        val onOpenMemoryDetail: () -> Unit,
-        val onOpenCpuDetail: () -> Unit,
         val onRemoveFps: () -> Unit,
         val onRemoveMemory: () -> Unit,
         val onRemoveCpu: () -> Unit,
@@ -545,56 +537,27 @@ class PerformanceOverlayEngine(
 
             combine(
                 fpsMonitorEngine.currentFpsInfo,
-                fpsMonitorEngine.fpsHistory,
                 fpsMonitorEngine.isRunning,
                 memoryMonitorEngine.currentMemory,
-                memoryMonitorEngine.memoryHistory,
                 memoryMonitorEngine.isMonitoring,
                 cpuMonitorEngine.currentCpu,
-                cpuMonitorEngine.cpuHistory,
                 cpuMonitorEngine.isMonitoring,
             ) { values ->
-                @Suppress("UNCHECKED_CAST")
                 val fpsInfo = values[0] as com.azikar24.wormaceptor.domain.entities.FpsInfo
-
-                @Suppress("UNCHECKED_CAST")
-                val fpsHistory = values[1] as List<com.azikar24.wormaceptor.domain.entities.FpsInfo>
-
-                val fpsRunning = values[2] as Boolean
-
-                @Suppress("UNCHECKED_CAST")
-                val memoryInfo = values[3] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
-
-                @Suppress("UNCHECKED_CAST")
-                val memoryHistory = values[4] as List<com.azikar24.wormaceptor.domain.entities.MemoryInfo>
-
-                val memoryRunning = values[5] as Boolean
-
-                @Suppress("UNCHECKED_CAST")
-                val cpuInfo = values[6] as com.azikar24.wormaceptor.domain.entities.CpuInfo
-
-                @Suppress("UNCHECKED_CAST")
-                val cpuHistory = values[7] as List<com.azikar24.wormaceptor.domain.entities.CpuInfo>
-
-                val cpuRunning = values[8] as Boolean
+                val fpsRunning = values[1] as Boolean
+                val memoryInfo = values[2] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
+                val memoryRunning = values[3] as Boolean
+                val cpuInfo = values[4] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+                val cpuRunning = values[5] as Boolean
 
                 val currentState = _state.value
 
                 currentState.copy(
                     fpsValue = fpsInfo.currentFps.toInt(),
-                    fpsHistory = fpsHistory
-                        .takeLast(PerformanceOverlayState.HISTORY_SIZE)
-                        .map { it.currentFps },
                     fpsMonitorRunning = fpsRunning,
                     memoryPercent = memoryInfo.heapUsagePercent.toInt(),
-                    memoryHistory = memoryHistory
-                        .takeLast(PerformanceOverlayState.HISTORY_SIZE)
-                        .map { it.heapUsagePercent },
                     memoryMonitorRunning = memoryRunning,
                     cpuPercent = cpuInfo.overallUsagePercent.toInt(),
-                    cpuHistory = cpuHistory
-                        .takeLast(PerformanceOverlayState.HISTORY_SIZE)
-                        .map { it.overallUsagePercent },
                     cpuMonitorRunning = cpuRunning,
                 )
             }.collect { newState ->
@@ -627,10 +590,6 @@ class PerformanceOverlayEngine(
                     onDrag = { offset -> handleDrag(offset) },
                     onDragEnd = { handleDragEnd() },
                     onHideOverlay = { setOverlayEnabled(false) },
-                    onOpenWormaCeptor = { openWormaCeptor() },
-                    onOpenFpsDetail = { openFpsDetail() },
-                    onOpenMemoryDetail = { openMemoryDetail() },
-                    onOpenCpuDetail = { openCpuDetail() },
                     onRemoveFps = { toggleFps() },
                     onRemoveMemory = { toggleMemory() },
                     onRemoveCpu = { toggleCpu() },
@@ -854,51 +813,6 @@ class PerformanceOverlayEngine(
             METRIC_SPACING_DP * (enabledCount - 1).coerceAtLeast(0) +
             PILL_PADDING_HORIZONTAL_DP * 2
         return (contentDp * density).toInt()
-    }
-
-    // Deep link handlers to open specific screens
-    private fun openWormaCeptor() {
-        val intent = android.content.Intent(
-            android.content.Intent.ACTION_VIEW,
-            "wormaceptor://tools".toUri(),
-        ).apply {
-            setPackage(context.packageName)
-            addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
-    }
-
-    private fun openFpsDetail() {
-        val intent = android.content.Intent(
-            android.content.Intent.ACTION_VIEW,
-            "wormaceptor://tools/fps".toUri(),
-        ).apply {
-            setPackage(context.packageName)
-            addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
-    }
-
-    private fun openMemoryDetail() {
-        val intent = android.content.Intent(
-            android.content.Intent.ACTION_VIEW,
-            "wormaceptor://tools/memory".toUri(),
-        ).apply {
-            setPackage(context.packageName)
-            addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
-    }
-
-    private fun openCpuDetail() {
-        val intent = android.content.Intent(
-            android.content.Intent.ACTION_VIEW,
-            "wormaceptor://tools/cpu".toUri(),
-        ).apply {
-            setPackage(context.packageName)
-            addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
     }
 
     /**

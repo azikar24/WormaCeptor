@@ -82,9 +82,6 @@
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$3</ID>
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$4</ID>
     <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$5</ID>
-    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$6</ID>
-    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$7</ID>
-    <ID>MagicNumber:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$8</ID>
     <ID>MagicNumber:PushSimulatorEngine.kt$PushSimulatorEngine$3</ID>
     <ID>MagicNumber:PushSimulatorEngine.kt$PushSimulatorEngine$40</ID>
     <ID>MagicNumber:RateLimitEngine.kt$RateLimitEngine$1000</ID>
@@ -206,10 +203,6 @@
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragEnd: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragStart: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onHideOverlay: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenCpuDetail: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenFpsDetail: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenMemoryDetail: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onOpenWormaCeptor: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveCpu: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveFps: () -&gt; Unit</ID>
     <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveMemory: () -&gt; Unit</ID>

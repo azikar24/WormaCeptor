@@ -59,7 +59,7 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 - **FPS Monitor**: Real-time frame rate tracking with history
 - **Memory Monitor**: Heap usage with threshold alerts
 - **CPU Monitor**: Per-core and overall usage tracking
-- **Performance Overlay**: Draggable floating badge showing live metrics with mini sparklines
+- **Performance Overlay**: Draggable floating badge showing live metrics
 
 ### System Inspection
 - **SQLite Browser**: Browse tables and execute custom queries
@@ -229,15 +229,10 @@ Enable/disable features programmatically or via Settings > Feature Toggles:
 The draggable overlay shows real-time FPS, Memory, and CPU metrics. Enable via Tools > Performance Overlay.
 
 **Features**:
-- Collapsed: Compact badge with three metrics
-- Expanded: Mini sparkline charts for each metric
-- Tap metrics to deep-link to detail screens
+- Compact badge with three metrics
 - Long-press to drag anywhere on screen
 
 **Deep Links**:
-- `wormaceptor://tools/fps` - FPS detail
-- `wormaceptor://tools/memory` - Memory detail
-- `wormaceptor://tools/cpu` - CPU detail
 - `wormaceptor://tools` - Tools tab
 
 ---

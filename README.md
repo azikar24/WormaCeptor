@@ -11,8 +11,8 @@
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.azikar24.WormaCeptor:api-client:1.0.2")
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:1.0.2")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.1.0")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.1.0")
 }
 ```
 
@@ -148,15 +148,15 @@ Add dependencies:
 ```kotlin
 dependencies {
     // Required: Lightweight API client
-    implementation("com.github.azikar24.WormaCeptor:api-client:1.0.2")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.1.0")
 
     // Debug: Choose one implementation
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:1.0.2")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.1.0")
     // OR for in-memory (clears on app kill):
-    // debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:1.0.2")
+    // debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:2.1.0")
 
     // Optional: Explicit no-op for release (usually not needed)
-    // releaseImplementation("com.github.azikar24.WormaCeptor:api-impl-no-op:1.0.2")
+    // releaseImplementation("com.github.azikar24.WormaCeptor:api-impl-no-op:2.1.0")
 }
 ```
 

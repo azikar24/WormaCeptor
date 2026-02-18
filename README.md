@@ -52,8 +52,6 @@ val client = OkHttpClient.Builder()
     .build()
 ```
 
-For detailed integration, see [Quick Reference](docs/reference/00-quick-reference.md).
-
 ---
 
 ## Why WormaCeptor V2?
@@ -144,8 +142,6 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 | **Features** | 31 modules | UI screens for each debugging feature |
 | **Infra** | persistence, networking, parsers, syntax | Concrete implementations |
 | **Platform** | android | Android-specific utilities (notifications, shake) |
-
-See [Repository Structure](docs/architecture/REPO_STRUCTURE.md) for full details.
 
 ---
 
@@ -309,19 +305,6 @@ Some features require additional permissions:
 | OkHttp | 4.12.0 |
 | Koin | 4.0.0 |
 | Coroutines | 1.8.1 |
-
----
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Quick Reference](docs/reference/00-quick-reference.md) | 5-minute integration guide |
-| [Technical Docs](docs/reference/01-technical-documentation.md) | Comprehensive architecture |
-| [Feature Inventory](docs/reference/02-feature-inventory.md) | Complete feature list |
-| [Repository Structure](docs/architecture/REPO_STRUCTURE.md) | Module layout |
-| [Design System](docs/architecture/DESIGN_SYSTEM.md) | UI guidelines |
-| [Product Boundaries](docs/architecture/PRODUCT_BOUNDARIES.md) | Scope definition |
 
 ---
 

@@ -12,6 +12,19 @@ Try WormaCeptor V2 in action with the demo app on the Google Play Store:
 
 <a href="https://play.google.com/store/apps/details?id=com.azikar24.wormaceptorapp"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80"></a>
 
+### Demo Video
+
+[![WormaCeptor Demo](https://img.youtube.com/vi/iSEifbkq7NI/maxresdefault.jpg)](https://youtube.com/shorts/iSEifbkq7NI)
+
+### Screenshots
+
+<p>
+  <img src="media/transaction_list.webp" width="200" alt="Transaction List">
+  <img src="media/response_details.webp" width="200" alt="Response Details">
+  <img src="media/crash_details.webp" width="200" alt="Crash Details">
+  <img src="media/tools_overview.webp" width="200" alt="Tools Overview">
+</p>
+
 ---
 
 ## Quick Start

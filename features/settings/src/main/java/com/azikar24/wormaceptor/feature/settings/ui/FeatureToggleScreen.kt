@@ -22,8 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.domain.contracts.FeatureConfig
 import com.azikar24.wormaceptor.feature.settings.R
 import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
 
@@ -36,6 +39,36 @@ import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
 fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
     val config by viewModel.featureConfig.collectAsState()
 
+    FeatureToggleScreenContent(
+        config = config,
+        onBack = onBack,
+        onResetDefaults = viewModel::resetToDefaults,
+        onToggleNetworkTab = viewModel::toggleNetworkTab,
+        onToggleCrashesTab = viewModel::toggleCrashesTab,
+        onTogglePreferences = viewModel::togglePreferences,
+        onToggleConsoleLogs = viewModel::toggleConsoleLogs,
+        onToggleDeviceInfo = viewModel::toggleDeviceInfo,
+        onToggleSqliteBrowser = viewModel::toggleSqliteBrowser,
+        onToggleFileBrowser = viewModel::toggleFileBrowser,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun FeatureToggleScreenContent(
+    config: FeatureConfig,
+    onBack: () -> Unit,
+    onResetDefaults: () -> Unit,
+    onToggleNetworkTab: () -> Unit,
+    onToggleCrashesTab: () -> Unit,
+    onTogglePreferences: () -> Unit,
+    onToggleConsoleLogs: () -> Unit,
+    onToggleDeviceInfo: () -> Unit,
+    onToggleSqliteBrowser: () -> Unit,
+    onToggleFileBrowser: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -50,7 +83,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     }
                 },
                 actions = {
-                    IconButton(onClick = viewModel::resetToDefaults) {
+                    IconButton(onClick = onResetDefaults) {
                         Icon(
                             imageVector = Icons.Default.RestartAlt,
                             contentDescription = stringResource(R.string.settings_reset_defaults),
@@ -75,7 +108,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_network_tab),
                     description = stringResource(R.string.settings_network_tab_description),
                     checked = config.showNetworkTab,
-                    onCheckedChange = { viewModel.toggleNetworkTab() },
+                    onCheckedChange = { onToggleNetworkTab() },
                 )
             }
 
@@ -84,7 +117,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_crashes_tab),
                     description = stringResource(R.string.settings_crashes_tab_description),
                     checked = config.showCrashesTab,
-                    onCheckedChange = { viewModel.toggleCrashesTab() },
+                    onCheckedChange = { onToggleCrashesTab() },
                 )
             }
 
@@ -102,7 +135,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_preferences_title),
                     description = stringResource(R.string.settings_preferences_description),
                     checked = config.showPreferences,
-                    onCheckedChange = { viewModel.togglePreferences() },
+                    onCheckedChange = { onTogglePreferences() },
                 )
             }
 
@@ -111,7 +144,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_console_logs_title),
                     description = stringResource(R.string.settings_console_logs_description),
                     checked = config.showConsoleLogs,
-                    onCheckedChange = { viewModel.toggleConsoleLogs() },
+                    onCheckedChange = { onToggleConsoleLogs() },
                 )
             }
 
@@ -120,7 +153,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_device_info_title),
                     description = stringResource(R.string.settings_device_info_description),
                     checked = config.showDeviceInfo,
-                    onCheckedChange = { viewModel.toggleDeviceInfo() },
+                    onCheckedChange = { onToggleDeviceInfo() },
                 )
             }
 
@@ -129,7 +162,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_sqlite_browser_title),
                     description = stringResource(R.string.settings_sqlite_browser_description),
                     checked = config.showSqliteBrowser,
-                    onCheckedChange = { viewModel.toggleSqliteBrowser() },
+                    onCheckedChange = { onToggleSqliteBrowser() },
                 )
             }
 
@@ -138,7 +171,7 @@ fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifi
                     title = stringResource(R.string.settings_file_browser_title),
                     description = stringResource(R.string.settings_file_browser_description),
                     checked = config.showFileBrowser,
-                    onCheckedChange = { viewModel.toggleFileBrowser() },
+                    onCheckedChange = { onToggleFileBrowser() },
                 )
             }
         }
@@ -188,4 +221,31 @@ private fun FeatureToggleItem(
             )
         },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FeatureToggleScreenPreview() {
+    WormaCeptorTheme {
+        FeatureToggleScreenContent(
+            config = FeatureConfig(
+                showNetworkTab = true,
+                showCrashesTab = true,
+                showPreferences = false,
+                showConsoleLogs = true,
+                showDeviceInfo = true,
+                showSqliteBrowser = false,
+                showFileBrowser = true,
+            ),
+            onBack = {},
+            onResetDefaults = {},
+            onToggleNetworkTab = {},
+            onToggleCrashesTab = {},
+            onTogglePreferences = {},
+            onToggleConsoleLogs = {},
+            onToggleDeviceInfo = {},
+            onToggleSqliteBrowser = {},
+            onToggleFileBrowser = {},
+        )
+    }
 }

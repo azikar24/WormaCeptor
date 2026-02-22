@@ -67,6 +67,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -80,6 +81,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
@@ -654,5 +656,71 @@ internal fun getStatusColor(request: WebViewRequest): Color {
         request.isPending -> WormaCeptorColors.StatusAmber
         request.isSuccess -> WormaCeptorColors.StatusGreen
         else -> WormaCeptorColors.StatusRed
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebViewMonitorListScreenPreview() {
+    WormaCeptorTheme {
+        WebViewMonitorListScreen(
+            requests = listOf(
+                WebViewRequest(
+                    id = "1",
+                    url = "https://api.example.com/v2/users",
+                    method = "GET",
+                    headers = mapOf("Accept" to "application/json"),
+                    timestamp = System.currentTimeMillis() - 3_000L,
+                    webViewId = "main",
+                    resourceType = WebViewResourceType.XHR,
+                    statusCode = 200,
+                    mimeType = "application/json",
+                    contentLength = 1_024L,
+                    duration = 150L,
+                ),
+                WebViewRequest(
+                    id = "2",
+                    url = "https://cdn.example.com/style.css",
+                    method = "GET",
+                    headers = emptyMap(),
+                    timestamp = System.currentTimeMillis() - 5_000L,
+                    webViewId = "main",
+                    resourceType = WebViewResourceType.STYLESHEET,
+                    statusCode = 200,
+                    contentLength = 4_096L,
+                    duration = 80L,
+                ),
+                WebViewRequest(
+                    id = "3",
+                    url = "https://api.example.com/v2/analytics",
+                    method = "POST",
+                    headers = emptyMap(),
+                    timestamp = System.currentTimeMillis() - 1_000L,
+                    webViewId = "main",
+                    resourceType = WebViewResourceType.XHR,
+                ),
+            ),
+            totalCount = 3,
+            stats = WebViewRequestStats(
+                totalRequests = 3,
+                successfulRequests = 2,
+                failedRequests = 0,
+                pendingRequests = 1,
+                byResourceType = mapOf(
+                    WebViewResourceType.XHR to 2,
+                    WebViewResourceType.STYLESHEET to 1,
+                ),
+                averageDuration = 115L,
+                totalDataTransferred = 5_120L,
+            ),
+            searchQuery = "",
+            resourceTypeFilter = emptySet(),
+            onSearchQueryChanged = {},
+            onToggleResourceTypeFilter = {},
+            onClearFilters = {},
+            onClearRequests = {},
+            onRequestClick = {},
+            onNavigateBack = {},
+        )
     }
 }

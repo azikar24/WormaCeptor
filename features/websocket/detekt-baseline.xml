@@ -43,6 +43,8 @@
     <ID>UndocumentedPublicProperty:WebSocketViewModel.kt$WebSocketViewModel$val messageSearchQuery: StateFlow&lt;String&gt; = _messageSearchQuery</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewModel.kt$WebSocketViewModel$val selectedConnectionId: StateFlow&lt;Long?&gt; = _selectedConnectionId</ID>
     <ID>UnstableCollections:WebSocketDetailScreen.kt$Map&lt;WebSocketMessageDirection, Int&gt;</ID>
+    <ID>UnusedPrivateMember:WebSocketDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketDetailScreenPreview()</ID>
+    <ID>UnusedPrivateMember:WebSocketListScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketListScreenPreview()</ID>
     <ID>ViewModelInjection:WebSocketFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

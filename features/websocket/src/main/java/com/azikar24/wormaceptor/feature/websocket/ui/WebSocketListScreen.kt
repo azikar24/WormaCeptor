@@ -35,15 +35,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
+import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import com.azikar24.wormaceptor.feature.websocket.R
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -320,5 +324,38 @@ private fun ConnectionItem(
                 ),
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebSocketListScreenPreview() {
+    WormaCeptorTheme {
+        WebSocketListScreen(
+            connections = persistentListOf(
+                WebSocketConnection(
+                    id = 1L,
+                    url = "wss://echo.websocket.org",
+                    state = WebSocketState.OPEN,
+                    openedAt = System.currentTimeMillis() - 60_000L,
+                ),
+                WebSocketConnection(
+                    id = 2L,
+                    url = "wss://api.example.com/ws",
+                    state = WebSocketState.CLOSED,
+                    openedAt = System.currentTimeMillis() - 120_000L,
+                    closedAt = System.currentTimeMillis() - 30_000L,
+                    closeCode = 1000,
+                    closeReason = "Normal closure",
+                ),
+            ),
+            searchQuery = "",
+            totalCount = 2,
+            onSearchQueryChanged = {},
+            onConnectionClick = {},
+            onClearAll = {},
+            getMessageCount = { 5 },
+            onBack = {},
+        )
     }
 }

@@ -67,6 +67,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
@@ -75,6 +76,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDateFull
@@ -127,7 +129,48 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
         }
     }
 
+    DeviceInfoScreenContent(
+        uiState = uiState,
+        snackbarHostState = snackbarHostState,
+        pullToRefreshState = pullToRefreshState,
+        onBack = onBack,
+        onCopyAll = { info ->
+            val message = copyAllToClipboard(context, info)
+            scope.launch { snackbarHostState.showSnackbar(message) }
+        },
+        onShare = { info -> shareDeviceInfo(context, info) },
+        onRefresh = {
+            uiState = uiState.copy(isRefreshing = true)
+            scope.launch {
+                delay(200)
+                val info = withContext(Dispatchers.IO) {
+                    GetDeviceInfoUseCase(context).execute()
+                }
+                uiState = uiState.copy(deviceInfo = info, isRefreshing = false)
+            }
+        },
+        onShowMessage = { message ->
+            scope.launch { snackbarHostState.showSnackbar(message) }
+        },
+    )
+}
+
+@Suppress("LongMethod", "LongParameterList")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun DeviceInfoScreenContent(
+    uiState: DeviceInfoUiState,
+    snackbarHostState: SnackbarHostState,
+    pullToRefreshState: androidx.compose.material3.pulltorefresh.PullToRefreshState,
+    onBack: () -> Unit,
+    onCopyAll: (DeviceInfo) -> Unit,
+    onShare: (DeviceInfo) -> Unit,
+    onRefresh: () -> Unit,
+    onShowMessage: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
+        modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
@@ -142,16 +185,13 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                 },
                 actions = {
                     uiState.deviceInfo?.let { info ->
-                        IconButton(onClick = {
-                            val message = copyAllToClipboard(context, info)
-                            scope.launch { snackbarHostState.showSnackbar(message) }
-                        }) {
+                        IconButton(onClick = { onCopyAll(info) }) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.deviceinfo_copy_all),
                             )
                         }
-                        IconButton(onClick = { shareDeviceInfo(context, info) }) {
+                        IconButton(onClick = { onShare(info) }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.deviceinfo_share),
@@ -177,16 +217,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
         } else {
             PullToRefreshBox(
                 isRefreshing = uiState.isRefreshing,
-                onRefresh = {
-                    uiState = uiState.copy(isRefreshing = true)
-                    scope.launch {
-                        delay(200)
-                        val info = withContext(Dispatchers.IO) {
-                            GetDeviceInfoUseCase(context).execute()
-                        }
-                        uiState = uiState.copy(deviceInfo = info, isRefreshing = false)
-                    }
-                },
+                onRefresh = onRefresh,
                 state = pullToRefreshState,
                 modifier = Modifier
                     .fillMaxSize()
@@ -209,30 +240,26 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
                             .padding(WormaCeptorDesignSystem.Spacing.lg),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
                     ) {
-                        val showMessage: (String) -> Unit = { message ->
-                            scope.launch { snackbarHostState.showSnackbar(message) }
-                        }
-
                         // Device Section
-                        DeviceSection(info.device, showMessage)
+                        DeviceSection(info.device, onShowMessage)
 
                         // OS Section
-                        OsSection(info.os, showMessage)
+                        OsSection(info.os, onShowMessage)
 
                         // Screen Section
-                        ScreenSection(info.screen, showMessage)
+                        ScreenSection(info.screen, onShowMessage)
 
                         // Memory Section
-                        MemorySection(info.memory, showMessage)
+                        MemorySection(info.memory, onShowMessage)
 
                         // Storage Section
-                        StorageSection(info.storage, showMessage)
+                        StorageSection(info.storage, onShowMessage)
 
                         // App Section
-                        AppSection(info.app, showMessage)
+                        AppSection(info.app, onShowMessage)
 
                         // Network Section
-                        NetworkSection(info.network, showMessage)
+                        NetworkSection(info.network, onShowMessage)
 
                         // Timestamp footer
                         Text(
@@ -634,7 +661,7 @@ private fun getUsageColor(percentage: Float): Color {
     }
 }
 
-private data class DeviceInfoUiState(
+internal data class DeviceInfoUiState(
     val deviceInfo: DeviceInfo? = null,
     val isInitialLoading: Boolean = true,
     val isRefreshing: Boolean = false,
@@ -808,4 +835,92 @@ private fun formatNetworkDetails(network: NetworkDetails): String = buildString 
     appendLine("Cellular: ${if (network.isCellularConnected) "Connected" else "Not Connected"}")
     appendLine("Metered: ${if (network.isMetered) "Yes" else "No"}")
     network.cellularNetworkType?.let { appendLine("Cellular Type: $it") }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun DeviceInfoScreenContentPreview() {
+    WormaCeptorTheme {
+        DeviceInfoScreenContent(
+            uiState = DeviceInfoUiState(
+                deviceInfo = DeviceInfo(
+                    device = DeviceDetails(
+                        manufacturer = "Google",
+                        model = "Pixel 8",
+                        brand = "google",
+                        device = "shiba",
+                        hardware = "shiba",
+                        board = "shiba",
+                        product = "shiba",
+                        isEmulator = false,
+                    ),
+                    os = OsDetails(
+                        androidVersion = "14",
+                        sdkLevel = 34,
+                        buildId = "UP1A.231005.007",
+                        securityPatch = "2024-01-05",
+                        bootloader = "shiba-1.0",
+                        fingerprint = "google/shiba/shiba:14/UP1A/1234567:userdebug/dev-keys",
+                        incremental = "1234567",
+                    ),
+                    screen = ScreenDetails(
+                        widthPixels = 1080,
+                        heightPixels = 2400,
+                        densityDpi = 420,
+                        density = 2.625f,
+                        scaledDensity = 2.625f,
+                        sizeCategory = "normal",
+                        orientation = "Portrait",
+                        refreshRate = 120f,
+                    ),
+                    memory = MemoryDetails(
+                        totalRam = 8_000_000_000L,
+                        availableRam = 4_000_000_000L,
+                        lowMemoryThreshold = 500_000_000L,
+                        isLowMemory = false,
+                        usedRam = 4_000_000_000L,
+                        usagePercentage = 50f,
+                    ),
+                    storage = StorageDetails(
+                        internalTotal = 128_000_000_000L,
+                        internalAvailable = 64_000_000_000L,
+                        internalUsed = 64_000_000_000L,
+                        externalTotal = null,
+                        externalAvailable = null,
+                        externalUsed = null,
+                        hasExternalStorage = false,
+                    ),
+                    app = AppDetails(
+                        packageName = "com.example.app",
+                        versionName = "1.0.0",
+                        versionCode = 1,
+                        targetSdk = 34,
+                        minSdk = 23,
+                        firstInstallTime = 1_700_000_000_000L,
+                        lastUpdateTime = 1_700_000_000_000L,
+                        isDebuggable = true,
+                    ),
+                    network = NetworkDetails(
+                        connectionType = "WiFi",
+                        isConnected = true,
+                        isWifiConnected = true,
+                        isCellularConnected = false,
+                        isMetered = false,
+                        wifiSsid = null,
+                        cellularNetworkType = null,
+                    ),
+                ),
+                isInitialLoading = false,
+                isRefreshing = false,
+            ),
+            snackbarHostState = remember { SnackbarHostState() },
+            pullToRefreshState = rememberPullToRefreshState(),
+            onBack = {},
+            onCopyAll = {},
+            onShare = {},
+            onRefresh = {},
+            onShowMessage = {},
+        )
+    }
 }

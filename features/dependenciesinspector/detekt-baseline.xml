@@ -52,6 +52,7 @@
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFD54F</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.15f</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
+    <ID>MagicNumber:DependenciesInspectorScreen.kt$3</ID>
     <ID>MagicNumber:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$5000</ID>
     <ID>ModifierWithoutDefault:DependenciesInspectorScreen.kt$modifier</ID>
     <ID>UndocumentedPublicFunction:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
@@ -102,6 +103,7 @@
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val selectedDependency: StateFlow&lt;DependencyInfo?&gt; = _selectedDependency.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$val showVersionedOnly: StateFlow&lt;Boolean&gt; = _showVersionedOnly.asStateFlow()</ID>
     <ID>UnstableCollections:DependenciesInspectorScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
+    <ID>UnusedPrivateMember:DependenciesInspectorScreen.kt$@Preview(showBackground = true) @Composable private fun DependenciesInspectorScreenPreview()</ID>
     <ID>ViewModelInjection:DependenciesInspectorFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -1,5 +1,11 @@
 # WormaCeptor V2
 
+[![JitPack](https://jitpack.io/v/azikar24/WormaCeptor.svg)](https://jitpack.io/#azikar24/WormaCeptor)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue.svg?logo=kotlin)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-BOM%202024.10.01-4285F4.svg?logo=jetpackcompose)](https://developer.android.com/jetpack/compose)
+
 ### The Clean-Architecture, Production-Safe Network Inspector and Debugging Toolkit for Android
 
 **WormaCeptor V2** is a complete architectural rewrite of the classic network interceptor, now expanded into a comprehensive debugging toolkit. Designed for modularity, safety, and zero-impact production builds, it decouples inspection logic from interception points.
@@ -368,4 +374,6 @@ If your feature adds a heavy library, create a new module.
 
 ## License
 
-MIT License - Free for personal and commercial use.
+MIT License © Abdulaziz Karam  
+Free for personal and commercial use.
+

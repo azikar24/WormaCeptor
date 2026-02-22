@@ -71,10 +71,12 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatDateShort
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
@@ -83,6 +85,7 @@ import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
 import com.azikar24.wormaceptor.feature.securestorage.R
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Main screen for the Secure Storage Viewer.
@@ -722,5 +725,49 @@ private fun DetailSection(
                 color = colors.valuePrimary,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SecureStorageScreenPreview() {
+    WormaCeptorTheme {
+        SecureStorageScreen(
+            entries = persistentListOf(
+                SecureStorageEntry(
+                    key = "user_token",
+                    value = "eyJhbGciOiJIUzI1NiJ9.test",
+                    storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                    isEncrypted = true,
+                    lastModified = System.currentTimeMillis() - 3_600_000L,
+                ),
+                SecureStorageEntry(
+                    key = "test_signing_key",
+                    value = "AES-256",
+                    storageType = StorageType.KEYSTORE,
+                    isEncrypted = true,
+                    lastModified = null,
+                ),
+            ),
+            summary = SecureStorageSummary(
+                encryptedPrefsCount = 5,
+                keystoreAliasCount = 3,
+                dataStoreFileCount = 1,
+            ),
+            isLoading = false,
+            error = null,
+            selectedType = null,
+            searchQuery = "",
+            selectedEntry = null,
+            keystoreAccessible = true,
+            encryptedPrefsAccessible = true,
+            lastRefreshTime = System.currentTimeMillis(),
+            onTypeSelected = {},
+            onSearchQueryChanged = {},
+            onEntrySelected = {},
+            onDismissDetail = {},
+            onRefresh = {},
+            onBack = {},
+        )
     }
 }

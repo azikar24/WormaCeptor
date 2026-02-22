@@ -64,18 +64,20 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
-import com.azikar24.wormaceptor.domain.entities.LoadedLibrary.LibraryType
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,11 +86,11 @@ fun LoadedLibrariesScreen(
     summary: LibrarySummary,
     isLoading: Boolean,
     error: String?,
-    selectedType: LibraryType?,
+    selectedType: LoadedLibrary.LibraryType?,
     showSystemLibs: Boolean,
     searchQuery: String,
     selectedLibrary: LoadedLibrary?,
-    onTypeSelected: (LibraryType?) -> Unit,
+    onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
     onLibrarySelected: (LoadedLibrary) -> Unit,
@@ -277,9 +279,9 @@ private fun SummarySection(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun FilterSection(
-    selectedType: LibraryType?,
+    selectedType: LoadedLibrary.LibraryType?,
     showSystemLibs: Boolean,
-    onTypeSelected: (LibraryType?) -> Unit,
+    onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
     colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
     modifier: Modifier,
@@ -294,15 +296,23 @@ private fun FilterSection(
                     selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
                 ),
             )
-            LibraryType.entries.filter { it != LibraryType.AAR_RESOURCE }.forEach { type ->
+            LoadedLibrary.LibraryType.entries.filter { it != LoadedLibrary.LibraryType.AAR_RESOURCE }.forEach { type ->
                 val (icon, labelRes, color) = when (type) {
-                    LibraryType.NATIVE_SO -> Triple(
+                    LoadedLibrary.LibraryType.NATIVE_SO -> Triple(
                         Icons.Default.Memory,
                         R.string.loadedlibraries_filter_native,
                         colors.nativeSo,
                     )
-                    LibraryType.DEX -> Triple(Icons.Default.Android, R.string.loadedlibraries_filter_dex, colors.dex)
-                    LibraryType.JAR -> Triple(Icons.Default.Code, R.string.loadedlibraries_filter_jar, colors.jar)
+                    LoadedLibrary.LibraryType.DEX -> Triple(
+                        Icons.Default.Android,
+                        R.string.loadedlibraries_filter_dex,
+                        colors.dex,
+                    )
+                    LoadedLibrary.LibraryType.JAR -> Triple(
+                        Icons.Default.Code,
+                        R.string.loadedlibraries_filter_jar,
+                        colors.jar,
+                    )
                     else -> Triple(Icons.Default.Extension, R.string.loadedlibraries_filter_other, colors.primary)
                 }
                 FilterChip(
@@ -336,10 +346,10 @@ private fun LibraryCard(
     colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
 ) {
     val (icon, color) = when (library.type) {
-        LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
-        LibraryType.DEX -> Icons.Default.Android to colors.dex
-        LibraryType.JAR -> Icons.Default.Code to colors.jar
-        LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
+        LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
+        LoadedLibrary.LibraryType.DEX -> Icons.Default.Android to colors.dex
+        LoadedLibrary.LibraryType.JAR -> Icons.Default.Code to colors.jar
+        LoadedLibrary.LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
     }
 
     Card(
@@ -421,10 +431,10 @@ private fun LibraryDetailContent(
     modifier: Modifier,
 ) {
     val (icon, color) = when (library.type) {
-        LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
-        LibraryType.DEX -> Icons.Default.Android to colors.dex
-        LibraryType.JAR -> Icons.Default.Code to colors.jar
-        LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
+        LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
+        LoadedLibrary.LibraryType.DEX -> Icons.Default.Android to colors.dex
+        LoadedLibrary.LibraryType.JAR -> Icons.Default.Code to colors.jar
+        LoadedLibrary.LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
     }
 
     Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg)) {
@@ -508,5 +518,66 @@ private fun DetailSection(
                 }
             }
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun LoadedLibrariesScreenPreview() {
+    WormaCeptorTheme {
+        LoadedLibrariesScreen(
+            libraries = persistentListOf(
+                LoadedLibrary(
+                    name = "libc.so",
+                    path = "/system/lib64/libc.so",
+                    type = LoadedLibrary.LibraryType.NATIVE_SO,
+                    size = 1_200_000L,
+                    loadAddress = "0x7f8a000000",
+                    version = null,
+                    isSystemLibrary = true,
+                ),
+                LoadedLibrary(
+                    name = "classes.dex",
+                    path = "/data/app/com.example/base.apk!classes.dex",
+                    type = LoadedLibrary.LibraryType.DEX,
+                    size = 4_500_000L,
+                    loadAddress = null,
+                    version = null,
+                    isSystemLibrary = false,
+                ),
+                LoadedLibrary(
+                    name = "okhttp.jar",
+                    path = "/data/app/com.example/lib/okhttp.jar",
+                    type = LoadedLibrary.LibraryType.JAR,
+                    size = 800_000L,
+                    loadAddress = null,
+                    version = "4.12.0",
+                    isSystemLibrary = false,
+                ),
+            ),
+            summary = LibrarySummary(
+                totalLibraries = 3,
+                nativeSoCount = 1,
+                dexCount = 1,
+                jarCount = 1,
+                totalSizeBytes = 6_500_000L,
+                systemLibraryCount = 1,
+                appLibraryCount = 2,
+            ),
+            isLoading = false,
+            error = null,
+            selectedType = null,
+            showSystemLibs = true,
+            searchQuery = "",
+            selectedLibrary = null,
+            onTypeSelected = {},
+            onShowSystemLibsChanged = {},
+            onSearchQueryChanged = {},
+            onLibrarySelected = {},
+            onDismissDetail = {},
+            onRefresh = {},
+            onBack = {},
+        )
     }
 }

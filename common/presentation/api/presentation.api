@@ -1,0 +1,15 @@
+public final class com/azikar24/wormaceptor/common/presentation/BaseScreenKt {
+	public static final fun BaseScreen (Lcom/azikar24/wormaceptor/common/presentation/BaseViewModel;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;I)V
+}
+
+public abstract class com/azikar24/wormaceptor/common/presentation/BaseViewModel : androidx/lifecycle/ViewModel {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;)V
+	protected final fun emitEffect (Ljava/lang/Object;)V
+	public final fun getEffects ()Lkotlinx/coroutines/flow/SharedFlow;
+	public final fun getUiState ()Lkotlinx/coroutines/flow/StateFlow;
+	protected abstract fun handleEvent (Ljava/lang/Object;)V
+	public final fun sendEvent (Ljava/lang/Object;)V
+	protected final fun updateState (Lkotlin/jvm/functions/Function1;)V
+}
+

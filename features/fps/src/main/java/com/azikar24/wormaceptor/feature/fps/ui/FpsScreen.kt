@@ -51,18 +51,21 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.FpsInfo
 import com.azikar24.wormaceptor.feature.fps.R
 import com.azikar24.wormaceptor.feature.fps.ui.theme.FpsColors
 import com.azikar24.wormaceptor.feature.fps.ui.theme.fpsColors
 import com.azikar24.wormaceptor.feature.fps.vm.FpsViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -76,13 +79,37 @@ import kotlin.math.roundToInt
  * - Real-time FPS chart
  * - Play/Pause and reset controls
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
     val currentInfo by viewModel.currentFpsInfo.collectAsState()
     val history by viewModel.fpsHistory.collectAsState()
     val isMonitoring by viewModel.isMonitoring.collectAsState()
 
+    FpsScreenContent(
+        currentFps = currentInfo,
+        fpsHistory = history,
+        isMonitoring = isMonitoring,
+        onStartMonitoring = { viewModel.startMonitoring() },
+        onToggleMonitoring = { viewModel.toggleMonitoring() },
+        onResetStats = { viewModel.resetStats() },
+        onBack = onBack,
+        modifier = modifier,
+    )
+}
+
+@Suppress("LongParameterList", "LongMethod")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun FpsScreenContent(
+    currentFps: FpsInfo,
+    fpsHistory: ImmutableList<FpsInfo>,
+    isMonitoring: Boolean,
+    onStartMonitoring: () -> Unit,
+    onToggleMonitoring: () -> Unit,
+    onResetStats: () -> Unit,
+    onBack: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
     val colors = fpsColors()
     val scrollState = rememberScrollState()
 
@@ -114,7 +141,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                 },
                 actions = {
                     // Reset button
-                    IconButton(onClick = { viewModel.resetStats() }) {
+                    IconButton(onClick = onResetStats) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(R.string.fps_reset_statistics),
@@ -123,7 +150,7 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
 
                     WormaCeptorPlayPauseButton(
                         isActive = isMonitoring,
-                        onToggle = { viewModel.toggleMonitoring() },
+                        onToggle = onToggleMonitoring,
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -132,9 +159,9 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
             )
         },
     ) { paddingValues ->
-        if (!isMonitoring && history.isEmpty()) {
+        if (!isMonitoring && fpsHistory.isEmpty()) {
             EmptyState(
-                onStartMonitoring = { viewModel.startMonitoring() },
+                onStartMonitoring = onStartMonitoring,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
@@ -149,27 +176,27 @@ fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: ((
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
             ) {
                 CurrentFpsCard(
-                    fpsInfo = currentInfo,
+                    fpsInfo = currentFps,
                     isMonitoring = isMonitoring,
                     colors = colors,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
                 StatisticsRow(
-                    fpsInfo = currentInfo,
+                    fpsInfo = currentFps,
                     colors = colors,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
                 DroppedFramesCard(
-                    droppedFrames = currentInfo.droppedFrames,
-                    jankFrames = currentInfo.jankFrames,
+                    droppedFrames = currentFps.droppedFrames,
+                    jankFrames = currentFps.jankFrames,
                     colors = colors,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
                 FpsChartCard(
-                    history = history,
+                    history = fpsHistory,
                     colors = colors,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -619,5 +646,58 @@ private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modif
                 )
             }
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun FpsScreenContentPreview() {
+    WormaCeptorTheme {
+        FpsScreenContent(
+            currentFps = FpsInfo(
+                currentFps = 58.5f,
+                averageFps = 55.2f,
+                minFps = 42.0f,
+                maxFps = 60.0f,
+                droppedFrames = 12,
+                jankFrames = 3,
+                timestamp = System.currentTimeMillis(),
+            ),
+            fpsHistory = persistentListOf(
+                FpsInfo(
+                    currentFps = 55f,
+                    averageFps = 52f,
+                    minFps = 42f,
+                    maxFps = 60f,
+                    droppedFrames = 8,
+                    jankFrames = 2,
+                    timestamp = 1L,
+                ),
+                FpsInfo(
+                    currentFps = 58.5f,
+                    averageFps = 55.2f,
+                    minFps = 42f,
+                    maxFps = 60f,
+                    droppedFrames = 12,
+                    jankFrames = 3,
+                    timestamp = 2L,
+                ),
+                FpsInfo(
+                    currentFps = 45f,
+                    averageFps = 53f,
+                    minFps = 42f,
+                    maxFps = 60f,
+                    droppedFrames = 15,
+                    jankFrames = 4,
+                    timestamp = 3L,
+                ),
+            ),
+            isMonitoring = true,
+            onStartMonitoring = {},
+            onToggleMonitoring = {},
+            onResetStats = {},
+            onBack = {},
+        )
     }
 }

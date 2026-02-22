@@ -5,8 +5,8 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
@@ -37,204 +37,189 @@ import java.util.UUID
  * ViewModel for the Location Simulation feature.
  * Manages mock location state, presets, and coordinate input.
  */
+@Suppress("TooManyFunctions")
 class LocationViewModel(
     private val repository: LocationSimulatorRepository,
     private val engine: LocationSimulatorEngine,
     context: Context,
-) : ViewModel() {
+) : BaseViewModel<LocationViewState, LocationViewEffect, LocationViewEvent>(
+    LocationViewState(isMockLocationAvailable = engine.isMockLocationAvailable()),
+) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
-    // Real device location tracking
+    // Real device location tracking (kept separate as it's driven by platform callbacks)
     private val _realDeviceLocation = MutableStateFlow<Location?>(null)
+
+    /** Real device location from GPS. */
     val realDeviceLocation: StateFlow<Location?> = _realDeviceLocation.asStateFlow()
 
     private var locationCallback: LocationCallback? = null
     private var isTrackingLocation = false
 
-    // Coordinate input fields
-    private val _latitudeInput = MutableStateFlow("")
-    val latitudeInput: StateFlow<String> = _latitudeInput.asStateFlow()
+    // Engine-driven reactive flows kept as separate StateFlows
 
-    private val _longitudeInput = MutableStateFlow("")
-    val longitudeInput: StateFlow<String> = _longitudeInput.asStateFlow()
-
-    // Search query for presets
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    // Loading state
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Error message
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-    // Success message for feedback
-    private val _successMessage = MutableStateFlow<String?>(null)
-    val successMessage: StateFlow<String?> = _successMessage.asStateFlow()
-
-    // Mock location availability
-    private val _isMockLocationAvailable = MutableStateFlow(engine.isMockLocationAvailable())
-    val isMockLocationAvailable: StateFlow<Boolean> = _isMockLocationAvailable.asStateFlow()
-
-    // Current mock location state - combine engine (active) with repo (persisted)
+    /** Current mock location combining engine (active) with repository (persisted). */
     val currentMockLocation: StateFlow<MockLocation?> = combine(
         repository.getCurrentMockLocation(),
         engine.currentMockLocation,
     ) { persisted, active ->
         active ?: persisted
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT), null)
 
-    // Mock location enabled state
+    /** Whether mock location is currently enabled. */
     val isMockEnabled: StateFlow<Boolean> = engine.isEnabled
 
-    // Engine error state
+    /** Engine error state. */
     val engineError: StateFlow<String?> = engine.lastError
 
-    // All presets (filtered by search)
+    /** All presets filtered by search query. */
     val presets: StateFlow<ImmutableList<LocationPreset>> = combine(
         repository.getPresets(),
-        _searchQuery,
-    ) { presets, query ->
+        uiState,
+    ) { presets, state ->
+        val query = state.searchQuery
         presets.filter { preset ->
             query.isBlank() ||
                 preset.name.contains(query, ignoreCase = true) ||
                 preset.location.name?.contains(query, ignoreCase = true) == true
         }.toImmutableList()
     }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT), persistentListOf())
 
-    // Validation state for input
-    val isInputValid: StateFlow<Boolean> = combine(
-        _latitudeInput,
-        _longitudeInput,
-    ) { lat, lon ->
-        val latitude = lat.toDoubleOrNull()
-        val longitude = lon.toDoubleOrNull()
-        latitude != null && longitude != null &&
-            latitude in -90.0..90.0 && longitude in -180.0..180.0
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
-
-    fun onLatitudeChanged(value: String) {
-        _latitudeInput.value = value
-        _errorMessage.value = null
+    /** Validation state for coordinate input. */
+    val isInputValid: StateFlow<Boolean> = uiState.let { stateFlow ->
+        combine(stateFlow) { states ->
+            val state = states[0]
+            val latitude = state.latitudeInput.toDoubleOrNull()
+            val longitude = state.longitudeInput.toDoubleOrNull()
+            latitude != null && longitude != null &&
+                latitude in -LAT_RANGE..LAT_RANGE && longitude in -LON_RANGE..LON_RANGE
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT), false)
     }
 
-    fun onLongitudeChanged(value: String) {
-        _longitudeInput.value = value
-        _errorMessage.value = null
+    override fun handleEvent(event: LocationViewEvent) {
+        when (event) {
+            is LocationViewEvent.LatitudeChanged -> updateState { copy(latitudeInput = event.value) }
+            is LocationViewEvent.LongitudeChanged -> updateState { copy(longitudeInput = event.value) }
+            is LocationViewEvent.SearchQueryChanged -> updateState { copy(searchQuery = event.query) }
+            LocationViewEvent.SetMockLocationFromInput -> handleSetMockLocationFromInput()
+            is LocationViewEvent.SetMockLocationFromPreset -> handleSetMockLocationFromPreset(event.preset)
+            is LocationViewEvent.SetMockLocation -> handleSetMockLocation(event.location)
+            LocationViewEvent.ClearMockLocation -> handleClearMockLocation()
+            LocationViewEvent.ToggleMockLocation -> handleToggleMockLocation()
+            LocationViewEvent.SetToCurrentRealLocation -> handleSetToCurrentRealLocation()
+            is LocationViewEvent.SaveCurrentAsPreset -> handleSaveCurrentAsPreset(event.name)
+            is LocationViewEvent.DeletePreset -> handleDeletePreset(event.presetId)
+            is LocationViewEvent.MapTapped -> handleMapTapped(event.latitude, event.longitude)
+            LocationViewEvent.RefreshMockLocationAvailability -> {
+                updateState { copy(isMockLocationAvailable = engine.isMockLocationAvailable()) }
+            }
+            LocationViewEvent.StartRealLocationUpdates -> startRealLocationUpdates()
+            LocationViewEvent.StopRealLocationUpdates -> stopRealLocationUpdates()
+        }
     }
 
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
-    }
-
-    /**
-     * Sets a mock location from the current input fields.
-     * Falls back to the last used location or the first preset if no valid input.
-     */
-    fun setMockLocationFromInput() {
+    private fun handleSetMockLocationFromInput() {
+        val state = uiState.value
         if (isInputValid.value) {
-            val latitude = _latitudeInput.value.toDouble()
-            val longitude = _longitudeInput.value.toDouble()
-            setMockLocation(MockLocation.from(latitude, longitude))
+            val latitude = state.latitudeInput.toDouble()
+            val longitude = state.longitudeInput.toDouble()
+            handleSetMockLocation(MockLocation.from(latitude, longitude))
             return
         }
 
         val lastUsed = currentMockLocation.value
         if (lastUsed != null) {
-            _latitudeInput.value = "%.6f".format(lastUsed.latitude)
-            _longitudeInput.value = "%.6f".format(lastUsed.longitude)
-            setMockLocation(lastUsed)
+            updateState {
+                copy(
+                    latitudeInput = "%.6f".format(lastUsed.latitude),
+                    longitudeInput = "%.6f".format(lastUsed.longitude),
+                )
+            }
+            handleSetMockLocation(lastUsed)
             return
         }
 
         val firstPreset = presets.value.firstOrNull()
         if (firstPreset != null) {
-            _latitudeInput.value = firstPreset.location.latitude.toString()
-            _longitudeInput.value = firstPreset.location.longitude.toString()
-            setMockLocation(firstPreset.location)
+            updateState {
+                copy(
+                    latitudeInput = firstPreset.location.latitude.toString(),
+                    longitudeInput = firstPreset.location.longitude.toString(),
+                )
+            }
+            handleSetMockLocation(firstPreset.location)
             return
         }
 
-        _errorMessage.value = "Please enter valid coordinates"
+        emitEffect(LocationViewEffect.ShowError("Please enter valid coordinates"))
     }
 
-    /**
-     * Sets a mock location from a preset.
-     */
-    fun setMockLocationFromPreset(preset: LocationPreset) {
-        setMockLocation(preset.location)
-        // Update input fields to reflect the preset
-        _latitudeInput.value = preset.location.latitude.toString()
-        _longitudeInput.value = preset.location.longitude.toString()
+    private fun handleSetMockLocationFromPreset(preset: LocationPreset) {
+        handleSetMockLocation(preset.location)
+        updateState {
+            copy(
+                latitudeInput = preset.location.latitude.toString(),
+                longitudeInput = preset.location.longitude.toString(),
+            )
+        }
     }
 
-    /**
-     * Sets the mock location.
-     */
-    fun setMockLocation(location: MockLocation) {
+    private fun handleSetMockLocation(location: MockLocation) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
+            updateState { copy(isLoading = true) }
             try {
                 val success = engine.setLocation(location)
                 if (success) {
                     repository.setMockLocation(location)
-                    _successMessage.value = "Mock location set successfully"
+                    updateState { copy(isLoading = false) }
+                    emitEffect(LocationViewEffect.ShowSuccess("Mock location set successfully"))
                 } else {
-                    _errorMessage.value = engine.lastError.value ?: "Failed to set mock location"
+                    updateState { copy(isLoading = false) }
+                    emitEffect(
+                        LocationViewEffect.ShowError(
+                            engine.lastError.value ?: "Failed to set mock location",
+                        ),
+                    )
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to set mock location", e)
-                _errorMessage.value = "Failed to set mock location: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowError("Failed to set mock location: ${e.message}"))
             }
         }
     }
 
-    /**
-     * Clears the current mock location.
-     */
-    fun clearMockLocation() {
+    private fun handleClearMockLocation() {
         viewModelScope.launch {
-            _isLoading.value = true
+            updateState { copy(isLoading = true) }
             try {
                 engine.clearMockLocation()
                 repository.setMockLocation(null)
-                _successMessage.value = "Mock location cleared"
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowSuccess("Mock location cleared"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to clear mock location", e)
-                _errorMessage.value = "Failed to clear mock location: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowError("Failed to clear mock location: ${e.message}"))
             }
         }
     }
 
-    /**
-     * Toggles mock location on/off.
-     */
-    fun toggleMockLocation() {
+    private fun handleToggleMockLocation() {
         if (isMockEnabled.value) {
-            clearMockLocation()
+            handleClearMockLocation()
         } else {
-            setMockLocationFromInput()
+            handleSetMockLocationFromInput()
         }
     }
 
-    /**
-     * Gets the current real device location and sets it in the input fields.
-     */
     @SuppressLint("MissingPermission")
-    fun setToCurrentRealLocation() {
+    private fun handleSetToCurrentRealLocation() {
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
+            updateState { copy(isLoading = true) }
             try {
                 val cancellationToken = CancellationTokenSource()
                 val location = fusedLocationClient.getCurrentLocation(
@@ -243,43 +228,51 @@ class LocationViewModel(
                 ).await()
 
                 if (location != null) {
-                    _latitudeInput.value = "%.6f".format(location.latitude)
-                    _longitudeInput.value = "%.6f".format(location.longitude)
-                    _successMessage.value = "Current location retrieved"
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            latitudeInput = "%.6f".format(location.latitude),
+                            longitudeInput = "%.6f".format(location.longitude),
+                        )
+                    }
+                    emitEffect(LocationViewEffect.ShowSuccess("Current location retrieved"))
                 } else {
-                    _errorMessage.value = "Could not get current location. Make sure location is enabled."
+                    updateState { copy(isLoading = false) }
+                    emitEffect(
+                        LocationViewEffect.ShowError(
+                            "Could not get current location. Make sure location is enabled.",
+                        ),
+                    )
                 }
             } catch (e: SecurityException) {
                 Log.w(TAG, "Location permission not granted", e)
-                _errorMessage.value = "Location permission not granted"
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowError("Location permission not granted"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to get location", e)
-                _errorMessage.value = "Failed to get location: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowError("Failed to get location: ${e.message}"))
             }
         }
     }
 
-    /**
-     * Saves the current input as a new preset.
-     */
-    fun saveCurrentAsPreset(name: String) {
-        val latitude = _latitudeInput.value.toDoubleOrNull()
-        val longitude = _longitudeInput.value.toDoubleOrNull()
+    private fun handleSaveCurrentAsPreset(name: String) {
+        val state = uiState.value
+        val latitude = state.latitudeInput.toDoubleOrNull()
+        val longitude = state.longitudeInput.toDoubleOrNull()
 
         if (latitude == null || longitude == null) {
-            _errorMessage.value = "Please enter valid coordinates first"
+            emitEffect(LocationViewEffect.ShowError("Please enter valid coordinates first"))
             return
         }
 
         if (name.isBlank()) {
-            _errorMessage.value = "Please enter a preset name"
+            emitEffect(LocationViewEffect.ShowError("Please enter a preset name"))
             return
         }
 
         viewModelScope.launch {
-            _isLoading.value = true
+            updateState { copy(isLoading = true) }
             try {
                 val preset = LocationPreset(
                     id = "user_${UUID.randomUUID()}",
@@ -288,51 +281,35 @@ class LocationViewModel(
                     isBuiltIn = false,
                 )
                 repository.savePreset(preset)
-                _successMessage.value = "Preset saved: ${preset.name}"
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowSuccess("Preset saved: ${preset.name}"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to save preset", e)
-                _errorMessage.value = "Failed to save preset: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
+                emitEffect(LocationViewEffect.ShowError("Failed to save preset: ${e.message}"))
             }
         }
     }
 
-    /**
-     * Deletes a user-created preset.
-     */
-    fun deletePreset(presetId: String) {
+    private fun handleDeletePreset(presetId: String) {
         viewModelScope.launch {
             try {
                 repository.deletePreset(presetId)
-                _successMessage.value = "Preset deleted"
+                emitEffect(LocationViewEffect.ShowSuccess("Preset deleted"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to delete preset", e)
-                _errorMessage.value = "Failed to delete preset: ${e.message}"
+                emitEffect(LocationViewEffect.ShowError("Failed to delete preset: ${e.message}"))
             }
         }
     }
 
-    /**
-     * Clears the error message.
-     */
-    fun clearError() {
-        _errorMessage.value = null
-    }
-
-    /**
-     * Clears the success message.
-     */
-    fun clearSuccessMessage() {
-        _successMessage.value = null
-    }
-
-    /**
-     * Refreshes the mock location availability state.
-     * Call this when returning from settings to check if mock locations were enabled.
-     */
-    fun refreshMockLocationAvailability() {
-        _isMockLocationAvailable.value = engine.isMockLocationAvailable()
+    private fun handleMapTapped(latitude: Double, longitude: Double) {
+        updateState {
+            copy(
+                latitudeInput = "%.6f".format(latitude),
+                longitudeInput = "%.6f".format(longitude),
+            )
+        }
     }
 
     /**
@@ -340,14 +317,14 @@ class LocationViewModel(
      * Call this when the map becomes visible.
      */
     @SuppressLint("MissingPermission")
-    fun startRealLocationUpdates() {
+    private fun startRealLocationUpdates() {
         if (isTrackingLocation) return
         isTrackingLocation = true
 
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
-            5000L, // Update every 5 seconds
-        ).setMinUpdateIntervalMillis(2000L)
+            LOCATION_UPDATE_INTERVAL,
+        ).setMinUpdateIntervalMillis(LOCATION_MIN_UPDATE_INTERVAL)
             .build()
 
         val callback = object : LocationCallback() {
@@ -366,7 +343,7 @@ class LocationViewModel(
                 Looper.getMainLooper(),
             )
         } catch (e: SecurityException) {
-            _errorMessage.value = "Location permission not granted"
+            emitEffect(LocationViewEffect.ShowError("Location permission not granted"))
             isTrackingLocation = false
         }
     }
@@ -375,7 +352,7 @@ class LocationViewModel(
      * Stops continuous real location updates.
      * Call this when the map is no longer visible.
      */
-    fun stopRealLocationUpdates() {
+    private fun stopRealLocationUpdates() {
         if (!isTrackingLocation) return
         isTrackingLocation = false
 
@@ -385,14 +362,6 @@ class LocationViewModel(
         locationCallback = null
     }
 
-    /**
-     * Updates the mock location from map tap coordinates.
-     */
-    fun setMockLocationFromCoordinates(latitude: Double, longitude: Double) {
-        _latitudeInput.value = "%.6f".format(latitude)
-        _longitudeInput.value = "%.6f".format(longitude)
-    }
-
     override fun onCleared() {
         super.onCleared()
         stopRealLocationUpdates()
@@ -400,5 +369,10 @@ class LocationViewModel(
 
     private companion object {
         private const val TAG = "LocationViewModel"
+        private const val SUBSCRIPTION_TIMEOUT = 5000L
+        private const val LOCATION_UPDATE_INTERVAL = 5000L
+        private const val LOCATION_MIN_UPDATE_INTERVAL = 2000L
+        private const val LAT_RANGE = 90.0
+        private const val LON_RANGE = 180.0
     }
 }

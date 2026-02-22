@@ -3,19 +3,22 @@ package com.azikar24.wormaceptor.feature.location
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.feature.location.ui.LocationScreen
+import com.azikar24.wormaceptor.feature.location.vm.LocationViewEffect
+import com.azikar24.wormaceptor.feature.location.vm.LocationViewEvent
 import com.azikar24.wormaceptor.feature.location.vm.LocationViewModel
 import org.osmdroid.util.GeoPoint
 
@@ -69,18 +72,23 @@ fun LocationSimulator(
     val factory = remember { LocationFeature.createViewModelFactory(repository, engine, context) }
     val viewModel: LocationViewModel = viewModel(factory = factory)
 
-    val latitudeInput by viewModel.latitudeInput.collectAsState()
-    val longitudeInput by viewModel.longitudeInput.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     val presets by viewModel.presets.collectAsState()
     val currentMockLocation by viewModel.currentMockLocation.collectAsState()
     val isMockEnabled by viewModel.isMockEnabled.collectAsState()
-    val isMockLocationAvailable by viewModel.isMockLocationAvailable.collectAsState()
     val isInputValid by viewModel.isInputValid.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    val successMessage by viewModel.successMessage.collectAsState()
     val realDeviceLocation by viewModel.realDeviceLocation.collectAsState()
+
+    // Handle one-time effects (error/success messages)
+    val snackbarState = remember { androidx.compose.material3.SnackbarHostState() }
+    LaunchedEffect(viewModel) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is LocationViewEffect.ShowError -> snackbarState.showSnackbar(effect.message)
+                is LocationViewEffect.ShowSuccess -> snackbarState.showSnackbar(effect.message)
+            }
+        }
+    }
 
     // Observe lifecycle to refresh mock location availability and manage location updates
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -88,11 +96,11 @@ fun LocationSimulator(
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
-                    viewModel.refreshMockLocationAvailability()
-                    viewModel.startRealLocationUpdates()
+                    viewModel.sendEvent(LocationViewEvent.RefreshMockLocationAvailability)
+                    viewModel.sendEvent(LocationViewEvent.StartRealLocationUpdates)
                 }
                 Lifecycle.Event.ON_PAUSE -> {
-                    viewModel.stopRealLocationUpdates()
+                    viewModel.sendEvent(LocationViewEvent.StopRealLocationUpdates)
                 }
                 else -> {}
             }
@@ -100,7 +108,7 @@ fun LocationSimulator(
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
-            viewModel.stopRealLocationUpdates()
+            viewModel.sendEvent(LocationViewEvent.StopRealLocationUpdates)
         }
     }
 
@@ -110,31 +118,31 @@ fun LocationSimulator(
     }
 
     LocationScreen(
-        latitudeInput = latitudeInput,
-        longitudeInput = longitudeInput,
-        searchQuery = searchQuery,
+        latitudeInput = state.latitudeInput,
+        longitudeInput = state.longitudeInput,
+        searchQuery = state.searchQuery,
         presets = presets,
         currentMockLocation = currentMockLocation,
         isMockEnabled = isMockEnabled,
-        isMockLocationAvailable = isMockLocationAvailable,
+        isMockLocationAvailable = state.isMockLocationAvailable,
         isInputValid = isInputValid,
-        isLoading = isLoading,
-        errorMessage = errorMessage,
-        successMessage = successMessage,
+        isLoading = state.isLoading,
+        errorMessage = null,
+        successMessage = null,
         realDeviceLocation = realGeoPoint,
-        onLatitudeChanged = viewModel::onLatitudeChanged,
-        onLongitudeChanged = viewModel::onLongitudeChanged,
-        onSearchQueryChanged = viewModel::onSearchQueryChanged,
-        onSetMockLocation = viewModel::setMockLocationFromInput,
-        onClearMockLocation = viewModel::clearMockLocation,
-        onSetToCurrentLocation = viewModel::setToCurrentRealLocation,
-        onPresetClick = viewModel::setMockLocationFromPreset,
-        onDeletePreset = viewModel::deletePreset,
-        onSavePreset = viewModel::saveCurrentAsPreset,
-        onClearError = viewModel::clearError,
-        onClearSuccessMessage = viewModel::clearSuccessMessage,
+        onLatitudeChanged = { viewModel.sendEvent(LocationViewEvent.LatitudeChanged(it)) },
+        onLongitudeChanged = { viewModel.sendEvent(LocationViewEvent.LongitudeChanged(it)) },
+        onSearchQueryChanged = { viewModel.sendEvent(LocationViewEvent.SearchQueryChanged(it)) },
+        onSetMockLocation = { viewModel.sendEvent(LocationViewEvent.SetMockLocationFromInput) },
+        onClearMockLocation = { viewModel.sendEvent(LocationViewEvent.ClearMockLocation) },
+        onSetToCurrentLocation = { viewModel.sendEvent(LocationViewEvent.SetToCurrentRealLocation) },
+        onPresetClick = { viewModel.sendEvent(LocationViewEvent.SetMockLocationFromPreset(it)) },
+        onDeletePreset = { viewModel.sendEvent(LocationViewEvent.DeletePreset(it)) },
+        onSavePreset = { viewModel.sendEvent(LocationViewEvent.SaveCurrentAsPreset(it)) },
+        onClearError = {},
+        onClearSuccessMessage = {},
         onMapTap = { geoPoint ->
-            viewModel.setMockLocationFromCoordinates(geoPoint.latitude, geoPoint.longitude)
+            viewModel.sendEvent(LocationViewEvent.MapTapped(geoPoint.latitude, geoPoint.longitude))
         },
         onBack = onNavigateBack,
         modifier = modifier,

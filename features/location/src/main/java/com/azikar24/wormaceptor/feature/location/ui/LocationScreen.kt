@@ -39,14 +39,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.feature.location.R
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.osmdroid.util.GeoPoint
 
 /**
@@ -79,8 +82,8 @@ fun LocationScreen(
     onClearError: () -> Unit,
     onClearSuccessMessage: () -> Unit,
     onMapTap: (GeoPoint) -> Unit,
-    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var showSavePresetDialog by remember { mutableStateOf(false) }
@@ -286,6 +289,53 @@ fun LocationScreen(
                 onSavePreset(name)
                 showSavePresetDialog = false
             },
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LocationScreenPreview() {
+    WormaCeptorTheme {
+        LocationScreen(
+            latitudeInput = "40.7128",
+            longitudeInput = "-74.0060",
+            searchQuery = "",
+            presets = persistentListOf(
+                LocationPreset(
+                    id = "1",
+                    name = "New York City",
+                    location = MockLocation.from(40.7128, -74.0060, "New York City"),
+                    isBuiltIn = true,
+                ),
+                LocationPreset(
+                    id = "2",
+                    name = "London",
+                    location = MockLocation.from(51.5074, -0.1278, "London"),
+                    isBuiltIn = true,
+                ),
+            ),
+            currentMockLocation = null,
+            isMockEnabled = false,
+            isMockLocationAvailable = true,
+            isInputValid = true,
+            isLoading = false,
+            errorMessage = null,
+            successMessage = null,
+            realDeviceLocation = null,
+            onLatitudeChanged = {},
+            onLongitudeChanged = {},
+            onSearchQueryChanged = {},
+            onSetMockLocation = {},
+            onClearMockLocation = {},
+            onSetToCurrentLocation = {},
+            onPresetClick = {},
+            onDeletePreset = {},
+            onSavePreset = {},
+            onClearError = {},
+            onClearSuccessMessage = {},
+            onMapTap = {},
+            onBack = {},
         )
     }
 }

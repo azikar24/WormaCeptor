@@ -62,11 +62,13 @@ public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingle
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function3;
 	public static field lambda-4 Lkotlin/jvm/functions/Function3;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$location_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-4$location_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-5$location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationStatusSectionKt {
@@ -102,38 +104,223 @@ public final class com/azikar24/wormaceptor/feature/location/ui/theme/LocationCo
 	public final fun getWarning-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowError : com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowError;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowError;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowSuccess : com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowSuccess;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowSuccess;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEffect$ShowSuccess;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$ClearMockLocation : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$ClearMockLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$DeletePreset : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$DeletePreset;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$DeletePreset;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$DeletePreset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPresetId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LatitudeChanged : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LatitudeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LatitudeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LatitudeChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LongitudeChanged : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LongitudeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LongitudeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$LongitudeChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$MapTapped : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (DD)V
+	public final fun component1 ()D
+	public final fun component2 ()D
+	public final fun copy (DD)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$MapTapped;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$MapTapped;DDILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$MapTapped;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLatitude ()D
+	public final fun getLongitude ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$RefreshMockLocationAvailability : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$RefreshMockLocationAvailability;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SaveCurrentAsPreset : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SaveCurrentAsPreset;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SaveCurrentAsPreset;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SaveCurrentAsPreset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SearchQueryChanged : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocation : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocation;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocation;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLocation ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromInput : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromPreset : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromPreset;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromPreset;Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetMockLocationFromPreset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPreset ()Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetToCurrentRealLocation : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$SetToCurrentRealLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$StartRealLocationUpdates : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$StartRealLocationUpdates;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$StopRealLocationUpdates : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$StopRealLocationUpdates;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$ToggleMockLocation : com/azikar24/wormaceptor/feature/location/vm/LocationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewEvent$ToggleMockLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Landroid/content/Context;)V
-	public final fun clearError ()V
-	public final fun clearMockLocation ()V
-	public final fun clearSuccessMessage ()V
-	public final fun deletePreset (Ljava/lang/String;)V
 	public final fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getEngineError ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getErrorMessage ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getLatitudeInput ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getLongitudeInput ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getPresets ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getRealDeviceLocation ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSuccessMessage ()Lkotlinx/coroutines/flow/StateFlow;
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
 	public final fun isInputValid ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun isMockEnabled ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMockLocationAvailable ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun onLatitudeChanged (Ljava/lang/String;)V
-	public final fun onLongitudeChanged (Ljava/lang/String;)V
-	public final fun onSearchQueryChanged (Ljava/lang/String;)V
-	public final fun refreshMockLocationAvailability ()V
-	public final fun saveCurrentAsPreset (Ljava/lang/String;)V
-	public final fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;)V
-	public final fun setMockLocationFromCoordinates (DD)V
-	public final fun setMockLocationFromInput ()V
-	public final fun setMockLocationFromPreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;)V
-	public final fun setToCurrentRealLocation ()V
-	public final fun startRealLocationUpdates ()V
-	public final fun stopRealLocationUpdates ()V
-	public final fun toggleMockLocation ()V
+}
+
+public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLatitudeInput ()Ljava/lang/String;
+	public final fun getLongitudeInput ()Ljava/lang/String;
+	public final fun getSearchQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isLoading ()Z
+	public final fun isMockLocationAvailable ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

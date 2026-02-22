@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.database.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -42,13 +43,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying list of available databases.
@@ -234,4 +238,35 @@ private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifi
             )
         },
     )
+}
+
+@SuppressLint("SdCardPath")
+@Preview(showBackground = true)
+@Composable
+private fun DatabaseListScreenPreview() {
+    WormaCeptorTheme {
+        DatabaseListScreen(
+            databases = persistentListOf(
+                DatabaseInfo(
+                    name = "app_database.db",
+                    path = "/data/data/com.example/databases/app_database.db",
+                    sizeBytes = 524_288L,
+                    tableCount = 5,
+                ),
+                DatabaseInfo(
+                    name = "cache.db",
+                    path = "/data/data/com.example/databases/cache.db",
+                    sizeBytes = 131_072L,
+                    tableCount = 2,
+                ),
+            ),
+            searchQuery = "",
+            isLoading = false,
+            error = null,
+            onSearchQueryChanged = {},
+            onDatabaseClick = {},
+            onRefresh = {},
+            onBack = {},
+        )
+    }
 }

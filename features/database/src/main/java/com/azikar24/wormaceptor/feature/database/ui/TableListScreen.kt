@@ -36,12 +36,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying list of tables in a database.
@@ -227,4 +230,26 @@ private fun TableListItem(table: TableInfo, onClick: () -> Unit, modifier: Modif
             )
         },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TableListScreenPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            databaseName = "app_database.db",
+            tables = persistentListOf(
+                TableInfo(name = "users", rowCount = 150L, columnCount = 6),
+                TableInfo(name = "transactions", rowCount = 1024L, columnCount = 12),
+                TableInfo(name = "settings", rowCount = 8L, columnCount = 3),
+            ),
+            searchQuery = "",
+            isLoading = false,
+            error = null,
+            onSearchQueryChanged = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
 }

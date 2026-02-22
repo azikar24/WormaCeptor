@@ -20,6 +20,7 @@ import com.azikar24.wormaceptor.feature.database.ui.DatabaseListScreen
 import com.azikar24.wormaceptor.feature.database.ui.QueryScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableDataScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableListScreen
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
 import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewModel
 
 /**
@@ -71,29 +72,9 @@ fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateB
     val viewModel: DatabaseViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
 
-    // Collect state
+    val state by viewModel.uiState.collectAsState()
     val databases by viewModel.databases.collectAsState()
-    val databaseSearchQuery by viewModel.databaseSearchQuery.collectAsState()
-    val isDatabasesLoading by viewModel.isDatabasesLoading.collectAsState()
-    val databasesError by viewModel.databasesError.collectAsState()
-
-    val selectedDatabaseName by viewModel.selectedDatabaseName.collectAsState()
     val tables by viewModel.tables.collectAsState()
-    val tableSearchQuery by viewModel.tableSearchQuery.collectAsState()
-    val isTablesLoading by viewModel.isTablesLoading.collectAsState()
-    val tablesError by viewModel.tablesError.collectAsState()
-
-    val selectedTableName by viewModel.selectedTableName.collectAsState()
-    val tableSchema by viewModel.tableSchema.collectAsState()
-    val queryResult by viewModel.queryResult.collectAsState()
-    val currentPage by viewModel.currentPage.collectAsState()
-    val isDataLoading by viewModel.isDataLoading.collectAsState()
-    val showSchema by viewModel.showSchema.collectAsState()
-
-    val sqlQuery by viewModel.sqlQuery.collectAsState()
-    val queryExecutionResult by viewModel.queryExecutionResult.collectAsState()
-    val queryHistory by viewModel.queryHistory.collectAsState()
-    val isQueryExecuting by viewModel.isQueryExecuting.collectAsState()
 
     NavHost(
         navController = navController,
@@ -107,36 +88,36 @@ fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateB
         composable("databases") {
             DatabaseListScreen(
                 databases = databases,
-                searchQuery = databaseSearchQuery,
-                isLoading = isDatabasesLoading,
-                error = databasesError,
-                onSearchQueryChanged = viewModel::onDatabaseSearchQueryChanged,
+                searchQuery = state.databaseSearchQuery,
+                isLoading = state.isDatabasesLoading,
+                error = state.databasesError,
+                onSearchQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged(it)) },
                 onDatabaseClick = { db ->
-                    viewModel.selectDatabase(db.name)
+                    viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected(db.name))
                     navController.navigate("tables")
                 },
-                onRefresh = viewModel::loadDatabases,
+                onRefresh = { viewModel.sendEvent(DatabaseViewEvent.LoadDatabases) },
                 onBack = { onNavigateBack?.invoke() },
             )
         }
 
         composable("tables") {
             TableListScreen(
-                databaseName = selectedDatabaseName ?: "",
+                databaseName = state.selectedDatabaseName ?: "",
                 tables = tables,
-                searchQuery = tableSearchQuery,
-                isLoading = isTablesLoading,
-                error = tablesError,
-                onSearchQueryChanged = viewModel::onTableSearchQueryChanged,
+                searchQuery = state.tableSearchQuery,
+                isLoading = state.isTablesLoading,
+                error = state.tablesError,
+                onSearchQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.TableSearchQueryChanged(it)) },
                 onTableClick = { table ->
-                    viewModel.selectTable(table.name)
+                    viewModel.sendEvent(DatabaseViewEvent.TableSelected(table.name))
                     navController.navigate("data")
                 },
                 onQueryClick = {
                     navController.navigate("query")
                 },
                 onBack = {
-                    viewModel.clearDatabaseSelection()
+                    viewModel.sendEvent(DatabaseViewEvent.DatabaseSelectionCleared)
                     navController.popBackStack()
                 },
             )
@@ -144,17 +125,17 @@ fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateB
 
         composable("data") {
             TableDataScreen(
-                tableName = selectedTableName ?: "",
-                queryResult = queryResult,
-                schema = tableSchema,
-                showSchema = showSchema,
-                currentPage = currentPage,
-                isLoading = isDataLoading,
-                onToggleSchema = viewModel::toggleSchema,
-                onPreviousPage = viewModel::previousPage,
-                onNextPage = viewModel::nextPage,
+                tableName = state.selectedTableName ?: "",
+                queryResult = state.queryResult,
+                schema = state.tableSchema,
+                showSchema = state.showSchema,
+                currentPage = state.currentPage,
+                isLoading = state.isDataLoading,
+                onToggleSchema = { viewModel.sendEvent(DatabaseViewEvent.ToggleSchema) },
+                onPreviousPage = { viewModel.sendEvent(DatabaseViewEvent.PreviousPage) },
+                onNextPage = { viewModel.sendEvent(DatabaseViewEvent.NextPage) },
                 onBack = {
-                    viewModel.clearTableSelection()
+                    viewModel.sendEvent(DatabaseViewEvent.TableSelectionCleared)
                     navController.popBackStack()
                 },
             )
@@ -162,17 +143,17 @@ fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateB
 
         composable("query") {
             QueryScreen(
-                databaseName = selectedDatabaseName ?: "",
-                sqlQuery = sqlQuery,
-                queryResult = queryExecutionResult,
-                queryHistory = queryHistory,
-                isExecuting = isQueryExecuting,
-                onQueryChanged = viewModel::onSqlQueryChanged,
-                onExecuteQuery = viewModel::executeQuery,
-                onClearQuery = viewModel::clearQuery,
-                onSelectFromHistory = viewModel::selectQueryFromHistory,
+                databaseName = state.selectedDatabaseName ?: "",
+                sqlQuery = state.sqlQuery,
+                queryResult = state.queryExecutionResult,
+                queryHistory = state.queryHistory,
+                isExecuting = state.isQueryExecuting,
+                onQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged(it)) },
+                onExecuteQuery = { viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery) },
+                onClearQuery = { viewModel.sendEvent(DatabaseViewEvent.ClearQuery) },
+                onSelectFromHistory = { viewModel.sendEvent(DatabaseViewEvent.QuerySelectedFromHistory(it)) },
                 onBack = {
-                    viewModel.clearQuery()
+                    viewModel.sendEvent(DatabaseViewEvent.ClearQuery)
                     navController.popBackStack()
                 },
             )

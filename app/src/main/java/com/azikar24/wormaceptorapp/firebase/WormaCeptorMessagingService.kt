@@ -7,8 +7,8 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.azikar24.wormaceptorapp.MainActivity
 import com.azikar24.wormaceptorapp.R
+import com.azikar24.wormaceptorapp.main.view.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

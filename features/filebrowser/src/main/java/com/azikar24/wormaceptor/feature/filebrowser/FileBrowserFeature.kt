@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.filebrowser
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -17,6 +18,8 @@ import com.azikar24.wormaceptor.feature.filebrowser.data.FileSystemRepositoryImp
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileBrowserScreen
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileInfoSheet
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileViewerScreen
+import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEffect
+import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
 import kotlinx.coroutines.launch
 
@@ -70,60 +73,57 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val currentPath by viewModel.currentPath.collectAsState()
-    val navigationStack by viewModel.navigationStack.collectAsState()
-    val filteredFiles by viewModel.filteredFiles.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
-    val selectedFile by viewModel.selectedFile.collectAsState()
-    val fileContent by viewModel.fileContent.collectAsState()
-    val fileInfo by viewModel.fileInfo.collectAsState()
+    val state by viewModel.uiState.collectAsState()
+
+    // Handle one-time effects
+    LaunchedEffect(viewModel) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                FileBrowserViewEffect.AtRoot -> onNavigateBack?.invoke()
+                FileBrowserViewEffect.NavigatedBack -> { /* Navigation handled via state */ }
+            }
+        }
+    }
 
     // Main browser screen or file viewer
-    val file = selectedFile
-    val content = fileContent
-    if (file != null && content != null) {
+    val selectedFile = state.selectedFile
+    val fileContent = state.fileContent
+    if (selectedFile != null && fileContent != null) {
         FileViewerScreen(
-            filePath = file,
-            content = content,
-            onBack = viewModel::closeFileViewer,
+            filePath = selectedFile,
+            content = fileContent,
+            onBack = { viewModel.sendEvent(FileBrowserViewEvent.CloseFileViewer) },
             modifier = modifier,
         )
     } else {
         FileBrowserScreen(
-            currentPath = currentPath,
-            navigationStack = navigationStack,
-            filteredFiles = filteredFiles,
-            searchQuery = searchQuery,
-            isLoading = isLoading,
-            error = error,
-            onSearchQueryChanged = viewModel::onSearchQueryChanged,
-            onNavigateToBreadcrumb = viewModel::navigateToBreadcrumb,
-            onFileClick = { file ->
-                if (file.isDirectory) {
-                    viewModel.navigateToDirectory(file.path)
-                } else {
-                    viewModel.openFile(file.path)
-                }
+            currentPath = state.currentPath,
+            navigationStack = state.navigationStack,
+            filteredFiles = state.filteredFiles,
+            searchQuery = state.searchQuery,
+            isLoading = state.isLoading,
+            error = state.error,
+            onSearchQueryChanged = { viewModel.sendEvent(FileBrowserViewEvent.SearchQueryChanged(it)) },
+            onNavigateToBreadcrumb = { viewModel.sendEvent(FileBrowserViewEvent.NavigateToBreadcrumb(it)) },
+            onFileClick = { file -> viewModel.sendEvent(FileBrowserViewEvent.FileClicked(file)) },
+            onFileLongClick = { file -> viewModel.sendEvent(FileBrowserViewEvent.FileLongClicked(file)) },
+            onSortModeChanged = { viewModel.sendEvent(FileBrowserViewEvent.SetSortMode(it)) },
+            onNavigateBack = {
+                viewModel.sendEvent(FileBrowserViewEvent.NavigateBack)
+                state.navigationStack.isNotEmpty()
             },
-            onFileLongClick = { file ->
-                viewModel.showFileInfo(file.path)
-            },
-            onSortModeChanged = viewModel::setSortMode,
-            onNavigateBack = viewModel::navigateBack,
             onExitBrowser = { onNavigateBack?.invoke() },
-            onClearError = viewModel::clearError,
+            onClearError = { viewModel.sendEvent(FileBrowserViewEvent.ClearError) },
             modifier = modifier,
         )
     }
 
     // File info bottom sheet
-    fileInfo?.let { info ->
+    state.fileInfo?.let { info ->
         FileInfoSheet(
             fileInfo = info,
-            onDismiss = viewModel::hideFileInfo,
-            onDelete = viewModel::deleteFile,
+            onDismiss = { viewModel.sendEvent(FileBrowserViewEvent.HideFileInfo) },
+            onDelete = { viewModel.sendEvent(FileBrowserViewEvent.DeleteFile(it)) },
             onShowMessage = { message ->
                 scope.launch { snackbarHostState.showSnackbar(message) }
             },

@@ -52,10 +52,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
@@ -65,6 +67,7 @@ import com.azikar24.wormaceptor.domain.entities.LeakSummary
 import com.azikar24.wormaceptor.feature.leakdetection.R
 import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.leakDetectionColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Main screen for Memory Leak Detection.
@@ -562,5 +565,64 @@ private fun DetailSection(
                 }
             }
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber", "UnderscoresInNumericLiterals")
+@Preview(showBackground = true)
+@Composable
+private fun LeakDetectionScreenPreview() {
+    WormaCeptorTheme {
+        LeakDetectionScreen(
+            leaks = persistentListOf(
+                LeakInfo(
+                    timestamp = System.currentTimeMillis(),
+                    objectClass = "com.example.app.ui.HomeActivity",
+                    leakDescription = "Activity retained after onDestroy",
+                    retainedSize = 2 * 1_048_576L,
+                    referencePath = listOf(
+                        "GC Root -> static field",
+                        "AppManager.instance -> activity",
+                    ),
+                    severity = LeakInfo.LeakSeverity.CRITICAL,
+                ),
+                LeakInfo(
+                    timestamp = System.currentTimeMillis() - 30000L,
+                    objectClass = "com.example.app.data.CacheManager",
+                    leakDescription = "Cache not cleared on low memory",
+                    retainedSize = 512 * 1024L,
+                    referencePath = listOf(
+                        "GC Root -> thread local",
+                        "Handler.callback -> cacheManager",
+                    ),
+                    severity = LeakInfo.LeakSeverity.HIGH,
+                ),
+                LeakInfo(
+                    timestamp = System.currentTimeMillis() - 60000L,
+                    objectClass = "com.example.app.util.ImageLoader",
+                    leakDescription = "Bitmap not recycled",
+                    retainedSize = 128 * 1024L,
+                    referencePath = emptyList(),
+                    severity = LeakInfo.LeakSeverity.MEDIUM,
+                ),
+            ),
+            summary = LeakSummary(
+                totalLeaks = 3,
+                criticalCount = 1,
+                highCount = 1,
+                mediumCount = 1,
+                lowCount = 0,
+                totalRetainedBytes = 2_686_976L,
+            ),
+            isRunning = true,
+            selectedSeverity = null,
+            selectedLeak = null,
+            onSeveritySelected = {},
+            onLeakSelected = {},
+            onDismissDetail = {},
+            onTriggerCheck = {},
+            onClearLeaks = {},
+            onBack = {},
+        )
     }
 }

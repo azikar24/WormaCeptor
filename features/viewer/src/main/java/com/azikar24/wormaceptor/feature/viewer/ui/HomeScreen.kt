@@ -68,17 +68,19 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -131,7 +133,7 @@ fun HomeScreen(
     // Generic tool navigation for Tools tab
     onToolNavigate: (String) -> Unit = {},
     // Snackbar message flow from ViewModel
-    snackbarMessage: SharedFlow<String>? = null,
+    snackbarMessage: Flow<String>? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -727,5 +729,64 @@ fun HomeScreen(
                 },
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenPreview() {
+    WormaCeptorTheme {
+        HomeScreen(
+            transactions = kotlinx.collections.immutable.persistentListOf(
+                TransactionSummary(
+                    id = UUID.randomUUID(),
+                    method = "GET",
+                    host = "api.example.com",
+                    path = "/users",
+                    code = 200,
+                    tookMs = 120L,
+                    hasRequestBody = false,
+                    hasResponseBody = true,
+                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    timestamp = System.currentTimeMillis(),
+                ),
+                TransactionSummary(
+                    id = UUID.randomUUID(),
+                    method = "POST",
+                    host = "api.example.com",
+                    path = "/auth/login",
+                    code = 401,
+                    tookMs = 250L,
+                    hasRequestBody = true,
+                    hasResponseBody = true,
+                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    timestamp = System.currentTimeMillis() - 30_000,
+                ),
+            ),
+            crashes = kotlinx.collections.immutable.persistentListOf(
+                Crash(
+                    id = 1L,
+                    timestamp = System.currentTimeMillis() - 60_000,
+                    exceptionType = "NullPointerException",
+                    message = "Attempt to invoke on null",
+                    stackTrace = "java.lang.NullPointerException\n\tat com.example.App.run(App.kt:10)",
+                ),
+            ),
+            searchQuery = "",
+            onSearchChanged = {},
+            onTransactionClick = {},
+            onCrashClick = {},
+            filterMethods = emptySet(),
+            filterStatusRanges = emptySet(),
+            onMethodFiltersChanged = {},
+            onStatusFiltersChanged = {},
+            onClearFilters = {},
+            onClearTransactions = {},
+            onClearCrashes = {},
+            onExportTransactions = {},
+            onExportCrashes = {},
+            selectedTabIndex = 0,
+            onTabSelected = {},
+        )
     }
 }

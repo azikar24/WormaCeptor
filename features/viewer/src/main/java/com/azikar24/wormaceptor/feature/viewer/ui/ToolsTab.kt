@@ -65,6 +65,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
@@ -78,6 +79,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorToolTile
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
 import kotlinx.coroutines.Dispatchers
@@ -729,5 +731,20 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ToolsTabPreview() {
+    WormaCeptorTheme {
+        ToolsTab(
+            onNavigate = {},
+            onShowMessage = {},
+            searchActive = false,
+            searchQuery = "",
+            onSearchQueryChanged = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

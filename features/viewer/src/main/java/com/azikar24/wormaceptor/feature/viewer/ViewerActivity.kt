@@ -44,6 +44,7 @@ import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
@@ -74,13 +75,16 @@ import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
+import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEffect
+import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEvent
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
 import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import com.azikar24.wormaceptor.feature.webviewmonitor.ui.WebViewMonitor as WebViewMonitorScreen
@@ -146,19 +150,15 @@ class ViewerActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this, factory)[ViewerViewModel::class.java]
 
         setContent {
+            val state by viewModel.uiState.collectAsState()
             val transactions by viewModel.transactions.collectAsState()
             val allTransactions by viewModel.allTransactions.collectAsState()
             val crashes by viewModel.crashes.collectAsState()
-            val searchQuery by viewModel.searchQuery.collectAsState()
-            val filterMethods by viewModel.filterMethods.collectAsState()
-            val filterStatusRanges by viewModel.filterStatusRanges.collectAsState()
-            val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
-            val isInitialLoading by viewModel.isInitialLoading.collectAsState()
-            val isRefreshingTransactions by viewModel.isRefreshingTransactions.collectAsState()
-            val isRefreshingCrashes by viewModel.isRefreshingCrashes.collectAsState()
-            val selectedIds by viewModel.selectedIds.collectAsState()
             val isSelectionMode by viewModel.isSelectionMode.collectAsState()
             val scope = rememberCoroutineScope()
+            val snackbarMessage: (String) -> Unit = { message ->
+                viewModel.sendEvent(ViewerViewEvent.ShowMessage(message))
+            }
 
             WormaCeptorTheme {
                 val navController = rememberNavController()
@@ -212,26 +212,42 @@ class ViewerActivity : ComponentActivity() {
                             HomeScreen(
                                 transactions = transactions,
                                 crashes = crashes,
-                                searchQuery = searchQuery,
-                                onSearchChanged = viewModel::onSearchQueryChanged,
+                                searchQuery = state.searchQuery,
+                                onSearchChanged = {
+                                    viewModel.sendEvent(ViewerViewEvent.SearchQueryChanged(it))
+                                },
                                 onTransactionClick = { navController.navigate("detail/${it.id}") },
-                                onCrashClick = { crash -> navController.navigate("crash/${crash.timestamp}") },
-                                filterMethods = filterMethods,
-                                filterStatusRanges = filterStatusRanges,
-                                onMethodFiltersChanged = viewModel::setMethodFilters,
-                                onStatusFiltersChanged = viewModel::setStatusFilters,
-                                onClearFilters = viewModel::clearFilters,
-                                onClearTransactions = { scope.launch { viewModel.clearAllTransactions() } },
-                                onClearCrashes = { scope.launch { viewModel.clearAllCrashes() } },
+                                onCrashClick = { crash ->
+                                    navController.navigate("crash/${crash.timestamp}")
+                                },
+                                filterMethods = state.filterMethods,
+                                filterStatusRanges = state.filterStatusRanges,
+                                onMethodFiltersChanged = {
+                                    viewModel.sendEvent(ViewerViewEvent.MethodFiltersChanged(it))
+                                },
+                                onStatusFiltersChanged = {
+                                    viewModel.sendEvent(ViewerViewEvent.StatusFiltersChanged(it))
+                                },
+                                onClearFilters = {
+                                    viewModel.sendEvent(ViewerViewEvent.ClearFilters)
+                                },
+                                onClearTransactions = {
+                                    viewModel.sendEvent(ViewerViewEvent.ClearAllTransactions)
+                                },
+                                onClearCrashes = {
+                                    viewModel.sendEvent(ViewerViewEvent.ClearAllCrashes)
+                                },
                                 onExportTransactions = {
                                     scope.launch {
-                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                            this@ViewerActivity,
-                                            onMessage = viewModel::showMessage,
-                                        )
-                                        val allTransactionsForExport = requireNotNull(CoreHolder.queryEngine) {
-                                            "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
-                                        }.getAllTransactionsForExport()
+                                        val exportManager =
+                                            com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                this@ViewerActivity,
+                                                onMessage = snackbarMessage,
+                                            )
+                                        val allTransactionsForExport =
+                                            requireNotNull(CoreHolder.queryEngine) {
+                                                "WormaCeptor not initialized"
+                                            }.getAllTransactionsForExport()
                                         exportManager.exportTransactions(allTransactionsForExport)
                                     }
                                 },
@@ -241,24 +257,38 @@ class ViewerActivity : ComponentActivity() {
                                         com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(
                                             this@ViewerActivity,
                                             allCrashes,
-                                            onMessage = viewModel::showMessage,
+                                            onMessage = snackbarMessage,
                                         )
                                     }
                                 },
-                                selectedTabIndex = selectedTabIndex,
-                                onTabSelected = viewModel::updateSelectedTab,
+                                selectedTabIndex = state.selectedTabIndex,
+                                onTabSelected = {
+                                    viewModel.sendEvent(ViewerViewEvent.TabSelected(it))
+                                },
                                 allTransactions = allTransactions,
-                                isInitialLoading = isInitialLoading,
-                                isRefreshingTransactions = isRefreshingTransactions,
-                                isRefreshingCrashes = isRefreshingCrashes,
-                                onRefreshTransactions = viewModel::refreshTransactions,
-                                onRefreshCrashes = viewModel::refreshCrashes,
-                                selectedIds = selectedIds,
+                                isInitialLoading = state.isInitialLoading,
+                                isRefreshingTransactions = state.isRefreshingTransactions,
+                                isRefreshingCrashes = state.isRefreshingCrashes,
+                                onRefreshTransactions = {
+                                    viewModel.sendEvent(ViewerViewEvent.RefreshTransactions)
+                                },
+                                onRefreshCrashes = {
+                                    viewModel.sendEvent(ViewerViewEvent.RefreshCrashes)
+                                },
+                                selectedIds = state.selectedIds,
                                 isSelectionMode = isSelectionMode,
-                                onSelectionToggle = viewModel::toggleSelection,
-                                onSelectAll = viewModel::selectAll,
-                                onClearSelection = viewModel::clearSelection,
-                                onDeleteSelected = { scope.launch { viewModel.deleteSelected() } },
+                                onSelectionToggle = {
+                                    viewModel.sendEvent(ViewerViewEvent.SelectionToggled(it))
+                                },
+                                onSelectAll = {
+                                    viewModel.sendEvent(ViewerViewEvent.SelectAllClicked)
+                                },
+                                onClearSelection = {
+                                    viewModel.sendEvent(ViewerViewEvent.SelectionCleared)
+                                },
+                                onDeleteSelected = {
+                                    viewModel.sendEvent(ViewerViewEvent.DeleteSelectedClicked)
+                                },
                                 onShareSelected = {
                                     val selected = viewModel.getSelectedTransactions()
                                     shareTransactions(selected)
@@ -266,10 +296,11 @@ class ViewerActivity : ComponentActivity() {
                                 onExportSelected = {
                                     scope.launch {
                                         val selected = viewModel.getSelectedTransactions()
-                                        val exportManager = com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
-                                            this@ViewerActivity,
-                                            onMessage = viewModel::showMessage,
-                                        )
+                                        val exportManager =
+                                            com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                this@ViewerActivity,
+                                                onMessage = snackbarMessage,
+                                            )
                                         val fullTransactions = selected.mapNotNull { summary ->
                                             CoreHolder.queryEngine?.getDetails(summary.id)
                                         }
@@ -279,13 +310,19 @@ class ViewerActivity : ComponentActivity() {
                                 onCopyUrl = { transaction -> copyUrlToClipboard(transaction) },
                                 onShare = { transaction -> shareTransaction(transaction) },
                                 onDelete = { transaction ->
-                                    scope.launch { viewModel.deleteTransaction(transaction.id) }
+                                    viewModel.sendEvent(
+                                        ViewerViewEvent.DeleteTransaction(transaction.id),
+                                    )
                                 },
-                                onCopyAsCurl = { transaction -> copyAsCurl(transaction, viewModel) },
-                                // Generic tool navigation for Tools tab
+                                onCopyAsCurl = { transaction ->
+                                    copyAsCurl(transaction, viewModel)
+                                },
                                 onToolNavigate = { route -> navController.navigate(route) },
-                                // Snackbar message flow
-                                snackbarMessage = viewModel.snackbarMessage,
+                                snackbarMessage = remember {
+                                    viewModel.effects
+                                        .filterIsInstance<ViewerViewEffect.ShowSnackbar>()
+                                        .map { it.message }
+                                },
                             )
                         }
 
@@ -581,13 +618,13 @@ class ViewerActivity : ComponentActivity() {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
-                viewModel.showMessage("Failed to load transaction details")
+                viewModel.sendEvent(ViewerViewEvent.ShowMessage("Failed to load transaction details"))
                 return@launch
             }
 
             val curl = buildCurlCommand(fullTransaction)
             val message = copyToClipboard(this@ViewerActivity, "cURL", curl)
-            viewModel.showMessage(message)
+            viewModel.sendEvent(ViewerViewEvent.ShowMessage(message))
         }
     }
 
@@ -622,7 +659,7 @@ class ViewerActivity : ComponentActivity() {
             is DeepLinkHandler.DeepLinkDestination.Tab -> {
                 // Navigate to home and select the specified tab
                 navController.popBackStack("home", inclusive = false)
-                viewModel.updateSelectedTab(destination.tabIndex)
+                viewModel.sendEvent(ViewerViewEvent.TabSelected(destination.tabIndex))
             }
 
             is DeepLinkHandler.DeepLinkDestination.Tool -> {

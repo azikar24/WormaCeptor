@@ -94,6 +94,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -101,6 +102,7 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -943,5 +945,21 @@ private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFil
         null // Success - share sheet handles it
     } catch (e: Exception) {
         "Failed to share PDF: ${e.message}"
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PdfViewerScreenPreview() {
+    // PdfViewerScreen requires a real PDF ByteArray for rendering.
+    // A minimal preview is provided with an empty array which will show the error overlay,
+    // demonstrating the screen's error-handling UI.
+    WormaCeptorTheme {
+        PdfViewerScreen(
+            pdfData = byteArrayOf(),
+            initialPage = 0,
+            onDismiss = {},
+            onDownload = {},
+        )
     }
 }

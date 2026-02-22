@@ -68,6 +68,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
@@ -75,6 +76,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -232,9 +234,8 @@ fun TransactionDetailPagerScreen(
 }
 
 /**
- * Original TransactionDetailScreen - kept for backward compatibility
+ * Transaction detail screen with swipe-back navigation.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionDetailScreen(transaction: NetworkTransaction, onBack: () -> Unit) {
     SwipeBackContainer(onBack = onBack) {
@@ -2045,5 +2046,39 @@ private fun savePdfToDownloads(context: Context, pdfData: ByteArray): String {
         }
     } catch (e: Exception) {
         "Failed to save PDF: ${e.message}"
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TransactionDetailScreenPreview() {
+    WormaCeptorTheme {
+        TransactionDetailScreen(
+            transaction = NetworkTransaction(
+                request = com.azikar24.wormaceptor.domain.entities.Request(
+                    url = "https://api.example.com/users/123",
+                    method = "GET",
+                    headers = mapOf(
+                        "Content-Type" to listOf("application/json"),
+                        "Authorization" to listOf("Bearer token123"),
+                    ),
+                    bodyRef = null,
+                ),
+                response = com.azikar24.wormaceptor.domain.entities.Response(
+                    code = 200,
+                    message = "OK",
+                    headers = mapOf(
+                        "Content-Type" to listOf("application/json"),
+                    ),
+                    bodyRef = null,
+                    protocol = "HTTP/2",
+                    tlsVersion = "TLSv1.3",
+                    bodySize = 1024L,
+                ),
+                durationMs = 142L,
+                status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+            ),
+            onBack = {},
+        )
     }
 }

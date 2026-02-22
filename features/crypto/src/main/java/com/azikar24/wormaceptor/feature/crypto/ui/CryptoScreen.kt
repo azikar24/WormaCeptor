@@ -69,6 +69,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
@@ -77,9 +78,11 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
+import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.CryptoOperation
 import com.azikar24.wormaceptor.domain.entities.CryptoPreset
 import com.azikar24.wormaceptor.domain.entities.CryptoResult
@@ -88,6 +91,9 @@ import com.azikar24.wormaceptor.domain.entities.PaddingScheme
 import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
 import com.azikar24.wormaceptor.feature.crypto.CryptoViewModel
 import com.azikar24.wormaceptor.feature.crypto.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -117,14 +123,91 @@ fun CryptoTool(
     val error by viewModel.error.collectAsState()
 
     val context = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    val copiedMessage = stringResource(R.string.crypto_copied_to_clipboard)
+    val outputLoadedMessage = stringResource(R.string.crypto_output_loaded_as_input)
+    val clipboardLabel = stringResource(R.string.crypto_clipboard_label)
+    val keyGeneratedMessage = stringResource(R.string.crypto_key_generated)
+    val ivGeneratedMessage = stringResource(R.string.crypto_iv_generated)
+
+    CryptoToolContent(
+        config = config,
+        inputText = viewModel.inputText,
+        currentResult = currentResult,
+        history = history.toImmutableList(),
+        isProcessing = isProcessing,
+        error = error,
+        snackBarHostState = snackBarHostState,
+        onNavigateBack = onNavigateBack,
+        onNavigateToHistory = onNavigateToHistory,
+        onApplyPreset = { viewModel.applyPreset(it) },
+        onSetAlgorithm = { viewModel.setAlgorithm(it) },
+        onSetMode = { viewModel.setMode(it) },
+        onSetPadding = { viewModel.setPadding(it) },
+        onSetKeyFormat = { viewModel.setKeyFormat(it) },
+        onSetKey = { viewModel.setKey(it) },
+        onSetIv = { viewModel.setIv(it) },
+        onGenerateKey = {
+            viewModel.generateKey()
+            scope.launch { snackBarHostState.showSnackbar(keyGeneratedMessage) }
+        },
+        onGenerateIv = {
+            viewModel.generateIv()
+            scope.launch { snackBarHostState.showSnackbar(ivGeneratedMessage) }
+        },
+        onInputTextChange = { viewModel.updateInputText(it) },
+        onEncrypt = { viewModel.encrypt() },
+        onDecrypt = { viewModel.decrypt() },
+        onCopyResult = { text ->
+            copyToClipboard(context, clipboardLabel, text)
+            scope.launch { snackBarHostState.showSnackbar(copiedMessage) }
+        },
+        onClearResult = { viewModel.clearResult() },
+        onUseAsInput = { text ->
+            viewModel.updateInputText(text)
+            scope.launch { snackBarHostState.showSnackbar(outputLoadedMessage) }
+        },
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+internal fun CryptoToolContent(
+    config: CryptoConfig,
+    inputText: String,
+    currentResult: CryptoResult?,
+    history: ImmutableList<CryptoResult>,
+    isProcessing: Boolean,
+    error: String?,
+    snackBarHostState: SnackbarHostState,
+    onNavigateBack: (() -> Unit)?,
+    onNavigateToHistory: (() -> Unit)?,
+    onApplyPreset: (CryptoPreset) -> Unit,
+    onSetAlgorithm: (CryptoAlgorithm) -> Unit,
+    onSetMode: (CipherMode) -> Unit,
+    onSetPadding: (PaddingScheme) -> Unit,
+    onSetKeyFormat: (KeyFormat) -> Unit,
+    onSetKey: (String) -> Unit,
+    onSetIv: (String) -> Unit,
+    onGenerateKey: () -> Unit,
+    onGenerateIv: () -> Unit,
+    onInputTextChange: (String) -> Unit,
+    onEncrypt: () -> Unit,
+    onDecrypt: () -> Unit,
+    onCopyResult: (String) -> Unit,
+    onClearResult: () -> Unit,
+    onUseAsInput: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     var showKeyPassword by remember { mutableStateOf(false) }
     var showIvPassword by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -178,7 +261,7 @@ fun CryptoTool(
                             FilterChip(
                                 selected = config.algorithm == preset.config.algorithm &&
                                     config.mode == preset.config.mode,
-                                onClick = { viewModel.applyPreset(preset) },
+                                onClick = { onApplyPreset(preset) },
                                 label = { Text(preset.displayName) },
                             )
                         }
@@ -203,7 +286,7 @@ fun CryptoTool(
                         CryptoAlgorithm.entries.filter { it != CryptoAlgorithm.RSA }.forEach { algorithm ->
                             FilterChip(
                                 selected = config.algorithm == algorithm,
-                                onClick = { viewModel.setAlgorithm(algorithm) },
+                                onClick = { onSetAlgorithm(algorithm) },
                                 label = { Text(algorithm.displayName) },
                             )
                         }
@@ -218,7 +301,7 @@ fun CryptoTool(
                         CipherMode.entries.forEach { mode ->
                             FilterChip(
                                 selected = config.mode == mode,
-                                onClick = { viewModel.setMode(mode) },
+                                onClick = { onSetMode(mode) },
                                 label = { Text(mode.displayName) },
                             )
                         }
@@ -233,7 +316,7 @@ fun CryptoTool(
                         PaddingScheme.entries.forEach { padding ->
                             FilterChip(
                                 selected = config.padding == padding,
-                                onClick = { viewModel.setPadding(padding) },
+                                onClick = { onSetPadding(padding) },
                                 label = { Text(padding.displayName) },
                             )
                         }
@@ -258,17 +341,16 @@ fun CryptoTool(
                         KeyFormat.entries.forEach { format ->
                             FilterChip(
                                 selected = config.keyFormat == format,
-                                onClick = { viewModel.setKeyFormat(format) },
+                                onClick = { onSetKeyFormat(format) },
                                 label = { Text(format.displayName) },
                             )
                         }
                     }
 
                     // Key input
-                    val keyGeneratedMessage = stringResource(R.string.crypto_key_generated)
                     OutlinedTextField(
                         value = config.key,
-                        onValueChange = { viewModel.setKey(it) },
+                        onValueChange = onSetKey,
                         label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / 8)) },
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation(),
@@ -286,12 +368,7 @@ fun CryptoTool(
                                         },
                                     )
                                 }
-                                IconButton(onClick = {
-                                    viewModel.generateKey()
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(keyGeneratedMessage)
-                                    }
-                                }) {
+                                IconButton(onClick = onGenerateKey) {
                                     Icon(Icons.Default.Refresh, stringResource(R.string.crypto_generate_key))
                                 }
                             }
@@ -301,7 +378,6 @@ fun CryptoTool(
                     )
 
                     // IV input (only show if mode requires it)
-                    val ivGeneratedMessage = stringResource(R.string.crypto_iv_generated)
                     val ivLabel = stringResource(R.string.crypto_iv_label)
                     val hideIv = stringResource(R.string.crypto_hide_iv)
                     val showIv = stringResource(R.string.crypto_show_iv)
@@ -313,7 +389,7 @@ fun CryptoTool(
                     ) {
                         OutlinedTextField(
                             value = config.iv,
-                            onValueChange = { viewModel.setIv(it) },
+                            onValueChange = onSetIv,
                             label = { Text(ivLabel) },
                             modifier = Modifier.fillMaxWidth(),
                             visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation(),
@@ -325,12 +401,7 @@ fun CryptoTool(
                                             contentDescription = if (showIvPassword) hideIv else showIv,
                                         )
                                     }
-                                    IconButton(onClick = {
-                                        viewModel.generateIv()
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar(ivGeneratedMessage)
-                                        }
-                                    }) {
+                                    IconButton(onClick = onGenerateIv) {
                                         Icon(Icons.Default.Refresh, generateIv)
                                     }
                                 }
@@ -352,8 +423,8 @@ fun CryptoTool(
                 ) {
                     Text(stringResource(R.string.crypto_input), fontWeight = FontWeight.SemiBold)
                     OutlinedTextField(
-                        value = viewModel.inputText,
-                        onValueChange = { viewModel.updateInputText(it) },
+                        value = inputText,
+                        onValueChange = onInputTextChange,
                         label = { Text(stringResource(R.string.crypto_input_hint)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -367,9 +438,9 @@ fun CryptoTool(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                     ) {
                         Button(
-                            onClick = { viewModel.encrypt() },
+                            onClick = onEncrypt,
                             modifier = Modifier.weight(1f),
-                            enabled = !isProcessing && viewModel.inputText.isNotBlank() && config.key.isNotBlank(),
+                            enabled = !isProcessing && inputText.isNotBlank() && config.key.isNotBlank(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = WormaCeptorColors.SecureStorage.EncryptedPrefs,
                             ),
@@ -388,9 +459,9 @@ fun CryptoTool(
                         }
 
                         Button(
-                            onClick = { viewModel.decrypt() },
+                            onClick = onDecrypt,
                             modifier = Modifier.weight(1f),
-                            enabled = !isProcessing && viewModel.inputText.isNotBlank() && config.key.isNotBlank(),
+                            enabled = !isProcessing && inputText.isNotBlank() && config.key.isNotBlank(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = WormaCeptorColors.SecureStorage.Datastore,
                             ),
@@ -412,9 +483,6 @@ fun CryptoTool(
             }
 
             // Result Display
-            val copiedMessage = stringResource(R.string.crypto_copied_to_clipboard)
-            val outputLoadedMessage = stringResource(R.string.crypto_output_loaded_as_input)
-            val clipboardLabel = stringResource(R.string.crypto_clipboard_label)
             AnimatedVisibility(
                 visible = currentResult != null || error != null,
                 enter = fadeIn() + expandVertically(),
@@ -423,24 +491,14 @@ fun CryptoTool(
                 currentResult?.let { result ->
                     ResultCard(
                         result = result,
-                        onCopy = { text ->
-                            copyToClipboard(context, clipboardLabel, text)
-                            scope.launch {
-                                snackbarHostState.showSnackbar(copiedMessage)
-                            }
-                        },
-                        onClear = { viewModel.clearResult() },
-                        onUseAsInput = { text ->
-                            viewModel.updateInputText(text)
-                            scope.launch {
-                                snackbarHostState.showSnackbar(outputLoadedMessage)
-                            }
-                        },
+                        onCopy = onCopyResult,
+                        onClear = onClearResult,
+                        onUseAsInput = onUseAsInput,
                     )
                 } ?: error?.let { errorMessage ->
                     ErrorCard(
                         message = errorMessage,
-                        onDismiss = { viewModel.clearResult() },
+                        onDismiss = onClearResult,
                     )
                 }
             }
@@ -615,12 +673,12 @@ fun CryptoHistoryScreen(
     val factory = remember { CryptoFeature.createViewModelFactory(engine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
     val history by viewModel.history.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -694,7 +752,7 @@ fun CryptoHistoryScreen(
                         onLoad = {
                             onLoadResult(result)
                             scope.launch {
-                                snackbarHostState.showSnackbar(loadedMessage)
+                                snackBarHostState.showSnackbar(loadedMessage)
                             }
                         },
                         onRemove = { viewModel.removeFromHistory(result.id) },
@@ -765,5 +823,38 @@ private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CryptoToolContentPreview() {
+    WormaCeptorTheme {
+        CryptoToolContent(
+            config = CryptoConfig.default(),
+            inputText = "Hello World",
+            currentResult = null,
+            history = persistentListOf(),
+            isProcessing = false,
+            error = null,
+            snackBarHostState = remember { SnackbarHostState() },
+            onNavigateBack = {},
+            onNavigateToHistory = null,
+            onApplyPreset = {},
+            onSetAlgorithm = {},
+            onSetMode = {},
+            onSetPadding = {},
+            onSetKeyFormat = {},
+            onSetKey = {},
+            onSetIv = {},
+            onGenerateKey = {},
+            onGenerateIv = {},
+            onInputTextChange = {},
+            onEncrypt = {},
+            onDecrypt = {},
+            onCopyResult = {},
+            onClearResult = {},
+            onUseAsInput = {},
+        )
     }
 }

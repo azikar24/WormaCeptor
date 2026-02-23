@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 @Composable
 fun <State, Effect, Event> BaseScreen(
     viewModel: BaseViewModel<State, Effect, Event>,
-    onEffect: (Effect) -> Unit,
+    onEffect: (Effect) -> Unit = {},
     content: @Composable (state: State, onEvent: (Event) -> Unit) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()

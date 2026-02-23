@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.feature.threadviolation.ui.ThreadViolationScreen
 import com.azikar24.wormaceptor.feature.threadviolation.vm.ThreadViolationViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Thread Violation Detection feature.
@@ -51,11 +52,8 @@ class ThreadViolationViewModelFactory(
  * Main composable for the Thread Violation Detection feature.
  */
 @Composable
-fun ThreadViolationMonitor(
-    engine: ThreadViolationEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun ThreadViolationMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: ThreadViolationEngine = koinInject()
     val factory = remember(engine) { ThreadViolationFeature.createViewModelFactory(engine) }
     val viewModel: ThreadViolationViewModel = viewModel(factory = factory)
 

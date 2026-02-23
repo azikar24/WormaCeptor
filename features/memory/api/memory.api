@@ -1,13 +1,11 @@
 public final class com/azikar24/wormaceptor/feature/memory/MemoryFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/MemoryFeature;
-	public final fun createEngine (JI)Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;
-	public static synthetic fun createEngine$default (Lcom/azikar24/wormaceptor/feature/memory/MemoryFeature;JIILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;)Lcom/azikar24/wormaceptor/feature/memory/MemoryViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/MemoryFeatureKt {
-	public static final fun MemoryMonitor (Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MemoryMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/MemoryViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

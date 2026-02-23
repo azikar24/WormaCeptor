@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/Depend
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorFeatureKt {
-	public static final fun DependenciesInspector (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DependenciesInspector (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

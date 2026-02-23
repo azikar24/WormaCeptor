@@ -59,8 +59,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -169,12 +171,12 @@ fun HomeScreen(
     var showClearTransactionsDialog by remember { mutableStateOf(false) }
     var showClearCrashesDialog by remember { mutableStateOf(false) }
     var showDeleteSelectedDialog by remember { mutableStateOf(false) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // Observe snackbar messages from ViewModel
     LaunchedEffect(snackbarMessage) {
         snackbarMessage?.collect { message ->
-            snackbarHostState.showSnackbar(message)
+            snackBarHostState.showSnackbar(message)
         }
     }
 
@@ -192,11 +194,13 @@ fun HomeScreen(
     }
 
     // Sync selectedTabIndex with pagerState when user swipes
+    val haptic = LocalHapticFeedback.current
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }
             .distinctUntilChanged()
             .collect { page ->
                 if (page != selectedTabIndex) {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     if (isSelectionMode) onClearSelection()
                     onTabSelected(page)
                 }
@@ -204,7 +208,7 @@ fun HomeScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
             val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
             val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
@@ -578,7 +582,7 @@ fun HomeScreen(
                             onNavigate = onToolNavigate,
                             onShowMessage = { message ->
                                 scope.launch {
-                                    snackbarHostState.showSnackbar(message)
+                                    snackBarHostState.showSnackbar(message)
                                 }
                             },
                             searchActive = toolsSearchActive,

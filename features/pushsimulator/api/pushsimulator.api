@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorF
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorFeatureKt {
-	public static final fun PushSimulator (Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PushSimulator (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

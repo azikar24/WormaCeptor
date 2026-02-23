@@ -92,11 +92,12 @@ import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorFeature
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorViewModel
+import org.koin.compose.koinInject
 
-/** Main composable for the WebView Monitor feature with internal engine. */
+/** Main composable for the WebView Monitor feature. */
 @Composable
 fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine = remember { WebViewMonitorFeature.createEngine() }
+    val engine: WebViewMonitorEngine = koinInject()
     WebViewMonitor(
         engine = engine,
         modifier = modifier,

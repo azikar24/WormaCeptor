@@ -1,3 +1,19 @@
+public final class com/azikar24/wormaceptor/feature/logs/LogsFeature {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/LogsFeature;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/LogCaptureEngine;)Lcom/azikar24/wormaceptor/feature/logs/LogsViewModelFactory;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/LogsFeatureKt {
+	public static final fun LogViewer (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/LogsViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LogCaptureEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
 public final class com/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;

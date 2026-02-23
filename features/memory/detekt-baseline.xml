@@ -13,7 +13,6 @@
     <ID>MagicNumber:MemoryScreen.kt$1_048_576</ID>
     <ID>MagicNumber:MemoryScreen.kt$4</ID>
     <ID>MagicNumber:MemoryViewModel.kt$MemoryViewModel$5000</ID>
-    <ID>MaxLineLength:MemoryFeature.kt$*</ID>
     <ID>UndocumentedPublicFunction:MemoryColors.kt$MemoryColors$fun statusColorForUsage(usagePercent: Float): Color</ID>
     <ID>UndocumentedPublicProperty:MemoryColors.kt$MemoryColors$val cardBackground: Color</ID>
     <ID>UndocumentedPublicProperty:MemoryColors.kt$MemoryColors$val chartBackground: Color</ID>

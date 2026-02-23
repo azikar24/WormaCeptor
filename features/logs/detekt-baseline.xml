@@ -10,8 +10,12 @@
     <ID>MagicNumber:LogsViewModel.kt$LogsViewModel$5000</ID>
     <ID>MatchingDeclarationName:LogColors.kt$LogLevelColors</ID>
     <ID>UnderscoresInNumericLiterals:LogsScreen.kt$12345</ID>
+    <ID>UndocumentedPublicClass:LogsFeature.kt$LogsFeature</ID>
+    <ID>UndocumentedPublicClass:LogsFeature.kt$LogsViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicFunction:LogColors.kt$LogLevelColors$fun backgroundForLevel(level: LogLevel): Color</ID>
     <ID>UndocumentedPublicFunction:LogColors.kt$LogLevelColors$fun forLevel(level: LogLevel): Color</ID>
+    <ID>UndocumentedPublicFunction:LogsFeature.kt$@Composable fun LogViewer(modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>UndocumentedPublicFunction:LogsFeature.kt$LogsFeature$fun createViewModelFactory(engine: LogCaptureEngine): LogsViewModelFactory</ID>
     <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assert: Color</ID>
     <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assertBackground: Color</ID>
     <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val debug: Color</ID>
@@ -38,5 +42,6 @@
     <ID>UnstableCollections:LogsScreen.kt$Set&lt;LogLevel&gt;</ID>
     <ID>UnusedParameter:LogColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>UnusedPrivateMember:LogsScreen.kt$@Preview(showBackground = true) @Composable private fun LogsScreenContentPreview()</ID>
+    <ID>ViewModelInjection:LogsFeature.kt$logsViewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

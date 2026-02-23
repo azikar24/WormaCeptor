@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrar
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesFeatureKt {
-	public static final fun LoadedLibrariesInspector (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LoadedLibrariesInspector (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrariesViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

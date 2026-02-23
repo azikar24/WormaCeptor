@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.PushSimulatorScreen
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Push Notification Simulator feature.
@@ -48,12 +49,9 @@ class PushSimulatorViewModelFactory(
  * Main composable for the Push Notification Simulator screen.
  */
 @Composable
-fun PushSimulator(
-    engine: PushSimulatorEngine,
-    repository: PushSimulatorRepository,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun PushSimulator(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: PushSimulatorEngine = koinInject()
+    val repository: PushSimulatorRepository = koinInject()
     val factory = remember { PushSimulatorFeature.createViewModelFactory(repository, engine) }
     val viewModel: PushSimulatorViewModel = viewModel(factory = factory)
 

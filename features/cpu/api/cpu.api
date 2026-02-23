@@ -1,13 +1,11 @@
 public final class com/azikar24/wormaceptor/feature/cpu/CpuFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/CpuFeature;
-	public final fun createEngine (JI)Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;
-	public static synthetic fun createEngine$default (Lcom/azikar24/wormaceptor/feature/cpu/CpuFeature;JIILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;)Lcom/azikar24/wormaceptor/feature/cpu/CpuViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/CpuFeatureKt {
-	public static final fun CpuMonitor (Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun CpuMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/CpuViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

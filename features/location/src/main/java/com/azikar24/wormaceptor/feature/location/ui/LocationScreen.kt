@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -84,14 +85,14 @@ fun LocationScreen(
     onMapTap: (GeoPoint) -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
     var showSavePresetDialog by remember { mutableStateOf(false) }
 
     // Show error as snackbar
     LaunchedEffect(errorMessage) {
         errorMessage?.let {
-            snackbarHostState.showSnackbar(it)
+            snackBarHostState.showSnackbar(it)
             onClearError()
         }
     }
@@ -99,7 +100,7 @@ fun LocationScreen(
     // Show success as snackbar
     LaunchedEffect(successMessage) {
         successMessage?.let {
-            snackbarHostState.showSnackbar(it)
+            snackBarHostState.showSnackbar(it)
             onClearSuccessMessage()
         }
     }
@@ -153,9 +154,9 @@ fun LocationScreen(
                 ),
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues).imePadding()) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.lg),
@@ -204,6 +205,8 @@ fun LocationScreen(
                         isLoading = isLoading,
                         isMockEnabled = isMockEnabled,
                         isMockLocationAvailable = isMockLocationAvailable,
+                        currentMockLatitude = currentMockLocation?.latitude,
+                        currentMockLongitude = currentMockLocation?.longitude,
                         onLatitudeChanged = onLatitudeChanged,
                         onLongitudeChanged = onLongitudeChanged,
                         onSetMockLocation = onSetMockLocation,

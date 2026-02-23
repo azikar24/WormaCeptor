@@ -4,6 +4,10 @@ public final class com/azikar24/wormaceptor/feature/crypto/CryptoFeature {
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)Lcom/azikar24/wormaceptor/feature/crypto/CryptoViewModelFactory;
 }
 
+public final class com/azikar24/wormaceptor/feature/crypto/CryptoFeatureKt {
+	public static final fun CryptoScreen (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/azikar24/wormaceptor/feature/crypto/CryptoViewModel : androidx/lifecycle/ViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)V

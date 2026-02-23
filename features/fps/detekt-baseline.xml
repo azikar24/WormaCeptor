@@ -12,7 +12,6 @@
     <ID>MagicNumber:FpsScreen.kt$65f</ID>
     <ID>MagicNumber:FpsScreen.kt$8f</ID>
     <ID>MagicNumber:FpsViewModel.kt$FpsViewModel$5000</ID>
-    <ID>MaxLineLength:FpsFeature.kt$*</ID>
     <ID>UndocumentedPublicFunction:FpsColors.kt$FpsColors$fun backgroundForFps(fps: Float): Color</ID>
     <ID>UndocumentedPublicFunction:FpsColors.kt$FpsColors$fun forFps(fps: Float): Color</ID>
     <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartFill: Color</ID>

@@ -122,7 +122,7 @@ import java.io.FileOutputStream
 fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> Unit, onDownload: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // PDF rendering state
     var pages by remember { mutableStateOf<List<Bitmap>>(emptyList()) }
@@ -288,7 +288,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                             onDownload = onDownload,
                             onShare = {
                                 sharePdfFromViewer(context, pdfData, tempFile)?.let { message ->
-                                    scope.launch { snackbarHostState.showSnackbar(message) }
+                                    scope.launch { snackBarHostState.showSnackbar(message) }
                                 }
                             },
                         )
@@ -363,7 +363,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
 
             // Snackbar host for messages
             SnackbarHost(
-                hostState = snackbarHostState,
+                hostState = snackBarHostState,
                 modifier = Modifier.align(Alignment.BottomCenter),
             ) { data ->
                 Snackbar(

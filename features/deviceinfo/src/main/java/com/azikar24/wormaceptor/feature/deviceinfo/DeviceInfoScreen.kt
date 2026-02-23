@@ -100,7 +100,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var uiState by remember { mutableStateOf(DeviceInfoUiState()) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val pullToRefreshState = rememberPullToRefreshState()
     val haptic = rememberHapticOnce()
 
@@ -131,12 +131,12 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 
     DeviceInfoScreenContent(
         uiState = uiState,
-        snackbarHostState = snackbarHostState,
+        snackBarHostState = snackBarHostState,
         pullToRefreshState = pullToRefreshState,
         onBack = onBack,
         onCopyAll = { info ->
             val message = copyAllToClipboard(context, info)
-            scope.launch { snackbarHostState.showSnackbar(message) }
+            scope.launch { snackBarHostState.showSnackbar(message) }
         },
         onShare = { info -> shareDeviceInfo(context, info) },
         onRefresh = {
@@ -150,7 +150,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
             }
         },
         onShowMessage = { message ->
-            scope.launch { snackbarHostState.showSnackbar(message) }
+            scope.launch { snackBarHostState.showSnackbar(message) }
         },
     )
 }
@@ -160,7 +160,7 @@ fun DeviceInfoScreen(onBack: () -> Unit) {
 @Composable
 internal fun DeviceInfoScreenContent(
     uiState: DeviceInfoUiState,
-    snackbarHostState: SnackbarHostState,
+    snackBarHostState: SnackbarHostState,
     pullToRefreshState: androidx.compose.material3.pulltorefresh.PullToRefreshState,
     onBack: () -> Unit,
     onCopyAll: (DeviceInfo) -> Unit,
@@ -171,7 +171,7 @@ internal fun DeviceInfoScreenContent(
 ) {
     Scaffold(
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.deviceinfo_title)) },
@@ -914,7 +914,7 @@ private fun DeviceInfoScreenContentPreview() {
                 isInitialLoading = false,
                 isRefreshing = false,
             ),
-            snackbarHostState = remember { SnackbarHostState() },
+            snackBarHostState = remember { SnackbarHostState() },
             pullToRefreshState = rememberPullToRefreshState(),
             onBack = {},
             onCopyAll = {},

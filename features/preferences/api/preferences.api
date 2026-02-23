@@ -91,7 +91,7 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferenceDet
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferencesListScreenKt {
-	public static final fun PreferencesListScreen (Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PreferencesListScreen (Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditSheetKt {

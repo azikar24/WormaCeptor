@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -78,7 +78,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
         } else {
             val message = context.getString(R.string.pushsimulator_notification_permission_denied)
             scope.launch {
-                snackbarHostState.showSnackbar(message)
+                snackBarHostState.showSnackbar(message)
             }
         }
     }
@@ -93,17 +93,17 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
         onEffect = { effect ->
             when (effect) {
                 is PushSimulatorViewEffect.NotificationSent -> {
-                    scope.launch { snackbarHostState.showSnackbar(notificationSentMessage) }
+                    scope.launch { snackBarHostState.showSnackbar(notificationSentMessage) }
                 }
                 is PushSimulatorViewEffect.TemplateSaved -> {
-                    scope.launch { snackbarHostState.showSnackbar(templateSavedMessage) }
+                    scope.launch { snackBarHostState.showSnackbar(templateSavedMessage) }
                 }
                 is PushSimulatorViewEffect.TemplateDeleted -> {
-                    scope.launch { snackbarHostState.showSnackbar(templateDeletedMessage) }
+                    scope.launch { snackBarHostState.showSnackbar(templateDeletedMessage) }
                 }
                 is PushSimulatorViewEffect.TemplateLoaded -> {
                     scope.launch {
-                        snackbarHostState.showSnackbar(
+                        snackBarHostState.showSnackbar(
                             context.getString(R.string.pushsimulator_template_loaded, effect.name),
                         )
                     }
@@ -112,14 +112,14 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                     showPermissionDialog = true
                 }
                 is PushSimulatorViewEffect.Error -> {
-                    scope.launch { snackbarHostState.showSnackbar(effect.message) }
+                    scope.launch { snackBarHostState.showSnackbar(effect.message) }
                 }
             }
         },
     ) { state, onEvent ->
         PushSimulatorScreenContent(
             state = state,
-            snackbarHostState = snackbarHostState,
+            snackBarHostState = snackBarHostState,
             showSaveDialog = showSaveDialog,
             showPermissionDialog = showPermissionDialog,
             onBack = onBack,
@@ -155,7 +155,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
 @Composable
 internal fun PushSimulatorScreenContent(
     state: PushSimulatorViewState,
-    snackbarHostState: SnackbarHostState,
+    snackBarHostState: SnackbarHostState,
     showSaveDialog: Boolean,
     showPermissionDialog: Boolean,
     onBack: () -> Unit,
@@ -190,7 +190,7 @@ internal fun PushSimulatorScreenContent(
                 },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -376,7 +376,7 @@ private fun PushSimulatorScreenContentPreview() {
     WormaCeptorTheme {
         PushSimulatorScreenContent(
             state = PushSimulatorViewState(title = "Test Notification", body = "This is a test"),
-            snackbarHostState = remember { SnackbarHostState() },
+            snackBarHostState = remember { SnackbarHostState() },
             showSaveDialog = false,
             showPermissionDialog = false,
             onBack = {},

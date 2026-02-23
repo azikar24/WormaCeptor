@@ -10,38 +10,6 @@ import java.util.UUID
 private const val TAG = "WormaCeptorInterceptor"
 
 /**
- * File signature (magic bytes) constants for binary content detection.
- * These are the first bytes of common binary file formats.
- */
-private object MagicBytes {
-    // PNG signature: 89 50 4E 47 0D 0A 1A 0A
-    val PNG_SIGNATURE = byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47)
-
-    // JPEG signature: FF D8 FF
-    val JPEG_SIGNATURE = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte())
-
-    // GIF signature: 47 49 46 38 ("GIF8")
-    val GIF_SIGNATURE = byteArrayOf(0x47, 0x49, 0x46, 0x38)
-
-    // WebP container: RIFF....WEBP (52 49 46 46 ?? ?? ?? ?? 57 45 42 50)
-    val WEBP_RIFF_HEADER = byteArrayOf(0x52, 0x49, 0x46, 0x46)
-    val WEBP_SIGNATURE = byteArrayOf(0x57, 0x45, 0x42, 0x50)
-    const val WEBP_SIGNATURE_OFFSET = 8
-
-    // PDF signature: 25 50 44 46 ("%PDF")
-    val PDF_SIGNATURE = byteArrayOf(0x25, 0x50, 0x44, 0x46)
-
-    // ZIP signature: 50 4B 03 04 ("PK\x03\x04")
-    val ZIP_SIGNATURE = byteArrayOf(0x50, 0x4B, 0x03, 0x04)
-
-    // GZIP signature: 1F 8B
-    val GZIP_SIGNATURE = byteArrayOf(0x1F, 0x8B.toByte())
-
-    // BMP signature: 42 4D ("BM")
-    val BMP_SIGNATURE = byteArrayOf(0x42, 0x4D)
-}
-
-/**
  * OkHttp interceptor that captures HTTP/HTTPS network traffic for inspection in WormaCeptor.
  *
  * Add this interceptor to your OkHttpClient to monitor network requests and responses.
@@ -103,68 +71,6 @@ class WormaCeptorInterceptor : Interceptor {
             Log.d(TAG, "Rate limit interceptor not available: ${e.message}")
             null
         }
-    }
-
-    /**
-     * Content types that should be treated as binary and stored without text conversion.
-     * Converting binary data to UTF-8 string corrupts the data.
-     */
-    private val binaryContentTypes = setOf(
-        "image/",
-        "audio/",
-        "video/",
-        "application/octet-stream",
-        "application/pdf",
-        "application/zip",
-        "application/gzip",
-        "application/x-tar",
-        "application/x-rar",
-        "application/x-7z-compressed",
-        "application/vnd.",
-        "font/",
-        "model/",
-    )
-
-    /**
-     * Checks if the content type indicates binary data that should not be converted to string.
-     */
-    private fun isBinaryContentType(contentType: String?): Boolean {
-        if (contentType == null) return false
-        val normalized = contentType.lowercase().trim()
-        return binaryContentTypes.any { normalized.startsWith(it) }
-    }
-
-    /**
-     * Detects if raw bytes are binary content (like images) by checking magic bytes.
-     * This is a fallback for when Content-Type header is missing or incorrect.
-     */
-    private fun isBinaryByMagicBytes(data: ByteArray): Boolean {
-        if (data.size < 8) return false
-
-        return when {
-            data.startsWith(MagicBytes.PNG_SIGNATURE) -> true
-            data.startsWith(MagicBytes.JPEG_SIGNATURE) -> true
-            data.startsWith(MagicBytes.GIF_SIGNATURE) -> true
-            data.size >= 12 &&
-                data.startsWith(MagicBytes.WEBP_RIFF_HEADER) &&
-                data.startsWith(MagicBytes.WEBP_SIGNATURE, MagicBytes.WEBP_SIGNATURE_OFFSET) -> true
-            data.startsWith(MagicBytes.PDF_SIGNATURE) -> true
-            data.startsWith(MagicBytes.ZIP_SIGNATURE) -> true
-            data.startsWith(MagicBytes.GZIP_SIGNATURE) -> true
-            data.startsWith(MagicBytes.BMP_SIGNATURE) -> true
-            else -> false
-        }
-    }
-
-    /**
-     * Checks if the byte array starts with the given prefix at the specified offset.
-     */
-    private fun ByteArray.startsWith(prefix: ByteArray, offset: Int = 0): Boolean {
-        if (this.size < offset + prefix.size) return false
-        for (i in prefix.indices) {
-            if (this[offset + i] != prefix[i]) return false
-        }
-        return true
     }
 
     @Throws(IOException::class)
@@ -248,11 +154,11 @@ class WormaCeptorInterceptor : Interceptor {
                 // Check if the response is binary content (images, PDFs, etc.)
                 // First check Content-Type header, then fall back to magic byte detection
                 val contentType = response.header("Content-Type")
-                val isBinaryByHeader = isBinaryContentType(contentType)
+                val isBinaryByHeader = BinaryContentDetector.isBinaryContentType(contentType)
 
                 // Always read as bytes first to enable magic byte detection as fallback
                 val rawBytes = responseBody.bytes()
-                val isBinary = isBinaryByHeader || isBinaryByMagicBytes(rawBytes)
+                val isBinary = isBinaryByHeader || BinaryContentDetector.isBinaryByMagicBytes(rawBytes)
 
                 val bodyStream: java.io.InputStream?
                 val bodySize: Long

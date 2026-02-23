@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.feature.securestorage.ui.SecureStorageScreen
 import com.azikar24.wormaceptor.feature.securestorage.vm.SecureStorageViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Secure Storage Viewer feature.
@@ -48,17 +49,10 @@ class SecureStorageViewModelFactory(
 /**
  * Main composable for the Secure Storage Viewer feature.
  * Displays secure storage entries with filtering and search capabilities.
- *
- * @param engine SecureStorageEngine instance from Koin
- * @param modifier Modifier for the root layout
- * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun SecureStorageViewer(
-    engine: SecureStorageEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun SecureStorageViewer(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: SecureStorageEngine = koinInject()
     val factory = remember { SecureStorageFeature.createViewModelFactory(engine) }
     val viewModel: SecureStorageViewModel = viewModel(factory = factory)
 

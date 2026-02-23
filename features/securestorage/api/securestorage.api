@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageF
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageFeatureKt {
-	public static final fun SecureStorageViewer (Lcom/azikar24/wormaceptor/core/engine/SecureStorageEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SecureStorageViewer (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.cpu
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -9,28 +10,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
+import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.cpu.ui.CpuScreen
 import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the CPU Monitoring feature.
  * Provides factory methods and composable entry point.
  */
 object CpuFeature {
-
-    /**
-     * Creates a CpuMonitorEngine instance.
-     * Use this in your dependency injection setup or as a singleton.
-     */
-    fun createEngine(
-        intervalMs: Long = CpuMonitorEngine.DEFAULT_INTERVAL_MS,
-        historySize: Int = CpuMonitorEngine.DEFAULT_HISTORY_SIZE,
-    ): CpuMonitorEngine {
-        return CpuMonitorEngine(
-            intervalMs = intervalMs,
-            historySize = historySize,
-        )
-    }
 
     /**
      * Creates a CpuViewModel factory for use with viewModel().
@@ -58,13 +47,14 @@ class CpuViewModelFactory(
 /**
  * Main composable for the CPU Monitoring feature.
  * Displays real-time CPU usage with charts and controls.
- *
- * @param engine Pre-created engine instance (required - must be created at Activity/Application level for state persistence)
- * @param modifier Modifier for the root layout
- * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun CpuMonitor(engine: CpuMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun CpuMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: CpuMonitorEngine = koinInject()
+    val performanceOverlayEngine: PerformanceOverlayEngine = koinInject()
+    LaunchedEffect(Unit) {
+        performanceOverlayEngine.enableMetricForMonitorScreen(cpu = true)
+    }
     val factory = remember { CpuFeature.createViewModelFactory(engine) }
     val viewModel: CpuViewModel = viewModel(factory = factory)
 

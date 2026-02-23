@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/location/LocationFeature {
 }
 
 public final class com/azikar24/wormaceptor/feature/location/LocationFeatureKt {
-	public static final fun LocationSimulator (Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LocationSimulator (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/location/LocationViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -79,7 +79,7 @@ public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingle
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/LocationScreenKt {
-	public static final fun LocationScreen (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZZZLjava/lang/String;Ljava/lang/String;Lorg/osmdroid/util/GeoPoint;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun LocationScreen (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZZZLjava/lang/String;Ljava/lang/String;Lorg/osmdroid/util/GeoPoint;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;IIII)V
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/components/LocationMapCardKt {

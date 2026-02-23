@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitFeature {
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitFeatureKt {
-	public static final fun RateLimiter (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun RateLimiter (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

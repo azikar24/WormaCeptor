@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.koin.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

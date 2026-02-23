@@ -266,7 +266,7 @@ private fun TransactionDetailContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tabs = listOf("Overview", "Request", "Response")
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // Tab pager state for content swipe
     val tabPagerState = rememberPagerState(
@@ -325,7 +325,7 @@ private fun TransactionDetailContent(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             Column {
                 // Swipeable TopAppBar for transaction navigation
@@ -505,7 +505,7 @@ private fun TransactionDetailContent(
                             onMatchCountChanged = { matchCount = it },
                             isSearchActive = showSearch,
                             onShowMessage = { message ->
-                                scope.launch { snackbarHostState.showSnackbar(message) }
+                                scope.launch { snackBarHostState.showSnackbar(message) }
                             },
                             modifier = Modifier.fillMaxSize(),
                         )

@@ -7,7 +7,7 @@ public final class com/azikar24/wormaceptor/feature/threadviolation/ThreadViolat
 }
 
 public final class com/azikar24/wormaceptor/feature/threadviolation/ThreadViolationFeatureKt {
-	public static final fun ThreadViolationMonitor (Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ThreadViolationMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/threadviolation/ThreadViolationViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

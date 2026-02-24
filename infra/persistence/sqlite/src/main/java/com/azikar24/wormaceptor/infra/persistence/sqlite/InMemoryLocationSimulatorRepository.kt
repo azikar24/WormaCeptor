@@ -6,10 +6,11 @@ import com.azikar24.wormaceptor.domain.entities.MockLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
 class InMemoryLocationSimulatorRepository : LocationSimulatorRepository {
 
-    private val _presets = MutableStateFlow(builtInPresets.toMutableList())
+    private val _presets = MutableStateFlow(builtInPresets)
     private val _mockLocation = MutableStateFlow<MockLocation?>(null)
 
     override fun getPresets(): Flow<List<LocationPreset>> {
@@ -17,17 +18,14 @@ class InMemoryLocationSimulatorRepository : LocationSimulatorRepository {
     }
 
     override suspend fun savePreset(preset: LocationPreset) {
-        val current = _presets.value.toMutableList()
-        current.removeAll { it.id == preset.id }
-        current.add(preset.copy(isBuiltIn = false))
-        _presets.value = current
+        _presets.update { current ->
+            current.filter { it.id != preset.id } + preset.copy(isBuiltIn = false)
+        }
     }
 
     override suspend fun deletePreset(id: String) {
         if (builtInPresets.any { it.id == id }) return
-        val current = _presets.value.toMutableList()
-        current.removeAll { it.id == id }
-        _presets.value = current
+        _presets.update { current -> current.filter { it.id != id } }
     }
 
     override fun getCurrentMockLocation(): Flow<MockLocation?> {

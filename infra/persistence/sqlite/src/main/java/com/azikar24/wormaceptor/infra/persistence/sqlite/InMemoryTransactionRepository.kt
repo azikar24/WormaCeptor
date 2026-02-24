@@ -12,45 +12,42 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryTransactionRepository : TransactionRepository {
-    private val transactions = ConcurrentHashMap<UUID, NetworkTransaction>()
-    private val _transactionsFlow = MutableStateFlow<List<NetworkTransaction>>(emptyList())
+    private val _transactionsFlow = MutableStateFlow<Map<UUID, NetworkTransaction>>(emptyMap())
 
     override fun getAllTransactions(): Flow<List<TransactionSummary>> {
-        return _transactionsFlow.map { list ->
-            list.map { it.toSummary() }.reversed()
+        return _transactionsFlow.map { map ->
+            map.values.map { it.toSummary() }.reversed()
         }
     }
 
     override suspend fun getTransactionById(id: UUID): NetworkTransaction? {
-        return transactions[id]
+        return _transactionsFlow.value[id]
     }
 
     override suspend fun saveTransaction(transaction: NetworkTransaction) {
-        transactions[transaction.id] = transaction
-        _transactionsFlow.value = transactions.values.toList()
+        _transactionsFlow.update { current -> current + (transaction.id to transaction) }
     }
 
     override suspend fun getAllTransactionsAsList(): List<NetworkTransaction> {
-        return transactions.values.toList()
+        return _transactionsFlow.value.values.toList()
     }
 
     override suspend fun clearAll() {
-        transactions.clear()
-        _transactionsFlow.value = emptyList()
+        _transactionsFlow.value = emptyMap()
     }
 
     override suspend fun deleteTransactionsBefore(timestamp: Long) {
-        transactions.values.removeIf { it.timestamp < timestamp }
-        _transactionsFlow.value = transactions.values.toList()
+        _transactionsFlow.update { current ->
+            current.filterValues { it.timestamp >= timestamp }
+        }
     }
 
     override suspend fun deleteTransactions(ids: List<UUID>) {
-        ids.forEach { transactions.remove(it) }
-        _transactionsFlow.value = transactions.values.toList()
+        _transactionsFlow.update { current -> current - ids.toSet() }
     }
 
     override fun searchTransactions(query: String): Flow<List<TransactionSummary>> {
@@ -76,7 +73,7 @@ class InMemoryTransactionRepository : TransactionRepository {
             ),
             pagingSourceFactory = {
                 InMemoryPagingSource(
-                    transactions = transactions.values.toList(),
+                    transactions = _transactionsFlow.value.values.toList(),
                     searchQuery = searchQuery,
                     filters = filters,
                 )
@@ -85,10 +82,11 @@ class InMemoryTransactionRepository : TransactionRepository {
     }
 
     override suspend fun getTransactionCount(searchQuery: String?): Int {
+        val current = _transactionsFlow.value
         return if (searchQuery.isNullOrBlank()) {
-            transactions.size
+            current.size
         } else {
-            transactions.values.count { tx ->
+            current.values.count { tx ->
                 tx.request.url.contains(searchQuery, ignoreCase = true) ||
                     tx.request.method.contains(searchQuery, ignoreCase = true)
             }

@@ -36,5 +36,6 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.koin.compose)
     debugImplementation(libs.androidx.ui.tooling)
 }

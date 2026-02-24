@@ -49,10 +49,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,9 +63,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -78,11 +76,9 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorToolTile
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.data.FavoritesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.get
 
 private const val GridColumns = 3
@@ -131,6 +127,8 @@ fun ToolsTab(
     searchActive: Boolean,
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
+    collapsedCategories: Set<String>,
+    onToggleCollapse: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -140,16 +138,6 @@ fun ToolsTab(
     LaunchedEffect(Unit) { favoritesRepository.setDefaultsIfNeeded() }
 
     val favorites by favoritesRepository.favorites.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
-    val collapsedCategories = remember { mutableStateMapOf<String, Boolean>() }
-
-    LaunchedEffect(Unit) {
-        val saved = withContext(Dispatchers.IO) {
-            val prefs = context.getSharedPreferences("wormaceptor_tools_collapse", android.content.Context.MODE_PRIVATE)
-            prefs.getStringSet("collapsed", emptySet()) ?: emptySet()
-        }
-        saved.forEach { collapsedCategories[it] = true }
-    }
 
     val enabledFeatures = remember { WormaCeptorApi.getEnabledFeatures() }
 
@@ -242,21 +230,8 @@ fun ToolsTab(
                     categoryColor = CategoryHelper.forCategory(category.name),
                     categoryIcon = CategoryHelper.iconForCategory(category.name),
                     tools = category.tools,
-                    isCollapsed = collapsedCategories[category.name] == true,
-                    onToggleCollapse = {
-                        val newState = !(collapsedCategories[category.name] ?: false)
-                        collapsedCategories[category.name] = newState
-                        val collapsed = collapsedCategories.filter { it.value }.keys.toSet()
-                        coroutineScope.launch(Dispatchers.IO) {
-                            context
-                                .getSharedPreferences(
-                                    "wormaceptor_tools_collapse",
-                                    android.content.Context.MODE_PRIVATE,
-                                ).edit {
-                                    putStringSet("collapsed", collapsed)
-                                }
-                        }
-                    },
+                    isCollapsed = category.name in collapsedCategories,
+                    onToggleCollapse = { onToggleCollapse(category.name) },
                     onToolClick = onNavigate,
                     onToolLongClick = { tool ->
                         val added = favoritesRepository.toggleFavorite(tool.feature)
@@ -729,5 +704,22 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ToolsTabPreview() {
+    WormaCeptorTheme {
+        ToolsTab(
+            onNavigate = {},
+            onShowMessage = {},
+            searchActive = false,
+            searchQuery = "",
+            onSearchQueryChanged = {},
+            collapsedCategories = emptySet(),
+            onToggleCollapse = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

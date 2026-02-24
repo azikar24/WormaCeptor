@@ -18,7 +18,6 @@
     <ID>MagicNumber:CpuScreen.kt$4</ID>
     <ID>MagicNumber:CpuScreen.kt$60</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$5000</ID>
-    <ID>MaxLineLength:CpuFeature.kt$*</ID>
     <ID>UndocumentedPublicFunction:CpuColors.kt$CpuColors$fun colorForCore(index: Int): Color</ID>
     <ID>UndocumentedPublicFunction:CpuColors.kt$CpuColors$fun statusColorForUsage(usagePercent: Float): Color</ID>
     <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val cardBackground: Color</ID>

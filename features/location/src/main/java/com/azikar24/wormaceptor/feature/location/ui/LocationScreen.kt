@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,14 +40,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.feature.location.R
 import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.osmdroid.util.GeoPoint
 
 /**
@@ -79,16 +83,18 @@ fun LocationScreen(
     onClearError: () -> Unit,
     onClearSuccessMessage: () -> Unit,
     onMapTap: (GeoPoint) -> Unit,
-    onBack: (() -> Unit)? = null,
+    isMapExpanded: Boolean,
+    onToggleMapExpanded: () -> Unit,
     modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
     var showSavePresetDialog by remember { mutableStateOf(false) }
 
     // Show error as snackbar
     LaunchedEffect(errorMessage) {
         errorMessage?.let {
-            snackbarHostState.showSnackbar(it)
+            snackBarHostState.showSnackbar(it)
             onClearError()
         }
     }
@@ -96,12 +102,10 @@ fun LocationScreen(
     // Show success as snackbar
     LaunchedEffect(successMessage) {
         successMessage?.let {
-            snackbarHostState.showSnackbar(it)
+            snackBarHostState.showSnackbar(it)
             onClearSuccessMessage()
         }
     }
-
-    var isMapExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -150,9 +154,9 @@ fun LocationScreen(
                 ),
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues).imePadding()) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.lg),
@@ -182,7 +186,7 @@ fun LocationScreen(
                 item {
                     CollapsibleMapSection(
                         isExpanded = isMapExpanded,
-                        onToggle = { isMapExpanded = !isMapExpanded },
+                        onToggle = onToggleMapExpanded,
                         realLocation = realDeviceLocation,
                         mockLocation = currentMockLocation?.let {
                             GeoPoint(it.latitude, it.longitude)
@@ -201,6 +205,8 @@ fun LocationScreen(
                         isLoading = isLoading,
                         isMockEnabled = isMockEnabled,
                         isMockLocationAvailable = isMockLocationAvailable,
+                        currentMockLatitude = currentMockLocation?.latitude,
+                        currentMockLongitude = currentMockLocation?.longitude,
                         onLatitudeChanged = onLatitudeChanged,
                         onLongitudeChanged = onLongitudeChanged,
                         onSetMockLocation = onSetMockLocation,
@@ -286,6 +292,55 @@ fun LocationScreen(
                 onSavePreset(name)
                 showSavePresetDialog = false
             },
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LocationScreenPreview() {
+    WormaCeptorTheme {
+        LocationScreen(
+            latitudeInput = "40.7128",
+            longitudeInput = "-74.0060",
+            searchQuery = "",
+            presets = persistentListOf(
+                LocationPreset(
+                    id = "1",
+                    name = "New York City",
+                    location = MockLocation.from(40.7128, -74.0060, "New York City"),
+                    isBuiltIn = true,
+                ),
+                LocationPreset(
+                    id = "2",
+                    name = "London",
+                    location = MockLocation.from(51.5074, -0.1278, "London"),
+                    isBuiltIn = true,
+                ),
+            ),
+            currentMockLocation = null,
+            isMockEnabled = false,
+            isMockLocationAvailable = true,
+            isInputValid = true,
+            isLoading = false,
+            errorMessage = null,
+            successMessage = null,
+            realDeviceLocation = null,
+            onLatitudeChanged = {},
+            onLongitudeChanged = {},
+            onSearchQueryChanged = {},
+            onSetMockLocation = {},
+            onClearMockLocation = {},
+            onSetToCurrentLocation = {},
+            onPresetClick = {},
+            onDeletePreset = {},
+            onSavePreset = {},
+            onClearError = {},
+            onClearSuccessMessage = {},
+            onMapTap = {},
+            isMapExpanded = false,
+            onToggleMapExpanded = {},
+            onBack = {},
         )
     }
 }

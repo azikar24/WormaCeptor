@@ -36,11 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
@@ -339,4 +341,38 @@ private fun isSevereException(exceptionType: String): Boolean {
         "AssertionError",
     )
     return severeTypes.any { exceptionType.contains(it, ignoreCase = true) }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CrashListScreenPreview() {
+    WormaCeptorTheme {
+        CrashListScreen(
+            crashes = kotlinx.collections.immutable.persistentListOf(
+                Crash(
+                    id = 1L,
+                    timestamp = System.currentTimeMillis() - 120_000,
+                    exceptionType = "java.lang.NullPointerException",
+                    message = "Attempt to invoke virtual method on a null object reference",
+                    stackTrace = "java.lang.NullPointerException\n\tat com.example.app.MainActivity.onCreate(MainActivity.kt:42)",
+                ),
+                Crash(
+                    id = 2L,
+                    timestamp = System.currentTimeMillis() - 3_600_000,
+                    exceptionType = "java.lang.IllegalStateException",
+                    message = "Fragment not attached to a context",
+                    stackTrace = "java.lang.IllegalStateException\n\tat com.example.app.HomeFragment.onResume(HomeFragment.kt:78)",
+                ),
+                Crash(
+                    id = 3L,
+                    timestamp = System.currentTimeMillis() - 86_400_000,
+                    exceptionType = "java.lang.OutOfMemoryError",
+                    message = "Failed to allocate a 12288012 byte allocation",
+                    stackTrace = "java.lang.OutOfMemoryError\n\tat dalvik.system.VMRuntime.newNonMovableArray(VMRuntime.java)",
+                ),
+            ),
+            onCrashClick = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
 }

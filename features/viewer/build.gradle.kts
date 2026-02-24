@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation(project(":api:client"))
+    implementation(project(":common:presentation"))
     implementation(project(":core:engine"))
     implementation(project(":core:ui"))
     implementation(project(":domain:contracts"))

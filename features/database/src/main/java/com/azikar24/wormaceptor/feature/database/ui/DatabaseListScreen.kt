@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.database.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,13 +44,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying list of available databases.
@@ -121,77 +126,79 @@ fun DatabaseListScreen(
         },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            error != null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-
-            databases.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        Box(modifier = Modifier.imePadding()) {
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Storage,
-                            contentDescription = stringResource(R.string.database_list_title),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                        )
+                        CircularProgressIndicator()
+                    }
+                }
+
+                error != null -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
                         Text(
-                            text = stringResource(R.string.database_list_empty),
+                            text = error,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.error,
                         )
                     }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(
-                        bottom = WormaCeptorDesignSystem.Spacing.lg,
-                    ),
-                ) {
-                    items(
-                        items = databases,
-                        key = { it.path },
-                    ) { database ->
-                        DatabaseListItem(
-                            database = database,
-                            onClick = { onDatabaseClick(database) },
-                        )
-                        WormaCeptorDivider()
+                databases.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Storage,
+                                contentDescription = stringResource(R.string.database_list_title),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                            )
+                            Text(
+                                text = stringResource(R.string.database_list_empty),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(
+                            bottom = WormaCeptorDesignSystem.Spacing.lg,
+                        ),
+                    ) {
+                        items(
+                            items = databases,
+                            key = { it.path },
+                        ) { database ->
+                            DatabaseListItem(
+                                database = database,
+                                onClick = { onDatabaseClick(database) },
+                            )
+                            WormaCeptorDivider()
+                        }
                     }
                 }
             }
@@ -234,4 +241,35 @@ private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifi
             )
         },
     )
+}
+
+@SuppressLint("SdCardPath")
+@Preview(showBackground = true)
+@Composable
+private fun DatabaseListScreenPreview() {
+    WormaCeptorTheme {
+        DatabaseListScreen(
+            databases = persistentListOf(
+                DatabaseInfo(
+                    name = "app_database.db",
+                    path = "/data/data/com.example/databases/app_database.db",
+                    sizeBytes = 524_288L,
+                    tableCount = 5,
+                ),
+                DatabaseInfo(
+                    name = "cache.db",
+                    path = "/data/data/com.example/databases/cache.db",
+                    sizeBytes = 131_072L,
+                    tableCount = 2,
+                ),
+            ),
+            searchQuery = "",
+            isLoading = false,
+            error = null,
+            onSearchQueryChanged = {},
+            onDatabaseClick = {},
+            onRefresh = {},
+            onBack = {},
+        )
+    }
 }

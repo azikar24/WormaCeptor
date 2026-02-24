@@ -43,9 +43,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 
 /**
  * Status for tool list items that show feedback.
@@ -299,5 +301,26 @@ private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
                 Spacer(modifier = Modifier.size(20.dp))
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TestToolsTabPreview() {
+    WormaCeptorMainTheme {
+        TestToolsTab(
+            onRunApiTests = {},
+            onWebSocketTest = {},
+            onTriggerCrash = {},
+            onTriggerLeak = {},
+            onThreadViolation = {},
+            onLocationClick = {},
+            onWebViewClick = {},
+            onSecureStorageClick = {},
+            apiTestStatus = ToolStatus.Done,
+            webSocketStatus = ToolStatus.Running,
+            leakStatus = ToolStatus.WaitingForAction,
+            threadViolationStatus = ToolStatus.Idle,
+        )
     }
 }

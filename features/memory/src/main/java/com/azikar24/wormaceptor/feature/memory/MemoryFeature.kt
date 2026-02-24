@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.memory
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -9,28 +10,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.memory.ui.MemoryScreen
 import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Memory Monitoring feature.
  * Provides factory methods and composable entry point.
  */
 object MemoryFeature {
-
-    /**
-     * Creates a MemoryMonitorEngine instance.
-     * Use this in your dependency injection setup or as a singleton.
-     */
-    fun createEngine(
-        intervalMs: Long = MemoryMonitorEngine.DEFAULT_INTERVAL_MS,
-        historySize: Int = MemoryMonitorEngine.DEFAULT_HISTORY_SIZE,
-    ): MemoryMonitorEngine {
-        return MemoryMonitorEngine(
-            intervalMs = intervalMs,
-            historySize = historySize,
-        )
-    }
 
     /**
      * Creates a MemoryViewModel factory for use with viewModel().
@@ -58,13 +47,14 @@ class MemoryViewModelFactory(
 /**
  * Main composable for the Memory Monitoring feature.
  * Displays real-time memory usage with charts and controls.
- *
- * @param engine Pre-created engine instance (required - must be created at Activity/Application level for state persistence)
- * @param modifier Modifier for the root layout
- * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun MemoryMonitor(engine: MemoryMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun MemoryMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: MemoryMonitorEngine = koinInject()
+    val performanceOverlayEngine: PerformanceOverlayEngine = koinInject()
+    LaunchedEffect(Unit) {
+        performanceOverlayEngine.enableMetricForMonitorScreen(memory = true)
+    }
     val factory = remember { MemoryFeature.createViewModelFactory(engine) }
     val viewModel: MemoryViewModel = viewModel(factory = factory)
 

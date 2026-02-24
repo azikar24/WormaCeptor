@@ -19,7 +19,7 @@
         android:theme="@style/Theme.WormaCeptor.Splash"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".main.view.MainActivity"
             android:exported="true">
 
             <intent-filter>

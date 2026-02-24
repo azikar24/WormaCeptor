@@ -40,7 +40,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,17 +55,20 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorChartLegendItem
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import com.azikar24.wormaceptor.feature.memory.R
 import com.azikar24.wormaceptor.feature.memory.ui.theme.memoryColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.DecimalFormat
 
 /**
@@ -628,5 +630,54 @@ private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) 
                 fontWeight = FontWeight.SemiBold,
             )
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun MemoryScreenPreview() {
+    WormaCeptorTheme {
+        MemoryScreen(
+            currentMemory = MemoryInfo(
+                timestamp = System.currentTimeMillis(),
+                usedMemory = 50 * 1_048_576L,
+                freeMemory = 30 * 1_048_576L,
+                totalMemory = 80 * 1_048_576L,
+                maxMemory = 256 * 1_048_576L,
+                heapUsagePercent = 62.5f,
+                nativeHeapSize = 64 * 1_048_576L,
+                nativeHeapAllocated = 40 * 1_048_576L,
+            ),
+            memoryHistory = persistentListOf(
+                MemoryInfo(
+                    timestamp = 1L,
+                    usedMemory = 40 * 1_048_576L,
+                    freeMemory = 40 * 1_048_576L,
+                    totalMemory = 80 * 1_048_576L,
+                    maxMemory = 256 * 1_048_576L,
+                    heapUsagePercent = 50f,
+                    nativeHeapSize = 64 * 1_048_576L,
+                    nativeHeapAllocated = 35 * 1_048_576L,
+                ),
+                MemoryInfo(
+                    timestamp = 2L,
+                    usedMemory = 50 * 1_048_576L,
+                    freeMemory = 30 * 1_048_576L,
+                    totalMemory = 80 * 1_048_576L,
+                    maxMemory = 256 * 1_048_576L,
+                    heapUsagePercent = 62.5f,
+                    nativeHeapSize = 64 * 1_048_576L,
+                    nativeHeapAllocated = 40 * 1_048_576L,
+                ),
+            ),
+            isMonitoring = true,
+            isHeapWarning = false,
+            onStartMonitoring = {},
+            onStopMonitoring = {},
+            onForceGc = {},
+            onClearHistory = {},
+            onBack = {},
+        )
     }
 }

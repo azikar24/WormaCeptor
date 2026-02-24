@@ -28,7 +28,7 @@ public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenFeature {
 }
 
 public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenFeatureKt {
-	public static final fun PushTokenManager (Lcom/azikar24/wormaceptor/core/engine/PushTokenEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PushTokenManager (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/pushtoken/PushTokenViewModel : androidx/lifecycle/ViewModel {

@@ -49,10 +49,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.R
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
 
@@ -421,4 +423,17 @@ enum class WelcomeFeature(
         description = "Access shared preferences, databases, and more",
         accentColor = Color(0xFF8B5CF6), // Purple
     ),
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WelcomeScreenPreview() {
+    WormaCeptorMainTheme {
+        WelcomeScreen(
+            onLaunchClick = {},
+            onTestToolsClick = {},
+            onGitHubClick = {},
+            onFeatureClick = {},
+        )
+    }
 }

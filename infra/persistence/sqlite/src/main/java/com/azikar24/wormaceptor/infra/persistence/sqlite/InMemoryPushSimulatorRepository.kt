@@ -8,26 +8,24 @@ import com.azikar24.wormaceptor.domain.entities.SimulatedNotification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
 class InMemoryPushSimulatorRepository : PushSimulatorRepository {
 
-    private val _templates = MutableStateFlow(presetTemplates.toMutableList())
+    private val _templates = MutableStateFlow(presetTemplates)
 
     override fun getTemplates(): Flow<List<NotificationTemplate>> {
         return _templates.map { it.toList() }
     }
 
     override suspend fun saveTemplate(template: NotificationTemplate) {
-        val current = _templates.value.toMutableList()
-        current.removeAll { it.id == template.id }
-        current.add(template)
-        _templates.value = current
+        _templates.update { current ->
+            current.filter { it.id != template.id } + template
+        }
     }
 
     override suspend fun deleteTemplate(id: String) {
-        val current = _templates.value.toMutableList()
-        current.removeAll { it.id == id }
-        _templates.value = current
+        _templates.update { current -> current.filter { it.id != id } }
     }
 
     companion object {

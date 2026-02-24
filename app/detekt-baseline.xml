@@ -9,7 +9,6 @@
     <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
     <ID>LongMethod:GlitchEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun MainActivityContent(viewModel: MainActivityViewModel = MainActivityViewModel())</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
@@ -125,22 +124,20 @@
     <ID>MagicNumber:LocationTestScreen.kt$19.0</ID>
     <ID>MagicNumber:LocationTestScreen.kt$20.0</ID>
     <ID>MagicNumber:LocationTestScreen.kt$4.0</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$0.96f</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity$1500</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$1234</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$15</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$2.34567891</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$200</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$201</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$2048</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$3</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$30</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$4</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$401</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$5</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$500</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$512</ID>
-    <ID>MagicNumber:MainActivityViewModel.kt$MainActivityViewModel$9</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$1234</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$15</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$2.34567891</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$200</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$201</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$2048</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$3</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$30</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$4</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$401</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$5</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$500</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$512</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$9</ID>
     <ID>MagicNumber:SampleApiService.kt$SampleApiService$250000L</ID>
     <ID>MagicNumber:SampleContentService.kt$SampleContentService$500000L</ID>
     <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService$1000</ID>
@@ -329,7 +326,10 @@
     <ID>UnderscoresInNumericLiterals:VeryLargeData.kt$VeryLargeData$1000000</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
     <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
-    <ID>UnusedParameter:MainActivityViewModel.kt$MainActivityViewModel$context: Context</ID>
+    <ID>UnusedPrivateMember:CrashConfirmationDialog.kt$@Preview(showBackground = true) @Composable private fun CrashConfirmationDialogPreview()</ID>
+    <ID>UnusedPrivateMember:TestToolsTab.kt$@Preview(showBackground = true) @Composable private fun TestToolsTabPreview()</ID>
+    <ID>UnusedPrivateMember:WelcomeScreen.kt$@Preview(showBackground = true) @Composable private fun WelcomeScreenPreview()</ID>
+    <ID>ViewModelInjection:MainActivity.kt$MainActivity$mainViewModel</ID>
     <ID>WildcardImport:HttpBinApi.kt$import retrofit2.http.*</ID>
   </CurrentIssues>
 </SmellBaseline>

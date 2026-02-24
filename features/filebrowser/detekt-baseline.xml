@@ -2,18 +2,17 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/'</ID>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/'</ID>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; text.length &amp;&amp; (text[i].isDigit() || text[i] == '.' || text[i] == 'e' || text[i] == 'E' || text[i] == '+' || text[i] == '-')</ID>
+    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; json.length &amp;&amp; (json[i].isDigit() || json[i] == '.' || json[i] == 'e' || json[i] == 'E' || json[i] == '+' || json[i] == '-')</ID>
+    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '=' &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/'</ID>
+    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/'</ID>
     <ID>CyclomaticComplexMethod:FileViewerScreen.kt$@Composable private fun highlightJson(json: String): AnnotatedString</ID>
     <ID>CyclomaticComplexMethod:FileViewerScreen.kt$@Composable private fun highlightXml(xml: String): AnnotatedString</ID>
-    <ID>LongMethod:FileBrowserFeature.kt$@Composable fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
-    <ID>LongMethod:FileBrowserScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileBrowserScreen( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (FileBrowserViewModel.SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FileBrowserScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileBrowserScreen( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
     <ID>LongMethod:FileInfoSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileInfoSheet( fileInfo: FileInfo, onDismiss: () -&gt; Unit, onDelete: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:FileListItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun FileListItem(file: FileEntry, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightJson(json: String): AnnotatedString</ID>
     <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightXml(xml: String): AnnotatedString</ID>
-    <ID>LongParameterList:FileBrowserScreen.kt$( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (FileBrowserViewModel.SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:FileBrowserScreen.kt$( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF1565C0</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF212121</ID>
     <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF2E7D32</ID>
@@ -43,14 +42,30 @@
     <ID>MagicNumber:FileViewerScreen.kt$5</ID>
     <ID>MagicNumber:FileViewerScreen.kt$8</ID>
     <ID>MaxLineLength:FileViewerScreen.kt$while</ID>
-    <ID>MaxLineLength:FileViewerScreen.kt$while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++</ID>
+    <ID>MaxLineLength:FileViewerScreen.kt$while (i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '=' &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/') i++</ID>
     <ID>MaximumLineLength:FileViewerScreen.kt$ </ID>
     <ID>SwallowedException:FileSystemDataSource.kt$FileSystemDataSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:FileBrowserViewModel.kt$FileBrowserViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FileSystemDataSource.kt$FileSystemDataSource$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FileViewerScreen.kt$e: Exception</ID>
     <ID>TopLevelPropertyNaming:FileViewerScreen.kt$private const val BYTES_PER_LINE = 16</ID>
-    <ID>UndocumentedPublicClass:FileBrowserViewModel.kt$FileBrowserViewModel$SortMode</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEffect.kt$FileBrowserViewEffect</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEffect.kt$FileBrowserViewEffect$AtRoot : FileBrowserViewEffect</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEffect.kt$FileBrowserViewEffect$NavigatedBack : FileBrowserViewEffect</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$ClearError : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$CloseFileViewer : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$DeleteFile : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$FileClicked : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$FileLongClicked : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$HideFileInfo : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$LoadRootDirectories : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$NavigateBack : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$NavigateToBreadcrumb : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$NavigateToDirectory : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$SearchQueryChanged : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewEvent.kt$FileBrowserViewEvent$SetSortMode : FileBrowserViewEvent</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewState.kt$FileBrowserViewState</ID>
+    <ID>UndocumentedPublicClass:SortMode.kt$SortMode</ID>
     <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$@Composable fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): SyntaxColors</ID>
     <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$fun getColor(fileName: String, isDirectory: Boolean): Color</ID>
     <ID>UndocumentedPublicFunction:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.FileTypes$fun getIcon(fileName: String, isDirectory: Boolean): ImageVector</ID>
@@ -71,18 +86,25 @@
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlComment: Color</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlContent: Color</ID>
     <ID>UndocumentedPublicProperty:FileBrowserDesignSystem.kt$FileBrowserDesignSystem.SyntaxColors$val xmlTag: Color</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val currentPath: StateFlow&lt;String?&gt; = _currentPath.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val fileContent: StateFlow&lt;FileContent?&gt; = _fileContent.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val fileInfo: StateFlow&lt;FileInfo?&gt; = _fileInfo.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val filteredFiles: StateFlow&lt;ImmutableList&lt;FileEntry&gt;&gt; = _filteredFiles.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val navigationStack: StateFlow&lt;ImmutableList&lt;String&gt;&gt; = _navigationStack.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val selectedFile: StateFlow&lt;String?&gt; = _selectedFile.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FileBrowserViewModel.kt$FileBrowserViewModel$val sortMode: StateFlow&lt;SortMode&gt; = _sortMode.asStateFlow()</ID>
-    <ID>UnnecessaryParentheses:FileViewerScreen.kt$(text[i] == '-' &amp;&amp; i + 1 &lt; text.length &amp;&amp; text[i + 1].isDigit())</ID>
-    <ID>UseIfInsteadOfWhen:FileViewerScreen.kt$when { // Tag start text[i] == '&lt;' -&gt; { val start = i i++ // Check for comment, CDATA, or processing instruction if (i &lt; text.length &amp;&amp; text[i] == '!') { // Comment or CDATA while (i &lt; text.length &amp;&amp; text[i] != '&gt;') i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(text.substring(start, minOf(i, text.length))) } } else if (i &lt; text.length &amp;&amp; text[i] == '?') { // Processing instruction while (i &lt; text.length &amp;&amp; !(text[i - 1] == '?' &amp;&amp; text[i] == '&gt;')) i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(text.substring(start, minOf(i, text.length))) } } else { // Regular tag withStyle(SpanStyle(color = colors.xmlTag)) { append("&lt;") } // Closing tag slash if (i &lt; text.length &amp;&amp; text[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } // Tag name val nameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) { append(text.substring(nameStart, i)) } // Attributes while (i &lt; text.length &amp;&amp; text[i] != '&gt;') { if (text[i].isWhitespace()) { append(text[i]) i++ } else if (text[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } else if (text[i] == '=') { append("=") i++ } else if (text[i] == '"' || text[i] == '\'') { val quote = text[i] val attrStart = i i++ while (i &lt; text.length &amp;&amp; text[i] != quote) i++ i++ withStyle(SpanStyle(color = colors.xmlAttrValue)) { append(text.substring(attrStart, minOf(i, text.length))) } } else { // Attribute name val attrNameStart = i while (i &lt; text.length &amp;&amp; !text[i].isWhitespace() &amp;&amp; text[i] != '=' &amp;&amp; text[i] != '&gt;' &amp;&amp; text[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlAttrName)) { append(text.substring(attrNameStart, i)) } } } if (i &lt; text.length &amp;&amp; text[i] == '&gt;') { withStyle(SpanStyle(color = colors.xmlTag)) { append("&gt;") } i++ } } } else -&gt; { // Text content val contentStart = i while (i &lt; text.length &amp;&amp; text[i] != '&lt;') i++ val content = text.substring(contentStart, i) if (content.isNotBlank()) { withStyle(SpanStyle(color = colors.xmlContent)) { append(content) } } else { append(content) } } }</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.DeleteFile$val path: String</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.FileClicked$val file: FileEntry</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.FileLongClicked$val file: FileEntry</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.NavigateToBreadcrumb$val index: Int</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.NavigateToDirectory$val path: String</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.SearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewEvent.kt$FileBrowserViewEvent.SetSortMode$val mode: SortMode</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val currentPath: String? = null</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val fileContent: FileContent? = null</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val fileInfo: FileInfo? = null</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val filteredFiles: ImmutableList&lt;FileEntry&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val navigationStack: ImmutableList&lt;String&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val selectedFile: String? = null</ID>
+    <ID>UndocumentedPublicProperty:FileBrowserViewState.kt$FileBrowserViewState$val sortMode: SortMode = SortMode.NAME</ID>
+    <ID>UnnecessaryParentheses:FileViewerScreen.kt$(json[i] == '-' &amp;&amp; i + 1 &lt; json.length &amp;&amp; json[i + 1].isDigit())</ID>
+    <ID>UseIfInsteadOfWhen:FileViewerScreen.kt$when { // Tag start xml[i] == '&lt;' -&gt; { val start = i i++ // Check for comment, CDATA, or processing instruction if (i &lt; xml.length &amp;&amp; xml[i] == '!') { // Comment or CDATA while (i &lt; xml.length &amp;&amp; xml[i] != '&gt;') i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(xml.substring(start, minOf(i, xml.length))) } } else if (i &lt; xml.length &amp;&amp; xml[i] == '?') { // Processing instruction while (i &lt; xml.length &amp;&amp; !(xml[i - 1] == '?' &amp;&amp; xml[i] == '&gt;')) i++ i++ withStyle(SpanStyle(color = colors.xmlComment)) { append(xml.substring(start, minOf(i, xml.length))) } } else { // Regular tag withStyle(SpanStyle(color = colors.xmlTag)) { append("&lt;") } // Closing tag slash if (i &lt; xml.length &amp;&amp; xml[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } // Tag name val nameStart = i while (i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) { append(xml.substring(nameStart, i)) } // Attributes while (i &lt; xml.length &amp;&amp; xml[i] != '&gt;') { if (xml[i].isWhitespace()) { append(xml[i]) i++ } else if (xml[i] == '/') { withStyle(SpanStyle(color = colors.xmlTag)) { append("/") } i++ } else if (xml[i] == '=') { append("=") i++ } else if (xml[i] == '"' || xml[i] == '\'') { val quote = xml[i] val attrStart = i i++ while (i &lt; xml.length &amp;&amp; xml[i] != quote) i++ i++ withStyle(SpanStyle(color = colors.xmlAttrValue)) { append(xml.substring(attrStart, minOf(i, xml.length))) } } else { // Attribute name val attrNameStart = i while (i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '=' &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/') i++ withStyle(SpanStyle(color = colors.xmlAttrName)) { append(xml.substring(attrNameStart, i)) } } } if (i &lt; xml.length &amp;&amp; xml[i] == '&gt;') { withStyle(SpanStyle(color = colors.xmlTag)) { append("&gt;") } i++ } } } else -&gt; { // Text content val contentStart = i while (i &lt; xml.length &amp;&amp; xml[i] != '&lt;') i++ val content = xml.substring(contentStart, i) if (content.isNotBlank()) { withStyle(SpanStyle(color = colors.xmlContent)) { append(content) } } else { append(content) } } }</ID>
     <ID>ViewModelInjection:FileBrowserFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

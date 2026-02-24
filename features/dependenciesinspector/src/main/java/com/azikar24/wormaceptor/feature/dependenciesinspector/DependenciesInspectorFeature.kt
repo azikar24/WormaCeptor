@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.DependenciesInspectorScreen
 import com.azikar24.wormaceptor.feature.dependenciesinspector.vm.DependenciesInspectorViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Dependencies Inspector feature.
@@ -47,11 +48,8 @@ class DependenciesInspectorViewModelFactory(
  * Main composable for the Dependencies Inspector feature.
  */
 @Composable
-fun DependenciesInspector(
-    engine: DependenciesInspectorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun DependenciesInspector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: DependenciesInspectorEngine = koinInject()
     val factory = remember { DependenciesInspectorFeature.createViewModelFactory(engine) }
     val viewModel: DependenciesInspectorViewModel = viewModel(factory = factory)
 

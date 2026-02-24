@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
 import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
@@ -20,6 +21,7 @@ import com.azikar24.wormaceptor.feature.database.ui.DatabaseListScreen
 import com.azikar24.wormaceptor.feature.database.ui.QueryScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableDataScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableListScreen
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
 import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewModel
 
 /**
@@ -71,111 +73,94 @@ fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateB
     val viewModel: DatabaseViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
 
-    // Collect state
-    val databases by viewModel.databases.collectAsState()
-    val databaseSearchQuery by viewModel.databaseSearchQuery.collectAsState()
-    val isDatabasesLoading by viewModel.isDatabasesLoading.collectAsState()
-    val databasesError by viewModel.databasesError.collectAsState()
+    BaseScreen(
+        viewModel = viewModel,
+    ) { state, onEvent ->
+        val databases by viewModel.databases.collectAsState()
+        val tables by viewModel.tables.collectAsState()
 
-    val selectedDatabaseName by viewModel.selectedDatabaseName.collectAsState()
-    val tables by viewModel.tables.collectAsState()
-    val tableSearchQuery by viewModel.tableSearchQuery.collectAsState()
-    val isTablesLoading by viewModel.isTablesLoading.collectAsState()
-    val tablesError by viewModel.tablesError.collectAsState()
+        NavHost(
+            navController = navController,
+            startDestination = "databases",
+            modifier = modifier,
+            enterTransition = WormaCeptorNavTransitions.enterTransition,
+            exitTransition = WormaCeptorNavTransitions.exitTransition,
+            popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,
+            popExitTransition = WormaCeptorNavTransitions.popExitTransition,
+        ) {
+            composable("databases") {
+                DatabaseListScreen(
+                    databases = databases,
+                    searchQuery = state.databaseSearchQuery,
+                    isLoading = state.isDatabasesLoading,
+                    error = state.databasesError,
+                    onSearchQueryChanged = { onEvent(DatabaseViewEvent.DatabaseSearchQueryChanged(it)) },
+                    onDatabaseClick = { db ->
+                        onEvent(DatabaseViewEvent.DatabaseSelected(db.name))
+                        navController.navigate("tables")
+                    },
+                    onRefresh = { onEvent(DatabaseViewEvent.LoadDatabases) },
+                    onBack = { onNavigateBack?.invoke() },
+                )
+            }
 
-    val selectedTableName by viewModel.selectedTableName.collectAsState()
-    val tableSchema by viewModel.tableSchema.collectAsState()
-    val queryResult by viewModel.queryResult.collectAsState()
-    val currentPage by viewModel.currentPage.collectAsState()
-    val isDataLoading by viewModel.isDataLoading.collectAsState()
-    val showSchema by viewModel.showSchema.collectAsState()
+            composable("tables") {
+                TableListScreen(
+                    databaseName = state.selectedDatabaseName ?: "",
+                    tables = tables,
+                    searchQuery = state.tableSearchQuery,
+                    isLoading = state.isTablesLoading,
+                    error = state.tablesError,
+                    onSearchQueryChanged = { onEvent(DatabaseViewEvent.TableSearchQueryChanged(it)) },
+                    onTableClick = { table ->
+                        onEvent(DatabaseViewEvent.TableSelected(table.name))
+                        navController.navigate("data")
+                    },
+                    onQueryClick = {
+                        navController.navigate("query")
+                    },
+                    onBack = {
+                        onEvent(DatabaseViewEvent.DatabaseSelectionCleared)
+                        navController.popBackStack()
+                    },
+                )
+            }
 
-    val sqlQuery by viewModel.sqlQuery.collectAsState()
-    val queryExecutionResult by viewModel.queryExecutionResult.collectAsState()
-    val queryHistory by viewModel.queryHistory.collectAsState()
-    val isQueryExecuting by viewModel.isQueryExecuting.collectAsState()
+            composable("data") {
+                TableDataScreen(
+                    tableName = state.selectedTableName ?: "",
+                    queryResult = state.queryResult,
+                    schema = state.tableSchema,
+                    showSchema = state.showSchema,
+                    currentPage = state.currentPage,
+                    isLoading = state.isDataLoading,
+                    onToggleSchema = { onEvent(DatabaseViewEvent.ToggleSchema) },
+                    onPreviousPage = { onEvent(DatabaseViewEvent.PreviousPage) },
+                    onNextPage = { onEvent(DatabaseViewEvent.NextPage) },
+                    onBack = {
+                        onEvent(DatabaseViewEvent.TableSelectionCleared)
+                        navController.popBackStack()
+                    },
+                )
+            }
 
-    NavHost(
-        navController = navController,
-        startDestination = "databases",
-        modifier = modifier,
-        enterTransition = WormaCeptorNavTransitions.enterTransition,
-        exitTransition = WormaCeptorNavTransitions.exitTransition,
-        popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,
-        popExitTransition = WormaCeptorNavTransitions.popExitTransition,
-    ) {
-        composable("databases") {
-            DatabaseListScreen(
-                databases = databases,
-                searchQuery = databaseSearchQuery,
-                isLoading = isDatabasesLoading,
-                error = databasesError,
-                onSearchQueryChanged = viewModel::onDatabaseSearchQueryChanged,
-                onDatabaseClick = { db ->
-                    viewModel.selectDatabase(db.name)
-                    navController.navigate("tables")
-                },
-                onRefresh = viewModel::loadDatabases,
-                onBack = { onNavigateBack?.invoke() },
-            )
-        }
-
-        composable("tables") {
-            TableListScreen(
-                databaseName = selectedDatabaseName ?: "",
-                tables = tables,
-                searchQuery = tableSearchQuery,
-                isLoading = isTablesLoading,
-                error = tablesError,
-                onSearchQueryChanged = viewModel::onTableSearchQueryChanged,
-                onTableClick = { table ->
-                    viewModel.selectTable(table.name)
-                    navController.navigate("data")
-                },
-                onQueryClick = {
-                    navController.navigate("query")
-                },
-                onBack = {
-                    viewModel.clearDatabaseSelection()
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composable("data") {
-            TableDataScreen(
-                tableName = selectedTableName ?: "",
-                queryResult = queryResult,
-                schema = tableSchema,
-                showSchema = showSchema,
-                currentPage = currentPage,
-                isLoading = isDataLoading,
-                onToggleSchema = viewModel::toggleSchema,
-                onPreviousPage = viewModel::previousPage,
-                onNextPage = viewModel::nextPage,
-                onBack = {
-                    viewModel.clearTableSelection()
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composable("query") {
-            QueryScreen(
-                databaseName = selectedDatabaseName ?: "",
-                sqlQuery = sqlQuery,
-                queryResult = queryExecutionResult,
-                queryHistory = queryHistory,
-                isExecuting = isQueryExecuting,
-                onQueryChanged = viewModel::onSqlQueryChanged,
-                onExecuteQuery = viewModel::executeQuery,
-                onClearQuery = viewModel::clearQuery,
-                onSelectFromHistory = viewModel::selectQueryFromHistory,
-                onBack = {
-                    viewModel.clearQuery()
-                    navController.popBackStack()
-                },
-            )
+            composable("query") {
+                QueryScreen(
+                    databaseName = state.selectedDatabaseName ?: "",
+                    sqlQuery = state.sqlQuery,
+                    queryResult = state.queryExecutionResult,
+                    queryHistory = state.queryHistory,
+                    isExecuting = state.isQueryExecuting,
+                    onQueryChanged = { onEvent(DatabaseViewEvent.SqlQueryChanged(it)) },
+                    onExecuteQuery = { onEvent(DatabaseViewEvent.ExecuteQuery) },
+                    onClearQuery = { onEvent(DatabaseViewEvent.ClearQuery) },
+                    onSelectFromHistory = { onEvent(DatabaseViewEvent.QuerySelectedFromHistory(it)) },
+                    onBack = {
+                        onEvent(DatabaseViewEvent.ClearQuery)
+                        navController.popBackStack()
+                    },
+                )
+            }
         }
     }
 }

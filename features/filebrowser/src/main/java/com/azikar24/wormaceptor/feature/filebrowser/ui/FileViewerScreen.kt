@@ -256,68 +256,67 @@ private fun highlightJson(json: String): AnnotatedString {
     val colors = FileBrowserDesignSystem.syntaxColors()
     return buildAnnotatedString {
         var i = 0
-        val text = json
-        while (i < text.length) {
+        while (i < json.length) {
             when {
                 // String (key or value)
-                text[i] == '"' -> {
+                json[i] == '"' -> {
                     val start = i
                     i++
-                    while (i < text.length && text[i] != '"') {
-                        if (text[i] == '\\' && i + 1 < text.length) i++
+                    while (i < json.length && json[i] != '"') {
+                        if (json[i] == '\\' && i + 1 < json.length) i++
                         i++
                     }
                     i++ // Include closing quote
-                    val str = text.substring(start, minOf(i, text.length))
+                    val str = json.substring(start, minOf(i, json.length))
 
                     // Check if this is a key (followed by colon)
                     var j = i
-                    while (j < text.length && text[j].isWhitespace()) j++
-                    val isKey = j < text.length && text[j] == ':'
+                    while (j < json.length && json[j].isWhitespace()) j++
+                    val isKey = j < json.length && json[j] == ':'
 
                     withStyle(SpanStyle(color = if (isKey) colors.jsonKey else colors.jsonString)) {
                         append(str)
                     }
                 }
                 // Number
-                text[i].isDigit() || (text[i] == '-' && i + 1 < text.length && text[i + 1].isDigit()) -> {
+                json[i].isDigit() || (json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit()) -> {
                     val start = i
-                    if (text[i] == '-') i++
-                    while (i < text.length && (text[i].isDigit() || text[i] == '.' || text[i] == 'e' || text[i] == 'E' || text[i] == '+' || text[i] == '-')) {
+                    if (json[i] == '-') i++
+                    while (i < json.length && (json[i].isDigit() || json[i] == '.' || json[i] == 'e' || json[i] == 'E' || json[i] == '+' || json[i] == '-')) {
                         i++
                     }
                     withStyle(SpanStyle(color = colors.jsonNumber)) {
-                        append(text.substring(start, i))
+                        append(json.substring(start, i))
                     }
                 }
                 // Boolean or null
-                text.substring(i).startsWith("true") -> {
+                json.substring(i).startsWith("true") -> {
                     withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("true")
                     }
                     i += 4
                 }
-                text.substring(i).startsWith("false") -> {
+                json.substring(i).startsWith("false") -> {
                     withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("false")
                     }
                     i += 5
                 }
-                text.substring(i).startsWith("null") -> {
+                json.substring(i).startsWith("null") -> {
                     withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
                         append("null")
                     }
                     i += 4
                 }
                 // Brackets and braces
-                text[i] in "{}[]" -> {
+                json[i] in "{}[]" -> {
                     withStyle(SpanStyle(color = colors.jsonBracket, fontWeight = FontWeight.Bold)) {
-                        append(text[i])
+                        append(json[i])
                     }
                     i++
                 }
                 else -> {
-                    append(text[i])
+                    append(json[i])
                     i++
                 }
             }
@@ -330,28 +329,27 @@ private fun highlightXml(xml: String): AnnotatedString {
     val colors = FileBrowserDesignSystem.syntaxColors()
     return buildAnnotatedString {
         var i = 0
-        val text = xml
-        while (i < text.length) {
+        while (i < xml.length) {
             when {
                 // Tag start
-                text[i] == '<' -> {
+                xml[i] == '<' -> {
                     val start = i
                     i++
 
                     // Check for comment, CDATA, or processing instruction
-                    if (i < text.length && text[i] == '!') {
+                    if (i < xml.length && xml[i] == '!') {
                         // Comment or CDATA
-                        while (i < text.length && text[i] != '>') i++
+                        while (i < xml.length && xml[i] != '>') i++
                         i++
                         withStyle(SpanStyle(color = colors.xmlComment)) {
-                            append(text.substring(start, minOf(i, text.length)))
+                            append(xml.substring(start, minOf(i, xml.length)))
                         }
-                    } else if (i < text.length && text[i] == '?') {
+                    } else if (i < xml.length && xml[i] == '?') {
                         // Processing instruction
-                        while (i < text.length && !(text[i - 1] == '?' && text[i] == '>')) i++
+                        while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
                         i++
                         withStyle(SpanStyle(color = colors.xmlComment)) {
-                            append(text.substring(start, minOf(i, text.length)))
+                            append(xml.substring(start, minOf(i, xml.length)))
                         }
                     } else {
                         // Regular tag
@@ -360,7 +358,7 @@ private fun highlightXml(xml: String): AnnotatedString {
                         }
 
                         // Closing tag slash
-                        if (i < text.length && text[i] == '/') {
+                        if (i < xml.length && xml[i] == '/') {
                             withStyle(SpanStyle(color = colors.xmlTag)) {
                                 append("/")
                             }
@@ -369,44 +367,44 @@ private fun highlightXml(xml: String): AnnotatedString {
 
                         // Tag name
                         val nameStart = i
-                        while (i < text.length && !text[i].isWhitespace() && text[i] != '>' && text[i] != '/') i++
+                        while (i < xml.length && !xml[i].isWhitespace() && xml[i] != '>' && xml[i] != '/') i++
                         withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
-                            append(text.substring(nameStart, i))
+                            append(xml.substring(nameStart, i))
                         }
 
                         // Attributes
-                        while (i < text.length && text[i] != '>') {
-                            if (text[i].isWhitespace()) {
-                                append(text[i])
+                        while (i < xml.length && xml[i] != '>') {
+                            if (xml[i].isWhitespace()) {
+                                append(xml[i])
                                 i++
-                            } else if (text[i] == '/') {
+                            } else if (xml[i] == '/') {
                                 withStyle(SpanStyle(color = colors.xmlTag)) {
                                     append("/")
                                 }
                                 i++
-                            } else if (text[i] == '=') {
+                            } else if (xml[i] == '=') {
                                 append("=")
                                 i++
-                            } else if (text[i] == '"' || text[i] == '\'') {
-                                val quote = text[i]
+                            } else if (xml[i] == '"' || xml[i] == '\'') {
+                                val quote = xml[i]
                                 val attrStart = i
                                 i++
-                                while (i < text.length && text[i] != quote) i++
+                                while (i < xml.length && xml[i] != quote) i++
                                 i++
                                 withStyle(SpanStyle(color = colors.xmlAttrValue)) {
-                                    append(text.substring(attrStart, minOf(i, text.length)))
+                                    append(xml.substring(attrStart, minOf(i, xml.length)))
                                 }
                             } else {
                                 // Attribute name
                                 val attrNameStart = i
-                                while (i < text.length && !text[i].isWhitespace() && text[i] != '=' && text[i] != '>' && text[i] != '/') i++
+                                while (i < xml.length && !xml[i].isWhitespace() && xml[i] != '=' && xml[i] != '>' && xml[i] != '/') i++
                                 withStyle(SpanStyle(color = colors.xmlAttrName)) {
-                                    append(text.substring(attrNameStart, i))
+                                    append(xml.substring(attrNameStart, i))
                                 }
                             }
                         }
 
-                        if (i < text.length && text[i] == '>') {
+                        if (i < xml.length && xml[i] == '>') {
                             withStyle(SpanStyle(color = colors.xmlTag)) {
                                 append(">")
                             }
@@ -417,8 +415,8 @@ private fun highlightXml(xml: String): AnnotatedString {
                 else -> {
                     // Text content
                     val contentStart = i
-                    while (i < text.length && text[i] != '<') i++
-                    val content = text.substring(contentStart, i)
+                    while (i < xml.length && xml[i] != '<') i++
+                    val content = xml.substring(contentStart, i)
                     if (content.isNotBlank()) {
                         withStyle(SpanStyle(color = colors.xmlContent)) {
                             append(content)

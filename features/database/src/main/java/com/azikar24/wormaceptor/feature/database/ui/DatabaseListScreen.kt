@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -125,77 +126,79 @@ fun DatabaseListScreen(
         },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            error != null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-
-            databases.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        Box(modifier = Modifier.imePadding()) {
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Storage,
-                            contentDescription = stringResource(R.string.database_list_title),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                        )
+                        CircularProgressIndicator()
+                    }
+                }
+
+                error != null -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
                         Text(
-                            text = stringResource(R.string.database_list_empty),
+                            text = error,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.error,
                         )
                     }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(
-                        bottom = WormaCeptorDesignSystem.Spacing.lg,
-                    ),
-                ) {
-                    items(
-                        items = databases,
-                        key = { it.path },
-                    ) { database ->
-                        DatabaseListItem(
-                            database = database,
-                            onClick = { onDatabaseClick(database) },
-                        )
-                        WormaCeptorDivider()
+                databases.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Storage,
+                                contentDescription = stringResource(R.string.database_list_title),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                            )
+                            Text(
+                                text = stringResource(R.string.database_list_empty),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(
+                            bottom = WormaCeptorDesignSystem.Spacing.lg,
+                        ),
+                    ) {
+                        items(
+                            items = databases,
+                            key = { it.path },
+                        ) { database ->
+                            DatabaseListItem(
+                                database = database,
+                                onClick = { onDatabaseClick(database) },
+                            )
+                            WormaCeptorDivider()
+                        }
                     }
                 }
             }

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -120,6 +121,7 @@ fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, 
     }
 
     val requests by viewModel.requests.collectAsState()
+    val filteredRequests by viewModel.filteredRequests.collectAsState()
     val stats by viewModel.stats.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val resourceTypeFilter by viewModel.resourceTypeFilter.collectAsState()
@@ -156,7 +158,7 @@ fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, 
     ) {
         composable("list") {
             WebViewMonitorListScreen(
-                requests = viewModel.getFilteredRequests(),
+                requests = filteredRequests,
                 totalCount = requests.size,
                 stats = stats,
                 searchQuery = searchQuery,
@@ -227,7 +229,7 @@ private fun WebViewMonitorListScreen(
             onToggleResourceTypeFilter = onToggleResourceTypeFilter,
             onClearFilters = onClearFilters,
             onRequestClick = onRequestClick,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.padding(padding).imePadding(),
         )
     }
 }

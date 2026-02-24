@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -186,35 +188,37 @@ internal fun WebSocketDetailScreen(
             }
         },
     ) { paddingValues ->
-        if (messages.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = stringResource(
-                    if (searchQuery.isNotBlank() || directionFilter != null) {
-                        R.string.websocket_empty_no_matching_messages
-                    } else {
-                        R.string.websocket_empty_no_messages
-                    },
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                subtitle = stringResource(
-                    if (searchQuery.isNotBlank() || directionFilter != null) {
-                        R.string.websocket_empty_filter_hint
-                    } else {
-                        R.string.websocket_empty_messages_hint
-                    },
-                ),
-            )
-        } else {
-            MessageList(
-                messages = messages,
-                expandedMessageId = expandedMessageId,
-                onMessageClick = onMessageClick,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
+        Box(modifier = Modifier.imePadding()) {
+            if (messages.isEmpty()) {
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (searchQuery.isNotBlank() || directionFilter != null) {
+                            R.string.websocket_empty_no_matching_messages
+                        } else {
+                            R.string.websocket_empty_no_messages
+                        },
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    subtitle = stringResource(
+                        if (searchQuery.isNotBlank() || directionFilter != null) {
+                            R.string.websocket_empty_filter_hint
+                        } else {
+                            R.string.websocket_empty_messages_hint
+                        },
+                    ),
+                )
+            } else {
+                MessageList(
+                    messages = messages,
+                    expandedMessageId = expandedMessageId,
+                    onMessageClick = onMessageClick,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            }
         }
     }
 }

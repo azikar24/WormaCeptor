@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -253,29 +255,31 @@ internal fun LogsScreenContent(
             }
         },
     ) { paddingValues ->
-        if (logs.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = if (isCapturing) "Waiting for logs..." else "No logs captured",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                subtitle = if (isCapturing) {
-                    "Logs will appear here as they are generated"
-                } else {
-                    "Tap play to start capturing logs"
-                },
-                icon = Icons.Default.VerticalAlignBottom,
-                actionLabel = if (!isCapturing) "Start Capture" else null,
-                onAction = if (!isCapturing) onStartCapture else null,
-            )
-        } else {
-            LogList(
-                logs = logs,
-                listState = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
+        Box(modifier = Modifier.imePadding()) {
+            if (logs.isEmpty()) {
+                WormaCeptorEmptyState(
+                    title = if (isCapturing) "Waiting for logs..." else "No logs captured",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    subtitle = if (isCapturing) {
+                        "Logs will appear here as they are generated"
+                    } else {
+                        "Tap play to start capturing logs"
+                    },
+                    icon = Icons.Default.VerticalAlignBottom,
+                    actionLabel = if (!isCapturing) "Start Capture" else null,
+                    onAction = if (!isCapturing) onStartCapture else null,
+                )
+            } else {
+                LogList(
+                    logs = logs,
+                    listState = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            }
         }
     }
 }

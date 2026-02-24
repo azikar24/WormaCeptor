@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -81,8 +82,8 @@ fun FileBrowserScreen(
     onExitBrowser: () -> Unit,
     onClearError: () -> Unit,
     modifier: Modifier = Modifier,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
     var showSortMenu by remember { mutableStateOf(false) }
     var searchActive by rememberSaveable { mutableStateOf(false) }
 
@@ -206,62 +207,64 @@ fun FileBrowserScreen(
         snackbarHost = { SnackbarHost(snackBarHostState) },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            filteredFiles.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        Box(modifier = Modifier.imePadding()) {
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Folder,
-                            contentDescription = stringResource(R.string.filebrowser_no_files_found),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                        )
-                        Text(
-                            text = stringResource(R.string.filebrowser_no_files_found),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                        CircularProgressIndicator()
                     }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(0.dp),
-                ) {
-                    items(
-                        items = filteredFiles,
-                        key = { it.path },
-                    ) { file ->
-                        FileListItem(
-                            file = file,
-                            onClick = { onFileClick(file) },
-                            onLongClick = { onFileLongClick(file) },
-                        )
-                        WormaCeptorDivider()
+                filteredFiles.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Folder,
+                                contentDescription = stringResource(R.string.filebrowser_no_files_found),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                            )
+                            Text(
+                                text = stringResource(R.string.filebrowser_no_files_found),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(0.dp),
+                    ) {
+                        items(
+                            items = filteredFiles,
+                            key = { it.path },
+                        ) { file ->
+                            FileListItem(
+                                file = file,
+                                onClick = { onFileClick(file) },
+                                onLongClick = { onFileLongClick(file) },
+                            )
+                            WormaCeptorDivider()
+                        }
                     }
                 }
             }

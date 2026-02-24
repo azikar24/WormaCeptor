@@ -355,4 +355,5 @@ They should only be used by WormaCeptor implementation modules, not by host appl
 
 | Version | Changes |
 |---------|---------|
+| 2.2.0 | Ktor HTTP client support, MVI pattern adoption (BaseViewModel), shared WormaCeptorTheme, decoupled syntax highlighting |
 | 2.0.0 | Initial modular architecture |

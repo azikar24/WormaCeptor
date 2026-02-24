@@ -178,13 +178,6 @@ class PushSimulatorViewModel(
         }
     }
 
-    /**
-     * Checks if notification permission is granted.
-     */
-    fun hasPermission(): Boolean {
-        return engine.hasNotificationPermission()
-    }
-
     private fun observeTemplates() {
         viewModelScope.launch {
             repository.getTemplates().collect { templateList ->

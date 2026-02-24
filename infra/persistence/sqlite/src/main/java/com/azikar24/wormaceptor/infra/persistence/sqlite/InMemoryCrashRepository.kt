@@ -5,19 +5,16 @@ import com.azikar24.wormaceptor.domain.entities.Crash
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-import java.util.concurrent.ConcurrentLinkedQueue
+import kotlinx.coroutines.flow.update
 
 class InMemoryCrashRepository : CrashRepository {
-    private val crashes = ConcurrentLinkedQueue<Crash>()
     private val _crashesFlow = MutableStateFlow<List<Crash>>(emptyList())
 
     override suspend fun saveCrash(crash: Crash) {
-        crashes.add(crash)
-        _crashesFlow.value = crashes.toList()
+        _crashesFlow.update { current -> current + crash }
     }
 
     override suspend fun clearCrashes() {
-        crashes.clear()
         _crashesFlow.value = emptyList()
     }
 

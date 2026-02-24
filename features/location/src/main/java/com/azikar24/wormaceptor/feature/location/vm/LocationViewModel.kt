@@ -118,6 +118,7 @@ class LocationViewModel(
             }
             LocationViewEvent.StartRealLocationUpdates -> startRealLocationUpdates()
             LocationViewEvent.StopRealLocationUpdates -> stopRealLocationUpdates()
+            LocationViewEvent.ToggleMapExpanded -> updateState { copy(isMapExpanded = !isMapExpanded) }
         }
     }
 

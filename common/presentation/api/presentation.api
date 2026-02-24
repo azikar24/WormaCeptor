@@ -1,5 +1,5 @@
 public final class com/azikar24/wormaceptor/common/presentation/BaseScreenKt {
-	public static final fun BaseScreen (Lcom/azikar24/wormaceptor/common/presentation/BaseViewModel;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;I)V
+	public static final fun BaseScreen (Lcom/azikar24/wormaceptor/common/presentation/BaseViewModel;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract class com/azikar24/wormaceptor/common/presentation/BaseViewModel : androidx/lifecycle/ViewModel {

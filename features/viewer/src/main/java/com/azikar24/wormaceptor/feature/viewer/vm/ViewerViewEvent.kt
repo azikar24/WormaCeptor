@@ -87,4 +87,11 @@ sealed class ViewerViewEvent {
      * @property message The text to show in the snackbar.
      */
     data class ShowMessage(val message: String) : ViewerViewEvent()
+
+    /**
+     * User toggled collapse/expand on a tool category.
+     *
+     * @property category The category name that was toggled.
+     */
+    data class ToolCategoryCollapseToggled(val category: String) : ViewerViewEvent()
 }

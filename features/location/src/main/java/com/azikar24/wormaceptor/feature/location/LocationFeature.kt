@@ -145,6 +145,8 @@ fun LocationSimulator(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit
             onMapTap = { geoPoint ->
                 onEvent(LocationViewEvent.MapTapped(geoPoint.latitude, geoPoint.longitude))
             },
+            isMapExpanded = state.isMapExpanded,
+            onToggleMapExpanded = { onEvent(LocationViewEvent.ToggleMapExpanded) },
             onBack = onNavigateBack,
             modifier = modifier,
             snackBarHostState = snackBarState,

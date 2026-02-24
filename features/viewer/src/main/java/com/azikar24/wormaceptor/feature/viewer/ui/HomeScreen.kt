@@ -134,6 +134,9 @@ fun HomeScreen(
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
     // Generic tool navigation for Tools tab
     onToolNavigate: (String) -> Unit = {},
+    // Tool category collapse state
+    collapsedToolCategories: Set<String> = emptySet(),
+    onToolCategoryCollapseToggled: (String) -> Unit = {},
     // Snackbar message flow from ViewModel
     snackbarMessage: Flow<String>? = null,
 ) {
@@ -588,6 +591,8 @@ fun HomeScreen(
                             searchActive = toolsSearchActive,
                             searchQuery = toolsSearchQuery,
                             onSearchQueryChanged = { toolsSearchQuery = it },
+                            collapsedCategories = collapsedToolCategories,
+                            onToggleCollapse = onToolCategoryCollapseToggled,
                             modifier = Modifier.fillMaxSize(),
                         )
                     }

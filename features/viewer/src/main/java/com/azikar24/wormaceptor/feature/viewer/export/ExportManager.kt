@@ -3,7 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.export
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
-import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.util.MAX_CLIPBOARD_SIZE
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
@@ -18,6 +18,7 @@ import java.util.Locale
 
 class ExportManager(
     private val context: Context,
+    private val queryEngine: QueryEngine?,
     private val onMessage: (String) -> Unit = {},
 ) {
 
@@ -33,10 +34,10 @@ class ExportManager(
                 transactions.forEach { transaction ->
                     // Fetch actual body content
                     val requestBody = transaction.request.bodyRef?.let { blobId ->
-                        CoreHolder.queryEngine?.getBody(blobId)
+                        queryEngine?.getBody(blobId)
                     }
                     val responseBody = transaction.response?.bodyRef?.let { blobId ->
-                        CoreHolder.queryEngine?.getBody(blobId)
+                        queryEngine?.getBody(blobId)
                     }
 
                     val jsonObject = JSONObject().apply {

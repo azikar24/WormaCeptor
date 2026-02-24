@@ -53,6 +53,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -71,6 +72,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
@@ -78,6 +81,8 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.buildHighlightedString
+import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
@@ -105,7 +110,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
 import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
@@ -133,6 +137,7 @@ fun TransactionDetailPagerScreen(
     transactionIds: List<UUID>,
     initialTransactionIndex: Int,
     getTransaction: suspend (UUID) -> NetworkTransaction?,
+    queryEngine: QueryEngine?,
     onBack: () -> Unit,
 ) {
     val view = LocalView.current
@@ -212,6 +217,7 @@ fun TransactionDetailPagerScreen(
             } else if (currentTransaction != null) {
                 TransactionDetailContent(
                     transaction = currentTransaction,
+                    queryEngine = queryEngine,
                     onBack = onBack,
                     onNavigatePrevTransaction = ::navigateToPrevTransaction,
                     onNavigateNextTransaction = ::navigateToNextTransaction,
@@ -237,10 +243,11 @@ fun TransactionDetailPagerScreen(
  * Transaction detail screen with swipe-back navigation.
  */
 @Composable
-fun TransactionDetailScreen(transaction: NetworkTransaction, onBack: () -> Unit) {
+fun TransactionDetailScreen(transaction: NetworkTransaction, queryEngine: QueryEngine?, onBack: () -> Unit) {
     SwipeBackContainer(onBack = onBack) {
         TransactionDetailContent(
             transaction = transaction,
+            queryEngine = queryEngine,
             onBack = onBack,
         )
     }
@@ -257,6 +264,7 @@ fun TransactionDetailScreen(transaction: NetworkTransaction, onBack: () -> Unit)
 @Composable
 private fun TransactionDetailContent(
     transaction: NetworkTransaction,
+    queryEngine: QueryEngine?,
     onBack: () -> Unit,
     onNavigatePrevTransaction: () -> Unit = {},
     onNavigateNextTransaction: () -> Unit = {},
@@ -422,6 +430,7 @@ private fun TransactionDetailContent(
                                         val exportManager =
                                             com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                                 context,
+                                                queryEngine,
                                             )
                                         scope.launch {
                                             exportManager.exportTransactions(listOf(transaction))
@@ -485,12 +494,13 @@ private fun TransactionDetailContent(
                 HorizontalPager(
                     state = tabPagerState,
                     modifier = Modifier.fillMaxSize(),
-                    beyondViewportPageCount = 1,
+                    beyondViewportPageCount = 2,
                 ) { page ->
                     when (page) {
                         0 -> OverviewTab(transaction, Modifier.fillMaxSize())
                         1 -> RequestTab(
                             transaction = transaction,
+                            queryEngine = queryEngine,
                             searchQuery = debouncedSearchQuery,
                             currentMatchIndex = currentMatchIndex,
                             onMatchCountChanged = { matchCount = it },
@@ -500,6 +510,7 @@ private fun TransactionDetailContent(
 
                         2 -> ResponseTab(
                             transaction = transaction,
+                            queryEngine = queryEngine,
                             searchQuery = debouncedSearchQuery,
                             currentMatchIndex = currentMatchIndex,
                             onMatchCountChanged = { matchCount = it },
@@ -905,6 +916,7 @@ private data class MatchInfo(
 @Composable
 private fun RequestTab(
     transaction: NetworkTransaction,
+    queryEngine: QueryEngine?,
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
@@ -920,8 +932,8 @@ private fun RequestTab(
     var isCopying by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
-    var headersExpanded by remember { mutableStateOf(true) }
-    var bodyExpanded by remember { mutableStateOf(true) }
+    var headersExpanded by rememberSaveable { mutableStateOf(true) }
+    var bodyExpanded by rememberSaveable { mutableStateOf(true) }
 
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
@@ -937,7 +949,7 @@ private fun RequestTab(
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
-            val raw = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBody(blobId)
+            val raw = queryEngine?.getBody(blobId)
             rawBody = raw
             val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
                 if (raw != null) formatJson(raw) else null
@@ -1089,6 +1101,31 @@ private fun RequestTab(
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                         val hasActiveSearch = searchQuery.isNotEmpty()
 
+                        // Syntax highlighting for raw/search mode
+                        var syntaxHighlighted by remember {
+                            mutableStateOf<androidx.compose.ui.text.AnnotatedString?>(null)
+                        }
+                        LaunchedEffect(displayBody, detectedContentType) {
+                            syntaxHighlighted = null
+                            if (displayBody.length > MAX_SYNTAX_HIGHLIGHT_SIZE) return@LaunchedEffect
+                            val language = when (detectedContentType) {
+                                ContentType.JSON -> "json"
+                                ContentType.XML, ContentType.HTML -> "xml"
+                                else -> return@LaunchedEffect
+                            }
+                            val highlighter = try {
+                                val registry: HighlighterRegistry =
+                                    org.koin.java.KoinJavaComponent.get(HighlighterRegistry::class.java)
+                                registry.getHighlighter(language)
+                            } catch (_: RuntimeException) {
+                                null
+                            } ?: return@LaunchedEffect
+                            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                                val tokens = highlighter.tokenize(displayBody)
+                                syntaxHighlighted = colors.buildHighlightedString(displayBody, tokens)
+                            }
+                        }
+
                         // Format-specific rendering in pretty mode (use flat text when searching)
                         if (isPrettyMode && !hasActiveSearch) {
                             when (detectedContentType) {
@@ -1133,6 +1170,7 @@ private fun RequestTab(
                                             query = searchQuery,
                                             currentMatchGlobalPos = currentMatchGlobalPos,
                                             modifier = Modifier.fillMaxWidth(),
+                                            syntaxHighlighted = syntaxHighlighted,
                                             onTextLayout = { textLayoutResult = it },
                                         )
                                     }
@@ -1146,6 +1184,7 @@ private fun RequestTab(
                                     query = searchQuery,
                                     currentMatchGlobalPos = currentMatchGlobalPos,
                                     modifier = Modifier.fillMaxWidth(),
+                                    syntaxHighlighted = syntaxHighlighted,
                                     onTextLayout = { textLayoutResult = it },
                                 )
                             }
@@ -1201,6 +1240,7 @@ private fun RequestTab(
 @Composable
 private fun ResponseTab(
     transaction: NetworkTransaction,
+    queryEngine: QueryEngine?,
     searchQuery: String,
     currentMatchIndex: Int,
     onMatchCountChanged: (Int) -> Unit,
@@ -1218,8 +1258,8 @@ private fun ResponseTab(
     var isCopying by remember { mutableStateOf(false) }
     var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
     var isPrettyMode by remember { mutableStateOf(true) }
-    var headersExpanded by remember { mutableStateOf(true) }
-    var bodyExpanded by remember { mutableStateOf(true) }
+    var headersExpanded by rememberSaveable { mutableStateOf(true) }
+    var bodyExpanded by rememberSaveable { mutableStateOf(true) }
     var showImageViewer by remember { mutableStateOf(false) }
     var showPdfViewer by remember { mutableStateOf(false) }
     var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
@@ -1281,7 +1321,7 @@ private fun ResponseTab(
         if (blobId != null) {
             isLoading = true
             // Get raw bytes first to detect binary content like images or PDFs
-            val bytes = com.azikar24.wormaceptor.core.engine.CoreHolder.queryEngine?.getBodyBytes(blobId)
+            val bytes = queryEngine?.getBodyBytes(blobId)
             rawBodyBytes = bytes
 
             // Check for image content and extract metadata
@@ -1466,6 +1506,31 @@ private fun ResponseTab(
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                             val hasActiveSearch = searchQuery.isNotEmpty()
 
+                            // Syntax highlighting for raw/search mode
+                            var syntaxHighlighted by remember {
+                                mutableStateOf<androidx.compose.ui.text.AnnotatedString?>(null)
+                            }
+                            LaunchedEffect(displayBody, detectedContentType) {
+                                syntaxHighlighted = null
+                                if (displayBody.length > MAX_SYNTAX_HIGHLIGHT_SIZE) return@LaunchedEffect
+                                val language = when (detectedContentType) {
+                                    ContentType.JSON -> "json"
+                                    ContentType.XML, ContentType.HTML -> "xml"
+                                    else -> return@LaunchedEffect
+                                }
+                                val highlighter = try {
+                                    val registry: HighlighterRegistry =
+                                        org.koin.java.KoinJavaComponent.get(HighlighterRegistry::class.java)
+                                    registry.getHighlighter(language)
+                                } catch (_: RuntimeException) {
+                                    null
+                                } ?: return@LaunchedEffect
+                                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                                    val tokens = highlighter.tokenize(displayBody)
+                                    syntaxHighlighted = colors.buildHighlightedString(displayBody, tokens)
+                                }
+                            }
+
                             // Format-specific rendering in pretty mode (use flat text when searching)
                             if (isPrettyMode && !hasActiveSearch) {
                                 when (detectedContentType) {
@@ -1510,6 +1575,7 @@ private fun ResponseTab(
                                                 query = searchQuery,
                                                 currentMatchGlobalPos = currentMatchGlobalPos,
                                                 modifier = Modifier.fillMaxWidth(),
+                                                syntaxHighlighted = syntaxHighlighted,
                                                 onTextLayout = { textLayoutResult = it },
                                             )
                                         }
@@ -1523,6 +1589,7 @@ private fun ResponseTab(
                                         query = searchQuery,
                                         currentMatchGlobalPos = currentMatchGlobalPos,
                                         modifier = Modifier.fillMaxWidth(),
+                                        syntaxHighlighted = syntaxHighlighted,
                                         onTextLayout = { textLayoutResult = it },
                                     )
                                 }
@@ -1811,6 +1878,9 @@ private fun BodyControlsRow(
     }
 }
 
+/** Maximum body size (in chars) for which syntax highlighting is attempted. */
+private const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000
+
 /**
  * Find all match positions using indexOf - faster than regex for simple substring matching.
  * O(n) where n = text length.
@@ -1836,11 +1906,13 @@ private fun findMatchRanges(text: String, query: String): List<IntRange> {
 private fun buildBaseHighlightedText(
     text: String,
     matchRanges: List<IntRange>,
+    syntaxHighlighted: androidx.compose.ui.text.AnnotatedString? = null,
 ): androidx.compose.ui.text.AnnotatedString {
-    if (matchRanges.isEmpty()) return androidx.compose.ui.text.AnnotatedString(text)
+    val base = syntaxHighlighted ?: androidx.compose.ui.text.AnnotatedString(text)
+    if (matchRanges.isEmpty()) return base
 
     return androidx.compose.ui.text.buildAnnotatedString {
-        append(text)
+        append(base)
         val defaultStyle = androidx.compose.ui.text.SpanStyle(
             background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
         )
@@ -1860,6 +1932,7 @@ private fun HighlightedBodyText(
     query: String,
     currentMatchGlobalPos: Int?,
     modifier: Modifier = Modifier,
+    syntaxHighlighted: androidx.compose.ui.text.AnnotatedString? = null,
     onTextLayout: (androidx.compose.ui.text.TextLayoutResult) -> Unit = {},
 ) {
     // Level 1: Cache match ranges - only when text/query changes
@@ -1868,8 +1941,8 @@ private fun HighlightedBodyText(
     }
 
     // Level 2: Cache base text with ALL matches in yellow - only when text/query changes
-    val baseHighlighted = remember(text, matchRanges) {
-        buildBaseHighlightedText(text, matchRanges)
+    val baseHighlighted = remember(text, matchRanges, syntaxHighlighted) {
+        buildBaseHighlightedText(text, matchRanges, syntaxHighlighted)
     }
 
     // Track layout for overlay positioning
@@ -2078,6 +2151,7 @@ private fun TransactionDetailScreenPreview() {
                 durationMs = 142L,
                 status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
             ),
+            queryEngine = null,
             onBack = {},
         )
     }

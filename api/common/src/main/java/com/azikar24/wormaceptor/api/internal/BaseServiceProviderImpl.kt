@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.CrashReporter
 import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
+import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
@@ -22,6 +23,8 @@ import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.contracts.WebViewMonitorRepository
+import com.azikar24.wormaceptor.infra.syntax.json.JsonHighlighter
+import com.azikar24.wormaceptor.infra.syntax.xml.XmlHighlighter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -97,6 +100,9 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
         // Configure WebView monitor engine with persistence
         configureWebViewMonitor(deps.webViewMonitorRepository)
+
+        // Register syntax highlighters
+        configureHighlighters()
     }
 
     private fun configureLeakDetection(context: Context, leakRepository: LeakRepository, leakNotifications: Boolean) {
@@ -125,6 +131,16 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
             webViewMonitorEngine.configure(repository = webViewMonitorRepository)
         } catch (e: RuntimeException) {
             Log.d(TAG, "WebViewMonitorEngine not available in Koin", e)
+        }
+    }
+
+    private fun configureHighlighters() {
+        try {
+            val registry: HighlighterRegistry = get(HighlighterRegistry::class.java)
+            registry.register(JsonHighlighter())
+            registry.register(XmlHighlighter())
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "HighlighterRegistry not available", e)
         }
     }
 
@@ -163,7 +179,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         tlsVersion: String?,
         error: String?,
     ) {
-        runBlocking(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             captureEngine?.completeTransaction(
                 id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error,
             )
@@ -201,7 +217,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     }
 
     override fun clearTransactions() {
-        runBlocking(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             queryEngine?.clear()
         }
     }

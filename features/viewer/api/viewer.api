@@ -35,8 +35,8 @@ public final class com/azikar24/wormaceptor/feature/viewer/export/CrashExportKt 
 
 public final class com/azikar24/wormaceptor/feature/viewer/export/ExportManager {
 	public static final field $stable I
-	public fun <init> (Landroid/content/Context;Lkotlin/jvm/functions/Function1;)V
-	public synthetic fun <init> (Landroid/content/Context;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Landroid/content/Context;Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Landroid/content/Context;Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun exportTransactions (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
@@ -284,7 +284,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/FilterBottomSheetC
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
-	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/Flow;Landroidx/compose/runtime/Composer;IIIIII)V
+	public static final fun HomeScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;Lkotlinx/collections/immutable/ImmutableList;ZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/util/Set;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/Flow;Landroidx/compose/runtime/Composer;IIIIII)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
@@ -338,12 +338,12 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolItem {
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ToolsTabKt {
-	public static final fun ToolsTab (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ToolsTab (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/util/Set;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/TransactionDetailScreenKt {
-	public static final fun TransactionDetailPagerScreen (Ljava/util/List;ILkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
-	public static final fun TransactionDetailScreen (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+	public static final fun TransactionDetailPagerScreen (Ljava/util/List;ILkotlin/jvm/functions/Function2;Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+	public static final fun TransactionDetailScreen (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/TransactionListScreenKt {
@@ -467,7 +467,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Fullscr
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/HighlightedTextKt {
-	public static final fun HighlightedText (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/TextStyle;ZZLjava/lang/String;Ljava/lang/Integer;Lkotlin/jvm/functions/Function1;Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun HighlightedText (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/TextStyle;ZZLjava/lang/String;Ljava/lang/Integer;Lkotlin/jvm/functions/Function1;Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
 	public static final fun InlineCode (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun SearchHighlightedText (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
@@ -653,7 +653,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Fo
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/JsonTreeViewKt {
-	public static final fun JsonTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZILcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun JsonTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZILcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/MultipartPart {
@@ -684,7 +684,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Mu
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/XmlTreeViewKt {
-	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ComposableSingletons$GestureNavigationComponentsKt {
@@ -704,60 +704,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gestures/SwipeBackContainerKt {
 	public static final fun SwipeBackContainer (Lkotlin/jvm/functions/Function0;ZFFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-OG5zQOY (JJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
-	public static synthetic fun copy-OG5zQOY$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;JJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
-	public final fun getBoolean-0d7_KjU ()J
-	public final fun getCodeBackground-0d7_KjU ()J
-	public final fun getComment-0d7_KjU ()J
-	public final fun getDefault-0d7_KjU ()J
-	public final fun getKeyword-0d7_KjU ()J
-	public final fun getLineNumberBackground-0d7_KjU ()J
-	public final fun getLineNumberText-0d7_KjU ()J
-	public final fun getNumber-0d7_KjU ()J
-	public final fun getOperator-0d7_KjU ()J
-	public final fun getProperty-0d7_KjU ()J
-	public final fun getPunctuation-0d7_KjU ()J
-	public final fun getSearchHighlight-0d7_KjU ()J
-	public final fun getSearchHighlightCurrent-0d7_KjU ()J
-	public final fun getSearchHighlightText-0d7_KjU ()J
-	public final fun getString-0d7_KjU ()J
-	public final fun getTag-0d7_KjU ()J
-	public final fun getType-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public final fun toSyntaxColors ()Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/theme/SyntaxColorsKt {
-	public static final fun ProvideSyntaxColors (ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun getDarkComposeSyntaxColors ()Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
-	public static final fun getLightComposeSyntaxColors ()Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
-	public static final fun getLocalSyntaxColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun syntaxColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/viewer/ui/theme/ComposeSyntaxColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/util/CommonUtilsKt {
@@ -961,10 +907,22 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent$Ta
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent$ToolCategoryCollapseToggled : com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent$ToolCategoryCollapseToggled;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent$ToolCategoryCollapseToggled;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewEvent$ToolCategoryCollapseToggled;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCategory ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel$Companion;
-	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Landroid/content/Context;)V
 	public final fun getAllTransactions ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getCrashes ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getPagedTransactions ()Lkotlinx/coroutines/flow/Flow;
@@ -980,10 +938,11 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewModel$Co
 public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;Z)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZLjava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZLjava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component10 ()Z
+	public final fun component11 ()Ljava/util/Set;
 	public final fun component2 ()Ljava/util/Set;
 	public final fun component3 ()Ljava/util/Set;
 	public final fun component4 ()I
@@ -992,9 +951,10 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState {
 	public final fun component7 ()Z
 	public final fun component8 ()Ljava/util/Set;
 	public final fun component9 ()Ljava/util/Set;
-	public final fun copy (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;Z)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;
+	public final fun copy (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZLjava/util/Set;)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;IIZZLjava/util/Set;Ljava/util/Set;ZLjava/util/Set;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/ViewerViewState;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCollapsedToolCategories ()Ljava/util/Set;
 	public final fun getFilterMethods ()Ljava/util/Set;
 	public final fun getFilterStatusRanges ()Ljava/util/Set;
 	public final fun getQuickFilters ()Ljava/util/Set;

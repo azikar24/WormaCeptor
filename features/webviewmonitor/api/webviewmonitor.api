@@ -10,13 +10,14 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel : androidx/lifecycle/ViewModel {
 	public static final field $stable I
+	public static final field Companion Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel$Companion;
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)V
 	public final fun clearFilters ()V
 	public final fun clearRequests ()V
 	public final fun clearSelection ()V
 	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
 	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
-	public final fun getFilteredRequests ()Ljava/util/List;
+	public final fun getFilteredRequests ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getRequests ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getResourceTypeFilter ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
@@ -29,6 +30,9 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public final fun toggleEnabled ()V
 	public final fun toggleFilters ()V
 	public final fun toggleResourceTypeFilter (Lcom/azikar24/wormaceptor/domain/entities/WebViewResourceType;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel$Companion {
 }
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {

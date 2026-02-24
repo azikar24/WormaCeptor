@@ -2,8 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:XmlHighlighter.kt$XmlHighlighter$private fun tokenize(code: String): List&lt;Token&gt;</ID>
-    <ID>LongMethod:XmlHighlighter.kt$XmlHighlighter$private fun tokenize(code: String): List&lt;Token&gt;</ID>
+    <ID>CyclomaticComplexMethod:XmlHighlighter.kt$XmlHighlighter$override fun tokenize(code: String): List&lt;Token&gt;</ID>
+    <ID>LongMethod:XmlHighlighter.kt$XmlHighlighter$override fun tokenize(code: String): List&lt;Token&gt;</ID>
     <ID>MagicNumber:XmlHighlighter.kt$XmlHighlighter$3</ID>
     <ID>MagicNumber:XmlHighlighter.kt$XmlHighlighter$4</ID>
     <ID>NestedBlockDepth:XmlHighlighter.kt$XmlHighlighter$private fun tokenizeAttributes(attrString: String, baseOffset: Int, tokens: MutableList&lt;Token&gt;)</ID>

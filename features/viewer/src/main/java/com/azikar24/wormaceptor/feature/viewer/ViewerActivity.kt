@@ -107,6 +107,7 @@ class ViewerActivity : ComponentActivity() {
                     requireNotNull(CoreHolder.queryEngine) {
                         "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
                     },
+                    applicationContext,
                 ) as T
             }
         }
@@ -210,15 +211,17 @@ class ViewerActivity : ComponentActivity() {
                                     },
                                     onExportTransactions = {
                                         scope.launch {
+                                            val qe = requireNotNull(CoreHolder.queryEngine) {
+                                                "WormaCeptor not initialized"
+                                            }
                                             val exportManager =
                                                 com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                                     this@ViewerActivity,
+                                                    qe,
                                                     onMessage = snackbarMessage,
                                                 )
                                             val allTransactionsForExport =
-                                                requireNotNull(CoreHolder.queryEngine) {
-                                                    "WormaCeptor not initialized"
-                                                }.getAllTransactionsForExport()
+                                                qe.getAllTransactionsForExport()
                                             exportManager.exportTransactions(allTransactionsForExport)
                                         }
                                     },
@@ -270,6 +273,7 @@ class ViewerActivity : ComponentActivity() {
                                             val exportManager =
                                                 com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
                                                     this@ViewerActivity,
+                                                    CoreHolder.queryEngine,
                                                     onMessage = snackbarMessage,
                                                 )
                                             val fullTransactions = selected.mapNotNull { summary ->
@@ -289,6 +293,10 @@ class ViewerActivity : ComponentActivity() {
                                         copyAsCurl(transaction, viewModel)
                                     },
                                     onToolNavigate = { route -> navController.navigate(route) },
+                                    collapsedToolCategories = state.collapsedToolCategories,
+                                    onToolCategoryCollapseToggled = {
+                                        onEvent(ViewerViewEvent.ToolCategoryCollapseToggled(it))
+                                    },
                                     snackbarMessage = snackbarMessages,
                                 )
                             }
@@ -315,6 +323,7 @@ class ViewerActivity : ComponentActivity() {
                                                     "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
                                                 }.getDetails(transactionId)
                                             },
+                                            queryEngine = CoreHolder.queryEngine,
                                             onBack = { navController.popBackStack() },
                                         )
                                     } else {
@@ -332,6 +341,7 @@ class ViewerActivity : ComponentActivity() {
                                         transaction?.let {
                                             TransactionDetailScreen(
                                                 transaction = it,
+                                                queryEngine = CoreHolder.queryEngine,
                                                 onBack = { navController.popBackStack() },
                                             )
                                         }

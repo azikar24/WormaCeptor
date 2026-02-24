@@ -110,6 +110,7 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
                 onExitBrowser = { onNavigateBack?.invoke() },
                 onClearError = { onEvent(FileBrowserViewEvent.ClearError) },
                 modifier = modifier,
+                snackBarHostState = snackBarHostState,
             )
         }
 

@@ -54,22 +54,6 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/CrashR
 	public abstract fun saveCrash (Lcom/azikar24/wormaceptor/domain/entities/Crash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/azikar24/wormaceptor/domain/contracts/DarkSyntaxColors : com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/domain/contracts/DarkSyntaxColors;
-	public fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
-	public fun getBoolean-0d7_KjU ()J
-	public fun getComment-0d7_KjU ()J
-	public fun getDefault-0d7_KjU ()J
-	public fun getKeyword-0d7_KjU ()J
-	public fun getNumber-0d7_KjU ()J
-	public fun getOperator-0d7_KjU ()J
-	public fun getProperty-0d7_KjU ()J
-	public fun getPunctuation-0d7_KjU ()J
-	public fun getString-0d7_KjU ()J
-	public fun getTag-0d7_KjU ()J
-	public fun getTypeAnnotation-0d7_KjU ()J
-}
-
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/DatabaseRepository {
 	public abstract fun executeQuery (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
 	public abstract fun getDatabases ()Ljava/util/List;
@@ -159,22 +143,6 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/LeakRe
 	public abstract fun saveLeak (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/azikar24/wormaceptor/domain/contracts/LightSyntaxColors : com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/domain/contracts/LightSyntaxColors;
-	public fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
-	public fun getBoolean-0d7_KjU ()J
-	public fun getComment-0d7_KjU ()J
-	public fun getDefault-0d7_KjU ()J
-	public fun getKeyword-0d7_KjU ()J
-	public fun getNumber-0d7_KjU ()J
-	public fun getOperator-0d7_KjU ()J
-	public fun getProperty-0d7_KjU ()J
-	public fun getPunctuation-0d7_KjU ()J
-	public fun getString-0d7_KjU ()J
-	public fun getTag-0d7_KjU ()J
-	public fun getTypeAnnotation-0d7_KjU ()J
-}
-
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository {
 	public abstract fun deletePreset (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getCurrentMockLocation ()Lkotlinx/coroutines/flow/Flow;
@@ -218,28 +186,9 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/PushSi
 	public abstract fun saveTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public abstract interface class com/azikar24/wormaceptor/domain/contracts/SyntaxColors {
-	public abstract fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
-	public abstract fun getBoolean-0d7_KjU ()J
-	public abstract fun getComment-0d7_KjU ()J
-	public abstract fun getDefault-0d7_KjU ()J
-	public abstract fun getKeyword-0d7_KjU ()J
-	public abstract fun getNumber-0d7_KjU ()J
-	public abstract fun getOperator-0d7_KjU ()J
-	public abstract fun getProperty-0d7_KjU ()J
-	public abstract fun getPunctuation-0d7_KjU ()J
-	public abstract fun getString-0d7_KjU ()J
-	public abstract fun getTag-0d7_KjU ()J
-	public abstract fun getTypeAnnotation-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/domain/contracts/SyntaxColors$DefaultImpls {
-	public static fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
-}
-
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter {
 	public abstract fun getLanguage ()Ljava/lang/String;
-	public abstract fun highlight (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/SyntaxColors;)Landroidx/compose/ui/text/AnnotatedString;
+	public abstract fun tokenize (Ljava/lang/String;)Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/Token {

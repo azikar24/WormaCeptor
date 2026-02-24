@@ -51,4 +51,7 @@ sealed class LocationViewEvent {
 
     /** Stop continuous real location updates. */
     data object StopRealLocationUpdates : LocationViewEvent()
+
+    /** User toggled the map expanded/collapsed state. */
+    data object ToggleMapExpanded : LocationViewEvent()
 }

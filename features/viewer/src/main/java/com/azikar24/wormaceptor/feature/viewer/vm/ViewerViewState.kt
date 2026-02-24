@@ -32,4 +32,6 @@ data class ViewerViewState(
     val selectedIds: Set<UUID> = emptySet(),
     /** Whether the initial data load is still in progress. */
     val isInitialLoading: Boolean = true,
+    /** Set of tool category names that are currently collapsed. */
+    val collapsedToolCategories: Set<String> = emptySet(),
 )

@@ -4,7 +4,6 @@
   <CurrentIssues>
     <ID>ComposableParamOrder:WormaCeptorFAB.kt$WormaCeptorFAB</ID>
     <ID>ComposableParamOrder:WormaCeptorStatItem.kt$WormaCeptorStatItem</ID>
-    <ID>CompositionLocalAllowlist:SyntaxColors.kt$LocalSyntaxColors</ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Disabled, inactive, neutral states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Error, failure, critical, destructive states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Info, in-progress, selected, link states </ID>
@@ -71,21 +70,6 @@
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
     <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF000000</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF0000FF</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF098658</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF22863A</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF24292E</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF5C6370</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF61AFEF</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF6A737D</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF6F42C1</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFF98C379</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFFABB2BF</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFFC678DD</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFFD19A66</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFFE06C75</ID>
-    <ID>MagicNumber:SyntaxColors.kt$0xFFE5C07B</ID>
     <ID>MagicNumber:Theme.kt$0xFF000000</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF3B82F6</ID>
@@ -227,6 +211,17 @@
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.Success$val message: String</ID>
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.TooLarge$val message: String</ID>
     <ID>UndocumentedPublicProperty:HapticHelpers.kt$HapticOnceState$val isTriggered: Boolean get() = hasTriggered()</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val boolean: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val comment: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val default: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val keyword: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val number: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val operator: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val property: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val punctuation: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val string: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val tag: Long</ID>
+    <ID>UndocumentedPublicProperty:SyntaxColorScheme.kt$SyntaxColors$val typeAnnotation: Long</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val boolean: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val comment: Color</ID>
     <ID>UndocumentedPublicProperty:SyntaxColors.kt$ComposeSyntaxColors$val default: Color</ID>

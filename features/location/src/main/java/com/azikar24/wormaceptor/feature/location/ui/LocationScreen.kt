@@ -83,6 +83,8 @@ fun LocationScreen(
     onClearError: () -> Unit,
     onClearSuccessMessage: () -> Unit,
     onMapTap: (GeoPoint) -> Unit,
+    isMapExpanded: Boolean,
+    onToggleMapExpanded: () -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -104,8 +106,6 @@ fun LocationScreen(
             onClearSuccessMessage()
         }
     }
-
-    var isMapExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -186,7 +186,7 @@ fun LocationScreen(
                 item {
                     CollapsibleMapSection(
                         isExpanded = isMapExpanded,
-                        onToggle = { isMapExpanded = !isMapExpanded },
+                        onToggle = onToggleMapExpanded,
                         realLocation = realDeviceLocation,
                         mockLocation = currentMockLocation?.let {
                             GeoPoint(it.latitude, it.longitude)
@@ -338,6 +338,8 @@ private fun LocationScreenPreview() {
             onClearError = {},
             onClearSuccessMessage = {},
             onMapTap = {},
+            isMapExpanded = false,
+            onToggleMapExpanded = {},
             onBack = {},
         )
     }

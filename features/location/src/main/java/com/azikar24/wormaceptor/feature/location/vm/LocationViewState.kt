@@ -14,4 +14,6 @@ data class LocationViewState(
     val isLoading: Boolean = false,
     /** Whether mock location provider is available on the device. */
     val isMockLocationAvailable: Boolean = false,
+    /** Whether the map section is expanded. */
+    val isMapExpanded: Boolean = false,
 )

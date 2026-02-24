@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.vm
 
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 /**
@@ -38,7 +41,21 @@ import java.util.UUID
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class ViewerViewModel(
     private val queryEngine: QueryEngine,
+    context: Context,
 ) : BaseViewModel<ViewerViewState, ViewerViewEffect, ViewerViewEvent>(ViewerViewState()) {
+
+    private val collapsePrefs = context.getSharedPreferences(COLLAPSE_PREFS_NAME, Context.MODE_PRIVATE)
+
+    init {
+        viewModelScope.launch {
+            val saved = withContext(Dispatchers.IO) {
+                collapsePrefs.getStringSet(COLLAPSE_KEY, emptySet()) ?: emptySet()
+            }
+            if (saved.isNotEmpty()) {
+                updateState { copy(collapsedToolCategories = saved) }
+            }
+        }
+    }
 
     /** Unfiltered stream of every recorded transaction summary. */
     val allTransactions: StateFlow<ImmutableList<TransactionSummary>> = queryEngine.observeTransactions()
@@ -137,6 +154,7 @@ class ViewerViewModel(
             is ViewerViewEvent.RefreshCrashes -> handleRefreshCrashes()
 
             is ViewerViewEvent.ShowMessage -> emitEffect(ViewerViewEffect.ShowSnackbar(event.message))
+            is ViewerViewEvent.ToolCategoryCollapseToggled -> handleToolCategoryCollapseToggle(event.category)
         }
     }
 
@@ -203,6 +221,22 @@ class ViewerViewModel(
         }
     }
 
+    private fun handleToolCategoryCollapseToggle(category: String) {
+        updateState {
+            val updated = if (category in collapsedToolCategories) {
+                collapsedToolCategories - category
+            } else {
+                collapsedToolCategories + category
+            }
+            copy(collapsedToolCategories = updated)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            collapsePrefs.edit {
+                putStringSet(COLLAPSE_KEY, uiState.value.collapsedToolCategories)
+            }
+        }
+    }
+
     private fun handleRefreshCrashes() {
         if (uiState.value.isRefreshingCrashes) return
 
@@ -219,5 +253,7 @@ class ViewerViewModel(
         private const val SEARCH_DEBOUNCE_LIST = 150L
         private const val PAGE_SIZE = 30
         private const val REFRESH_DELAY = 500L
+        private const val COLLAPSE_PREFS_NAME = "wormaceptor_tools_collapse"
+        private const val COLLAPSE_KEY = "collapsed"
     }
 }

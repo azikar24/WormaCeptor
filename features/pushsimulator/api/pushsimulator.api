@@ -312,7 +312,6 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulat
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;)V
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
-	public final fun hasPermission ()Z
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewState {

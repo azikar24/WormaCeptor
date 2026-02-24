@@ -58,6 +58,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -585,7 +586,7 @@ private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> U
 
 @Composable
 private fun CollapsibleInfoRow(label: String, value: String) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
     val collapse = stringResource(R.string.deviceinfo_collapse)
     val expand = stringResource(R.string.deviceinfo_expand)
 

@@ -69,18 +69,12 @@ jobs:
       - name: Run Detekt
         run: ./gradlew detekt
 
-      - name: Upload SARIF to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: build/reports/detekt/detekt.sarif
-
       - name: Upload Detekt Report
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: detekt-report
-          path: build/reports/detekt/
+          path: '**/build/reports/detekt/'
 
   # ==========================================================================
   # Android Lint

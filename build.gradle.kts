@@ -39,6 +39,7 @@ dependencyCheck {
     suppressionFile = "$rootDir/config/owasp/suppressions.xml"
     formats = listOf("HTML", "JSON", "SARIF")
     outputDirectory = "$buildDir/reports/dependency-check"
+    nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
 }
 
 // =============================================================================

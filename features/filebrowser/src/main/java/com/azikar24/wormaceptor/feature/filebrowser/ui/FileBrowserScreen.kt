@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,16 +47,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.BreadcrumbBar
 import com.azikar24.wormaceptor.feature.filebrowser.ui.components.FileListItem
-import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
+import com.azikar24.wormaceptor.feature.filebrowser.vm.SortMode
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Main file browser screen showing directory listing.
@@ -72,13 +77,13 @@ fun FileBrowserScreen(
     onNavigateToBreadcrumb: (Int) -> Unit,
     onFileClick: (FileEntry) -> Unit,
     onFileLongClick: (FileEntry) -> Unit,
-    onSortModeChanged: (FileBrowserViewModel.SortMode) -> Unit,
+    onSortModeChanged: (SortMode) -> Unit,
     onNavigateBack: () -> Boolean,
     onExitBrowser: () -> Unit,
     onClearError: () -> Unit,
     modifier: Modifier = Modifier,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
     var showSortMenu by remember { mutableStateOf(false) }
     var searchActive by rememberSaveable { mutableStateOf(false) }
 
@@ -92,7 +97,7 @@ fun FileBrowserScreen(
     // Show error as snackbar
     LaunchedEffect(error) {
         error?.let {
-            snackbarHostState.showSnackbar(it)
+            snackBarHostState.showSnackbar(it)
             onClearError()
         }
     }
@@ -144,21 +149,21 @@ fun FileBrowserScreen(
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.filebrowser_sort_name)) },
                                     onClick = {
-                                        onSortModeChanged(FileBrowserViewModel.SortMode.NAME)
+                                        onSortModeChanged(SortMode.NAME)
                                         showSortMenu = false
                                     },
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.filebrowser_sort_size)) },
                                     onClick = {
-                                        onSortModeChanged(FileBrowserViewModel.SortMode.SIZE)
+                                        onSortModeChanged(SortMode.SIZE)
                                         showSortMenu = false
                                     },
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.filebrowser_sort_date)) },
                                     onClick = {
-                                        onSortModeChanged(FileBrowserViewModel.SortMode.DATE)
+                                        onSortModeChanged(SortMode.DATE)
                                         showSortMenu = false
                                     },
                                 )
@@ -199,68 +204,120 @@ fun FileBrowserScreen(
                 WormaCeptorDivider()
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            filteredFiles.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        Box(modifier = Modifier.imePadding()) {
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Folder,
-                            contentDescription = stringResource(R.string.filebrowser_no_files_found),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                        )
-                        Text(
-                            text = stringResource(R.string.filebrowser_no_files_found),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                        CircularProgressIndicator()
                     }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(0.dp),
-                ) {
-                    items(
-                        items = filteredFiles,
-                        key = { it.path },
-                    ) { file ->
-                        FileListItem(
-                            file = file,
-                            onClick = { onFileClick(file) },
-                            onLongClick = { onFileLongClick(file) },
-                        )
-                        WormaCeptorDivider()
+                filteredFiles.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Folder,
+                                contentDescription = stringResource(R.string.filebrowser_no_files_found),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                            )
+                            Text(
+                                text = stringResource(R.string.filebrowser_no_files_found),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(0.dp),
+                    ) {
+                        items(
+                            items = filteredFiles,
+                            key = { it.path },
+                        ) { file ->
+                            FileListItem(
+                                file = file,
+                                onClick = { onFileClick(file) },
+                                onLongClick = { onFileLongClick(file) },
+                            )
+                            WormaCeptorDivider()
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@SuppressLint("SdCardPath")
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun FileBrowserScreenPreview() {
+    WormaCeptorTheme {
+        FileBrowserScreen(
+            currentPath = "/data/data/com.example/files",
+            navigationStack = persistentListOf("files"),
+            filteredFiles = persistentListOf(
+                FileEntry(
+                    name = "config",
+                    path = "/data/data/com.example/files/config",
+                    isDirectory = true,
+                    sizeBytes = 4_096L,
+                    lastModified = 1_700_000_000_000L,
+                    permissions = "rwxr-xr-x",
+                ),
+                FileEntry(
+                    name = "app.log",
+                    path = "/data/data/com.example/files/app.log",
+                    isDirectory = false,
+                    sizeBytes = 25_600L,
+                    lastModified = 1_700_001_000_000L,
+                    permissions = "rw-r--r--",
+                ),
+                FileEntry(
+                    name = "settings.json",
+                    path = "/data/data/com.example/files/settings.json",
+                    isDirectory = false,
+                    sizeBytes = 1_024L,
+                    lastModified = 1_700_002_000_000L,
+                    permissions = "rw-r--r--",
+                ),
+            ),
+            searchQuery = "",
+            isLoading = false,
+            error = null,
+            onSearchQueryChanged = {},
+            onNavigateToBreadcrumb = {},
+            onFileClick = {},
+            onFileLongClick = {},
+            onSortModeChanged = {},
+            onNavigateBack = { false },
+            onExitBrowser = {},
+            onClearError = {},
+        )
     }
 }

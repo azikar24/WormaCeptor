@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,6 +53,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
@@ -58,6 +61,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
@@ -89,6 +93,47 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
     val totalCount by viewModel.totalCount.collectAsState()
     val levelCounts by viewModel.levelCounts.collectAsState()
 
+    LogsScreenContent(
+        logs = logs,
+        searchQuery = searchQuery,
+        selectedLevels = selectedLevels,
+        autoScroll = autoScroll,
+        isCapturing = isCapturing,
+        totalCount = totalCount,
+        levelCounts = levelCounts,
+        pid = viewModel.currentPid,
+        onSearchQueryChanged = viewModel::onSearchQueryChanged,
+        onLevelToggle = viewModel::toggleLevel,
+        onSetAutoScroll = viewModel::setAutoScroll,
+        onToggleCapture = { if (isCapturing) viewModel.stopCapture() else viewModel.startCapture() },
+        onStartCapture = viewModel::startCapture,
+        onClearLogs = viewModel::clearLogs,
+        modifier = modifier,
+        onBack = onBack,
+    )
+}
+
+@Suppress("LongParameterList")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun LogsScreenContent(
+    logs: ImmutableList<LogEntry>,
+    searchQuery: String,
+    selectedLevels: Set<LogLevel>,
+    autoScroll: Boolean,
+    isCapturing: Boolean,
+    totalCount: Int,
+    levelCounts: Map<LogLevel, Int>,
+    pid: Int,
+    onSearchQueryChanged: (String) -> Unit,
+    onLevelToggle: (LogLevel) -> Unit,
+    onSetAutoScroll: (Boolean) -> Unit,
+    onToggleCapture: () -> Unit,
+    onStartCapture: () -> Unit,
+    onClearLogs: () -> Unit,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+) {
     val listState = rememberLazyListState()
 
     // Auto-scroll to bottom when new logs arrive
@@ -110,7 +155,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
     // Disable auto-scroll when user scrolls up
     LaunchedEffect(isAtBottom) {
         if (!isAtBottom && autoScroll) {
-            viewModel.setAutoScroll(false)
+            onSetAutoScroll(false)
         }
     }
 
@@ -138,15 +183,13 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     actions = {
                         WormaCeptorPlayPauseButton(
                             isActive = isCapturing,
-                            onToggle = {
-                                if (isCapturing) viewModel.stopCapture() else viewModel.startCapture()
-                            },
+                            onToggle = onToggleCapture,
                             activeContentDescription = "Pause capture",
                             inactiveContentDescription = "Start capture",
                         )
 
                         // Clear logs
-                        IconButton(onClick = { viewModel.clearLogs() }) {
+                        IconButton(onClick = onClearLogs) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(R.string.logs_clear),
@@ -161,7 +204,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                 // Search bar
                 WormaCeptorSearchBar(
                     query = searchQuery,
-                    onQueryChange = viewModel::onSearchQueryChanged,
+                    onQueryChange = onSearchQueryChanged,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -175,7 +218,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                 LevelFilterChips(
                     selectedLevels = selectedLevels,
                     levelCounts = levelCounts,
-                    onLevelToggle = viewModel::toggleLevel,
+                    onLevelToggle = onLevelToggle,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
@@ -186,7 +229,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
                     totalCount = totalCount,
                     filteredCount = logs.size,
                     isCapturing = isCapturing,
-                    pid = viewModel.currentPid,
+                    pid = pid,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -204,7 +247,7 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
             ) {
                 WormaCeptorFAB(
                     onClick = {
-                        viewModel.setAutoScroll(true)
+                        onSetAutoScroll(true)
                     },
                     icon = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.logs_scroll_to_bottom),
@@ -212,33 +255,31 @@ fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: 
             }
         },
     ) { paddingValues ->
-        if (logs.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = if (isCapturing) "Waiting for logs..." else "No logs captured",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                subtitle = if (isCapturing) {
-                    "Logs will appear here as they are generated"
-                } else {
-                    "Tap play to start capturing logs"
-                },
-                icon = Icons.Default.VerticalAlignBottom,
-                actionLabel = if (!isCapturing) "Start Capture" else null,
-                onAction = if (!isCapturing) {
-                    { viewModel.startCapture() }
-                } else {
-                    null
-                },
-            )
-        } else {
-            LogList(
-                logs = logs,
-                listState = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
+        Box(modifier = Modifier.imePadding()) {
+            if (logs.isEmpty()) {
+                WormaCeptorEmptyState(
+                    title = if (isCapturing) "Waiting for logs..." else "No logs captured",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    subtitle = if (isCapturing) {
+                        "Logs will appear here as they are generated"
+                    } else {
+                        "Tap play to start capturing logs"
+                    },
+                    icon = Icons.Default.VerticalAlignBottom,
+                    actionLabel = if (!isCapturing) "Start Capture" else null,
+                    onAction = if (!isCapturing) onStartCapture else null,
+                )
+            } else {
+                LogList(
+                    logs = logs,
+                    listState = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            }
         }
     }
 }
@@ -476,5 +517,58 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LogsScreenContentPreview() {
+    WormaCeptorTheme {
+        LogsScreenContent(
+            logs = kotlinx.collections.immutable.persistentListOf(
+                LogEntry(
+                    id = 1L,
+                    timestamp = System.currentTimeMillis() - 5_000,
+                    level = LogLevel.DEBUG,
+                    tag = "OkHttp",
+                    pid = 12345,
+                    message = "Sending request https://api.example.com/users",
+                ),
+                LogEntry(
+                    id = 2L,
+                    timestamp = System.currentTimeMillis() - 3_000,
+                    level = LogLevel.INFO,
+                    tag = "MainActivity",
+                    pid = 12345,
+                    message = "User authenticated successfully",
+                ),
+                LogEntry(
+                    id = 3L,
+                    timestamp = System.currentTimeMillis() - 1_000,
+                    level = LogLevel.ERROR,
+                    tag = "CrashReporter",
+                    pid = 12345,
+                    message = "Failed to upload crash report: timeout",
+                ),
+            ),
+            searchQuery = "",
+            selectedLevels = LogLevel.entries.toSet(),
+            autoScroll = true,
+            isCapturing = true,
+            totalCount = 3,
+            levelCounts = mapOf(
+                LogLevel.DEBUG to 1,
+                LogLevel.INFO to 1,
+                LogLevel.ERROR to 1,
+            ),
+            pid = 12345,
+            onSearchQueryChanged = {},
+            onLevelToggle = {},
+            onSetAutoScroll = {},
+            onToggleCapture = {},
+            onStartCapture = {},
+            onClearLogs = {},
+            onBack = {},
+        )
     }
 }

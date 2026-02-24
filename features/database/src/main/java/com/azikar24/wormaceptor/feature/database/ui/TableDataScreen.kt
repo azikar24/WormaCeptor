@@ -33,15 +33,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying table data with pagination.
@@ -307,5 +310,35 @@ private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TableDataScreenPreview() {
+    WormaCeptorTheme {
+        TableDataScreen(
+            tableName = "users",
+            queryResult = QueryResult(
+                columns = listOf("id", "name", "email"),
+                rows = listOf(
+                    listOf(1, "Alice", "alice@example.com"),
+                    listOf(2, "Bob", "bob@example.com"),
+                ),
+                rowCount = 2,
+            ),
+            schema = persistentListOf(
+                ColumnInfo(name = "id", type = "INTEGER", isPrimaryKey = true, isNullable = false),
+                ColumnInfo(name = "name", type = "TEXT", isPrimaryKey = false, isNullable = false),
+                ColumnInfo(name = "email", type = "TEXT", isPrimaryKey = false, isNullable = true),
+            ),
+            showSchema = false,
+            currentPage = 0,
+            isLoading = false,
+            onToggleSchema = {},
+            onPreviousPage = {},
+            onNextPage = {},
+            onBack = {},
+        )
     }
 }

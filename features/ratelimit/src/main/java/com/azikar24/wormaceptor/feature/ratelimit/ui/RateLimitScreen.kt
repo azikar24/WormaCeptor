@@ -60,11 +60,12 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
-import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.rateLimitColors
@@ -84,9 +85,9 @@ import java.util.Locale
 fun RateLimitScreen(
     config: RateLimitConfig,
     stats: ThrottleStats,
-    selectedPreset: NetworkPreset?,
+    selectedPreset: RateLimitConfig.NetworkPreset?,
     onEnableToggle: () -> Unit,
-    onPresetSelected: (NetworkPreset?) -> Unit,
+    onPresetSelected: (RateLimitConfig.NetworkPreset?) -> Unit,
     onDownloadSpeedChanged: (Long) -> Unit,
     onUploadSpeedChanged: (Long) -> Unit,
     onLatencyChanged: (Long) -> Unit,
@@ -276,9 +277,9 @@ private fun EnableToggleCard(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun NetworkPresetsCard(
-    selectedPreset: NetworkPreset?,
+    selectedPreset: RateLimitConfig.NetworkPreset?,
     enabled: Boolean,
-    onPresetSelected: (NetworkPreset?) -> Unit,
+    onPresetSelected: (RateLimitConfig.NetworkPreset?) -> Unit,
     colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
@@ -305,7 +306,7 @@ private fun NetworkPresetsCard(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
-                NetworkPreset.entries.forEach { preset ->
+                RateLimitConfig.NetworkPreset.entries.forEach { preset ->
                     PresetChip(
                         preset = preset,
                         selected = selectedPreset == preset,
@@ -361,7 +362,7 @@ private fun NetworkPresetsCard(
 
 @Composable
 private fun PresetChip(
-    preset: NetworkPreset,
+    preset: RateLimitConfig.NetworkPreset,
     selected: Boolean,
     enabled: Boolean,
     onClick: () -> Unit,
@@ -369,20 +370,20 @@ private fun PresetChip(
     modifier: Modifier = Modifier,
 ) {
     val presetColor = when (preset) {
-        NetworkPreset.WIFI -> colors.presetWifi
-        NetworkPreset.GOOD_3G, NetworkPreset.REGULAR_3G, NetworkPreset.SLOW_3G -> colors.preset3G
-        NetworkPreset.GOOD_2G, NetworkPreset.SLOW_2G -> colors.preset2G
-        NetworkPreset.EDGE -> colors.presetEdge
-        NetworkPreset.OFFLINE -> colors.presetOffline
+        RateLimitConfig.NetworkPreset.WIFI -> colors.presetWifi
+        RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> colors.preset3G
+        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> colors.preset2G
+        RateLimitConfig.NetworkPreset.EDGE -> colors.presetEdge
+        RateLimitConfig.NetworkPreset.OFFLINE -> colors.presetOffline
     }
 
     val presetIcon = when (preset) {
-        NetworkPreset.WIFI -> Icons.Default.Wifi
-        NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
-        NetworkPreset.REGULAR_3G, NetworkPreset.SLOW_3G -> Icons.Default.SignalCellularAlt
-        NetworkPreset.GOOD_2G, NetworkPreset.SLOW_2G -> Icons.Default.SignalCellularAlt
-        NetworkPreset.EDGE -> Icons.Default.SignalCellularAlt
-        NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
+        RateLimitConfig.NetworkPreset.WIFI -> Icons.Default.Wifi
+        RateLimitConfig.NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
+        RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.EDGE -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
     }
 
     FilterChip(
@@ -709,5 +710,39 @@ private fun formatSpeed(kbps: Long): String {
         String.format(Locale.US, "%.1f Mbps", kbps / 1000.0)
     } else {
         "$kbps Kbps"
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun RateLimitScreenPreview() {
+    WormaCeptorTheme {
+        RateLimitScreen(
+            config = RateLimitConfig(
+                enabled = true,
+                downloadSpeedKbps = 2000L,
+                uploadSpeedKbps = 500L,
+                latencyMs = 100L,
+                packetLossPercent = 1f,
+                preset = RateLimitConfig.NetworkPreset.GOOD_3G,
+            ),
+            stats = ThrottleStats(
+                requestsThrottled = 42,
+                totalDelayMs = 8500L,
+                packetsDropped = 3,
+                bytesThrottled = 1_048_576L,
+            ),
+            selectedPreset = RateLimitConfig.NetworkPreset.GOOD_3G,
+            onEnableToggle = {},
+            onPresetSelected = {},
+            onDownloadSpeedChanged = {},
+            onUploadSpeedChanged = {},
+            onLatencyChanged = {},
+            onPacketLossChanged = {},
+            onClearStats = {},
+            onResetToDefaults = {},
+            onBack = {},
+        )
     }
 }

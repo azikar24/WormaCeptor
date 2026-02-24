@@ -37,9 +37,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.theme.ComposeSyntaxColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.ComposeSyntaxColors
-import com.azikar24.wormaceptor.feature.viewer.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
 import org.json.JSONArray
 import org.json.JSONObject
 

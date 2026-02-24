@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageF
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageFeatureKt {
-	public static final fun SecureStorageViewer (Lcom/azikar24/wormaceptor/core/engine/SecureStorageEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SecureStorageViewer (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -19,10 +19,12 @@ public final class com/azikar24/wormaceptor/feature/securestorage/ui/ComposableS
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$securestorage_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$securestorage_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/ui/SecureStorageScreenKt {

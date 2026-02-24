@@ -20,9 +20,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
@@ -58,6 +60,7 @@ import java.util.UUID
 fun SelectableTransactionListScreen(
     transactions: ImmutableList<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
+    modifier: Modifier = Modifier,
     isInitialLoading: Boolean = false,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
@@ -71,7 +74,6 @@ fun SelectableTransactionListScreen(
     onShare: (TransactionSummary) -> Unit = {},
     onDelete: (TransactionSummary) -> Unit = {},
     onCopyAsCurl: (TransactionSummary) -> Unit = {},
-    modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
@@ -237,5 +239,54 @@ fun SelectableTransactionListScreen(
                 listContent()
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SelectableTransactionListScreenPreview() {
+    WormaCeptorTheme {
+        SelectableTransactionListScreen(
+            transactions = kotlinx.collections.immutable.persistentListOf(
+                TransactionSummary(
+                    id = UUID.randomUUID(),
+                    method = "GET",
+                    host = "api.example.com",
+                    path = "/users/123",
+                    code = 200,
+                    tookMs = 142L,
+                    hasRequestBody = false,
+                    hasResponseBody = true,
+                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    timestamp = System.currentTimeMillis(),
+                ),
+                TransactionSummary(
+                    id = UUID.randomUUID(),
+                    method = "POST",
+                    host = "api.example.com",
+                    path = "/auth/login",
+                    code = 401,
+                    tookMs = 310L,
+                    hasRequestBody = true,
+                    hasResponseBody = true,
+                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    timestamp = System.currentTimeMillis() - 60_000,
+                ),
+                TransactionSummary(
+                    id = UUID.randomUUID(),
+                    method = "PUT",
+                    host = "api.example.com",
+                    path = "/users/123/profile",
+                    code = null,
+                    tookMs = null,
+                    hasRequestBody = true,
+                    hasResponseBody = false,
+                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.ACTIVE,
+                    timestamp = System.currentTimeMillis() - 5_000,
+                ),
+            ),
+            onItemClick = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

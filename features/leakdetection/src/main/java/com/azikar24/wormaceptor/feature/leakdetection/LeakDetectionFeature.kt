@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.feature.leakdetection.ui.LeakDetectionScreen
 import com.azikar24.wormaceptor.feature.leakdetection.vm.LeakDetectionViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Memory Leak Detection feature.
@@ -98,13 +99,10 @@ class LeakDetectionViewModelFactory(
 /**
  * Main composable for the Memory Leak Detection feature.
  * Displays detected memory leaks with filtering and detail capabilities.
- *
- * @param engine The LeakDetectionEngine instance (must be started separately)
- * @param modifier Modifier for the root layout
- * @param onNavigateBack Optional callback for back navigation
  */
 @Composable
-fun LeakDetector(engine: LeakDetectionEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun LeakDetector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: LeakDetectionEngine = koinInject()
     val factory = remember(engine) { LeakDetectionFeature.createViewModelFactory(engine) }
     val viewModel: LeakDetectionViewModel = viewModel(factory = factory)
 

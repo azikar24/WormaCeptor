@@ -2,13 +2,13 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:PushSimulatorFormSection.kt$@Composable internal fun NotificationFormCard( uiState: PushSimulatorUiState, channels: List&lt;NotificationChannelInfo&gt;, previewTitlePlaceholder: String, previewBodyPlaceholder: String, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:PushSimulatorFormSection.kt$@Composable internal fun NotificationFormCard( state: PushSimulatorViewState, channels: List&lt;NotificationChannelInfo&gt;, previewTitlePlaceholder: String, previewBodyPlaceholder: String, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorFormSection.kt$@Composable private fun ChannelSelector( selectedChannelId: String, channels: List&lt;NotificationChannelInfo&gt;, onChannelSelected: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorFormSection.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ActionButtonsSection( actions: List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;, newActionTitle: String, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PushSimulatorPreviewSection.kt$@OptIn(ExperimentalLayoutApi::class) @Composable internal fun NotificationPreview( title: String, body: String, priority: NotificationPriority, channelName: String?, actions: List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;, )</ID>
-    <ID>LongMethod:PushSimulatorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:PushSimulatorScreen.kt$@Composable fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:PushSimulatorTemplatesSection.kt$@OptIn(ExperimentalLayoutApi::class) @Composable internal fun TemplateCard( template: NotificationTemplate, onLoad: () -&gt; Unit, onSend: () -&gt; Unit, onDelete: () -&gt; Unit, )</ID>
-    <ID>LongParameterList:PushSimulatorFormSection.kt$( uiState: PushSimulatorUiState, channels: List&lt;NotificationChannelInfo&gt;, previewTitlePlaceholder: String, previewBodyPlaceholder: String, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
+    <ID>LongParameterList:PushSimulatorFormSection.kt$( state: PushSimulatorViewState, channels: List&lt;NotificationChannelInfo&gt;, previewTitlePlaceholder: String, previewBodyPlaceholder: String, onTitleChange: (String) -&gt; Unit, onBodyChange: (String) -&gt; Unit, onChannelChange: (String) -&gt; Unit, onPriorityChange: (NotificationPriority) -&gt; Unit, onNewActionTitleChange: (String) -&gt; Unit, onAddAction: (String) -&gt; Unit, onRemoveAction: (String) -&gt; Unit, )</ID>
     <ID>LongParameterList:PushSimulatorFormSection.kt$( value: String, onValueChange: (String) -&gt; Unit, label: String, placeholder: String, singleLine: Boolean, maxChars: Int, minLines: Int = 1, maxLines: Int = 1, )</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$0xFF4FC3F7</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$0xFF90A4AE</ID>
@@ -19,17 +19,27 @@
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$0xFFBA68C8</ID>
     <ID>MagicNumber:PushSimulatorFormSection.kt$3</ID>
     <ID>MagicNumber:PushSimulatorTemplatesSection.kt$3</ID>
-    <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$3</ID>
-    <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$5000</ID>
-    <ID>MagicNumber:PushSimulatorViewModel.kt$PushSimulatorViewModel$8</ID>
     <ID>SwallowedException:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: NotificationPermissionException</ID>
     <ID>TooGenericExceptionCaught:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: Exception</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$Error : PushSimulatorEvent</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$NotificationSent : PushSimulatorEvent</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$PermissionRequired : PushSimulatorEvent</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$TemplateDeleted : PushSimulatorEvent</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$TemplateLoaded : PushSimulatorEvent</ID>
-    <ID>UndocumentedPublicClass:PushSimulatorViewModel.kt$PushSimulatorEvent$TemplateSaved : PushSimulatorEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$Error : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$NotificationSent : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$PermissionRequired : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$TemplateDeleted : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$TemplateLoaded : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEffect.kt$PushSimulatorViewEffect$TemplateSaved : PushSimulatorViewEffect</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$AddAction : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$ClearForm : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$DeleteTemplate : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$LoadTemplate : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$RemoveAction : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$SaveAsTemplate : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$SendFromTemplate : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$SendNotification : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$UpdateBody : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$UpdateChannelId : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$UpdateNewActionTitle : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$UpdatePriority : PushSimulatorViewEvent</ID>
+    <ID>UndocumentedPublicClass:PushSimulatorViewEvent.kt$PushSimulatorViewEvent$UpdateTitle : PushSimulatorViewEvent</ID>
     <ID>UndocumentedPublicFunction:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$fun forPriority(priorityName: String): Color</ID>
     <ID>UndocumentedPublicProperty:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$val default = Color(0xFF4FC3F7) // Light Blue</ID>
     <ID>UndocumentedPublicProperty:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.PriorityColors$val high = Color(0xFFFFB74D) // Orange</ID>
@@ -38,21 +48,31 @@
     <ID>UndocumentedPublicProperty:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$val action = Color(0xFFBA68C8) // Purple</ID>
     <ID>UndocumentedPublicProperty:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$val preset = Color(0xFF81C784) // Light Green</ID>
     <ID>UndocumentedPublicProperty:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$val user = Color(0xFF64B5F6) // Blue</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorEvent.Error$val message: String</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorEvent.TemplateLoaded$val name: String</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val actions: List&lt;NotificationAction&gt; = emptyList()</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val body: String = ""</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val newActionTitle: String = ""</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val priority: NotificationPriority = NotificationPriority.DEFAULT</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val selectedChannelId: String = ""</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorUiState$val title: String = ""</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorViewModel$// Templates from repository val templates: StateFlow&lt;List&lt;NotificationTemplate&gt;&gt; = repository.getTemplates() .stateIn( scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = emptyList(), )</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorViewModel$val channels: StateFlow&lt;List&lt;NotificationChannelInfo&gt;&gt; = _channels.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorViewModel$val events: StateFlow&lt;PushSimulatorEvent?&gt; = _events.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorViewModel.kt$PushSimulatorViewModel$val uiState: StateFlow&lt;PushSimulatorUiState&gt; = _uiState.asStateFlow()</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEffect.kt$PushSimulatorViewEffect.Error$val message: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEffect.kt$PushSimulatorViewEffect.TemplateLoaded$val name: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.AddAction$val title: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.DeleteTemplate$val templateId: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.LoadTemplate$val template: NotificationTemplate</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.RemoveAction$val actionId: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.SaveAsTemplate$val templateName: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.SendFromTemplate$val template: NotificationTemplate</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.UpdateBody$val body: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.UpdateChannelId$val channelId: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.UpdateNewActionTitle$val title: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.UpdatePriority$val priority: NotificationPriority</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewEvent.kt$PushSimulatorViewEvent.UpdateTitle$val title: String</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val actions: ImmutableList&lt;NotificationAction&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val body: String = ""</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val channels: ImmutableList&lt;NotificationChannelInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val newActionTitle: String = ""</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val priority: NotificationPriority = NotificationPriority.DEFAULT</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val selectedChannelId: String = ""</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val templates: ImmutableList&lt;NotificationTemplate&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:PushSimulatorViewState.kt$PushSimulatorViewState$val title: String = ""</ID>
     <ID>UnstableCollections:PushSimulatorFormSection.kt$List&lt;NotificationChannelInfo&gt;</ID>
     <ID>UnstableCollections:PushSimulatorFormSection.kt$List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;</ID>
     <ID>UnstableCollections:PushSimulatorPreviewSection.kt$List&lt;com.azikar24.wormaceptor.domain.entities.NotificationAction&gt;</ID>
+    <ID>ViewModelForwarding:PushSimulatorScreen.kt$BaseScreen( viewModel = viewModel, onEffect = { effect -&gt; when (effect) { is PushSimulatorViewEffect.NotificationSent -&gt; { scope.launch { snackBarHostState.showSnackbar(notificationSentMessage) } } is PushSimulatorViewEffect.TemplateSaved -&gt; { scope.launch { snackBarHostState.showSnackbar(templateSavedMessage) } } is PushSimulatorViewEffect.TemplateDeleted -&gt; { scope.launch { snackBarHostState.showSnackbar(templateDeletedMessage) } } is PushSimulatorViewEffect.TemplateLoaded -&gt; { scope.launch { snackBarHostState.showSnackbar( context.getString(R.string.pushsimulator_template_loaded, effect.name), ) } } is PushSimulatorViewEffect.PermissionRequired -&gt; { showPermissionDialog = true } is PushSimulatorViewEffect.Error -&gt; { scope.launch { snackBarHostState.showSnackbar(effect.message) } } } }, ) { state, onEvent -&gt; PushSimulatorScreenContent( state = state, snackBarHostState = snackBarHostState, showSaveDialog = showSaveDialog, showPermissionDialog = showPermissionDialog, onBack = onBack, onEvent = onEvent, onSendClick = { if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.TIRAMISU) { val permission = Manifest.permission.POST_NOTIFICATIONS if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED ) { onEvent(PushSimulatorViewEvent.SendNotification) } else { permissionLauncher.launch(permission) } } else { onEvent(PushSimulatorViewEvent.SendNotification) } }, onSaveClick = { showSaveDialog = true }, onSaveTemplate = { name -&gt; onEvent(PushSimulatorViewEvent.SaveAsTemplate(name)) showSaveDialog = false }, onDismissSaveDialog = { showSaveDialog = false }, onDismissPermissionDialog = { showPermissionDialog = false }, modifier = modifier, ) }</ID>
     <ID>ViewModelInjection:PushSimulatorFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

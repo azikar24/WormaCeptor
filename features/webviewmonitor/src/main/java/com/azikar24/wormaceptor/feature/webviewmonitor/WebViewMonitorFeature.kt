@@ -2,13 +2,17 @@ package com.azikar24.wormaceptor.feature.webviewmonitor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 /**
@@ -56,6 +60,10 @@ object WebViewMonitorFeature {
  */
 class WebViewMonitorViewModel(private val engine: WebViewMonitorEngine) : ViewModel() {
 
+    companion object {
+        private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
+    }
+
     val isEnabled: StateFlow<Boolean> = engine.isEnabled
     val requests: StateFlow<List<WebViewRequest>> = engine.requests
     val stats: StateFlow<WebViewRequestStats> = engine.stats
@@ -70,24 +78,28 @@ class WebViewMonitorViewModel(private val engine: WebViewMonitorEngine) : ViewMo
     private val _showFilters = MutableStateFlow(false)
     val showFilters: StateFlow<Boolean> = _showFilters.asStateFlow()
 
-    /**
-     * Gets filtered requests based on search query and resource type filters.
-     */
-    fun getFilteredRequests(): List<WebViewRequest> {
-        val query = _searchQuery.value.lowercase()
-        val typeFilter = resourceTypeFilter.value
-
-        return requests.value.filter { request ->
-            val matchesSearch = query.isEmpty() ||
-                request.url.lowercase().contains(query) ||
-                request.method.lowercase().contains(query) ||
-                request.host.lowercase().contains(query)
+    /** Reactively filtered requests based on search query and resource type filter. */
+    val filteredRequests: StateFlow<List<WebViewRequest>> = combine(
+        requests,
+        _searchQuery,
+        resourceTypeFilter,
+    ) { allRequests, query, typeFilter ->
+        val lowerQuery = query.lowercase()
+        allRequests.filter { request ->
+            val matchesSearch = lowerQuery.isEmpty() ||
+                request.url.lowercase().contains(lowerQuery) ||
+                request.method.lowercase().contains(lowerQuery) ||
+                request.host.lowercase().contains(lowerQuery)
 
             val matchesType = typeFilter.isEmpty() || typeFilter.contains(request.resourceType)
 
             matchesSearch && matchesType
         }
-    }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT_MS),
+        initialValue = emptyList(),
+    )
 
     fun toggleEnabled() {
         engine.toggle()

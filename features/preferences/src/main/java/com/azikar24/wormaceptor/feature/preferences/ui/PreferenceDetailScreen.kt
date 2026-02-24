@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -61,17 +62,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
+import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying key-value pairs for a specific SharedPreferences file.
@@ -184,7 +189,8 @@ fun PreferenceDetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(padding)
+                .imePadding(),
         ) {
             // Animated search bar
             AnimatedVisibility(
@@ -428,5 +434,32 @@ private fun PreferenceItemRow(item: PreferenceItem, typeColor: Color) {
                 ),
             )
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun PreferenceDetailScreenPreview() {
+    WormaCeptorTheme {
+        PreferenceDetailScreen(
+            fileName = "app_preferences",
+            items = persistentListOf(
+                PreferenceItem(key = "dark_mode", value = PreferenceValue.BooleanValue(true)),
+                PreferenceItem(key = "username", value = PreferenceValue.StringValue("john_doe")),
+                PreferenceItem(key = "launch_count", value = PreferenceValue.IntValue(42)),
+            ),
+            totalCount = 3,
+            searchQuery = "",
+            typeFilter = null,
+            availableTypes = persistentListOf("Boolean", "String", "Int"),
+            onSearchQueryChanged = {},
+            onTypeFilterChanged = {},
+            onBack = {},
+            onEditItem = {},
+            onDeleteItem = {},
+            onClearAll = {},
+            onCreateItem = {},
+        )
     }
 }

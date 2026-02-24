@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.websocket.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,15 +37,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
+import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import com.azikar24.wormaceptor.feature.websocket.R
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -129,36 +135,38 @@ internal fun WebSocketListScreen(
             }
         },
     ) { paddingValues ->
-        if (connections.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = stringResource(
-                    if (searchQuery.isNotBlank()) {
-                        R.string.websocket_empty_no_matching_connections
-                    } else {
-                        R.string.websocket_empty_no_connections
-                    },
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                subtitle = stringResource(
-                    if (searchQuery.isNotBlank()) {
-                        R.string.websocket_empty_search_hint
-                    } else {
-                        R.string.websocket_empty_connections_hint
-                    },
-                ),
-                icon = Icons.Default.Sync,
-            )
-        } else {
-            ConnectionList(
-                connections = connections,
-                onConnectionClick = onConnectionClick,
-                getMessageCount = getMessageCount,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
+        Box(modifier = Modifier.imePadding()) {
+            if (connections.isEmpty()) {
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (searchQuery.isNotBlank()) {
+                            R.string.websocket_empty_no_matching_connections
+                        } else {
+                            R.string.websocket_empty_no_connections
+                        },
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    subtitle = stringResource(
+                        if (searchQuery.isNotBlank()) {
+                            R.string.websocket_empty_search_hint
+                        } else {
+                            R.string.websocket_empty_connections_hint
+                        },
+                    ),
+                    icon = Icons.Default.Sync,
+                )
+            } else {
+                ConnectionList(
+                    connections = connections,
+                    onConnectionClick = onConnectionClick,
+                    getMessageCount = getMessageCount,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            }
         }
     }
 }
@@ -320,5 +328,38 @@ private fun ConnectionItem(
                 ),
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebSocketListScreenPreview() {
+    WormaCeptorTheme {
+        WebSocketListScreen(
+            connections = persistentListOf(
+                WebSocketConnection(
+                    id = 1L,
+                    url = "wss://echo.websocket.org",
+                    state = WebSocketState.OPEN,
+                    openedAt = System.currentTimeMillis() - 60_000L,
+                ),
+                WebSocketConnection(
+                    id = 2L,
+                    url = "wss://api.example.com/ws",
+                    state = WebSocketState.CLOSED,
+                    openedAt = System.currentTimeMillis() - 120_000L,
+                    closedAt = System.currentTimeMillis() - 30_000L,
+                    closeCode = 1000,
+                    closeReason = "Normal closure",
+                ),
+            ),
+            searchQuery = "",
+            totalCount = 2,
+            onSearchQueryChanged = {},
+            onConnectionClick = {},
+            onClearAll = {},
+            getMessageCount = { 5 },
+            onBack = {},
+        )
     }
 }

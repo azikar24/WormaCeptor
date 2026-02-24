@@ -140,10 +140,16 @@ public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavTra
 
 public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component10-0d7_KjU ()J
 	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component13-0d7_KjU ()J
+	public final fun component14-0d7_KjU ()J
+	public final fun component15-0d7_KjU ()J
+	public final fun component16-0d7_KjU ()J
+	public final fun component17-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
@@ -152,17 +158,24 @@ public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors {
 	public final fun component7-0d7_KjU ()J
 	public final fun component8-0d7_KjU ()J
 	public final fun component9-0d7_KjU ()J
-	public final fun copy-KpyCeHw (JJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
-	public static synthetic fun copy-KpyCeHw$default (Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;JJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+	public final fun copy-OG5zQOY (JJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+	public static synthetic fun copy-OG5zQOY$default (Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;JJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun forType-vNxB06k (Lcom/azikar24/wormaceptor/domain/contracts/TokenType;)J
 	public final fun getBoolean-0d7_KjU ()J
+	public final fun getCodeBackground-0d7_KjU ()J
 	public final fun getComment-0d7_KjU ()J
 	public final fun getDefault-0d7_KjU ()J
 	public final fun getKeyword-0d7_KjU ()J
+	public final fun getLineNumberBackground-0d7_KjU ()J
+	public final fun getLineNumberText-0d7_KjU ()J
 	public final fun getNumber-0d7_KjU ()J
 	public final fun getOperator-0d7_KjU ()J
 	public final fun getProperty-0d7_KjU ()J
 	public final fun getPunctuation-0d7_KjU ()J
+	public final fun getSearchHighlight-0d7_KjU ()J
+	public final fun getSearchHighlightCurrent-0d7_KjU ()J
+	public final fun getSearchHighlightText-0d7_KjU ()J
 	public final fun getString-0d7_KjU ()J
 	public final fun getTag-0d7_KjU ()J
 	public final fun getType-0d7_KjU ()J
@@ -170,19 +183,66 @@ public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/theme/DarkSyntaxColors : com/azikar24/wormaceptor/core/ui/theme/SyntaxColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/DarkSyntaxColors;
+	public fun getBoolean ()J
+	public fun getComment ()J
+	public fun getDefault ()J
+	public fun getKeyword ()J
+	public fun getNumber ()J
+	public fun getOperator ()J
+	public fun getProperty ()J
+	public fun getPunctuation ()J
+	public fun getString ()J
+	public fun getTag ()J
+	public fun getTypeAnnotation ()J
+}
+
+public final class com/azikar24/wormaceptor/core/ui/theme/LightSyntaxColors : com/azikar24/wormaceptor/core/ui/theme/SyntaxColors {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/LightSyntaxColors;
+	public fun getBoolean ()J
+	public fun getComment ()J
+	public fun getDefault ()J
+	public fun getKeyword ()J
+	public fun getNumber ()J
+	public fun getOperator ()J
+	public fun getProperty ()J
+	public fun getPunctuation ()J
+	public fun getString ()J
+	public fun getTag ()J
+	public fun getTypeAnnotation ()J
+}
+
+public abstract interface class com/azikar24/wormaceptor/core/ui/theme/SyntaxColors {
+	public abstract fun getBoolean ()J
+	public abstract fun getComment ()J
+	public abstract fun getDefault ()J
+	public abstract fun getKeyword ()J
+	public abstract fun getNumber ()J
+	public abstract fun getOperator ()J
+	public abstract fun getProperty ()J
+	public abstract fun getPunctuation ()J
+	public abstract fun getString ()J
+	public abstract fun getTag ()J
+	public abstract fun getTypeAnnotation ()J
+}
+
 public final class com/azikar24/wormaceptor/core/ui/theme/SyntaxColorsKt {
-	public static final fun ProvideSyntaxColors (ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun buildHighlightedString (Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Ljava/lang/String;Ljava/util/List;)Landroidx/compose/ui/text/AnnotatedString;
 	public static final fun getDarkComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
 	public static final fun getLightComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
-	public static final fun getLocalSyntaxColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun syntaxColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/theme/ThemeKt {
+	public static final fun WormaCeptorTheme (ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors;
-	public final fun getContentCyan-0d7_KjU ()J
-	public final fun getContentPurple-0d7_KjU ()J
 	public final fun getStatusAmber-0d7_KjU ()J
 	public final fun getStatusBlue-0d7_KjU ()J
 	public final fun getStatusGreen-0d7_KjU ()J
@@ -193,11 +253,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors {
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Accent {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Accent;
-	public final fun getFocusRing-0d7_KjU ()J
 	public final fun getHighlight-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
-	public final fun getSecondary-0d7_KjU ()J
-	public final fun getSelection-0d7_KjU ()J
 	public final fun getTertiary-0d7_KjU ()J
 }
 
@@ -219,7 +275,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Char
 	public final fun getClientError4xx-0d7_KjU ()J
 	public final fun getFast-0d7_KjU ()J
 	public final fun getMedium-0d7_KjU ()J
-	public final fun getPending-0d7_KjU ()J
 	public final fun getRedirect3xx-0d7_KjU ()J
 	public final fun getServerError5xx-0d7_KjU ()J
 	public final fun getSlow-0d7_KjU ()J
@@ -270,20 +325,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Data
 	public final fun getText-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$FileBrowser {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$FileBrowser;
-	public final fun getArchive-0d7_KjU ()J
-	public final fun getAudio-0d7_KjU ()J
-	public final fun getCode-0d7_KjU ()J
-	public final fun getDatabase-0d7_KjU ()J
-	public final fun getDocument-0d7_KjU ()J
-	public final fun getFile-0d7_KjU ()J
-	public final fun getFolder-0d7_KjU ()J
-	public final fun getImage-0d7_KjU ()J
-	public final fun getVideo-0d7_KjU ()J
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$HttpMethod {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$HttpMethod;
@@ -331,18 +372,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Memo
 	public final fun getNativeHeap-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Preferences {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Preferences;
-	public final fun getBooleanFalse-0d7_KjU ()J
-	public final fun getBooleanTrue-0d7_KjU ()J
-	public final fun getFloatValue-0d7_KjU ()J
-	public final fun getIntValue-0d7_KjU ()J
-	public final fun getLongValue-0d7_KjU ()J
-	public final fun getSetValue-0d7_KjU ()J
-	public final fun getStringValue-0d7_KjU ()J
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$SecureStorage {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$SecureStorage;
@@ -352,26 +381,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Secu
 	public final fun getKeystore-0d7_KjU ()J
 	public final fun getPrimary-0d7_KjU ()J
 	public final fun getUnencrypted-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Surfaces {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$Surfaces;
-	public final fun getErrorLight-0d7_KjU ()J
-	public final fun getErrorMedium-0d7_KjU ()J
-	public final fun getErrorSubtle-0d7_KjU ()J
-	public final fun getInfoLight-0d7_KjU ()J
-	public final fun getInfoMedium-0d7_KjU ()J
-	public final fun getInfoSubtle-0d7_KjU ()J
-	public final fun getNeutralLight-0d7_KjU ()J
-	public final fun getNeutralMedium-0d7_KjU ()J
-	public final fun getNeutralSubtle-0d7_KjU ()J
-	public final fun getSuccessLight-0d7_KjU ()J
-	public final fun getSuccessMedium-0d7_KjU ()J
-	public final fun getSuccessSubtle-0d7_KjU ()J
-	public final fun getWarningLight-0d7_KjU ()J
-	public final fun getWarningMedium-0d7_KjU ()J
-	public final fun getWarningSubtle-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorColors$ThreadViolation {
@@ -409,19 +418,13 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Alpha;
 	public static final field bold F
-	public static final field disabled F
-	public static final field dragged F
-	public static final field focus F
 	public static final field heavy F
 	public static final field hint F
-	public static final field hover F
 	public static final field intense F
-	public static final field invisible F
 	public static final field light F
 	public static final field medium F
 	public static final field moderate F
 	public static final field opaque F
-	public static final field pressed F
 	public static final field prominent F
 	public static final field soft F
 	public static final field strong F
@@ -431,101 +434,50 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$AnimationDuration {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$AnimationDuration;
-	public static final field complex I
-	public static final field deliberate I
 	public static final field fast I
-	public static final field instant I
-	public static final field micro I
 	public static final field normal I
 	public static final field page I
 	public static final field slow I
-	public static final field standard I
 	public static final field ultraFast I
 	public static final field verySlow I
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$AnimationSpecs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$AnimationSpecs;
-	public final fun getFastSpring ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getFastTween ()Landroidx/compose/animation/core/TweenSpec;
-	public final fun getGentleSpring ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getNormalSpring ()Landroidx/compose/animation/core/SpringSpec;
-	public final fun getNormalTween ()Landroidx/compose/animation/core/TweenSpec;
-	public final fun getSlowTween ()Landroidx/compose/animation/core/TweenSpec;
-	public final fun getSnappySpring ()Landroidx/compose/animation/core/SpringSpec;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$BorderWidth {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$BorderWidth;
 	public final fun getBold-D9Ej5fM ()F
-	public final fun getHairline-D9Ej5fM ()F
-	public final fun getMedium-D9Ej5fM ()F
 	public final fun getRegular-D9Ej5fM ()F
 	public final fun getThick-D9Ej5fM ()F
 	public final fun getThin-D9Ej5fM ()F
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$CardPadding {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$CardPadding;
-	public final fun getComfortable ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getCompact ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getRegular ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getSpacious ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getTight ()Landroidx/compose/foundation/layout/PaddingValues;
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$CornerRadius {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$CornerRadius;
-	public final fun forSize-5rwHm24 (F)F
 	public final fun getLg-D9Ej5fM ()F
 	public final fun getMd-D9Ej5fM ()F
-	public final fun getNone-D9Ej5fM ()F
 	public final fun getPill-D9Ej5fM ()F
 	public final fun getSm-D9Ej5fM ()F
 	public final fun getXl-D9Ej5fM ()F
 	public final fun getXs-D9Ej5fM ()F
-	public final fun getXxl-D9Ej5fM ()F
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Easing {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Easing;
-	public final fun getAccelerate ()Landroidx/compose/animation/core/CubicBezierEasing;
-	public final fun getDecelerate ()Landroidx/compose/animation/core/CubicBezierEasing;
-	public final fun getEmphasized ()Landroidx/compose/animation/core/CubicBezierEasing;
-	public final fun getLinear ()Landroidx/compose/animation/core/CubicBezierEasing;
-	public final fun getStandard ()Landroidx/compose/animation/core/Easing;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Elevation {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Elevation;
-	public final fun getCard-D9Ej5fM ()F
 	public final fun getFab-D9Ej5fM ()F
 	public final fun getLg-D9Ej5fM ()F
 	public final fun getMd-D9Ej5fM ()F
-	public final fun getModal-D9Ej5fM ()F
-	public final fun getNone-D9Ej5fM ()F
 	public final fun getSm-D9Ej5fM ()F
 	public final fun getXl-D9Ej5fM ()F
 	public final fun getXs-D9Ej5fM ()F
-	public final fun getXxl-D9Ej5fM ()F
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$IconSize {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$IconSize;
-	public final fun getAction-D9Ej5fM ()F
-	public final fun getEmptyState-D9Ej5fM ()F
-	public final fun getFeature-D9Ej5fM ()F
-	public final fun getInline-D9Ej5fM ()F
 	public final fun getLg-D9Ej5fM ()F
 	public final fun getMd-D9Ej5fM ()F
-	public final fun getNavigation-D9Ej5fM ()F
 	public final fun getSm-D9Ej5fM ()F
 	public final fun getXl-D9Ej5fM ()F
 	public final fun getXs-D9Ej5fM ()F
@@ -539,11 +491,9 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Shapes;
 	public final fun getBadge ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getButton ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getButtonLarge ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getCard ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getCardLarge ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getChip ()Landroidx/compose/foundation/shape/RoundedCornerShape;
-	public final fun getDialog ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getFab ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getPill ()Landroidx/compose/foundation/shape/RoundedCornerShape;
 	public final fun getSearchBar ()Landroidx/compose/foundation/shape/RoundedCornerShape;
@@ -556,7 +506,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Spacing;
 	public final fun getLg-D9Ej5fM ()F
 	public final fun getMd-D9Ej5fM ()F
-	public final fun getSafeArea-D9Ej5fM ()F
 	public final fun getSm-D9Ej5fM ()F
 	public final fun getXl-D9Ej5fM ()F
 	public final fun getXs-D9Ej5fM ()F
@@ -573,8 +522,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public final fun getAccentSubtleDark-0d7_KjU ()J
 	public final fun getAccentSubtleLight-0d7_KjU ()J
 	public final fun getDarkBackground-0d7_KjU ()J
-	public final fun getDarkOutline-0d7_KjU ()J
-	public final fun getDarkOutlineVariant-0d7_KjU ()J
 	public final fun getDarkSurface-0d7_KjU ()J
 	public final fun getDarkSurfaceVariant-0d7_KjU ()J
 	public final fun getDarkTextPrimary-0d7_KjU ()J
@@ -582,20 +529,14 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 	public final fun getDarkTextTertiary-0d7_KjU ()J
 	public final fun getError-0d7_KjU ()J
 	public final fun getErrorDark-0d7_KjU ()J
-	public final fun getInfo-0d7_KjU ()J
-	public final fun getInfoDark-0d7_KjU ()J
 	public final fun getLightBackground-0d7_KjU ()J
-	public final fun getLightOutline-0d7_KjU ()J
-	public final fun getLightOutlineVariant-0d7_KjU ()J
 	public final fun getLightSurface-0d7_KjU ()J
 	public final fun getLightSurfaceVariant-0d7_KjU ()J
 	public final fun getLightTextPrimary-0d7_KjU ()J
 	public final fun getLightTextSecondary-0d7_KjU ()J
 	public final fun getLightTextTertiary-0d7_KjU ()J
 	public final fun getSuccess-0d7_KjU ()J
-	public final fun getSuccessDark-0d7_KjU ()J
 	public final fun getWarning-0d7_KjU ()J
-	public final fun getWarningDark-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$TouchTarget {
@@ -609,26 +550,12 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSyste
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Typography {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystem$Typography;
-	public final fun getBodyLarge ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getBodyMedium ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getBodySmall ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getCaption ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getCodeLarge ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getCodeMedium ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getCodeSmall ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getDisplayLarge ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getDisplayMedium ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getDisplaySmall ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getHeadlineLarge ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getHeadlineMedium ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getHeadlineSmall ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getLabelLarge ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getLabelMedium ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getLabelSmall ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getOverline ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getTitleLarge ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getTitleMedium ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getTitleSmall ()Landroidx/compose/ui/text/TextStyle;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorDesignSystemKt {

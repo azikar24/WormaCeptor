@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,14 +46,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.feature.preferences.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying a list of SharedPreferences files.
@@ -64,8 +68,8 @@ fun PreferencesListScreen(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onFileClick: (PreferenceFile) -> Unit,
-    onNavigateBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
 ) {
     var searchActive by rememberSaveable { mutableStateOf(false) }
 
@@ -100,7 +104,7 @@ fun PreferencesListScreen(
         },
         modifier = modifier,
     ) { padding ->
-        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Column(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
             // Animated search bar
             AnimatedVisibility(
                 visible = searchActive,
@@ -233,5 +237,24 @@ private fun PreferenceFileIcon() {
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun PreferencesListScreenPreview() {
+    WormaCeptorTheme {
+        PreferencesListScreen(
+            files = persistentListOf(
+                PreferenceFile(name = "app_preferences", itemCount = 12),
+                PreferenceFile(name = "user_settings", itemCount = 5),
+                PreferenceFile(name = "cache_config", itemCount = 3),
+            ),
+            searchQuery = "",
+            onSearchQueryChanged = {},
+            onFileClick = {},
+            onNavigateBack = {},
+        )
     }
 }

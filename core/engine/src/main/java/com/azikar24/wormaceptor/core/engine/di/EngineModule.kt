@@ -2,8 +2,10 @@ package com.azikar24.wormaceptor.core.engine.di
 
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
+import com.azikar24.wormaceptor.core.engine.DefaultHighlighterRegistry
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
+import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
@@ -61,4 +63,7 @@ val engineModule = module {
     single { PushTokenEngine(androidContext()) }
     single { LocationSimulatorEngine(androidContext()) }
     single { PushSimulatorEngine(androidContext()) }
+
+    // Syntax highlighting
+    single<HighlighterRegistry> { DefaultHighlighterRegistry() }
 }

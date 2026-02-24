@@ -33,6 +33,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatDateShort
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import kotlinx.coroutines.flow.StateFlow
+import org.koin.compose.koinInject
 
 object PushTokenFeature {
     fun createViewModelFactory(engine: PushTokenEngine) = PushTokenViewModelFactory(engine)
@@ -60,7 +61,8 @@ class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PushTokenManager(engine: PushTokenEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun PushTokenManager(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: PushTokenEngine = koinInject()
     val factory = remember { PushTokenFeature.createViewModelFactory(engine) }
     val viewModel: PushTokenViewModel = viewModel(factory = factory)
 

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,8 +38,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,24 +48,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.pushsimulator.R
-import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorEvent
+import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEffect
+import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEvent
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewModel
+import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewState
 import kotlinx.coroutines.launch
 
 /**
  * Main screen for the Push Notification Simulator.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
-    val uiState by viewModel.uiState.collectAsState()
-    val templates by viewModel.templates.collectAsState()
-    val channels by viewModel.channels.collectAsState()
-    val event by viewModel.events.collectAsState()
-
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -78,11 +75,11 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
         contract = ActivityResultContracts.RequestPermission(),
     ) { isGranted ->
         if (isGranted) {
-            viewModel.sendNotification()
+            viewModel.sendEvent(PushSimulatorViewEvent.SendNotification)
         } else {
             val message = context.getString(R.string.pushsimulator_notification_permission_denied)
             scope.launch {
-                snackbarHostState.showSnackbar(message)
+                snackBarHostState.showSnackbar(message)
             }
         }
     }
@@ -92,40 +89,85 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
     val templateSavedMessage = stringResource(R.string.pushsimulator_template_saved)
     val templateDeletedMessage = stringResource(R.string.pushsimulator_template_deleted)
 
-    // Handle events
-    LaunchedEffect(event) {
-        when (event) {
-            is PushSimulatorEvent.NotificationSent -> {
-                snackbarHostState.showSnackbar(notificationSentMessage)
-                viewModel.clearEvent()
+    BaseScreen(
+        viewModel = viewModel,
+        onEffect = { effect ->
+            when (effect) {
+                is PushSimulatorViewEffect.NotificationSent -> {
+                    scope.launch { snackBarHostState.showSnackbar(notificationSentMessage) }
+                }
+                is PushSimulatorViewEffect.TemplateSaved -> {
+                    scope.launch { snackBarHostState.showSnackbar(templateSavedMessage) }
+                }
+                is PushSimulatorViewEffect.TemplateDeleted -> {
+                    scope.launch { snackBarHostState.showSnackbar(templateDeletedMessage) }
+                }
+                is PushSimulatorViewEffect.TemplateLoaded -> {
+                    scope.launch {
+                        snackBarHostState.showSnackbar(
+                            context.getString(R.string.pushsimulator_template_loaded, effect.name),
+                        )
+                    }
+                }
+                is PushSimulatorViewEffect.PermissionRequired -> {
+                    showPermissionDialog = true
+                }
+                is PushSimulatorViewEffect.Error -> {
+                    scope.launch { snackBarHostState.showSnackbar(effect.message) }
+                }
             }
-            is PushSimulatorEvent.TemplateSaved -> {
-                snackbarHostState.showSnackbar(templateSavedMessage)
-                viewModel.clearEvent()
-            }
-            is PushSimulatorEvent.TemplateDeleted -> {
-                snackbarHostState.showSnackbar(templateDeletedMessage)
-                viewModel.clearEvent()
-            }
-            is PushSimulatorEvent.TemplateLoaded -> {
-                val templateName = (event as PushSimulatorEvent.TemplateLoaded).name
-                snackbarHostState.showSnackbar(
-                    context.getString(R.string.pushsimulator_template_loaded, templateName),
-                )
-                viewModel.clearEvent()
-            }
-            is PushSimulatorEvent.PermissionRequired -> {
-                showPermissionDialog = true
-                viewModel.clearEvent()
-            }
-            is PushSimulatorEvent.Error -> {
-                snackbarHostState.showSnackbar((event as PushSimulatorEvent.Error).message)
-                viewModel.clearEvent()
-            }
-            null -> {}
-        }
+        },
+    ) { state, onEvent ->
+        PushSimulatorScreenContent(
+            state = state,
+            snackBarHostState = snackBarHostState,
+            showSaveDialog = showSaveDialog,
+            showPermissionDialog = showPermissionDialog,
+            onBack = onBack,
+            onEvent = onEvent,
+            onSendClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val permission = Manifest.permission.POST_NOTIFICATIONS
+                    if (ContextCompat.checkSelfPermission(context, permission) ==
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+                        onEvent(PushSimulatorViewEvent.SendNotification)
+                    } else {
+                        permissionLauncher.launch(permission)
+                    }
+                } else {
+                    onEvent(PushSimulatorViewEvent.SendNotification)
+                }
+            },
+            onSaveClick = { showSaveDialog = true },
+            onSaveTemplate = { name ->
+                onEvent(PushSimulatorViewEvent.SaveAsTemplate(name))
+                showSaveDialog = false
+            },
+            onDismissSaveDialog = { showSaveDialog = false },
+            onDismissPermissionDialog = { showPermissionDialog = false },
+            modifier = modifier,
+        )
     }
+}
 
+@Suppress("LongParameterList", "LongMethod")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun PushSimulatorScreenContent(
+    state: PushSimulatorViewState,
+    snackBarHostState: SnackbarHostState,
+    showSaveDialog: Boolean,
+    showPermissionDialog: Boolean,
+    onBack: () -> Unit,
+    onEvent: (PushSimulatorViewEvent) -> Unit,
+    onSendClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    onSaveTemplate: (String) -> Unit,
+    onDismissSaveDialog: () -> Unit,
+    onDismissPermissionDialog: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -140,7 +182,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.clearForm() }) {
+                    IconButton(onClick = { onEvent(PushSimulatorViewEvent.ClearForm) }) {
                         Icon(
                             imageVector = Icons.Default.Clear,
                             contentDescription = stringResource(R.string.pushsimulator_clear_form),
@@ -149,70 +191,61 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                 },
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(padding)
+                .imePadding(),
             contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.lg),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             // Notification Form
             item {
                 NotificationFormCard(
-                    uiState = uiState,
-                    channels = channels,
+                    state = state,
+                    channels = state.channels,
                     previewTitlePlaceholder = stringResource(R.string.pushsimulator_preview_title_placeholder),
                     previewBodyPlaceholder = stringResource(R.string.pushsimulator_preview_body_placeholder),
-                    onTitleChange = viewModel::updateTitle,
-                    onBodyChange = viewModel::updateBody,
-                    onChannelChange = viewModel::updateChannelId,
-                    onPriorityChange = viewModel::updatePriority,
-                    onNewActionTitleChange = viewModel::updateNewActionTitle,
-                    onAddAction = viewModel::addAction,
-                    onRemoveAction = viewModel::removeAction,
+                    onTitleChange = { onEvent(PushSimulatorViewEvent.UpdateTitle(it)) },
+                    onBodyChange = { onEvent(PushSimulatorViewEvent.UpdateBody(it)) },
+                    onChannelChange = { onEvent(PushSimulatorViewEvent.UpdateChannelId(it)) },
+                    onPriorityChange = { onEvent(PushSimulatorViewEvent.UpdatePriority(it)) },
+                    onNewActionTitleChange = { onEvent(PushSimulatorViewEvent.UpdateNewActionTitle(it)) },
+                    onAddAction = { onEvent(PushSimulatorViewEvent.AddAction(it)) },
+                    onRemoveAction = { onEvent(PushSimulatorViewEvent.RemoveAction(it)) },
                 )
             }
 
             // Action Buttons
             item {
                 ActionButtonsRow(
-                    onSendClick = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val permission = Manifest.permission.POST_NOTIFICATIONS
-                            if (ContextCompat.checkSelfPermission(context, permission) ==
-                                PackageManager.PERMISSION_GRANTED
-                            ) {
-                                viewModel.sendNotification()
-                            } else {
-                                permissionLauncher.launch(permission)
-                            }
-                        } else {
-                            viewModel.sendNotification()
-                        }
-                    },
-                    onSaveClick = { showSaveDialog = true },
-                    isTitleEmpty = uiState.title.isBlank(),
+                    onSendClick = onSendClick,
+                    onSaveClick = onSaveClick,
+                    isTitleEmpty = state.title.isBlank(),
                 )
             }
 
             // Templates Section
             item {
-                SectionHeader(text = stringResource(R.string.pushsimulator_templates_header), count = templates.size)
+                SectionHeader(
+                    text = stringResource(R.string.pushsimulator_templates_header),
+                    count = state.templates.size,
+                )
             }
 
-            if (templates.isEmpty()) {
+            if (state.templates.isEmpty()) {
                 item {
                     EmptyTemplatesCard()
                 }
             } else {
-                items(templates, key = { it.id }) { template ->
+                items(state.templates, key = { it.id }) { template ->
                     TemplateCard(
                         template = template,
-                        onLoad = { viewModel.loadTemplate(template) },
-                        onSend = { viewModel.sendFromTemplate(template) },
-                        onDelete = { viewModel.deleteTemplate(template.id) },
+                        onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(template)) },
+                        onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(template)) },
+                        onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(template.id)) },
                     )
                 }
             }
@@ -222,18 +255,15 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
     // Save Template Dialog
     if (showSaveDialog) {
         SaveTemplateDialog(
-            onDismiss = { showSaveDialog = false },
-            onSave = { name ->
-                viewModel.saveAsTemplate(name)
-                showSaveDialog = false
-            },
+            onDismiss = onDismissSaveDialog,
+            onSave = onSaveTemplate,
         )
     }
 
     // Permission Dialog
     if (showPermissionDialog) {
         AlertDialog(
-            onDismissRequest = { showPermissionDialog = false },
+            onDismissRequest = onDismissPermissionDialog,
             title = { Text(stringResource(R.string.pushsimulator_permission_title)) },
             text = {
                 Text(
@@ -242,7 +272,7 @@ fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, m
                 )
             },
             confirmButton = {
-                Button(onClick = { showPermissionDialog = false }) {
+                Button(onClick = onDismissPermissionDialog) {
                     Text(stringResource(R.string.pushsimulator_ok))
                 }
             },
@@ -339,4 +369,25 @@ private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) 
             }
         },
     )
+}
+
+@Suppress("UnusedPrivateMember")
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+private fun PushSimulatorScreenContentPreview() {
+    WormaCeptorTheme {
+        PushSimulatorScreenContent(
+            state = PushSimulatorViewState(title = "Test Notification", body = "This is a test"),
+            snackBarHostState = remember { SnackbarHostState() },
+            showSaveDialog = false,
+            showPermissionDialog = false,
+            onBack = {},
+            onEvent = {},
+            onSendClick = {},
+            onSaveClick = {},
+            onSaveTemplate = {},
+            onDismissSaveDialog = {},
+            onDismissPermissionDialog = {},
+        )
+    }
 }

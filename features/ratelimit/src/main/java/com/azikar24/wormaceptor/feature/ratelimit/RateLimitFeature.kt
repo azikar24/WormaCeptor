@@ -11,17 +11,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.feature.ratelimit.ui.RateLimitScreen
 import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewModel
+import org.koin.compose.koinInject
 
 /**
- * Main composable with an externally provided engine.
- * Use this when you need to share the engine with your OkHttpClient.
- *
- * @param engine The shared RateLimitEngine instance
- * @param modifier Modifier for the root layout
- * @param onNavigateBack Optional callback for back navigation
+ * Main composable for the Rate Limiter feature.
  */
 @Composable
-fun RateLimiter(engine: RateLimitEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun RateLimiter(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: RateLimitEngine = koinInject()
     val factory = remember(engine) { RateLimitFeature.createViewModelFactory(engine) }
     val viewModel: RateLimitViewModel = viewModel(factory = factory)
 

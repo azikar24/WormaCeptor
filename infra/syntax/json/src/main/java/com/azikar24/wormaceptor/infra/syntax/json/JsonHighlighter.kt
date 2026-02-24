@@ -1,10 +1,5 @@
 package com.azikar24.wormaceptor.infra.syntax.json
 
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import com.azikar24.wormaceptor.domain.contracts.SyntaxColors
 import com.azikar24.wormaceptor.domain.contracts.SyntaxHighlighter
 import com.azikar24.wormaceptor.domain.contracts.Token
 import com.azikar24.wormaceptor.domain.contracts.TokenType
@@ -38,15 +33,7 @@ class JsonHighlighter : SyntaxHighlighter {
         TokenPattern("""[{}\[\],:]""".toRegex(), TokenType.PUNCTUATION),
     )
 
-    override fun highlight(code: String, colors: SyntaxColors): AnnotatedString {
-        val tokens = tokenize(code)
-        return buildHighlightedString(code, tokens, colors)
-    }
-
-    /**
-     * Tokenizes the input code into a list of tokens.
-     */
-    private fun tokenize(code: String): List<Token> {
+    override fun tokenize(code: String): List<Token> {
         val tokens = mutableListOf<Token>()
         val usedRanges = mutableSetOf<IntRange>()
 
@@ -79,38 +66,6 @@ class JsonHighlighter : SyntaxHighlighter {
         }
 
         return tokens.sortedBy { it.start }
-    }
-
-    /**
-     * Builds an AnnotatedString from the code and tokens.
-     */
-    private fun buildHighlightedString(code: String, tokens: List<Token>, colors: SyntaxColors): AnnotatedString {
-        return buildAnnotatedString {
-            var lastEnd = 0
-
-            for (token in tokens) {
-                // Append unhighlighted text before this token
-                if (token.start > lastEnd) {
-                    withStyle(SpanStyle(color = colors.default)) {
-                        append(code.substring(lastEnd, token.start))
-                    }
-                }
-
-                // Append highlighted token
-                withStyle(SpanStyle(color = colors.forType(token.type))) {
-                    append(code.substring(token.start, minOf(token.end, code.length)))
-                }
-
-                lastEnd = token.end
-            }
-
-            // Append remaining text after last token
-            if (lastEnd < code.length) {
-                withStyle(SpanStyle(color = colors.default)) {
-                    append(code.substring(lastEnd))
-                }
-            }
-        }
     }
 
     /**

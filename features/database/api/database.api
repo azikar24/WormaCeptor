@@ -41,15 +41,47 @@ public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingle
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$database_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$QueryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$QueryScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$database_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function3;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-5$database_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
@@ -59,30 +91,6 @@ public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingle
 	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableDataScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public fun <init> ()V
-	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$database_release ()Lkotlin/jvm/functions/Function3;
-}
-
-public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$TableListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$database_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$database_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$database_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/database/ui/DatabaseListScreenKt {
@@ -130,45 +138,227 @@ public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDe
 	public final fun getTable-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect$ShowError : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect$ShowError;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect$ShowError;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect$ShowError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ClearQuery : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ClearQuery;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSearchQueryChanged : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelected : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelected;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelected;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelectionCleared : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$DatabaseSelectionCleared;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ExecuteQuery : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ExecuteQuery;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$LoadDatabases : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$LoadDatabases;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$NextPage : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$NextPage;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PrefilledQueryRequested : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PrefilledQueryRequested;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PrefilledQueryRequested;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PrefilledQueryRequested;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQueryType ()Ljava/lang/String;
+	public final fun getTableName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PreviousPage : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$PreviousPage;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$QuerySelectedFromHistory : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$QuerySelectedFromHistory;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$QuerySelectedFromHistory;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$QuerySelectedFromHistory;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$SqlQueryChanged : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$SqlQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$SqlQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$SqlQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSearchQueryChanged : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelected : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelected;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelected;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelectionCleared : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$TableSelectionCleared;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ToggleSchema : com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewEvent$ToggleSchema;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)V
-	public final fun clearDatabaseSelection ()V
-	public final fun clearQuery ()V
-	public final fun clearTableSelection ()V
-	public final fun executeQuery ()V
-	public final fun getCurrentPage ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getDatabaseSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getDatabases ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getDatabasesError ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getQueryExecutionResult ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getQueryHistory ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getQueryResult ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedDatabaseName ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedTableName ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getShowSchema ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSqlQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTableSchema ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTableSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getTables ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTablesError ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isDataLoading ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isDatabasesLoading ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isQueryExecuting ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isTablesLoading ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun loadDatabases ()V
-	public final fun loadTableData ()V
-	public final fun loadTableSchema ()V
-	public final fun loadTables ()V
-	public final fun nextPage ()V
-	public final fun onDatabaseSearchQueryChanged (Ljava/lang/String;)V
-	public final fun onSqlQueryChanged (Ljava/lang/String;)V
-	public final fun onTableSearchQueryChanged (Ljava/lang/String;)V
-	public final fun previousPage ()V
-	public final fun selectDatabase (Ljava/lang/String;)V
-	public final fun selectQueryFromHistory (Ljava/lang/String;)V
-	public final fun selectTable (Ljava/lang/String;)V
-	public final fun setPrefilledQuery (Ljava/lang/String;Ljava/lang/String;)V
-	public final fun toggleSchema ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;IZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;ZLkotlinx/collections/immutable/ImmutableList;)V
+	public synthetic fun <init> (Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;IZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;ZLkotlinx/collections/immutable/ImmutableList;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public final fun component11 ()I
+	public final fun component12 ()Z
+	public final fun component13 ()Z
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public final fun component16 ()Z
+	public final fun component17 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component2 ()Z
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun copy (Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;IZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;ZLkotlinx/collections/immutable/ImmutableList;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewState;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;IZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/QueryResult;ZLkotlinx/collections/immutable/ImmutableList;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/database/vm/DatabaseViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrentPage ()I
+	public final fun getDatabaseSearchQuery ()Ljava/lang/String;
+	public final fun getDatabasesError ()Ljava/lang/String;
+	public final fun getQueryExecutionResult ()Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public final fun getQueryHistory ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getQueryResult ()Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public final fun getSelectedDatabaseName ()Ljava/lang/String;
+	public final fun getSelectedTableName ()Ljava/lang/String;
+	public final fun getShowSchema ()Z
+	public final fun getSqlQuery ()Ljava/lang/String;
+	public final fun getTableSchema ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getTableSearchQuery ()Ljava/lang/String;
+	public final fun getTablesError ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isDataLoading ()Z
+	public final fun isDatabasesLoading ()Z
+	public final fun isQueryExecuting ()Z
+	public final fun isTablesLoading ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

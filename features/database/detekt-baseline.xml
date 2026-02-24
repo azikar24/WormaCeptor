@@ -15,10 +15,6 @@
     <ID>LongParameterList:TableDataScreen.kt$( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:TableListScreen.kt$( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:DatabaseDataSource.kt$DatabaseDataSource$1000</ID>
-    <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$100</ID>
-    <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$20</ID>
-    <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$300</ID>
-    <ID>MagicNumber:DatabaseViewModel.kt$DatabaseViewModel$5000</ID>
     <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%'"</ID>
     <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%' ORDER BY name"</ID>
     <ID>MaxLineLength:TableDataScreen.kt$tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface</ID>
@@ -29,30 +25,10 @@
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun countTables(databasePath: String): Int</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun executeRawQuery(db: SQLiteDatabase, query: String): QueryResult</ID>
     <ID>SwallowedException:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
-    <ID>SwallowedException:DatabaseViewModel.kt$DatabaseViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:DatabaseViewModel.kt$DatabaseViewModel$e: Exception</ID>
     <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$DataTypeColors</ID>
     <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$SqlSyntaxColors</ID>
     <ID>UndocumentedPublicFunction:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$fun forType(type: String): Color</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun clearDatabaseSelection()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun clearQuery()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun clearTableSelection()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun executeQuery()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun loadDatabases()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun loadTableData()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun loadTableSchema()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun loadTables()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun nextPage()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun onDatabaseSearchQueryChanged(query: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun onSqlQueryChanged(query: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun onTableSearchQueryChanged(query: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun previousPage()</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun selectDatabase(name: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun selectQueryFromHistory(query: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun selectTable(name: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun setPrefilledQuery(tableName: String, queryType: String)</ID>
-    <ID>UndocumentedPublicFunction:DatabaseViewModel.kt$DatabaseViewModel$fun toggleSchema()</ID>
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val blob = WormaCeptorColors.Database.Blob</ID>
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val integer = WormaCeptorColors.Database.Integer</ID>
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val nullValue = WormaCeptorColors.Database.NullValue</ID>
@@ -66,25 +42,10 @@
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val operator = WormaCeptorColors.Database.SqlOperator</ID>
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val string = WormaCeptorColors.Database.SqlString</ID>
     <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val table = WormaCeptorColors.Database.SqlTable</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$@OptIn(kotlinx.coroutines.FlowPreview::class) val databases: StateFlow&lt;ImmutableList&lt;DatabaseInfo&gt;&gt; = combine( _allDatabases, _databaseSearchQuery.debounce(300), ) { databases, query -&gt; if (query.isBlank()) { databases.toImmutableList() } else { databases.filter { it.name.contains(query, ignoreCase = true) || it.path.contains(query, ignoreCase = true) }.toImmutableList() } }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$@OptIn(kotlinx.coroutines.FlowPreview::class) val tables: StateFlow&lt;ImmutableList&lt;TableInfo&gt;&gt; = combine( _allTables, _tableSearchQuery.debounce(300), ) { tables, query -&gt; if (query.isBlank()) { tables.toImmutableList() } else { tables.filter { it.name.contains(query, ignoreCase = true) }.toImmutableList() } }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val currentPage: StateFlow&lt;Int&gt; = _currentPage</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val databaseSearchQuery: StateFlow&lt;String&gt; = _databaseSearchQuery</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val databasesError: StateFlow&lt;String?&gt; = _databasesError</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val isDataLoading: StateFlow&lt;Boolean&gt; = _isDataLoading</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val isDatabasesLoading: StateFlow&lt;Boolean&gt; = _isDatabasesLoading</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val isQueryExecuting: StateFlow&lt;Boolean&gt; = _isQueryExecuting</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val isTablesLoading: StateFlow&lt;Boolean&gt; = _isTablesLoading</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val queryExecutionResult: StateFlow&lt;QueryResult?&gt; = _queryExecutionResult</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val queryHistory: StateFlow&lt;ImmutableList&lt;String&gt;&gt; = _queryHistory</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val queryResult: StateFlow&lt;QueryResult?&gt; = _queryResult</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val selectedDatabaseName: StateFlow&lt;String?&gt; = _selectedDatabaseName</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val selectedTableName: StateFlow&lt;String?&gt; = _selectedTableName</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val showSchema: StateFlow&lt;Boolean&gt; = _showSchema</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val sqlQuery: StateFlow&lt;String&gt; = _sqlQuery</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tableSchema: StateFlow&lt;ImmutableList&lt;ColumnInfo&gt;&gt; = _tableSchema</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tableSearchQuery: StateFlow&lt;String&gt; = _tableSearchQuery</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewModel.kt$DatabaseViewModel$val tablesError: StateFlow&lt;String?&gt; = _tablesError</ID>
+    <ID>UnusedPrivateMember:DatabaseListScreen.kt$@SuppressLint("SdCardPath") @Preview(showBackground = true) @Composable private fun DatabaseListScreenPreview()</ID>
+    <ID>UnusedPrivateMember:QueryScreen.kt$@Preview(showBackground = true) @Composable private fun QueryScreenPreview()</ID>
+    <ID>UnusedPrivateMember:TableDataScreen.kt$@Preview(showBackground = true) @Composable private fun TableDataScreenPreview()</ID>
+    <ID>UnusedPrivateMember:TableListScreen.kt$@Preview(showBackground = true) @Composable private fun TableListScreenPreview()</ID>
     <ID>ViewModelInjection:DatabaseFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

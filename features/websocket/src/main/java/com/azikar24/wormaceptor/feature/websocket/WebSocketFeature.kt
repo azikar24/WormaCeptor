@@ -16,6 +16,7 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the WebSocket Monitoring feature.
@@ -75,17 +76,10 @@ class WebSocketViewModelFactory(
 /**
  * Main composable for the WebSocket Monitor feature.
  * Handles navigation between connection list and message detail screens.
- *
- * @param engine The WebSocketMonitorEngine instance to use
- * @param modifier Modifier for the root composable
- * @param onNavigateBack Callback when back navigation is requested from the list screen
  */
 @Composable
-fun WebSocketMonitor(
-    engine: WebSocketMonitorEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun WebSocketMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: WebSocketMonitorEngine = koinInject()
     val factory = remember { WebSocketFeature.createViewModelFactory(engine) }
     val viewModel: WebSocketViewModel = viewModel(factory = factory)
     val navController = rememberNavController()

@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,18 +48,23 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
+import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
+import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import com.azikar24.wormaceptor.feature.websocket.R
 import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -181,35 +188,37 @@ internal fun WebSocketDetailScreen(
             }
         },
     ) { paddingValues ->
-        if (messages.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = stringResource(
-                    if (searchQuery.isNotBlank() || directionFilter != null) {
-                        R.string.websocket_empty_no_matching_messages
-                    } else {
-                        R.string.websocket_empty_no_messages
-                    },
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                subtitle = stringResource(
-                    if (searchQuery.isNotBlank() || directionFilter != null) {
-                        R.string.websocket_empty_filter_hint
-                    } else {
-                        R.string.websocket_empty_messages_hint
-                    },
-                ),
-            )
-        } else {
-            MessageList(
-                messages = messages,
-                expandedMessageId = expandedMessageId,
-                onMessageClick = onMessageClick,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
+        Box(modifier = Modifier.imePadding()) {
+            if (messages.isEmpty()) {
+                WormaCeptorEmptyState(
+                    title = stringResource(
+                        if (searchQuery.isNotBlank() || directionFilter != null) {
+                            R.string.websocket_empty_no_matching_messages
+                        } else {
+                            R.string.websocket_empty_no_messages
+                        },
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    subtitle = stringResource(
+                        if (searchQuery.isNotBlank() || directionFilter != null) {
+                            R.string.websocket_empty_filter_hint
+                        } else {
+                            R.string.websocket_empty_messages_hint
+                        },
+                    ),
+                )
+            } else {
+                MessageList(
+                    messages = messages,
+                    expandedMessageId = expandedMessageId,
+                    onMessageClick = onMessageClick,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            }
         }
     }
 }
@@ -460,5 +469,53 @@ private fun MessageItem(
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebSocketDetailScreenPreview() {
+    WormaCeptorTheme {
+        WebSocketDetailScreen(
+            connection = WebSocketConnection(
+                id = 1L,
+                url = "wss://echo.websocket.org",
+                state = WebSocketState.OPEN,
+                openedAt = System.currentTimeMillis() - 60_000L,
+            ),
+            messages = persistentListOf(
+                WebSocketMessage(
+                    id = 1L,
+                    connectionId = 1L,
+                    type = WebSocketMessageType.TEXT,
+                    direction = WebSocketMessageDirection.SENT,
+                    payload = "{\"type\":\"ping\",\"timestamp\":1234567890}",
+                    timestamp = System.currentTimeMillis() - 5_000L,
+                    size = 42L,
+                ),
+                WebSocketMessage(
+                    id = 2L,
+                    connectionId = 1L,
+                    type = WebSocketMessageType.TEXT,
+                    direction = WebSocketMessageDirection.RECEIVED,
+                    payload = "{\"type\":\"pong\",\"timestamp\":1234567891}",
+                    timestamp = System.currentTimeMillis() - 4_000L,
+                    size = 43L,
+                ),
+            ),
+            searchQuery = "",
+            directionFilter = null,
+            totalMessageCount = 2,
+            directionCounts = mapOf(
+                WebSocketMessageDirection.SENT to 1,
+                WebSocketMessageDirection.RECEIVED to 1,
+            ),
+            expandedMessageId = null,
+            onSearchQueryChanged = {},
+            onDirectionFilterToggle = {},
+            onMessageClick = {},
+            onClearMessages = {},
+            onBack = {},
+        )
     }
 }

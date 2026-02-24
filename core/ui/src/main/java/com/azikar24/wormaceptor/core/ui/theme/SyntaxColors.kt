@@ -2,14 +2,17 @@ package com.azikar24.wormaceptor.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import com.azikar24.wormaceptor.domain.contracts.Token
+import com.azikar24.wormaceptor.domain.contracts.TokenType
 
 /**
  * Compose-friendly syntax colors for code highlighting.
- * Provides both light and dark theme variants with additional UI-specific colors.
+ * Provides both syntax token colors and UI-specific colors for code display components.
  */
 @Immutable
 data class ComposeSyntaxColors(
@@ -24,66 +27,92 @@ data class ComposeSyntaxColors(
     val boolean: Color,
     val type: Color,
     val default: Color,
-)
+    /** Line number text color. */
+    val lineNumberText: Color,
+    /** Line number gutter background. */
+    val lineNumberBackground: Color,
+    /** Code area background. */
+    val codeBackground: Color,
+    /** Search match highlight background. */
+    val searchHighlight: Color,
+    /** Current search match highlight background. */
+    val searchHighlightCurrent: Color,
+    /** Text color rendered on top of search highlight backgrounds. */
+    val searchHighlightText: Color,
+) {
+    /** Returns the Compose [Color] for the given [type]. */
+    fun forType(type: TokenType): Color = when (type) {
+        TokenType.KEYWORD -> keyword
+        TokenType.STRING -> string
+        TokenType.NUMBER -> number
+        TokenType.COMMENT -> comment
+        TokenType.PROPERTY -> property
+        TokenType.TAG -> tag
+        TokenType.OPERATOR -> operator
+        TokenType.PUNCTUATION -> punctuation
+        TokenType.BOOLEAN -> boolean
+        TokenType.TYPE -> this.type
+        TokenType.DEFAULT -> default
+    }
+}
 
-/**
- * Light theme syntax colors - clean, high-contrast for readability.
- * Inspired by VS Code Light+ and IntelliJ IDEA light theme.
- */
+/** Light theme Compose syntax colors derived from [LightSyntaxColors]. */
 val LightComposeSyntaxColors = ComposeSyntaxColors(
-    keyword = Color(0xFF0000FF), // Blue for keywords (if, else, class)
-    string = Color(0xFF22863A), // Green for strings
-    number = Color(0xFF098658), // Teal for numbers
-    comment = Color(0xFF6A737D), // Gray for comments
-    property = Color(0xFF6F42C1), // Purple for properties/fields
-    tag = Color(0xFF22863A), // Green for XML/HTML tags
-    operator = Color(0xFF000000), // Black for operators
-    punctuation = Color(0xFF000000), // Black for punctuation
-    boolean = Color(0xFF0000FF), // Blue for true/false/null
-    type = Color(0xFF6F42C1), // Purple for types
-    default = Color(0xFF24292E), // Dark gray for default text
+    keyword = Color(LightSyntaxColors.keyword.toInt()),
+    string = Color(LightSyntaxColors.string.toInt()),
+    number = Color(LightSyntaxColors.number.toInt()),
+    comment = Color(LightSyntaxColors.comment.toInt()),
+    property = Color(LightSyntaxColors.property.toInt()),
+    tag = Color(LightSyntaxColors.tag.toInt()),
+    operator = Color(LightSyntaxColors.operator.toInt()),
+    punctuation = Color(LightSyntaxColors.punctuation.toInt()),
+    boolean = Color(LightSyntaxColors.boolean.toInt()),
+    type = Color(LightSyntaxColors.typeAnnotation.toInt()),
+    default = Color(LightSyntaxColors.default.toInt()),
+    lineNumberText = SyntaxColorTokens.Light.LineNumberText,
+    lineNumberBackground = SyntaxColorTokens.Light.LineNumberBackground,
+    codeBackground = SyntaxColorTokens.Light.CodeBackground,
+    searchHighlight = SyntaxColorTokens.Light.SearchHighlight,
+    searchHighlightCurrent = SyntaxColorTokens.Light.SearchHighlightCurrent,
+    searchHighlightText = SyntaxColorTokens.Light.SearchHighlightText,
 )
 
-/**
- * Dark theme syntax colors - easy on the eyes for extended viewing.
- * Inspired by VS Code Dark+ and IntelliJ IDEA dark theme.
- */
+/** Dark theme Compose syntax colors derived from [DarkSyntaxColors]. */
 val DarkComposeSyntaxColors = ComposeSyntaxColors(
-    keyword = Color(0xFFC678DD), // Purple for keywords
-    string = Color(0xFF98C379), // Green for strings
-    number = Color(0xFFD19A66), // Orange for numbers
-    comment = Color(0xFF5C6370), // Gray for comments
-    property = Color(0xFFE06C75), // Red for properties/fields
-    tag = Color(0xFF61AFEF), // Blue for XML/HTML tags
-    operator = Color(0xFFABB2BF), // Light gray for operators
-    punctuation = Color(0xFFABB2BF), // Light gray for punctuation
-    boolean = Color(0xFFD19A66), // Orange for true/false/null
-    type = Color(0xFFE5C07B), // Yellow for types
-    default = Color(0xFFABB2BF), // Light gray for default text
+    keyword = Color(DarkSyntaxColors.keyword.toInt()),
+    string = Color(DarkSyntaxColors.string.toInt()),
+    number = Color(DarkSyntaxColors.number.toInt()),
+    comment = Color(DarkSyntaxColors.comment.toInt()),
+    property = Color(DarkSyntaxColors.property.toInt()),
+    tag = Color(DarkSyntaxColors.tag.toInt()),
+    operator = Color(DarkSyntaxColors.operator.toInt()),
+    punctuation = Color(DarkSyntaxColors.punctuation.toInt()),
+    boolean = Color(DarkSyntaxColors.boolean.toInt()),
+    type = Color(DarkSyntaxColors.typeAnnotation.toInt()),
+    default = Color(DarkSyntaxColors.default.toInt()),
+    lineNumberText = SyntaxColorTokens.Dark.LineNumberText,
+    lineNumberBackground = SyntaxColorTokens.Dark.LineNumberBackground,
+    codeBackground = SyntaxColorTokens.Dark.CodeBackground,
+    searchHighlight = SyntaxColorTokens.Dark.SearchHighlight,
+    searchHighlightCurrent = SyntaxColorTokens.Dark.SearchHighlightCurrent,
+    searchHighlightText = SyntaxColorTokens.Dark.SearchHighlightText,
 )
 
-/**
- * Composition local for syntax colors, allowing components to access
- * the current theme's syntax colors without explicit passing.
- */
-val LocalSyntaxColors = staticCompositionLocalOf { LightComposeSyntaxColors }
-
-/**
- * Returns the appropriate syntax colors based on the current theme.
- */
+/** Returns the appropriate [ComposeSyntaxColors] based on the current theme. */
 @Composable
 fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): ComposeSyntaxColors {
     return if (darkTheme) DarkComposeSyntaxColors else LightComposeSyntaxColors
 }
 
-/**
- * Provides syntax colors to the composition tree.
- * Wrap your content with this to make syntax colors available via LocalSyntaxColors.
- */
-@Composable
-fun ProvideSyntaxColors(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = syntaxColors(darkTheme)
-    CompositionLocalProvider(LocalSyntaxColors provides colors) {
-        content()
+/** Builds an [AnnotatedString] with syntax-colored spans applied over the raw [code]. */
+fun ComposeSyntaxColors.buildHighlightedString(code: String, tokens: List<Token>): AnnotatedString =
+    buildAnnotatedString {
+        append(code)
+        tokens.forEach { token ->
+            addStyle(
+                SpanStyle(color = forType(token.type)),
+                start = token.start,
+                end = token.end,
+            )
+        }
     }
-}

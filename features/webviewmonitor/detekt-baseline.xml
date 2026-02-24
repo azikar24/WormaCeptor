@@ -2,6 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>ClassOrdering:WebViewMonitorFeature.kt$WebViewMonitorViewModel$Companion</ID>
+    <ID>LongMethod:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
     <ID>LongMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -&gt; Unit)</ID>
     <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearFilters()</ID>
     <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearRequests()</ID>
@@ -21,6 +23,8 @@
     <ID>UnstableCollections:WebViewMonitorScreen.kt$List&lt;WebViewRequest&gt;</ID>
     <ID>UnstableCollections:WebViewMonitorScreen.kt$Set&lt;WebViewResourceType&gt;</ID>
     <ID>UnstableCollections:WebViewRequestDetailScreen.kt$Map&lt;String, String&gt;</ID>
+    <ID>UnusedPrivateMember:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
+    <ID>UnusedPrivateMember:WebViewRequestDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewRequestDetailScreenPreview()</ID>
     <ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

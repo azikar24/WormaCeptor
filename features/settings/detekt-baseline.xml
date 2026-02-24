@@ -2,7 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:FeatureToggleScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FeatureToggleScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun FeatureToggleScreenContent( config: FeatureConfig, onBack: () -&gt; Unit, onResetDefaults: () -&gt; Unit, onToggleNetworkTab: () -&gt; Unit, onToggleCrashesTab: () -&gt; Unit, onTogglePreferences: () -&gt; Unit, onToggleConsoleLogs: () -&gt; Unit, onToggleDeviceInfo: () -&gt; Unit, onToggleSqliteBrowser: () -&gt; Unit, onToggleFileBrowser: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:FeatureToggleScreen.kt$( config: FeatureConfig, onBack: () -&gt; Unit, onResetDefaults: () -&gt; Unit, onToggleNetworkTab: () -&gt; Unit, onToggleCrashesTab: () -&gt; Unit, onTogglePreferences: () -&gt; Unit, onToggleConsoleLogs: () -&gt; Unit, onToggleDeviceInfo: () -&gt; Unit, onToggleSqliteBrowser: () -&gt; Unit, onToggleFileBrowser: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:SettingsViewModel.kt$SettingsViewModel$5000</ID>
     <ID>UndocumentedPublicFunction:SettingsViewModel.kt$SettingsViewModel$fun resetToDefaults()</ID>
     <ID>UndocumentedPublicFunction:SettingsViewModel.kt$SettingsViewModel$fun toggleConsoleLogs()</ID>
@@ -13,6 +14,7 @@
     <ID>UndocumentedPublicFunction:SettingsViewModel.kt$SettingsViewModel$fun togglePreferences()</ID>
     <ID>UndocumentedPublicFunction:SettingsViewModel.kt$SettingsViewModel$fun toggleSqliteBrowser()</ID>
     <ID>UndocumentedPublicProperty:SettingsViewModel.kt$SettingsViewModel$val featureConfig: StateFlow&lt;FeatureConfig&gt; = repository.observeConfig() .stateIn( scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), initialValue = FeatureConfig.DEFAULT, )</ID>
+    <ID>UnusedPrivateMember:FeatureToggleScreen.kt$@Preview(showBackground = true) @Composable private fun FeatureToggleScreenPreview()</ID>
     <ID>ViewModelInjection:SettingsFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

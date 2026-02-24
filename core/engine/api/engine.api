@@ -290,17 +290,9 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine
 	public fun getSavedStateRegistry ()Landroidx/savedstate/SavedStateRegistry;
 	public final fun getState ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun hide ()V
-	public final fun isCpuEnabled ()Z
-	public final fun isFpsEnabled ()Z
-	public final fun isMemoryEnabled ()Z
-	public final fun isOverlayEnabled ()Z
-	public final fun isVisible ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun loadSavedMetricStates (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun savePosition ()V
-	public final fun setContentProvider (Lkotlin/jvm/functions/Function4;)V
 	public final fun setDragging (Z)V
-	public final fun setMetricEnabled (Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;)V
-	public static synthetic fun setMetricEnabled$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;ILjava/lang/Object;)V
 	public final fun setOverlayEnabled (ZLandroid/app/Activity;)V
 	public static synthetic fun setOverlayEnabled$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;ZLandroid/app/Activity;ILjava/lang/Object;)V
 	public final fun show ()V
@@ -311,42 +303,30 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine
 	public static synthetic fun toggleFps$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
 	public final fun toggleMemory (Landroid/app/Activity;)V
 	public static synthetic fun toggleMemory$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
-	public final fun toggleOverlay (Landroid/app/Activity;)V
-	public static synthetic fun toggleOverlay$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
 	public final fun toggleOverlayWithAllMetrics (Landroid/app/Activity;)V
 	public static synthetic fun toggleOverlayWithAllMetrics$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine;Landroid/app/Activity;ILjava/lang/Object;)V
-	public final fun updatePosition-k-4lQ0M (J)V
 }
 
 public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$Companion {
-	public final fun canDrawOverlays (Landroid/content/Context;)Z
 }
 
 public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks {
 	public static final field $stable I
-	public fun <init> (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public fun <init> (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
 	public final fun component1 ()Lkotlin/jvm/functions/Function0;
-	public final fun component10 ()Lkotlin/jvm/functions/Function0;
-	public final fun component11 ()Lkotlin/jvm/functions/Function0;
 	public final fun component2 ()Lkotlin/jvm/functions/Function1;
 	public final fun component3 ()Lkotlin/jvm/functions/Function0;
 	public final fun component4 ()Lkotlin/jvm/functions/Function0;
 	public final fun component5 ()Lkotlin/jvm/functions/Function0;
 	public final fun component6 ()Lkotlin/jvm/functions/Function0;
 	public final fun component7 ()Lkotlin/jvm/functions/Function0;
-	public final fun component8 ()Lkotlin/jvm/functions/Function0;
-	public final fun component9 ()Lkotlin/jvm/functions/Function0;
-	public final fun copy (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;
+	public final fun copy (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine$OverlayCallbacks;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getOnDrag ()Lkotlin/jvm/functions/Function1;
 	public final fun getOnDragEnd ()Lkotlin/jvm/functions/Function0;
 	public final fun getOnDragStart ()Lkotlin/jvm/functions/Function0;
 	public final fun getOnHideOverlay ()Lkotlin/jvm/functions/Function0;
-	public final fun getOnOpenCpuDetail ()Lkotlin/jvm/functions/Function0;
-	public final fun getOnOpenFpsDetail ()Lkotlin/jvm/functions/Function0;
-	public final fun getOnOpenMemoryDetail ()Lkotlin/jvm/functions/Function0;
-	public final fun getOnOpenWormaCeptor ()Lkotlin/jvm/functions/Function0;
 	public final fun getOnRemoveCpu ()Lkotlin/jvm/functions/Function0;
 	public final fun getOnRemoveFps ()Lkotlin/jvm/functions/Function0;
 	public final fun getOnRemoveMemory ()Lkotlin/jvm/functions/Function0;
@@ -358,37 +338,30 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayState 
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState$Companion;
 	public static final field DISMISS_ZONE_THRESHOLD F
-	public static final field HISTORY_SIZE I
-	public synthetic fun <init> (ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZJZZZZIZIZIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZJZZZZIZIZIZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Z
-	public final fun component10 ()I
-	public final fun component11 ()Ljava/util/List;
+	public final fun component10 ()Z
+	public final fun component11 ()I
 	public final fun component12 ()Z
-	public final fun component13 ()I
-	public final fun component14 ()Ljava/util/List;
-	public final fun component15 ()Z
 	public final fun component2-F1C5BW0 ()J
 	public final fun component3 ()Z
 	public final fun component4 ()Z
 	public final fun component5 ()Z
 	public final fun component6 ()Z
 	public final fun component7 ()I
-	public final fun component8 ()Ljava/util/List;
-	public final fun component9 ()Z
-	public final fun copy-H2Vzq_w (ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;Z)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
-	public static synthetic fun copy-H2Vzq_w$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;ZJZZZZILjava/util/List;ZILjava/util/List;ZILjava/util/List;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
+	public final fun component8 ()Z
+	public final fun component9 ()I
+	public final fun copy-2MEWV7M (ZJZZZZIZIZIZ)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
+	public static synthetic fun copy-2MEWV7M$default (Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;ZJZZZZIZIZIZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCpuEnabled ()Z
-	public final fun getCpuHistory ()Ljava/util/List;
 	public final fun getCpuMonitorRunning ()Z
 	public final fun getCpuPercent ()I
 	public final fun getFpsEnabled ()Z
-	public final fun getFpsHistory ()Ljava/util/List;
 	public final fun getFpsMonitorRunning ()Z
 	public final fun getFpsValue ()I
 	public final fun getMemoryEnabled ()Z
-	public final fun getMemoryHistory ()Ljava/util/List;
 	public final fun getMemoryMonitorRunning ()Z
 	public final fun getMemoryPercent ()I
 	public final fun getPositionPercent-F1C5BW0 ()J
@@ -620,6 +593,10 @@ public final class com/azikar24/wormaceptor/core/engine/di/WormaCeptorKoin {
 	public final fun cleanup ()V
 	public final fun getKoin ()Lorg/koin/core/Koin;
 	public final fun init (Landroid/content/Context;)V
+}
+
+public final class com/azikar24/wormaceptor/core/engine/ui/DismissZoneContentKt {
+	public static final fun DismissZoneContent (ZZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/engine/ui/PerformanceOverlayContentKt {

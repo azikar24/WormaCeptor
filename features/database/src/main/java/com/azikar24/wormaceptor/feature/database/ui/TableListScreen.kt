@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,12 +37,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen displaying list of tables in a database.
@@ -116,75 +120,77 @@ fun TableListScreen(
         },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            error != null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-
-            tables.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        Box(modifier = Modifier.imePadding()) {
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.TableChart,
-                            contentDescription = stringResource(R.string.database_table_list_empty),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                        )
+                        CircularProgressIndicator()
+                    }
+                }
+
+                error != null -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
                         Text(
-                            text = stringResource(R.string.database_table_list_empty),
+                            text = error,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.error,
                         )
                     }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.lg),
-                ) {
-                    items(
-                        items = tables,
-                        key = { it.name },
-                    ) { table ->
-                        TableListItem(
-                            table = table,
-                            onClick = { onTableClick(table) },
-                        )
-                        WormaCeptorDivider()
+                tables.isEmpty() -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.TableChart,
+                                contentDescription = stringResource(R.string.database_table_list_empty),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                            )
+                            Text(
+                                text = stringResource(R.string.database_table_list_empty),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.lg),
+                    ) {
+                        items(
+                            items = tables,
+                            key = { it.name },
+                        ) { table ->
+                            TableListItem(
+                                table = table,
+                                onClick = { onTableClick(table) },
+                            )
+                            WormaCeptorDivider()
+                        }
                     }
                 }
             }
@@ -227,4 +233,26 @@ private fun TableListItem(table: TableInfo, onClick: () -> Unit, modifier: Modif
             )
         },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TableListScreenPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            databaseName = "app_database.db",
+            tables = persistentListOf(
+                TableInfo(name = "users", rowCount = 150L, columnCount = 6),
+                TableInfo(name = "transactions", rowCount = 1024L, columnCount = 12),
+                TableInfo(name = "settings", rowCount = 8L, columnCount = 3),
+            ),
+            searchQuery = "",
+            isLoading = false,
+            error = null,
+            onSearchQueryChanged = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
 }

@@ -32,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -49,12 +50,16 @@ internal fun CoordinateInputCard(
     isLoading: Boolean,
     isMockEnabled: Boolean,
     isMockLocationAvailable: Boolean,
+    currentMockLatitude: Double?,
+    currentMockLongitude: Double?,
     onLatitudeChanged: (String) -> Unit,
     onLongitudeChanged: (String) -> Unit,
     onSetMockLocation: () -> Unit,
     onSetToCurrentLocation: () -> Unit,
     onSaveAsPreset: () -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -158,9 +163,15 @@ internal fun CoordinateInputCard(
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
             // Set mock location button
+            val isMatchingCurrentMock = isMockEnabled &&
+                latitudeInput.toDoubleOrNull() == currentMockLatitude &&
+                longitudeInput.toDoubleOrNull() == currentMockLongitude
             Button(
-                onClick = onSetMockLocation,
-                enabled = isMockLocationAvailable && isInputValid && !isLoading && !isMockEnabled,
+                onClick = {
+                    keyboardController?.hide()
+                    onSetMockLocation()
+                },
+                enabled = isMockLocationAvailable && isInputValid && !isLoading && !isMatchingCurrentMock,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LocationColors.enabled,

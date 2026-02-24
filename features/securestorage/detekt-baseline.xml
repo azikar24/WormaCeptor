@@ -34,6 +34,7 @@
     <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val selectedEntry: StateFlow&lt;SecureStorageEntry?&gt; = _selectedEntry.asStateFlow()</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val selectedType: StateFlow&lt;StorageType?&gt; = _selectedType.asStateFlow()</ID>
     <ID>UnusedParameter:SecureStorageColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
+    <ID>UnusedPrivateMember:SecureStorageScreen.kt$@Preview(showBackground = true) @Composable private fun SecureStorageScreenPreview()</ID>
     <ID>ViewModelInjection:SecureStorageFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -46,8 +46,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -608,4 +610,23 @@ private fun shareCrash(context: Context, crash: Crash) {
         appendLine(crash.stackTrace)
     }
     shareText(context, text, "Share Crash Report", "Crash Report: ${crash.exceptionType}")
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CrashDetailScreenPreview() {
+    WormaCeptorTheme {
+        CrashDetailScreen(
+            crash = Crash(
+                id = 1L,
+                timestamp = System.currentTimeMillis(),
+                exceptionType = "java.lang.NullPointerException",
+                message = "Attempt to invoke virtual method on a null object reference",
+                stackTrace = "java.lang.NullPointerException: Attempt to invoke virtual method\n" +
+                    "\tat com.example.app.MainActivity.onCreate(MainActivity.kt:42)\n" +
+                    "\tat android.app.Activity.performCreate(Activity.java:8051)",
+            ),
+            onBack = {},
+        )
+    }
 }

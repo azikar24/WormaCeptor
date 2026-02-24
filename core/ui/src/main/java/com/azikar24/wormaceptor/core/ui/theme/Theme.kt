@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.feature.viewer.ui.theme
+package com.azikar24.wormaceptor.core.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 
 private val LightColorScheme = lightColorScheme(

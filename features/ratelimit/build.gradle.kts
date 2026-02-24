@@ -37,5 +37,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.okhttp)
+    implementation(libs.koin.compose)
     debugImplementation(libs.androidx.ui.tooling)
 }

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -69,7 +68,7 @@ import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
-import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorUiState
+import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewState
 
 internal const val TitleMaxChars = 50
 internal const val BodyMaxChars = 200
@@ -82,7 +81,7 @@ private const val ImportanceLow = 1
 
 @Composable
 internal fun NotificationFormCard(
-    uiState: PushSimulatorUiState,
+    state: PushSimulatorViewState,
     channels: List<NotificationChannelInfo>,
     previewTitlePlaceholder: String,
     previewBodyPlaceholder: String,
@@ -94,7 +93,7 @@ internal fun NotificationFormCard(
     onAddAction: (String) -> Unit,
     onRemoveAction: (String) -> Unit,
 ) {
-    val selectedChannel = channels.find { it.id == uiState.selectedChannelId }
+    val selectedChannel = channels.find { it.id == state.selectedChannelId }
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -113,11 +112,11 @@ internal fun NotificationFormCard(
         ) {
             // Enhanced Preview Header
             NotificationPreview(
-                title = uiState.title.ifBlank { previewTitlePlaceholder },
-                body = uiState.body.ifBlank { previewBodyPlaceholder },
-                priority = uiState.priority,
+                title = state.title.ifBlank { previewTitlePlaceholder },
+                body = state.body.ifBlank { previewBodyPlaceholder },
+                priority = state.priority,
                 channelName = selectedChannel?.name,
-                actions = uiState.actions,
+                actions = state.actions,
             )
 
             WormaCeptorDivider(
@@ -127,7 +126,7 @@ internal fun NotificationFormCard(
 
             // Title Input with character count
             OutlinedTextFieldWithCounter(
-                value = uiState.title,
+                value = state.title,
                 onValueChange = onTitleChange,
                 label = stringResource(R.string.pushsimulator_field_title),
                 placeholder = stringResource(R.string.pushsimulator_field_title_placeholder),
@@ -137,7 +136,7 @@ internal fun NotificationFormCard(
 
             // Body Input with character count
             OutlinedTextFieldWithCounter(
-                value = uiState.body,
+                value = state.body,
                 onValueChange = onBodyChange,
                 label = stringResource(R.string.pushsimulator_field_message),
                 placeholder = stringResource(R.string.pushsimulator_field_message_placeholder),
@@ -149,21 +148,21 @@ internal fun NotificationFormCard(
 
             // Channel Selector
             ChannelSelector(
-                selectedChannelId = uiState.selectedChannelId,
+                selectedChannelId = state.selectedChannelId,
                 channels = channels,
                 onChannelSelected = onChannelChange,
             )
 
             // Priority Selector
             PrioritySelector(
-                selectedPriority = uiState.priority,
+                selectedPriority = state.priority,
                 onPrioritySelected = onPriorityChange,
             )
 
             // Action Buttons Section
             ActionButtonsSection(
-                actions = uiState.actions,
-                newActionTitle = uiState.newActionTitle,
+                actions = state.actions,
+                newActionTitle = state.newActionTitle,
                 onNewActionTitleChange = onNewActionTitleChange,
                 onAddAction = onAddAction,
                 onRemoveAction = onRemoveAction,

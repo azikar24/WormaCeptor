@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:presentation"))
     implementation(project(":core:engine"))
     implementation(project(":core:ui"))
     implementation(project(":domain:contracts"))
@@ -45,6 +46,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     // OpenStreetMap for map visualization
     implementation(libs.osmdroid.android)
+    implementation(libs.koin.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

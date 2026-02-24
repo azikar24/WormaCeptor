@@ -54,6 +54,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
@@ -62,6 +63,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableMap
 
@@ -519,4 +521,32 @@ private fun methodColor(method: String): Color = when (method.uppercase()) {
     "DELETE" -> WormaCeptorColors.StatusRed
     "PATCH" -> Color(0xFF9C27B0)
     else -> WormaCeptorColors.StatusGrey
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FilterBottomSheetContentPreview() {
+    WormaCeptorTheme {
+        FilterBottomSheetContent(
+            initialSearchQuery = "",
+            initialFilterMethods = setOf("GET"),
+            initialFilterStatusRanges = setOf(200..299),
+            onApply = { _, _, _ -> },
+            filteredCount = 42,
+            totalCount = 100,
+            methodCounts = kotlinx.collections.immutable.persistentMapOf(
+                "GET" to 30,
+                "POST" to 25,
+                "PUT" to 10,
+                "DELETE" to 5,
+                "PATCH" to 2,
+            ),
+            statusCounts = kotlinx.collections.immutable.persistentMapOf(
+                200..299 to 50,
+                300..399 to 10,
+                400..499 to 15,
+                500..599 to 3,
+            ),
+        )
+    }
 }

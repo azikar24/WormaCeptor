@@ -1,10 +1,5 @@
 package com.azikar24.wormaceptor.infra.syntax.xml
 
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import com.azikar24.wormaceptor.domain.contracts.SyntaxColors
 import com.azikar24.wormaceptor.domain.contracts.SyntaxHighlighter
 import com.azikar24.wormaceptor.domain.contracts.Token
 import com.azikar24.wormaceptor.domain.contracts.TokenType
@@ -24,17 +19,7 @@ class XmlHighlighter : SyntaxHighlighter {
 
     override val language: String = "xml"
 
-    override fun highlight(code: String, colors: SyntaxColors): AnnotatedString {
-        val tokens = tokenize(code)
-        return buildHighlightedString(code, tokens, colors)
-    }
-
-    /**
-     * Tokenizes the input XML/HTML code.
-     *
-     * Uses a simple state machine approach to handle the nested nature of XML.
-     */
-    private fun tokenize(code: String): List<Token> {
+    override fun tokenize(code: String): List<Token> {
         val tokens = mutableListOf<Token>()
 
         // Match comments: <!-- ... -->
@@ -169,52 +154,6 @@ class XmlHighlighter : SyntaxHighlighter {
                         val valueEnd = baseOffset + valueGroup.range.last + 1
                         tokens.add(Token(TokenType.STRING, valueStart, valueEnd))
                     }
-                }
-            }
-        }
-    }
-
-    /**
-     * Builds an AnnotatedString from the code and tokens.
-     */
-    private fun buildHighlightedString(code: String, tokens: List<Token>, colors: SyntaxColors): AnnotatedString {
-        return buildAnnotatedString {
-            var lastEnd = 0
-
-            // Remove overlapping tokens, keeping the first one (which is usually more specific)
-            val filteredTokens = mutableListOf<Token>()
-            for (token in tokens.sortedBy { it.start }) {
-                val overlaps = filteredTokens.any { existing ->
-                    token.start < existing.end && token.end > existing.start
-                }
-                if (!overlaps) {
-                    filteredTokens.add(token)
-                }
-            }
-
-            for (token in filteredTokens.sortedBy { it.start }) {
-                // Append unhighlighted text before this token
-                if (token.start > lastEnd) {
-                    withStyle(SpanStyle(color = colors.default)) {
-                        append(code.substring(lastEnd, token.start))
-                    }
-                }
-
-                // Append highlighted token
-                val safeEnd = minOf(token.end, code.length)
-                if (token.start < safeEnd) {
-                    withStyle(SpanStyle(color = colors.forType(token.type))) {
-                        append(code.substring(token.start, safeEnd))
-                    }
-                }
-
-                lastEnd = maxOf(lastEnd, safeEnd)
-            }
-
-            // Append remaining text after last token
-            if (lastEnd < code.length) {
-                withStyle(SpanStyle(color = colors.default)) {
-                    append(code.substring(lastEnd))
                 }
             }
         }

@@ -13,7 +13,6 @@
     <ID>MagicNumber:MemoryScreen.kt$1_048_576</ID>
     <ID>MagicNumber:MemoryScreen.kt$4</ID>
     <ID>MagicNumber:MemoryViewModel.kt$MemoryViewModel$5000</ID>
-    <ID>MaxLineLength:MemoryFeature.kt$*</ID>
     <ID>UndocumentedPublicFunction:MemoryColors.kt$MemoryColors$fun statusColorForUsage(usagePercent: Float): Color</ID>
     <ID>UndocumentedPublicProperty:MemoryColors.kt$MemoryColors$val cardBackground: Color</ID>
     <ID>UndocumentedPublicProperty:MemoryColors.kt$MemoryColors$val chartBackground: Color</ID>
@@ -33,6 +32,7 @@
     <ID>UndocumentedPublicProperty:MemoryViewModel.kt$MemoryViewModel$// Memory history for charts val memoryHistory: StateFlow&lt;ImmutableList&lt;MemoryInfo&gt;&gt; = engine.memoryHistory .map { it.toImmutableList() } .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf(), )</ID>
     <ID>UndocumentedPublicProperty:MemoryViewModel.kt$MemoryViewModel$// Monitoring state val isMonitoring: StateFlow&lt;Boolean&gt; = engine.isMonitoring</ID>
     <ID>UnusedParameter:MemoryColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
+    <ID>UnusedPrivateMember:MemoryScreen.kt$@Suppress("MagicNumber") @Preview(showBackground = true) @Composable private fun MemoryScreenPreview()</ID>
     <ID>ViewModelInjection:MemoryFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

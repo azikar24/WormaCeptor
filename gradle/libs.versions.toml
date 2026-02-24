@@ -25,6 +25,7 @@ junit = "4.13.2"
 mockk = "1.13.12"
 kotlinx-coroutines-test = "1.8.1"
 koin = "4.0.0"
+ktor = "3.0.3"
 startup = "1.2.0"
 work = "2.9.1"
 coil = "2.6.0"
@@ -52,9 +53,9 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "40"
+versionCode = "41"
 #noinspection UnusedVersionCatalogEntry
-versionName = "2.1.0"
+versionName = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -88,6 +89,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
 androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }

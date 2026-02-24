@@ -17,13 +17,10 @@ import androidx.compose.ui.geometry.Offset
  * @property memoryEnabled Whether memory metric is enabled and should be displayed
  * @property cpuEnabled Whether CPU metric is enabled and should be displayed
  * @property fpsValue Current frames per second
- * @property fpsHistory History of FPS values for sparkline (last 30 data points)
  * @property fpsMonitorRunning Whether the FPS monitor is actively running
  * @property memoryPercent Current memory usage percentage
- * @property memoryHistory History of memory percentage values for sparkline
  * @property memoryMonitorRunning Whether the memory monitor is actively running
  * @property cpuPercent Current CPU usage percentage
- * @property cpuHistory History of CPU percentage values for sparkline
  * @property cpuMonitorRunning Whether the CPU monitor is actively running
  */
 @Stable
@@ -35,13 +32,10 @@ data class PerformanceOverlayState(
     val memoryEnabled: Boolean = false,
     val cpuEnabled: Boolean = false,
     val fpsValue: Int = 0,
-    val fpsHistory: List<Float> = emptyList(),
     val fpsMonitorRunning: Boolean = false,
     val memoryPercent: Int = 0,
-    val memoryHistory: List<Float> = emptyList(),
     val memoryMonitorRunning: Boolean = false,
     val cpuPercent: Int = 0,
-    val cpuHistory: List<Float> = emptyList(),
     val cpuMonitorRunning: Boolean = false,
 ) {
     /**
@@ -61,12 +55,6 @@ data class PerformanceOverlayState(
          * Y = 0.05 means 5% from top (near top edge)
          */
         val DEFAULT_POSITION_PERCENT = Offset(0.80f, 0.05f)
-
-        /**
-         * Maximum number of history points to keep for sparklines.
-         * At 1 sample per second, this represents 30 seconds of data.
-         */
-        const val HISTORY_SIZE = 30
 
         /**
          * Y position threshold for dismiss zone (bottom 15% of screen).

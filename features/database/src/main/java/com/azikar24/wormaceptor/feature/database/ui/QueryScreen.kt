@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,14 +40,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
 import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Screen for executing SQL queries.
@@ -111,7 +115,8 @@ fun QueryScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(padding)
+                .imePadding(),
         ) {
             // Query input
             Box(
@@ -329,5 +334,27 @@ private fun QueryHistoryView(
                 WormaCeptorDivider()
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun QueryScreenPreview() {
+    WormaCeptorTheme {
+        QueryScreen(
+            databaseName = "app_database.db",
+            sqlQuery = "SELECT * FROM users WHERE active = 1",
+            queryResult = null,
+            queryHistory = persistentListOf(
+                "SELECT * FROM users",
+                "SELECT COUNT(*) FROM transactions",
+            ),
+            isExecuting = false,
+            onQueryChanged = {},
+            onExecuteQuery = {},
+            onClearQuery = {},
+            onSelectFromHistory = {},
+            onBack = {},
+        )
     }
 }

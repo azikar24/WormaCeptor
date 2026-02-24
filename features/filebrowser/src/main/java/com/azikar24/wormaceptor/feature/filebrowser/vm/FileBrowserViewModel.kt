@@ -1,17 +1,11 @@
 package com.azikar24.wormaceptor.feature.filebrowser.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.FileSystemRepository
-import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.domain.entities.FileEntry
-import com.azikar24.wormaceptor.domain.entities.FileInfo
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -20,150 +14,118 @@ import kotlinx.coroutines.launch
  */
 class FileBrowserViewModel(
     private val repository: FileSystemRepository,
-) : ViewModel() {
-
-    // Navigation stack (list of paths)
-    private val _navigationStack = MutableStateFlow<ImmutableList<String>>(persistentListOf())
-    val navigationStack: StateFlow<ImmutableList<String>> = _navigationStack.asStateFlow()
-
-    // Current directory path
-    private val _currentPath = MutableStateFlow<String?>(null)
-    val currentPath: StateFlow<String?> = _currentPath.asStateFlow()
-
-    // Files in current directory
-    private val _files = MutableStateFlow<ImmutableList<FileEntry>>(persistentListOf())
-
-    // Search query
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    // Filtered files based on search
-    private val _filteredFiles = MutableStateFlow<ImmutableList<FileEntry>>(persistentListOf())
-    val filteredFiles: StateFlow<ImmutableList<FileEntry>> = _filteredFiles.asStateFlow()
-
-    // Sort mode
-    private val _sortMode = MutableStateFlow(SortMode.NAME)
-    val sortMode: StateFlow<SortMode> = _sortMode.asStateFlow()
-
-    // Loading state
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Error state
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-
-    // Selected file for viewing
-    private val _selectedFile = MutableStateFlow<String?>(null)
-    val selectedFile: StateFlow<String?> = _selectedFile.asStateFlow()
-
-    // File content
-    private val _fileContent = MutableStateFlow<FileContent?>(null)
-    val fileContent: StateFlow<FileContent?> = _fileContent.asStateFlow()
-
-    // File info for bottom sheet
-    private val _fileInfo = MutableStateFlow<FileInfo?>(null)
-    val fileInfo: StateFlow<FileInfo?> = _fileInfo.asStateFlow()
+) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent>(FileBrowserViewState()) {
 
     init {
-        loadRootDirectories()
+        handleLoadRootDirectories()
     }
 
-    /**
-     * Loads the root directories as the initial view.
-     */
-    fun loadRootDirectories() {
+    override fun handleEvent(event: FileBrowserViewEvent) {
+        when (event) {
+            FileBrowserViewEvent.LoadRootDirectories -> handleLoadRootDirectories()
+            is FileBrowserViewEvent.NavigateToDirectory -> handleNavigateToDirectory(event.path)
+            FileBrowserViewEvent.NavigateBack -> handleNavigateBack()
+            is FileBrowserViewEvent.NavigateToBreadcrumb -> handleNavigateToBreadcrumb(event.index)
+            is FileBrowserViewEvent.SearchQueryChanged -> handleSearchQueryChanged(event.query)
+            is FileBrowserViewEvent.SetSortMode -> handleSetSortMode(event.mode)
+            is FileBrowserViewEvent.FileClicked -> handleFileClicked(event.file)
+            is FileBrowserViewEvent.FileLongClicked -> handleFileLongClicked(event.file)
+            is FileBrowserViewEvent.DeleteFile -> handleDeleteFile(event.path)
+            FileBrowserViewEvent.CloseFileViewer -> updateState { copy(selectedFile = null, fileContent = null) }
+            FileBrowserViewEvent.HideFileInfo -> updateState { copy(fileInfo = null) }
+            FileBrowserViewEvent.ClearError -> updateState { copy(error = null) }
+        }
+    }
+
+    private fun handleLoadRootDirectories() {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+            updateState { copy(isLoading = true, error = null) }
             try {
                 val roots = repository.getRootDirectories()
-                _files.value = roots.toImmutableList()
-                _filteredFiles.value = roots.toImmutableList()
-                _currentPath.value = null
-                _navigationStack.value = persistentListOf()
-            } catch (e: Exception) {
-                _error.value = "Failed to load root directories: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState {
+                    copy(
+                        isLoading = false,
+                        filteredFiles = roots.toImmutableList(),
+                        currentPath = null,
+                        navigationStack = persistentListOf(),
+                    )
+                }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to load root directories: ${e.message}")
+                }
             }
         }
     }
 
-    /**
-     * Navigates into a directory.
-     */
-    fun navigateToDirectory(path: String) {
+    private fun handleNavigateToDirectory(path: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-            _searchQuery.value = ""
+            updateState { copy(isLoading = true, error = null, searchQuery = "") }
             try {
                 val fileList = repository.listFiles(path)
-                _files.value = applySorting(fileList).toImmutableList()
-                _filteredFiles.value = _files.value
-                _currentPath.value = path
-
-                // Add to navigation stack
-                val newStack = _navigationStack.value.toMutableList()
+                val sorted = applySorting(fileList, uiState.value.sortMode)
+                val newStack = uiState.value.navigationStack.toMutableList()
                 newStack.add(path)
-                _navigationStack.value = newStack.toImmutableList()
-            } catch (e: Exception) {
-                _error.value = "Failed to list directory: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState {
+                    copy(
+                        isLoading = false,
+                        filteredFiles = sorted.toImmutableList(),
+                        currentPath = path,
+                        navigationStack = newStack.toImmutableList(),
+                    )
+                }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                }
             }
         }
     }
 
-    /**
-     * Navigates back to parent directory or root.
-     */
-    fun navigateBack(): Boolean {
-        val stack = _navigationStack.value
+    private fun handleNavigateBack() {
+        val stack = uiState.value.navigationStack
 
         if (stack.isEmpty()) {
-            // Already at root
-            return false
+            emitEffect(FileBrowserViewEffect.AtRoot)
+            return
         }
 
         if (stack.size == 1) {
-            // Go back to root
-            loadRootDirectories()
-            return true
+            handleLoadRootDirectories()
+            emitEffect(FileBrowserViewEffect.NavigatedBack)
+            return
         }
 
-        // Go to parent in stack
         val newStack = stack.dropLast(1)
-        _navigationStack.value = newStack.toImmutableList()
+        updateState { copy(navigationStack = newStack.toImmutableList()) }
 
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-            _searchQuery.value = ""
+            updateState { copy(isLoading = true, error = null, searchQuery = "") }
             try {
                 val parentPath = newStack.last()
                 val fileList = repository.listFiles(parentPath)
-                _files.value = applySorting(fileList).toImmutableList()
-                _filteredFiles.value = _files.value
-                _currentPath.value = parentPath
-            } catch (e: Exception) {
-                _error.value = "Failed to list directory: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                val sorted = applySorting(fileList, uiState.value.sortMode)
+                updateState {
+                    copy(
+                        isLoading = false,
+                        filteredFiles = sorted.toImmutableList(),
+                        currentPath = parentPath,
+                    )
+                }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                }
             }
         }
-        return true
+        emitEffect(FileBrowserViewEffect.NavigatedBack)
     }
 
-    /**
-     * Navigates to a specific breadcrumb level.
-     */
-    fun navigateToBreadcrumb(index: Int) {
-        val stack = _navigationStack.value
+    private fun handleNavigateToBreadcrumb(index: Int) {
+        val stack = uiState.value.navigationStack
 
         if (index < 0) {
-            loadRootDirectories()
+            handleLoadRootDirectories()
             return
         }
 
@@ -173,145 +135,159 @@ class FileBrowserViewModel(
 
         val path = stack[index]
         val newStack = stack.take(index + 1)
-        _navigationStack.value = newStack.toImmutableList()
+        updateState { copy(navigationStack = newStack.toImmutableList()) }
 
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-            _searchQuery.value = ""
+            updateState { copy(isLoading = true, error = null, searchQuery = "") }
             try {
                 val fileList = repository.listFiles(path)
-                _files.value = applySorting(fileList).toImmutableList()
-                _filteredFiles.value = _files.value
-                _currentPath.value = path
-            } catch (e: Exception) {
-                _error.value = "Failed to list directory: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                val sorted = applySorting(fileList, uiState.value.sortMode)
+                updateState {
+                    copy(
+                        isLoading = false,
+                        filteredFiles = sorted.toImmutableList(),
+                        currentPath = path,
+                    )
+                }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                }
             }
         }
     }
 
-    /**
-     * Updates search query and filters files.
-     */
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
-        filterFiles(query)
+    private fun handleSearchQueryChanged(query: String) {
+        updateState { copy(searchQuery = query) }
+        filterCurrentFiles(query)
     }
 
-    /**
-     * Changes the sort mode.
-     */
-    fun setSortMode(mode: SortMode) {
-        _sortMode.value = mode
-        _files.value = applySorting(_files.value).toImmutableList()
-        filterFiles(_searchQuery.value)
+    private fun handleSetSortMode(mode: SortMode) {
+        updateState { copy(sortMode = mode) }
+        refreshCurrentDirectory()
     }
 
-    /**
-     * Opens a file for viewing.
-     */
-    fun openFile(path: String) {
+    private fun handleFileClicked(file: FileEntry) {
+        if (file.isDirectory) {
+            handleNavigateToDirectory(file.path)
+        } else {
+            handleOpenFile(file.path)
+        }
+    }
+
+    private fun handleFileLongClicked(file: FileEntry) {
+        handleShowFileInfo(file.path)
+    }
+
+    private fun handleOpenFile(path: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+            updateState { copy(isLoading = true, error = null) }
             try {
                 val content = repository.readFile(path)
-                _fileContent.value = content
-                _selectedFile.value = path
-            } catch (e: Exception) {
-                _error.value = "Failed to read file: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                updateState {
+                    copy(isLoading = false, fileContent = content, selectedFile = path)
+                }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to read file: ${e.message}")
+                }
             }
         }
     }
 
-    /**
-     * Closes the file viewer.
-     */
-    fun closeFileViewer() {
-        _selectedFile.value = null
-        _fileContent.value = null
-    }
-
-    /**
-     * Shows file info bottom sheet.
-     */
-    fun showFileInfo(path: String) {
+    private fun handleShowFileInfo(path: String) {
         viewModelScope.launch {
             try {
                 val info = repository.getFileInfo(path)
-                _fileInfo.value = info
-            } catch (e: Exception) {
-                _error.value = "Failed to get file info: ${e.message}"
+                updateState { copy(fileInfo = info) }
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState { copy(error = "Failed to get file info: ${e.message}") }
             }
         }
     }
 
-    /**
-     * Hides file info bottom sheet.
-     */
-    fun hideFileInfo() {
-        _fileInfo.value = null
-    }
-
-    /**
-     * Deletes a file.
-     */
-    fun deleteFile(path: String) {
+    private fun handleDeleteFile(path: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+            updateState { copy(isLoading = true, error = null) }
             try {
                 val success = repository.deleteFile(path)
                 if (success) {
-                    // Refresh current directory
-                    _currentPath.value?.let { currentPath ->
-                        val fileList = repository.listFiles(currentPath)
-                        _files.value = applySorting(fileList).toImmutableList()
-                        filterFiles(_searchQuery.value)
-                    } ?: loadRootDirectories()
+                    refreshCurrentDirectory()
                 } else {
-                    _error.value = "Failed to delete file"
+                    updateState { copy(isLoading = false, error = "Failed to delete file") }
                 }
-            } catch (e: Exception) {
-                _error.value = "Failed to delete file: ${e.message}"
-            } finally {
-                _isLoading.value = false
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                updateState {
+                    copy(isLoading = false, error = "Failed to delete file: ${e.message}")
+                }
             }
         }
     }
 
-    /**
-     * Clears error message.
-     */
-    fun clearError() {
-        _error.value = null
-    }
-
-    private fun filterFiles(query: String) {
-        _filteredFiles.value = if (query.isBlank()) {
-            _files.value
+    private fun refreshCurrentDirectory() {
+        val state = uiState.value
+        val currentPath = state.currentPath
+        if (currentPath != null) {
+            viewModelScope.launch {
+                updateState { copy(isLoading = true, error = null) }
+                try {
+                    val fileList = repository.listFiles(currentPath)
+                    val sorted = applySorting(fileList, uiState.value.sortMode)
+                    val filtered = filterFiles(sorted, uiState.value.searchQuery)
+                    updateState {
+                        copy(isLoading = false, filteredFiles = filtered.toImmutableList())
+                    }
+                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    updateState {
+                        copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                    }
+                }
+            }
         } else {
-            _files.value
-                .filter { it.name.contains(query, ignoreCase = true) }
-                .toImmutableList()
+            handleLoadRootDirectories()
         }
     }
 
-    private fun applySorting(files: List<FileEntry>): List<FileEntry> {
-        return when (_sortMode.value) {
+    private fun filterCurrentFiles(query: String) {
+        // Re-fetch and filter from the current directory
+        val currentPath = uiState.value.currentPath
+        if (currentPath != null) {
+            viewModelScope.launch {
+                try {
+                    val fileList = repository.listFiles(currentPath)
+                    val sorted = applySorting(fileList, uiState.value.sortMode)
+                    val filtered = filterFiles(sorted, query)
+                    updateState { copy(filteredFiles = filtered.toImmutableList()) }
+                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    updateState { copy(error = "Failed to filter files: ${e.message}") }
+                }
+            }
+        } else {
+            viewModelScope.launch {
+                try {
+                    val roots = repository.getRootDirectories()
+                    val filtered = filterFiles(roots, query)
+                    updateState { copy(filteredFiles = filtered.toImmutableList()) }
+                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    updateState { copy(error = "Failed to filter files: ${e.message}") }
+                }
+            }
+        }
+    }
+
+    private fun filterFiles(files: List<FileEntry>, query: String): List<FileEntry> {
+        return if (query.isBlank()) {
+            files
+        } else {
+            files.filter { it.name.contains(query, ignoreCase = true) }
+        }
+    }
+
+    private fun applySorting(files: List<FileEntry>, sortMode: SortMode): List<FileEntry> {
+        return when (sortMode) {
             SortMode.NAME -> files.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
             SortMode.SIZE -> files.sortedWith(compareBy({ !it.isDirectory }, { -it.sizeBytes }))
             SortMode.DATE -> files.sortedWith(compareBy({ !it.isDirectory }, { -it.lastModified }))
         }
-    }
-
-    enum class SortMode {
-        NAME,
-        SIZE,
-        DATE,
     }
 }

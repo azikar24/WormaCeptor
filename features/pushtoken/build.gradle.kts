@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.koin.compose)
     debugImplementation(libs.androidx.ui.tooling)
 
     // Firebase Messaging - compileOnly to avoid forcing dependency on consumers

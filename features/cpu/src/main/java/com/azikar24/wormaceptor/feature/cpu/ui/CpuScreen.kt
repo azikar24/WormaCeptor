@@ -56,18 +56,21 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorChartLegendItem
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.DecimalFormat
 import java.util.Locale
 
@@ -739,5 +742,48 @@ private fun formatUptime(uptimeMs: Long): String {
         hours > 0 -> "${hours}h ${minutes % 60}m ${seconds % 60}s"
         minutes > 0 -> "${minutes}m ${seconds % 60}s"
         else -> "${seconds}s"
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun CpuScreenPreview() {
+    WormaCeptorTheme {
+        CpuScreen(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 15.2f,
+                perCoreUsage = listOf(32.5f, 67.8f, 12.3f, 55.0f),
+                coreCount = 8,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = 42.5f,
+                uptime = 3_600_000L,
+            ),
+            cpuHistory = persistentListOf(
+                CpuInfo(
+                    timestamp = 1L,
+                    overallUsagePercent = 30f,
+                    perCoreUsage = listOf(25f, 35f, 20f, 40f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 40f,
+                ),
+                CpuInfo(
+                    timestamp = 2L,
+                    overallUsagePercent = 45.2f,
+                    perCoreUsage = listOf(32.5f, 67.8f, 12.3f, 55.0f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 42.5f,
+                ),
+            ),
+            isMonitoring = true,
+            isCpuWarning = false,
+            onStartMonitoring = {},
+            onStopMonitoring = {},
+            onClearHistory = {},
+            onBack = {},
+        )
     }
 }

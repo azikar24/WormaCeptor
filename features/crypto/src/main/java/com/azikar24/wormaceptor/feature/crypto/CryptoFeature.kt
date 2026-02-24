@@ -1,8 +1,11 @@
 package com.azikar24.wormaceptor.feature.crypto
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
@@ -13,7 +16,10 @@ import com.azikar24.wormaceptor.domain.entities.CryptoPreset
 import com.azikar24.wormaceptor.domain.entities.CryptoResult
 import com.azikar24.wormaceptor.domain.entities.KeyFormat
 import com.azikar24.wormaceptor.domain.entities.PaddingScheme
+import com.azikar24.wormaceptor.feature.crypto.ui.CryptoHistoryScreen
+import com.azikar24.wormaceptor.feature.crypto.ui.CryptoTool
 import kotlinx.coroutines.flow.StateFlow
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Response Encryption/Decryption feature.
@@ -99,5 +105,30 @@ class CryptoViewModelFactory(
             return CryptoViewModel(engine) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+    }
+}
+
+/**
+ * Main composable entry point for the Crypto feature.
+ * Manages navigation between the crypto tool and history screens.
+ */
+@Composable
+fun CryptoScreen(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: CryptoEngine = koinInject()
+    var showHistory by remember { mutableStateOf(false) }
+    if (showHistory) {
+        CryptoHistoryScreen(
+            engine = engine,
+            onNavigateBack = { showHistory = false },
+            onLoadResult = { showHistory = false },
+            modifier = modifier,
+        )
+    } else {
+        CryptoTool(
+            engine = engine,
+            onNavigateBack = onNavigateBack,
+            onNavigateToHistory = { showHistory = true },
+            modifier = modifier,
+        )
     }
 }

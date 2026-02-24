@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,10 +28,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -67,19 +68,23 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
+import com.azikar24.wormaceptor.domain.entities.DetectionMethod
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.DependenciesInspectorColors
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.dependenciesInspectorColors
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.shortLabel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -174,7 +179,7 @@ fun DependenciesInspectorScreen(
             }
         },
     ) { paddingValues ->
-        Column(Modifier.fillMaxSize().padding(paddingValues)) {
+        Column(Modifier.fillMaxSize().padding(paddingValues).imePadding()) {
             SummarySection(
                 summary,
                 colors,
@@ -218,7 +223,7 @@ fun DependenciesInspectorScreen(
                     title = stringResource(R.string.dependenciesinspector_empty_title),
                     modifier = Modifier.fillMaxSize(),
                     subtitle = stringResource(R.string.dependenciesinspector_empty_subtitle),
-                    icon = Icons.Default.HelpOutline,
+                    icon = Icons.AutoMirrored.Filled.HelpOutline,
                 )
             } else {
                 LazyColumn(
@@ -618,5 +623,62 @@ private fun DetailSection(title: String, items: List<Pair<String, String>>, colo
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DependenciesInspectorScreenPreview() {
+    WormaCeptorTheme {
+        DependenciesInspectorScreen(
+            dependencies = persistentListOf(
+                DependencyInfo(
+                    name = "OkHttp",
+                    groupId = "com.squareup.okhttp3",
+                    artifactId = "okhttp",
+                    version = "4.12.0",
+                    category = DependencyCategory.NETWORKING,
+                    detectionMethod = DetectionMethod.VERSION_FIELD,
+                    packageName = "okhttp3",
+                    isDetected = true,
+                    description = "HTTP client for Android and Java",
+                    website = "https://square.github.io/okhttp/",
+                ),
+                DependencyInfo(
+                    name = "Koin",
+                    groupId = "io.insert-koin",
+                    artifactId = "koin-core",
+                    version = "4.0.0",
+                    category = DependencyCategory.DEPENDENCY_INJECTION,
+                    detectionMethod = DetectionMethod.CLASS_PRESENCE_ONLY,
+                    packageName = "org.koin",
+                    isDetected = true,
+                    description = "Lightweight dependency injection framework",
+                    website = null,
+                ),
+            ),
+            summary = DependencySummary(
+                totalDetected = 12,
+                withVersion = 8,
+                withoutVersion = 4,
+                byCategory = mapOf(
+                    DependencyCategory.NETWORKING to 3,
+                    DependencyCategory.DEPENDENCY_INJECTION to 2,
+                ),
+            ),
+            isLoading = false,
+            error = null,
+            selectedCategory = null,
+            searchQuery = "",
+            selectedDependency = null,
+            showVersionedOnly = false,
+            onCategorySelected = {},
+            onSearchQueryChanged = {},
+            onDependencySelected = {},
+            onDismissDetail = {},
+            onShowVersionedOnlyChanged = {},
+            onRefresh = {},
+            onBack = {},
+        )
     }
 }

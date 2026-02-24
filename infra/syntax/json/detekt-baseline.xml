@@ -2,6 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>NestedBlockDepth:JsonHighlighter.kt$JsonHighlighter$private fun tokenize(code: String): List&lt;Token&gt;</ID>
+    <ID>NestedBlockDepth:JsonHighlighter.kt$JsonHighlighter$override fun tokenize(code: String): List&lt;Token&gt;</ID>
   </CurrentIssues>
 </SmellBaseline>

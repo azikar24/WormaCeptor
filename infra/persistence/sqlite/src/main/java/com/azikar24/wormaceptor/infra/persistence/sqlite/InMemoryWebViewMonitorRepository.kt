@@ -5,46 +5,44 @@ import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.flow.update
 
 class InMemoryWebViewMonitorRepository : WebViewMonitorRepository {
 
-    private val requests = ConcurrentHashMap<String, WebViewRequest>()
-    private val _requestsFlow = MutableStateFlow<List<WebViewRequest>>(emptyList())
+    private val _requestsFlow = MutableStateFlow<Map<String, WebViewRequest>>(emptyMap())
 
     override suspend fun saveRequest(request: WebViewRequest) {
-        requests[request.id] = request
-        emitSnapshot()
+        _requestsFlow.update { current -> current + (request.id to request) }
     }
 
     override suspend fun updateRequest(request: WebViewRequest) {
-        requests[request.id] = request
-        emitSnapshot()
+        _requestsFlow.update { current -> current + (request.id to request) }
     }
 
     override suspend fun clearRequests() {
-        requests.clear()
-        _requestsFlow.value = emptyList()
+        _requestsFlow.value = emptyMap()
     }
 
     override suspend fun clearRequestsForWebView(webViewId: String) {
-        requests.entries.removeIf { it.value.webViewId == webViewId }
-        emitSnapshot()
+        _requestsFlow.update { current ->
+            current.filterValues { it.webViewId != webViewId }
+        }
     }
 
     override fun observeRequests(): Flow<List<WebViewRequest>> {
-        return _requestsFlow.map { it }
+        return _requestsFlow.map { map ->
+            map.values.sortedByDescending { it.timestamp }
+        }
     }
 
     override suspend fun deleteOldest(keepCount: Int) {
-        if (requests.size <= keepCount) return
-        val toKeep = requests.values.sortedByDescending { it.timestamp }.take(keepCount)
-        requests.clear()
-        toKeep.forEach { requests[it.id] = it }
-        emitSnapshot()
-    }
-
-    private fun emitSnapshot() {
-        _requestsFlow.value = requests.values.sortedByDescending { it.timestamp }
+        _requestsFlow.update { current ->
+            if (current.size <= keepCount) {
+                current
+            } else {
+                val toKeep = current.values.sortedByDescending { it.timestamp }.take(keepCount)
+                toKeep.associateBy { it.id }
+            }
+        }
     }
 }

@@ -27,4 +27,6 @@ dependencies {
     api(project(":domain:contracts"))
     api(project(":core:engine"))
     api(project(":features:viewer"))
+    implementation(project(":infra:syntax:json"))
+    implementation(project(":infra:syntax:xml"))
 }

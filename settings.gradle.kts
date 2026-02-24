@@ -64,6 +64,7 @@ include(":infra:parser:xml")
 include(":infra:syntax:json")
 include(":infra:syntax:xml")
 include(":platform:android")
+include(":common:presentation")
 include(":test:architecture")
 
 // IDE Integration (Android Studio Plugin - built separately with IntelliJ Gradle Plugin)

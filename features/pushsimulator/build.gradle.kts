@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation(project(":core:engine"))
     implementation(project(":core:ui"))
+    implementation(project(":common:presentation"))
     implementation(project(":domain:entities"))
     implementation(project(":domain:contracts"))
 
@@ -39,6 +40,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.koin.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

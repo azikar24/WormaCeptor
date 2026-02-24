@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorF
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorFeatureKt {
-	public static final fun PushSimulator (Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PushSimulator (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/pushsimulator/PushSimulatorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -31,6 +31,7 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/ui/ComposableS
 	public static field lambda-12 Lkotlin/jvm/functions/Function2;
 	public static field lambda-13 Lkotlin/jvm/functions/Function2;
 	public static field lambda-14 Lkotlin/jvm/functions/Function2;
+	public static field lambda-15 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function3;
@@ -46,6 +47,7 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/ui/ComposableS
 	public final fun getLambda-12$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-13$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-14$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-15$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$pushsimulator_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$pushsimulator_release ()Lkotlin/jvm/functions/Function3;
@@ -94,111 +96,249 @@ public final class com/azikar24/wormaceptor/feature/pushsimulator/ui/theme/PushS
 	public final fun getUser-0d7_KjU ()J
 }
 
-public abstract class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public abstract class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$Error : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$Error : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$Error;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$Error;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$Error;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$Error;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$Error;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$Error;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMessage ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$NotificationSent : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$NotificationSent : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$NotificationSent;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$NotificationSent;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$PermissionRequired : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$PermissionRequired : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$PermissionRequired;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$PermissionRequired;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateDeleted : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateDeleted : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateDeleted;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateDeleted;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateLoaded : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateLoaded : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateLoaded;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateLoaded;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateLoaded;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateLoaded;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateLoaded;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateLoaded;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateSaved : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateSaved : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorEvent$TemplateSaved;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEffect$TemplateSaved;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorUiState {
+public abstract class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
 	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$AddAction : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Ljava/lang/String;
-	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
-	public final fun component5 ()Ljava/util/List;
-	public final fun component6 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorUiState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorUiState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorUiState;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$AddAction;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$AddAction;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$AddAction;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getActions ()Ljava/util/List;
-	public final fun getBody ()Ljava/lang/String;
-	public final fun getNewActionTitle ()Ljava/lang/String;
-	public final fun getPriority ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
-	public final fun getSelectedChannelId ()Ljava/lang/String;
 	public final fun getTitle ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewModel : androidx/lifecycle/ViewModel {
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$ClearForm : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$ClearForm;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$DeleteTemplate : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$DeleteTemplate;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$DeleteTemplate;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$DeleteTemplate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTemplateId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$LoadTemplate : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$LoadTemplate;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$LoadTemplate;Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$LoadTemplate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTemplate ()Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$RemoveAction : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$RemoveAction;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$RemoveAction;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$RemoveAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SaveAsTemplate : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SaveAsTemplate;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SaveAsTemplate;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SaveAsTemplate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTemplateName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendFromTemplate : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendFromTemplate;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendFromTemplate;Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendFromTemplate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTemplate ()Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendNotification : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$SendNotification;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateBody : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateBody;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateBody;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateBody;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateChannelId : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateChannelId;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateChannelId;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateChannelId;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChannelId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateNewActionTitle : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateNewActionTitle;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateNewActionTitle;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateNewActionTitle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdatePriority : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdatePriority;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdatePriority;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdatePriority;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPriority ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateTitle : com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateTitle;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateTitle;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewEvent$UpdateTitle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/PushSimulatorEngine;)V
-	public final fun addAction (Ljava/lang/String;)V
-	public final fun clearEvent ()V
-	public final fun clearForm ()V
-	public final fun deleteTemplate (Ljava/lang/String;)V
-	public final fun getChannels ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getEvents ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTemplates ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getUiState ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun hasPermission ()Z
-	public final fun loadTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)V
-	public final fun removeAction (Ljava/lang/String;)V
-	public final fun saveAsTemplate (Ljava/lang/String;)V
-	public final fun sendFromTemplate (Lcom/azikar24/wormaceptor/domain/entities/NotificationTemplate;)V
-	public final fun sendNotification ()V
-	public final fun updateBody (Ljava/lang/String;)V
-	public final fun updateChannelId (Ljava/lang/String;)V
-	public final fun updateNewActionTitle (Ljava/lang/String;)V
-	public final fun updatePriority (Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;)V
-	public final fun updateTitle (Ljava/lang/String;)V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public final fun component5 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component8 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/pushsimulator/vm/PushSimulatorViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActions ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getChannels ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getNewActionTitle ()Ljava/lang/String;
+	public final fun getPriority ()Lcom/azikar24/wormaceptor/domain/entities/NotificationPriority;
+	public final fun getSelectedChannelId ()Ljava/lang/String;
+	public final fun getTemplates ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

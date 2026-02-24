@@ -44,7 +44,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,11 +55,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
@@ -69,6 +70,7 @@ import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import com.azikar24.wormaceptor.feature.threadviolation.R
 import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.threadViolationColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Main screen for Thread Violation Detection.
@@ -564,5 +566,66 @@ private fun DetailSection(
                 }
             }
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(showBackground = true)
+@Composable
+private fun ThreadViolationScreenPreview() {
+    WormaCeptorTheme {
+        ThreadViolationScreen(
+            violations = persistentListOf(
+                ThreadViolation(
+                    id = 1L,
+                    timestamp = System.currentTimeMillis(),
+                    violationType = ViolationType.DISK_READ,
+                    description = "SharedPreferences read on main thread",
+                    stackTrace = listOf(
+                        "com.example.app.SettingsRepository.getPrefs(SettingsRepository.kt:42)",
+                        "com.example.app.MainActivity.onCreate(MainActivity.kt:28)",
+                    ),
+                    durationMs = 15L,
+                    threadName = "main",
+                ),
+                ThreadViolation(
+                    id = 2L,
+                    timestamp = System.currentTimeMillis() - 5000L,
+                    violationType = ViolationType.NETWORK,
+                    description = "Network call on main thread",
+                    stackTrace = listOf(
+                        "com.example.app.ApiClient.fetch(ApiClient.kt:55)",
+                    ),
+                    durationMs = 230L,
+                    threadName = "main",
+                ),
+                ThreadViolation(
+                    id = 3L,
+                    timestamp = System.currentTimeMillis() - 10000L,
+                    violationType = ViolationType.DISK_WRITE,
+                    description = "Database write on main thread",
+                    stackTrace = emptyList(),
+                    durationMs = 45L,
+                    threadName = "main",
+                ),
+            ),
+            stats = ViolationStats(
+                totalViolations = 3,
+                diskReadCount = 1,
+                diskWriteCount = 1,
+                networkCount = 1,
+                slowCallCount = 0,
+                customSlowCodeCount = 0,
+            ),
+            isMonitoring = true,
+            selectedType = null,
+            selectedViolation = null,
+            onToggleMonitoring = {},
+            onTypeSelected = {},
+            onViolationSelected = {},
+            onDismissDetail = {},
+            onClearViolations = {},
+            onBack = {},
+        )
     }
 }

@@ -9,30 +9,12 @@
     <ID>LongMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
     <ID>LongParameterList:ServiceProvider.kt$ServiceProvider$( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long, protocol: String?, tlsVersion: String?, error: String?, )</ID>
     <ID>MagicNumber:RedactionConfig.kt$RedactionConfig$3</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x03</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x04</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x25</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x38</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x42</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x44</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x45</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x46</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x47</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x49</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4B</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4D</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x4E</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x50</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x52</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$MagicBytes$0x57</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$1000L</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$12</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$24</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$250_000L</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$30</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$60</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$7</ID>
-    <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$8</ID>
     <ID>SwallowedException:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: NoSuchFieldException</ID>

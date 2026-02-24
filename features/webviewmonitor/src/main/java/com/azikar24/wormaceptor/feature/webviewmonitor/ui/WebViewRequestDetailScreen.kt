@@ -35,17 +35,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
+import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -331,6 +334,38 @@ private fun ErrorCard(errorMessage: String) {
             text = errorMessage,
             style = WormaCeptorDesignSystem.Typography.codeMedium,
             color = WormaCeptorColors.StatusRed,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WebViewRequestDetailScreenPreview() {
+    WormaCeptorTheme {
+        WebViewRequestDetailScreen(
+            request = WebViewRequest(
+                id = "req-1",
+                url = "https://api.example.com/v2/users/profile",
+                method = "GET",
+                headers = mapOf(
+                    "Authorization" to "Bearer eyJhbGci...",
+                    "Accept" to "application/json",
+                ),
+                timestamp = System.currentTimeMillis() - 5_000L,
+                webViewId = "main_webview",
+                resourceType = WebViewResourceType.XHR,
+                isForMainFrame = false,
+                statusCode = 200,
+                mimeType = "application/json",
+                encoding = "UTF-8",
+                contentLength = 2_048L,
+                duration = 234L,
+                responseHeaders = mapOf(
+                    "Content-Type" to "application/json; charset=utf-8",
+                    "Cache-Control" to "no-cache",
+                ),
+            ),
+            onNavigateBack = {},
         )
     }
 }

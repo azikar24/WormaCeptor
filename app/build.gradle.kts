@@ -84,6 +84,7 @@ dependencies {
     implementation(libs.androidx.multidex)
 
     implementation(project(":api:client"))
+    implementation(project(":common:presentation"))
     implementation(project(":core:ui")) // Used in main source set
     implementation(project(":api:impl:persistence"))
 //    debugImplementation(project(":api:impl:no-op"))

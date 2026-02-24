@@ -20,7 +20,8 @@ class Converters {
     fun fromStatus(status: TransactionStatus): String = status.name
 
     @TypeConverter
-    fun toStatus(value: String): TransactionStatus = TransactionStatus.valueOf(value)
+    fun toStatus(value: String): TransactionStatus =
+        TransactionStatus.entries.find { it.name == value } ?: TransactionStatus.FAILED
 
     @TypeConverter
     fun fromUUID(uuid: UUID?): String? = uuid?.toString()

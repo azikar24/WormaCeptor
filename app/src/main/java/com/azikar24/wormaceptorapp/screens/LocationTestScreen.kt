@@ -62,6 +62,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
@@ -389,7 +390,7 @@ private fun createMapView(context: Context): MapView {
         setMultiTouchControls(true)
         controller.setZoom(4.0)
         controller.setCenter(GeoPoint(20.0, 0.0))
-        zoomController.setVisibility(org.osmdroid.views.CustomZoomButtonsController.Visibility.NEVER)
+        zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         minZoomLevel = 2.0
         maxZoomLevel = 19.0
     }

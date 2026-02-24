@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.LoadedLibrariesScreen
 import com.azikar24.wormaceptor.feature.loadedlibraries.vm.LoadedLibrariesViewModel
+import org.koin.compose.koinInject
 
 /**
  * Entry point for the Loaded Libraries Inspector feature.
@@ -44,11 +45,8 @@ class LoadedLibrariesViewModelFactory(
  * Main composable for the Loaded Libraries Inspector feature.
  */
 @Composable
-fun LoadedLibrariesInspector(
-    engine: LoadedLibrariesEngine,
-    modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
-) {
+fun LoadedLibrariesInspector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+    val engine: LoadedLibrariesEngine = koinInject()
     val factory = remember { LoadedLibrariesFeature.createViewModelFactory(engine) }
     val viewModel: LoadedLibrariesViewModel = viewModel(factory = factory)
 

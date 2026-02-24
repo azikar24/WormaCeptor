@@ -190,3 +190,31 @@ public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorConte
 public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider$Companion {
 }
 
+public final class com/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig {
+	public static final field DEFAULT_MAX_CONTENT_LENGTH J
+	public fun <init> ()V
+	public final fun getMaxContentLength ()J
+	public final fun getRetainDataFor ()Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public final fun redactBody (Ljava/lang/String;)V
+	public final fun redactHeader (Ljava/lang/String;)V
+	public final fun redactJsonValue (Ljava/lang/String;)V
+	public final fun redactXmlValue (Ljava/lang/String;)V
+	public final fun setMaxContentLength (J)V
+	public final fun setRetainDataFor (Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;)V
+}
+
+public final class com/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod : java/lang/Enum {
+	public static final field FOREVER Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static final field ONE_DAY Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static final field ONE_HOUR Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static final field ONE_MONTH Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static final field ONE_WEEK Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+	public static fun values ()[Lcom/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig$RetentionPeriod;
+}
+
+public final class com/azikar24/wormaceptor/api/ktor/WormaCeptorKtorPluginKt {
+	public static final fun getWormaCeptorKtorPlugin ()Lio/ktor/client/plugins/api/ClientPlugin;
+}
+

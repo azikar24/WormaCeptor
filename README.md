@@ -12,6 +12,27 @@
 
 ---
 
+## Live Demo
+
+Try WormaCeptor V2 in action with the demo app on the Google Play Store:
+
+<a href="https://play.google.com/store/apps/details?id=com.azikar24.wormaceptorapp"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="80"></a>
+
+### Demo Video
+
+[![WormaCeptor Demo](https://img.youtube.com/vi/iSEifbkq7NI/maxresdefault.jpg)](https://youtube.com/shorts/iSEifbkq7NI)
+
+### Screenshots
+
+<p>
+  <img src="media/transaction_list.webp" width="200" alt="Transaction List">
+  <img src="media/response_details.webp" width="200" alt="Response Details">
+  <img src="media/crash_details.webp" width="200" alt="Crash Details">
+  <img src="media/tools_overview.webp" width="200" alt="Tools Overview">
+</p>
+
+---
+
 ## Quick Start
 
 ```kotlin
@@ -36,8 +57,6 @@ val client = OkHttpClient.Builder()
     .addInterceptor(WormaCeptorInterceptor())
     .build()
 ```
-
-For detailed integration, see [Quick Reference](docs/reference/00-quick-reference.md).
 
 ---
 
@@ -129,8 +148,6 @@ For detailed integration, see [Quick Reference](docs/reference/00-quick-referenc
 | **Features** | 31 modules | UI screens for each debugging feature |
 | **Infra** | persistence, networking, parsers, syntax | Concrete implementations |
 | **Platform** | android | Android-specific utilities (notifications, shake) |
-
-See [Repository Structure](docs/architecture/REPO_STRUCTURE.md) for full details.
 
 ---
 
@@ -289,19 +306,6 @@ Some features require additional permissions:
 | OkHttp | 4.12.0 |
 | Koin | 4.0.0 |
 | Coroutines | 1.8.1 |
-
----
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Quick Reference](docs/reference/00-quick-reference.md) | 5-minute integration guide |
-| [Technical Docs](docs/reference/01-technical-documentation.md) | Comprehensive architecture |
-| [Feature Inventory](docs/reference/02-feature-inventory.md) | Complete feature list |
-| [Repository Structure](docs/architecture/REPO_STRUCTURE.md) | Module layout |
-| [Design System](docs/architecture/DESIGN_SYSTEM.md) | UI guidelines |
-| [Product Boundaries](docs/architecture/PRODUCT_BOUNDARIES.md) | Scope definition |
 
 ---
 

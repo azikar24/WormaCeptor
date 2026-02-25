@@ -186,7 +186,6 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
-    <ID>OutdatedDocumentation:WormaCeptorStatItem.kt$@Composable fun WormaCeptorStatItem( label: String, value: String, modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary, )</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$Success : ClipboardResult</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$TooLarge : ClipboardResult</ID>

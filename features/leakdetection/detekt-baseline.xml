@@ -2,8 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakCard( leak: LeakInfo, onClick: () -&gt; Unit, colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakDetailContent( leak: LeakInfo, colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakCard( leak: LeakInfo, onClick: () -&gt; Unit, colors: LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LeakDetectionScreen.kt$@Composable private fun LeakDetailContent( leak: LeakInfo, colors: LeakDetectionColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LeakDetectionScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LeakDetectionScreen( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:LeakDetectionScreen.kt$( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:LeakDetectionViewModel.kt$LeakDetectionViewModel$5000</ID>

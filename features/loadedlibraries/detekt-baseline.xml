@@ -2,10 +2,10 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:LoadedLibrariesScreen.kt$@Composable private fun LibraryCard( library: LoadedLibrary, onClick: () -&gt; Unit, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, )</ID>
+    <ID>LongMethod:LoadedLibrariesScreen.kt$@Composable private fun LibraryCard( library: LoadedLibrary, onClick: () -&gt; Unit, colors: LoadedLibrariesColors, )</ID>
     <ID>LongMethod:LoadedLibrariesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LoadedLibrariesScreen( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:LoadedLibrariesScreen.kt$( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:LoadedLibrariesScreen.kt$( selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors, modifier: Modifier, )</ID>
+    <ID>LongParameterList:LoadedLibrariesScreen.kt$( selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, colors: LoadedLibrariesColors, modifier: Modifier, )</ID>
     <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF00BCD4</ID>
     <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF1565C0</ID>
     <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF1976D2</ID>

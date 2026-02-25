@@ -2,9 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationCard( violation: ThreadViolation, onClick: () -&gt; Unit, colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors, )</ID>
-    <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationDetailContent( violation: ThreadViolation, colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:ThreadViolationScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun TypeFilterChips( selectedType: ViolationType?, onTypeSelected: (ViolationType?) -&gt; Unit, colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors, )</ID>
+    <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationCard( violation: ThreadViolation, onClick: () -&gt; Unit, colors: ThreadViolationColors, )</ID>
+    <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationDetailContent( violation: ThreadViolation, colors: ThreadViolationColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ThreadViolationScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun TypeFilterChips( selectedType: ViolationType?, onTypeSelected: (ViolationType?) -&gt; Unit, colors: ThreadViolationColors, )</ID>
     <ID>LongMethod:ThreadViolationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ThreadViolationScreen( violations: ImmutableList&lt;ThreadViolation&gt;, stats: ViolationStats, isMonitoring: Boolean, selectedType: ViolationType?, selectedViolation: ThreadViolation?, onToggleMonitoring: () -&gt; Unit, onTypeSelected: (ViolationType?) -&gt; Unit, onViolationSelected: (ThreadViolation) -&gt; Unit, onDismissDetail: () -&gt; Unit, onClearViolations: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ThreadViolationScreen.kt$( violations: ImmutableList&lt;ThreadViolation&gt;, stats: ViolationStats, isMonitoring: Boolean, selectedType: ViolationType?, selectedViolation: ThreadViolation?, onToggleMonitoring: () -&gt; Unit, onTypeSelected: (ViolationType?) -&gt; Unit, onViolationSelected: (ThreadViolation) -&gt; Unit, onDismissDetail: () -&gt; Unit, onClearViolations: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:ThreadViolationViewModel.kt$ThreadViolationViewModel$5000</ID>

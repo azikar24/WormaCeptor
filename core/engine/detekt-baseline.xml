@@ -154,7 +154,7 @@
     <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun startTransaction( url: String, method: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long = 0, ): UUID</ID>
     <ID>UndocumentedPublicFunction:CoreHolder.kt$CoreHolder$fun initialize( capture: CaptureEngine, query: QueryEngine, extensions: ExtensionRegistry? = null, ): Boolean</ID>
     <ID>UndocumentedPublicFunction:CrashReporter.kt$CrashReporter$fun init()</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeCrashes(): Flow&lt;List&lt;com.azikar24.wormaceptor.domain.entities.Crash&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeCrashes(): Flow&lt;List&lt;Crash&gt;&gt;</ID>
     <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeTransactions(): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
     <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun search(query: String): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
     <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun clear()</ID>

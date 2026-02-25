@@ -30,13 +30,14 @@ import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
 import com.azikar24.wormaceptor.feature.crypto.CryptoScreen
-import com.azikar24.wormaceptor.feature.database.DatabaseBrowser
+import com.azikar24.wormaceptor.feature.database.navigation.databaseGraph
 import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
 import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
@@ -46,7 +47,7 @@ import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
 import com.azikar24.wormaceptor.feature.location.LocationSimulator
 import com.azikar24.wormaceptor.feature.logs.LogViewer
 import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
-import com.azikar24.wormaceptor.feature.preferences.PreferencesInspector
+import com.azikar24.wormaceptor.feature.preferences.navigation.preferencesGraph
 import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
 import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
 import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
@@ -62,7 +63,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEffect
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEvent
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
-import com.azikar24.wormaceptor.feature.websocket.WebSocketMonitor
+import com.azikar24.wormaceptor.feature.websocket.navigation.webSocketGraph
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -154,7 +155,7 @@ class ViewerActivity : ComponentActivity() {
                     Surface(modifier = Modifier.fillMaxSize()) {
                         NavHost(
                             navController = navController,
-                            startDestination = "home",
+                            startDestination = WormaCeptorNavKeys.Home.route,
                             enterTransition = {
                                 slideIntoContainer(
                                     AnimatedContentTransitionScope.SlideDirection.Start,
@@ -180,7 +181,7 @@ class ViewerActivity : ComponentActivity() {
                                 )
                             },
                         ) {
-                            composable("home") {
+                            composable(WormaCeptorNavKeys.Home.route) {
                                 HomeScreen(
                                     transactions = transactions,
                                     crashes = crashes,
@@ -188,9 +189,15 @@ class ViewerActivity : ComponentActivity() {
                                     onSearchChanged = {
                                         onEvent(ViewerViewEvent.SearchQueryChanged(it))
                                     },
-                                    onTransactionClick = { navController.navigate("detail/${it.id}") },
+                                    onTransactionClick = {
+                                        navController.navigate(
+                                            WormaCeptorNavKeys.TransactionDetail.createRoute(it.id.toString()),
+                                        )
+                                    },
                                     onCrashClick = { crash ->
-                                        navController.navigate("crash/${crash.timestamp}")
+                                        navController.navigate(
+                                            WormaCeptorNavKeys.CrashDetail.createRoute(crash.timestamp),
+                                        )
                                     },
                                     filterMethods = state.filterMethods,
                                     filterStatusRanges = state.filterStatusRanges,
@@ -297,11 +304,39 @@ class ViewerActivity : ComponentActivity() {
                                     onToolCategoryCollapseToggled = {
                                         onEvent(ViewerViewEvent.ToolCategoryCollapseToggled(it))
                                     },
+                                    showFilterSheet = state.showFilterSheet,
+                                    onFilterSheetVisibilityChanged = {
+                                        onEvent(ViewerViewEvent.FilterSheetVisibilityChanged(it))
+                                    },
+                                    showOverflowMenu = state.showOverflowMenu,
+                                    onOverflowMenuVisibilityChanged = {
+                                        onEvent(ViewerViewEvent.OverflowMenuVisibilityChanged(it))
+                                    },
+                                    toolsSearchActive = state.toolsSearchActive,
+                                    onToolsSearchActiveChanged = {
+                                        onEvent(ViewerViewEvent.ToolsSearchActiveChanged(it))
+                                    },
+                                    toolsSearchQuery = state.toolsSearchQuery,
+                                    onToolsSearchQueryChanged = {
+                                        onEvent(ViewerViewEvent.ToolsSearchQueryChanged(it))
+                                    },
+                                    showClearTransactionsDialog = state.showClearTransactionsDialog,
+                                    onClearTransactionsDialogVisibilityChanged = {
+                                        onEvent(ViewerViewEvent.ClearTransactionsDialogVisibilityChanged(it))
+                                    },
+                                    showClearCrashesDialog = state.showClearCrashesDialog,
+                                    onClearCrashesDialogVisibilityChanged = {
+                                        onEvent(ViewerViewEvent.ClearCrashesDialogVisibilityChanged(it))
+                                    },
+                                    showDeleteSelectedDialog = state.showDeleteSelectedDialog,
+                                    onDeleteSelectedDialogVisibilityChanged = {
+                                        onEvent(ViewerViewEvent.DeleteSelectedDialogVisibilityChanged(it))
+                                    },
                                     snackbarMessage = snackbarMessages,
                                 )
                             }
 
-                            composable("detail/{id}") { backStackEntry ->
+                            composable(WormaCeptorNavKeys.TransactionDetail.route) { backStackEntry ->
                                 val id = backStackEntry.arguments?.getString("id")
                                 if (id != null) {
                                     val uuid = java.util.UUID.fromString(id)
@@ -349,7 +384,7 @@ class ViewerActivity : ComponentActivity() {
                                 }
                             }
 
-                            composable("crash/{timestamp}") { backStackEntry ->
+                            composable(WormaCeptorNavKeys.CrashDetail.route) { backStackEntry ->
                                 val timestamp = backStackEntry.arguments?.getString("timestamp")?.toLongOrNull()
                                 if (timestamp != null) {
                                     // Snapshot the crash list when entering the detail screen
@@ -371,144 +406,123 @@ class ViewerActivity : ComponentActivity() {
                                 }
                             }
 
-                            // Preferences route - uses PreferencesInspector which handles internal navigation
-                            composable("preferences") {
-                                PreferencesInspector(
-                                    context = this@ViewerActivity,
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
+                            // Multi-screen feature graphs
+                            preferencesGraph(
+                                navController = navController,
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
 
-                            // Logs route
-                            composable("logs") {
+                            // Single-screen tools
+                            composable(WormaCeptorNavKeys.Logs.route) {
                                 LogViewer(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Device Info route
-                            composable("deviceinfo") {
+                            composable(WormaCeptorNavKeys.DeviceInfo.route) {
                                 DeviceInfoScreen(
                                     onBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Database Browser route
-                            composable("database") {
-                                DatabaseBrowser(
-                                    context = this@ViewerActivity,
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
+                            databaseGraph(
+                                navController = navController,
+                                context = this@ViewerActivity,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
 
-                            // File Browser route
-                            composable("filebrowser") {
+                            composable(WormaCeptorNavKeys.FileBrowser.route) {
                                 FileBrowser(
                                     context = this@ViewerActivity,
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Memory Monitor route
-                            composable("memory") {
+                            composable(WormaCeptorNavKeys.Memory.route) {
                                 MemoryMonitor(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // FPS Monitor route
-                            composable("fps") {
+                            composable(WormaCeptorNavKeys.Fps.route) {
                                 FpsMonitor(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // WebSocket Monitor route
-                            composable("websocket") {
-                                WebSocketMonitor(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
+                            webSocketGraph(
+                                navController = navController,
+                                onNavigateBack = { navController.popBackStack() },
+                            )
 
-                            // CPU Monitor route
-                            composable("cpu") {
+                            composable(WormaCeptorNavKeys.Cpu.route) {
                                 CpuMonitor(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Location Simulator route
-                            composable("location") {
+                            composable(WormaCeptorNavKeys.Location.route) {
                                 LocationSimulator(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Push Notification Simulator route
-                            composable("pushsimulator") {
+                            composable(WormaCeptorNavKeys.PushSimulator.route) {
                                 PushSimulator(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Leak Detection route
-                            composable("leakdetection") {
+                            composable(WormaCeptorNavKeys.LeakDetection.route) {
                                 LeakDetector(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Thread Violation Detection route
-                            composable("threadviolation") {
+                            composable(WormaCeptorNavKeys.ThreadViolation.route) {
                                 ThreadViolationMonitor(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // WebView Monitor route
-                            composable("webviewmonitor") {
+                            composable(WormaCeptorNavKeys.WebViewMonitor.route) {
                                 WebViewMonitorScreen(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Crypto route
-                            composable("crypto") {
+                            composable(WormaCeptorNavKeys.Crypto.route) {
                                 CryptoScreen(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Secure Storage Viewer route
-                            composable("securestorage") {
+                            composable(WormaCeptorNavKeys.SecureStorage.route) {
                                 SecureStorageViewer(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Rate Limiter route
-                            composable("ratelimit") {
+                            composable(WormaCeptorNavKeys.RateLimit.route) {
                                 RateLimiter(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Push Token Manager route
-                            composable("pushtoken") {
+                            composable(WormaCeptorNavKeys.PushToken.route) {
                                 PushTokenManager(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Loaded Libraries Inspector route
-                            composable("loadedlibraries") {
+                            composable(WormaCeptorNavKeys.LoadedLibraries.route) {
                                 LoadedLibrariesInspector(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
                             }
 
-                            // Dependencies Inspector route
-                            composable("dependencies") {
+                            composable(WormaCeptorNavKeys.Dependencies.route) {
                                 DependenciesInspector(
                                     onNavigateBack = { navController.popBackStack() },
                                 )
@@ -547,7 +561,10 @@ class ViewerActivity : ComponentActivity() {
         shareText(this, text, "Share ${transactions.size} Transactions")
     }
 
-    private fun copyAsCurl(transaction: TransactionSummary, viewModel: ViewerViewModel) {
+    private fun copyAsCurl(
+        transaction: TransactionSummary,
+        viewModel: ViewerViewModel,
+    ) {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
@@ -591,15 +608,15 @@ class ViewerActivity : ComponentActivity() {
         when (destination) {
             is DeepLinkHandler.DeepLinkDestination.Tab -> {
                 // Navigate to home and select the specified tab
-                navController.popBackStack("home", inclusive = false)
+                navController.popBackStack(WormaCeptorNavKeys.Home.route, inclusive = false)
                 viewModel.sendEvent(ViewerViewEvent.TabSelected(destination.tabIndex))
             }
 
             is DeepLinkHandler.DeepLinkDestination.Tool -> {
                 // Navigate directly to the tool screen
                 // First ensure we're on home, then navigate to the tool
-                if (navController.currentDestination?.route != "home") {
-                    navController.popBackStack("home", inclusive = false)
+                if (navController.currentDestination?.route != WormaCeptorNavKeys.Home.route) {
+                    navController.popBackStack(WormaCeptorNavKeys.Home.route, inclusive = false)
                 }
                 navController.navigate(destination.route)
             }

@@ -80,8 +80,8 @@ fun PdfPreviewCard(
     contentType: String?,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
-    onShowMessage: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onShowMessage: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     var loadState by remember { mutableStateOf<PdfLoadState>(PdfLoadState.Loading) }
@@ -433,7 +433,11 @@ private fun SuccessContent(
 }
 
 @Composable
-private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
+private fun MetadataChip(
+    icon: ImageVector?,
+    text: String,
+    tint: Color,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
@@ -602,7 +606,11 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+private fun sharePdf(
+    context: Context,
+    pdfData: ByteArray,
+    existingFile: File?,
+): String? {
     return try {
         // Use existing file or create new one
         val file = existingFile ?: run {
@@ -634,7 +642,10 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?):
 /**
  * Checks if the response body appears to be a PDF document
  */
-fun isPdfContent(contentType: String?, bodyBytes: ByteArray?): Boolean {
+fun isPdfContent(
+    contentType: String?,
+    bodyBytes: ByteArray?,
+): Boolean {
     // Check content type
     if (contentType?.contains("pdf", ignoreCase = true) == true) {
         return true

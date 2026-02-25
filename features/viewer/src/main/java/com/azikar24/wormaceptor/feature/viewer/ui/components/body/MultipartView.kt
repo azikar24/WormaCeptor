@@ -67,7 +67,11 @@ data class MultipartPart(
  * Each part is displayed as an expandable section showing its headers and content.
  */
 @Composable
-fun MultipartView(multipartData: String, boundary: String? = null, modifier: Modifier = Modifier) {
+fun MultipartView(
+    multipartData: String,
+    modifier: Modifier = Modifier,
+    boundary: String? = null,
+) {
     val parts = remember(multipartData, boundary) {
         parseMultipartData(multipartData, boundary)
     }
@@ -129,7 +133,11 @@ fun MultipartView(multipartData: String, boundary: String? = null, modifier: Mod
 }
 
 @Composable
-private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean) {
+private fun MultipartPartCard(
+    part: MultipartPart,
+    index: Int,
+    initiallyExpanded: Boolean,
+) {
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
@@ -347,7 +355,10 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
     }
 }
 
-private fun parseMultipartData(data: String, providedBoundary: String?): List<MultipartPart> {
+private fun parseMultipartData(
+    data: String,
+    providedBoundary: String?,
+): List<MultipartPart> {
     if (data.isBlank()) return emptyList()
 
     val boundary = providedBoundary ?: detectBoundary(data) ?: return emptyList()
@@ -411,7 +422,10 @@ private fun parseMultipartPart(section: String): MultipartPart? {
     )
 }
 
-private fun extractDispositionParam(disposition: String, param: String): String? {
+private fun extractDispositionParam(
+    disposition: String,
+    param: String,
+): String? {
     val regex = Regex("""$param\s*=\s*"?([^";]+)"?""", RegexOption.IGNORE_CASE)
     return regex.find(disposition)?.groupValues?.getOrNull(1)?.trim()
 }

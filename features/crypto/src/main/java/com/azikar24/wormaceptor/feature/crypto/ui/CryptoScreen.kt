@@ -623,7 +623,10 @@ private fun ResultCard(
 }
 
 @Composable
-private fun ErrorCard(message: String, onDismiss: () -> Unit) {
+private fun ErrorCard(
+    message: String,
+    onDismiss: () -> Unit,
+) {
     val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
@@ -666,9 +669,9 @@ private fun ErrorCard(message: String, onDismiss: () -> Unit) {
 @Composable
 fun CryptoHistoryScreen(
     engine: CryptoEngine,
-    modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
     onLoadResult: (CryptoResult) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val factory = remember { CryptoFeature.createViewModelFactory(engine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
@@ -767,7 +770,11 @@ fun CryptoHistoryScreen(
 }
 
 @Composable
-private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -> Unit) {
+private fun HistoryItem(
+    result: CryptoResult,
+    onLoad: () -> Unit,
+    onRemove: () -> Unit,
+) {
     val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
     val accentColor = when {
         !result.success -> WormaCeptorDesignSystem.ThemeColors.Error

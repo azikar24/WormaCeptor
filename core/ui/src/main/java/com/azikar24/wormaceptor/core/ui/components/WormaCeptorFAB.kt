@@ -18,9 +18,9 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 fun WormaCeptorFAB(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
     contentDescription: String? = null,
     icon: ImageVector = Icons.Default.Add,
-    iconModifier: Modifier = Modifier,
 ) {
     FloatingActionButton(
         onClick = onClick,

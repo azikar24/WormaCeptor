@@ -119,7 +119,12 @@ import java.io.FileOutputStream
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> Unit, onDownload: () -> Unit) {
+fun PdfViewerScreen(
+    pdfData: ByteArray,
+    onDismiss: () -> Unit,
+    onDownload: () -> Unit,
+    initialPage: Int = 0,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -377,7 +382,11 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
 }
 
 @Composable
-private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
+private fun ZoomablePage(
+    bitmap: Bitmap?,
+    pageIndex: Int,
+    onTap: () -> Unit,
+) {
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val minScale = 1f
@@ -697,7 +706,12 @@ private fun ThumbnailStrip(
 }
 
 @Composable
-private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, onClick: () -> Unit) {
+private fun ThumbnailItem(
+    bitmap: Bitmap,
+    pageNumber: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
         animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
@@ -745,7 +759,12 @@ private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, 
 }
 
 @Composable
-private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> Unit, onPageSelected: (Int) -> Unit) {
+private fun PageJumpDialog(
+    currentPage: Int,
+    totalPages: Int,
+    onDismiss: () -> Unit,
+    onPageSelected: (Int) -> Unit,
+) {
     var pageInput by remember { mutableStateOf(currentPage.toString()) }
     var isError by remember { mutableStateOf(false) }
 
@@ -849,7 +868,10 @@ private fun LoadingOverlay() {
 }
 
 @Composable
-private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
+private fun ErrorOverlay(
+    message: String,
+    onDismiss: () -> Unit,
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -919,7 +941,11 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+private fun sharePdfFromViewer(
+    context: Context,
+    pdfData: ByteArray,
+    existingFile: File?,
+): String? {
     return try {
         // Use existing file or create new one
         val file = existingFile ?: run {

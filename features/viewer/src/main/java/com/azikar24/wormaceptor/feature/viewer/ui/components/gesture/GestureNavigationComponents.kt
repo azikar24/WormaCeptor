@@ -52,9 +52,9 @@ fun ZoomControls(
     onZoomIn: () -> Unit,
     onZoomOut: () -> Unit,
     onReset: () -> Unit,
+    modifier: Modifier = Modifier,
     minZoom: Float = 0.5f,
     maxZoom: Float = 3f,
-    modifier: Modifier = Modifier,
 ) {
     val canZoomIn = currentZoom < maxZoom
     val canZoomOut = currentZoom > minZoom
@@ -148,7 +148,11 @@ fun ZoomControls(
  * Visual zoom level indicator with progress bar
  */
 @Composable
-private fun ZoomLevelIndicator(zoom: Float, minZoom: Float, maxZoom: Float) {
+private fun ZoomLevelIndicator(
+    zoom: Float,
+    minZoom: Float,
+    maxZoom: Float,
+) {
     val normalizedZoom = ((zoom - minZoom) / (maxZoom - minZoom)).coerceIn(0f, 1f)
 
     Column(

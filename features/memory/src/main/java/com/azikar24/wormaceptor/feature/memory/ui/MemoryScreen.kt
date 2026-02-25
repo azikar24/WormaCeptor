@@ -66,6 +66,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import com.azikar24.wormaceptor.feature.memory.R
+import com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors
 import com.azikar24.wormaceptor.feature.memory.ui.theme.memoryColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -198,7 +199,7 @@ fun MemoryScreen(
 private fun HeapUsageCard(
     currentMemory: MemoryInfo,
     isWarning: Boolean,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     val statusColor = colors.statusColorForUsage(currentMemory.heapUsagePercent)
@@ -341,7 +342,7 @@ private fun MemoryStatItem(
     label: String,
     value: String,
     color: Color,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -366,7 +367,7 @@ private fun MemoryStatItem(
 @Composable
 private fun MemoryChartCard(
     history: ImmutableList<MemoryInfo>,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -441,7 +442,7 @@ private fun MemoryChartCard(
 @Composable
 private fun MemoryLineChart(
     history: ImmutableList<MemoryInfo>,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     if (history.isEmpty()) return
@@ -544,7 +545,7 @@ private fun MemoryLineChart(
 @Composable
 private fun NativeHeapCard(
     currentMemory: MemoryInfo,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     val usagePercent = if (currentMemory.nativeHeapSize > 0) {

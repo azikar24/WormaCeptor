@@ -27,6 +27,9 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.azikar24.wormaceptor.core.engine.ui.DismissZoneContent
 import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
+import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.domain.entities.FpsInfo
+import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -556,11 +559,11 @@ class PerformanceOverlayEngine(
                 cpuMonitorEngine.currentCpu,
                 cpuMonitorEngine.isMonitoring,
             ) { values ->
-                val fpsInfo = values[0] as com.azikar24.wormaceptor.domain.entities.FpsInfo
+                val fpsInfo = values[0] as FpsInfo
                 val fpsRunning = values[1] as Boolean
-                val memoryInfo = values[2] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
+                val memoryInfo = values[2] as MemoryInfo
                 val memoryRunning = values[3] as Boolean
-                val cpuInfo = values[4] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+                val cpuInfo = values[4] as CpuInfo
                 val cpuRunning = values[5] as Boolean
 
                 val currentState = _state.value

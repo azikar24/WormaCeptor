@@ -9,6 +9,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
 import com.azikar24.wormaceptor.feature.viewer.ui.components.applyQuickFilters
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -180,7 +181,7 @@ class ViewerViewModel(
         return transactions.value.filter { it.id in currentSelectedIds }
     }
 
-    private fun handleQuickFilterToggle(filter: com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter) {
+    private fun handleQuickFilterToggle(filter: QuickFilter) {
         updateState {
             val updated = if (filter in quickFilters) quickFilters - filter else quickFilters + filter
             copy(quickFilters = updated)

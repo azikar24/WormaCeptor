@@ -68,6 +68,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import com.azikar24.wormaceptor.feature.ratelimit.R
+import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors
 import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.rateLimitColors
 import java.util.Locale
 
@@ -198,7 +199,7 @@ fun RateLimitScreen(
 private fun EnableToggleCard(
     enabled: Boolean,
     onToggle: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     val statusColor by animateColorAsState(
@@ -280,7 +281,7 @@ private fun NetworkPresetsCard(
     selectedPreset: RateLimitConfig.NetworkPreset?,
     enabled: Boolean,
     onPresetSelected: (RateLimitConfig.NetworkPreset?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -366,7 +367,7 @@ private fun PresetChip(
     selected: Boolean,
     enabled: Boolean,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     val presetColor = when (preset) {
@@ -453,7 +454,7 @@ private fun ConfigurationCard(
     onUploadSpeedChanged: (Long) -> Unit,
     onLatencyChanged: (Long) -> Unit,
     onPacketLossChanged: (Float) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -545,7 +546,7 @@ private fun ConfigSlider(
     enabled: Boolean,
     color: Color,
     onValueChange: (Float) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -602,7 +603,7 @@ private fun ConfigSlider(
 @Composable
 private fun StatisticsCard(
     stats: ThrottleStats,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -680,7 +681,7 @@ private fun StatItem(
     label: String,
     value: String,
     color: Color,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Column(

@@ -65,6 +65,7 @@ import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
 import com.azikar24.wormaceptor.feature.leakdetection.R
+import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors
 import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.leakDetectionColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -221,7 +222,7 @@ fun LeakDetectionScreen(
 @Composable
 private fun SummarySection(
     summary: LeakSummary,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
+    colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -268,7 +269,7 @@ private fun SummarySection(
 private fun SeverityFilterChips(
     selectedSeverity: LeakSeverity?,
     onSeveritySelected: (LeakSeverity?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
+    colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -302,7 +303,7 @@ private fun SeverityFilterChips(
 private fun LeakCard(
     leak: LeakInfo,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
+    colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
     val severityColor = colors.colorForSeverity(leak.severity)
@@ -398,7 +399,7 @@ private fun LeakCard(
 @Composable
 private fun LeakDetailContent(
     leak: LeakInfo,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
+    colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
     val severityColor = colors.colorForSeverity(leak.severity)
@@ -525,7 +526,7 @@ private fun LeakDetailContent(
 private fun DetailSection(
     title: String,
     items: List<Pair<String, String>>,
-    colors: com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors,
+    colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
     Column(

@@ -89,7 +89,11 @@ import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.Request
+import com.azikar24.wormaceptor.domain.entities.Response
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.feature.viewer.R
+import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
@@ -432,7 +436,7 @@ private fun TransactionDetailContent(
                                     onClick = {
                                         showMenu = false
                                         val exportManager =
-                                            com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                            ExportManager(
                                                 context,
                                                 queryEngine,
                                             )
@@ -2158,7 +2162,7 @@ private fun TransactionDetailScreenPreview() {
     WormaCeptorTheme {
         TransactionDetailScreen(
             transaction = NetworkTransaction(
-                request = com.azikar24.wormaceptor.domain.entities.Request(
+                request = Request(
                     url = "https://api.example.com/users/123",
                     method = "GET",
                     headers = mapOf(
@@ -2167,7 +2171,7 @@ private fun TransactionDetailScreenPreview() {
                     ),
                     bodyRef = null,
                 ),
-                response = com.azikar24.wormaceptor.domain.entities.Response(
+                response = Response(
                     code = 200,
                     message = "OK",
                     headers = mapOf(
@@ -2179,7 +2183,7 @@ private fun TransactionDetailScreenPreview() {
                     bodySize = 1024L,
                 ),
                 durationMs = 142L,
-                status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                status = TransactionStatus.COMPLETED,
             ),
             queryEngine = null,
             onBack = {},

@@ -74,6 +74,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
@@ -745,7 +746,7 @@ private fun HomeScreenPreview() {
                     tookMs = 120L,
                     hasRequestBody = false,
                     hasResponseBody = true,
-                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    status = TransactionStatus.COMPLETED,
                     timestamp = System.currentTimeMillis(),
                 ),
                 TransactionSummary(
@@ -757,7 +758,7 @@ private fun HomeScreenPreview() {
                     tookMs = 250L,
                     hasRequestBody = true,
                     hasResponseBody = true,
-                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    status = TransactionStatus.COMPLETED,
                     timestamp = System.currentTimeMillis() - 30_000,
                 ),
             ),

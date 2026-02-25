@@ -76,6 +76,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
+import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -238,7 +239,7 @@ fun LoadedLibrariesScreen(
 @Composable
 private fun SummarySection(
     summary: LibrarySummary,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
     modifier: Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
@@ -284,7 +285,7 @@ private fun FilterSection(
     showSystemLibs: Boolean,
     onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
     modifier: Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
@@ -344,7 +345,7 @@ private fun FilterSection(
 private fun LibraryCard(
     library: LoadedLibrary,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
 ) {
     val (icon, color) = when (library.type) {
         LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
@@ -428,7 +429,7 @@ private fun LibraryCard(
 @Composable
 private fun LibraryDetailContent(
     library: LoadedLibrary,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
     modifier: Modifier,
 ) {
     val (icon, color) = when (library.type) {
@@ -491,7 +492,7 @@ private fun LibraryDetailContent(
 private fun DetailSection(
     title: String,
     items: List<Pair<String, String>>,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
 ) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(

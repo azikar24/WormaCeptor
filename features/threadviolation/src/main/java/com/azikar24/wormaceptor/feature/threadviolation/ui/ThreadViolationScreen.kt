@@ -68,6 +68,7 @@ import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import com.azikar24.wormaceptor.feature.threadviolation.R
+import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors
 import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.threadViolationColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -217,7 +218,7 @@ fun ThreadViolationScreen(
 @Composable
 private fun SummarySection(
     stats: ViolationStats,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -263,7 +264,7 @@ private fun SummarySection(
 private fun TypeFilterChips(
     selectedType: ViolationType?,
     onTypeSelected: (ViolationType?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
@@ -330,7 +331,7 @@ private fun TypeFilterChips(
 private fun ViolationCard(
     violation: ThreadViolation,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     val typeColor = colors.colorForType(violation.violationType)
     val icon = when (violation.violationType) {
@@ -412,7 +413,7 @@ private fun ViolationCard(
 @Composable
 private fun ViolationDetailContent(
     violation: ThreadViolation,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = colors.colorForType(violation.violationType)
@@ -535,7 +536,7 @@ private fun ViolationDetailContent(
 private fun DetailSection(
     title: String,
     items: List<Pair<String, String>>,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(

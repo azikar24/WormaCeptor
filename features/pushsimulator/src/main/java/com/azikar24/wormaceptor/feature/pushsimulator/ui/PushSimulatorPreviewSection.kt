@@ -40,6 +40,7 @@ import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
@@ -51,7 +52,7 @@ internal fun NotificationPreview(
     body: String,
     priority: NotificationPriority,
     channelName: String?,
-    actions: List<com.azikar24.wormaceptor.domain.entities.NotificationAction>,
+    actions: List<NotificationAction>,
 ) {
     val priorityColor = PushSimulatorDesignSystem.PriorityColors.forPriority(priority.name)
     val isHighPriority = priority == NotificationPriority.HIGH || priority == NotificationPriority.MAX

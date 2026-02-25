@@ -25,6 +25,7 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.SelectableTransactionItem
@@ -257,7 +258,7 @@ private fun SelectableTransactionListScreenPreview() {
                     tookMs = 142L,
                     hasRequestBody = false,
                     hasResponseBody = true,
-                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    status = TransactionStatus.COMPLETED,
                     timestamp = System.currentTimeMillis(),
                 ),
                 TransactionSummary(
@@ -269,7 +270,7 @@ private fun SelectableTransactionListScreenPreview() {
                     tookMs = 310L,
                     hasRequestBody = true,
                     hasResponseBody = true,
-                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                    status = TransactionStatus.COMPLETED,
                     timestamp = System.currentTimeMillis() - 60_000,
                 ),
                 TransactionSummary(
@@ -281,7 +282,7 @@ private fun SelectableTransactionListScreenPreview() {
                     tookMs = null,
                     hasRequestBody = true,
                     hasResponseBody = false,
-                    status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.ACTIVE,
+                    status = TransactionStatus.ACTIVE,
                     timestamp = System.currentTimeMillis() - 5_000,
                 ),
             ),

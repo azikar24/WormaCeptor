@@ -53,6 +53,8 @@ import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
 import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
 import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
 import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
+import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
+import com.azikar24.wormaceptor.feature.viewer.export.exportCrashes
 import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
 import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
@@ -222,7 +224,7 @@ class ViewerActivity : ComponentActivity() {
                                                 "WormaCeptor not initialized"
                                             }
                                             val exportManager =
-                                                com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                ExportManager(
                                                     this@ViewerActivity,
                                                     qe,
                                                     onMessage = snackbarMessage,
@@ -235,7 +237,7 @@ class ViewerActivity : ComponentActivity() {
                                     onExportCrashes = {
                                         scope.launch {
                                             val allCrashes = crashes
-                                            com.azikar24.wormaceptor.feature.viewer.export.exportCrashes(
+                                            exportCrashes(
                                                 this@ViewerActivity,
                                                 allCrashes,
                                                 onMessage = snackbarMessage,
@@ -278,7 +280,7 @@ class ViewerActivity : ComponentActivity() {
                                         scope.launch {
                                             val selected = viewModel.getSelectedTransactions()
                                             val exportManager =
-                                                com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                                ExportManager(
                                                     this@ViewerActivity,
                                                     CoreHolder.queryEngine,
                                                     onMessage = snackbarMessage,

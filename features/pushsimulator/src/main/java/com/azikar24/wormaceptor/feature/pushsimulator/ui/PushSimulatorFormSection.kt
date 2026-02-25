@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
@@ -478,7 +479,7 @@ private fun PrioritySelector(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActionButtonsSection(
-    actions: List<com.azikar24.wormaceptor.domain.entities.NotificationAction>,
+    actions: List<NotificationAction>,
     newActionTitle: String,
     onNewActionTitleChange: (String) -> Unit,
     onAddAction: (String) -> Unit,

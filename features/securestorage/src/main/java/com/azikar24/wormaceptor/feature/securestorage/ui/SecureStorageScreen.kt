@@ -84,6 +84,7 @@ import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
 import com.azikar24.wormaceptor.feature.securestorage.R
+import com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -303,7 +304,7 @@ private fun SummarySection(
     keystoreAccessible: Boolean,
     encryptedPrefsAccessible: Boolean,
     lastRefreshTime: Long?,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -373,7 +374,7 @@ private fun SummaryCard(
     isAccessible: Boolean,
     accessibleText: String,
     notAccessibleText: String,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -428,7 +429,7 @@ private fun SummaryCard(
 private fun TypeFilterChips(
     selectedType: StorageType?,
     onTypeSelected: (StorageType?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -482,7 +483,7 @@ private fun TypeFilterChips(
 private fun EntryCard(
     entry: SecureStorageEntry,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = when (entry.storageType) {
@@ -587,7 +588,7 @@ private fun EntryCard(
 @Composable
 private fun EntryDetailContent(
     entry: SecureStorageEntry,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = when (entry.storageType) {
@@ -700,7 +701,7 @@ private fun EntryDetailContent(
 private fun DetailSection(
     label: String,
     value: String,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Column(

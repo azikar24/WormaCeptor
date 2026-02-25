@@ -6,6 +6,7 @@ import com.azikar24.wormaceptor.domain.contracts.CrashRepository
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.BlobID
+import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,7 @@ class QueryEngine(
         return repository.getAllTransactions()
     }
 
-    fun observeCrashes(): Flow<List<com.azikar24.wormaceptor.domain.entities.Crash>> {
+    fun observeCrashes(): Flow<List<Crash>> {
         return crashRepository?.observeCrashes() ?: flowOf(emptyList())
     }
 

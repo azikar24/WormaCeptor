@@ -51,11 +51,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -104,10 +101,10 @@ fun HomeScreen(
     onMethodFiltersChanged: (Set<String>) -> Unit,
     onStatusFiltersChanged: (Set<IntRange>) -> Unit,
     onClearFilters: () -> Unit,
-    onClearTransactions: suspend () -> Unit,
-    onClearCrashes: suspend () -> Unit,
-    onExportTransactions: suspend () -> Unit,
-    onExportCrashes: suspend () -> Unit,
+    onClearTransactions: () -> Unit,
+    onClearCrashes: () -> Unit,
+    onExportTransactions: () -> Unit,
+    onExportCrashes: () -> Unit,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
     allTransactions: ImmutableList<TransactionSummary> = transactions,
@@ -124,7 +121,7 @@ fun HomeScreen(
     onSelectionToggle: (UUID) -> Unit = {},
     onSelectAll: () -> Unit = {},
     onClearSelection: () -> Unit = {},
-    onDeleteSelected: suspend () -> Unit = {},
+    onDeleteSelected: () -> Unit = {},
     onShareSelected: () -> Unit = {},
     onExportSelected: () -> Unit = {},
     // Context menu action parameters
@@ -137,6 +134,21 @@ fun HomeScreen(
     // Tool category collapse state
     collapsedToolCategories: Set<String> = emptySet(),
     onToolCategoryCollapseToggled: (String) -> Unit = {},
+    // Dialog and menu visibility state
+    showFilterSheet: Boolean = false,
+    onFilterSheetVisibilityChanged: (Boolean) -> Unit = {},
+    showOverflowMenu: Boolean = false,
+    onOverflowMenuVisibilityChanged: (Boolean) -> Unit = {},
+    toolsSearchActive: Boolean = false,
+    onToolsSearchActiveChanged: (Boolean) -> Unit = {},
+    toolsSearchQuery: String = "",
+    onToolsSearchQueryChanged: (String) -> Unit = {},
+    showClearTransactionsDialog: Boolean = false,
+    onClearTransactionsDialogVisibilityChanged: (Boolean) -> Unit = {},
+    showClearCrashesDialog: Boolean = false,
+    onClearCrashesDialogVisibilityChanged: (Boolean) -> Unit = {},
+    showDeleteSelectedDialog: Boolean = false,
+    onDeleteSelectedDialogVisibilityChanged: (Boolean) -> Unit = {},
     // Snackbar message flow from ViewModel
     snackbarMessage: Flow<String>? = null,
 ) {
@@ -167,13 +179,6 @@ fun HomeScreen(
             if (showToolsTab) add(toolsTitle)
         }
     }
-    var showFilterSheet by remember { mutableStateOf(false) }
-    var showOverflowMenu by remember { mutableStateOf(false) }
-    var toolsSearchActive by remember { mutableStateOf(false) }
-    var toolsSearchQuery by remember { mutableStateOf("") }
-    var showClearTransactionsDialog by remember { mutableStateOf(false) }
-    var showClearCrashesDialog by remember { mutableStateOf(false) }
-    var showDeleteSelectedDialog by remember { mutableStateOf(false) }
     val snackBarHostState = remember { SnackbarHostState() }
 
     // Observe snackbar messages from ViewModel
@@ -238,7 +243,7 @@ fun HomeScreen(
                     },
                 ) {
                     WormaCeptorFAB(
-                        onClick = { showFilterSheet = true },
+                        onClick = { onFilterSheetVisibilityChanged(true) },
                         icon = Icons.Default.FilterList,
                         contentDescription = stringResource(R.string.viewer_home_filter),
                     )
@@ -254,7 +259,7 @@ fun HomeScreen(
                             selectedCount = selectedIds.size,
                             totalCount = transactions.size,
                             onShare = onShareSelected,
-                            onDelete = { showDeleteSelectedDialog = true },
+                            onDelete = { onDeleteSelectedDialogVisibilityChanged(true) },
                             onExport = onExportSelected,
                             onSelectAll = onSelectAll,
                             onDeselectAll = onClearSelection,
@@ -274,7 +279,7 @@ fun HomeScreen(
                             actions = {
                                 // Overflow Menu - only show on Transactions and Crashes tabs
                                 if (pagerState.currentPage < 2) {
-                                    IconButton(onClick = { showOverflowMenu = true }) {
+                                    IconButton(onClick = { onOverflowMenuVisibilityChanged(true) }) {
                                         Icon(
                                             imageVector = Icons.Default.MoreVert,
                                             contentDescription = stringResource(R.string.viewer_home_more_options),
@@ -283,7 +288,7 @@ fun HomeScreen(
 
                                     DropdownMenu(
                                         expanded = showOverflowMenu,
-                                        onDismissRequest = { showOverflowMenu = false },
+                                        onDismissRequest = { onOverflowMenuVisibilityChanged(false) },
                                         shape = WormaCeptorDesignSystem.Shapes.cardLarge,
                                     ) {
                                         when (pagerState.currentPage) {
@@ -297,8 +302,8 @@ fun HomeScreen(
                                                     },
                                                     leadingIcon = { Icon(Icons.Default.Share, null) },
                                                     onClick = {
-                                                        showOverflowMenu = false
-                                                        scope.launch { onExportTransactions() }
+                                                        onOverflowMenuVisibilityChanged(false)
+                                                        onExportTransactions()
                                                     },
                                                 )
                                                 DropdownMenuItem(
@@ -309,8 +314,8 @@ fun HomeScreen(
                                                     },
                                                     leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                                     onClick = {
-                                                        showOverflowMenu = false
-                                                        showClearTransactionsDialog = true
+                                                        onOverflowMenuVisibilityChanged(false)
+                                                        onClearTransactionsDialogVisibilityChanged(true)
                                                     },
                                                 )
                                             }
@@ -324,8 +329,8 @@ fun HomeScreen(
                                                     },
                                                     leadingIcon = { Icon(Icons.Default.Share, null) },
                                                     onClick = {
-                                                        showOverflowMenu = false
-                                                        scope.launch { onExportCrashes() }
+                                                        onOverflowMenuVisibilityChanged(false)
+                                                        onExportCrashes()
                                                     },
                                                 )
                                                 DropdownMenuItem(
@@ -336,8 +341,8 @@ fun HomeScreen(
                                                     },
                                                     leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
                                                     onClick = {
-                                                        showOverflowMenu = false
-                                                        showClearCrashesDialog = true
+                                                        onOverflowMenuVisibilityChanged(false)
+                                                        onClearCrashesDialogVisibilityChanged(true)
                                                     },
                                                 )
                                             }
@@ -349,8 +354,7 @@ fun HomeScreen(
                                 if (pagerState.currentPage == 2) {
                                     IconButton(
                                         onClick = {
-                                            toolsSearchActive = !toolsSearchActive
-                                            if (!toolsSearchActive) toolsSearchQuery = ""
+                                            onToolsSearchActiveChanged(!toolsSearchActive)
                                         },
                                     ) {
                                         Icon(
@@ -590,7 +594,7 @@ fun HomeScreen(
                             },
                             searchActive = toolsSearchActive,
                             searchQuery = toolsSearchQuery,
-                            onSearchQueryChanged = { toolsSearchQuery = it },
+                            onSearchQueryChanged = { onToolsSearchQueryChanged(it) },
                             collapsedCategories = collapsedToolCategories,
                             onToggleCollapse = onToolCategoryCollapseToggled,
                             modifier = Modifier.fillMaxSize(),
@@ -621,7 +625,7 @@ fun HomeScreen(
                 modifier = Modifier.imePadding(),
                 onDismissRequest = {
                     focusManager.clearFocus()
-                    showFilterSheet = false
+                    onFilterSheetVisibilityChanged(false)
                 },
                 sheetState = sheetState,
                 shape = WormaCeptorDesignSystem.Shapes.sheet,
@@ -636,7 +640,7 @@ fun HomeScreen(
                         onMethodFiltersChanged(methods)
                         onStatusFiltersChanged(statusRanges)
                         focusManager.clearFocus()
-                        showFilterSheet = false
+                        onFilterSheetVisibilityChanged(false)
                     },
                     filteredCount = transactions.size,
                     totalCount = allTransactions.size,
@@ -649,7 +653,7 @@ fun HomeScreen(
         // Clear Transactions Confirmation Dialog (SelectableHomeScreen)
         if (showClearTransactionsDialog) {
             AlertDialog(
-                onDismissRequest = { showClearTransactionsDialog = false },
+                onDismissRequest = { onClearTransactionsDialogVisibilityChanged(false) },
                 title = { Text(stringResource(R.string.viewer_dialog_clear_transactions_title)) },
                 text = {
                     Text(
@@ -658,18 +662,13 @@ fun HomeScreen(
                 },
                 confirmButton = {
                     TextButton(
-                        onClick = {
-                            scope.launch {
-                                onClearTransactions()
-                                showClearTransactionsDialog = false
-                            }
-                        },
+                        onClick = { onClearTransactions() },
                     ) {
                         Text(stringResource(R.string.viewer_dialog_button_clear))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showClearTransactionsDialog = false }) {
+                    TextButton(onClick = { onClearTransactionsDialogVisibilityChanged(false) }) {
                         Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },
@@ -679,7 +678,7 @@ fun HomeScreen(
         // Clear Crashes Confirmation Dialog (SelectableHomeScreen)
         if (showClearCrashesDialog) {
             AlertDialog(
-                onDismissRequest = { showClearCrashesDialog = false },
+                onDismissRequest = { onClearCrashesDialogVisibilityChanged(false) },
                 title = { Text(stringResource(R.string.viewer_dialog_clear_crashes_title)) },
                 text = {
                     Text(
@@ -688,18 +687,13 @@ fun HomeScreen(
                 },
                 confirmButton = {
                     TextButton(
-                        onClick = {
-                            scope.launch {
-                                onClearCrashes()
-                                showClearCrashesDialog = false
-                            }
-                        },
+                        onClick = { onClearCrashes() },
                     ) {
                         Text(stringResource(R.string.viewer_dialog_button_clear))
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showClearCrashesDialog = false }) {
+                    TextButton(onClick = { onClearCrashesDialogVisibilityChanged(false) }) {
                         Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },
@@ -709,7 +703,7 @@ fun HomeScreen(
         // Delete Selected Confirmation Dialog
         if (showDeleteSelectedDialog) {
             AlertDialog(
-                onDismissRequest = { showDeleteSelectedDialog = false },
+                onDismissRequest = { onDeleteSelectedDialogVisibilityChanged(false) },
                 title = { Text(stringResource(R.string.viewer_dialog_delete_selected_title, selectedIds.size)) },
                 text = {
                     Text(
@@ -718,12 +712,7 @@ fun HomeScreen(
                 },
                 confirmButton = {
                     TextButton(
-                        onClick = {
-                            scope.launch {
-                                onDeleteSelected()
-                                showDeleteSelectedDialog = false
-                            }
-                        },
+                        onClick = { onDeleteSelected() },
                     ) {
                         Text(
                             stringResource(R.string.viewer_dialog_button_delete),
@@ -732,7 +721,7 @@ fun HomeScreen(
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDeleteSelectedDialog = false }) {
+                    TextButton(onClick = { onDeleteSelectedDialogVisibilityChanged(false) }) {
                         Text(stringResource(R.string.viewer_dialog_button_cancel))
                     }
                 },

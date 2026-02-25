@@ -34,4 +34,18 @@ data class ViewerViewState(
     val isInitialLoading: Boolean = true,
     /** Set of tool category names that are currently collapsed. */
     val collapsedToolCategories: Set<String> = emptySet(),
+    /** Whether the filter bottom sheet is currently visible. */
+    val showFilterSheet: Boolean = false,
+    /** Whether the overflow menu is currently visible. */
+    val showOverflowMenu: Boolean = false,
+    /** Whether the tools tab search bar is currently active. */
+    val toolsSearchActive: Boolean = false,
+    /** Current search query text in the tools tab search bar. */
+    val toolsSearchQuery: String = "",
+    /** Whether the clear-transactions confirmation dialog is currently visible. */
+    val showClearTransactionsDialog: Boolean = false,
+    /** Whether the clear-crashes confirmation dialog is currently visible. */
+    val showClearCrashesDialog: Boolean = false,
+    /** Whether the delete-selected confirmation dialog is currently visible. */
+    val showDeleteSelectedDialog: Boolean = false,
 )

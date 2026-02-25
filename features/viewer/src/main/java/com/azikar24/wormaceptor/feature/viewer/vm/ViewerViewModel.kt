@@ -155,6 +155,22 @@ class ViewerViewModel(
 
             is ViewerViewEvent.ShowMessage -> emitEffect(ViewerViewEffect.ShowSnackbar(event.message))
             is ViewerViewEvent.ToolCategoryCollapseToggled -> handleToolCategoryCollapseToggle(event.category)
+
+            is ViewerViewEvent.FilterSheetVisibilityChanged ->
+                updateState { copy(showFilterSheet = event.visible) }
+            is ViewerViewEvent.OverflowMenuVisibilityChanged ->
+                updateState { copy(showOverflowMenu = event.visible) }
+            is ViewerViewEvent.ToolsSearchActiveChanged -> updateState {
+                copy(toolsSearchActive = event.active, toolsSearchQuery = if (event.active) toolsSearchQuery else "")
+            }
+            is ViewerViewEvent.ToolsSearchQueryChanged ->
+                updateState { copy(toolsSearchQuery = event.query) }
+            is ViewerViewEvent.ClearTransactionsDialogVisibilityChanged ->
+                updateState { copy(showClearTransactionsDialog = event.visible) }
+            is ViewerViewEvent.ClearCrashesDialogVisibilityChanged ->
+                updateState { copy(showClearCrashesDialog = event.visible) }
+            is ViewerViewEvent.DeleteSelectedDialogVisibilityChanged ->
+                updateState { copy(showDeleteSelectedDialog = event.visible) }
         }
     }
 
@@ -188,7 +204,7 @@ class ViewerViewModel(
     private fun handleDeleteSelected() {
         viewModelScope.launch {
             val idsToDelete = uiState.value.selectedIds.toList()
-            updateState { copy(selectedIds = emptySet()) }
+            updateState { copy(selectedIds = emptySet(), showDeleteSelectedDialog = false) }
             queryEngine.deleteTransactions(idsToDelete)
         }
     }
@@ -201,12 +217,14 @@ class ViewerViewModel(
 
     private fun handleClearAllTransactions() {
         viewModelScope.launch {
+            updateState { copy(showClearTransactionsDialog = false) }
             queryEngine.clear()
         }
     }
 
     private fun handleClearAllCrashes() {
         viewModelScope.launch {
+            updateState { copy(showClearCrashesDialog = false) }
             queryEngine.clearCrashes()
         }
     }

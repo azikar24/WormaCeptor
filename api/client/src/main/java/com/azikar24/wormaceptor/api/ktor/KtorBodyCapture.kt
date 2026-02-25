@@ -16,7 +16,10 @@ import io.ktor.http.content.TextContent
  */
 internal object KtorBodyCapture {
 
-    fun captureRequestBody(content: OutgoingContent, maxContentLength: Long): ByteArray? {
+    fun captureRequestBody(
+        content: OutgoingContent,
+        maxContentLength: Long,
+    ): ByteArray? {
         return when (content) {
             is TextContent -> content.text.toByteArray(Charsets.UTF_8).truncate(maxContentLength)
             is ByteArrayContent -> content.bytes().truncate(maxContentLength)

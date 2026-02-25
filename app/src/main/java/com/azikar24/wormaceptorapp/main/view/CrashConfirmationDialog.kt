@@ -19,7 +19,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptorapp.R
 
 @Composable
-fun CrashConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+fun CrashConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {

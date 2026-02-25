@@ -36,7 +36,10 @@ class CaptureStatusWidget(private val project: Project) : StatusBarWidget, Statu
             updateWidget()
         }
 
-        override fun onCaptureStatusChanged(active: Boolean, count: Int) {
+        override fun onCaptureStatusChanged(
+            active: Boolean,
+            count: Int,
+        ) {
             isCapturing = active
             transactionCount = count
             updateWidget()

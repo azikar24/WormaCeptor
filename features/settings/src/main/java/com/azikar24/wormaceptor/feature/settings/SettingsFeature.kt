@@ -55,7 +55,11 @@ class SettingsViewModelFactory(
  * Main composable for the Feature Toggles screen.
  */
 @Composable
-fun FeatureToggles(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun FeatureToggles(
+    context: Context,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val repository = remember { SettingsFeature.createRepository(context) }
     val factory = remember { SettingsFeature.createViewModelFactory(repository) }
     val viewModel: SettingsViewModel = viewModel(factory = factory)

@@ -506,7 +506,10 @@ private fun ToolCategorySection(
 }
 
 @Composable
-private fun EmptyToolsState(searchQuery: String, modifier: Modifier = Modifier) {
+private fun EmptyToolsState(
+    searchQuery: String,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

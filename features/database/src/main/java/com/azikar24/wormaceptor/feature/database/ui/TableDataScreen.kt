@@ -166,7 +166,10 @@ fun TableDataScreen(
 }
 
 @Composable
-private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = Modifier) {
+private fun SchemaView(
+    schema: ImmutableList<ColumnInfo>,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(0.dp),
@@ -228,7 +231,10 @@ private fun SchemaView(schema: ImmutableList<ColumnInfo>, modifier: Modifier = M
 }
 
 @Composable
-private fun DataTable(result: QueryResult, modifier: Modifier = Modifier) {
+private fun DataTable(
+    result: QueryResult,
+    modifier: Modifier = Modifier,
+) {
     val horizontalScrollState = rememberScrollState()
 
     LazyColumn(

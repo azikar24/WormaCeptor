@@ -59,7 +59,11 @@ private const val DismissZoneFraction = 1f - PerformanceOverlayState.DISMISS_ZON
  * @param modifier Optional modifier
  */
 @Composable
-fun DismissZoneContent(isDragging: Boolean, isInDismissZone: Boolean, modifier: Modifier = Modifier) {
+fun DismissZoneContent(
+    isDragging: Boolean,
+    isInDismissZone: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter,

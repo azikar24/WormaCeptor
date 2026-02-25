@@ -18,7 +18,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param modifier Modifier for the root composable
  */
 @Composable
-fun WormaCeptorMethodBadge(method: String, modifier: Modifier = Modifier) {
+fun WormaCeptorMethodBadge(
+    method: String,
+    modifier: Modifier = Modifier,
+) {
     val color = WormaCeptorColors.HttpMethod.forMethod(method)
     Surface(
         modifier = modifier,

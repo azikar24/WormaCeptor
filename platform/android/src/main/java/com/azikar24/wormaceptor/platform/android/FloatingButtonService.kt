@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.platform.android
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.Application
@@ -14,6 +15,7 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -38,6 +40,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -93,13 +96,17 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     // Foreground/background detection
     private var startedActivityCount = 0
     private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) = Unit
         override fun onActivityStarted(activity: Activity) {
             startedActivityCount++
             if (startedActivityCount == 1) {
                 floatingView?.visibility = View.VISIBLE
             }
         }
+
         override fun onActivityResumed(activity: Activity) = Unit
         override fun onActivityPaused(activity: Activity) = Unit
         override fun onActivityStopped(activity: Activity) {
@@ -108,7 +115,11 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
                 floatingView?.visibility = View.GONE
             }
         }
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) = Unit
         override fun onActivityDestroyed(activity: Activity) = Unit
     }
 
@@ -129,7 +140,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
 
         serviceScope.launch {
             val (savedX, savedY) = withContext(Dispatchers.IO) {
-                val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                 prefs.getInt(PREF_X, Int.MIN_VALUE) to prefs.getInt(PREF_Y, Int.MIN_VALUE)
             }
             setupFloatingButton(savedX, savedY)
@@ -179,11 +190,8 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
     private fun createNotification(): Notification {
         // Create intent to open ViewerActivity when notification is tapped
         val openIntent = getLaunchIntent()
-        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val pendingIntentFlags =
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
         val pendingIntent = PendingIntent.getActivity(this, 0, openIntent, pendingIntentFlags)
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -206,7 +214,10 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         }
     }
 
-    private fun setupFloatingButton(savedX: Int, savedY: Int) {
+    private fun setupFloatingButton(
+        savedX: Int,
+        savedY: Int,
+    ) {
         // Determine window type based on API level
         val windowType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -334,7 +345,10 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         animateToPosition(targetX, targetY)
     }
 
-    private fun animateToPosition(targetX: Int, targetY: Int) {
+    private fun animateToPosition(
+        targetX: Int,
+        targetY: Int,
+    ) {
         val startX = layoutParams.x
         val startY = layoutParams.y
 
@@ -357,26 +371,32 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
             }
         }
 
-        animator.addListener(object : android.animation.Animator.AnimatorListener {
-            override fun onAnimationStart(animation: android.animation.Animator) {}
-            override fun onAnimationEnd(animation: android.animation.Animator) {
-                // Save position after animation completes
-                savePosition(targetX, targetY)
-            }
-            override fun onAnimationCancel(animation: android.animation.Animator) {}
-            override fun onAnimationRepeat(animation: android.animation.Animator) {}
-        })
+        animator.addListener(
+            object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
+                    // Save position after animation completes
+                    savePosition(targetX, targetY)
+                }
+
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            },
+        )
 
         animator.start()
     }
 
-    private fun savePosition(x: Int, y: Int) {
+    private fun savePosition(
+        x: Int,
+        y: Int,
+    ) {
         serviceScope.launch(Dispatchers.IO) {
-            getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putInt(PREF_X, x)
-                .putInt(PREF_Y, y)
-                .apply()
+            getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .edit {
+                    putInt(PREF_X, x)
+                        .putInt(PREF_Y, y)
+                }
         }
     }
 
@@ -432,11 +452,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
          * Check if the app can draw overlays.
          */
         fun canDrawOverlays(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                android.provider.Settings.canDrawOverlays(context)
-            } else {
-                true
-            }
+            return Settings.canDrawOverlays(context)
         }
 
         /**

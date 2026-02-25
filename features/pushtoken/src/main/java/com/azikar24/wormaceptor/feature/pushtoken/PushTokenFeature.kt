@@ -61,7 +61,10 @@ class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PushTokenManager(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun PushTokenManager(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: PushTokenEngine = koinInject()
     val factory = remember { PushTokenFeature.createViewModelFactory(engine) }
     val viewModel: PushTokenViewModel = viewModel(factory = factory)

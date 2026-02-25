@@ -18,7 +18,10 @@ object ImageMetadataExtractor {
      * @param format The detected image format
      * @return ImageMetadata with extracted information
      */
-    fun extract(data: ByteArray, format: ImageFormat): ImageMetadata {
+    fun extract(
+        data: ByteArray,
+        format: ImageFormat,
+    ): ImageMetadata {
         return when (format) {
             ImageFormat.PNG -> extractPngMetadata(data)
             ImageFormat.JPEG -> extractJpegMetadata(data)

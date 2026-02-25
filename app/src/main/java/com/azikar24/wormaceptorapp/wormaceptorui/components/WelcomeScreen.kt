@@ -166,7 +166,10 @@ private fun FeatureCardsGrid(onFeatureClick: ((WelcomeFeature) -> Unit)?) {
 }
 
 @Composable
-private fun FeatureCard(feature: WelcomeFeature, onClick: (() -> Unit)?) {
+private fun FeatureCard(
+    feature: WelcomeFeature,
+    onClick: (() -> Unit)?,
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -226,7 +229,10 @@ private fun FeatureIcon(feature: WelcomeFeature) {
 }
 
 @Composable
-private fun FeatureTextContent(feature: WelcomeFeature, modifier: Modifier = Modifier) {
+private fun FeatureTextContent(
+    feature: WelcomeFeature,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -247,7 +253,10 @@ private fun FeatureTextContent(feature: WelcomeFeature, modifier: Modifier = Mod
 }
 
 @Composable
-private fun ActionButtonsSection(onLaunchClick: () -> Unit, onTestToolsClick: () -> Unit) {
+private fun ActionButtonsSection(
+    onLaunchClick: () -> Unit,
+    onTestToolsClick: () -> Unit,
+) {
     Column(
         modifier = Modifier.width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -267,7 +276,11 @@ private fun ActionButtonsSection(onLaunchClick: () -> Unit, onTestToolsClick: ()
 }
 
 @Composable
-private fun PrimaryActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun PrimaryActionButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -302,7 +315,10 @@ private fun PrimaryActionButton(text: String, onClick: () -> Unit, modifier: Mod
 }
 
 @Composable
-private fun SecondaryActionButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun SecondaryActionButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(

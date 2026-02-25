@@ -186,7 +186,10 @@ class FileSystemDataSource(private val context: Context) {
         }
     }
 
-    private fun createFileEntry(file: File, customName: String? = null): FileEntry {
+    private fun createFileEntry(
+        file: File,
+        customName: String? = null,
+    ): FileEntry {
         val permissions = buildString {
             append(if (file.canRead()) "r" else "-")
             append(if (file.canWrite()) "w" else "-")

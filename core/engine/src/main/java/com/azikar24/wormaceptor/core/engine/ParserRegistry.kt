@@ -27,7 +27,10 @@ interface ParserRegistry {
      * @param body The raw body bytes
      * @return ParsedBody with formatted content and metadata
      */
-    fun parseBody(contentType: String?, body: ByteArray): ParsedBody
+    fun parseBody(
+        contentType: String?,
+        body: ByteArray,
+    ): ParsedBody
 
     /**
      * Detects the content type without fully parsing the body.
@@ -36,7 +39,10 @@ interface ParserRegistry {
      * @param body The raw body bytes
      * @return The detected ContentType
      */
-    fun detectContentType(contentType: String?, body: ByteArray): ContentType
+    fun detectContentType(
+        contentType: String?,
+        body: ByteArray,
+    ): ContentType
 }
 
 /**
@@ -53,7 +59,10 @@ class DefaultParserRegistry : ParserRegistry {
         parsers.sortByDescending { it.priority }
     }
 
-    override fun parseBody(contentType: String?, body: ByteArray): ParsedBody {
+    override fun parseBody(
+        contentType: String?,
+        body: ByteArray,
+    ): ParsedBody {
         if (body.isEmpty()) {
             return ParsedBody(
                 formatted = "",
@@ -66,7 +75,10 @@ class DefaultParserRegistry : ParserRegistry {
         return parser?.parse(body) ?: createFallbackParsedBody(body)
     }
 
-    override fun detectContentType(contentType: String?, body: ByteArray): ContentType {
+    override fun detectContentType(
+        contentType: String?,
+        body: ByteArray,
+    ): ContentType {
         if (body.isEmpty()) {
             return ContentType.UNKNOWN
         }
@@ -81,7 +93,10 @@ class DefaultParserRegistry : ParserRegistry {
         return if (isLikelyText(body)) ContentType.PLAIN_TEXT else ContentType.BINARY
     }
 
-    private fun findParser(contentType: String?, body: ByteArray): BodyParser? {
+    private fun findParser(
+        contentType: String?,
+        body: ByteArray,
+    ): BodyParser? {
         return parsers.firstOrNull { it.canParse(contentType, body) }
     }
 

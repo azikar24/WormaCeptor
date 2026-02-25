@@ -181,7 +181,10 @@ fun CrashListScreen(
 }
 
 @Composable
-fun CrashItem(crash: Crash, onClick: () -> Unit) {
+fun CrashItem(
+    crash: Crash,
+    onClick: () -> Unit,
+) {
     val location = remember(crash.stackTrace) { CrashUtils.extractCrashLocation(crash.stackTrace) }
     val relativeTime = remember(crash.timestamp) { formatRelativeTime(crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }

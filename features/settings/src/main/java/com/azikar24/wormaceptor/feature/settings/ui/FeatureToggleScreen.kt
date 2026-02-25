@@ -36,7 +36,11 @@ import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FeatureToggleScreen(viewModel: SettingsViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun FeatureToggleScreen(
+    viewModel: SettingsViewModel,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val config by viewModel.featureConfig.collectAsState()
 
     FeatureToggleScreenContent(
@@ -179,7 +183,10 @@ internal fun FeatureToggleScreenContent(
 }
 
 @Composable
-private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
+private fun SectionHeader(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleSmall,

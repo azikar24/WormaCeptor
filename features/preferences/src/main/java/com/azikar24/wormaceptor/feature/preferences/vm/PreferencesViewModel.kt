@@ -147,7 +147,10 @@ class PreferencesViewModel(
         _typeFilter.value = null
     }
 
-    fun setPreference(key: String, value: PreferenceValue) {
+    fun setPreference(
+        key: String,
+        value: PreferenceValue,
+    ) {
         val fileName = _selectedFileName.value ?: return
         viewModelScope.launch {
             _isLoading.value = true
@@ -186,7 +189,10 @@ class PreferencesViewModel(
     /**
      * Creates a new preference item in the current file.
      */
-    fun createPreference(key: String, value: PreferenceValue) {
+    fun createPreference(
+        key: String,
+        value: PreferenceValue,
+    ) {
         setPreference(key, value)
     }
 }

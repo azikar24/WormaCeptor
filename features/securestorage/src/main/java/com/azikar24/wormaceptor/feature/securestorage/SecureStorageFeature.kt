@@ -51,7 +51,10 @@ class SecureStorageViewModelFactory(
  * Displays secure storage entries with filtering and search capabilities.
  */
 @Composable
-fun SecureStorageViewer(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun SecureStorageViewer(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: SecureStorageEngine = koinInject()
     val factory = remember { SecureStorageFeature.createViewModelFactory(engine) }
     val viewModel: SecureStorageViewModel = viewModel(factory = factory)

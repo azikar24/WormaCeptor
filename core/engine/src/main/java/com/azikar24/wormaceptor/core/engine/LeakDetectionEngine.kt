@@ -65,7 +65,10 @@ class LeakDetectionEngine(
     // Activity lifecycle callbacks
     private var application: Application? = null
     private val lifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) = Unit
 
         override fun onActivityStarted(activity: Activity) = Unit
 
@@ -75,7 +78,10 @@ class LeakDetectionEngine(
 
         override fun onActivityStopped(activity: Activity) = Unit
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) = Unit
 
         override fun onActivityDestroyed(activity: Activity) {
             if (_isRunning.value) {
@@ -126,7 +132,10 @@ class LeakDetectionEngine(
      * @param repository Optional repository for persisting detected leaks
      * @param onLeakCallback Optional callback invoked when a leak is detected (for notifications)
      */
-    fun configure(repository: LeakRepository? = null, onLeakCallback: ((LeakInfo) -> Unit)? = null) {
+    fun configure(
+        repository: LeakRepository? = null,
+        onLeakCallback: ((LeakInfo) -> Unit)? = null,
+    ) {
         this.leakRepository = repository
         this.onLeakDetected = onLeakCallback
     }
@@ -160,7 +169,10 @@ class LeakDetectionEngine(
      * @param obj The object to track
      * @param description Optional description for the tracked object
      */
-    fun watchObject(obj: Any, description: String = "") {
+    fun watchObject(
+        obj: Any,
+        description: String = "",
+    ) {
         if (!_isRunning.value) return
 
         val id = UUID.randomUUID().toString()
@@ -258,7 +270,10 @@ class LeakDetectionEngine(
     /**
      * Reports a detected memory leak.
      */
-    private fun reportLeak(check: PendingCheck, leakedObject: Any) {
+    private fun reportLeak(
+        check: PendingCheck,
+        leakedObject: Any,
+    ) {
         val retainedSize = estimateRetainedSize(leakedObject)
         val severity = classifySeverity(check.className, retainedSize)
         val referencePath = buildReferencePath(leakedObject)
@@ -303,7 +318,10 @@ class LeakDetectionEngine(
     /**
      * Classifies the severity of a leak based on object type and retained size.
      */
-    private fun classifySeverity(className: String, retainedSize: Long): LeakSeverity {
+    private fun classifySeverity(
+        className: String,
+        retainedSize: Long,
+    ): LeakSeverity {
         // Activities are always high or critical severity
         val isActivity = className.contains("Activity")
 

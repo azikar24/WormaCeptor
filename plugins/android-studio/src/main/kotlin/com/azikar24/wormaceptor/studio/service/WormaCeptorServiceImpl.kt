@@ -90,7 +90,10 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         }
     }
 
-    override fun getTransactionDetail(id: String, callback: (TransactionDetail?) -> Unit) {
+    override fun getTransactionDetail(
+        id: String,
+        callback: (TransactionDetail?) -> Unit,
+    ) {
         ApplicationManager.getApplication().executeOnPooledThread {
             val detail = fetchTransactionDetailFromDevice(id)
             ApplicationManager.getApplication().invokeLater {
@@ -469,7 +472,10 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
     /**
      * Tests if a package has a WormaCeptor content provider by querying its status endpoint.
      */
-    private fun tryContentProvider(device: String, packageName: String): Boolean {
+    private fun tryContentProvider(
+        device: String,
+        packageName: String,
+    ): Boolean {
         return try {
             val result = executeAdbCommand(
                 "-s",
@@ -503,7 +509,10 @@ class WormaCeptorServiceImpl(override val project: Project) : WormaCeptorService
         listeners.forEach { it.onTransactionsUpdated(transactions) }
     }
 
-    private fun notifyCaptureStatusChanged(active: Boolean, count: Int) {
+    private fun notifyCaptureStatusChanged(
+        active: Boolean,
+        count: Int,
+    ) {
         listeners.forEach { it.onCaptureStatusChanged(active, count) }
     }
 }

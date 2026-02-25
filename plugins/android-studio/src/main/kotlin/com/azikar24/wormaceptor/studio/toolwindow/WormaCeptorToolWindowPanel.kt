@@ -71,7 +71,10 @@ class WormaCeptorToolWindowPanel(private val project: Project) : SimpleToolWindo
             }
         }
 
-        override fun onCaptureStatusChanged(active: Boolean, count: Int) {
+        override fun onCaptureStatusChanged(
+            active: Boolean,
+            count: Int,
+        ) {
             // Update status bar widget
         }
     }

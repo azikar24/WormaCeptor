@@ -376,7 +376,13 @@ private fun JsonArrayNode(
 }
 
 @Composable
-private fun JsonValueNode(key: String, value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
+private fun JsonValueNode(
+    key: String,
+    value: Any?,
+    depth: Int,
+    isLast: Boolean,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
@@ -405,7 +411,12 @@ private fun JsonValueNode(key: String, value: Any?, depth: Int, isLast: Boolean,
 }
 
 @Composable
-private fun JsonArrayValueNode(value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
+private fun JsonArrayValueNode(
+    value: Any?,
+    depth: Int,
+    isLast: Boolean,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
@@ -428,7 +439,10 @@ private fun JsonArrayValueNode(value: Any?, depth: Int, isLast: Boolean, colors:
 }
 
 @Composable
-private fun formatValue(value: Any?, colors: ComposeSyntaxColors): AnnotatedString {
+private fun formatValue(
+    value: Any?,
+    colors: ComposeSyntaxColors,
+): AnnotatedString {
     return buildAnnotatedString {
         when (value) {
             null, JSONObject.NULL -> {

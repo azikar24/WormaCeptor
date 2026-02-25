@@ -200,7 +200,10 @@ class PushSimulatorEngine(private val context: Context) {
      * @param notification Optional notification configuration; if null, uses data for title/body
      * @return The notification ID
      */
-    fun simulateFcmPayload(data: Map<String, String>, notification: SimulatedNotification? = null): Int {
+    fun simulateFcmPayload(
+        data: Map<String, String>,
+        notification: SimulatedNotification? = null,
+    ): Int {
         val finalNotification = notification ?: SimulatedNotification(
             id = System.currentTimeMillis().toString(),
             title = data["title"] ?: "FCM Message",

@@ -266,7 +266,11 @@ class LoadedLibrariesEngine(
     /**
      * Recursively finds JAR files in a directory.
      */
-    private fun findJarFiles(dir: File, result: MutableList<LoadedLibrary>, depth: Int = 0) {
+    private fun findJarFiles(
+        dir: File,
+        result: MutableList<LoadedLibrary>,
+        depth: Int = 0,
+    ) {
         if (depth > 3) return // Limit recursion depth
 
         try {

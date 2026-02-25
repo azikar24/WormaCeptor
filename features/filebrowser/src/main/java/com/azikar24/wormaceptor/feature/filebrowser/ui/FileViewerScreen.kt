@@ -65,7 +65,12 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FileViewerScreen(filePath: String, content: FileContent, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun FileViewerScreen(
+    filePath: String,
+    content: FileContent,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val fileName = File(filePath).name
 
     Scaffold(
@@ -463,7 +468,10 @@ private fun BinaryFileContent(content: FileContent.Binary) {
 }
 
 @Composable
-private fun HexDumpLine(bytes: ByteArray, lineIndex: Int) {
+private fun HexDumpLine(
+    bytes: ByteArray,
+    lineIndex: Int,
+) {
     val lineStart = lineIndex * BYTES_PER_LINE
     val lineText = remember(lineIndex) {
         buildHexLine(bytes, lineStart)
@@ -480,7 +488,10 @@ private fun HexDumpLine(bytes: ByteArray, lineIndex: Int) {
     )
 }
 
-private fun buildHexLine(bytes: ByteArray, lineStart: Int): String {
+private fun buildHexLine(
+    bytes: ByteArray,
+    lineStart: Int,
+): String {
     val builder = StringBuilder()
 
     // Address column
@@ -633,7 +644,10 @@ private fun PdfFileContent(content: FileContent.Pdf) {
 }
 
 @Composable
-private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
+private fun PdfPageCard(
+    renderer: PdfRenderer,
+    pageIndex: Int,
+) {
     val pageNumber = pageIndex + 1
     val bitmap = remember(pageIndex) {
         val page = renderer.openPage(pageIndex)

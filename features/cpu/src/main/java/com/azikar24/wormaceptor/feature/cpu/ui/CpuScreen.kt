@@ -331,7 +331,12 @@ private fun CpuUsageGaugeCard(
 }
 
 @Composable
-private fun CpuGauge(progress: Float, statusColor: Color, colors: CpuColors, modifier: Modifier = Modifier) {
+private fun CpuGauge(
+    progress: Float,
+    statusColor: Color,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
     Canvas(modifier = modifier) {
         val strokeWidth = WormaCeptorDesignSystem.Spacing.lg.toPx()
         val radius = (size.minDimension - strokeWidth) / 2
@@ -362,7 +367,11 @@ private fun CpuGauge(progress: Float, statusColor: Color, colors: CpuColors, mod
 }
 
 @Composable
-private fun PerCoreUsageCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
+private fun PerCoreUsageCard(
+    currentCpu: CpuInfo,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
@@ -455,7 +464,11 @@ private fun CoreUsageBar(
 }
 
 @Composable
-private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, modifier: Modifier = Modifier) {
+private fun CpuChartCard(
+    history: ImmutableList<CpuInfo>,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
@@ -520,7 +533,11 @@ private fun CpuChartCard(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
 }
 
 @Composable
-private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, modifier: Modifier = Modifier) {
+private fun CpuLineChart(
+    history: ImmutableList<CpuInfo>,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
     if (history.isEmpty()) return
 
     Canvas(
@@ -612,7 +629,11 @@ private fun CpuLineChart(history: ImmutableList<CpuInfo>, colors: CpuColors, mod
 }
 
 @Composable
-private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier) {
+private fun SystemInfoCard(
+    currentCpu: CpuInfo,
+    colors: CpuColors,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),

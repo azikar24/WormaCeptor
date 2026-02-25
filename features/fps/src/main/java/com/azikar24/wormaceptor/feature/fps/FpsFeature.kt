@@ -46,7 +46,10 @@ class FpsViewModelFactory(
  * Main composable for the FPS Monitor feature.
  */
 @Composable
-fun FpsMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun FpsMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: FpsMonitorEngine = koinInject()
     val performanceOverlayEngine: PerformanceOverlayEngine = koinInject()
     LaunchedEffect(Unit) {

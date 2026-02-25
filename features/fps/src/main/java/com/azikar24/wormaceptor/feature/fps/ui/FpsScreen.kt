@@ -80,7 +80,11 @@ import kotlin.math.roundToInt
  * - Play/Pause and reset controls
  */
 @Composable
-fun FpsScreen(viewModel: FpsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
+fun FpsScreen(
+    viewModel: FpsViewModel,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+) {
     val currentInfo by viewModel.currentFpsInfo.collectAsState()
     val history by viewModel.fpsHistory.collectAsState()
     val isMonitoring by viewModel.isMonitoring.collectAsState()
@@ -208,7 +212,12 @@ internal fun FpsScreenContent(
 }
 
 @Composable
-private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier) {
+private fun CurrentFpsCard(
+    fpsInfo: FpsInfo,
+    isMonitoring: Boolean,
+    colors: FpsColors,
+    modifier: Modifier = Modifier,
+) {
     val fpsColor by animateColorAsState(
         targetValue = if (fpsInfo.currentFps > 0) {
             colors.forFps(fpsInfo.currentFps)
@@ -279,7 +288,11 @@ private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsC
 }
 
 @Composable
-private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifier = Modifier) {
+private fun StatisticsRow(
+    fpsInfo: FpsInfo,
+    colors: FpsColors,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
@@ -326,7 +339,12 @@ private fun StatisticsRow(fpsInfo: FpsInfo, colors: FpsColors, modifier: Modifie
 }
 
 @Composable
-private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier) {
+private fun DroppedFramesCard(
+    droppedFrames: Int,
+    jankFrames: Int,
+    colors: FpsColors,
+    modifier: Modifier = Modifier,
+) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
@@ -429,7 +447,11 @@ private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsCo
 }
 
 @Composable
-private fun FpsChartCard(history: ImmutableList<FpsInfo>, colors: FpsColors, modifier: Modifier = Modifier) {
+private fun FpsChartCard(
+    history: ImmutableList<FpsInfo>,
+    colors: FpsColors,
+    modifier: Modifier = Modifier,
+) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
@@ -479,7 +501,11 @@ private fun FpsChartCard(history: ImmutableList<FpsInfo>, colors: FpsColors, mod
 }
 
 @Composable
-private fun FpsChart(data: ImmutableList<FpsInfo>, colors: FpsColors, modifier: Modifier = Modifier) {
+private fun FpsChart(
+    data: ImmutableList<FpsInfo>,
+    colors: FpsColors,
+    modifier: Modifier = Modifier,
+) {
     val lineColor = colors.chartLine
     val fillColor = colors.chartFill
     val gridColor = colors.chartGrid
@@ -575,7 +601,10 @@ private fun FpsChart(data: ImmutableList<FpsInfo>, colors: FpsColors, modifier: 
 }
 
 @Composable
-private fun EmptyState(onStartMonitoring: () -> Unit, modifier: Modifier = Modifier) {
+private fun EmptyState(
+    onStartMonitoring: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

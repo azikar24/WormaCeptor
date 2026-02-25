@@ -241,6 +241,7 @@ spotless {
                     "ktlint_standard_value-parameter-comment" to "disabled",
                     "ktlint_standard_comment-wrapping" to "disabled",
                     "ktlint_standard_class-naming" to "disabled",
+                    "ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than" to 2,
                 ),
             )
     }
@@ -248,6 +249,11 @@ spotless {
         target("**/*.gradle.kts")
         targetExclude("**/build/**")
         ktlint("1.2.1")
+            .editorConfigOverride(
+                mapOf(
+                    "ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than" to 2,
+                ),
+            )
     }
 }
 

@@ -8,7 +8,11 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 
-suspend fun exportCrashes(context: Context, crashes: List<Crash>, onMessage: (String) -> Unit = {}) {
+suspend fun exportCrashes(
+    context: Context,
+    crashes: List<Crash>,
+    onMessage: (String) -> Unit = {},
+) {
     withContext(Dispatchers.IO) {
         try {
             val jsonArray = JSONArray()
@@ -36,7 +40,12 @@ suspend fun exportCrashes(context: Context, crashes: List<Crash>, onMessage: (St
     }
 }
 
-private fun shareText(context: Context, content: String, subject: String, onMessage: (String) -> Unit) {
+private fun shareText(
+    context: Context,
+    content: String,
+    subject: String,
+    onMessage: (String) -> Unit,
+) {
     try {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"

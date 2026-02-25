@@ -243,7 +243,11 @@ fun TransactionDetailPagerScreen(
  * Transaction detail screen with swipe-back navigation.
  */
 @Composable
-fun TransactionDetailScreen(transaction: NetworkTransaction, queryEngine: QueryEngine?, onBack: () -> Unit) {
+fun TransactionDetailScreen(
+    transaction: NetworkTransaction,
+    queryEngine: QueryEngine?,
+    onBack: () -> Unit,
+) {
     SwipeBackContainer(onBack = onBack) {
         TransactionDetailContent(
             transaction = transaction,
@@ -636,7 +640,10 @@ private fun SwipeableTopBar(
 }
 
 @Composable
-private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Modifier) {
+private fun OverviewTab(
+    transaction: NetworkTransaction,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -721,7 +728,10 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
 }
 
 @Composable
-private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
+private fun TransactionTimeline(
+    durationMs: Long,
+    hasResponse: Boolean,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -818,7 +828,10 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
 }
 
 @Composable
-private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
+private fun SslBadge(
+    isSsl: Boolean,
+    tlsVersion: String?,
+) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
         color = if (isSsl) {
@@ -1783,7 +1796,10 @@ private fun CollapsibleSection(
 }
 
 @Composable
-private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
+private fun PrettyRawToggle(
+    isPretty: Boolean,
+    onToggle: () -> Unit,
+) {
     val activeColor = MaterialTheme.colorScheme.primary
     val radius = WormaCeptorDesignSystem.CornerRadius.xs
     val shape = RoundedCornerShape(radius)
@@ -1815,7 +1831,12 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
 }
 
 @Composable
-private fun SegmentOption(text: String, isSelected: Boolean, activeColor: Color, onClick: () -> Unit) {
+private fun SegmentOption(
+    text: String,
+    isSelected: Boolean,
+    activeColor: Color,
+    onClick: () -> Unit,
+) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
             activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
@@ -1885,7 +1906,10 @@ private const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000
  * Find all match positions using indexOf - faster than regex for simple substring matching.
  * O(n) where n = text length.
  */
-private fun findMatchRanges(text: String, query: String): List<IntRange> {
+private fun findMatchRanges(
+    text: String,
+    query: String,
+): List<IntRange> {
     if (query.isEmpty()) return emptyList()
     val matches = ArrayList<IntRange>(64) // Pre-size for typical case
     var index = 0
@@ -1997,7 +2021,10 @@ private fun HighlightedBodyText(
 }
 
 @Composable
-private fun DetailRow(label: String, value: String) {
+private fun DetailRow(
+    label: String,
+    value: String,
+) {
     Row(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs)) {
         Text(
             text = "$label: ",
@@ -2077,7 +2104,10 @@ private fun formatJson(json: String): String {
  *
  * @return Message describing the result of the operation
  */
-private fun savePdfToDownloads(context: Context, pdfData: ByteArray): String {
+private fun savePdfToDownloads(
+    context: Context,
+    pdfData: ByteArray,
+): String {
     return try {
         val fileName = "wormaceptor_${System.currentTimeMillis()}.pdf"
 

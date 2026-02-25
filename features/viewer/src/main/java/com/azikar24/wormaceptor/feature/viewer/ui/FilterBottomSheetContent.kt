@@ -174,7 +174,11 @@ fun FilterBottomSheetContent(
 }
 
 @Composable
-private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boolean) {
+private fun FilterHeader(
+    filteredCount: Int,
+    totalCount: Int,
+    filtersActive: Boolean,
+) {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -476,7 +480,11 @@ private fun GridFilterCard(
 }
 
 @Composable
-private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, onApply: () -> Unit) {
+private fun FilterActionButtons(
+    filtersActive: Boolean,
+    onClearAll: () -> Unit,
+    onApply: () -> Unit,
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         WormaCeptorDivider(style = DividerStyle.Subtle)
         Row(

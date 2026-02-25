@@ -113,7 +113,10 @@ class CryptoViewModelFactory(
  * Manages navigation between the crypto tool and history screens.
  */
 @Composable
-fun CryptoScreen(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun CryptoScreen(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: CryptoEngine = koinInject()
     var showHistory by remember { mutableStateOf(false) }
     if (showHistory) {

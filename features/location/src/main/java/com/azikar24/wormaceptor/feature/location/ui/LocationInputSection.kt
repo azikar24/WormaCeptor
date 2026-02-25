@@ -190,7 +190,10 @@ internal fun CoordinateInputCard(
 }
 
 @Composable
-internal fun SavePresetDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
+internal fun SavePresetDialog(
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit,
+) {
     var presetName by remember { mutableStateOf("") }
 
     AlertDialog(

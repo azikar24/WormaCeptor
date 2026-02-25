@@ -16,7 +16,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param style Divider style variant
  */
 @Composable
-fun WormaCeptorDivider(modifier: Modifier = Modifier, style: DividerStyle = DividerStyle.Standard) {
+fun WormaCeptorDivider(
+    modifier: Modifier = Modifier,
+    style: DividerStyle = DividerStyle.Standard,
+) {
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
     when (style) {
         DividerStyle.Standard -> HorizontalDivider(modifier = modifier)

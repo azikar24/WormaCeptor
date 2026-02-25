@@ -28,7 +28,10 @@ class LogsViewModelFactory(
 }
 
 @Composable
-fun LogViewer(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun LogViewer(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: LogCaptureEngine = koinInject()
     val factory = remember { LogsFeature.createViewModelFactory(engine) }
     val logsViewModel: LogsViewModel = viewModel(factory = factory)

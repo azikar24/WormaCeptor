@@ -31,7 +31,10 @@ class ProtobufBodyParser : BaseBodyParser() {
 
     override val defaultContentType: ContentType = ContentType.PROTOBUF
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type first
         if (contentType != null) {
             val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
@@ -143,7 +146,11 @@ class ProtobufBodyParser : BaseBodyParser() {
         return fields
     }
 
-    private fun readField(buffer: ByteBuffer, fieldNumber: Int, wireType: Int): ProtobufField? {
+    private fun readField(
+        buffer: ByteBuffer,
+        fieldNumber: Int,
+        wireType: Int,
+    ): ProtobufField? {
         return try {
             when (wireType) {
                 WIRE_TYPE_VARINT -> {
@@ -182,7 +189,10 @@ class ProtobufBodyParser : BaseBodyParser() {
         }
     }
 
-    private fun skipField(buffer: ByteBuffer, wireType: Int): Boolean {
+    private fun skipField(
+        buffer: ByteBuffer,
+        wireType: Int,
+    ): Boolean {
         return try {
             when (wireType) {
                 WIRE_TYPE_VARINT -> {

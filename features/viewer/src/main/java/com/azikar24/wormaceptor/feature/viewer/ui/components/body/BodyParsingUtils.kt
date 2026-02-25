@@ -12,7 +12,10 @@ object BodyParsingUtils {
     /**
      * Detects the content type of a body string based on Content-Type header and content inspection.
      */
-    fun detectContentType(contentTypeHeader: String?, body: String?): ContentType {
+    fun detectContentType(
+        contentTypeHeader: String?,
+        body: String?,
+    ): ContentType {
         if (body == null) return ContentType.UNKNOWN
 
         // Check Content-Type header first

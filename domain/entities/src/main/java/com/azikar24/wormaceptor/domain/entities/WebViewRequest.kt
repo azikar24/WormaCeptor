@@ -134,7 +134,10 @@ enum class WebViewResourceType(
         /**
          * Infers the resource type from a URL and MIME type.
          */
-        fun fromUrl(url: String, mimeType: String? = null): WebViewResourceType {
+        fun fromUrl(
+            url: String,
+            mimeType: String? = null,
+        ): WebViewResourceType {
             val lowercaseUrl = url.lowercase()
             val lowercaseMime = mimeType?.lowercase()
 

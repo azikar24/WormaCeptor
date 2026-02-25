@@ -41,7 +41,10 @@ class PdfParser(
 
     override val emptyBodyFormatted: String = "[Empty PDF]"
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type header
         if (contentType?.contains("pdf", ignoreCase = true) == true) {
             return true
@@ -248,7 +251,10 @@ class PdfParser(
          * Extracts a string field value from PDF content.
          * Handles both literal strings (parentheses) and hex strings (angle brackets).
          */
-        private fun extractPdfStringField(content: String, fieldName: String): String? {
+        private fun extractPdfStringField(
+            content: String,
+            fieldName: String,
+        ): String? {
             // Look for /FieldName followed by string value
             val patterns = listOf(
                 // Literal string: /Title (Some Title)

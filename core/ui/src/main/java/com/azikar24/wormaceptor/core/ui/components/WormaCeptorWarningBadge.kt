@@ -27,7 +27,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param modifier Modifier for the root composable
  */
 @Composable
-fun WormaCeptorWarningBadge(contentDescription: String, modifier: Modifier = Modifier) {
+fun WormaCeptorWarningBadge(
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,

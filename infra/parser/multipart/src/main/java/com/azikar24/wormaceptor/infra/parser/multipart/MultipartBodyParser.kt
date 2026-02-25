@@ -25,7 +25,10 @@ class MultipartBodyParser : BaseBodyParser() {
 
     override val defaultContentType: ContentType = ContentType.MULTIPART
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type first - must have boundary parameter
         if (contentType != null) {
             val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
@@ -97,7 +100,10 @@ class MultipartBodyParser : BaseBodyParser() {
         return null
     }
 
-    private fun parseParts(content: String, boundary: String): List<MultipartPart> {
+    private fun parseParts(
+        content: String,
+        boundary: String,
+    ): List<MultipartPart> {
         val parts = mutableListOf<MultipartPart>()
         val delimiter = "--$boundary"
 
@@ -178,7 +184,10 @@ class MultipartBodyParser : BaseBodyParser() {
         return ContentDisposition(name = name, filename = filename)
     }
 
-    private fun isBinaryContent(contentType: String?, content: String): Boolean {
+    private fun isBinaryContent(
+        contentType: String?,
+        content: String,
+    ): Boolean {
         if (contentType != null) {
             val type = contentType.lowercase()
             if (type.startsWith("image/") ||

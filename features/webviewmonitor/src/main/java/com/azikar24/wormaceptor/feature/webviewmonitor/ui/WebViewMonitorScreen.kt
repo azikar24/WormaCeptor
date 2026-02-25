@@ -97,7 +97,10 @@ import org.koin.compose.koinInject
 
 /** Main composable for the WebView Monitor feature. */
 @Composable
-fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun WebViewMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: WebViewMonitorEngine = koinInject()
     WebViewMonitor(
         engine = engine,
@@ -109,7 +112,11 @@ fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? 
 /** Main composable for the WebView Monitor feature with external engine. */
 @Suppress("LongMethod")
 @Composable
-fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun WebViewMonitor(
+    engine: WebViewMonitorEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember(engine) { WebViewMonitorFeature.createViewModelFactory(engine) }
     val viewModel: WebViewMonitorViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
@@ -290,7 +297,11 @@ private fun ListTopBar(
 }
 
 @Composable
-private fun ExpandableSearchBar(visible: Boolean, query: String, onQueryChange: (String) -> Unit) {
+private fun ExpandableSearchBar(
+    visible: Boolean,
+    query: String,
+    onQueryChange: (String) -> Unit,
+) {
     AnimatedVisibility(
         visible = visible,
         enter = expandVertically(
@@ -378,7 +389,10 @@ private fun ListContent(
 }
 
 @Composable
-private fun StatsRow(stats: WebViewRequestStats, modifier: Modifier = Modifier) {
+private fun StatsRow(
+    stats: WebViewRequestStats,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -469,7 +483,11 @@ private fun FilterSection(
 }
 
 @Composable
-private fun CountText(filteredCount: Int, totalCount: Int, modifier: Modifier = Modifier) {
+private fun CountText(
+    filteredCount: Int,
+    totalCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = if (filteredCount == totalCount) {
             stringResource(R.string.webviewmonitor_request_count, totalCount)
@@ -483,7 +501,10 @@ private fun CountText(filteredCount: Int, totalCount: Int, modifier: Modifier = 
 }
 
 @Composable
-private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
+private fun WebViewRequestItem(
+    request: WebViewRequest,
+    onClick: () -> Unit,
+) {
     val statusColor = getStatusColor(request)
 
     Row(
@@ -516,7 +537,10 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
 }
 
 @Composable
-private fun RequestItemContent(request: WebViewRequest, modifier: Modifier = Modifier) {
+private fun RequestItemContent(
+    request: WebViewRequest,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -573,7 +597,10 @@ private fun RequestHostChip(host: String) {
 }
 
 @Composable
-private fun RequestStatusBadge(request: WebViewRequest, statusColor: Color) {
+private fun RequestStatusBadge(
+    request: WebViewRequest,
+    statusColor: Color,
+) {
     Column(horizontalAlignment = Alignment.End) {
         val statusText = when {
             request.isPending -> "..."

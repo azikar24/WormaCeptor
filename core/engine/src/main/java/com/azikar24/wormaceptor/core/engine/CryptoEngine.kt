@@ -377,7 +377,10 @@ class CryptoEngine {
     /**
      * Formats bytes to string based on the key format.
      */
-    private fun formatBytes(bytes: ByteArray, format: KeyFormat): String {
+    private fun formatBytes(
+        bytes: ByteArray,
+        format: KeyFormat,
+    ): String {
         return when (format) {
             KeyFormat.BASE64 -> Base64.encodeToString(bytes, Base64.NO_WRAP)
             KeyFormat.HEX -> bytes.joinToString("") { "%02x".format(it) }
@@ -429,7 +432,10 @@ class CryptoEngine {
     /**
      * Parses a key or IV string into bytes based on the format.
      */
-    private fun parseKeyOrIv(value: String, format: KeyFormat): ByteArray {
+    private fun parseKeyOrIv(
+        value: String,
+        format: KeyFormat,
+    ): ByteArray {
         return when (format) {
             KeyFormat.BASE64 -> Base64.decode(value, Base64.NO_WRAP)
             KeyFormat.HEX -> value.chunked(2).map { it.toInt(16).toByte() }.toByteArray()

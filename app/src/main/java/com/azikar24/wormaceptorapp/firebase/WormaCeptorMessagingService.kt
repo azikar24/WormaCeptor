@@ -44,7 +44,10 @@ class WormaCeptorMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun showNotification(title: String, body: String) {
+    private fun showNotification(
+        title: String,
+        body: String,
+    ) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

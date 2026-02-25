@@ -63,7 +63,10 @@ internal object BinaryContentDetector {
         }
     }
 
-    private fun ByteArray.startsWith(prefix: ByteArray, offset: Int = 0): Boolean {
+    private fun ByteArray.startsWith(
+        prefix: ByteArray,
+        offset: Int = 0,
+    ): Boolean {
         if (this.size < offset + prefix.size) return false
         for (i in prefix.indices) {
             if (this[offset + i] != prefix[i]) return false

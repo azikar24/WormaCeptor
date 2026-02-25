@@ -165,7 +165,10 @@ private fun updateMapMarkers(
     mapView.invalidate()
 }
 
-private fun createMarkerDrawable(context: Context, isReal: Boolean): Drawable? {
+private fun createMarkerDrawable(
+    context: Context,
+    isReal: Boolean,
+): Drawable? {
     val drawableRes = if (isReal) {
         R.drawable.ic_marker_real
     } else {
@@ -185,7 +188,10 @@ private class MapTapOverlay(
     private val onTap: (GeoPoint) -> Unit,
 ) : org.osmdroid.views.overlay.Overlay() {
 
-    override fun onSingleTapConfirmed(e: android.view.MotionEvent?, mapView: MapView?): Boolean {
+    override fun onSingleTapConfirmed(
+        e: android.view.MotionEvent?,
+        mapView: MapView?,
+    ): Boolean {
         if (e == null || mapView == null) return false
 
         val projection = mapView.projection
@@ -198,7 +204,10 @@ private class MapTapOverlay(
 /**
  * Calculate distance between two GeoPoints in meters.
  */
-fun calculateDistance(point1: GeoPoint, point2: GeoPoint): Double {
+fun calculateDistance(
+    point1: GeoPoint,
+    point2: GeoPoint,
+): Double {
     return point1.distanceToAsDouble(point2)
 }
 

@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Looper
 import android.os.StrictMode
 import android.os.strictmode.Violation
+import androidx.annotation.RequiresApi
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import kotlinx.coroutines.CoroutineScope
@@ -86,7 +87,10 @@ class ThreadViolationEngine(
      * @param hostPackage The host app's package name to filter violations
      * @param onViolationCallback Optional callback invoked when a violation is detected (for notifications)
      */
-    fun configure(hostPackage: String? = null, onViolationCallback: ((ThreadViolation) -> Unit)? = null) {
+    fun configure(
+        hostPackage: String? = null,
+        onViolationCallback: ((ThreadViolation) -> Unit)? = null,
+    ) {
         this.hostPackageName = hostPackage
         this.onViolationDetected = onViolationCallback
     }
@@ -155,7 +159,7 @@ class ThreadViolationEngine(
      * Handles a violation detected by StrictMode.
      * Available only on API 28+.
      */
-    @androidx.annotation.RequiresApi(Build.VERSION_CODES.P)
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun handleViolation(violation: Violation) {
         scope.launch {
             val threadViolation = parseViolation(violation)
@@ -166,7 +170,7 @@ class ThreadViolationEngine(
     /**
      * Parses a StrictMode Violation into our ThreadViolation entity.
      */
-    @androidx.annotation.RequiresApi(Build.VERSION_CODES.P)
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun parseViolation(violation: Violation): ThreadViolation {
         val timestamp = System.currentTimeMillis()
         val violationType = determineViolationType(violation)
@@ -191,7 +195,7 @@ class ThreadViolationEngine(
     /**
      * Determines the violation type from the StrictMode Violation class.
      */
-    @androidx.annotation.RequiresApi(Build.VERSION_CODES.P)
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun determineViolationType(violation: Violation): ThreadViolation.ViolationType {
         val className = violation.javaClass.simpleName.lowercase()
         val message = violation.message?.lowercase() ?: ""
@@ -240,7 +244,10 @@ class ThreadViolationEngine(
     /**
      * Formats the description to be more human-readable.
      */
-    private fun formatDescription(type: ThreadViolation.ViolationType, originalDescription: String): String {
+    private fun formatDescription(
+        type: ThreadViolation.ViolationType,
+        originalDescription: String,
+    ): String {
         val prefix = when (type) {
             ThreadViolation.ViolationType.DISK_READ -> "Disk Read"
             ThreadViolation.ViolationType.DISK_WRITE -> "Disk Write"
@@ -345,7 +352,11 @@ class ThreadViolationEngine(
      * Manually records a custom violation.
      * Useful for integrating with custom performance monitoring.
      */
-    fun recordViolation(type: ThreadViolation.ViolationType, description: String, durationMs: Long? = null) {
+    fun recordViolation(
+        type: ThreadViolation.ViolationType,
+        description: String,
+        durationMs: Long? = null,
+    ) {
         val violation = ThreadViolation(
             id = violationIdCounter.incrementAndGet(),
             timestamp = System.currentTimeMillis(),

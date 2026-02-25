@@ -46,7 +46,10 @@ import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 
 @Composable
-internal fun SectionHeader(text: String, count: Int = 0) {
+internal fun SectionHeader(
+    text: String,
+    count: Int = 0,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

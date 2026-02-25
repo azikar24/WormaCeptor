@@ -393,7 +393,12 @@ private fun FullscreenImageContent(
 }
 
 @Composable
-private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: () -> Unit, currentZoom: Float) {
+private fun TopControlBar(
+    onClose: () -> Unit,
+    onZoomIn: () -> Unit,
+    onZoomOut: () -> Unit,
+    currentZoom: Float,
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
@@ -470,7 +475,11 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
 }
 
 @Composable
-private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, onShare: () -> Unit) {
+private fun BottomControlBar(
+    metadata: ImageMetadata?,
+    onDownload: () -> Unit,
+    onShare: () -> Unit,
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -545,7 +554,10 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
 }
 
 @Composable
-private fun MetadataChip(icon: ImageVector, text: String) {
+private fun MetadataChip(
+    icon: ImageVector,
+    text: String,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
@@ -565,7 +577,11 @@ private fun MetadataChip(icon: ImageVector, text: String) {
 }
 
 @Composable
-private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
+private fun ActionChip(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
@@ -601,7 +617,11 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
  *
  * @return Result message to display to the user
  */
-fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): String {
+fun saveImageToGallery(
+    context: Context,
+    imageData: ByteArray,
+    format: String,
+): String {
     return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {
@@ -669,7 +689,11 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
  *
  * @return Error message if sharing failed, null on success (share sheet handles success)
  */
-fun shareImage(context: Context, imageData: ByteArray, format: String): String? {
+fun shareImage(
+    context: Context,
+    imageData: ByteArray,
+    format: String,
+): String? {
     return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {

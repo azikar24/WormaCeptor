@@ -100,7 +100,10 @@ private data class KeyStoreEntry(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun SecureStorageTestScreen(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -441,7 +444,10 @@ fun SecureStorageTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EncryptedPrefsSection(entries: List<EncryptedPrefEntry>, modifier: Modifier = Modifier) {
+private fun EncryptedPrefsSection(
+    entries: List<EncryptedPrefEntry>,
+    modifier: Modifier = Modifier,
+) {
     if (entries.isEmpty()) {
         EmptyState(
             icon = Icons.Default.Lock,
@@ -465,7 +471,10 @@ private fun EncryptedPrefsSection(entries: List<EncryptedPrefEntry>, modifier: M
 }
 
 @Composable
-private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier) {
+private fun EncryptedPrefItem(
+    entry: EncryptedPrefEntry,
+    modifier: Modifier = Modifier,
+) {
     var isValueVisible by remember { mutableStateOf(false) }
 
     Card(
@@ -529,7 +538,10 @@ private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Mo
 }
 
 @Composable
-private fun KeyStoreSection(entries: List<KeyStoreEntry>, modifier: Modifier = Modifier) {
+private fun KeyStoreSection(
+    entries: List<KeyStoreEntry>,
+    modifier: Modifier = Modifier,
+) {
     if (entries.isEmpty()) {
         EmptyState(
             icon = Icons.Default.Key,
@@ -553,7 +565,10 @@ private fun KeyStoreSection(entries: List<KeyStoreEntry>, modifier: Modifier = M
 }
 
 @Composable
-private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier) {
+private fun KeyStoreItem(
+    entry: KeyStoreEntry,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -629,7 +644,12 @@ private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EmptyState(icon: ImageVector, title: String, subtitle: String, modifier: Modifier = Modifier) {
+private fun EmptyState(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -749,7 +769,10 @@ private fun SpeedDialItem(
 }
 
 @Composable
-private fun AddSecureEntryDialog(onDismiss: () -> Unit, onAdd: (key: String, value: String) -> Unit) {
+private fun AddSecureEntryDialog(
+    onDismiss: () -> Unit,
+    onAdd: (key: String, value: String) -> Unit,
+) {
     var key by remember { mutableStateOf("") }
     var value by remember { mutableStateOf("") }
 

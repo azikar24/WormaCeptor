@@ -24,7 +24,10 @@ class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
         this.mListener = listener
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+    override fun onAccuracyChanged(
+        sensor: Sensor,
+        accuracy: Int,
+    ) {
         // ignore
     }
 
@@ -63,7 +66,10 @@ class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
         private const val SHAKE_SLOP_TIME_MS = 500
         private const val SHAKE_COUNT_RESET_TIME_MS = 3000
 
-        fun start(activity: ComponentActivity, onShake: () -> Unit) {
+        fun start(
+            activity: ComponentActivity,
+            onShake: () -> Unit,
+        ) {
             val sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) ?: return
 

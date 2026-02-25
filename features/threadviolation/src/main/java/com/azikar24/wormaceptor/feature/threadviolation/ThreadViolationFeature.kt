@@ -52,7 +52,10 @@ class ThreadViolationViewModelFactory(
  * Main composable for the Thread Violation Detection feature.
  */
 @Composable
-fun ThreadViolationMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun ThreadViolationMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: ThreadViolationEngine = koinInject()
     val factory = remember(engine) { ThreadViolationFeature.createViewModelFactory(engine) }
     val viewModel: ThreadViolationViewModel = viewModel(factory = factory)

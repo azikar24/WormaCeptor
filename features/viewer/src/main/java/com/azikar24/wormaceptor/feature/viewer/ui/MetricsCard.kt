@@ -53,7 +53,10 @@ import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modifier = Modifier) {
+fun MetricsCard(
+    transactions: ImmutableList<TransactionSummary>,
+    modifier: Modifier = Modifier,
+) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,

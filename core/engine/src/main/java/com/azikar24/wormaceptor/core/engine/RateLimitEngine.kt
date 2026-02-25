@@ -97,7 +97,12 @@ class RateLimitEngine {
      * @param latencyMs Additional latency in milliseconds
      * @param packetLossPercent Packet loss percentage (0-100)
      */
-    fun setCustomConfig(downloadSpeedKbps: Long, uploadSpeedKbps: Long, latencyMs: Long, packetLossPercent: Float) {
+    fun setCustomConfig(
+        downloadSpeedKbps: Long,
+        uploadSpeedKbps: Long,
+        latencyMs: Long,
+        packetLossPercent: Float,
+    ) {
         _config.value = RateLimitConfig(
             enabled = true,
             downloadSpeedKbps = downloadSpeedKbps,
@@ -217,7 +222,10 @@ class RateLimitEngine {
      * @param speedKbps Speed limit in kilobits per second
      * @return Delay in milliseconds
      */
-    private fun calculateThrottleDelay(bytes: Long, speedKbps: Long): Long {
+    private fun calculateThrottleDelay(
+        bytes: Long,
+        speedKbps: Long,
+    ): Long {
         if (speedKbps <= 0) return 0
 
         // Convert Kbps to bytes per second: Kbps * 1000 / 8
@@ -259,7 +267,10 @@ class RateLimitEngine {
         private var bytesRead = 0L
         private var startTime = System.currentTimeMillis()
 
-        override fun read(sink: Buffer, byteCount: Long): Long {
+        override fun read(
+            sink: Buffer,
+            byteCount: Long,
+        ): Long {
             val bytesReadNow = super.read(sink, byteCount)
 
             if (bytesReadNow > 0) {

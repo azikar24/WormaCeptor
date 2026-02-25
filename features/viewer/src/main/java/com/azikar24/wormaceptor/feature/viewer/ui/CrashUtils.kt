@@ -36,7 +36,10 @@ object CrashUtils {
     /**
      * Parses a stack trace string into individual frames.
      */
-    fun parseStackTrace(stackTrace: String, appPackage: String = "com.azikar24.wormaceptor"): List<StackFrame> {
+    fun parseStackTrace(
+        stackTrace: String,
+        appPackage: String = "com.azikar24.wormaceptor",
+    ): List<StackFrame> {
         return stackTrace.lines()
             .filter { it.isNotBlank() }
             .mapNotNull { line ->
@@ -51,7 +54,10 @@ object CrashUtils {
      * - at com.example.MyClass$inner.method(MyClass.kt:123)
      * - at java.lang.Thread.run(Thread.java:764)
      */
-    private fun parseStackFrame(line: String, appPackage: String): StackFrame {
+    private fun parseStackFrame(
+        line: String,
+        appPackage: String,
+    ): StackFrame {
         val trimmed = line.trim()
 
         // Match pattern: at package.Class.method(File.kt:line)

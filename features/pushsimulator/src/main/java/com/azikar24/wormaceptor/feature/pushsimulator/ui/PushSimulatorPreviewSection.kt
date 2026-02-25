@@ -228,7 +228,10 @@ internal fun NotificationPreview(
 }
 
 @Composable
-internal fun PriorityIndicator(priority: NotificationPriority, color: Color) {
+internal fun PriorityIndicator(
+    priority: NotificationPriority,
+    color: Color,
+) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
         color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),

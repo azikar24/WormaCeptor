@@ -207,7 +207,11 @@ fun DatabaseListScreen(
 }
 
 @Composable
-private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun DatabaseListItem(
+    database: DatabaseInfo,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     ListItem(
         modifier = modifier.clickable(onClick = onClick),
         headlineContent = {

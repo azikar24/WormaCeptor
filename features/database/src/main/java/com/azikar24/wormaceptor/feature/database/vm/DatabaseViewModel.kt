@@ -284,7 +284,10 @@ class DatabaseViewModel(
         }
     }
 
-    private fun setPrefilledQuery(tableName: String, queryType: String) {
+    private fun setPrefilledQuery(
+        tableName: String,
+        queryType: String,
+    ) {
         val query = when (queryType) {
             "select" -> "SELECT * FROM `$tableName` LIMIT 10"
             "count" -> "SELECT COUNT(*) FROM `$tableName`"

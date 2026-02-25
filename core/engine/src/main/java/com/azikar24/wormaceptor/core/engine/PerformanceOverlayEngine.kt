@@ -74,7 +74,10 @@ class PerformanceOverlayEngine(
     private var applicationRef: WeakReference<Application>? = null
     private var startedActivityCount = 1
     private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) = Unit
         override fun onActivityStarted(activity: Activity) {
             startedActivityCount++
             if (startedActivityCount == 1) {
@@ -97,7 +100,10 @@ class PerformanceOverlayEngine(
             }
         }
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) = Unit
         override fun onActivityDestroyed(activity: Activity) = Unit
     }
     private var isLifecycleCallbacksRegistered = false
@@ -442,7 +448,10 @@ class PerformanceOverlayEngine(
     /**
      * Sets the overlay enabled state.
      */
-    fun setOverlayEnabled(enabled: Boolean, activity: Activity? = null) {
+    fun setOverlayEnabled(
+        enabled: Boolean,
+        activity: Activity? = null,
+    ) {
         if (_state.value.isOverlayEnabled == enabled) return
 
         _state.value = _state.value.copy(isOverlayEnabled = enabled)
@@ -466,7 +475,11 @@ class PerformanceOverlayEngine(
      * @param memory Enable Memory metric
      * @param cpu Enable CPU metric
      */
-    fun enableMetricForMonitorScreen(fps: Boolean = false, memory: Boolean = false, cpu: Boolean = false) {
+    fun enableMetricForMonitorScreen(
+        fps: Boolean = false,
+        memory: Boolean = false,
+        cpu: Boolean = false,
+    ) {
         // Only enable metrics if the overlay master toggle is enabled
         if (!_state.value.isOverlayEnabled) return
 
@@ -620,7 +633,10 @@ class PerformanceOverlayEngine(
         WindowManager.LayoutParams.TYPE_PHONE
     }
 
-    private fun createOverlayLayoutParams(activity: Activity, windowType: Int): WindowManager.LayoutParams {
+    private fun createOverlayLayoutParams(
+        activity: Activity,
+        windowType: Int,
+    ): WindowManager.LayoutParams {
         val displayMetrics = activity.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         val screenHeight = displayMetrics.heightPixels
@@ -819,7 +835,10 @@ class PerformanceOverlayEngine(
      * Default overlay content using PerformanceOverlayContent composable.
      */
     @Composable
-    private fun DefaultOverlayContent(state: PerformanceOverlayState, callbacks: OverlayCallbacks) {
+    private fun DefaultOverlayContent(
+        state: PerformanceOverlayState,
+        callbacks: OverlayCallbacks,
+    ) {
         PerformanceOverlayContent(
             state = state,
             callbacks = callbacks,

@@ -168,7 +168,10 @@ class WormaCeptorWebSocket private constructor(
          * @param url The WebSocket URL (for identification in the UI)
          * @return A [WormaCeptorWebSocket] containing the wrapped listener
          */
-        fun wrap(delegate: WebSocketListener, url: String): WormaCeptorWebSocket {
+        fun wrap(
+            delegate: WebSocketListener,
+            url: String,
+        ): WormaCeptorWebSocket {
             return WormaCeptorWebSocket(delegate, url)
         }
 

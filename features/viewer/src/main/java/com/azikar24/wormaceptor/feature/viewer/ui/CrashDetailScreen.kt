@@ -67,7 +67,11 @@ import java.util.*
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashDetailPagerScreen(crashes: List<Crash>, initialCrashIndex: Int, onBack: () -> Unit) {
+fun CrashDetailPagerScreen(
+    crashes: List<Crash>,
+    initialCrashIndex: Int,
+    onBack: () -> Unit,
+) {
     val view = LocalView.current
 
     // Current crash index state with direction tracking
@@ -148,7 +152,10 @@ fun CrashDetailPagerScreen(crashes: List<Crash>, initialCrashIndex: Int, onBack:
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashDetailScreen(crash: Crash, onBack: () -> Unit) {
+fun CrashDetailScreen(
+    crash: Crash,
+    onBack: () -> Unit,
+) {
     CrashDetailContent(
         crash = crash,
         onBack = onBack,
@@ -277,7 +284,10 @@ private fun SwipeableTopBar(
 }
 
 @Composable
-private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
+private fun ExceptionInfoCard(
+    crash: Crash,
+    dateFormat: SimpleDateFormat,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
@@ -357,7 +367,10 @@ private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat) {
 }
 
 @Composable
-private fun MessageCard(message: String, context: Context) {
+private fun MessageCard(
+    message: String,
+    context: Context,
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
@@ -403,7 +416,11 @@ private fun MessageCard(message: String, context: Context) {
 }
 
 @Composable
-private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStackTrace: String, context: Context) {
+private fun StackTraceSection(
+    stackFrames: List<CrashUtils.StackFrame>,
+    fullStackTrace: String,
+    context: Context,
+) {
     var showAllFrames by remember { mutableStateOf(false) }
 
     Card(
@@ -518,7 +535,10 @@ private fun StackTraceSection(stackFrames: List<CrashUtils.StackFrame>, fullStac
 }
 
 @Composable
-private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean) {
+private fun StackFrameItem(
+    frame: CrashUtils.StackFrame,
+    isHighlighted: Boolean,
+) {
     val backgroundColor = if (isHighlighted) {
         MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
     } else {
@@ -591,7 +611,10 @@ private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)
     }
 }
 
-private fun shareCrash(context: Context, crash: Crash) {
+private fun shareCrash(
+    context: Context,
+    crash: Crash,
+) {
     val text = buildString {
         appendLine("WormaCeptor Crash Report")
         appendLine("=======================")

@@ -17,7 +17,10 @@ import org.koin.compose.koinInject
  * Main composable for the Rate Limiter feature.
  */
 @Composable
-fun RateLimiter(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun RateLimiter(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: RateLimitEngine = koinInject()
     val factory = remember(engine) { RateLimitFeature.createViewModelFactory(engine) }
     val viewModel: RateLimitViewModel = viewModel(factory = factory)

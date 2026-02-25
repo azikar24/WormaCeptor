@@ -291,7 +291,11 @@ object WormaCeptorApi {
     }
 
     private class NoOpProvider : ServiceProvider {
-        override fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean) {}
+        override fun init(
+            context: Context,
+            logCrashes: Boolean,
+            leakNotifications: Boolean,
+        ) {}
         override fun startTransaction(
             url: String,
             method: String,

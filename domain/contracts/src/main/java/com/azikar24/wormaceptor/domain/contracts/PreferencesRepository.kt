@@ -31,7 +31,10 @@ interface PreferencesRepository {
      * @param key The preference key
      * @return The preference value, or null if not found
      */
-    suspend fun getPreference(fileName: String, key: String): PreferenceValue?
+    suspend fun getPreference(
+        fileName: String,
+        key: String,
+    ): PreferenceValue?
 
     /**
      * Sets a preference value. Creates or updates the key.
@@ -40,7 +43,11 @@ interface PreferencesRepository {
      * @param key The preference key
      * @param value The new value to set
      */
-    suspend fun setPreference(fileName: String, key: String, value: PreferenceValue)
+    suspend fun setPreference(
+        fileName: String,
+        key: String,
+        value: PreferenceValue,
+    )
 
     /**
      * Deletes a specific preference key from a file.
@@ -48,7 +55,10 @@ interface PreferencesRepository {
      * @param fileName The name of the SharedPreferences file
      * @param key The preference key to delete
      */
-    suspend fun deletePreference(fileName: String, key: String)
+    suspend fun deletePreference(
+        fileName: String,
+        key: String,
+    )
 
     /**
      * Clears all preferences from a file.

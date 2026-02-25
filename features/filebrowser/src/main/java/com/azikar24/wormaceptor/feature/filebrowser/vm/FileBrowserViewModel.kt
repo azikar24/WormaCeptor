@@ -275,7 +275,10 @@ class FileBrowserViewModel(
         }
     }
 
-    private fun filterFiles(files: List<FileEntry>, query: String): List<FileEntry> {
+    private fun filterFiles(
+        files: List<FileEntry>,
+        query: String,
+    ): List<FileEntry> {
         return if (query.isBlank()) {
             files
         } else {
@@ -283,7 +286,10 @@ class FileBrowserViewModel(
         }
     }
 
-    private fun applySorting(files: List<FileEntry>, sortMode: SortMode): List<FileEntry> {
+    private fun applySorting(
+        files: List<FileEntry>,
+        sortMode: SortMode,
+    ): List<FileEntry> {
         return when (sortMode) {
             SortMode.NAME -> files.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
             SortMode.SIZE -> files.sortedWith(compareBy({ !it.isDirectory }, { -it.sizeBytes }))

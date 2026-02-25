@@ -49,7 +49,10 @@ class MemoryViewModelFactory(
  * Displays real-time memory usage with charts and controls.
  */
 @Composable
-fun MemoryMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun MemoryMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: MemoryMonitorEngine = koinInject()
     val performanceOverlayEngine: PerformanceOverlayEngine = koinInject()
     LaunchedEffect(Unit) {

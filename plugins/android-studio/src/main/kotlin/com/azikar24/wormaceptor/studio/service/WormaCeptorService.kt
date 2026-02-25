@@ -49,7 +49,10 @@ interface WormaCeptorService {
     /**
      * Get details of a specific transaction.
      */
-    fun getTransactionDetail(id: String, callback: (TransactionDetail?) -> Unit)
+    fun getTransactionDetail(
+        id: String,
+        callback: (TransactionDetail?) -> Unit,
+    )
 
     /**
      * Open the WormaCeptor viewer on the device.
@@ -82,6 +85,9 @@ interface WormaCeptorService {
     interface StateListener {
         fun onDeviceChanged(serial: String?)
         fun onTransactionsUpdated(transactions: List<TransactionSummary>)
-        fun onCaptureStatusChanged(active: Boolean, count: Int)
+        fun onCaptureStatusChanged(
+            active: Boolean,
+            count: Int,
+        )
     }
 }

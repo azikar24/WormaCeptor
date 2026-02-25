@@ -139,7 +139,11 @@ fun LocationMapCard(
 }
 
 @Composable
-private fun LegendItem(color: androidx.compose.ui.graphics.Color, label: String, modifier: Modifier = Modifier) {
+private fun LegendItem(
+    color: androidx.compose.ui.graphics.Color,
+    label: String,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,

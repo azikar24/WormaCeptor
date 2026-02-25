@@ -23,7 +23,11 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param modifier Modifier for the root composable
  */
 @Composable
-fun WormaCeptorChartLegendItem(label: String, color: Color, modifier: Modifier = Modifier) {
+fun WormaCeptorChartLegendItem(
+    label: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,

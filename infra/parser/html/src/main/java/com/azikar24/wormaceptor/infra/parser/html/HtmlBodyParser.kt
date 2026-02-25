@@ -40,7 +40,10 @@ class HtmlBodyParser(
         "link", "meta", "param", "source", "track", "wbr",
     )
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type first
         if (contentType != null) {
             val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
@@ -208,7 +211,10 @@ class HtmlBodyParser(
         return result.toString().trim()
     }
 
-    private fun findTagEnd(html: String, start: Int): Int {
+    private fun findTagEnd(
+        html: String,
+        start: Int,
+    ): Int {
         var i = start + 1
         var inQuote = false
         var quoteChar = ' '

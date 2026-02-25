@@ -29,7 +29,10 @@ import java.net.URLDecoder
  * Parses key-value pairs and displays them in a structured table format.
  */
 @Composable
-fun FormDataView(formData: String, modifier: Modifier = Modifier) {
+fun FormDataView(
+    formData: String,
+    modifier: Modifier = Modifier,
+) {
     val parsedData = remember(formData) {
         parseFormData(formData)
     }
@@ -109,7 +112,11 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun FormDataRow(key: String, value: String, isEven: Boolean) {
+private fun FormDataRow(
+    key: String,
+    value: String,
+    isEven: Boolean,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

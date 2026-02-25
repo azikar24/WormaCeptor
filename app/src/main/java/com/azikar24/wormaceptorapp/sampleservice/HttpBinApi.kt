@@ -83,7 +83,10 @@ interface HttpBinApi {
     fun cookieSet(@Query("k1") value: String?): Call<Void>
 
     @GET("/basic-auth/{user}/{passwd}")
-    fun basicAuth(@Path("user") user: String?, @Path("passwd") passwd: String?): Call<Void>
+    fun basicAuth(
+        @Path("user") user: String?,
+        @Path("passwd") passwd: String?,
+    ): Call<Void>
 
     @GET("/drip")
     fun drip(

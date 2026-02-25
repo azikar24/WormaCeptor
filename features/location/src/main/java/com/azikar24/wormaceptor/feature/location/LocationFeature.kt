@@ -66,7 +66,10 @@ class LocationViewModelFactory(
  * Call this from your navigation host with route "location".
  */
 @Composable
-fun LocationSimulator(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun LocationSimulator(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: LocationSimulatorEngine = koinInject()
     val repository: LocationSimulatorRepository = koinInject()
     val context = LocalContext.current

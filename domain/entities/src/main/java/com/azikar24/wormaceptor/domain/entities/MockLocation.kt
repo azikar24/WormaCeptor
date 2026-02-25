@@ -51,7 +51,11 @@ data class MockLocation(
         /**
          * Creates a MockLocation from latitude and longitude with default values.
          */
-        fun from(latitude: Double, longitude: Double, name: String? = null): MockLocation {
+        fun from(
+            latitude: Double,
+            longitude: Double,
+            name: String? = null,
+        ): MockLocation {
             return MockLocation(
                 latitude = latitude,
                 longitude = longitude,

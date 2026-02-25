@@ -92,7 +92,11 @@ fun WormaCeptorToolTile(
 }
 
 @Composable
-private fun TileContent(label: String, icon: ImageVector, accentColor: Color) {
+private fun TileContent(
+    label: String,
+    icon: ImageVector,
+    accentColor: Color,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()

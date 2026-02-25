@@ -84,7 +84,11 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
+fun LogsScreen(
+    viewModel: LogsViewModel,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+) {
     val logs by viewModel.logs.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedLevels by viewModel.selectedLevels.collectAsState()
@@ -433,7 +437,10 @@ private fun LogList(
 }
 
 @Composable
-private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
+private fun LogEntryItem(
+    entry: LogEntry,
+    modifier: Modifier = Modifier,
+) {
     val colors = logLevelColors()
     val levelColor = colors.forLevel(entry.level)
     val backgroundColor = colors.backgroundForLevel(entry.level)

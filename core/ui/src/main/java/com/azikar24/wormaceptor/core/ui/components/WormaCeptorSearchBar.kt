@@ -81,7 +81,11 @@ fun WormaCeptorSearchBar(
 }
 
 @Composable
-private fun ClearButton(visible: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun ClearButton(
+    visible: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(),

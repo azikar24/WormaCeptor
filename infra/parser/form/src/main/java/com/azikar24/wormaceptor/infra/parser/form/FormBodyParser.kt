@@ -23,7 +23,10 @@ class FormBodyParser : BaseBodyParser() {
 
     override val defaultContentType: ContentType = ContentType.FORM_DATA
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type first
         if (contentType != null) {
             val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()

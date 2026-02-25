@@ -231,7 +231,11 @@ class SecureStorageEngine(
     /**
      * Reads regular SharedPreferences.
      */
-    private fun readRegularPrefs(prefsName: String, file: File, entries: MutableList<SecureStorageEntry>) {
+    private fun readRegularPrefs(
+        prefsName: String,
+        file: File,
+        entries: MutableList<SecureStorageEntry>,
+    ) {
         try {
             val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             addPrefsEntries(prefs, prefsName, file, isEncrypted = false, entries)
@@ -348,7 +352,10 @@ class SecureStorageEngine(
     /**
      * Builds a safe info string about a KeyStore entry without exposing sensitive data.
      */
-    private fun buildKeyInfo(keyStore: KeyStore, alias: String): String {
+    private fun buildKeyInfo(
+        keyStore: KeyStore,
+        alias: String,
+    ): String {
         val info = StringBuilder()
 
         try {
@@ -410,7 +417,10 @@ class SecureStorageEngine(
     /**
      * Recursively scans a directory for DataStore files.
      */
-    private fun scanDataStoreDirectory(directory: File, entries: MutableList<SecureStorageEntry>) {
+    private fun scanDataStoreDirectory(
+        directory: File,
+        entries: MutableList<SecureStorageEntry>,
+    ) {
         directory.listFiles()?.forEach { file ->
             if (file.isDirectory) {
                 scanDataStoreDirectory(file, entries)
@@ -440,7 +450,10 @@ class SecureStorageEngine(
     /**
      * Builds info about a DataStore file.
      */
-    private fun buildDataStoreInfo(file: File, isPreferences: Boolean): String {
+    private fun buildDataStoreInfo(
+        file: File,
+        isPreferences: Boolean,
+    ): String {
         val info = StringBuilder()
         info.append("Type: ${if (isPreferences) "Preferences DataStore" else "Proto DataStore"}")
         info.append("\nSize: ${formatFileSize(file.length())}")

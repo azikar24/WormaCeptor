@@ -74,7 +74,11 @@ interface ServiceProvider {
      * @param logCrashes Whether to install an uncaught exception handler for crash logging
      * @param leakNotifications Whether to show notifications when memory leaks are detected
      */
-    fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean = true)
+    fun init(
+        context: Context,
+        logCrashes: Boolean,
+        leakNotifications: Boolean = true,
+    )
 
     /**
      * Records the start of an HTTP transaction (request phase).

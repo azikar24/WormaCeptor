@@ -65,7 +65,11 @@ fun XmlTreeView(
 }
 
 @Composable
-private fun XmlLineView(line: String, lineNumber: Int, colors: ComposeSyntaxColors) {
+private fun XmlLineView(
+    line: String,
+    lineNumber: Int,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = 1.dp),
         verticalAlignment = Alignment.Top,
@@ -180,7 +184,10 @@ private fun formatXml(xml: String): List<String> {
  * Applies syntax highlighting to an XML line.
  */
 @Composable
-private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors) = buildAnnotatedString {
+private fun highlightXmlLine(
+    line: String,
+    colors: ComposeSyntaxColors,
+) = buildAnnotatedString {
     var i = 0
     while (i < line.length) {
         when {
@@ -259,7 +266,10 @@ private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors) = buildA
  * Highlights a single XML tag with attributes.
  */
 @Composable
-private fun highlightXmlTag(tag: String, colors: ComposeSyntaxColors) = buildAnnotatedString {
+private fun highlightXmlTag(
+    tag: String,
+    colors: ComposeSyntaxColors,
+) = buildAnnotatedString {
     withStyle(SpanStyle(color = colors.punctuation)) {
         append("<")
     }
@@ -292,7 +302,10 @@ private fun highlightXmlTag(tag: String, colors: ComposeSyntaxColors) = buildAnn
  * Parses and highlights XML attributes.
  */
 @Composable
-private fun highlightAttributes(attributes: String, colors: ComposeSyntaxColors): List<CharSequence> {
+private fun highlightAttributes(
+    attributes: String,
+    colors: ComposeSyntaxColors,
+): List<CharSequence> {
     val result = mutableListOf<CharSequence>()
     val attrRegex = Regex("""(\s*)(\w+(?::\w+)?)\s*=\s*("[^"]*"|'[^']*')""")
 

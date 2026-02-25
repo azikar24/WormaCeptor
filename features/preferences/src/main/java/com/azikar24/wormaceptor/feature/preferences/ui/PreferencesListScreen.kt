@@ -167,7 +167,11 @@ fun PreferencesListScreen(
 }
 
 @Composable
-private fun PreferenceFileItem(file: PreferenceFile, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun PreferenceFileItem(
+    file: PreferenceFile,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     WormaCeptorContainer(
         onClick = onClick,
         style = ContainerStyle.Outlined,

@@ -481,7 +481,13 @@ fun ImagePreviewCard(
 }
 
 @Composable
-private fun MetadataItem(icon: ImageVector, label: String, value: String, tint: Color, modifier: Modifier = Modifier) {
+private fun MetadataItem(
+    icon: ImageVector,
+    label: String,
+    value: String,
+    tint: Color,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,

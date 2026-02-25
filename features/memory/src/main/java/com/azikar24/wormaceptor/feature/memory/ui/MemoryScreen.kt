@@ -606,7 +606,10 @@ private fun NativeHeapCard(
 }
 
 @Composable
-private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) {
+private fun ActionButtons(
+    onForceGc: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,

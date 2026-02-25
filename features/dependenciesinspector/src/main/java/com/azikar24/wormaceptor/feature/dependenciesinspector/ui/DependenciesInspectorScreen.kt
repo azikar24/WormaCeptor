@@ -252,7 +252,11 @@ fun DependenciesInspectorScreen(
 }
 
 @Composable
-private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
+private fun SummarySection(
+    summary: DependencySummary,
+    colors: DependenciesInspectorColors,
+    modifier: Modifier,
+) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
             count = summary.totalDetected.toString(),
@@ -339,7 +343,11 @@ private fun FilterSection(
 }
 
 @Composable
-private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colors: DependenciesInspectorColors) {
+private fun DependencyCard(
+    dependency: DependencyInfo,
+    onClick: () -> Unit,
+    colors: DependenciesInspectorColors,
+) {
     val categoryColor = colors.colorForCategory(dependency.category)
     val hasVersion = dependency.version != null
 
@@ -590,7 +598,11 @@ private fun DependencyDetailContent(
 }
 
 @Composable
-private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: DependenciesInspectorColors) {
+private fun DetailSection(
+    title: String,
+    items: List<Pair<String, String>>,
+    colors: DependenciesInspectorColors,
+) {
     if (items.isEmpty()) return
 
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {

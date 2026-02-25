@@ -298,7 +298,10 @@ class LocationSimulatorEngine(private val context: Context) {
         isProviderAdded = false
     }
 
-    private fun createAndroidLocation(mockLocation: MockLocation, provider: String): Location {
+    private fun createAndroidLocation(
+        mockLocation: MockLocation,
+        provider: String,
+    ): Location {
         return Location(provider).apply {
             latitude = mockLocation.latitude
             longitude = mockLocation.longitude

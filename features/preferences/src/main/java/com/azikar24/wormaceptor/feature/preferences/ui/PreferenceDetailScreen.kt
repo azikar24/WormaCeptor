@@ -376,7 +376,10 @@ private fun PreferenceItemContent(
 }
 
 @Composable
-private fun PreferenceItemRow(item: PreferenceItem, typeColor: Color) {
+private fun PreferenceItemRow(
+    item: PreferenceItem,
+    typeColor: Color,
+) {
     Row(
         modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,

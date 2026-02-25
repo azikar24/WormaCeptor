@@ -54,7 +54,11 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     protected abstract fun createDependencies(context: Context): StorageDependencies
     protected abstract fun getNotificationTitle(): String
 
-    override fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean) {
+    override fun init(
+        context: Context,
+        logCrashes: Boolean,
+        leakNotifications: Boolean,
+    ) {
         if (captureEngine != null) return
 
         // Initialize Koin for engine dependencies (WebSocketMonitorEngine, etc.)
@@ -105,7 +109,11 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         configureHighlighters()
     }
 
-    private fun configureLeakDetection(context: Context, leakRepository: LeakRepository, leakNotifications: Boolean) {
+    private fun configureLeakDetection(
+        context: Context,
+        leakRepository: LeakRepository,
+        leakNotifications: Boolean,
+    ) {
         try {
             val leakEngine: LeakDetectionEngine = get(LeakDetectionEngine::class.java)
             val notificationHelper = if (leakNotifications) {

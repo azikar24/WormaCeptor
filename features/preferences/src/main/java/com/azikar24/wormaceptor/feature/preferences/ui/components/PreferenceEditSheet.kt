@@ -388,7 +388,10 @@ private fun EditSheetValueInput(
 }
 
 @Composable
-private fun StringValueInput(value: String, onValueChange: (String) -> Unit) {
+private fun StringValueInput(
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -424,7 +427,10 @@ private fun NumericValueInput(
 }
 
 @Composable
-private fun BooleanValueInput(value: Boolean, onValueChange: (Boolean) -> Unit) {
+private fun BooleanValueInput(
+    value: Boolean,
+    onValueChange: (Boolean) -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -481,7 +487,10 @@ private fun StringSetValueInput(
 }
 
 @Composable
-private fun StringSetChips(values: ImmutableList<String>, onRemoveItem: (Int) -> Unit) {
+private fun StringSetChips(
+    values: ImmutableList<String>,
+    onRemoveItem: (Int) -> Unit,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)) {
         values.forEachIndexed { index, value ->
             InputChip(
@@ -506,7 +515,11 @@ private fun StringSetChips(values: ImmutableList<String>, onRemoveItem: (Int) ->
 }
 
 @Composable
-private fun StringSetAddRow(newItem: String, onNewItemChange: (String) -> Unit, onAddItem: () -> Unit) {
+private fun StringSetAddRow(
+    newItem: String,
+    onNewItemChange: (String) -> Unit,
+    onAddItem: () -> Unit,
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         OutlinedTextField(
             value = newItem,

@@ -105,14 +105,16 @@ fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): ComposeSyntaxColor
 }
 
 /** Builds an [AnnotatedString] with syntax-colored spans applied over the raw [code]. */
-fun ComposeSyntaxColors.buildHighlightedString(code: String, tokens: List<Token>): AnnotatedString =
-    buildAnnotatedString {
-        append(code)
-        tokens.forEach { token ->
-            addStyle(
-                SpanStyle(color = forType(token.type)),
-                start = token.start,
-                end = token.end,
-            )
-        }
+fun ComposeSyntaxColors.buildHighlightedString(
+    code: String,
+    tokens: List<Token>,
+): AnnotatedString = buildAnnotatedString {
+    append(code)
+    tokens.forEach { token ->
+        addStyle(
+            SpanStyle(color = forType(token.type)),
+            start = token.start,
+            end = token.end,
+        )
     }
+}

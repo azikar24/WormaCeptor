@@ -113,7 +113,10 @@ class DependenciesInspectorEngine(
     /**
      * Checks if a library is used internally by WormaCeptor.
      */
-    private fun isWormaCeptorInternal(name: String, packageName: String): Boolean {
+    private fun isWormaCeptorInternal(
+        name: String,
+        packageName: String,
+    ): Boolean {
         return name in WORMACEPTOR_INTERNAL_LIBRARIES ||
             WORMACEPTOR_INTERNAL_PACKAGES.any { packageName.startsWith(it) }
     }
@@ -121,7 +124,10 @@ class DependenciesInspectorEngine(
     /**
      * Checks if a package is already covered by a known library.
      */
-    private fun isKnownPackageCovered(packageName: String, knownPackages: Set<String>): Boolean {
+    private fun isKnownPackageCovered(
+        packageName: String,
+        knownPackages: Set<String>,
+    ): Boolean {
         return knownPackages.any { known ->
             packageName.startsWith("$known.") || packageName == known
         }
@@ -514,7 +520,10 @@ class DependenciesInspectorEngine(
     /**
      * Tries to get a static field value from a class.
      */
-    private fun tryGetStaticField(className: String, fieldName: String): String? {
+    private fun tryGetStaticField(
+        className: String,
+        fieldName: String,
+    ): String? {
         return try {
             val clazz = Class.forName(className)
             val field = clazz.getDeclaredField(fieldName)

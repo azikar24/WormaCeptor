@@ -58,7 +58,10 @@ class WebSocketMonitorEngine(
      * @param url The WebSocket URL for identification
      * @return A wrapped listener that monitors all events
      */
-    fun wrap(delegate: WebSocketListener, url: String): MonitoringWebSocketListener {
+    fun wrap(
+        delegate: WebSocketListener,
+        url: String,
+    ): MonitoringWebSocketListener {
         return MonitoringWebSocketListener(delegate, url)
     }
 
@@ -124,7 +127,10 @@ class WebSocketMonitorEngine(
         }
     }
 
-    private fun registerConnection(webSocket: WebSocket, url: String): Long {
+    private fun registerConnection(
+        webSocket: WebSocket,
+        url: String,
+    ): Long {
         val connectionId = connectionIdGenerator.incrementAndGet()
         synchronized(connectionMapLock) {
             connectionMap[webSocket] = connectionId
@@ -151,7 +157,10 @@ class WebSocketMonitorEngine(
         }
     }
 
-    private fun updateConnection(connectionId: Long, updater: (WebSocketConnection) -> WebSocketConnection) {
+    private fun updateConnection(
+        connectionId: Long,
+        updater: (WebSocketConnection) -> WebSocketConnection,
+    ) {
         synchronized(bufferLock) {
             val index = connectionBuffer.indexOfFirst { it.id == connectionId }
             if (index >= 0) {
@@ -181,7 +190,10 @@ class WebSocketMonitorEngine(
 
         private var connectionId: Long = -1
 
-        override fun onOpen(webSocket: WebSocket, response: Response) {
+        override fun onOpen(
+            webSocket: WebSocket,
+            response: Response,
+        ) {
             connectionId = registerConnection(webSocket, url)
             updateConnection(connectionId) { conn ->
                 conn.copy(
@@ -192,7 +204,10 @@ class WebSocketMonitorEngine(
             delegate?.onOpen(webSocket, response)
         }
 
-        override fun onMessage(webSocket: WebSocket, text: String) {
+        override fun onMessage(
+            webSocket: WebSocket,
+            text: String,
+        ) {
             val connId = getConnectionId(webSocket) ?: connectionId
             addMessage(
                 WebSocketMessage(
@@ -208,7 +223,10 @@ class WebSocketMonitorEngine(
             delegate?.onMessage(webSocket, text)
         }
 
-        override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+        override fun onMessage(
+            webSocket: WebSocket,
+            bytes: ByteString,
+        ) {
             val connId = getConnectionId(webSocket) ?: connectionId
             addMessage(
                 WebSocketMessage(
@@ -224,7 +242,11 @@ class WebSocketMonitorEngine(
             delegate?.onMessage(webSocket, bytes)
         }
 
-        override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        override fun onClosing(
+            webSocket: WebSocket,
+            code: Int,
+            reason: String,
+        ) {
             val connId = getConnectionId(webSocket) ?: connectionId
             updateConnection(connId) { conn ->
                 conn.copy(
@@ -236,7 +258,11 @@ class WebSocketMonitorEngine(
             delegate?.onClosing(webSocket, code, reason)
         }
 
-        override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+        override fun onClosed(
+            webSocket: WebSocket,
+            code: Int,
+            reason: String,
+        ) {
             val connId = getConnectionId(webSocket) ?: connectionId
             updateConnection(connId) { conn ->
                 conn.copy(
@@ -252,7 +278,11 @@ class WebSocketMonitorEngine(
             delegate?.onClosed(webSocket, code, reason)
         }
 
-        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        override fun onFailure(
+            webSocket: WebSocket,
+            t: Throwable,
+            response: Response?,
+        ) {
             val connId = getConnectionId(webSocket) ?: connectionId
             updateConnection(connId) { conn ->
                 conn.copy(

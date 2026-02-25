@@ -78,7 +78,10 @@ object FileBrowserDesignSystem {
         val databaseColor = Color(0xFF9C27B0) // Purple
         val defaultColor = Color(0xFF78909C) // Blue Grey
 
-        fun getIcon(fileName: String, isDirectory: Boolean): ImageVector {
+        fun getIcon(
+            fileName: String,
+            isDirectory: Boolean,
+        ): ImageVector {
             if (isDirectory) return Icons.Default.Folder
 
             val extension = fileName.substringAfterLast('.', "").lowercase()
@@ -90,7 +93,10 @@ object FileBrowserDesignSystem {
             }
         }
 
-        fun getColor(fileName: String, isDirectory: Boolean): Color {
+        fun getColor(
+            fileName: String,
+            isDirectory: Boolean,
+        ): Color {
             if (isDirectory) return folderColor
 
             val extension = fileName.substringAfterLast('.', "").lowercase()

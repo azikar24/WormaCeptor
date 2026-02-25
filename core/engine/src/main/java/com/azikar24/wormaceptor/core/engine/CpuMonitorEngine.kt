@@ -302,7 +302,10 @@ class CpuMonitorEngine(
     /**
      * Calculates CPU usage percentage from the delta between two stat readings.
      */
-    private fun calculateUsagePercent(previous: CpuStats?, current: CpuStats?): Float {
+    private fun calculateUsagePercent(
+        previous: CpuStats?,
+        current: CpuStats?,
+    ): Float {
         if (previous == null || current == null) return 0f
 
         val prevTotal = previous.total

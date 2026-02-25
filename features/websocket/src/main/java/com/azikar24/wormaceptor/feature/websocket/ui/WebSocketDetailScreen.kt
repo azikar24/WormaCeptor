@@ -302,7 +302,11 @@ private fun DirectionFilterChips(
 }
 
 @Composable
-private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = Modifier) {
+private fun StatsBar(
+    totalCount: Int,
+    filteredCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,

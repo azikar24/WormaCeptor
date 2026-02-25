@@ -42,7 +42,10 @@ class ImageParser : BodyParser {
      */
     override val priority: Int = 150
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // First check content-type header
         if (contentType != null) {
             val normalizedType = contentType.lowercase().split(";").first().trim()

@@ -55,7 +55,10 @@ object LeakDetectionFeature {
      * @param engine The LeakDetectionEngine instance
      * @param application The application instance to monitor
      */
-    fun startMonitoring(engine: LeakDetectionEngine, application: Application) {
+    fun startMonitoring(
+        engine: LeakDetectionEngine,
+        application: Application,
+    ) {
         engine.start(application)
     }
 
@@ -76,7 +79,11 @@ object LeakDetectionFeature {
      * @param obj The object to watch
      * @param description Optional description for the watched object
      */
-    fun watchObject(engine: LeakDetectionEngine, obj: Any, description: String = "") {
+    fun watchObject(
+        engine: LeakDetectionEngine,
+        obj: Any,
+        description: String = "",
+    ) {
         engine.watchObject(obj, description)
     }
 }
@@ -101,7 +108,10 @@ class LeakDetectionViewModelFactory(
  * Displays detected memory leaks with filtering and detail capabilities.
  */
 @Composable
-fun LeakDetector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun LeakDetector(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: LeakDetectionEngine = koinInject()
     val factory = remember(engine) { LeakDetectionFeature.createViewModelFactory(engine) }
     val viewModel: LeakDetectionViewModel = viewModel(factory = factory)

@@ -103,7 +103,10 @@ class WormaCeptorContentProvider : ContentProvider() {
         return cursor
     }
 
-    private fun addTransactionToCursor(cursor: MatrixCursor, item: Any) {
+    private fun addTransactionToCursor(
+        cursor: MatrixCursor,
+        item: Any,
+    ) {
         try {
             // NetworkTransaction has nested request/response objects
             val request = getProperty(item, "request")
@@ -164,7 +167,10 @@ class WormaCeptorContentProvider : ContentProvider() {
         }
     }
 
-    private fun getProperty(obj: Any, name: String): Any? {
+    private fun getProperty(
+        obj: Any,
+        name: String,
+    ): Any? {
         return try {
             obj.javaClass.getDeclaredField(name).apply { isAccessible = true }.get(obj)
         } catch (e: NoSuchFieldException) {
@@ -187,9 +193,16 @@ class WormaCeptorContentProvider : ContentProvider() {
         else -> null
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? = null
+    override fun insert(
+        uri: Uri,
+        values: ContentValues?,
+    ): Uri? = null
 
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+    override fun delete(
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+    ): Int {
         if (uriMatcher.match(uri) != CODE_TRANSACTIONS) return 0
         val provider = WormaCeptorApi.provider ?: return 0
         return try {
@@ -204,10 +217,17 @@ class WormaCeptorContentProvider : ContentProvider() {
         }
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int =
-        0
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+    ): Int = 0
 
-    override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
+    override fun openFile(
+        uri: Uri,
+        mode: String,
+    ): ParcelFileDescriptor? {
         if (uriMatcher.match(uri) != CODE_TRANSACTION_DETAIL) return null
 
         // Extract transaction ID from URI: transaction/{id}/detail

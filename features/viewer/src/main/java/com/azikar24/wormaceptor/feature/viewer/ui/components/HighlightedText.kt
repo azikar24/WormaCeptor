@@ -172,7 +172,10 @@ private fun HighlightedTextWithLineNumbers(
  * Finds all match positions for a search query in text.
  * Uses indexOf for O(n) performance - faster than regex for simple substring matching.
  */
-private fun findAllMatches(text: String, searchQuery: String): List<IntRange> {
+private fun findAllMatches(
+    text: String,
+    searchQuery: String,
+): List<IntRange> {
     if (searchQuery.isEmpty()) return emptyList()
 
     val matches = ArrayList<IntRange>(64) // Pre-size for typical case

@@ -304,7 +304,10 @@ class PushTokenEngine(
         return metadata
     }
 
-    private fun addHistoryEntry(token: String, event: TokenEvent) {
+    private fun addHistoryEntry(
+        token: String,
+        event: TokenEvent,
+    ) {
         val entry = TokenHistory(
             token = token,
             timestamp = System.currentTimeMillis(),

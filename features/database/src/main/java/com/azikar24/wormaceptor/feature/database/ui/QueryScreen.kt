@@ -201,7 +201,10 @@ fun QueryScreen(
 }
 
 @Composable
-private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) {
+private fun QueryResultView(
+    result: QueryResult,
+    modifier: Modifier = Modifier,
+) {
     val horizontalScrollState = rememberScrollState()
 
     if (result.error != null) {

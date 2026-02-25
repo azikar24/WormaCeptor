@@ -25,7 +25,12 @@ import java.net.URI
  * @param title Optional title for the share chooser dialog
  * @param subject Optional subject line (used by email apps)
  */
-fun shareText(context: Context, text: String, title: String = "Share", subject: String? = null) {
+fun shareText(
+    context: Context,
+    text: String,
+    title: String = "Share",
+    subject: String? = null,
+) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, text)
@@ -136,7 +141,11 @@ fun extractUrlPath(url: String): String {
  * @param scheme The URL scheme (default: https)
  * @return The complete URL string
  */
-fun buildFullUrl(host: String, path: String, scheme: String = "https"): String {
+fun buildFullUrl(
+    host: String,
+    path: String,
+    scheme: String = "https",
+): String {
     return "$scheme://$host$path"
 }
 
@@ -159,7 +168,10 @@ fun buildFullUrl(host: String, path: String, scheme: String = "https"): String {
  * @return The appropriate Color for the status
  */
 @Composable
-fun getStatusColor(status: TransactionStatus, code: Int?): Color {
+fun getStatusColor(
+    status: TransactionStatus,
+    code: Int?,
+): Color {
     return when (status) {
         TransactionStatus.COMPLETED -> when {
             code == null -> WormaCeptorColors.StatusAmber

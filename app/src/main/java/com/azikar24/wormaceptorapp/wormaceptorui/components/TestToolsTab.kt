@@ -40,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -173,7 +174,10 @@ fun TestToolsTab(
  * Section header with uppercase styling.
  */
 @Composable
-private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
+private fun SectionHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = title,
         fontSize = 12.sp,
@@ -247,7 +251,7 @@ private fun ToolListItem(
 private fun ToolListItemLabel(
     label: String,
     description: String?,
-    textColor: androidx.compose.ui.graphics.Color,
+    textColor: Color,
     showDescription: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -270,7 +274,10 @@ private fun ToolListItemLabel(
 }
 
 @Composable
-private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
+private fun ToolListItemTrailing(
+    status: ToolStatus,
+    showChevron: Boolean,
+) {
     AnimatedContent(
         targetState = status,
         transitionSpec = {

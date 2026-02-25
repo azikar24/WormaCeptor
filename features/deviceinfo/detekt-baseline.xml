@@ -2,8 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun CollapsibleInfoRow(label: String, value: String)</ID>
-    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -&gt; Unit)</ID>
+    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun CollapsibleInfoRow( label: String, value: String, )</ID>
+    <ID>LongMethod:DeviceInfoScreen.kt$@Composable private fun StorageSection( storage: StorageDetails, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Preview(showBackground = true) @Composable private fun DeviceInfoScreenContentPreview()</ID>
     <ID>LongMethod:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$@SuppressLint("MissingPermission") private fun getNetworkDetails(): NetworkDetails</ID>
     <ID>MagicNumber:DeviceInfoScreen.kt$100f</ID>

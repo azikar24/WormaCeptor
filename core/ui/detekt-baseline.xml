@@ -2,8 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ComposableParamOrder:WormaCeptorFAB.kt$WormaCeptorFAB</ID>
-    <ID>ComposableParamOrder:WormaCeptorStatItem.kt$WormaCeptorStatItem</ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Disabled, inactive, neutral states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Error, failure, critical, destructive states </ID>
     <ID>EndOfSentenceFormat:WormaCeptorColors.kt$WormaCeptorColors$ Info, in-progress, selected, link states </ID>
@@ -188,6 +186,7 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
+    <ID>OutdatedDocumentation:WormaCeptorStatItem.kt$@Composable fun WormaCeptorStatItem( label: String, value: String, modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary, )</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$Success : ClipboardResult</ID>
     <ID>UndocumentedPublicClass:ClipboardUtils.kt$ClipboardResult$TooLarge : ClipboardResult</ID>
@@ -206,7 +205,7 @@
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Cpu$fun forCore(index: Int): Color</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorColors.kt$WormaCeptorColors.Database$fun forDataType(type: String): Color</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorExtendedFAB( onClick: () -&gt; Unit, text: @Composable () -&gt; Unit, modifier: Modifier = Modifier, icon: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorFAB( onClick: () -&gt; Unit, modifier: Modifier = Modifier, contentDescription: String? = null, icon: ImageVector = Icons.Default.Add, iconModifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorFAB( onClick: () -&gt; Unit, modifier: Modifier = Modifier, iconModifier: Modifier = Modifier, contentDescription: String? = null, icon: ImageVector = Icons.Default.Add, )</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorFAB.kt$@Composable fun WormaCeptorSmallFAB( onClick: () -&gt; Unit, modifier: Modifier = Modifier, contentDescription: String? = null, icon: ImageVector = Icons.Default.Add, containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest, contentColor: Color = MaterialTheme.colorScheme.primary, )</ID>
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.Success$val message: String</ID>
     <ID>UndocumentedPublicProperty:ClipboardUtils.kt$ClipboardResult.TooLarge$val message: String</ID>

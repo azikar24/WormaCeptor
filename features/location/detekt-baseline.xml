@@ -2,7 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator(modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:LocationInputSection.kt$@Composable internal fun CoordinateInputCard( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, currentMockLatitude: Double?, currentMockLongitude: Double?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationMapCard.kt$@Composable fun LocationMapCard( realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LocationPresetsSection.kt$@Composable internal fun CollapsibleMapSection( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>

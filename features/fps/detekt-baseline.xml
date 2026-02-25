@@ -2,10 +2,10 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun CurrentFpsCard(fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun DroppedFramesCard(droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun EmptyState(onStartMonitoring: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun FpsChart(data: ImmutableList&lt;FpsInfo&gt;, colors: FpsColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun CurrentFpsCard( fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun DroppedFramesCard( droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun EmptyState( onStartMonitoring: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FpsScreen.kt$@Composable private fun FpsChart( data: ImmutableList&lt;FpsInfo&gt;, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:FpsScreen.kt$30f</ID>
     <ID>MagicNumber:FpsScreen.kt$55f</ID>
     <ID>MagicNumber:FpsScreen.kt$60f</ID>

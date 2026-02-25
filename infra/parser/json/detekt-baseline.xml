@@ -6,6 +6,6 @@
     <ID>LoopWithTooManyJumpStatements:JsonBodyParser.kt$JsonBodyParser$while</ID>
     <ID>MagicNumber:JsonBodyParser.kt$JsonBodyParser$250</ID>
     <ID>NestedBlockDepth:JsonBodyParser.kt$JsonBodyParser$private fun cleanJson5Syntax(json: String): String</ID>
-    <ID>ReturnCount:JsonBodyParser.kt$JsonBodyParser$override fun canParse(contentType: String?, body: ByteArray): Boolean</ID>
+    <ID>ReturnCount:JsonBodyParser.kt$JsonBodyParser$override fun canParse( contentType: String?, body: ByteArray, ): Boolean</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -5,7 +5,6 @@
     <ID>LongMethod:WebSocketDetailScreen.kt$@Composable private fun DirectionFilterChips( selectedDirection: WebSocketMessageDirection?, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, onDirectionToggle: (WebSocketMessageDirection) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketDetailScreen.kt$@Composable private fun MessageItem( message: WebSocketMessage, isExpanded: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketDetailScreen( connection: WebSocketConnection?, messages: ImmutableList&lt;WebSocketMessage&gt;, searchQuery: String, directionFilter: WebSocketMessageDirection?, totalMessageCount: Int, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, expandedMessageId: Long?, onSearchQueryChanged: (String) -&gt; Unit, onDirectionFilterToggle: (WebSocketMessageDirection) -&gt; Unit, onMessageClick: (Long) -&gt; Unit, onClearMessages: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:WebSocketFeature.kt$@Composable fun WebSocketMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
     <ID>LongMethod:WebSocketListScreen.kt$@Composable private fun ConnectionItem( connection: WebSocketConnection, messageCount: Int, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketListScreen( connections: ImmutableList&lt;WebSocketConnection&gt;, searchQuery: String, totalCount: Int, onSearchQueryChanged: (String) -&gt; Unit, onConnectionClick: (WebSocketConnection) -&gt; Unit, onClearAll: () -&gt; Unit, getMessageCount: (Long) -&gt; Int, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>LongParameterList:WebSocketDetailScreen.kt$( connection: WebSocketConnection?, messages: ImmutableList&lt;WebSocketMessage&gt;, searchQuery: String, directionFilter: WebSocketMessageDirection?, totalMessageCount: Int, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, expandedMessageId: Long?, onSearchQueryChanged: (String) -&gt; Unit, onDirectionFilterToggle: (WebSocketMessageDirection) -&gt; Unit, onMessageClick: (Long) -&gt; Unit, onClearMessages: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -46,6 +45,5 @@
     <ID>UnstableCollections:WebSocketDetailScreen.kt$Map&lt;WebSocketMessageDirection, Int&gt;</ID>
     <ID>UnusedPrivateMember:WebSocketDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketDetailScreenPreview()</ID>
     <ID>UnusedPrivateMember:WebSocketListScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketListScreenPreview()</ID>
-    <ID>ViewModelInjection:WebSocketFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

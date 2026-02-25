@@ -3,7 +3,7 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>CompositionLocalAllowlist:LogColors.kt$LocalLogLevelColors</ID>
-    <ID>LongMethod:LogsScreen.kt$@Composable private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:LogsScreen.kt$@Composable private fun LogEntryItem( entry: LogEntry, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LogsScreen.kt$@Suppress("LongParameterList") @OptIn(ExperimentalMaterial3Api::class) @Composable internal fun LogsScreenContent( logs: ImmutableList&lt;LogEntry&gt;, searchQuery: String, selectedLevels: Set&lt;LogLevel&gt;, autoScroll: Boolean, isCapturing: Boolean, totalCount: Int, levelCounts: Map&lt;LogLevel, Int&gt;, pid: Int, onSearchQueryChanged: (String) -&gt; Unit, onLevelToggle: (LogLevel) -&gt; Unit, onSetAutoScroll: (Boolean) -&gt; Unit, onToggleCapture: () -&gt; Unit, onStartCapture: () -&gt; Unit, onClearLogs: () -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>MagicNumber:LogColors.kt$0xFFC2185B</ID>
     <ID>MagicNumber:LogsViewModel.kt$LogsViewModel$100</ID>
@@ -14,7 +14,7 @@
     <ID>UndocumentedPublicClass:LogsFeature.kt$LogsViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicFunction:LogColors.kt$LogLevelColors$fun backgroundForLevel(level: LogLevel): Color</ID>
     <ID>UndocumentedPublicFunction:LogColors.kt$LogLevelColors$fun forLevel(level: LogLevel): Color</ID>
-    <ID>UndocumentedPublicFunction:LogsFeature.kt$@Composable fun LogViewer(modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
+    <ID>UndocumentedPublicFunction:LogsFeature.kt$@Composable fun LogViewer( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>UndocumentedPublicFunction:LogsFeature.kt$LogsFeature$fun createViewModelFactory(engine: LogCaptureEngine): LogsViewModelFactory</ID>
     <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assert: Color</ID>
     <ID>UndocumentedPublicProperty:LogColors.kt$LogLevelColors$val assertBackground: Color</ID>

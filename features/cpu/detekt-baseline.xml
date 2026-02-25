@@ -2,9 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuLineChart(history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun SystemInfoCard(currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:CpuScreen.kt$@Composable private fun SystemInfoCard( currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:CpuScreen.kt$( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:CpuColors.kt$CpuColors$50f</ID>

@@ -3,15 +3,15 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
-    <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
     <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
     <ID>LongMethod:GlitchEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
-    <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem(entry: EncryptedPrefEntry, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem(entry: KeyStoreEntry, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen(onBack: () -&gt; Unit, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem( entry: EncryptedPrefEntry, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem( entry: KeyStoreEntry, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>LongMethod:WormaceptorLogo.kt$@Composable fun WormaceptorLogo(): ImageVector</ID>
     <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>

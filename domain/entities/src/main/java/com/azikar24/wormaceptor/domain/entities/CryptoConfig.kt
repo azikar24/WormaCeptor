@@ -44,7 +44,7 @@ data class CryptoConfig(
                 KeyFormat.HEX -> key.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
                 KeyFormat.UTF8 -> key.toByteArray(Charsets.UTF_8)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return false
         }
 
@@ -57,6 +57,7 @@ data class CryptoConfig(
         }
     }
 
+    /** Factory methods and default presets for [CryptoConfig]. */
     companion object {
         /**
          * Creates a default configuration with AES-256/CBC.
@@ -84,10 +85,19 @@ enum class CryptoAlgorithm(
     val displayName: String,
     val keyLengthBits: Int,
 ) {
+    /** AES with 128-bit key. */
     AES_128("AES", "AES-128", 128),
+
+    /** AES with 256-bit key. */
     AES_256("AES", "AES-256", 256),
+
+    /** DES with 64-bit key (legacy, not recommended). */
     DES("DES", "DES", 64),
+
+    /** Triple DES with 192-bit key. */
     TRIPLE_DES("DESede", "3DES", 192),
+
+    /** RSA asymmetric encryption with 2048-bit key. */
     RSA("RSA", "RSA", 2048),
 }
 
@@ -103,11 +113,22 @@ enum class CipherMode(
     val displayName: String,
     val requiresIv: Boolean,
 ) {
+    /** Cipher Block Chaining - requires IV, widely used. */
     CBC("CBC", "CBC", true),
+
+    /** Electronic Codebook - no IV, identical blocks produce identical ciphertext. */
     ECB("ECB", "ECB", false),
+
+    /** Galois/Counter Mode - authenticated encryption, requires IV. */
     GCM("GCM", "GCM", true),
+
+    /** Counter Mode - converts block cipher to stream cipher, requires IV. */
     CTR("CTR", "CTR", true),
+
+    /** Cipher Feedback - self-synchronizing stream mode, requires IV. */
     CFB("CFB", "CFB", true),
+
+    /** Output Feedback - synchronous stream mode, requires IV. */
     OFB("OFB", "OFB", true),
 }
 
@@ -121,9 +142,16 @@ enum class PaddingScheme(
     val paddingName: String,
     val displayName: String,
 ) {
+    /** PKCS#5 padding, standard for block ciphers. */
     PKCS5("PKCS5Padding", "PKCS5"),
+
+    /** PKCS#7 padding, functionally equivalent to PKCS#5 for common block sizes. */
     PKCS7("PKCS7Padding", "PKCS7"),
+
+    /** No padding; input must be an exact multiple of the block size. */
     NO_PADDING("NoPadding", "None"),
+
+    /** ISO 10126 padding with random bytes. */
     ISO10126("ISO10126Padding", "ISO10126"),
 }
 
@@ -133,7 +161,12 @@ enum class PaddingScheme(
  * @property displayName Human-readable name for UI
  */
 enum class KeyFormat(val displayName: String) {
+    /** Key encoded as a Base64 string. */
     BASE64("Base64"),
+
+    /** Key encoded as a hexadecimal string. */
     HEX("Hex"),
+
+    /** Key provided as raw UTF-8 text. */
     UTF8("UTF-8 Text"),
 }

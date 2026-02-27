@@ -72,6 +72,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import com.azikar24.wormaceptor.feature.webviewmonitor.ui.WebViewMonitor as WebViewMonitorScreen
 
+/** Main activity hosting the WormaCeptor debugging UI with navigation and deep link support. */
 class ViewerActivity : ComponentActivity() {
 
     // Inject only engines needed directly by ViewerActivity

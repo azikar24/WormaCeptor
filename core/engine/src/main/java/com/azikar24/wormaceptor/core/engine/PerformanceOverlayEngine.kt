@@ -126,6 +126,8 @@ class PerformanceOverlayEngine(
 
     // State
     private val _state = MutableStateFlow(PerformanceOverlayState.EMPTY)
+
+    /** The current overlay state including position, metric values, and visibility. */
     val state: StateFlow<PerformanceOverlayState> = _state.asStateFlow()
 
     private val _isVisible = MutableStateFlow(false)
@@ -140,6 +142,14 @@ class PerformanceOverlayEngine(
 
     /**
      * Callbacks for overlay interactions.
+     *
+     * @property onDragStart Called when the user begins dragging the overlay.
+     * @property onDrag Called during a drag gesture with the delta offset.
+     * @property onDragEnd Called when the user releases the overlay.
+     * @property onHideOverlay Called when the user requests to hide the overlay.
+     * @property onRemoveFps Called when the user removes the FPS metric from the overlay.
+     * @property onRemoveMemory Called when the user removes the memory metric from the overlay.
+     * @property onRemoveCpu Called when the user removes the CPU metric from the overlay.
      */
     data class OverlayCallbacks(
         val onDragStart: () -> Unit,
@@ -848,6 +858,7 @@ class PerformanceOverlayEngine(
         )
     }
 
+    /** SharedPreferences keys and overlay dimension constants. */
     companion object {
         // SharedPreferences keys
         private const val PREFS_NAME = "wormaceptor_performance_overlay_prefs"

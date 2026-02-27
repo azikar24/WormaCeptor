@@ -22,6 +22,14 @@ object CrashUtils {
 
     /**
      * Represents a single frame in a stack trace.
+     *
+     * @property fullLine The complete original line from the stack trace.
+     * @property packageName The Java/Kotlin package name, or null if unparseable.
+     * @property className The simple class name, or null if unparseable.
+     * @property methodName The method name, or null if unparseable.
+     * @property fileName The source file name (e.g. "MyClass.kt"), or null if unparseable.
+     * @property lineNumber The line number in the source file, or null if unparseable.
+     * @property isAppCode Whether this frame belongs to the application (not a library/framework).
      */
     data class StackFrame(
         val fullLine: String,

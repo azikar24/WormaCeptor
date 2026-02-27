@@ -12,6 +12,26 @@ import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 /**
  * Colors for the Leak Detection feature.
  * Uses centralized colors from WormaCeptorColors.LeakDetection.
+ *
+ * @property critical Foreground color for critical-severity leaks.
+ * @property criticalBackground Background color for critical-severity leak badges.
+ * @property high Foreground color for high-severity leaks.
+ * @property highBackground Background color for high-severity leak badges.
+ * @property medium Foreground color for medium-severity leaks.
+ * @property mediumBackground Background color for medium-severity leak badges.
+ * @property low Foreground color for low-severity leaks.
+ * @property lowBackground Background color for low-severity leak badges.
+ * @property monitoring Color indicating that leak detection is actively scanning.
+ * @property idle Color indicating that leak detection is idle.
+ * @property cardBackground Background color for leak info cards.
+ * @property surfaceBackground General surface background color.
+ * @property detailBackground Background color for the leak detail view.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for less prominent labels.
+ * @property valuePrimary Color for primary metric values.
+ * @property actionButton Color for action buttons (e.g., trigger check).
+ * @property actionButtonText Text color for action buttons.
+ * @property divider Color for divider lines between sections.
  */
 @Immutable
 data class LeakDetectionColors(
@@ -35,6 +55,7 @@ data class LeakDetectionColors(
     val actionButtonText: Color,
     val divider: Color,
 ) {
+    /** Returns the foreground color for the given leak severity level. */
     fun colorForSeverity(severity: LeakSeverity): Color = when (severity) {
         LeakSeverity.CRITICAL -> critical
         LeakSeverity.HIGH -> high
@@ -42,6 +63,7 @@ data class LeakDetectionColors(
         LeakSeverity.LOW -> low
     }
 
+    /** Returns the background color for the given leak severity level. */
     fun backgroundForSeverity(severity: LeakSeverity): Color = when (severity) {
         LeakSeverity.CRITICAL -> criticalBackground
         LeakSeverity.HIGH -> highBackground

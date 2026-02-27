@@ -85,6 +85,8 @@ enum class Feature {
     DEVICE_INFO,
     ;
 
+    /** Predefined feature sets for common configurations. */
+    @Suppress("unused")
     companion object {
         /**
          * All available features.

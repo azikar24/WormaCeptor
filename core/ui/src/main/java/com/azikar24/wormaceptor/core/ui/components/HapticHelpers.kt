@@ -42,18 +42,27 @@ fun rememberHapticOnce(): HapticOnceState {
     }
 }
 
+/** State holder for one-shot haptic feedback that fires at most once until reset. */
 class HapticOnceState(
     private val hasTriggered: () -> Boolean,
     private val trigger: () -> Unit,
     private val reset: () -> Unit,
 ) {
+    /** Whether the haptic feedback has already been triggered in the current gesture. */
     val isTriggered: Boolean get() = hasTriggered()
 
+    /** Fires the haptic feedback if not already triggered. */
     fun triggerHaptic() = trigger()
 
+    /** Resets the trigger so haptic can fire again. */
     fun resetHaptic() = reset()
 
+    /** Destructuring: whether haptic has already been triggered. */
     operator fun component1(): Boolean = isTriggered
+
+    /** Destructuring: the trigger callback. */
     operator fun component2(): () -> Unit = trigger
+
+    /** Destructuring: the reset callback. */
     operator fun component3(): () -> Unit = reset
 }

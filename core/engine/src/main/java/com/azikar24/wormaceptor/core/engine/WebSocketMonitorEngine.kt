@@ -39,9 +39,13 @@ class WebSocketMonitorEngine(
     private val connectionMapLock = Any()
 
     private val _connections = MutableStateFlow<List<WebSocketConnection>>(emptyList())
+
+    /** All tracked WebSocket connections and their current states. */
     val connections: StateFlow<List<WebSocketConnection>> = _connections.asStateFlow()
 
     private val _messages = MutableStateFlow<List<WebSocketMessage>>(emptyList())
+
+    /** All captured WebSocket messages across all connections. */
     val messages: StateFlow<List<WebSocketMessage>> = _messages.asStateFlow()
 
     // Internal storage
@@ -381,7 +385,9 @@ class WebSocketMonitorEngine(
         fun getConnectionId(): Long = connectionId
     }
 
+    /** Buffer size defaults. */
     companion object {
+        /** Default maximum number of WebSocket messages to retain. */
         const val DEFAULT_MAX_MESSAGES = 500
     }
 }

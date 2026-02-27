@@ -14,20 +14,24 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
+/** Engine for querying captured network transactions, crashes, and body content. */
 class QueryEngine(
     private val repository: TransactionRepository,
     private val blobStorage: BlobStorage,
     private val crashRepository: CrashRepository? = null,
 ) {
 
+    /** Observes all network transactions as a reactive stream. */
     fun observeTransactions(): Flow<List<TransactionSummary>> {
         return repository.getAllTransactions()
     }
 
+    /** Observes all captured crashes as a reactive stream. */
     fun observeCrashes(): Flow<List<Crash>> {
         return crashRepository?.observeCrashes() ?: flowOf(emptyList())
     }
 
+    /** Searches transactions by URL or HTTP method. */
     fun search(query: String): Flow<List<TransactionSummary>> {
         if (query.isBlank()) return observeTransactions()
         return repository.searchTransactions(query)
@@ -56,8 +60,10 @@ class QueryEngine(
         return repository.getTransactionCount(searchQuery)
     }
 
+    /** Retrieves full transaction details by ID. */
     suspend fun getDetails(id: UUID) = repository.getTransactionById(id)
 
+    /** Reads the text content of a stored request or response body. */
     suspend fun getBody(blobId: BlobID): String? = withContext(Dispatchers.IO) {
         blobStorage.readBlob(blobId)?.use { input ->
             String(input.readBytes(), Charsets.UTF_8)
@@ -73,11 +79,15 @@ class QueryEngine(
         }
     }
 
+    /** Deletes all stored transactions. */
     suspend fun clear() = repository.clearAll()
 
+    /** Deletes all stored crash reports. */
     suspend fun clearCrashes() = crashRepository?.clearCrashes()
 
+    /** Returns all transactions for export (e.g., HAR, cURL). */
     suspend fun getAllTransactionsForExport() = repository.getAllTransactionsAsList()
 
+    /** Deletes specific transactions by their IDs. */
     suspend fun deleteTransactions(ids: List<UUID>) = repository.deleteTransactions(ids)
 }

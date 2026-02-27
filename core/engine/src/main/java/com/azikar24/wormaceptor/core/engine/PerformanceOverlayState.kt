@@ -48,6 +48,7 @@ data class PerformanceOverlayState(
      */
     fun isInDismissZone(): Boolean = positionPercent.y >= DISMISS_ZONE_THRESHOLD
 
+    /** Positioning defaults and empty state factory. */
     companion object {
         /**
          * Default position: top-right corner with safe margin.
@@ -73,16 +74,22 @@ data class PerformanceOverlayState(
  * These define when metrics should show green (good), yellow (warning), or red (critical).
  */
 object PerformanceThresholds {
-    // FPS thresholds
+    /** FPS at or above this value is considered healthy. */
     const val FPS_GOOD = 55
+
+    /** FPS at or above this value (but below [FPS_GOOD]) triggers a warning. */
     const val FPS_WARNING = 30
 
-    // Memory usage thresholds (percentage)
+    /** Memory usage percentage below this value is considered healthy. */
     const val MEMORY_GOOD = 60
+
+    /** Memory usage percentage at or above this value is critical. */
     const val MEMORY_WARNING = 80
 
-    // CPU usage thresholds (percentage)
+    /** CPU usage percentage below this value is considered healthy. */
     const val CPU_GOOD = 50
+
+    /** CPU usage percentage at or above this value is critical. */
     const val CPU_WARNING = 80
 }
 
@@ -90,14 +97,20 @@ object PerformanceThresholds {
  * Enum representing the health status of a metric.
  */
 enum class MetricStatus {
+    /** Metric value is within healthy range. */
     GOOD,
+
+    /** Metric value is approaching a problematic threshold. */
     WARNING,
+
+    /** Metric value has exceeded the acceptable threshold. */
     CRITICAL,
 
     /** Metric is not being actively monitored (paused). */
     INACTIVE,
     ;
 
+    /** Threshold-based factories for deriving status from raw metric values. */
     companion object {
         /**
          * Determines FPS status based on value.

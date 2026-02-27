@@ -13,6 +13,22 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketState
 /**
  * WebSocket-specific colors for consistent visual representation.
  * Uses centralized colors from WormaCeptorColors.WebSocket.
+ *
+ * @property connecting Foreground color for the CONNECTING state.
+ * @property open Foreground color for the OPEN state.
+ * @property closing Foreground color for the CLOSING state.
+ * @property closed Foreground color for the CLOSED state.
+ * @property sent Foreground color for sent messages.
+ * @property received Foreground color for received messages.
+ * @property textMessage Color for text-type message indicators.
+ * @property binaryMessage Color for binary-type message indicators.
+ * @property pingPong Color for ping/pong control frame indicators.
+ * @property sentBackground Background color for sent message rows.
+ * @property receivedBackground Background color for received message rows.
+ * @property connectingBackground Background color for CONNECTING state badges.
+ * @property openBackground Background color for OPEN state badges.
+ * @property closingBackground Background color for CLOSING state badges.
+ * @property closedBackground Background color for CLOSED state badges.
  */
 @Immutable
 data class WebSocketColors(
@@ -32,6 +48,7 @@ data class WebSocketColors(
     val closingBackground: Color,
     val closedBackground: Color,
 ) {
+    /** Returns the foreground color for the given connection state. */
     fun forState(state: WebSocketState): Color = when (state) {
         WebSocketState.CONNECTING -> connecting
         WebSocketState.OPEN -> open
@@ -39,6 +56,7 @@ data class WebSocketColors(
         WebSocketState.CLOSED -> closed
     }
 
+    /** Returns the background color for the given connection state. */
     fun backgroundForState(state: WebSocketState): Color = when (state) {
         WebSocketState.CONNECTING -> connectingBackground
         WebSocketState.OPEN -> openBackground
@@ -46,16 +64,19 @@ data class WebSocketColors(
         WebSocketState.CLOSED -> closedBackground
     }
 
+    /** Returns the foreground color for the given message direction (sent or received). */
     fun forDirection(direction: WebSocketMessageDirection): Color = when (direction) {
         WebSocketMessageDirection.SENT -> sent
         WebSocketMessageDirection.RECEIVED -> received
     }
 
+    /** Returns the background color for the given message direction. */
     fun backgroundForDirection(direction: WebSocketMessageDirection): Color = when (direction) {
         WebSocketMessageDirection.SENT -> sentBackground
         WebSocketMessageDirection.RECEIVED -> receivedBackground
     }
 
+    /** Returns the color associated with the given message type (text, binary, ping/pong). */
     fun forMessageType(type: WebSocketMessageType): Color = when (type) {
         WebSocketMessageType.TEXT -> textMessage
         WebSocketMessageType.BINARY -> binaryMessage

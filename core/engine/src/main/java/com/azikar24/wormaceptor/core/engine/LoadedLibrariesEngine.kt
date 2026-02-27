@@ -36,18 +36,26 @@ class LoadedLibrariesEngine(
 
     // All loaded libraries
     private val _libraries = MutableStateFlow<List<LoadedLibrary>>(emptyList())
+
+    /** All loaded libraries detected in the application process. */
     val libraries: StateFlow<List<LoadedLibrary>> = _libraries.asStateFlow()
 
     // Summary statistics
     private val _summary = MutableStateFlow(LibrarySummary.empty())
+
+    /** Aggregated summary of loaded libraries (counts and total size). */
     val summary: StateFlow<LibrarySummary> = _summary.asStateFlow()
 
     // Loading state
     private val _isLoading = MutableStateFlow(false)
+
+    /** Whether a library scan is currently in progress. */
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     // Error state
     private val _error = MutableStateFlow<String?>(null)
+
+    /** The most recent scan error message, or null if no error occurred. */
     val error: StateFlow<String?> = _error.asStateFlow()
 
     // Cache for package info
@@ -55,7 +63,7 @@ class LoadedLibrariesEngine(
     private val appSourceDir: String by lazy {
         try {
             context.packageManager.getApplicationInfo(packageName, 0).sourceDir
-        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (_: PackageManager.NameNotFoundException) {
             ""
         }
     }
@@ -149,7 +157,7 @@ class LoadedLibrariesEngine(
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Silently handle permission issues
         }
 
@@ -185,7 +193,7 @@ class LoadedLibrariesEngine(
         val size = try {
             val file = File(path)
             if (file.exists()) file.length() else null
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 
@@ -229,7 +237,7 @@ class LoadedLibrariesEngine(
                         )
                     }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // APK might be inaccessible
         }
 
@@ -255,7 +263,7 @@ class LoadedLibrariesEngine(
                 if (dir.exists() && dir.isDirectory) {
                     findJarFiles(dir, jarFiles)
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Skip inaccessible directories
             }
         }
@@ -294,7 +302,7 @@ class LoadedLibrariesEngine(
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Skip inaccessible directories
         }
     }
@@ -386,7 +394,7 @@ class LoadedLibrariesEngine(
         sb.appendLine(
             "Generated: ${java.text.SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss",
-                java.util.Locale.US,
+                Locale.US,
             ).format(java.util.Date())}",
         )
         sb.appendLine("Package: $packageName")
@@ -406,7 +414,7 @@ class LoadedLibrariesEngine(
         libraries.filter { it.type == LoadedLibrary.LibraryType.NATIVE_SO }
             .sortedBy { it.name }
             .forEach { lib ->
-                sb.appendLine("${lib.name}")
+                sb.appendLine(lib.name)
                 sb.appendLine("  Path: ${lib.path}")
                 lib.loadAddress?.let { sb.appendLine("  Load Address: $it") }
                 lib.size?.let { sb.appendLine("  Size: ${formatSize(it)}") }
@@ -419,7 +427,7 @@ class LoadedLibrariesEngine(
         libraries.filter { it.type == LoadedLibrary.LibraryType.DEX }
             .sortedBy { it.name }
             .forEach { lib ->
-                sb.appendLine("${lib.name}")
+                sb.appendLine(lib.name)
                 sb.appendLine("  Path: ${lib.path}")
                 lib.size?.let { sb.appendLine("  Size: ${formatSize(it)}") }
                 sb.appendLine()
@@ -429,7 +437,7 @@ class LoadedLibrariesEngine(
         libraries.filter { it.type == LoadedLibrary.LibraryType.JAR }
             .sortedBy { it.name }
             .forEach { lib ->
-                sb.appendLine("${lib.name}")
+                sb.appendLine(lib.name)
                 sb.appendLine("  Path: ${lib.path}")
                 lib.size?.let { sb.appendLine("  Size: ${formatSize(it)}") }
                 lib.version?.let { sb.appendLine("  Version: $it") }

@@ -15,6 +15,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  */
 object WormaCeptorNavTransitions {
 
+    /** Slide-left-and-fade enter transition for forward navigation. */
     val enterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
         slideIntoContainer(
             AnimatedContentTransitionScope.SlideDirection.Left,
@@ -22,6 +23,7 @@ object WormaCeptorNavTransitions {
         ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
     }
 
+    /** Slide-left-and-fade exit transition for forward navigation. */
     val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
         slideOutOfContainer(
             AnimatedContentTransitionScope.SlideDirection.Left,
@@ -29,6 +31,7 @@ object WormaCeptorNavTransitions {
         ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
     }
 
+    /** Slide-right-and-fade enter transition for back navigation. */
     val popEnterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
         slideIntoContainer(
             AnimatedContentTransitionScope.SlideDirection.Right,
@@ -36,6 +39,7 @@ object WormaCeptorNavTransitions {
         ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
     }
 
+    /** Slide-right-and-fade exit transition for back navigation. */
     val popExitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
         slideOutOfContainer(
             AnimatedContentTransitionScope.SlideDirection.Right,

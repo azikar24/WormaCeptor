@@ -67,6 +67,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableMap
 
+/** Bottom sheet UI for filtering network transactions by HTTP method and status code range. */
 @Composable
 fun FilterBottomSheetContent(
     initialSearchQuery: String,

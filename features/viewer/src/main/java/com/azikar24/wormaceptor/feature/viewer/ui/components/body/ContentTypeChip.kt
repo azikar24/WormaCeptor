@@ -96,6 +96,10 @@ fun ContentTypeChip(
 
 /**
  * Information about a content type for display purposes.
+ *
+ * @property displayName Human-readable label for the content type (e.g. "JSON", "XML").
+ * @property icon Material icon representing the content type.
+ * @property color Semantic color used for the chip background and text tint.
  */
 data class ContentTypeChipInfo(
     val displayName: String,

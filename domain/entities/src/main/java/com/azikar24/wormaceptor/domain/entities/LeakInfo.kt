@@ -35,6 +35,7 @@ data class LeakInfo(
         CRITICAL,
     }
 
+    /** Factory methods for [LeakInfo]. */
     companion object {
         /**
          * Creates an empty LeakInfo instance with default values.
@@ -68,6 +69,7 @@ data class LeakSummary(
     val lowCount: Int,
     val totalRetainedBytes: Long,
 ) {
+    /** Factory methods for [LeakSummary]. */
     companion object {
         /**
          * Creates an empty LeakSummary instance with zero values.

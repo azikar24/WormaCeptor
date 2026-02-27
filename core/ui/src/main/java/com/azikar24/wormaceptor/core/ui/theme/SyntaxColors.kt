@@ -13,6 +13,24 @@ import com.azikar24.wormaceptor.domain.contracts.TokenType
 /**
  * Compose-friendly syntax colors for code highlighting.
  * Provides both syntax token colors and UI-specific colors for code display components.
+ *
+ * @property keyword Language keyword color (e.g. if, fun, class).
+ * @property string String literal color.
+ * @property number Numeric literal color.
+ * @property comment Comment text color.
+ * @property property Property/field name color.
+ * @property tag XML/HTML tag name color.
+ * @property operator Operator symbol color (e.g. +, -, =).
+ * @property punctuation Punctuation symbol color (e.g. braces, commas).
+ * @property boolean Boolean literal color (true/false).
+ * @property type Type annotation color.
+ * @property default Default/fallback text color.
+ * @property lineNumberText Line number text color.
+ * @property lineNumberBackground Line number gutter background color.
+ * @property codeBackground Code area background color.
+ * @property searchHighlight Search match highlight background color.
+ * @property searchHighlightCurrent Current search match highlight background color.
+ * @property searchHighlightText Text color rendered on top of search highlight backgrounds.
  */
 @Immutable
 data class ComposeSyntaxColors(
@@ -27,17 +45,11 @@ data class ComposeSyntaxColors(
     val boolean: Color,
     val type: Color,
     val default: Color,
-    /** Line number text color. */
     val lineNumberText: Color,
-    /** Line number gutter background. */
     val lineNumberBackground: Color,
-    /** Code area background. */
     val codeBackground: Color,
-    /** Search match highlight background. */
     val searchHighlight: Color,
-    /** Current search match highlight background. */
     val searchHighlightCurrent: Color,
-    /** Text color rendered on top of search highlight backgrounds. */
     val searchHighlightText: Color,
 ) {
     /** Returns the Compose [Color] for the given [type]. */

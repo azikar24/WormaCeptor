@@ -20,6 +20,7 @@ data class FpsInfo(
     val jankFrames: Int,
     val timestamp: Long,
 ) {
+    /** Constants and default instances for [FpsInfo]. */
     companion object {
         /**
          * Default empty FpsInfo instance.

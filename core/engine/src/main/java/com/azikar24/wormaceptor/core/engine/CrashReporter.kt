@@ -8,12 +8,15 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlin.system.exitProcess
 
+/** Captures uncaught exceptions and persists them as crash reports. */
 class CrashReporter(
     private val repository: CrashRepository,
 ) {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    /** Installs the uncaught exception handler to capture crashes. */
     fun init() {
         val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
 
@@ -24,7 +27,7 @@ class CrashReporter(
             if (oldHandler != null) {
                 oldHandler.uncaughtException(paramThread, paramThrowable)
             } else {
-                System.exit(2)
+                exitProcess(2)
             }
         }
     }

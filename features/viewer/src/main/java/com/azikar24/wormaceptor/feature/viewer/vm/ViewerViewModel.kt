@@ -266,6 +266,7 @@ class ViewerViewModel(
         }
     }
 
+    /** Timeout and debounce constants for reactive streams. */
     companion object {
         private const val SUBSCRIPTION_TIMEOUT = 5000L
         private const val SEARCH_DEBOUNCE_PAGED = 100L

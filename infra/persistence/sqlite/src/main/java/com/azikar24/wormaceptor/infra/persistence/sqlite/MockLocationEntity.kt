@@ -4,6 +4,19 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 
+/**
+ * Room entity representing the currently active mock location (singleton row).
+ *
+ * @property id Fixed primary key (always 1) ensuring a single active location row.
+ * @property latitude Latitude coordinate in decimal degrees.
+ * @property longitude Longitude coordinate in decimal degrees.
+ * @property altitude Altitude in metres above the WGS-84 ellipsoid.
+ * @property accuracy Estimated horizontal accuracy in metres.
+ * @property speed Speed in metres per second.
+ * @property bearing Bearing in degrees clockwise from north.
+ * @property timestamp Epoch millis when this mock location was set.
+ * @property name Optional human-readable name for the location.
+ */
 @Entity(tableName = "mock_location")
 data class MockLocationEntity(
     @PrimaryKey val id: Int = 1,
@@ -16,6 +29,7 @@ data class MockLocationEntity(
     val timestamp: Long,
     val name: String? = null,
 ) {
+    /** Converts this entity to a domain [MockLocation] model. */
     fun toDomain() = MockLocation(
         latitude = latitude,
         longitude = longitude,
@@ -27,7 +41,9 @@ data class MockLocationEntity(
         name = name,
     )
 
+    /** Domain-entity conversion factory. */
     companion object {
+        /** Creates a [MockLocationEntity] from a domain [MockLocation] model. */
         fun fromDomain(location: MockLocation) = MockLocationEntity(
             latitude = location.latitude,
             longitude = location.longitude,

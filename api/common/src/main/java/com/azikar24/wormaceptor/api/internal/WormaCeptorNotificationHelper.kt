@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 
+/** Displays an ongoing notification summarizing recent network transactions. */
 class WormaCeptorNotificationHelper(
     private val context: Context,
     private val title: String = "WormaCeptor: Recording...",
@@ -41,6 +42,7 @@ class WormaCeptorNotificationHelper(
         }
     }
 
+    /** Updates the ongoing notification with the latest transaction details. */
     fun show(transaction: NetworkTransaction) {
         synchronized(this) {
             if (transactionBuffer.size >= BUFFER_SIZE) {
@@ -80,6 +82,7 @@ class WormaCeptorNotificationHelper(
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
+    /** Notification channel and identifier constants. */
     companion object {
         private const val CHANNEL_ID = "wormaceptor_v2_channel"
         private const val NOTIFICATION_ID = 4200

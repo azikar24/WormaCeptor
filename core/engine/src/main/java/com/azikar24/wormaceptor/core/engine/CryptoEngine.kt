@@ -38,22 +38,32 @@ class CryptoEngine {
 
     // Current configuration
     private val _config = MutableStateFlow(CryptoConfig.default())
+
+    /** The current cryptographic configuration (algorithm, mode, key, IV). */
     val config: StateFlow<CryptoConfig> = _config.asStateFlow()
 
     // Current operation result
     private val _currentResult = MutableStateFlow<CryptoResult?>(null)
+
+    /** The result of the most recent encrypt or decrypt operation. */
     val currentResult: StateFlow<CryptoResult?> = _currentResult.asStateFlow()
 
     // Operation history (most recent first)
     private val _history = MutableStateFlow<List<CryptoResult>>(emptyList())
+
+    /** History of cryptographic operation results, most recent first. */
     val history: StateFlow<List<CryptoResult>> = _history.asStateFlow()
 
     // Loading state
     private val _isProcessing = MutableStateFlow(false)
+
+    /** Whether an encrypt or decrypt operation is currently in progress. */
     val isProcessing: StateFlow<Boolean> = _isProcessing.asStateFlow()
 
     // Error state
     private val _error = MutableStateFlow<String?>(null)
+
+    /** The most recent error message, or null if no error occurred. */
     val error: StateFlow<String?> = _error.asStateFlow()
 
     /**
@@ -452,6 +462,7 @@ class CryptoEngine {
         _history.value = currentHistory.take(MAX_HISTORY_SIZE)
     }
 
+    /** Configuration constants and crypto parameters. */
     companion object {
         /** Maximum number of results to keep in history */
         const val MAX_HISTORY_SIZE = 50

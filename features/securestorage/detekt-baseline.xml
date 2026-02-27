@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:SecureStorageScreen.kt$@Composable private fun EntryCard( entry: SecureStorageEntry, onClick: () -&gt; Unit, colors: SecureStorageColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageScreen.kt$@Composable private fun EntryDetailContent( entry: SecureStorageEntry, colors: SecureStorageColors, modifier: Modifier = Modifier, )</ID>
@@ -9,30 +9,9 @@
     <ID>LongParameterList:SecureStorageScreen.kt$( entries: ImmutableList&lt;SecureStorageEntry&gt;, summary: SecureStorageSummary, isLoading: Boolean, error: String?, selectedType: StorageType?, searchQuery: String, selectedEntry: SecureStorageEntry?, keystoreAccessible: Boolean, encryptedPrefsAccessible: Boolean, lastRefreshTime: Long?, onTypeSelected: (StorageType?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onEntrySelected: (SecureStorageEntry) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:SecureStorageScreen.kt$100</ID>
     <ID>MagicNumber:SecureStorageViewModel.kt$SecureStorageViewModel$5000</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val cardBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val chipBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val chipBackgroundSelected: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val datastore: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val encrypted: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val encryptedPrefs: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val keystore: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val labelPrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val labelSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val primary: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val searchBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val unencrypted: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val valuePrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageColors.kt$SecureStorageColors$val valueSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$// Accessibility status val keystoreAccessible: StateFlow&lt;Boolean&gt; = engine.keystoreAccessible</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$// Error state val error: StateFlow&lt;String?&gt; = engine.error</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$// Filtered entries val filteredEntries: StateFlow&lt;ImmutableList&lt;SecureStorageEntry&gt;&gt; = combine( engine.entries, _selectedType, _searchQuery, ) { entries, type, query -&gt; var filtered = entries // Filter by type if selected if (type != null) { filtered = filtered.filter { it.storageType == type } } // Filter by search query if (query.isNotBlank()) { val lowerQuery = query.lowercase() filtered = filtered.filter { entry -&gt; entry.key.lowercase().contains(lowerQuery) || entry.value.lowercase().contains(lowerQuery) } } filtered.toImmutableList() }.stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf(), )</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$// Loading state val isLoading: StateFlow&lt;Boolean&gt; = engine.isLoading</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$// Summary val summary: StateFlow&lt;SecureStorageSummary&gt; = engine.summary .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), SecureStorageSummary.empty(), )</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val encryptedPrefsAccessible: StateFlow&lt;Boolean&gt; = engine.encryptedPrefsAccessible</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val lastRefreshTime: StateFlow&lt;Long?&gt; = engine.lastRefreshTime</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val selectedEntry: StateFlow&lt;SecureStorageEntry?&gt; = _selectedEntry.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageViewModel.kt$SecureStorageViewModel$val selectedType: StateFlow&lt;StorageType?&gt; = _selectedType.asStateFlow()</ID>
+    <ID>ParameterNaming:SecureStorageScreen.kt$onEntrySelected</ID>
+    <ID>ParameterNaming:SecureStorageScreen.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:SecureStorageScreen.kt$onTypeSelected</ID>
     <ID>UnusedParameter:SecureStorageColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>UnusedPrivateMember:SecureStorageScreen.kt$@Preview(showBackground = true) @Composable private fun SecureStorageScreenPreview()</ID>
     <ID>ViewModelInjection:SecureStorageFeature.kt$viewModel</ID>

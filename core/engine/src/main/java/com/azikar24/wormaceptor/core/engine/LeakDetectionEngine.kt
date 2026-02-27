@@ -50,12 +50,18 @@ class LeakDetectionEngine(
 
     // StateFlows for UI observation
     private val _detectedLeaks = MutableStateFlow<List<LeakInfo>>(emptyList())
+
+    /** All memory leaks detected so far, most recent first. */
     val detectedLeaks: StateFlow<List<LeakInfo>> = _detectedLeaks.asStateFlow()
 
     private val _leakSummary = MutableStateFlow(LeakSummary.empty())
+
+    /** Aggregated summary of detected leaks by severity. */
     val leakSummary: StateFlow<LeakSummary> = _leakSummary.asStateFlow()
 
     private val _isRunning = MutableStateFlow(false)
+
+    /** Whether the leak detection engine is actively monitoring. */
     val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
     // Persistence and notification configuration
@@ -367,7 +373,7 @@ class LeakDetectionEngine(
                         val fieldTypeName = field.type.simpleName
                         path.add("   .${field.name} ($fieldTypeName)")
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // Field access failed, skip
                 }
             }
@@ -423,6 +429,7 @@ class LeakDetectionEngine(
         )
     }
 
+    /** Timing, history size, and retained size estimation defaults. */
     companion object {
         /** Default delay before checking if an object was collected (5 seconds) */
         const val DEFAULT_CHECK_DELAY_MS = 5000L

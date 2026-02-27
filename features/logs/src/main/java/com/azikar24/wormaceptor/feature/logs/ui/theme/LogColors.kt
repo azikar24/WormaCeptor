@@ -21,6 +21,20 @@ import com.azikar24.wormaceptor.domain.entities.LogLevel
  * - ERROR: Red (errors, failures)
  * - ASSERT: Deep Red/Magenta (critical assertions, feature-specific)
  */
+/**
+ * @property verbose Foreground color for VERBOSE level logs.
+ * @property debug Foreground color for DEBUG level logs.
+ * @property info Foreground color for INFO level logs.
+ * @property warn Foreground color for WARN level logs.
+ * @property error Foreground color for ERROR level logs.
+ * @property assert Foreground color for ASSERT level logs.
+ * @property verboseBackground Background color for VERBOSE level log rows.
+ * @property debugBackground Background color for DEBUG level log rows.
+ * @property infoBackground Background color for INFO level log rows.
+ * @property warnBackground Background color for WARN level log rows.
+ * @property errorBackground Background color for ERROR level log rows.
+ * @property assertBackground Background color for ASSERT level log rows.
+ */
 @Immutable
 data class LogLevelColors(
     val verbose: Color,
@@ -36,6 +50,7 @@ data class LogLevelColors(
     val errorBackground: Color,
     val assertBackground: Color,
 ) {
+    /** Returns the foreground color for the given log level. */
     fun forLevel(level: LogLevel): Color = when (level) {
         LogLevel.VERBOSE -> verbose
         LogLevel.DEBUG -> debug
@@ -45,6 +60,7 @@ data class LogLevelColors(
         LogLevel.ASSERT -> assert
     }
 
+    /** Returns the background color for the given log level. */
     fun backgroundForLevel(level: LogLevel): Color = when (level) {
         LogLevel.VERBOSE -> verboseBackground
         LogLevel.DEBUG -> debugBackground
@@ -81,6 +97,7 @@ fun logLevelColors(darkTheme: Boolean = isSystemInDarkTheme()): LogLevelColors {
     )
 }
 
+/** CompositionLocal providing the current [LogLevelColors] to descendant composables. */
 val LocalLogLevelColors = staticCompositionLocalOf {
     LogLevelColors(
         verbose = WormaCeptorColors.StatusGrey,

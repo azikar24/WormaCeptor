@@ -16,12 +16,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Handles exporting network transactions as JSON files via the system share sheet. */
 class ExportManager(
     private val context: Context,
     private val queryEngine: QueryEngine?,
     private val onMessage: (String) -> Unit = {},
 ) {
 
+    /** Exports the given transactions as a JSON file and opens the system share sheet. */
     suspend fun exportTransactions(transactions: List<NetworkTransaction>) {
         withContext(Dispatchers.Main) {
             onMessage("Preparing export...")

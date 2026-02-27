@@ -26,30 +26,37 @@ class SecureStorageViewModel(
     private val engine: SecureStorageEngine,
 ) : ViewModel() {
 
-    // Filter state
     private val _selectedType = MutableStateFlow<StorageType?>(null)
+
+    /** Currently selected storage type filter, or null if showing all types. */
     val selectedType: StateFlow<StorageType?> = _selectedType.asStateFlow()
 
-    // Search state
     private val _searchQuery = MutableStateFlow("")
+
+    /** Current search query used to filter storage entries. */
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // Selected entry for detail view
     private val _selectedEntry = MutableStateFlow<SecureStorageEntry?>(null)
+
+    /** Currently selected entry for the detail view. */
     val selectedEntry: StateFlow<SecureStorageEntry?> = _selectedEntry.asStateFlow()
 
-    // Loading state
+    /** Whether a loading operation is in progress. */
     val isLoading: StateFlow<Boolean> = engine.isLoading
 
-    // Error state
+    /** Current error message, or null if no error. */
     val error: StateFlow<String?> = engine.error
 
-    // Accessibility status
+    /** Whether Android Keystore is accessible on this device. */
     val keystoreAccessible: StateFlow<Boolean> = engine.keystoreAccessible
+
+    /** Whether EncryptedSharedPreferences is accessible on this device. */
     val encryptedPrefsAccessible: StateFlow<Boolean> = engine.encryptedPrefsAccessible
+
+    /** Timestamp of the last successful refresh, or null if never refreshed. */
     val lastRefreshTime: StateFlow<Long?> = engine.lastRefreshTime
 
-    // Summary
+    /** Aggregated summary of all secure storage entries. */
     val summary: StateFlow<SecureStorageSummary> = engine.summary
         .stateIn(
             viewModelScope,
@@ -57,7 +64,7 @@ class SecureStorageViewModel(
             SecureStorageSummary.empty(),
         )
 
-    // Filtered entries
+    /** Entries filtered by selected type and search query. */
     val filteredEntries: StateFlow<ImmutableList<SecureStorageEntry>> =
         combine(
             engine.entries,

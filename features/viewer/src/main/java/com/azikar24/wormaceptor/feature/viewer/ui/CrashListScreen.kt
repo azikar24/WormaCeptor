@@ -180,6 +180,7 @@ fun CrashListScreen(
     }
 }
 
+/** Renders a single crash entry card showing the exception type, message, and timestamp. */
 @Composable
 fun CrashItem(
     crash: Crash,

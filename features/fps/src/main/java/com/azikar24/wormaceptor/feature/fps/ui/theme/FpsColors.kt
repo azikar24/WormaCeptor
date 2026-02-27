@@ -15,6 +15,17 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * - Good (>= 55 FPS): Green - excellent performance
  * - Warning (30-54 FPS): Yellow/Amber - moderate performance
  * - Critical (< 30 FPS): Red - poor performance
+ *
+ * @property good Foreground color for good FPS (>= 55).
+ * @property warning Foreground color for moderate FPS (30-54).
+ * @property critical Foreground color for poor FPS (< 30).
+ * @property goodBackground Background color for good FPS status badges.
+ * @property warningBackground Background color for warning FPS status badges.
+ * @property criticalBackground Background color for critical FPS status badges.
+ * @property chartLine Line color for the FPS time-series chart.
+ * @property chartFill Fill color beneath the FPS chart line.
+ * @property chartGrid Grid line color for the FPS chart.
+ * @property jankIndicator Color used to highlight jank (frame drop) events.
  */
 @Immutable
 data class FpsColors(
@@ -29,20 +40,26 @@ data class FpsColors(
     val chartGrid: Color,
     val jankIndicator: Color,
 ) {
+    /** Returns the foreground color indicating FPS quality (good, warning, or critical). */
     fun forFps(fps: Float): Color = when {
         fps >= FPS_GOOD_THRESHOLD -> good
         fps >= FPS_WARNING_THRESHOLD -> warning
         else -> critical
     }
 
+    /** Returns the background color indicating FPS quality (good, warning, or critical). */
     fun backgroundForFps(fps: Float): Color = when {
         fps >= FPS_GOOD_THRESHOLD -> goodBackground
         fps >= FPS_WARNING_THRESHOLD -> warningBackground
         else -> criticalBackground
     }
 
+    /** FPS threshold constants for performance classification. */
     companion object {
+        /** Minimum FPS considered good performance. */
         const val FPS_GOOD_THRESHOLD = 55f
+
+        /** Minimum FPS before performance is classified as critical. */
         const val FPS_WARNING_THRESHOLD = 30f
     }
 }

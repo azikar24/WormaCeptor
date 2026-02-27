@@ -35,23 +35,43 @@ import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.compose.koinInject
 
+/** Entry point for the Push Token management feature. */
 object PushTokenFeature {
+    /** Creates a ViewModelProvider.Factory for [PushTokenViewModel]. */
     fun createViewModelFactory(engine: PushTokenEngine) = PushTokenViewModelFactory(engine)
 }
 
+/** ViewModel exposing push token state and operations. */
 class PushTokenViewModel(private val engine: PushTokenEngine) : ViewModel() {
+    /** Current push token information, or null if not yet fetched. */
     val currentToken: StateFlow<PushTokenInfo?> = engine.currentToken
+
+    /** Chronological list of token lifecycle events. */
     val tokenHistory: StateFlow<List<TokenHistory>> = engine.tokenHistory
+
+    /** Whether a token fetch or refresh operation is in progress. */
     val isLoading: StateFlow<Boolean> = engine.isLoading
+
+    /** Current error message, or null if no error. */
     val error: StateFlow<String?> = engine.error
 
+    /** Fetches the current push token from the messaging provider. */
     fun fetchToken() = engine.fetchCurrentToken()
+
+    /** Requests a new push token, invalidating the current one. */
     fun refreshToken() = engine.requestNewToken()
+
+    /** Deletes the current push token from the provider. */
     fun deleteToken() = engine.deleteToken()
+
+    /** Clears all entries from the token history. */
     fun clearHistory() = engine.clearHistory()
+
+    /** Dismisses the current error message. */
     fun clearError() = engine.clearError()
 }
 
+/** Factory for creating [PushTokenViewModel] instances with the required engine. */
 class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -59,6 +79,7 @@ class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModel
     }
 }
 
+/** Displays the push token management screen with token info, copy, and history. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PushTokenManager(

@@ -95,6 +95,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
+/** Displays detailed hardware, software, and storage information about the device. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreen(onBack: () -> Unit) {

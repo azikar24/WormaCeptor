@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.navigation
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 
 /**
@@ -18,6 +19,7 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
  */
 object DeepLinkHandler {
 
+    /** URI scheme used for all WormaCeptor deep links. */
     const val SCHEME = "wormaceptor"
     private const val HOST_TOOLS = "tools"
     private const val HOST_TRANSACTIONS = "transactions"
@@ -27,18 +29,32 @@ object DeepLinkHandler {
      * Represents a navigation destination parsed from a deep link.
      */
     sealed class DeepLinkDestination {
-        /** Navigate to the home screen with a specific tab selected */
+        /**
+         * Navigate to the home screen with a specific tab selected.
+         *
+         * @property tabIndex Zero-based index of the tab to select.
+         */
         data class Tab(val tabIndex: Int) : DeepLinkDestination()
 
-        /** Navigate directly to a tool screen */
+        /**
+         * Navigate directly to a tool screen.
+         *
+         * @property route Navigation route string for the target tool screen.
+         */
         data class Tool(val route: String) : DeepLinkDestination()
 
         /** Invalid or unrecognized deep link */
         data object Invalid : DeepLinkDestination()
 
+        /** Tab index constants for deep link navigation targets. */
         companion object {
+            /** Index of the Transactions tab. */
             const val TAB_TRANSACTIONS = 0
+
+            /** Index of the Crashes tab. */
             const val TAB_CRASHES = 1
+
+            /** Index of the Tools tab. */
             const val TAB_TOOLS = 2
         }
     }
@@ -125,7 +141,7 @@ object DeepLinkHandler {
         context: Context,
         deepLinkUri: String,
     ): Intent {
-        return Intent(Intent.ACTION_VIEW, Uri.parse(deepLinkUri)).apply {
+        return Intent(Intent.ACTION_VIEW, deepLinkUri.toUri()).apply {
             setPackage(context.packageName)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }

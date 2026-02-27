@@ -43,7 +43,18 @@ fun isContentTooLargeForClipboard(text: String): Boolean {
  * Result of a clipboard copy operation with size check.
  */
 sealed class ClipboardResult {
+    /**
+     * The content was successfully copied to the clipboard.
+     *
+     * @property message Confirmation message to display to the user.
+     */
     data class Success(val message: String) : ClipboardResult()
+
+    /**
+     * The content exceeds the maximum clipboard size.
+     *
+     * @property message Warning message describing the size limit.
+     */
     data class TooLarge(val message: String) : ClipboardResult()
 }
 

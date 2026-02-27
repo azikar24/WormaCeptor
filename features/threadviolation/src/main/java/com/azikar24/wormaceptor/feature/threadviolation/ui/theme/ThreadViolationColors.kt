@@ -12,6 +12,20 @@ import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 /**
  * Colors for the Thread Violation Detection feature.
  * Uses centralized colors from WormaCeptorColors.ThreadViolation.
+ *
+ * @property primary Primary accent color for the feature.
+ * @property diskRead Color representing disk-read violations.
+ * @property diskWrite Color representing disk-write violations.
+ * @property network Color representing network violations on the main thread.
+ * @property slowCall Color representing slow method call violations.
+ * @property customSlowCode Color representing custom slow-code violations.
+ * @property monitoring Color indicating that violation monitoring is active.
+ * @property idle Color indicating that violation monitoring is idle.
+ * @property cardBackground Background color for violation cards.
+ * @property detailBackground Background color for the violation detail view.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for less prominent labels.
+ * @property valuePrimary Color for primary metric values.
  */
 @Immutable
 data class ThreadViolationColors(
@@ -29,6 +43,7 @@ data class ThreadViolationColors(
     val labelSecondary: Color,
     val valuePrimary: Color,
 ) {
+    /** Returns the color associated with the given violation type. */
     fun colorForType(type: ViolationType): Color = when (type) {
         ViolationType.DISK_READ -> diskRead
         ViolationType.DISK_WRITE -> diskWrite

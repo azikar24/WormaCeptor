@@ -11,6 +11,21 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 /**
  * Colors for the CPU Monitoring feature.
  * Uses centralized colors from WormaCeptorColors.Cpu for chart colors.
+ *
+ * @property cpuUsage Primary color for overall CPU usage indicators.
+ * @property cpuUsageLight Lighter variant of the CPU usage color for fills and backgrounds.
+ * @property coreColors Distinct colors for individual CPU cores in charts.
+ * @property normal Color indicating normal (healthy) CPU usage.
+ * @property warning Color indicating elevated CPU usage.
+ * @property critical Color indicating dangerously high CPU usage.
+ * @property cardBackground Background color for CPU metric cards.
+ * @property chartBackground Background color for CPU usage charts.
+ * @property gridLines Color for chart grid lines.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for less prominent labels.
+ * @property valuePrimary Color for primary metric values.
+ * @property gaugeBackground Background color for the CPU gauge.
+ * @property gaugeTrack Track color for the CPU gauge ring.
  */
 @Immutable
 data class CpuColors(
@@ -29,12 +44,14 @@ data class CpuColors(
     val gaugeBackground: Color,
     val gaugeTrack: Color,
 ) {
+    /** Returns a status color (normal, warning, critical) based on CPU usage percentage. */
     fun statusColorForUsage(usagePercent: Float): Color = when {
         usagePercent >= 80f -> critical
         usagePercent >= 50f -> warning
         else -> normal
     }
 
+    /** Returns a distinct color for the CPU core at the given index. */
     fun colorForCore(index: Int): Color = WormaCeptorColors.Cpu.forCore(index)
 }
 

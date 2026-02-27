@@ -91,7 +91,7 @@ class ImageParser : BodyParser {
         // Extract metadata
         val metadata = try {
             ImageMetadataExtractor.extract(body, format)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             ImageMetadata.unknown(body.size.toLong()).copy(format = format.displayName)
         }
 
@@ -125,7 +125,7 @@ class ImageParser : BodyParser {
 
         return try {
             ImageMetadataExtractor.extract(body, format)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             ImageMetadata.unknown(body.size.toLong()).copy(format = format.displayName)
         }
     }
@@ -186,6 +186,7 @@ class ImageParser : BodyParser {
         }
     }
 
+    /** Utility helpers for image MIME-type detection. */
     companion object {
         /**
          * Checks if the given content type string represents an image.

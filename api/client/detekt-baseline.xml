@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private fun addTransactionToCursor( cursor: MatrixCursor, item: Any, )</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${ }</ID>
@@ -15,16 +15,9 @@
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$30</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$60</ID>
     <ID>MagicNumber:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$7</ID>
-    <ID>SwallowedException:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
-    <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
-    <ID>SwallowedException:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: NoSuchFieldException</ID>
-    <ID>SwallowedException:WormaCeptorWebSocket.kt$WormaCeptorWebSocket$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:WormaCeptorApi.kt$WormaCeptorApi$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$e: Exception</ID>
     <ID>TooGenericExceptionCaught:WormaCeptorWebSocket.kt$WormaCeptorWebSocket$e: Exception</ID>
     <ID>TooManyFunctions:WormaCeptorApi.kt$WormaCeptorApi</ID>
-    <ID>UndocumentedPublicClass:WormaCeptorApi.kt$WormaCeptorApi</ID>
-    <ID>UndocumentedPublicProperty:WormaCeptorApi.kt$WormaCeptorApi$val redactionConfig = RedactionConfig()</ID>
   </CurrentIssues>
 </SmellBaseline>

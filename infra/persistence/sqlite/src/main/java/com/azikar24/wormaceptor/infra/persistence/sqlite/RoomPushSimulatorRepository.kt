@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
+/** Room-backed [PushSimulatorRepository] that persists notification templates to SQLite. */
 class RoomPushSimulatorRepository(
     private val dao: PushTemplateDao,
 ) : PushSimulatorRepository {
@@ -40,7 +41,9 @@ class RoomPushSimulatorRepository(
         }
     }
 
+    /** Pre-configured notification templates for quick testing. */
     companion object {
+        /** Default notification templates seeded into an empty database for quick testing. */
         val presetTemplates: List<NotificationTemplate> = listOf(
             NotificationTemplate(
                 id = "preset_simple_alert",

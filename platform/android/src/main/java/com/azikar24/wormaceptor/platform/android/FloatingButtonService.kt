@@ -435,6 +435,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         }
     }
 
+    /** Notification, gesture, and layout constants. */
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "wormaceptor_floating_channel"
         private const val NOTIFICATION_ID = 9999

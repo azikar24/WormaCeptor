@@ -6,16 +6,37 @@ package com.azikar24.wormaceptor.core.ui.theme
  * Implementations provide both light and dark theme variants.
  */
 interface SyntaxColors {
+    /** Language keyword color (e.g. if, fun, class). */
     val keyword: Long
+
+    /** String literal color. */
     val string: Long
+
+    /** Numeric literal color. */
     val number: Long
+
+    /** Comment text color. */
     val comment: Long
+
+    /** Property/field name color. */
     val property: Long
+
+    /** XML/HTML tag name color. */
     val tag: Long
+
+    /** Operator symbol color (e.g. +, -, =). */
     val operator: Long
+
+    /** Punctuation symbol color (e.g. braces, commas). */
     val punctuation: Long
+
+    /** Boolean literal color (true/false). */
     val boolean: Long
+
+    /** Type annotation color. */
     val typeAnnotation: Long
+
+    /** Default/fallback text color. */
     val default: Long
 }
 

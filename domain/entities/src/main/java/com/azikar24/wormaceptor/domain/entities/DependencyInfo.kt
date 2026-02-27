@@ -3,16 +3,18 @@ package com.azikar24.wormaceptor.domain.entities
 /**
  * Represents a detected library/dependency in the application.
  *
- * @param name Display name of the library (e.g., "OkHttp")
- * @param groupId Maven group ID if known (e.g., "com.squareup.okhttp3")
- * @param artifactId Maven artifact ID if known (e.g., "okhttp")
- * @param version Detected version string, or null if unknown
- * @param category Functional category of the library
- * @param detectionMethod How the library/version was detected
- * @param packageName The main package used for detection
- * @param isDetected Whether the library was found in the classpath
- * @param description Brief description of what the library does
- * @param website Official website or repository URL
+ * @property name Display name of the library (e.g., "OkHttp").
+ * @property groupId Maven group ID if known (e.g., "com.squareup.okhttp3").
+ * @property artifactId Maven artifact ID if known (e.g., "okhttp").
+ * @property version Detected version string, or null if unknown.
+ * @property category Functional category of the library.
+ * @property detectionMethod How the library/version was detected.
+ * @property packageName The main package used for detection.
+ * @property isDetected Whether the library was found in the classpath.
+ * @property description Brief description of what the library does.
+ * @property website Official website or repository URL.
+ * @property isInternalDependency Whether this is an internal (first-party) dependency
+ *   rather than a third-party library.
  */
 data class DependencyInfo(
     val name: String,
@@ -42,23 +44,53 @@ data class DependencyInfo(
  * Categories for organizing dependencies by their primary function.
  */
 enum class DependencyCategory {
+    /** HTTP clients, WebSocket, and REST libraries. */
     NETWORKING,
+
+    /** DI frameworks like Koin, Dagger, or Hilt. */
     DEPENDENCY_INJECTION,
+
+    /** Compose, View-based UI, and widget libraries. */
     UI_FRAMEWORK,
+
+    /** Image loading and caching (Glide, Coil, Picasso). */
     IMAGE_LOADING,
+
+    /** JSON, XML, and protobuf serialization libraries. */
     SERIALIZATION,
+
+    /** Room, SQLDelight, Realm, and other persistence libraries. */
     DATABASE,
+
+    /** RxJava, Kotlin Flow extensions, and reactive stream libraries. */
     REACTIVE,
+
+    /** Logging frameworks (Timber, SLF4J). */
     LOGGING,
+
+    /** Analytics and crash reporting SDKs. */
     ANALYTICS,
+
+    /** Unit test, UI test, and mocking frameworks. */
     TESTING,
+
+    /** Encryption, certificate pinning, and security libraries. */
     SECURITY,
+
+    /** General-purpose utility libraries. */
     UTILITY,
+
+    /** AndroidX Jetpack libraries. */
     ANDROIDX,
+
+    /** Kotlin standard library and official extensions. */
     KOTLIN,
+
+    /** Libraries that do not fit any other category. */
     OTHER,
     ;
 
+    /** Returns the human-readable label for this category. */
     fun displayName(): String = when (this) {
         NETWORKING -> "Networking"
         DEPENDENCY_INJECTION -> "Dependency Injection"
@@ -104,6 +136,7 @@ enum class DetectionMethod {
     JAR_MANIFEST,
     ;
 
+    /** Returns the human-readable label for this detection method. */
     fun displayName(): String = when (this) {
         VERSION_FIELD -> "VERSION field"
         BUILD_CONFIG -> "BuildConfig"
@@ -114,6 +147,7 @@ enum class DetectionMethod {
         JAR_MANIFEST -> "JAR manifest"
     }
 
+    /** Returns a confidence rating (High, Medium, Low) for this detection method. */
     fun confidence(): String = when (this) {
         VERSION_FIELD -> "High"
         BUILD_CONFIG -> "High"
@@ -129,12 +163,18 @@ enum class DetectionMethod {
  * Summary statistics for detected dependencies.
  */
 data class DependencySummary(
+    /** Total number of libraries detected in the classpath. */
     val totalDetected: Int,
+    /** Number of libraries where the version string was resolved. */
     val withVersion: Int,
+    /** Number of libraries detected without a version string. */
     val withoutVersion: Int,
+    /** Breakdown of detected libraries grouped by functional category. */
     val byCategory: Map<DependencyCategory, Int>,
 ) {
+    /** Factory methods for [DependencySummary]. */
     companion object {
+        /** Creates an empty summary with zero counts. */
         fun empty() = DependencySummary(
             totalDetected = 0,
             withVersion = 0,

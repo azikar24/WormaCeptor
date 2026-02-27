@@ -60,22 +60,36 @@ object WebViewMonitorFeature {
  */
 class WebViewMonitorViewModel(private val engine: WebViewMonitorEngine) : ViewModel() {
 
+    /** Timeout constants for StateFlow subscriptions. */
     companion object {
         private const val SUBSCRIPTION_TIMEOUT_MS = 5000L
     }
 
+    /** Whether WebView network monitoring is currently active. */
     val isEnabled: StateFlow<Boolean> = engine.isEnabled
+
+    /** All captured WebView network requests. */
     val requests: StateFlow<List<WebViewRequest>> = engine.requests
+
+    /** Aggregated statistics for captured WebView requests. */
     val stats: StateFlow<WebViewRequestStats> = engine.stats
+
+    /** Set of resource types currently included in the filter. */
     val resourceTypeFilter: StateFlow<Set<WebViewResourceType>> = engine.resourceTypeFilter
 
     private val _searchQuery = MutableStateFlow("")
+
+    /** Current search query for filtering captured requests. */
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     private val _selectedRequest = MutableStateFlow<WebViewRequest?>(null)
+
+    /** Currently selected request for the detail view. */
     val selectedRequest: StateFlow<WebViewRequest?> = _selectedRequest.asStateFlow()
 
     private val _showFilters = MutableStateFlow(false)
+
+    /** Whether the filter panel is visible. */
     val showFilters: StateFlow<Boolean> = _showFilters.asStateFlow()
 
     /** Reactively filtered requests based on search query and resource type filter. */
@@ -101,35 +115,43 @@ class WebViewMonitorViewModel(private val engine: WebViewMonitorEngine) : ViewMo
         initialValue = emptyList(),
     )
 
+    /** Toggles the WebView network monitoring on or off. */
     fun toggleEnabled() {
         engine.toggle()
     }
 
+    /** Updates the search query used to filter captured requests. */
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }
 
+    /** Adds or removes a resource type from the active filter set. */
     fun toggleResourceTypeFilter(type: WebViewResourceType) {
         engine.toggleResourceTypeFilter(type)
     }
 
+    /** Resets all active search and resource type filters. */
     fun clearFilters() {
         _searchQuery.value = ""
         engine.clearFilters()
     }
 
+    /** Deletes all captured WebView network requests. */
     fun clearRequests() {
         engine.clearRequests()
     }
 
+    /** Selects a request to display its details. */
     fun selectRequest(request: WebViewRequest) {
         _selectedRequest.value = request
     }
 
+    /** Deselects the currently viewed request. */
     fun clearSelection() {
         _selectedRequest.value = null
     }
 
+    /** Toggles the visibility of the filter panel. */
     fun toggleFilters() {
         _showFilters.update { !it }
     }

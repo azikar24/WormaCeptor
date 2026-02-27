@@ -6,6 +6,10 @@ package com.azikar24.wormaceptor.domain.entities
 sealed class FileContent {
     /**
      * Text file content that can be displayed as a string.
+     *
+     * @property content The full text content of the file.
+     * @property encoding Character encoding used to read the file.
+     * @property lineCount Number of lines in the content.
      */
     data class Text(
         val content: String,
@@ -15,6 +19,11 @@ sealed class FileContent {
 
     /**
      * JSON file content with formatted/pretty-printed content.
+     *
+     * @property rawContent Original unformatted JSON string.
+     * @property formattedContent Pretty-printed JSON for display.
+     * @property isValid Whether the JSON could be parsed without errors.
+     * @property lineCount Number of lines in the formatted content.
      */
     data class Json(
         val rawContent: String,
@@ -25,6 +34,11 @@ sealed class FileContent {
 
     /**
      * XML file content with formatted content.
+     *
+     * @property rawContent Original unformatted XML string.
+     * @property formattedContent Pretty-printed XML for display.
+     * @property isValid Whether the XML could be parsed without errors.
+     * @property lineCount Number of lines in the formatted content.
      */
     data class Xml(
         val rawContent: String,
@@ -35,6 +49,9 @@ sealed class FileContent {
 
     /**
      * Binary file content with raw bytes for hex viewing.
+     *
+     * @property bytes Raw byte content of the file.
+     * @property displaySize Number of bytes to show in the hex viewer.
      */
     data class Binary(
         val bytes: ByteArray,
@@ -61,6 +78,11 @@ sealed class FileContent {
 
     /**
      * Image file content with bitmap data.
+     *
+     * @property bytes Raw image bytes for decoding.
+     * @property width Image width in pixels.
+     * @property height Image height in pixels.
+     * @property mimeType Image MIME type (e.g., "image/png").
      */
     data class Image(
         val bytes: ByteArray,
@@ -93,6 +115,10 @@ sealed class FileContent {
 
     /**
      * PDF file content with path for rendering.
+     *
+     * @property filePath Absolute path to the PDF file on disk.
+     * @property pageCount Number of pages in the PDF document.
+     * @property sizeBytes Size of the PDF file in bytes.
      */
     data class Pdf(
         val filePath: String,
@@ -102,6 +128,9 @@ sealed class FileContent {
 
     /**
      * File is too large to display.
+     *
+     * @property sizeBytes Actual file size in bytes.
+     * @property maxSize Maximum displayable size threshold in bytes.
      */
     data class TooLarge(
         val sizeBytes: Long,
@@ -110,6 +139,9 @@ sealed class FileContent {
 
     /**
      * Error occurred while reading the file.
+     *
+     * @property message Human-readable error description.
+     * @property throwable Underlying exception, or null if not available.
      */
     data class Error(
         val message: String,

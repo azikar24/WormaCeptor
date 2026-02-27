@@ -8,6 +8,7 @@ import android.database.MatrixCursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
@@ -114,7 +115,7 @@ class WormaCeptorContentProvider : ContentProvider() {
 
             // Extract URL from request and parse host/path
             val url = request?.let { getProperty(it, "url")?.toString() }
-            val uri = url?.let { Uri.parse(it) }
+            val uri = url?.toUri()
             val host = uri?.host ?: ""
             val path = uri?.path ?: "/"
 
@@ -162,7 +163,7 @@ class WormaCeptorContentProvider : ContentProvider() {
         return try {
             val headers = getProperty(response, "headers") as? Map<String, List<String>> ?: return null
             headers.entries.find { it.key.equals("content-type", ignoreCase = true) }?.value?.firstOrNull()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -173,13 +174,13 @@ class WormaCeptorContentProvider : ContentProvider() {
     ): Any? {
         return try {
             obj.javaClass.getDeclaredField(name).apply { isAccessible = true }.get(obj)
-        } catch (e: NoSuchFieldException) {
+        } catch (_: NoSuchFieldException) {
             try {
                 obj.javaClass.getMethod("get${name.replaceFirstChar { it.uppercase() }}").invoke(obj)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 try {
                     obj.javaClass.getMethod(name).invoke(obj)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     null
                 }
             }
@@ -304,6 +305,7 @@ class WormaCeptorContentProvider : ContentProvider() {
         return json
     }
 
+    /** URI matchers, column definitions, and constants for the content provider. */
     companion object {
         private const val TAG = "WormaCeptorProvider"
         private const val CODE_TRANSACTIONS = 1

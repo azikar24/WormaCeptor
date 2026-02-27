@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.domain.entities.Crash
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Room-backed [CrashRepository] that persists crash reports to SQLite. */
 class RoomCrashRepository(
     private val dao: CrashDao,
 ) : CrashRepository {

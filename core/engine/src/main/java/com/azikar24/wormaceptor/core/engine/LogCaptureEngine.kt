@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicLong
  * Filters logs to the current process PID and maintains a circular buffer
  * of the most recent entries.
  *
- * Threadtime format example:
+ * Thread time format example:
  * 01-21 14:30:45.123  1234  5678 D MyTag  : This is a log message
  * MM-DD HH:mm:ss.mmm  PID   TID  LEVEL TAG: MESSAGE
  */
@@ -41,9 +41,13 @@ class LogCaptureEngine(
     private val currentPid = android.os.Process.myPid()
 
     private val _logs = MutableStateFlow<List<LogEntry>>(emptyList())
+
+    /** All captured logcat entries for the current process. */
     val logs: StateFlow<List<LogEntry>> = _logs.asStateFlow()
 
     private val _isCapturing = MutableStateFlow(false)
+
+    /** Whether logcat capture is currently active. */
     val isCapturing: StateFlow<Boolean> = _isCapturing.asStateFlow()
 
     // Internal buffer for circular storage
@@ -98,7 +102,7 @@ class LogCaptureEngine(
      */
     fun getCurrentPid(): Int = currentPid
 
-    private suspend fun captureLogcat() {
+    private fun captureLogcat() {
         try {
             // Clear logcat before starting to avoid old logs
             Runtime.getRuntime().exec("logcat -c").waitFor()
@@ -154,7 +158,7 @@ class LogCaptureEngine(
             } else {
                 System.currentTimeMillis()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             System.currentTimeMillis()
         }
 
@@ -183,8 +187,11 @@ class LogCaptureEngine(
         }
     }
 
+    /** Logging configuration defaults. */
     companion object {
         private const val TAG = "LogCaptureEngine"
+
+        /** Default maximum number of log entries to retain in the buffer. */
         const val DEFAULT_BUFFER_SIZE = 1000
     }
 }

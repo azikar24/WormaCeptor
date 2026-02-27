@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>LambdaParameterInRestartableEffect:LocationScreen.kt$onClearError</ID>
+    <ID>LambdaParameterInRestartableEffect:LocationScreen.kt$onClearSuccessMessage</ID>
     <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:LocationInputSection.kt$@Composable internal fun CoordinateInputCard( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, currentMockLatitude: Double?, currentMockLongitude: Double?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationMapCard.kt$@Composable fun LocationMapCard( realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -29,25 +31,13 @@
     <ID>MaximumLineLength:LocationInputSection.kt$ </ID>
     <ID>MaximumLineLength:LocationMapView.kt$ </ID>
     <ID>MaximumLineLength:LocationPresetsSection.kt$ </ID>
+    <ID>ParameterNaming:LocationInputSection.kt$onLatitudeChanged</ID>
+    <ID>ParameterNaming:LocationInputSection.kt$onLongitudeChanged</ID>
+    <ID>ParameterNaming:LocationScreen.kt$onLatitudeChanged</ID>
+    <ID>ParameterNaming:LocationScreen.kt$onLongitudeChanged</ID>
+    <ID>ParameterNaming:LocationScreen.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:LocationScreen.kt$onToggleMapExpanded</ID>
     <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val builtIn: Color = WormaCeptorColors.Location.BuiltInPreset</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val coordinate: Color = WormaCeptorColors.Location.Coordinate</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val disabled: Color = WormaCeptorColors.Location.Disabled</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val enabled: Color = WormaCeptorColors.Location.Enabled</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val error: Color = WormaCeptorColors.Location.Error</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val userPreset: Color = WormaCeptorColors.Location.UserPreset</ID>
-    <ID>UndocumentedPublicProperty:LocationColors.kt$LocationColors$val warning: Color = WormaCeptorColors.Location.Warning</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEffect.kt$LocationViewEffect.ShowError$val message: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEffect.kt$LocationViewEffect.ShowSuccess$val message: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.DeletePreset$val presetId: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.LatitudeChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.LongitudeChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.MapTapped$val latitude: Double</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.MapTapped$val longitude: Double</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.SaveCurrentAsPreset$val name: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.SearchQueryChanged$val query: String</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.SetMockLocation$val location: MockLocation</ID>
-    <ID>UndocumentedPublicProperty:LocationViewEvent.kt$LocationViewEvent.SetMockLocationFromPreset$val preset: LocationPreset</ID>
     <ID>UnusedPrivateMember:LocationScreen.kt$@Preview(showBackground = true) @Composable private fun LocationScreenPreview()</ID>
     <ID>ViewModelInjection:LocationFeature.kt$viewModel</ID>
   </CurrentIssues>

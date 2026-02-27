@@ -25,6 +25,7 @@ private const val TAG = "WormaCeptorWebSocket"
  * monitor.recordSentMessage(message)
  * ```
  */
+@Suppress("unused")
 class WormaCeptorWebSocket private constructor(
     delegate: WebSocketListener?,
     url: String,
@@ -150,13 +151,14 @@ class WormaCeptorWebSocket private constructor(
         return try {
             val method = clazz.getMethod("getConnectionId")
             method.invoke(wrapped) as? Long ?: -1
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             -1
         }
     }
 
     private class NoOpWebSocketListener : WebSocketListener()
 
+    /** Factory for creating monitored WebSocket wrappers. */
     companion object {
         /**
          * Wraps a [WebSocketListener] for monitoring.

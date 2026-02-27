@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
+/** Room-backed [TransactionRepository] that persists network transactions to SQLite. */
 class RoomTransactionRepository(
     private val dao: TransactionDao,
 ) : TransactionRepository {

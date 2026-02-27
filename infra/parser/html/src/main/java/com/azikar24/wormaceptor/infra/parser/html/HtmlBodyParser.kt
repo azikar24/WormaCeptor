@@ -244,7 +244,7 @@ class HtmlBodyParser(
         return if (spaceIndex == -1) {
             trimmed.trimEnd('/')
         } else {
-            trimmed.substring(0, spaceIndex)
+            trimmed.take(spaceIndex)
         }
     }
 

@@ -36,28 +36,42 @@ class SecureStorageEngine(
 
     // All storage entries
     private val _entries = MutableStateFlow<List<SecureStorageEntry>>(emptyList())
+
+    /** All discovered secure storage entries (KeyStore aliases, encrypted prefs, DataStore). */
     val entries: StateFlow<List<SecureStorageEntry>> = _entries.asStateFlow()
 
     // Summary statistics
     private val _summary = MutableStateFlow(SecureStorageSummary.empty())
+
+    /** Aggregated summary of secure storage entries by type. */
     val summary: StateFlow<SecureStorageSummary> = _summary.asStateFlow()
 
     // Loading state
     private val _isLoading = MutableStateFlow(false)
+
+    /** Whether a secure storage scan is currently in progress. */
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     // Error state
     private val _error = MutableStateFlow<String?>(null)
+
+    /** The most recent scan error message, or null if no error occurred. */
     val error: StateFlow<String?> = _error.asStateFlow()
 
     // Accessibility status
     private val _keystoreAccessible = MutableStateFlow(false)
+
+    /** Whether the Android KeyStore is accessible on this device. */
     val keystoreAccessible: StateFlow<Boolean> = _keystoreAccessible.asStateFlow()
 
     private val _encryptedPrefsAccessible = MutableStateFlow(false)
+
+    /** Whether EncryptedSharedPreferences is accessible on this device. */
     val encryptedPrefsAccessible: StateFlow<Boolean> = _encryptedPrefsAccessible.asStateFlow()
 
     private val _lastRefreshTime = MutableStateFlow<Long?>(null)
+
+    /** Timestamp of the last successful scan, or null if never scanned. */
     val lastRefreshTime: StateFlow<Long?> = _lastRefreshTime.asStateFlow()
 
     init {
@@ -141,7 +155,7 @@ class SecureStorageEngine(
             MasterKey.Builder(context)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 
@@ -169,7 +183,7 @@ class SecureStorageEngine(
                     }
                 }
             }
-        } catch (e: SecurityException) {
+        } catch (_: SecurityException) {
             // Permission denied
         }
 
@@ -222,7 +236,7 @@ class SecureStorageEngine(
                     false // Let regular prefs handler deal with it
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Not an encrypted prefs file or different encryption scheme
             false
         }
@@ -318,7 +332,7 @@ class SecureStorageEngine(
                 val alias = aliases.nextElement()
 
                 try {
-                    val entry = keyStore.getEntry(alias, null)
+                    keyStore.getEntry(alias, null)
                     val keyInfo = buildKeyInfo(keyStore, alias)
 
                     entries.add(
@@ -342,7 +356,7 @@ class SecureStorageEngine(
                     )
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // KeyStore not available or error accessing it
         }
 
@@ -376,7 +390,7 @@ class SecureStorageEngine(
                         info.append("\nKey Algorithm: ${it.algorithm}")
                         info.append("\nKey Format: ${it.format ?: "Hardware-backed"}")
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     info.append("\n[Key protected]")
                 }
             }
@@ -384,10 +398,10 @@ class SecureStorageEngine(
             val creationDate = keyStore.getCreationDate(alias)
             creationDate?.let {
                 info.append(
-                    "\nCreated: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(it)}",
+                    "\nCreated: ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(it)}",
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             info.append("[KeyStore alias]")
         }
 
@@ -407,7 +421,7 @@ class SecureStorageEngine(
 
         try {
             scanDataStoreDirectory(dataStoreDir, entries)
-        } catch (e: SecurityException) {
+        } catch (_: SecurityException) {
             // Permission denied
         }
 

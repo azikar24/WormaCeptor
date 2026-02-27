@@ -43,6 +43,7 @@ data class ThreadViolation(
         CUSTOM_SLOW_CODE,
     }
 
+    /** Factory methods for [ThreadViolation]. */
     companion object {
         /**
          * Creates an empty ThreadViolation instance.
@@ -77,6 +78,7 @@ data class ViolationStats(
     val slowCallCount: Int,
     val customSlowCodeCount: Int,
 ) {
+    /** Factory methods for [ViolationStats]. */
     companion object {
         /**
          * Creates an empty ViolationStats instance.

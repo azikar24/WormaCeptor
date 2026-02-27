@@ -31,32 +31,36 @@ class LogsViewModel(
     private val logCaptureEngine: LogCaptureEngine,
 ) : ViewModel() {
 
-    // Search query for filtering logs
     private val _searchQuery = MutableStateFlow("")
+
+    /** Current search query used to filter log entries by tag or message. */
     val searchQuery: StateFlow<String> = _searchQuery
 
-    // Minimum log level filter (shows this level and above)
     private val _minimumLevel = MutableStateFlow(LogLevel.VERBOSE)
+
+    /** Minimum log level threshold; levels below this are hidden. */
     val minimumLevel: StateFlow<LogLevel> = _minimumLevel
 
-    // Selected level filters (when using multi-select mode)
     private val _selectedLevels = MutableStateFlow<Set<LogLevel>>(LogLevel.entries.toSet())
+
+    /** Set of currently selected log levels in multi-select filter mode. */
     val selectedLevels: StateFlow<Set<LogLevel>> = _selectedLevels
 
-    // Auto-scroll toggle
     private val _autoScroll = MutableStateFlow(true)
+
+    /** Whether the log list automatically scrolls to new entries. */
     val autoScroll: StateFlow<Boolean> = _autoScroll
 
-    // Capture state from engine
+    /** Whether the log capture engine is actively capturing logs. */
     val isCapturing: StateFlow<Boolean> = logCaptureEngine.isCapturing
 
-    // Current PID
+    /** Process ID of the current application. */
     val currentPid: Int = logCaptureEngine.getCurrentPid()
 
     // Raw logs from engine
     private val rawLogs: StateFlow<List<LogEntry>> = logCaptureEngine.logs
 
-    // Filtered logs combining search, level filter
+    /** Filtered log entries combining search query and selected level filters. */
     val logs: StateFlow<ImmutableList<LogEntry>> = combine(
         rawLogs,
         _searchQuery.debounce(100),
@@ -79,12 +83,12 @@ class LogsViewModel(
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
-    // Total count of unfiltered logs
+    /** Total number of unfiltered log entries. */
     val totalCount: StateFlow<Int> = rawLogs
         .map { it.size }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
-    // Count per level for badges
+    /** Number of log entries per log level, used for filter badge counts. */
     val levelCounts: StateFlow<Map<LogLevel, Int>> = rawLogs
         .map { logs ->
             logs.groupingBy { it.level }.eachCount()

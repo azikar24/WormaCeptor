@@ -2,6 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>MagicNumber:ExtensionProvider.kt$ExtensionProvider$50</ID>
+    <ID>LambdaParameterInRestartableEffect:BaseScreen.kt$onEffect</ID>
   </CurrentIssues>
 </SmellBaseline>

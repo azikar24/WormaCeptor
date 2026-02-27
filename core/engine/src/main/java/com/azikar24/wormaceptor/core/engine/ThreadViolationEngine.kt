@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executor
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -43,14 +42,20 @@ class ThreadViolationEngine(
 
     // Violations list
     private val _violations = MutableStateFlow<List<ThreadViolation>>(emptyList())
+
+    /** All recorded thread violations, most recent first. */
     val violations: StateFlow<List<ThreadViolation>> = _violations.asStateFlow()
 
     // Statistics
     private val _stats = MutableStateFlow(ViolationStats.empty())
+
+    /** Aggregated violation counts by type. */
     val stats: StateFlow<ViolationStats> = _stats.asStateFlow()
 
     // Monitoring state
     private val _isMonitoring = MutableStateFlow(false)
+
+    /** Whether StrictMode thread violation monitoring is active. */
     val isMonitoring: StateFlow<Boolean> = _isMonitoring.asStateFlow()
 
     // History buffer
@@ -117,7 +122,7 @@ class ThreadViolationEngine(
 
         // Set up violation listener (API 28+) or fallback
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            builder.penaltyListener(Executor { it.run() }) { violation ->
+            builder.penaltyListener({ it.run() }) { violation ->
                 handleViolation(violation)
             }
         } else {
@@ -378,6 +383,7 @@ class ThreadViolationEngine(
         return Looper.myLooper() == Looper.getMainLooper()
     }
 
+    /** History size defaults. */
     companion object {
         /** Default history size: 100 violations */
         const val DEFAULT_HISTORY_SIZE = 100

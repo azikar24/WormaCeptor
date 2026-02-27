@@ -11,6 +11,21 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 /**
  * Colors for the Secure Storage Viewer feature.
  * Uses centralized colors from WormaCeptorColors.SecureStorage.
+ *
+ * @property primary Main accent color for the feature.
+ * @property encrypted Color for encrypted storage entries.
+ * @property unencrypted Color for unencrypted storage entries.
+ * @property encryptedPrefs Color for EncryptedSharedPreferences entries.
+ * @property keystore Color for Android Keystore entries.
+ * @property datastore Color for DataStore entries.
+ * @property cardBackground Background color for card containers.
+ * @property searchBackground Background color for the search field.
+ * @property chipBackground Background color for unselected filter chips.
+ * @property chipBackgroundSelected Background color for selected filter chips.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for labels.
+ * @property valuePrimary Primary text color for values.
+ * @property valueSecondary Secondary text color for values.
  */
 @Immutable
 data class SecureStorageColors(

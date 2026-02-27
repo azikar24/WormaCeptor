@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>MagicNumber:PushTokenFeature.kt$20</ID>
@@ -8,20 +8,6 @@
     <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.material.icons.filled.*</ID>
     <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.material3.*</ID>
     <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.runtime.*</ID>
-    <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenFeature</ID>
-    <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenViewModel : ViewModel</ID>
-    <ID>UndocumentedPublicClass:PushTokenFeature.kt$PushTokenViewModelFactory : Factory</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenFeature$fun createViewModelFactory(engine: PushTokenEngine)</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun clearError()</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun clearHistory()</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun deleteToken()</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun fetchToken()</ID>
-    <ID>UndocumentedPublicFunction:PushTokenFeature.kt$PushTokenViewModel$fun refreshToken()</ID>
-    <ID>UndocumentedPublicProperty:PushTokenFeature.kt$PushTokenViewModel$val currentToken: StateFlow&lt;PushTokenInfo?&gt; = engine.currentToken</ID>
-    <ID>UndocumentedPublicProperty:PushTokenFeature.kt$PushTokenViewModel$val error: StateFlow&lt;String?&gt; = engine.error</ID>
-    <ID>UndocumentedPublicProperty:PushTokenFeature.kt$PushTokenViewModel$val isLoading: StateFlow&lt;Boolean&gt; = engine.isLoading</ID>
-    <ID>UndocumentedPublicProperty:PushTokenFeature.kt$PushTokenViewModel$val tokenHistory: StateFlow&lt;List&lt;TokenHistory&gt;&gt; = engine.tokenHistory</ID>
     <ID>ViewModelInjection:PushTokenFeature.kt$viewModel</ID>
     <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.foundation.layout.*</ID>
     <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.material.icons.filled.*</ID>

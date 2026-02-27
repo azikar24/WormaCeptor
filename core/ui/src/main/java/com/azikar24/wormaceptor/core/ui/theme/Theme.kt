@@ -95,6 +95,7 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = ThemeColors.DarkSurfaceVariant,
 )
 
+/** Applies the WormaCeptor Material 3 theme with optional dynamic color support. */
 @Composable
 fun WormaCeptorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

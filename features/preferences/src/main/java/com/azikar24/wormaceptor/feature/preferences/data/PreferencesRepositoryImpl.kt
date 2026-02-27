@@ -71,6 +71,7 @@ class PreferencesRepositoryImpl(
         dataSource.clearFile(fileName)
     }
 
+    /** Polling interval for preference file changes. */
     companion object {
         private const val POLL_INTERVAL_MS = 2000L
     }

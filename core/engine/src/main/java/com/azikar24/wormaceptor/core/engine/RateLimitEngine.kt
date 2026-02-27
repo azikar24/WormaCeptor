@@ -42,10 +42,14 @@ class RateLimitEngine {
 
     // Current configuration
     private val _config = MutableStateFlow(RateLimitConfig.default())
+
+    /** The current rate limiting configuration (speed, latency, packet loss). */
     val config: StateFlow<RateLimitConfig> = _config.asStateFlow()
 
     // Throttle statistics
     private val _stats = MutableStateFlow(ThrottleStats.empty())
+
+    /** Accumulated throttle statistics since last reset. */
     val stats: StateFlow<ThrottleStats> = _stats.asStateFlow()
 
     // Atomic counters for thread-safe stat tracking
@@ -299,6 +303,7 @@ class RateLimitEngine {
         }
     }
 
+    /** Speed and latency range boundaries. */
     companion object {
         /** Minimum speed in Kbps */
         const val MIN_SPEED_KBPS = 1L

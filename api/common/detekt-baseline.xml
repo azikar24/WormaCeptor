@@ -7,13 +7,6 @@
     <ID>MagicNumber:LeakNotificationHelper.kt$LeakNotificationHelper$1_048_576</ID>
     <ID>MagicNumber:LeakNotificationHelper.kt$LeakNotificationHelper$1_048_576.0</ID>
     <ID>TooGenericExceptionCaught:BaseServiceProviderImpl.kt$BaseServiceProviderImpl$e: RuntimeException</ID>
-    <ID>UndocumentedPublicClass:BaseServiceProviderImpl.kt$BaseServiceProviderImpl : ServiceProvider</ID>
-    <ID>UndocumentedPublicClass:LeakNotificationHelper.kt$LeakNotificationHelper</ID>
-    <ID>UndocumentedPublicClass:ThreadViolationNotificationHelper.kt$ThreadViolationNotificationHelper</ID>
-    <ID>UndocumentedPublicClass:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper</ID>
-    <ID>UndocumentedPublicFunction:LeakNotificationHelper.kt$LeakNotificationHelper$fun show(leak: LeakInfo)</ID>
-    <ID>UndocumentedPublicFunction:ThreadViolationNotificationHelper.kt$ThreadViolationNotificationHelper$fun show(violation: ThreadViolation)</ID>
-    <ID>UndocumentedPublicFunction:WormaCeptorNotificationHelper.kt$WormaCeptorNotificationHelper$fun show(transaction: NetworkTransaction)</ID>
     <ID>Wrapping:BaseServiceProviderImpl.kt$BaseServiceProviderImpl${ leak -&gt; helper.show(leak) }</ID>
   </CurrentIssues>
 </SmellBaseline>

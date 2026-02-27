@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun categorizePackage(packageName: String): Pair&lt;String, DependencyCategory&gt;</ID>
     <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
@@ -106,139 +106,21 @@
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryFindVersionDynamically(packageName: String): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:LeakDetectionEngine.kt$LeakDetectionEngine$private fun buildReferencePath(obj: Any): List&lt;String&gt;</ID>
     <ID>NestedBlockDepth:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$private fun parseNativeLibraries(): List&lt;LoadedLibrary&gt;</ID>
-    <ID>NestedBlockDepth:LogCaptureEngine.kt$LogCaptureEngine$private suspend fun captureLogcat()</ID>
+    <ID>NestedBlockDepth:LogCaptureEngine.kt$LogCaptureEngine$private fun captureLogcat()</ID>
     <ID>NestedBlockDepth:PushSimulatorEngine.kt$PushSimulatorEngine$@SuppressLint("MissingPermission") // Permission checked via hasNotificationPermission() before notify() fun sendNotification(notification: SimulatedNotification): Int</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun buildKeyInfo( keyStore: KeyStore, alias: String, ): String</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>
     <ID>OutdatedDocumentation:WebSocketMonitorEngine.kt$WebSocketMonitorEngine</ID>
     <ID>PrintStackTrace:CrashReporter.kt$CrashReporter$e</ID>
     <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
-    <ID>SwallowedException:CpuMonitorEngine.kt$CpuMonitorEngine$e: Exception</ID>
-    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: ClassNotFoundException</ID>
-    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: Exception</ID>
-    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: NoClassDefFoundError</ID>
-    <ID>SwallowedException:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$e: Exception</ID>
-    <ID>SwallowedException:LeakDetectionEngine.kt$LeakDetectionEngine$e: Exception</ID>
-    <ID>SwallowedException:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: Exception</ID>
-    <ID>SwallowedException:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: PackageManager.NameNotFoundException</ID>
-    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: Exception</ID>
-    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: IllegalArgumentException</ID>
-    <ID>SwallowedException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: SecurityException</ID>
-    <ID>SwallowedException:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
-    <ID>SwallowedException:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
-    <ID>SwallowedException:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
-    <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: ClassNotFoundException</ID>
-    <ID>SwallowedException:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
-    <ID>SwallowedException:SecureStorageEngine.kt$SecureStorageEngine$e: Exception</ID>
-    <ID>SwallowedException:SecureStorageEngine.kt$SecureStorageEngine$e: SecurityException</ID>
-    <ID>TooGenericExceptionCaught:CpuMonitorEngine.kt$CpuMonitorEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CrashReporter.kt$CrashReporter$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CryptoEngine.kt$CryptoEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ExtensionRegistry.kt$DefaultExtensionRegistry$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:LeakDetectionEngine.kt$LeakDetectionEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:LocationSimulatorEngine.kt$LocationSimulatorEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:LogCaptureEngine.kt$LogCaptureEngine$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:MemoryMonitorEngine.kt$MemoryMonitorEngine$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:PushSimulatorEngine.kt$PushSimulatorEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushTokenEngine.kt$PushTokenEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SecureStorageEngine.kt$SecureStorageEngine$e: Exception</ID>
-    <ID>UndocumentedPublicClass:CaptureEngine.kt$CaptureEngine</ID>
-    <ID>UndocumentedPublicClass:CoreHolder.kt$CoreHolder</ID>
-    <ID>UndocumentedPublicClass:CrashReporter.kt$CrashReporter</ID>
-    <ID>UndocumentedPublicClass:QueryEngine.kt$QueryEngine</ID>
-    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun cleanup(timestampThreshold: Long)</ID>
-    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun completeTransaction( id: UUID, code: Int, message: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long = 0, protocol: String? = null, tlsVersion: String? = null, error: String? = null, )</ID>
-    <ID>UndocumentedPublicFunction:CaptureEngine.kt$CaptureEngine$suspend fun startTransaction( url: String, method: String, headers: Map&lt;String, List&lt;String&gt;&gt;, bodyStream: InputStream?, bodySize: Long = 0, ): UUID</ID>
-    <ID>UndocumentedPublicFunction:CoreHolder.kt$CoreHolder$fun initialize( capture: CaptureEngine, query: QueryEngine, extensions: ExtensionRegistry? = null, ): Boolean</ID>
-    <ID>UndocumentedPublicFunction:CrashReporter.kt$CrashReporter$fun init()</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeCrashes(): Flow&lt;List&lt;Crash&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun observeTransactions(): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$fun search(query: String): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun clear()</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun clearCrashes()</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun deleteTransactions(ids: List&lt;UUID&gt;)</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getAllTransactionsForExport()</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getBody(blobId: BlobID): String?</ID>
-    <ID>UndocumentedPublicFunction:QueryEngine.kt$QueryEngine$suspend fun getDetails(id: UUID)</ID>
-    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val captureEngine: CaptureEngine? get() = engines.get()?.first</ID>
-    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val extensionRegistry: ExtensionRegistry? get() = engines.get()?.third</ID>
-    <ID>UndocumentedPublicProperty:CoreHolder.kt$CoreHolder$val queryEngine: QueryEngine? get() = engines.get()?.second</ID>
-    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val cpuHistory: StateFlow&lt;List&lt;CpuInfo&gt;&gt; = _cpuHistory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val currentCpu: StateFlow&lt;CpuInfo&gt; = _currentCpu.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CpuMonitorEngine.kt$CpuMonitorEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val config: StateFlow&lt;CryptoConfig&gt; = _config.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val currentResult: StateFlow&lt;CryptoResult?&gt; = _currentResult.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val history: StateFlow&lt;List&lt;CryptoResult&gt;&gt; = _history.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:CryptoEngine.kt$CryptoEngine$val isProcessing: StateFlow&lt;Boolean&gt; = _isProcessing.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val dependencies: StateFlow&lt;List&lt;DependencyInfo&gt;&gt; = _dependencies.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$val summary: StateFlow&lt;DependencySummary&gt; = _summary.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val currentFpsInfo: StateFlow&lt;FpsInfo&gt; = _currentFpsInfo.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val fpsHistory: StateFlow&lt;List&lt;FpsInfo&gt;&gt; = _fpsHistory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine$val isRunning: StateFlow&lt;Boolean&gt; = _isRunning.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:FpsMonitorEngine.kt$FpsMonitorEngine.Companion$const val DEFAULT_HISTORY_SIZE = 60</ID>
-    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val detectedLeaks: StateFlow&lt;List&lt;LeakInfo&gt;&gt; = _detectedLeaks.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val isRunning: StateFlow&lt;Boolean&gt; = _isRunning.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LeakDetectionEngine.kt$LeakDetectionEngine$val leakSummary: StateFlow&lt;LeakSummary&gt; = _leakSummary.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val libraries: StateFlow&lt;List&lt;LoadedLibrary&gt;&gt; = _libraries.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$val summary: StateFlow&lt;LibrarySummary&gt; = _summary.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val currentMockLocation: StateFlow&lt;MockLocation?&gt; = _currentMockLocation.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val isEnabled: StateFlow&lt;Boolean&gt; = _isEnabled.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LocationSimulatorEngine.kt$LocationSimulatorEngine$val lastError: StateFlow&lt;String?&gt; = _lastError.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine$val isCapturing: StateFlow&lt;Boolean&gt; = _isCapturing.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine$val logs: StateFlow&lt;List&lt;LogEntry&gt;&gt; = _logs.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LogCaptureEngine.kt$LogCaptureEngine.Companion$const val DEFAULT_BUFFER_SIZE = 1000</ID>
-    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val currentMemory: StateFlow&lt;MemoryInfo&gt; = _currentMemory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:MemoryMonitorEngine.kt$MemoryMonitorEngine$val memoryHistory: StateFlow&lt;List&lt;MemoryInfo&gt;&gt; = _memoryHistory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine$val state: StateFlow&lt;PerformanceOverlayState&gt; = _state.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDrag: (Offset) -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragEnd: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onDragStart: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onHideOverlay: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveCpu: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveFps: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayEngine.kt$PerformanceOverlayEngine.OverlayCallbacks$val onRemoveMemory: () -&gt; Unit</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// CPU usage thresholds (percentage) const val CPU_GOOD = 50</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// FPS thresholds const val FPS_GOOD = 55</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$// Memory usage thresholds (percentage) const val MEMORY_GOOD = 60</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val CPU_WARNING = 80</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val FPS_WARNING = 30</ID>
-    <ID>UndocumentedPublicProperty:PerformanceOverlayState.kt$PerformanceThresholds$const val MEMORY_WARNING = 80</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_ID = "wormaceptor_test_channel"</ID>
-    <ID>UndocumentedPublicProperty:PushSimulatorEngine.kt$PushSimulatorEngine.Companion$const val DEFAULT_CHANNEL_NAME = "WormaCeptor Test Notifications"</ID>
-    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val currentToken: StateFlow&lt;PushTokenInfo?&gt; = _currentToken.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:PushTokenEngine.kt$PushTokenEngine$val tokenHistory: StateFlow&lt;List&lt;TokenHistory&gt;&gt; = _tokenHistory.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:RateLimitEngine.kt$RateLimitEngine$val config: StateFlow&lt;RateLimitConfig&gt; = _config.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:RateLimitEngine.kt$RateLimitEngine$val stats: StateFlow&lt;ThrottleStats&gt; = _stats.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val encryptedPrefsAccessible: StateFlow&lt;Boolean&gt; = _encryptedPrefsAccessible.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val entries: StateFlow&lt;List&lt;SecureStorageEntry&gt;&gt; = _entries.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val error: StateFlow&lt;String?&gt; = _error.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val isLoading: StateFlow&lt;Boolean&gt; = _isLoading.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val keystoreAccessible: StateFlow&lt;Boolean&gt; = _keystoreAccessible.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val lastRefreshTime: StateFlow&lt;Long?&gt; = _lastRefreshTime.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:SecureStorageEngine.kt$SecureStorageEngine$val summary: StateFlow&lt;SecureStorageSummary&gt; = _summary.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val isMonitoring: StateFlow&lt;Boolean&gt; = _isMonitoring.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val stats: StateFlow&lt;ViolationStats&gt; = _stats.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationEngine.kt$ThreadViolationEngine$val violations: StateFlow&lt;List&lt;ThreadViolation&gt;&gt; = _violations.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine$val connections: StateFlow&lt;List&lt;WebSocketConnection&gt;&gt; = _connections.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine$val messages: StateFlow&lt;List&lt;WebSocketMessage&gt;&gt; = _messages.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebSocketMonitorEngine.kt$WebSocketMonitorEngine.Companion$const val DEFAULT_MAX_MESSAGES = 500</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val isEnabled: StateFlow&lt;Boolean&gt; = _isEnabled.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val requests: StateFlow&lt;List&lt;WebViewRequest&gt;&gt; = _requests.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val resourceTypeFilter: StateFlow&lt;Set&lt;WebViewResourceType&gt;&gt; = _resourceTypeFilter.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val stats: StateFlow&lt;WebViewRequestStats&gt; = _stats.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val urlFilter: StateFlow&lt;String?&gt; = _urlFilter.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorEngine.kt$WebViewMonitorEngine$val webViewIdFilter: StateFlow&lt;String?&gt; = _webViewIdFilter.asStateFlow()</ID>
   </CurrentIssues>
 </SmellBaseline>

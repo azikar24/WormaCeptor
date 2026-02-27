@@ -70,7 +70,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Metadata extracted from an image
+ * Metadata extracted from an image.
+ *
+ * @property width Image width in pixels.
+ * @property height Image height in pixels.
+ * @property format Detected image format (e.g. "PNG", "JPEG", "GIF").
+ * @property fileSize Size of the raw image data in bytes.
+ * @property hasAlpha Whether the image format supports an alpha channel.
+ * @property colorDepth Bit depth of the color channels (e.g. "8-bit").
  */
 data class ImageMetadata(
     val width: Int,
@@ -289,7 +296,7 @@ fun ImagePreviewCard(
                 }
 
                 // Image Preview Container
-                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: 16f / 9f
+                val aspectRatio = metadata?.let { it.width.toFloat() / it.height.toFloat() } ?: (16f / 9f)
                 val constrainedAspectRatio = aspectRatio.coerceIn(0.5f, 2.5f)
 
                 Box(

@@ -86,6 +86,7 @@ import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.shortLabe
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+/** Displays the dependencies list with category filtering, search, and detail views. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DependenciesInspectorScreen(

@@ -1,28 +1,11 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ClassOrdering:WebViewMonitorFeature.kt$WebViewMonitorViewModel$Companion</ID>
     <ID>LongMethod:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
     <ID>LongMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen( request: WebViewRequest, onNavigateBack: () -&gt; Unit, )</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearFilters()</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearRequests()</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun clearSelection()</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun selectRequest(request: WebViewRequest)</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun setSearchQuery(query: String)</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleEnabled()</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleFilters()</ID>
-    <ID>UndocumentedPublicFunction:WebViewMonitorFeature.kt$WebViewMonitorViewModel$fun toggleResourceTypeFilter(type: WebViewResourceType)</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val isEnabled: StateFlow&lt;Boolean&gt; = engine.isEnabled</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val requests: StateFlow&lt;List&lt;WebViewRequest&gt;&gt; = engine.requests</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val resourceTypeFilter: StateFlow&lt;Set&lt;WebViewResourceType&gt;&gt; = engine.resourceTypeFilter</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val selectedRequest: StateFlow&lt;WebViewRequest?&gt; = _selectedRequest.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val showFilters: StateFlow&lt;Boolean&gt; = _showFilters.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:WebViewMonitorFeature.kt$WebViewMonitorViewModel$val stats: StateFlow&lt;WebViewRequestStats&gt; = engine.stats</ID>
-    <ID>UnstableCollections:WebViewMonitorScreen.kt$List&lt;WebViewRequest&gt;</ID>
-    <ID>UnstableCollections:WebViewMonitorScreen.kt$Set&lt;WebViewResourceType&gt;</ID>
-    <ID>UnstableCollections:WebViewRequestDetailScreen.kt$Map&lt;String, String&gt;</ID>
+    <ID>ParameterNaming:WebViewMonitorScreen.kt$onSearchQueryChanged</ID>
     <ID>UnusedPrivateMember:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
     <ID>UnusedPrivateMember:WebViewRequestDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewRequestDetailScreenPreview()</ID>
     <ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>

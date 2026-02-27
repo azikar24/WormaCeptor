@@ -44,7 +44,16 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * PDF metadata extracted from the document
+ * PDF metadata extracted from the document.
+ *
+ * @property pageCount Total number of pages in the PDF.
+ * @property title Document title from PDF metadata, or null if absent.
+ * @property author Document author from PDF metadata, or null if absent.
+ * @property creator Application that created the PDF, or null if absent.
+ * @property creationDate Creation date string from PDF metadata, or null if absent.
+ * @property fileSize Size of the PDF data in bytes.
+ * @property version PDF specification version (e.g. "1.7"), or null if undetected.
+ * @property isPasswordProtected Whether the PDF requires a password to open.
  */
 data class PdfMetadata(
     val pageCount: Int,
@@ -61,9 +70,29 @@ data class PdfMetadata(
  * State representing the PDF loading status
  */
 sealed class PdfLoadState {
+    /** The PDF is currently being loaded and rendered. */
     data object Loading : PdfLoadState()
+
+    /**
+     * The PDF was loaded successfully with a rendered thumbnail.
+     *
+     * @property thumbnail Bitmap of the rendered first page.
+     * @property metadata Parsed PDF metadata.
+     */
     data class Success(val thumbnail: Bitmap, val metadata: PdfMetadata) : PdfLoadState()
+
+    /**
+     * The PDF failed to load.
+     *
+     * @property message Human-readable error description.
+     */
     data class Error(val message: String) : PdfLoadState()
+
+    /**
+     * The PDF requires a password to open.
+     *
+     * @property metadata Partial PDF metadata available without decryption.
+     */
     data class PasswordProtected(val metadata: PdfMetadata) : PdfLoadState()
 }
 

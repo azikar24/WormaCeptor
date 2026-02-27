@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
+/** In-memory [PushSimulatorRepository] implementation with preset notification templates. */
 class InMemoryPushSimulatorRepository : PushSimulatorRepository {
 
     private val _templates = MutableStateFlow(presetTemplates)
@@ -28,6 +29,7 @@ class InMemoryPushSimulatorRepository : PushSimulatorRepository {
         _templates.update { current -> current.filter { it.id != id } }
     }
 
+    /** Pre-configured notification templates for quick testing. */
     companion object {
         private val presetTemplates: List<NotificationTemplate> = listOf(
             NotificationTemplate(

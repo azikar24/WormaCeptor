@@ -10,12 +10,14 @@ import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import java.io.InputStream
 import java.util.UUID
 
+/** Engine responsible for capturing and storing network request/response data. */
 class CaptureEngine(
     private val repository: TransactionRepository,
     private val blobStorage: BlobStorage,
     private val extensionRegistry: ExtensionRegistry? = null,
 ) {
 
+    /** Records the start of a network request and returns a tracking UUID. */
     suspend fun startTransaction(
         url: String,
         method: String,
@@ -32,6 +34,7 @@ class CaptureEngine(
         return transaction.id
     }
 
+    /** Records the response for a previously started transaction. */
     suspend fun completeTransaction(
         id: UUID,
         code: Int,
@@ -71,6 +74,7 @@ class CaptureEngine(
         repository.saveTransaction(updated)
     }
 
+    /** Deletes transactions older than the given timestamp threshold. */
     suspend fun cleanup(timestampThreshold: Long) {
         repository.deleteTransactionsBefore(timestampThreshold)
     }

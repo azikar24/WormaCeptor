@@ -12,6 +12,20 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * Colors for the Memory Monitoring feature.
  * Uses centralized colors from WormaCeptorColors.Memory for chart colors
  * and WormaCeptorColors status colors for status indicators.
+ *
+ * @property heapUsed Color representing used heap memory in charts.
+ * @property heapFree Color representing free heap memory in charts.
+ * @property heapTotal Color representing total heap capacity in charts.
+ * @property nativeHeap Color representing native heap memory in charts.
+ * @property normal Color indicating normal (healthy) memory usage.
+ * @property warning Color indicating elevated memory usage.
+ * @property critical Color indicating dangerously high memory usage.
+ * @property cardBackground Background color for memory metric cards.
+ * @property chartBackground Background color for memory charts.
+ * @property gridLines Color for chart grid lines.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for less prominent labels.
+ * @property valuePrimary Color for primary metric values.
  */
 @Immutable
 data class MemoryColors(
@@ -29,6 +43,7 @@ data class MemoryColors(
     val labelSecondary: Color,
     val valuePrimary: Color,
 ) {
+    /** Returns a status color (normal, warning, critical) based on heap usage percentage. */
     fun statusColorForUsage(usagePercent: Float): Color = when {
         usagePercent >= 80f -> critical
         usagePercent >= 60f -> warning

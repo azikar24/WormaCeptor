@@ -21,7 +21,7 @@ class RateLimitViewModel(
     private val engine: RateLimitEngine,
 ) : ViewModel() {
 
-    // Current configuration
+    /** Current rate limiting configuration including speed, latency, and packet loss settings. */
     val config: StateFlow<RateLimitConfig> = engine.config
         .stateIn(
             viewModelScope,
@@ -29,7 +29,7 @@ class RateLimitViewModel(
             RateLimitConfig.default(),
         )
 
-    // Throttle statistics
+    /** Accumulated throttle statistics such as bytes throttled and requests delayed. */
     val stats: StateFlow<ThrottleStats> = engine.stats
         .stateIn(
             viewModelScope,

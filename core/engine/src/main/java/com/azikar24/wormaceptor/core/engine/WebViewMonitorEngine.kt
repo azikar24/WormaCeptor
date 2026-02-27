@@ -59,14 +59,20 @@ class WebViewMonitorEngine(
 
     // Whether monitoring is enabled (default: true)
     private val _isEnabled = MutableStateFlow(true)
+
+    /** Whether WebView network monitoring is currently enabled. */
     val isEnabled: StateFlow<Boolean> = _isEnabled.asStateFlow()
 
     // All captured requests
     private val _requests = MutableStateFlow<List<WebViewRequest>>(emptyList())
+
+    /** All captured WebView network requests. */
     val requests: StateFlow<List<WebViewRequest>> = _requests.asStateFlow()
 
     // Statistics about captured requests
     private val _stats = MutableStateFlow(WebViewRequestStats.empty())
+
+    /** Aggregated statistics about captured WebView requests. */
     val stats: StateFlow<WebViewRequestStats> = _stats.asStateFlow()
 
     // Track pending requests for timing
@@ -77,14 +83,20 @@ class WebViewMonitorEngine(
 
     // URL pattern filter
     private val _urlFilter = MutableStateFlow<String?>(null)
+
+    /** The active URL pattern filter, or null if no URL filter is applied. */
     val urlFilter: StateFlow<String?> = _urlFilter.asStateFlow()
 
     // Resource type filter
     private val _resourceTypeFilter = MutableStateFlow<Set<WebViewResourceType>>(emptySet())
+
+    /** The set of resource types to capture; empty means all types are captured. */
     val resourceTypeFilter: StateFlow<Set<WebViewResourceType>> = _resourceTypeFilter.asStateFlow()
 
     // WebView ID filter
     private val _webViewIdFilter = MutableStateFlow<String?>(null)
+
+    /** The active WebView instance ID filter, or null if capturing from all WebViews. */
     val webViewIdFilter: StateFlow<String?> = _webViewIdFilter.asStateFlow()
 
     /**
@@ -383,6 +395,7 @@ class WebViewMonitorEngine(
             return delegate?.shouldInterceptRequest(view, request)
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
         override fun shouldInterceptRequest(
             view: WebView?,
@@ -431,11 +444,7 @@ class WebViewMonitorEngine(
         ) {
             if (_isEnabled.value && request != null && error != null) {
                 val url = request.url.toString()
-                val errorDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    error.description?.toString() ?: "Unknown error"
-                } else {
-                    "Error"
-                }
+                val errorDescription = error.description?.toString() ?: "Unknown error"
 
                 // Find and update the matching request
                 _requests.value.find { it.url == url && it.webViewId == webViewId && it.isPending }?.let { req ->
@@ -449,6 +458,7 @@ class WebViewMonitorEngine(
             delegate?.onReceivedError(view, request, error)
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
         override fun onReceivedError(
             view: WebView?,
@@ -518,6 +528,7 @@ class WebViewMonitorEngine(
             return delegate?.shouldOverrideUrlLoading(view, request) ?: false
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
         override fun shouldOverrideUrlLoading(
             view: WebView?,
@@ -557,6 +568,7 @@ class WebViewMonitorEngine(
         }
     }
 
+    /** Storage limits and monitoring defaults. */
     companion object {
         /** Default maximum number of requests to store */
         const val DEFAULT_MAX_REQUESTS = 1000

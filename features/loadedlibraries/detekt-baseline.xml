@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:LoadedLibrariesScreen.kt$@Composable private fun LibraryCard( library: LoadedLibrary, onClick: () -&gt; Unit, colors: LoadedLibrariesColors, )</ID>
     <ID>LongMethod:LoadedLibrariesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LoadedLibrariesScreen( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
@@ -39,41 +39,10 @@
     <ID>MagicNumber:LoadedLibrariesScreen.kt$3</ID>
     <ID>MagicNumber:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$5000</ID>
     <ID>ModifierWithoutDefault:LoadedLibrariesScreen.kt$modifier</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LoadedLibrariesScreen( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun dismissDetail()</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun exportAsText(): String</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun refresh()</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun selectLibrary(library: LoadedLibrary)</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun setSearchQuery(query: String)</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun setSelectedType(type: LibraryType?)</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$fun setShowSystemLibs(show: Boolean)</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val aarResource: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val appLibrary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val cardBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val chipBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val dex: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val divider: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val jar: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val labelPrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val labelSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val nativeSo: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val pathText: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val primary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val searchBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val searchHighlight: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val selectedChipBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val systemBadge: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val systemLibrary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesColors.kt$LoadedLibrariesColors$val valuePrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$// Error state val error: StateFlow&lt;String?&gt; = engine.error</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$// Filtered libraries val filteredLibraries: StateFlow&lt;ImmutableList&lt;LoadedLibrary&gt;&gt; = combine(engine.libraries, _selectedType, _showSystemLibs, _searchQuery) { libs, type, showSystem, query -&gt; var filtered = libs if (type != null) filtered = filtered.filter { it.type == type } if (!showSystem) filtered = filtered.filter { !it.isSystemLibrary } if (query.isNotBlank()) { val lowerQuery = query.lowercase() filtered = filtered.filter { it.name.lowercase().contains( lowerQuery, ) || it.path.lowercase().contains(lowerQuery) } } filtered.toImmutableList() }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$// Loading state val isLoading: StateFlow&lt;Boolean&gt; = engine.isLoading</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$// Summary val summary: StateFlow&lt;LibrarySummary&gt; = engine.summary .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), LibrarySummary.empty())</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$val searchQuery: StateFlow&lt;String&gt; = _searchQuery.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$val selectedLibrary: StateFlow&lt;LoadedLibrary?&gt; = _selectedLibrary.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$val selectedType: StateFlow&lt;LibraryType?&gt; = _selectedType.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$val showSystemLibs: StateFlow&lt;Boolean&gt; = _showSystemLibs.asStateFlow()</ID>
-    <ID>UnstableCollections:LoadedLibrariesScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
+    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onLibrarySelected</ID>
+    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onShowSystemLibsChanged</ID>
+    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onTypeSelected</ID>
     <ID>ViewModelInjection:LoadedLibrariesFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

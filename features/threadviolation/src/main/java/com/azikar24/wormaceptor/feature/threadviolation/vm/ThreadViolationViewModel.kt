@@ -25,15 +25,17 @@ class ThreadViolationViewModel(
     private val engine: ThreadViolationEngine,
 ) : ViewModel() {
 
-    // Filter by type
     private val _selectedType = MutableStateFlow<ViolationType?>(null)
+
+    /** Currently selected violation type filter, or null for all types. */
     val selectedType: StateFlow<ViolationType?> = _selectedType.asStateFlow()
 
-    // Selected violation for detail view
     private val _selectedViolation = MutableStateFlow<ThreadViolation?>(null)
+
+    /** Currently selected violation for the detail view, or null when none is selected. */
     val selectedViolation: StateFlow<ThreadViolation?> = _selectedViolation.asStateFlow()
 
-    // Is monitoring state
+    /** Whether thread violation monitoring is currently active. */
     val isMonitoring: StateFlow<Boolean> = engine.isMonitoring
         .stateIn(
             viewModelScope,
@@ -41,7 +43,7 @@ class ThreadViolationViewModel(
             false,
         )
 
-    // Stats
+    /** Aggregated violation statistics (counts per type, total duration, etc.). */
     val stats: StateFlow<ViolationStats> = engine.stats
         .stateIn(
             viewModelScope,
@@ -49,7 +51,7 @@ class ThreadViolationViewModel(
             ViolationStats.empty(),
         )
 
-    // Filtered violations
+    /** Violations filtered by the currently selected type. */
     val filteredViolations: StateFlow<ImmutableList<ThreadViolation>> =
         combine(
             engine.violations,

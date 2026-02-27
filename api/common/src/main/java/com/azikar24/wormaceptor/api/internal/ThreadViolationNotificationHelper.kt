@@ -5,11 +5,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 
+/** Displays Android notifications when main-thread violations are detected. */
 class ThreadViolationNotificationHelper(
     private val context: Context,
 ) {
@@ -33,8 +34,9 @@ class ThreadViolationNotificationHelper(
         }
     }
 
+    /** Displays a notification with details about the detected thread violation. */
     fun show(violation: ThreadViolation) {
-        val launchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(THREAD_VIOLATION_DEEP_LINK)).apply {
+        val launchIntent = Intent(Intent.ACTION_VIEW, THREAD_VIOLATION_DEEP_LINK.toUri()).apply {
             setPackage(context.packageName)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
@@ -63,6 +65,7 @@ class ThreadViolationNotificationHelper(
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
+    /** Notification channel and identifier constants. */
     companion object {
         private const val CHANNEL_ID = "wormaceptor_thread_violation_channel"
         private const val NOTIFICATION_ID = 4202

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
+/** In-memory [WebViewMonitorRepository] implementation for non-persistent debug builds. */
 class InMemoryWebViewMonitorRepository : WebViewMonitorRepository {
 
     private val _requestsFlow = MutableStateFlow<Map<String, WebViewRequest>>(emptyMap())

@@ -54,7 +54,9 @@ class TransactionPagingSource(
         }
     }
 
+    /** Paging configuration constants. */
     companion object {
+        /** Number of transactions loaded per page. */
         const val PAGE_SIZE = 30
     }
 }

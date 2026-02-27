@@ -15,32 +15,47 @@ import androidx.compose.ui.graphics.Color
  * - Latency: Orange/Amber tones for delay indication
  * - PacketLoss: Red tones for dropped packets
  */
+/**
+ * @property primary Main accent color for the rate limit feature.
+ * @property download Color representing download speed metrics.
+ * @property upload Color representing upload speed metrics.
+ * @property latency Color representing latency injection metrics.
+ * @property packetLoss Color representing packet loss metrics.
+ * @property enabled Color indicating rate limiting is active.
+ * @property disabled Color indicating rate limiting is inactive.
+ * @property presetWifi Badge color for the WiFi network preset.
+ * @property preset3G Badge color for the 3G network preset.
+ * @property preset2G Badge color for the 2G network preset.
+ * @property presetEdge Badge color for the EDGE network preset.
+ * @property presetOffline Badge color for the Offline network preset.
+ * @property cardBackground Background color for card containers.
+ * @property sliderTrack Color for the slider track.
+ * @property sliderThumb Color for the slider thumb.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for labels.
+ * @property valuePrimary Primary text color for displayed values.
+ */
 @Immutable
 data class RateLimitColors(
-    // Feature accent colors
     val primary: Color,
     val download: Color,
     val upload: Color,
     val latency: Color,
     val packetLoss: Color,
 
-    // Status colors
     val enabled: Color,
     val disabled: Color,
 
-    // Preset badge colors
     val presetWifi: Color,
     val preset3G: Color,
     val preset2G: Color,
     val presetEdge: Color,
     val presetOffline: Color,
 
-    // Background colors
     val cardBackground: Color,
     val sliderTrack: Color,
     val sliderThumb: Color,
 
-    // Text colors
     val labelPrimary: Color,
     val labelSecondary: Color,
     val valuePrimary: Color,

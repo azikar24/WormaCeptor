@@ -97,7 +97,7 @@ class FormBodyParser : BaseBodyParser() {
             decoded.all { c ->
                 c.isLetterOrDigit() || c in setOf('_', '-', '.', '[', ']')
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -126,7 +126,7 @@ class FormBodyParser : BaseBodyParser() {
                         nestedKeys = nestedKeys,
                     ),
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Keep raw values if decoding fails
                 params.add(
                     FormParameter(
@@ -157,11 +157,11 @@ class FormBodyParser : BaseBodyParser() {
             return Triple(name, null, emptyList())
         }
 
-        val baseName = name.substring(0, bracketIndex)
+        val baseName = name.take(bracketIndex)
         val nestedKeys = mutableListOf<String>()
         var arrayIndex: Int? = null
 
-        val bracketPattern = """\[([^\]]*)\]""".toRegex()
+        val bracketPattern = """\[([^]]*)]""".toRegex()
         val matches = bracketPattern.findAll(name.substring(bracketIndex))
 
         matches.forEachIndexed { index, match ->
@@ -228,6 +228,13 @@ class FormBodyParser : BaseBodyParser() {
 
 /**
  * Represents a parsed form parameter.
+ *
+ * @property rawKey The original URL-encoded key before decoding.
+ * @property key The decoded base parameter name (without bracket notation).
+ * @property value The decoded parameter value.
+ * @property arrayIndex Array index from bracket notation, or -1 for empty brackets.
+ * @property nestedKeys Nested key names extracted from bracket notation (e.g., user[address][city]).
+ * @property decodingFailed Whether URL decoding failed for this parameter.
  */
 data class FormParameter(
     val rawKey: String,

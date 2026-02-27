@@ -23,7 +23,7 @@ class MemoryViewModel(
     private val engine: MemoryMonitorEngine,
 ) : ViewModel() {
 
-    // Current memory snapshot
+    /** Current memory snapshot with heap and native allocation data. */
     val currentMemory: StateFlow<MemoryInfo> = engine.currentMemory
         .stateIn(
             viewModelScope,
@@ -31,7 +31,7 @@ class MemoryViewModel(
             MemoryInfo.empty(),
         )
 
-    // Memory history for charts
+    /** Historical memory snapshots used for rendering time-series charts. */
     val memoryHistory: StateFlow<ImmutableList<MemoryInfo>> = engine.memoryHistory
         .map { it.toImmutableList() }
         .stateIn(
@@ -40,10 +40,10 @@ class MemoryViewModel(
             persistentListOf(),
         )
 
-    // Monitoring state
+    /** Whether memory monitoring is currently active. */
     val isMonitoring: StateFlow<Boolean> = engine.isMonitoring
 
-    // Heap warning indicator (when usage exceeds threshold)
+    /** Whether heap usage exceeds the warning threshold. */
     val isHeapWarning: StateFlow<Boolean> = engine.currentMemory
         .map { it.heapUsagePercent >= MemoryMonitorEngine.HEAP_WARNING_THRESHOLD }
         .stateIn(
@@ -78,11 +78,5 @@ class MemoryViewModel(
      */
     fun clearHistory() {
         engine.clearHistory()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Note: We don't stop the engine here - monitoring persists across navigation.
-        // The engine lifecycle is managed by the user via explicit start/stop.
     }
 }

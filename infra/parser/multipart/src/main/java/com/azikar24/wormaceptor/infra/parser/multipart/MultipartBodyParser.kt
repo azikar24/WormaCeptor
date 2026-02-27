@@ -123,7 +123,7 @@ class MultipartBodyParser : BaseBodyParser() {
             val separatorIndex = findHeaderBodySeparator(trimmed)
             if (separatorIndex == -1) continue
 
-            val headerSection = trimmed.substring(0, separatorIndex)
+            val headerSection = trimmed.take(separatorIndex)
             val bodyContent = trimmed.substring(separatorIndex).trimStart('\r', '\n')
                 .trimEnd('\r', '\n')
 
@@ -163,7 +163,7 @@ class MultipartBodyParser : BaseBodyParser() {
         for (line in lines) {
             val colonIndex = line.indexOf(':')
             if (colonIndex > 0) {
-                val key = line.substring(0, colonIndex).trim()
+                val key = line.take(colonIndex).trim()
                 val value = line.substring(colonIndex + 1).trim()
                 headers[key] = value
             }
@@ -252,6 +252,13 @@ class MultipartBodyParser : BaseBodyParser() {
 
 /**
  * Represents a single part in a multipart message.
+ *
+ * @property name The name from the Content-Disposition header, if present.
+ * @property filename The filename from the Content-Disposition header, if present.
+ * @property contentType The MIME type of this part, if specified.
+ * @property headers All parsed headers for this part.
+ * @property content The body content of the part as a string.
+ * @property isBinary Whether the part content is detected as binary data.
  */
 data class MultipartPart(
     val name: String?,

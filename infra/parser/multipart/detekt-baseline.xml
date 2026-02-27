@@ -13,11 +13,5 @@
     <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$500</ID>
     <ID>MagicNumber:MultipartBodyParser.kt$MultipartBodyParser$9</ID>
     <ID>TooGenericExceptionCaught:MultipartBodyParser.kt$MultipartBodyParser$e: Exception</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val content: String</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val contentType: String?</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val filename: String?</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val headers: Map&lt;String, String&gt;</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val isBinary: Boolean</ID>
-    <ID>UndocumentedPublicProperty:MultipartBodyParser.kt$MultipartPart$val name: String?</ID>
   </CurrentIssues>
 </SmellBaseline>

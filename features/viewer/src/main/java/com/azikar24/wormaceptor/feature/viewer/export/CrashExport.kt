@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 
+/** Exports the given crashes as a JSON file and opens the system share sheet. */
 suspend fun exportCrashes(
     context: Context,
     crashes: List<Crash>,

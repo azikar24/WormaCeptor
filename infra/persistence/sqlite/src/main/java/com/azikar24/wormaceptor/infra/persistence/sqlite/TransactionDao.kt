@@ -7,38 +7,48 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
+/** Data access object for network transaction persistence. */
 @Dao
 interface TransactionDao {
+    /** Observes all transactions ordered by newest first. */
     @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
     fun getAll(): Flow<List<TransactionEntity>>
 
+    /** Retrieves a single transaction by its UUID. */
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: UUID): TransactionEntity?
 
+    /** Retrieves a single transaction by its string ID. */
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: String): TransactionEntity?
 
+    /** Returns all transactions as a snapshot list, ordered by newest first. */
     @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
     suspend fun getAllAsList(): List<TransactionEntity>
 
+    /** Inserts or replaces a transaction record. */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(transaction: TransactionEntity)
 
+    /** Deletes all transaction records. */
     @Query("DELETE FROM transactions")
     suspend fun deleteAll()
 
+    /** Deletes transactions older than the given Unix timestamp. */
     @Query("DELETE FROM transactions WHERE timestamp < :timestamp")
     suspend fun deleteOlderThan(timestamp: Long)
 
+    /** Deletes transactions matching the given list of UUIDs. */
     @Query("DELETE FROM transactions WHERE id IN (:ids)")
     suspend fun deleteByIds(ids: List<UUID>)
 
+    /** Searches transactions by URL or HTTP method, ordered by newest first. */
     @Query(
         "SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC",
     )
     fun search(query: String): Flow<List<TransactionEntity>>
 
-    // Paged queries for lazy loading
+    /** Retrieves a page of transactions with optional search, status, and method filters. */
     @Query(
         """
         SELECT * FROM transactions
@@ -59,6 +69,7 @@ interface TransactionDao {
         method: String?,
     ): List<TransactionEntity>
 
+    /** Returns the count of transactions matching an optional search query. */
     @Query(
         """
         SELECT COUNT(*) FROM transactions

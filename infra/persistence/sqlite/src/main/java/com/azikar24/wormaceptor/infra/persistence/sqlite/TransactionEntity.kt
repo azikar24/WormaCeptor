@@ -17,6 +17,25 @@ import java.util.UUID
  * - resCode: Filtering by status code range
  * - reqMethod: Filtering by HTTP method
  * - timestamp + resCode: Compound index for sorted, filtered queries
+ *
+ * @property id Unique identifier for the transaction.
+ * @property timestamp Epoch millis when the request was initiated.
+ * @property durationMs Round-trip duration in milliseconds, or null if still in-flight.
+ * @property status Current lifecycle status of the transaction.
+ * @property reqUrl Full request URL including query parameters.
+ * @property reqMethod HTTP method (GET, POST, PUT, etc.).
+ * @property reqHeaders Map of request header names to their values.
+ * @property reqBodyRef Blob storage reference key for the request body, or null if empty.
+ * @property reqBodySize Size of the request body in bytes.
+ * @property resCode HTTP response status code, or null if no response received.
+ * @property resMessage HTTP response status message, or null if no response received.
+ * @property resHeaders Map of response header names to their values, or null if no response.
+ * @property resBodyRef Blob storage reference key for the response body, or null if empty.
+ * @property resError Error message if the request failed, or null on success.
+ * @property resProtocol Protocol used for the response (e.g. "h2", "http/1.1").
+ * @property resTlsVersion TLS version negotiated for the connection, or null if plaintext.
+ * @property resBodySize Size of the response body in bytes.
+ * @property extensions Arbitrary key-value metadata attached to the transaction.
  */
 @Entity(
     tableName = "transactions",
@@ -52,6 +71,7 @@ data class TransactionEntity(
 
     val extensions: Map<String, String>,
 ) {
+    /** Converts this entity to a domain [NetworkTransaction] model. */
     fun toDomain(): NetworkTransaction {
         return NetworkTransaction(
             id = id,
@@ -83,7 +103,9 @@ data class TransactionEntity(
         )
     }
 
+    /** Domain-entity conversion factory. */
     companion object {
+        /** Creates a [TransactionEntity] from a domain [NetworkTransaction] model. */
         fun fromDomain(domain: NetworkTransaction): TransactionEntity {
             return TransactionEntity(
                 id = domain.id,

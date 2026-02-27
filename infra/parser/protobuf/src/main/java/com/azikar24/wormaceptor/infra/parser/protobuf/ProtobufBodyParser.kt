@@ -119,7 +119,7 @@ class ProtobufBodyParser : BaseBodyParser() {
 
             // If we successfully parsed some fields and read a reasonable amount, likely protobuf
             return validFieldCount > 0 && totalBytesRead > 0
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return false
         }
     }
@@ -184,7 +184,7 @@ class ProtobufBodyParser : BaseBodyParser() {
                 }
                 else -> null
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -217,7 +217,7 @@ class ProtobufBodyParser : BaseBodyParser() {
                 }
                 else -> false
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -320,7 +320,7 @@ class ProtobufBodyParser : BaseBodyParser() {
             } else {
                 null
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -369,6 +369,7 @@ class ProtobufBodyParser : BaseBodyParser() {
         return sb.toString()
     }
 
+    /** Wire-type constants for the protobuf binary encoding. */
     companion object {
         private const val WIRE_TYPE_VARINT = 0
         private const val WIRE_TYPE_64BIT = 1
@@ -381,6 +382,11 @@ class ProtobufBodyParser : BaseBodyParser() {
 
 /**
  * Represents a decoded protobuf field.
+ *
+ * @property fieldNumber The field number from the protobuf tag.
+ * @property wireType The numeric wire type identifier (0-5).
+ * @property wireTypeName Human-readable wire type name (e.g., "Varint", "64-bit").
+ * @property value Formatted string representation of the field value.
  */
 data class ProtobufField(
     val fieldNumber: Int,

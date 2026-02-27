@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
+/** Standard-sized floating action button styled with the WormaCeptor design system. */
 @Composable
 fun WormaCeptorFAB(
     onClick: () -> Unit,
@@ -40,6 +41,7 @@ fun WormaCeptorFAB(
     }
 }
 
+/** Small-sized floating action button styled with the WormaCeptor design system. */
 @Composable
 fun WormaCeptorSmallFAB(
     onClick: () -> Unit,
@@ -65,6 +67,7 @@ fun WormaCeptorSmallFAB(
     }
 }
 
+/** Extended floating action button with text and optional icon, styled with the WormaCeptor design system. */
 @Composable
 fun WormaCeptorExtendedFAB(
     onClick: () -> Unit,

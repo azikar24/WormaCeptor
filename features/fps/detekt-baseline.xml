@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:FpsScreen.kt$@Composable private fun CurrentFpsCard( fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:FpsScreen.kt$@Composable private fun DroppedFramesCard( droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
@@ -12,20 +12,6 @@
     <ID>MagicNumber:FpsScreen.kt$65f</ID>
     <ID>MagicNumber:FpsScreen.kt$8f</ID>
     <ID>MagicNumber:FpsViewModel.kt$FpsViewModel$5000</ID>
-    <ID>UndocumentedPublicFunction:FpsColors.kt$FpsColors$fun backgroundForFps(fps: Float): Color</ID>
-    <ID>UndocumentedPublicFunction:FpsColors.kt$FpsColors$fun forFps(fps: Float): Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartFill: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartGrid: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val chartLine: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val critical: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val criticalBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val good: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val goodBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val jankIndicator: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val warning: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors$val warningBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors.Companion$const val FPS_GOOD_THRESHOLD = 55f</ID>
-    <ID>UndocumentedPublicProperty:FpsColors.kt$FpsColors.Companion$const val FPS_WARNING_THRESHOLD = 30f</ID>
     <ID>UnusedPrivateMember:FpsScreen.kt$@Suppress("MagicNumber") @Preview(showBackground = true) @Composable private fun FpsScreenContentPreview()</ID>
     <ID>ViewModelInjection:FpsFeature.kt$viewModel</ID>
   </CurrentIssues>

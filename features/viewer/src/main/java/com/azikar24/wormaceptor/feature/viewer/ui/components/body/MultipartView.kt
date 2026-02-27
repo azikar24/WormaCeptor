@@ -52,6 +52,13 @@ import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
  * A data class representing a single part in multipart form data.
+ *
+ * @property name The form field name from the Content-Disposition header.
+ * @property fileName The original filename if this part is a file upload, or null.
+ * @property contentType The MIME type of this part, or null if unspecified.
+ * @property headers Additional headers for this part (excluding Content-Disposition and Content-Type).
+ * @property body The decoded body content of this part.
+ * @property size The length of the body content in characters.
  */
 data class MultipartPart(
     val name: String,
@@ -387,7 +394,7 @@ private fun parseMultipartPart(section: String): MultipartPart? {
         ?: section.indexOf("\n\n").takeIf { it >= 0 }
         ?: return null
 
-    val headerSection = section.substring(0, headerBodySplit)
+    val headerSection = section.take(headerBodySplit)
     val body = section.substring(
         headerBodySplit + if (section.contains("\r\n\r\n")) 4 else 2,
     ).trimEnd()
@@ -396,7 +403,7 @@ private fun parseMultipartPart(section: String): MultipartPart? {
     headerSection.lines().forEach { line ->
         val colonIndex = line.indexOf(':')
         if (colonIndex > 0) {
-            val key = line.substring(0, colonIndex).trim()
+            val key = line.take(colonIndex).trim()
             val value = line.substring(colonIndex + 1).trim()
             headers[key] = value
         }

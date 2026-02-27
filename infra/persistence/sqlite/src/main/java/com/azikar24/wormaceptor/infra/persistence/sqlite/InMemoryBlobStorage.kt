@@ -7,6 +7,7 @@ import java.io.InputStream
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
+/** [BlobStorage] implementation that stores request/response bodies in memory. */
 class InMemoryBlobStorage : BlobStorage {
     private val storage = ConcurrentHashMap<BlobID, ByteArray>()
 

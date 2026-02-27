@@ -7,10 +7,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.SimulatedNotification
@@ -54,12 +54,12 @@ class PushSimulatorEngine(private val context: Context) {
         // Set large icon if provided
         notification.largeIconUri?.let { uriString ->
             try {
-                val uri = Uri.parse(uriString)
+                val uri = uriString.toUri()
                 context.contentResolver.openInputStream(uri)?.use { inputStream ->
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     bitmap?.let { builder.setLargeIcon(it) }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignore invalid URI
             }
         }
@@ -259,9 +259,15 @@ class PushSimulatorEngine(private val context: Context) {
         }
     }
 
+    /** Default notification channel configuration. */
     companion object {
+        /** Channel ID used for the default test notification channel. */
         const val DEFAULT_CHANNEL_ID = "wormaceptor_test_channel"
+
+        /** User-visible name for the default test notification channel. */
         const val DEFAULT_CHANNEL_NAME = "WormaCeptor Test Notifications"
+
+        /** Description for the default test notification channel. */
         const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"
         private const val ACTION_BROADCAST_PREFIX = "com.azikar24.wormaceptor.NOTIFICATION_ACTION_"
     }

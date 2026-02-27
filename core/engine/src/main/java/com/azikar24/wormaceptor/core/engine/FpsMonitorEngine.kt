@@ -37,12 +37,18 @@ class FpsMonitorEngine(
     private var fpsCount = 0
 
     private val _currentFpsInfo = MutableStateFlow(FpsInfo.EMPTY)
+
+    /** The most recent FPS measurement including min, max, average, and dropped frames. */
     val currentFpsInfo: StateFlow<FpsInfo> = _currentFpsInfo.asStateFlow()
 
     private val _fpsHistory = MutableStateFlow<List<FpsInfo>>(emptyList())
+
+    /** Historical FPS samples for charting. */
     val fpsHistory: StateFlow<List<FpsInfo>> = _fpsHistory.asStateFlow()
 
     private val _isRunning = MutableStateFlow(false)
+
+    /** Whether the FPS monitor is actively measuring frame delivery. */
     val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
     private val choreographer: Choreographer by lazy {
@@ -186,7 +192,9 @@ class FpsMonitorEngine(
         _fpsHistory.value = currentHistory.toList()
     }
 
+    /** Sampling intervals and history size defaults. */
     companion object {
+        /** Default number of FPS history samples to retain. */
         const val DEFAULT_HISTORY_SIZE = 60
         private const val FPS_CALCULATION_WINDOW = 10
         private const val HISTORY_SAMPLE_INTERVAL = 6 // Sample every 6 frames (~100ms at 60fps)

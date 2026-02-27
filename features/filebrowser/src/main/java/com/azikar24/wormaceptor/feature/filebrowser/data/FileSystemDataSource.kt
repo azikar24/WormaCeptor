@@ -181,7 +181,7 @@ class FileSystemDataSource(private val context: Context) {
 
         return try {
             file.delete()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -239,8 +239,7 @@ class FileSystemDataSource(private val context: Context) {
                 trimmed.startsWith("[") -> JSONArray(trimmed).toString(2)
                 else -> {
                     // Try to parse anyway
-                    val token = JSONTokener(trimmed).nextValue()
-                    when (token) {
+                    when (val token = JSONTokener(trimmed).nextValue()) {
                         is JSONObject -> token.toString(2)
                         is JSONArray -> token.toString(2)
                         else -> json
@@ -248,7 +247,7 @@ class FileSystemDataSource(private val context: Context) {
                 }
             }
             Pair(formatted, true)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Return original content if parsing fails
             Pair(json, false)
         }
@@ -281,7 +280,7 @@ class FileSystemDataSource(private val context: Context) {
             val writer = StringWriter()
             transformer.transform(DOMSource(document), StreamResult(writer))
             Pair(writer.toString(), true)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Return original content if parsing fails
             Pair(xml, false)
         }
@@ -314,7 +313,7 @@ class FileSystemDataSource(private val context: Context) {
                 height = options.outHeight,
                 mimeType = getMimeType(file.extension) ?: "image/*",
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // If image decode fails, try as binary
             readBinaryFile(file)
         }
@@ -333,7 +332,7 @@ class FileSystemDataSource(private val context: Context) {
                 pageCount = pageCount,
                 sizeBytes = file.length(),
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // If PDF rendering fails, fall back to binary
             readBinaryFile(file)
         }
@@ -343,6 +342,7 @@ class FileSystemDataSource(private val context: Context) {
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.lowercase())
     }
 
+    /** File size limits and known text extensions used during content detection. */
     companion object {
         private const val MAX_TEXT_FILE_SIZE = 1_048_576L // 1MB
         private const val MAX_BINARY_PREVIEW_SIZE = 5_242_880L // 5MB

@@ -37,6 +37,7 @@ data class LoadedLibrary(
         AAR_RESOURCE,
     }
 
+    /** Factory methods for [LoadedLibrary]. */
     companion object {
         /**
          * Creates an empty LoadedLibrary instance.
@@ -73,6 +74,7 @@ data class LibrarySummary(
     val systemLibraryCount: Int,
     val appLibraryCount: Int,
 ) {
+    /** Factory methods for [LibrarySummary]. */
     companion object {
         /**
          * Creates an empty LibrarySummary instance.

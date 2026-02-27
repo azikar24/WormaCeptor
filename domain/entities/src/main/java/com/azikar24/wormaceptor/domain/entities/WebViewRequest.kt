@@ -64,7 +64,7 @@ data class WebViewRequest(
     val host: String
         get() = try {
             java.net.URL(url).host
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             url
         }
 
@@ -74,10 +74,11 @@ data class WebViewRequest(
     val path: String
         get() = try {
             java.net.URL(url).path.ifEmpty { "/" }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             "/"
         }
 
+    /** Factory methods for [WebViewRequest]. */
     companion object {
         /**
          * Creates a new WebViewRequest with a generated ID.
@@ -112,24 +113,52 @@ data class WebViewRequest(
  * Type of resource being requested by the WebView.
  */
 enum class WebViewResourceType(
+    /** Short label for UI display. */
     val displayName: String,
+    /** Longer explanation of what this resource type covers. */
     val description: String,
 ) {
+    /** HTML documents and main frames. */
     DOCUMENT("Document", "HTML documents and main frames"),
+
+    /** JavaScript files. */
     SCRIPT("Script", "JavaScript files"),
+
+    /** CSS stylesheets. */
     STYLESHEET("Stylesheet", "CSS files"),
+
+    /** Image files (PNG, JPG, GIF, WebP, etc.). */
     IMAGE("Image", "Image files (PNG, JPG, GIF, etc.)"),
+
+    /** Web fonts (WOFF, TTF, OTF, etc.). */
     FONT("Font", "Web fonts (WOFF, TTF, etc.)"),
+
+    /** XMLHttpRequest / Fetch API calls. */
     XHR("XHR", "XMLHttpRequest / Fetch API calls"),
+
+    /** Audio and video streaming resources. */
     MEDIA("Media", "Audio and video files"),
+
+    /** WebSocket connection upgrades. */
     WEBSOCKET("WebSocket", "WebSocket connections"),
+
+    /** Web app manifest files. */
     MANIFEST("Manifest", "Web app manifest files"),
+
+    /** Embedded plugin content (e.g., Flash, PDF). */
     OBJECT("Object", "Plugin content"),
+
+    /** Inline frame (iframe) content. */
     IFRAME("IFrame", "Inline frame content"),
+
+    /** Resource types that do not match any specific category. */
     OTHER("Other", "Other resource types"),
+
+    /** Resource type could not be determined from URL or MIME type. */
     UNKNOWN("Unknown", "Unknown resource type"),
     ;
 
+    /** Inference utilities for determining [WebViewResourceType] from URL or MIME type. */
     companion object {
         /**
          * Infers the resource type from a URL and MIME type.
@@ -193,7 +222,9 @@ data class WebViewRequestStats(
     val averageDuration: Long,
     val totalDataTransferred: Long,
 ) {
+    /** Factory and aggregation methods for [WebViewRequestStats]. */
     companion object {
+        /** Creates an empty stats instance with zero values. */
         fun empty() = WebViewRequestStats(
             totalRequests = 0,
             successfulRequests = 0,
@@ -204,6 +235,7 @@ data class WebViewRequestStats(
             totalDataTransferred = 0L,
         )
 
+        /** Computes aggregate statistics from a list of [WebViewRequest] instances. */
         fun from(requests: List<WebViewRequest>): WebViewRequestStats {
             if (requests.isEmpty()) return empty()
 

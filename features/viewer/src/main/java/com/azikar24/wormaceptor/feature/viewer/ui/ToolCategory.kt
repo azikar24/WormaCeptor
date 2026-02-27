@@ -27,6 +27,11 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 
 /**
  * Represents a tool item with its display information and feature mapping.
+ *
+ * @property feature The [Feature] flag this tool corresponds to.
+ * @property name Human-readable display name for the tool.
+ * @property icon Material icon representing the tool in the UI.
+ * @property route Navigation route string used to open the tool screen.
  */
 data class ToolItem(
     val feature: Feature,
@@ -37,6 +42,9 @@ data class ToolItem(
 
 /**
  * Represents a category of tools.
+ *
+ * @property name Display name for this category (e.g. "Inspection", "Performance").
+ * @property tools Ordered list of tools belonging to this category.
  */
 data class ToolCategory(
     val name: String,

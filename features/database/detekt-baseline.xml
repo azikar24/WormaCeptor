@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:DatabaseListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DatabaseListScreen( databases: ImmutableList&lt;DatabaseInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:QueryScreen.kt$@Composable private fun QueryResultView( result: QueryResult, modifier: Modifier = Modifier, )</ID>
@@ -23,24 +23,11 @@
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTables(databasePath: String): List&lt;TableInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun countTables(databasePath: String): Int</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun executeRawQuery( db: SQLiteDatabase, query: String, ): QueryResult</ID>
+    <ID>ParameterNaming:DatabaseListScreen.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:QueryScreen.kt$onQueryChanged</ID>
+    <ID>ParameterNaming:TableListScreen.kt$onSearchQueryChanged</ID>
     <ID>SwallowedException:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
-    <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$DataTypeColors</ID>
-    <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$SqlSyntaxColors</ID>
-    <ID>UndocumentedPublicFunction:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$fun forType(type: String): Color</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val blob = WormaCeptorColors.Database.Blob</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val integer = WormaCeptorColors.Database.Integer</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val nullValue = WormaCeptorColors.Database.NullValue</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val primaryKey = WormaCeptorColors.Database.PrimaryKey</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val real = WormaCeptorColors.Database.Real</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val text = WormaCeptorColors.Database.Text</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val comment = WormaCeptorColors.Database.SqlComment</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val function = WormaCeptorColors.Database.SqlFunction</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val keyword = WormaCeptorColors.Database.SqlKeyword</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val number = WormaCeptorColors.Database.SqlNumber</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val operator = WormaCeptorColors.Database.SqlOperator</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val string = WormaCeptorColors.Database.SqlString</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val table = WormaCeptorColors.Database.SqlTable</ID>
     <ID>UnusedPrivateMember:DatabaseListScreen.kt$@SuppressLint("SdCardPath") @Preview(showBackground = true) @Composable private fun DatabaseListScreenPreview()</ID>
     <ID>UnusedPrivateMember:QueryScreen.kt$@Preview(showBackground = true) @Composable private fun QueryScreenPreview()</ID>
     <ID>UnusedPrivateMember:TableDataScreen.kt$@Preview(showBackground = true) @Composable private fun TableDataScreenPreview()</ID>

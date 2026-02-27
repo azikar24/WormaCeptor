@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Room-backed [WebViewMonitorRepository] that persists WebView requests to SQLite. */
 class RoomWebViewMonitorRepository(
     private val dao: WebViewRequestDao,
 ) : WebViewMonitorRepository {

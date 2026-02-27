@@ -25,10 +25,11 @@ data class RateLimitConfig(
     /**
      * Predefined network condition presets simulating various connection types.
      *
-     * @property downloadKbps Download speed in kilobits per second
-     * @property uploadKbps Upload speed in kilobits per second
-     * @property latencyMs Typical latency in milliseconds
-     * @property packetLoss Typical packet loss percentage
+     * @property displayName Human-readable label for the preset.
+     * @property downloadKbps Download speed in kilobits per second.
+     * @property uploadKbps Upload speed in kilobits per second.
+     * @property latencyMs Typical latency in milliseconds.
+     * @property packetLoss Typical packet loss percentage.
      */
     enum class NetworkPreset(
         val displayName: String,
@@ -37,16 +38,32 @@ data class RateLimitConfig(
         val latencyMs: Long,
         val packetLoss: Float,
     ) {
+        /** Fast Wi-Fi connection with minimal latency. */
         WIFI("Wi-Fi", 50000, 20000, 10, 0f),
+
+        /** Good 3G mobile connection. */
         GOOD_3G("Good 3G", 2000, 500, 100, 0f),
+
+        /** Average 3G connection with moderate latency. */
         REGULAR_3G("Regular 3G", 750, 250, 200, 1f),
+
+        /** Slow 3G with high latency and some packet loss. */
         SLOW_3G("Slow 3G", 400, 100, 400, 2f),
+
+        /** Good 2G connection. */
         GOOD_2G("Good 2G", 150, 50, 600, 3f),
+
+        /** Slow 2G connection with significant latency. */
         SLOW_2G("Slow 2G", 50, 20, 1000, 5f),
+
+        /** EDGE network with very limited bandwidth. */
         EDGE("EDGE", 35, 10, 1500, 5f),
+
+        /** Simulates a completely offline device (100% packet loss). */
         OFFLINE("Offline", 0, 0, 0, 100f),
     }
 
+    /** Factory methods and preset builders for [RateLimitConfig]. */
     companion object {
         /**
          * Creates a default configuration with rate limiting disabled.
@@ -91,6 +108,7 @@ data class ThrottleStats(
     val packetsDropped: Int,
     val bytesThrottled: Long,
 ) {
+    /** Factory methods for [ThrottleStats]. */
     companion object {
         /**
          * Creates an empty stats instance with zero values.

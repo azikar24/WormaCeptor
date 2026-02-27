@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
@@ -18,26 +18,6 @@
     <ID>MagicNumber:CpuScreen.kt$4</ID>
     <ID>MagicNumber:CpuScreen.kt$60</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$5000</ID>
-    <ID>UndocumentedPublicFunction:CpuColors.kt$CpuColors$fun colorForCore(index: Int): Color</ID>
-    <ID>UndocumentedPublicFunction:CpuColors.kt$CpuColors$fun statusColorForUsage(usagePercent: Float): Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val cardBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val chartBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val coreColors: List&lt;Color&gt;</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val cpuUsage: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val cpuUsageLight: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val critical: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val gaugeBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val gaugeTrack: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val gridLines: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val labelPrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val labelSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val normal: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val valuePrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuColors.kt$CpuColors$val warning: Color</ID>
-    <ID>UndocumentedPublicProperty:CpuViewModel.kt$CpuViewModel$// CPU history for charts val cpuHistory: StateFlow&lt;ImmutableList&lt;CpuInfo&gt;&gt; = engine.cpuHistory .map { it.toImmutableList() } .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf(), )</ID>
-    <ID>UndocumentedPublicProperty:CpuViewModel.kt$CpuViewModel$// CPU warning indicator (when usage exceeds threshold) val isCpuWarning: StateFlow&lt;Boolean&gt; = engine.currentCpu .map { it.overallUsagePercent &gt;= CpuMonitorEngine.CPU_WARNING_THRESHOLD } .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), false, )</ID>
-    <ID>UndocumentedPublicProperty:CpuViewModel.kt$CpuViewModel$// Current CPU snapshot val currentCpu: StateFlow&lt;CpuInfo&gt; = engine.currentCpu .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), CpuInfo.empty(), )</ID>
-    <ID>UndocumentedPublicProperty:CpuViewModel.kt$CpuViewModel$// Monitoring state val isMonitoring: StateFlow&lt;Boolean&gt; = engine.isMonitoring</ID>
     <ID>UnusedParameter:CpuColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>ViewModelInjection:CpuFeature.kt$viewModel</ID>
   </CurrentIssues>

@@ -38,8 +38,9 @@ dependencyCheck {
     failBuildOnCVSS = 7.0f // Fail on HIGH and CRITICAL vulnerabilities
     suppressionFile = "$rootDir/config/owasp/suppressions.xml"
     formats = listOf("HTML", "JSON", "SARIF")
-    outputDirectory = "$buildDir/reports/dependency-check"
+    outputDirectory.set(layout.buildDirectory.dir("reports/dependency-check"))
     nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
+    nvd.delay = 10000 // 10s delay between NVD API requests to avoid rate limiting
 }
 
 // =============================================================================

@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.core.engine
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo.PushProvider
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
@@ -39,18 +40,26 @@ class PushTokenEngine(
 
     // Current token state
     private val _currentToken = MutableStateFlow<PushTokenInfo?>(null)
+
+    /** The current push notification token info, or null if unavailable. */
     val currentToken: StateFlow<PushTokenInfo?> = _currentToken.asStateFlow()
 
     // Token history
     private val _tokenHistory = MutableStateFlow<List<TokenHistory>>(emptyList())
+
+    /** Chronological history of token lifecycle events (created, refreshed, deleted). */
     val tokenHistory: StateFlow<List<TokenHistory>> = _tokenHistory.asStateFlow()
 
     // Loading state
     private val _isLoading = MutableStateFlow(false)
+
+    /** Whether a token fetch, refresh, or delete operation is in progress. */
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     // Error state
     private val _error = MutableStateFlow<String?>(null)
+
+    /** The most recent token operation error message, or null if no error occurred. */
     val error: StateFlow<String?> = _error.asStateFlow()
 
     init {
@@ -184,7 +193,7 @@ class PushTokenEngine(
                     metadata = buildMetadata(),
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // FCM not available, continue
         }
 
@@ -203,7 +212,7 @@ class PushTokenEngine(
                     metadata = buildMetadata(),
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // HMS not available, continue
         }
 
@@ -226,10 +235,10 @@ class PushTokenEngine(
             val token = awaitMethod.invoke(null, taskResult) as? String
 
             token
-        } catch (e: ClassNotFoundException) {
+        } catch (_: ClassNotFoundException) {
             // Firebase not available
             null
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -252,10 +261,10 @@ class PushTokenEngine(
             val token = getToken.invoke(instance, appId, "HCM") as? String
 
             token
-        } catch (e: ClassNotFoundException) {
+        } catch (_: ClassNotFoundException) {
             // HMS not available
             null
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -273,7 +282,7 @@ class PushTokenEngine(
             val tasksClass = Class.forName("com.google.android.gms.tasks.Tasks")
             val awaitMethod = tasksClass.getMethod("await", Class.forName("com.google.android.gms.tasks.Task"))
             awaitMethod.invoke(null, taskResult)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // FCM deletion failed or not available
         }
 
@@ -291,7 +300,7 @@ class PushTokenEngine(
 
             val deleteToken = hmsInstanceIdClass.getMethod("deleteToken", String::class.java, String::class.java)
             deleteToken.invoke(instance, appId, "HCM")
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // HMS deletion failed or not available
         }
     }
@@ -319,15 +328,15 @@ class PushTokenEngine(
     }
 
     private fun persistToken(tokenInfo: PushTokenInfo) {
-        prefs.edit()
-            .putString(KEY_TOKEN, tokenInfo.token)
-            .putString(KEY_PROVIDER, tokenInfo.provider.name)
-            .putLong(KEY_CREATED_AT, tokenInfo.createdAt)
-            .putLong(KEY_LAST_REFRESHED, tokenInfo.lastRefreshed)
-            .putBoolean(KEY_IS_VALID, tokenInfo.isValid)
-            .putString(KEY_USER_ID, tokenInfo.associatedUserId)
-            .putString(KEY_METADATA, JSONObject(tokenInfo.metadata).toString())
-            .apply()
+        prefs.edit {
+            putString(KEY_TOKEN, tokenInfo.token)
+                .putString(KEY_PROVIDER, tokenInfo.provider.name)
+                .putLong(KEY_CREATED_AT, tokenInfo.createdAt)
+                .putLong(KEY_LAST_REFRESHED, tokenInfo.lastRefreshed)
+                .putBoolean(KEY_IS_VALID, tokenInfo.isValid)
+                .putString(KEY_USER_ID, tokenInfo.associatedUserId)
+                .putString(KEY_METADATA, JSONObject(tokenInfo.metadata).toString())
+        }
     }
 
     private fun loadPersistedToken() {
@@ -337,7 +346,7 @@ class PushTokenEngine(
         val providerName = prefs.getString(KEY_PROVIDER, PushProvider.UNKNOWN.name) ?: PushProvider.UNKNOWN.name
         val provider = try {
             PushProvider.valueOf(providerName)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             PushProvider.UNKNOWN
         }
 
@@ -345,7 +354,7 @@ class PushTokenEngine(
         val metadata = try {
             val json = JSONObject(metadataJson)
             json.keys().asSequence().associateWith { json.getString(it) }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyMap()
         }
 
@@ -361,15 +370,15 @@ class PushTokenEngine(
     }
 
     private fun clearPersistedToken() {
-        prefs.edit()
-            .remove(KEY_TOKEN)
-            .remove(KEY_PROVIDER)
-            .remove(KEY_CREATED_AT)
-            .remove(KEY_LAST_REFRESHED)
-            .remove(KEY_IS_VALID)
-            .remove(KEY_USER_ID)
-            .remove(KEY_METADATA)
-            .apply()
+        prefs.edit {
+            remove(KEY_TOKEN)
+                .remove(KEY_PROVIDER)
+                .remove(KEY_CREATED_AT)
+                .remove(KEY_LAST_REFRESHED)
+                .remove(KEY_IS_VALID)
+                .remove(KEY_USER_ID)
+                .remove(KEY_METADATA)
+        }
     }
 
     private fun persistHistory(history: List<TokenHistory>) {
@@ -381,7 +390,7 @@ class PushTokenEngine(
             obj.put("event", entry.event.name)
             jsonArray.put(obj)
         }
-        prefs.edit().putString(KEY_HISTORY, jsonArray.toString()).apply()
+        prefs.edit { putString(KEY_HISTORY, jsonArray.toString()) }
     }
 
     private fun loadPersistedHistory() {
@@ -395,7 +404,7 @@ class PushTokenEngine(
                 val obj = jsonArray.getJSONObject(i)
                 val event = try {
                     TokenEvent.valueOf(obj.getString("event"))
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     continue
                 }
 
@@ -409,11 +418,12 @@ class PushTokenEngine(
             }
 
             _tokenHistory.value = history
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Failed to parse history, start fresh
         }
     }
 
+    /** SharedPreferences keys and storage constants. */
     companion object {
         private const val PREFS_NAME = "wormaceptor_push_token"
         private const val KEY_TOKEN = "token"

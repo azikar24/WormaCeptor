@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:RateLimitScreen.kt$@Composable private fun ConfigurationCard( config: RateLimitConfig, enabled: Boolean, onDownloadSpeedChanged: (Long) -&gt; Unit, onUploadSpeedChanged: (Long) -&gt; Unit, onLatencyChanged: (Long) -&gt; Unit, onPacketLossChanged: (Float) -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:RateLimitScreen.kt$@Composable private fun EnableToggleCard( enabled: Boolean, onToggle: () -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
@@ -36,27 +36,12 @@
     <ID>MaxLineLength:RateLimitScreen.kt$RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -&gt; colors.preset3G</ID>
     <ID>MaxLineLength:RateLimitScreen.kt$RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -&gt; Icons.Default.SignalCellularAlt</ID>
     <ID>MaximumLineLength:RateLimitScreen.kt$ </ID>
+    <ID>ParameterNaming:RateLimitScreen.kt$onDownloadSpeedChanged</ID>
+    <ID>ParameterNaming:RateLimitScreen.kt$onLatencyChanged</ID>
+    <ID>ParameterNaming:RateLimitScreen.kt$onPacketLossChanged</ID>
+    <ID>ParameterNaming:RateLimitScreen.kt$onPresetSelected</ID>
+    <ID>ParameterNaming:RateLimitScreen.kt$onUploadSpeedChanged</ID>
     <ID>UnderscoresInNumericLiterals:RateLimitScreen.kt$100000f</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val cardBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val disabled: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val download: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val enabled: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val labelPrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val labelSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val latency: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val packetLoss: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val preset2G: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val preset3G: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val presetEdge: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val presetOffline: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val presetWifi: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val primary: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val sliderThumb: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val sliderTrack: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val upload: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitColors.kt$RateLimitColors$val valuePrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:RateLimitViewModel.kt$RateLimitViewModel$// Current configuration val config: StateFlow&lt;RateLimitConfig&gt; = engine.config .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), RateLimitConfig.default(), )</ID>
-    <ID>UndocumentedPublicProperty:RateLimitViewModel.kt$RateLimitViewModel$// Throttle statistics val stats: StateFlow&lt;ThrottleStats&gt; = engine.stats .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), ThrottleStats.empty(), )</ID>
     <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

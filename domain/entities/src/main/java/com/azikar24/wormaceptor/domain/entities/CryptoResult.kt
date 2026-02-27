@@ -26,6 +26,7 @@ data class CryptoResult(
     val timestamp: Long,
     val durationMs: Long,
 ) {
+    /** Factory methods for creating success and failure [CryptoResult] instances. */
     companion object {
         /**
          * Creates a successful encryption result.
@@ -102,8 +103,14 @@ data class CryptoResult(
 /**
  * Types of cryptographic operations.
  */
-enum class CryptoOperation(val displayName: String) {
+enum class CryptoOperation(
+    /** Human-readable label for this operation type. */
+    val displayName: String,
+) {
+    /** Data encryption (plaintext to ciphertext). */
     ENCRYPT("Encrypt"),
+
+    /** Data decryption (ciphertext to plaintext). */
     DECRYPT("Decrypt"),
 }
 
@@ -119,6 +126,7 @@ enum class CryptoPreset(
     val description: String,
     val config: CryptoConfig,
 ) {
+    /** AES-256 with GCM authenticated encryption, recommended for modern apps. */
     AES_256_GCM(
         "AES-256 GCM",
         "Recommended for modern applications",
@@ -131,6 +139,8 @@ enum class CryptoPreset(
             keyFormat = KeyFormat.BASE64,
         ),
     ),
+
+    /** AES-256 with CBC mode, common for API response encryption. */
     AES_256_CBC(
         "AES-256 CBC",
         "Common for API responses",
@@ -143,6 +153,8 @@ enum class CryptoPreset(
             keyFormat = KeyFormat.BASE64,
         ),
     ),
+
+    /** AES-128 with CBC mode, used for legacy system compatibility. */
     AES_128_CBC(
         "AES-128 CBC",
         "Legacy compatibility",
@@ -155,6 +167,8 @@ enum class CryptoPreset(
             keyFormat = KeyFormat.BASE64,
         ),
     ),
+
+    /** Triple DES with CBC mode, for legacy system interoperability. */
     TRIPLE_DES_CBC(
         "3DES CBC",
         "Legacy systems",

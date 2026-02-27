@@ -36,58 +36,91 @@ object CryptoFeature {
  * ViewModel for the Crypto feature.
  */
 class CryptoViewModel(private val engine: CryptoEngine) : ViewModel() {
+    /** Current cryptographic configuration (algorithm, mode, padding, key, IV). */
     val config: StateFlow<CryptoConfig> = engine.config
+
+    /** Result of the most recent encrypt/decrypt operation, or null. */
     val currentResult: StateFlow<CryptoResult?> = engine.currentResult
+
+    /** List of previous encryption/decryption results. */
     val history: StateFlow<List<CryptoResult>> = engine.history
+
+    /** Whether an encrypt or decrypt operation is currently running. */
     val isProcessing: StateFlow<Boolean> = engine.isProcessing
+
+    /** Current error message from the engine, or null if no error. */
     val error: StateFlow<String?> = engine.error
 
+    /** Plaintext input for encryption or ciphertext input for decryption. */
     var inputText by mutableStateOf("")
         private set
 
+    /** Updates the plaintext input for encryption or decryption. */
     fun updateInputText(text: String) {
         inputText = text
     }
 
+    /** Sets the cryptographic algorithm (e.g. AES, DES). */
     fun setAlgorithm(algorithm: CryptoAlgorithm) = engine.setAlgorithm(algorithm)
+
+    /** Sets the cipher block mode (e.g. CBC, ECB). */
     fun setMode(mode: CipherMode) = engine.setMode(mode)
+
+    /** Sets the padding scheme (e.g. PKCS5, NoPadding). */
     fun setPadding(padding: PaddingScheme) = engine.updateConfig { copy(padding = padding) }
+
+    /** Sets the encryption key string. */
     fun setKey(key: String) = engine.setKey(key)
+
+    /** Sets the initialization vector string. */
     fun setIv(iv: String) = engine.setIv(iv)
+
+    /** Sets the key encoding format (e.g. Base64, Hex). */
     fun setKeyFormat(format: KeyFormat) = engine.setKeyFormat(format)
 
+    /** Applies a predefined configuration preset (algorithm, mode, padding). */
     fun applyPreset(preset: CryptoPreset) {
         engine.setConfig(preset.config)
     }
 
+    /** Generates a random key for the current algorithm and stores it. */
     fun generateKey(): String {
         val key = engine.generateKey()
         engine.setKey(key)
         return key
     }
 
+    /** Generates a random initialization vector and stores it. */
     fun generateIv(): String {
         val iv = engine.generateIv()
         engine.setIv(iv)
         return iv
     }
 
+    /** Encrypts the current input text using the configured algorithm and key. */
     fun encrypt() {
         if (inputText.isNotBlank()) {
             engine.encrypt(inputText)
         }
     }
 
+    /** Decrypts the current input text using the configured algorithm and key. */
     fun decrypt() {
         if (inputText.isNotBlank()) {
             engine.decrypt(inputText)
         }
     }
 
+    /** Clears the current encryption/decryption result. */
     fun clearResult() = engine.clearResult()
+
+    /** Clears all entries from the operation history. */
     fun clearHistory() = engine.clearHistory()
+
+    /** Removes a single entry from the operation history by its ID. */
     fun removeFromHistory(id: String) = engine.removeFromHistory(id)
 
+    /** Restores the input text from a previous history result. */
     fun loadFromHistory(result: CryptoResult) {
         inputText = result.input
     }

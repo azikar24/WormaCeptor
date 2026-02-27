@@ -8,13 +8,26 @@ import java.time.ZoneId
 /**
  * Quick filters that can be applied to the transaction list.
  * Each filter has a label and a predicate function.
+ *
+ * @property label Human-readable display text shown on the filter chip.
  */
 enum class QuickFilter(val label: String) {
+    /** Show only transactions with 4xx/5xx status codes. */
     ERRORS("Errors"),
+
+    /** Show only transactions that took longer than one second. */
     SLOW("Slow (>1s)"),
+
+    /** Show only transactions with response bodies larger than 100 KB. */
     LARGE(">100KB"),
+
+    /** Show only transactions recorded today. */
     TODAY("Today"),
+
+    /** Show only transactions whose path contains "json". */
     JSON("JSON"),
+
+    /** Show only transactions whose path ends with a common image extension. */
     IMAGES("Images"),
     ;
 

@@ -52,6 +52,7 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
 
+/** Expandable card showing aggregate network metrics (count, average duration, status breakdown). */
 @Composable
 fun MetricsCard(
     transactions: ImmutableList<TransactionSummary>,

@@ -34,6 +34,7 @@ import org.koin.java.KoinJavaComponent.get
 import java.io.InputStream
 import java.util.UUID
 
+/** Base implementation of [ServiceProvider] that wires up core engines, notifications, and DI. */
 abstract class BaseServiceProviderImpl : ServiceProvider {
 
     protected var captureEngine: CaptureEngine? = null

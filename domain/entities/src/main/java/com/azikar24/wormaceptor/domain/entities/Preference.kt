@@ -4,39 +4,67 @@ package com.azikar24.wormaceptor.domain.entities
  * Represents a value stored in SharedPreferences with type safety.
  */
 sealed class PreferenceValue {
+    /** Human-readable representation of the stored value. */
     abstract val displayValue: String
+
+    /** Short type label (e.g., "String", "Int", "Boolean"). */
     abstract val typeName: String
 
-    data class StringValue(val value: String) : PreferenceValue() {
+    /** Wraps a [String] SharedPreferences value. */
+    data class StringValue(
+        /** The stored string. */
+        val value: String,
+    ) : PreferenceValue() {
         override val displayValue: String = value
         override val typeName: String = "String"
     }
 
-    data class IntValue(val value: Int) : PreferenceValue() {
+    /** Wraps an [Int] SharedPreferences value. */
+    data class IntValue(
+        /** The stored integer. */
+        val value: Int,
+    ) : PreferenceValue() {
         override val displayValue: String = value.toString()
         override val typeName: String = "Int"
     }
 
-    data class LongValue(val value: Long) : PreferenceValue() {
+    /** Wraps a [Long] SharedPreferences value. */
+    data class LongValue(
+        /** The stored long integer. */
+        val value: Long,
+    ) : PreferenceValue() {
         override val displayValue: String = value.toString()
         override val typeName: String = "Long"
     }
 
-    data class FloatValue(val value: Float) : PreferenceValue() {
+    /** Wraps a [Float] SharedPreferences value. */
+    data class FloatValue(
+        /** The stored float. */
+        val value: Float,
+    ) : PreferenceValue() {
         override val displayValue: String = value.toString()
         override val typeName: String = "Float"
     }
 
-    data class BooleanValue(val value: Boolean) : PreferenceValue() {
+    /** Wraps a [Boolean] SharedPreferences value. */
+    data class BooleanValue(
+        /** The stored boolean. */
+        val value: Boolean,
+    ) : PreferenceValue() {
         override val displayValue: String = value.toString()
         override val typeName: String = "Boolean"
     }
 
-    data class StringSetValue(val value: Set<String>) : PreferenceValue() {
+    /** Wraps a [Set] of [String] SharedPreferences value. */
+    data class StringSetValue(
+        /** The stored set of strings. */
+        val value: Set<String>,
+    ) : PreferenceValue() {
         override val displayValue: String = value.joinToString(", ")
         override val typeName: String = "StringSet"
     }
 
+    /** Conversion helpers for creating [PreferenceValue] from untyped data. */
     companion object {
         /**
          * Creates a PreferenceValue from an Any object.
@@ -62,7 +90,9 @@ sealed class PreferenceValue {
  * Represents a single key-value pair in a SharedPreferences file.
  */
 data class PreferenceItem(
+    /** SharedPreferences key for this entry. */
     val key: String,
+    /** Typed wrapper around the stored value. */
     val value: PreferenceValue,
 )
 
@@ -70,6 +100,8 @@ data class PreferenceItem(
  * Represents a SharedPreferences file with its name and item count.
  */
 data class PreferenceFile(
+    /** SharedPreferences file name (without the .xml extension). */
     val name: String,
+    /** Number of key-value pairs stored in this file. */
     val itemCount: Int,
 )

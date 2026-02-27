@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
+import androidx.core.content.edit
 import com.azikar24.wormaceptor.api.Feature
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,8 @@ class FavoritesRepository private constructor(context: Context) {
 
     private val prefs: SharedPreferences
     private val _favorites: MutableStateFlow<Set<Feature>>
+
+    /** Observable stream of the current set of favorite features. */
     val favorites: StateFlow<Set<Feature>>
 
     init {
@@ -87,7 +90,7 @@ class FavoritesRepository private constructor(context: Context) {
      * Clear all favorites.
      */
     fun clearFavorites() {
-        prefs.edit().remove(KEY_FAVORITES).apply()
+        prefs.edit { remove(KEY_FAVORITES) }
         _favorites.value = emptySet()
     }
 
@@ -107,7 +110,7 @@ class FavoritesRepository private constructor(context: Context) {
         return savedNames?.mapNotNull { name ->
             try {
                 Feature.valueOf(name)
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
         }?.toSet() ?: emptySet()
@@ -115,9 +118,10 @@ class FavoritesRepository private constructor(context: Context) {
 
     private fun saveFavorites(features: Set<Feature>) {
         val names = features.map { it.name }.toSet()
-        prefs.edit().putStringSet(KEY_FAVORITES, names).apply()
+        prefs.edit { putStringSet(KEY_FAVORITES, names) }
     }
 
+    /** SharedPreferences keys and singleton accessor. */
     companion object {
         private const val PREFS_NAME = "wormaceptor_favorites"
         private const val KEY_FAVORITES = "favorite_tools"
@@ -135,6 +139,7 @@ class FavoritesRepository private constructor(context: Context) {
         @Volatile
         private var instance: FavoritesRepository? = null
 
+        /** Returns the singleton instance, creating it if necessary. */
         fun getInstance(context: Context): FavoritesRepository {
             return instance ?: synchronized(this) {
                 instance ?: FavoritesRepository(context.applicationContext).also {

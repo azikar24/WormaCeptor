@@ -11,10 +11,13 @@ import com.azikar24.wormaceptor.feature.logs.ui.LogsScreen
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import org.koin.compose.koinInject
 
+/** Entry point for the Console Logs feature. */
 object LogsFeature {
+    /** Creates a ViewModelProvider.Factory for LogsViewModel. */
     fun createViewModelFactory(engine: LogCaptureEngine): LogsViewModelFactory = LogsViewModelFactory(engine)
 }
 
+/** Factory for creating LogsViewModel instances with the required engine. */
 class LogsViewModelFactory(
     private val engine: LogCaptureEngine,
 ) : ViewModelProvider.Factory {
@@ -27,6 +30,7 @@ class LogsViewModelFactory(
     }
 }
 
+/** Composable entry point that sets up and displays the log viewer screen. */
 @Composable
 fun LogViewer(
     modifier: Modifier = Modifier,

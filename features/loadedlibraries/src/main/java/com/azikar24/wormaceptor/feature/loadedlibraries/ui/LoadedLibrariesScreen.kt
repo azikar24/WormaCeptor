@@ -81,6 +81,7 @@ import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibraries
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+/** Displays the loaded libraries list with filtering, search, and detail views. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadedLibrariesScreen(

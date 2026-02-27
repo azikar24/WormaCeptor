@@ -17,7 +17,6 @@
     <ID>SwallowedException:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: SecurityException</ID>
     <ID>TooGenericExceptionCaught:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
     <ID>TooManyFunctions:DeviceInfoScreen.kt$com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen.kt</ID>
-    <ID>UndocumentedPublicFunction:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreen(onBack: () -&gt; Unit)</ID>
     <ID>UnnecessaryParentheses:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$(applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)</ID>
     <ID>UnusedPrivateMember:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Preview(showBackground = true) @Composable private fun DeviceInfoScreenContentPreview()</ID>
   </CurrentIssues>

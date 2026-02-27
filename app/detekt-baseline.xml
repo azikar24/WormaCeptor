@@ -1,12 +1,15 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ComposableNaming:WormaceptorLogo.kt$WormaceptorLogo</ID>
+    <ID>ContentSlotReused:GlitchEffect.kt$content</ID>
     <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:SampleContentApi.kt$SampleContentApi$* Sample API endpoints for testing content handling features: * - Image preview * - PDF viewer * - Various content types</ID>
     <ID>Filename:TestToolsNavigation.kt$com.azikar24.wormaceptorapp.navigation.TestToolsNavigation.kt</ID>
+    <ID>LambdaParameterEventTrailing:WelcomeScreen.kt$onClick</ID>
+    <ID>LambdaParameterInRestartableEffect:MainActivity.kt$MainActivity$onEvent</ID>
     <ID>LongMethod:GlitchEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem( entry: EncryptedPrefEntry, modifier: Modifier = Modifier, )</ID>
@@ -314,8 +317,6 @@
     <ID>MagicNumber:WormaceptorLogo.kt$96.65f</ID>
     <ID>MatchingDeclarationName:TestToolsNavigation.kt$TestToolsRoutes</ID>
     <ID>MatchingDeclarationName:TestToolsTab.kt$ToolStatus</ID>
-    <ID>ModifierReused:GlitchEffect.kt$Box( modifier = modifier.graphicsLayer { shader.setFloatUniform("resolution", screenWidthPx, screenHeightPx) shader.setFloatUniform("progress", progress) shader.setFloatUniform("time", time) renderEffect = RenderEffect .createRuntimeShaderEffect(shader, "content") .asComposeRenderEffect() }, ) { content() }</ID>
-    <ID>ModifierReused:GlitchEffect.kt$Box(modifier = modifier) { content() }</ID>
     <ID>NoWildcardImports:HttpBinApi.kt$import retrofit2.http.*</ID>
     <ID>TooGenericExceptionCaught:SecureStorageTestScreen.kt$e: Exception</ID>
     <ID>TooManyFunctions:HttpBinApi.kt$HttpBinApi</ID>
@@ -324,8 +325,6 @@
     <ID>UnderscoresInNumericLiterals:SampleContentService.kt$SampleContentService$500000L</ID>
     <ID>UnderscoresInNumericLiterals:SampleWebSocketService.kt$SampleWebSocketService$250000L</ID>
     <ID>UnderscoresInNumericLiterals:VeryLargeData.kt$VeryLargeData$1000000</ID>
-    <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;EncryptedPrefEntry&gt;</ID>
-    <ID>UnstableCollections:SecureStorageTestScreen.kt$List&lt;KeyStoreEntry&gt;</ID>
     <ID>UnusedPrivateMember:CrashConfirmationDialog.kt$@Preview(showBackground = true) @Composable private fun CrashConfirmationDialogPreview()</ID>
     <ID>UnusedPrivateMember:TestToolsTab.kt$@Preview(showBackground = true) @Composable private fun TestToolsTabPreview()</ID>
     <ID>UnusedPrivateMember:WelcomeScreen.kt$@Preview(showBackground = true) @Composable private fun WelcomeScreenPreview()</ID>

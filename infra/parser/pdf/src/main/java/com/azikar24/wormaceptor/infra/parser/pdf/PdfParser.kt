@@ -178,6 +178,7 @@ class PdfParser(
         metadata.keywords?.let { append("Keywords: $it\n") }
     }.trimEnd()
 
+    /** PDF magic-byte detection and metadata extraction helpers. */
     companion object {
         /**
          * PDF magic bytes: %PDF- (25 50 44 46 2D in hex)
@@ -212,7 +213,7 @@ class PdfParser(
                 val header = body.take(20).toByteArray().decodeToString()
                 val versionMatch = Regex("%PDF-(\\d+\\.\\d+)").find(header)
                 versionMatch?.groupValues?.get(1) ?: "Unknown"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 "Unknown"
             }
         }
@@ -240,7 +241,7 @@ class PdfParser(
                         info[field] = value
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignore parsing errors - metadata is optional
             }
 
@@ -288,7 +289,7 @@ class PdfParser(
                 hex.chunked(2)
                     .map { it.toInt(16).toChar() }
                     .joinToString("")
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 hex
             }
         }
@@ -313,7 +314,7 @@ class PdfParser(
 
             return try {
                 val dateStr = pdfDate.removePrefix("D:")
-                val year = dateStr.substring(0, 4)
+                val year = dateStr.take(4)
                 val month = dateStr.substring(4, 6)
                 val day = dateStr.substring(6, 8)
 
@@ -327,7 +328,7 @@ class PdfParser(
                 }
 
                 "$year-$month-$day$time"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 pdfDate
             }
         }

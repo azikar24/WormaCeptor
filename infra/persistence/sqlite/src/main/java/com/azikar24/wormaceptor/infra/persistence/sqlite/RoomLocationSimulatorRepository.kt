@@ -6,6 +6,7 @@ import com.azikar24.wormaceptor.domain.entities.MockLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Room-backed [LocationSimulatorRepository] that persists location presets and mock state to SQLite. */
 class RoomLocationSimulatorRepository(
     private val presetDao: LocationPresetDao,
     private val mockLocationDao: MockLocationDao,
@@ -39,6 +40,7 @@ class RoomLocationSimulatorRepository(
         }
     }
 
+    /** Built-in location presets shipped with the library. */
     companion object {
         /** Default location presets shipped with the app. */
         val builtInPresets: List<LocationPreset> = listOf(

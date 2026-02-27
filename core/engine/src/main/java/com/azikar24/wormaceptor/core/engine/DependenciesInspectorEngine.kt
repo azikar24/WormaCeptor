@@ -37,18 +37,26 @@ class DependenciesInspectorEngine(
 
     // Detected dependencies
     private val _dependencies = MutableStateFlow<List<DependencyInfo>>(emptyList())
+
+    /** All detected third-party dependencies in the application. */
     val dependencies: StateFlow<List<DependencyInfo>> = _dependencies.asStateFlow()
 
     // Summary statistics
     private val _summary = MutableStateFlow(DependencySummary.empty())
+
+    /** Aggregated statistics about detected dependencies. */
     val summary: StateFlow<DependencySummary> = _summary.asStateFlow()
 
     // Loading state
     private val _isLoading = MutableStateFlow(false)
+
+    /** Whether a dependency scan is currently in progress. */
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     // Error state
     private val _error = MutableStateFlow<String?>(null)
+
+    /** The most recent scan error message, or null if no error occurred. */
     val error: StateFlow<String?> = _error.asStateFlow()
 
     init {
@@ -166,19 +174,19 @@ class DependenciesInspectorEngine(
                                 discoveredPackages.add(packageName)
                             }
                         }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         // Skip this element
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Fallback: scanning failed, return empty
         }
 
         // Convert discovered packages to DependencyInfo
         return discoveredPackages
             .filter { !isSystemPackage(it) && !isAppPackage(it) }
-            .mapNotNull { packageName -> createDynamicDependency(packageName) }
+            .map { packageName -> createDynamicDependency(packageName) }
     }
 
     /**
@@ -243,7 +251,7 @@ class DependenciesInspectorEngine(
     /**
      * Creates a DependencyInfo from a dynamically discovered package.
      */
-    private fun createDynamicDependency(packageName: String): DependencyInfo? {
+    private fun createDynamicDependency(packageName: String): DependencyInfo {
         // Try to categorize based on package patterns
         val (name, category) = categorizePackage(packageName)
 
@@ -497,7 +505,7 @@ class DependenciesInspectorEngine(
      * Example: "okhttp/4.12.0" -> "4.12.0"
      */
     private fun extractVersionFromUserAgent(userAgent: String): String? {
-        val versionPattern = Regex("""[\d]+\.[\d]+(?:\.[\d]+)?(?:-[\w]+)?""")
+        val versionPattern = Regex("""\d+\.\d+(?:\.\d+)?(?:-\w+)?""")
         return versionPattern.find(userAgent)?.value
     }
 
@@ -508,11 +516,11 @@ class DependenciesInspectorEngine(
         return try {
             Class.forName(className)
             true
-        } catch (e: ClassNotFoundException) {
+        } catch (_: ClassNotFoundException) {
             false
-        } catch (e: NoClassDefFoundError) {
+        } catch (_: NoClassDefFoundError) {
             false
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -530,7 +538,7 @@ class DependenciesInspectorEngine(
             field.isAccessible = true
             val value = field.get(null)
             value?.toString()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -585,7 +593,7 @@ class DependenciesInspectorEngine(
             sb.appendLine()
             sb.appendLine("--- ${category.displayName()} ---")
             libraries.forEach { lib ->
-                sb.appendLine("${lib.name}")
+                sb.appendLine(lib.name)
                 lib.version?.let { sb.appendLine("  Version: $it") }
                 lib.mavenCoordinate?.let { sb.appendLine("  Maven: $it") }
                 sb.appendLine("  Detection: ${lib.detectionMethod.displayName()}")
@@ -596,6 +604,7 @@ class DependenciesInspectorEngine(
         return sb.toString()
     }
 
+    /** Internal package filters and analysis helpers. */
     companion object {
         /**
          * Only WormaCeptor's own packages are excluded.
@@ -637,7 +646,7 @@ class DependenciesInspectorEngine(
                             val version = Regex("""okhttp/([\d.]+)""").find(it)?.groupValues?.get(1)
                             version?.let { v -> v to DetectionMethod.USER_AGENT }
                         }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null
                     }
                 },
@@ -698,7 +707,7 @@ class DependenciesInspectorEngine(
                         val clazz = Class.forName("org.koin.core.context.KoinContext")
                         // Koin 3.x stores version differently
                         null
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null
                     }
                 },
@@ -795,7 +804,7 @@ class DependenciesInspectorEngine(
                         field.isAccessible = true
                         val version = field.get(null)?.toString()
                         version?.let { it to DetectionMethod.BUILD_CONFIG }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null
                     }
                 },
@@ -1181,7 +1190,7 @@ class DependenciesInspectorEngine(
                     try {
                         val version = KotlinVersion.CURRENT.toString()
                         version to DetectionMethod.VERSION_FIELD
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null
                     }
                 },

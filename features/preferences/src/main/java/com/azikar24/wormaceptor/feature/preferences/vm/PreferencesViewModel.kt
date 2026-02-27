@@ -33,27 +33,32 @@ class PreferencesViewModel(
     private val repository: PreferencesRepository,
 ) : ViewModel() {
 
-    // File list search query
     private val _fileSearchQuery = MutableStateFlow("")
+
+    /** Current search query for filtering the preference file list. */
     val fileSearchQuery: StateFlow<String> = _fileSearchQuery
 
-    // Currently selected file
     private val _selectedFileName = MutableStateFlow<String?>(null)
+
+    /** Name of the currently selected preference file, or null if none selected. */
     val selectedFileName: StateFlow<String?> = _selectedFileName
 
-    // Item search query (for detail screen)
     private val _itemSearchQuery = MutableStateFlow("")
+
+    /** Current search query for filtering items within the selected file. */
     val itemSearchQuery: StateFlow<String> = _itemSearchQuery
 
-    // Type filter (null = all types)
     private val _typeFilter = MutableStateFlow<String?>(null)
+
+    /** Active type filter name, or null to show all types. */
     val typeFilter: StateFlow<String?> = _typeFilter
 
-    // Loading states
     private val _isLoading = MutableStateFlow(false)
+
+    /** Whether a write or delete operation is in progress. */
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    // All preference files
+    /** Filtered and sorted list of discovered SharedPreferences files. */
     val preferenceFiles: StateFlow<ImmutableList<PreferenceFile>> = combine(
         repository.observePreferenceFiles(),
         _fileSearchQuery.debounce(150),
@@ -64,7 +69,7 @@ class PreferencesViewModel(
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
-    // Items for the selected file
+    /** Filtered preference items for the currently selected file. */
     val preferenceItems: StateFlow<ImmutableList<PreferenceItem>> = _selectedFileName
         .flatMapLatest { fileName ->
             if (fileName == null) {
@@ -92,7 +97,7 @@ class PreferencesViewModel(
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
-    // Available type filters based on current items
+    /** Distinct value type names available in the selected file, for filter chips. */
     val availableTypes: StateFlow<ImmutableList<String>> = _selectedFileName
         .flatMapLatest { fileName ->
             if (fileName == null) {
@@ -107,7 +112,7 @@ class PreferencesViewModel(
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
-    // Total item count for selected file (unfiltered)
+    /** Total number of preference entries in the selected file, before filtering. */
     val totalItemCount: StateFlow<Int> = _selectedFileName
         .flatMapLatest { fileName ->
             if (fileName == null) {
@@ -118,35 +123,42 @@ class PreferencesViewModel(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
 
+    /** Updates the search query used to filter the preference file list. */
     fun onFileSearchQueryChanged(query: String) {
         _fileSearchQuery.value = query
     }
 
+    /** Selects a preference file to display its entries. */
     fun selectFile(fileName: String) {
         _selectedFileName.value = fileName
         _itemSearchQuery.value = ""
         _typeFilter.value = null
     }
 
+    /** Deselects the current file and resets item filters. */
     fun clearFileSelection() {
         _selectedFileName.value = null
         _itemSearchQuery.value = ""
         _typeFilter.value = null
     }
 
+    /** Updates the search query used to filter items within the selected file. */
     fun onItemSearchQueryChanged(query: String) {
         _itemSearchQuery.value = query
     }
 
+    /** Applies a type-based filter to show only items of the given type, or all if null. */
     fun setTypeFilter(typeName: String?) {
         _typeFilter.value = typeName
     }
 
+    /** Resets item search query and type filter to their defaults. */
     fun clearFilters() {
         _itemSearchQuery.value = ""
         _typeFilter.value = null
     }
 
+    /** Writes or updates a preference value in the currently selected file. */
     fun setPreference(
         key: String,
         value: PreferenceValue,
@@ -162,6 +174,7 @@ class PreferencesViewModel(
         }
     }
 
+    /** Removes a preference entry by key from the currently selected file. */
     fun deletePreference(key: String) {
         val fileName = _selectedFileName.value ?: return
         viewModelScope.launch {
@@ -174,6 +187,7 @@ class PreferencesViewModel(
         }
     }
 
+    /** Removes all preference entries from the currently selected file. */
     fun clearCurrentFile() {
         val fileName = _selectedFileName.value ?: return
         viewModelScope.launch {

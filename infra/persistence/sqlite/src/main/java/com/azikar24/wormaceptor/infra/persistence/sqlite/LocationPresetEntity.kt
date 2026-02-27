@@ -5,6 +5,20 @@ import androidx.room.PrimaryKey
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 
+/**
+ * Room entity representing a saved location preset for the mock location simulator.
+ *
+ * @property id Unique identifier for the preset.
+ * @property name User-visible display name of the preset.
+ * @property latitude Latitude coordinate in decimal degrees.
+ * @property longitude Longitude coordinate in decimal degrees.
+ * @property altitude Altitude in metres above the WGS-84 ellipsoid.
+ * @property accuracy Estimated horizontal accuracy in metres.
+ * @property speed Speed in metres per second.
+ * @property bearing Bearing in degrees clockwise from north.
+ * @property locationName Optional human-readable name for the location.
+ * @property isBuiltIn Whether this preset is shipped with the app (non-deletable).
+ */
 @Entity(tableName = "location_presets")
 data class LocationPresetEntity(
     @PrimaryKey val id: String,
@@ -18,6 +32,7 @@ data class LocationPresetEntity(
     val locationName: String? = null,
     val isBuiltIn: Boolean = false,
 ) {
+    /** Converts this entity to a domain [LocationPreset] model. */
     fun toDomain() = LocationPreset(
         id = id,
         name = name,
@@ -33,7 +48,9 @@ data class LocationPresetEntity(
         isBuiltIn = isBuiltIn,
     )
 
+    /** Domain-entity conversion factory. */
     companion object {
+        /** Creates a [LocationPresetEntity] from a domain [LocationPreset] model. */
         fun fromDomain(preset: LocationPreset) = LocationPresetEntity(
             id = preset.id,
             name = preset.name,

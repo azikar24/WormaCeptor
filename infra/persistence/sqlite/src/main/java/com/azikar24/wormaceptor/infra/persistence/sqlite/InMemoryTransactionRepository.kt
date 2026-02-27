@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import java.util.UUID
 
+/** In-memory [TransactionRepository] implementation for non-persistent debug builds. */
 class InMemoryTransactionRepository : TransactionRepository {
     private val _transactionsFlow = MutableStateFlow<Map<UUID, NetworkTransaction>>(emptyMap())
 
@@ -100,12 +101,12 @@ class InMemoryTransactionRepository : TransactionRepository {
             method = request.method,
             host = try {
                 java.net.URI(request.url).host ?: ""
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 ""
             },
             path = try {
                 java.net.URI(request.url).path ?: request.url
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 request.url
             },
             code = response?.code,

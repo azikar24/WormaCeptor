@@ -36,14 +36,20 @@ class MemoryMonitorEngine(
 
     // Current memory snapshot
     private val _currentMemory = MutableStateFlow(MemoryInfo.empty())
+
+    /** The most recent memory usage snapshot (heap and native). */
     val currentMemory: StateFlow<MemoryInfo> = _currentMemory.asStateFlow()
 
     // Memory history for charts (circular buffer)
     private val _memoryHistory = MutableStateFlow<List<MemoryInfo>>(emptyList())
+
+    /** Historical memory snapshots for charting, stored in a circular buffer. */
     val memoryHistory: StateFlow<List<MemoryInfo>> = _memoryHistory.asStateFlow()
 
     // Monitoring state
     private val _isMonitoring = MutableStateFlow(false)
+
+    /** Whether the memory monitor is actively sampling. */
     val isMonitoring: StateFlow<Boolean> = _isMonitoring.asStateFlow()
 
     // History buffer
@@ -171,12 +177,13 @@ class MemoryMonitorEngine(
         return try {
             val gcCountString = Debug.getRuntimeStat("art.gc.gc-count")
             gcCountString?.toLongOrNull() ?: 0L
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Fallback: return 0 if stats not available
             0L
         }
     }
 
+    /** Sampling intervals, history size, and threshold defaults. */
     companion object {
         /** Default sampling interval: 1 second */
         const val DEFAULT_INTERVAL_MS = 1000L

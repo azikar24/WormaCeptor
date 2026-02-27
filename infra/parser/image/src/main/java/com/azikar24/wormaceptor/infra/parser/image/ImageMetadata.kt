@@ -38,6 +38,7 @@ data class ImageMetadata(
             else -> String.format(Locale.US, "%.2f MB", fileSize / (1024.0 * 1024.0))
         }
 
+    /** Factory methods for [ImageMetadata]. */
     companion object {
         /**
          * Creates an unknown/failed metadata instance.

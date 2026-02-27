@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationCard( violation: ThreadViolation, onClick: () -&gt; Unit, colors: ThreadViolationColors, )</ID>
     <ID>LongMethod:ThreadViolationScreen.kt$@Composable private fun ViolationDetailContent( violation: ThreadViolation, colors: ThreadViolationColors, modifier: Modifier = Modifier, )</ID>
@@ -11,27 +11,9 @@
     <ID>ModifierNotUsedAtRoot:ThreadViolationScreen.kt$modifier = modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxxl)</ID>
     <ID>ModifierReused:ThreadViolationScreen.kt$ModalBottomSheet( modifier = modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxxl), onDismissRequest = onDismissDetail, sheetState = sheetState, shape = WormaCeptorDesignSystem.Shapes.sheet, ) { ViolationDetailContent( violation = violation, colors = colors, modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg), ) }</ID>
     <ID>ModifierReused:ThreadViolationScreen.kt$Scaffold( modifier = modifier, topBar = { TopAppBar( title = { Row( verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm), ) { Text( text = stringResource(R.string.threadviolation_title), fontWeight = FontWeight.SemiBold, ) WormaCeptorMonitoringIndicator( isActive = isMonitoring, activeColor = colors.monitoring, inactiveColor = colors.idle, ) } }, navigationIcon = { onBack?.let { back -&gt; IconButton(onClick = back) { Icon( imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.threadviolation_back), ) } } }, actions = { WormaCeptorPlayPauseButton( isActive = isMonitoring, onToggle = onToggleMonitoring, activeContentDescription = stringResource(R.string.threadviolation_action_stop), inactiveContentDescription = stringResource(R.string.threadviolation_action_start), ) IconButton(onClick = onClearViolations) { Icon( imageVector = Icons.Default.Delete, contentDescription = stringResource(R.string.threadviolation_clear), ) } }, colors = TopAppBarDefaults.topAppBarColors( containerColor = MaterialTheme.colorScheme.surface, ), ) }, ) { paddingValues -&gt; Column( modifier = Modifier .fillMaxSize() .padding(paddingValues) .padding(WormaCeptorDesignSystem.Spacing.lg), verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg), ) { // Summary cards SummarySection(stats = stats, colors = colors) // Type filter chips TypeFilterChips( selectedType = selectedType, onTypeSelected = onTypeSelected, colors = colors, ) // Violations list if (violations.isEmpty()) { WormaCeptorEmptyState( title = stringResource( if (isMonitoring) { R.string.threadviolation_empty_monitoring } else { R.string.threadviolation_empty_no_violations }, ), modifier = Modifier.fillMaxWidth().weight(1f), subtitle = stringResource( if (isMonitoring) { R.string.threadviolation_empty_hint_monitoring } else { R.string.threadviolation_empty_hint_start }, ), icon = Icons.Default.Warning, ) } else { LazyColumn( modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm), ) { items(violations, key = { it.id }) { violation -&gt; ViolationCard( violation = violation, onClick = { onViolationSelected(violation) }, colors = colors, ) } } } } selectedViolation?.let { violation -&gt; ModalBottomSheet( modifier = modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxxl), onDismissRequest = onDismissDetail, sheetState = sheetState, shape = WormaCeptorDesignSystem.Shapes.sheet, ) { ViolationDetailContent( violation = violation, colors = colors, modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg), ) } } }</ID>
+    <ID>ParameterNaming:ThreadViolationScreen.kt$onTypeSelected</ID>
+    <ID>ParameterNaming:ThreadViolationScreen.kt$onViolationSelected</ID>
     <ID>UnderscoresInNumericLiterals:ThreadViolationScreen.kt$10000L</ID>
-    <ID>UndocumentedPublicFunction:ThreadViolationColors.kt$ThreadViolationColors$fun colorForType(type: ViolationType): Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val cardBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val customSlowCode: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val detailBackground: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val diskRead: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val diskWrite: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val idle: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val labelPrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val labelSecondary: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val monitoring: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val network: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val primary: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val slowCall: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationColors.kt$ThreadViolationColors$val valuePrimary: Color</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationViewModel.kt$ThreadViolationViewModel$// Filtered violations val filteredViolations: StateFlow&lt;ImmutableList&lt;ThreadViolation&gt;&gt; = combine( engine.violations, _selectedType, ) { violations, type -&gt; val filtered = if (type != null) { violations.filter { it.violationType == type } } else { violations } filtered.toImmutableList() }.stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf(), )</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationViewModel.kt$ThreadViolationViewModel$// Is monitoring state val isMonitoring: StateFlow&lt;Boolean&gt; = engine.isMonitoring .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), false, )</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationViewModel.kt$ThreadViolationViewModel$// Stats val stats: StateFlow&lt;ViolationStats&gt; = engine.stats .stateIn( viewModelScope, SharingStarted.WhileSubscribed(5000), ViolationStats.empty(), )</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationViewModel.kt$ThreadViolationViewModel$val selectedType: StateFlow&lt;ViolationType?&gt; = _selectedType.asStateFlow()</ID>
-    <ID>UndocumentedPublicProperty:ThreadViolationViewModel.kt$ThreadViolationViewModel$val selectedViolation: StateFlow&lt;ThreadViolation?&gt; = _selectedViolation.asStateFlow()</ID>
-    <ID>UnstableCollections:ThreadViolationScreen.kt$List&lt;Pair&lt;String, String&gt;&gt;</ID>
     <ID>UnusedParameter:ThreadViolationColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>UnusedPrivateMember:ThreadViolationScreen.kt$@Suppress("MagicNumber") @Preview(showBackground = true) @Composable private fun ThreadViolationScreenPreview()</ID>
     <ID>ViewModelInjection:ThreadViolationFeature.kt$viewModel</ID>

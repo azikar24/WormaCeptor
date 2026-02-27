@@ -2,15 +2,17 @@ package com.azikar24.wormaceptor.api
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.platform.android.ShakeDetector
 
 private const val TAG = "WormaCeptorApi"
 
+/** Main entry point for the WormaCeptor debugging toolkit API. */
+@Suppress("unused")
 object WormaCeptorApi {
 
     @Volatile
@@ -20,6 +22,7 @@ object WormaCeptorApi {
     @Volatile
     private var enabledFeatures: Set<Feature> = Feature.DEFAULT
 
+    /** Configuration for redacting sensitive data from captured network traffic. */
     val redactionConfig = RedactionConfig()
 
     /**
@@ -45,7 +48,7 @@ object WormaCeptorApi {
         // Discovery via reflection to avoid compile-time dependency on implementation modules
         val implClass = try {
             Class.forName("com.azikar24.wormaceptor.api.internal.ServiceProviderImpl")
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 
@@ -82,7 +85,7 @@ object WormaCeptorApi {
             ShakeDetector.start(activity) {
                 activity.startActivity(getLaunchIntent(activity))
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Shake detector might not be present in No-Op
         }
     }
@@ -105,11 +108,7 @@ object WormaCeptorApi {
      * On API < 23, always returns true.
      */
     fun canShowFloatingButton(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(context)
-        } else {
-            true
-        }
+        return Settings.canDrawOverlays(context)
     }
 
     /**
@@ -173,14 +172,10 @@ object WormaCeptorApi {
      * @return Intent to open overlay settings, or null if not needed (API < 23)
      */
     fun getOverlayPermissionIntent(context: Context): Intent? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                android.net.Uri.parse("package:${context.packageName}"),
-            )
-        } else {
-            null
-        }
+        return Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            "package:${context.packageName}".toUri(),
+        )
     }
 
     // ========== Performance Overlay API ==========
@@ -253,7 +248,7 @@ object WormaCeptorApi {
             val stateFlow = isVisibleField.invoke(engine)
             val valueMethod = stateFlow.javaClass.getMethod("getValue")
             valueMethod.invoke(stateFlow) as? Boolean ?: false
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }
@@ -295,7 +290,9 @@ object WormaCeptorApi {
             context: Context,
             logCrashes: Boolean,
             leakNotifications: Boolean,
-        ) {}
+        ) {
+        }
+
         override fun startTransaction(
             url: String,
             method: String,

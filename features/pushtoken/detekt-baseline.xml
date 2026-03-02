@@ -4,14 +4,6 @@
   <CurrentIssues>
     <ID>LongMethod:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>MagicNumber:PushTokenFeature.kt$20</ID>
-    <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.material.icons.filled.*</ID>
-    <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:PushTokenFeature.kt$import androidx.compose.runtime.*</ID>
     <ID>ViewModelInjection:PushTokenFeature.kt$viewModel</ID>
-    <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.material.icons.filled.*</ID>
-    <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:PushTokenFeature.kt$import androidx.compose.runtime.*</ID>
   </CurrentIssues>
 </SmellBaseline>

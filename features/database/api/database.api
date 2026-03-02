@@ -2,16 +2,12 @@ public final class com/azikar24/wormaceptor/feature/database/DatabaseFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/DatabaseFeature;
 	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;
-	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)Lcom/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory;
-}
-
-public final class com/azikar24/wormaceptor/feature/database/DatabaseFeatureKt {
-	public static final fun DatabaseBrowser (Landroid/content/Context;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Landroid/app/Application;)Lcom/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Landroid/app/Application;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
 }
 
@@ -33,6 +29,10 @@ public final class com/azikar24/wormaceptor/feature/database/data/DatabaseReposi
 	public fun getTableSchema (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 	public fun getTables (Ljava/lang/String;)Ljava/util/List;
 	public fun queryTable (Ljava/lang/String;Ljava/lang/String;II)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+}
+
+public final class com/azikar24/wormaceptor/feature/database/navigation/DatabaseNavigationKt {
+	public static final fun databaseGraph (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/database/ui/ComposableSingletons$DatabaseListScreenKt {
@@ -310,7 +310,7 @@ public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEven
 
 public final class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Landroid/app/Application;)V
 	public final fun getDatabases ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getTables ()Lkotlinx/coroutines/flow/StateFlow;
 	public synthetic fun handleEvent (Ljava/lang/Object;)V

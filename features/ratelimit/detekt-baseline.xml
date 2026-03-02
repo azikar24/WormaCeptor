@@ -33,15 +33,11 @@
     <ID>MagicNumber:RateLimitScreen.kt$1000</ID>
     <ID>MagicNumber:RateLimitScreen.kt$1000.0</ID>
     <ID>MagicNumber:RateLimitViewModel.kt$RateLimitViewModel$5000</ID>
-    <ID>MaxLineLength:RateLimitScreen.kt$RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -&gt; colors.preset3G</ID>
-    <ID>MaxLineLength:RateLimitScreen.kt$RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -&gt; Icons.Default.SignalCellularAlt</ID>
-    <ID>MaximumLineLength:RateLimitScreen.kt$ </ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onDownloadSpeedChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onLatencyChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onPacketLossChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onPresetSelected</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onUploadSpeedChanged</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitScreen.kt$100000f</ID>
     <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -2,9 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ComplexCondition:FormBodyParser.kt$FormBodyParser$trimmed.startsWith("{") || trimmed.startsWith("[") || trimmed.startsWith("&lt;") || trimmed.startsWith("&lt;!")</ID>
-    <ID>MagicNumber:FormBodyParser.kt$FormBodyParser$100</ID>
-    <ID>MagicNumber:FormBodyParser.kt$FormBodyParser$220</ID>
-    <ID>TooGenericExceptionCaught:FormBodyParser.kt$FormBodyParser$e: Exception</ID>
+    <ID>UndocumentedPublicClass:FormBodyParser.kt$FormBodyParser$Companion</ID>
   </CurrentIssues>
 </SmellBaseline>

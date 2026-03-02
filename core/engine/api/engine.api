@@ -100,7 +100,9 @@ public final class com/azikar24/wormaceptor/core/engine/DefaultHighlighterRegist
 public final class com/azikar24/wormaceptor/core/engine/DefaultParserRegistry : com/azikar24/wormaceptor/core/engine/ParserRegistry {
 	public static final field $stable I
 	public fun <init> ()V
+	public fun detectContentType (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
 	public fun detectContentType (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public fun extractMultipartBoundary (Ljava/lang/String;)Ljava/lang/String;
 	public fun parseBody (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 	public fun register (Lcom/azikar24/wormaceptor/domain/contracts/BodyParser;)V
 }
@@ -273,7 +275,9 @@ public final class com/azikar24/wormaceptor/core/engine/NotificationPermissionEx
 }
 
 public abstract interface class com/azikar24/wormaceptor/core/engine/ParserRegistry {
+	public abstract fun detectContentType (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
 	public abstract fun detectContentType (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ContentType;
+	public abstract fun extractMultipartBoundary (Ljava/lang/String;)Ljava/lang/String;
 	public abstract fun parseBody (Ljava/lang/String;[B)Lcom/azikar24/wormaceptor/domain/contracts/ParsedBody;
 	public abstract fun register (Lcom/azikar24/wormaceptor/domain/contracts/BodyParser;)V
 }

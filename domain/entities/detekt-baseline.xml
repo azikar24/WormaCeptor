@@ -2,26 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.BUILD_CONFIG$ Version found via BuildConfig class </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.CLASS_PRESENCE_ONLY$ Library detected but version could not be determined </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.JAR_MANIFEST$ Version extracted from JAR manifest </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.MANIFEST_METADATA$ Version found via manifest metadata </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.PACKAGE_ANNOTATION$ Version found via package annotation </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.USER_AGENT$ Version found via user-agent or other runtime string </ID>
-    <ID>EndOfSentenceFormat:DependencyInfo.kt$DetectionMethod.VERSION_FIELD$ Version found via static VERSION field </ID>
-    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.CRITICAL$ Critical severity - severe leak, requires immediate attention </ID>
-    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.HIGH$ High severity - significant leak, should be fixed soon </ID>
-    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.LOW$ Low severity - minor leak, minimal impact </ID>
-    <ID>EndOfSentenceFormat:LeakInfo.kt$LeakInfo.LeakSeverity.MEDIUM$ Medium severity - moderate leak, should be investigated </ID>
-    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.AAR_RESOURCE$ Resource from AAR (Android Archive) </ID>
-    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.DEX$ Dalvik executable (.dex) file </ID>
-    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.JAR$ Java archive (.jar) file </ID>
-    <ID>EndOfSentenceFormat:LoadedLibrary.kt$LoadedLibrary.LibraryType.NATIVE_SO$ Native shared object (.so) file </ID>
-    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.CUSTOM_SLOW_CODE$ Custom slow code block on main thread </ID>
-    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.DISK_READ$ File read operation on main thread </ID>
-    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.DISK_WRITE$ File write operation on main thread </ID>
-    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.NETWORK$ Network operation on main thread </ID>
-    <ID>EndOfSentenceFormat:ThreadViolation.kt$ThreadViolation.ViolationType.SLOW_CALL$ Slow method call on main thread </ID>
     <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, input: String, output: String, algorithm: CryptoAlgorithm, mode: CipherMode, durationMs: Long, )</ID>
     <ID>LongParameterList:CryptoResult.kt$CryptoResult.Companion$( id: String, operation: CryptoOperation, input: String, algorithm: CryptoAlgorithm, mode: CipherMode, errorMessage: String, durationMs: Long, )</ID>
     <ID>MagicNumber:CryptoConfig.kt$CryptoConfig$16</ID>
@@ -34,10 +14,5 @@
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$200</ID>
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$299</ID>
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$399</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$20000</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.Companion$50000</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.NetworkPreset.WIFI$20000</ID>
-    <ID>UnderscoresInNumericLiterals:RateLimitConfig.kt$RateLimitConfig.NetworkPreset.WIFI$50000</ID>
-    <ID>UnnecessaryParentheses:WebViewRequest.kt$WebViewRequest$(statusCode != null &amp;&amp; statusCode !in 200..399)</ID>
   </CurrentIssues>
 </SmellBaseline>

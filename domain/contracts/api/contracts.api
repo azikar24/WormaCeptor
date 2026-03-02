@@ -137,6 +137,15 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/FileSy
 	public abstract fun readFile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/FormDataParser {
+	public abstract fun parse (Ljava/lang/String;)Ljava/util/List;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/ImageMetadataExtractor {
+	public abstract fun extractMetadata ([B)Lcom/azikar24/wormaceptor/domain/entities/ImageMetadata;
+	public abstract fun isImageData ([B)Z
+}
+
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/LeakRepository {
 	public abstract fun clearLeaks (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeLeaks ()Lkotlinx/coroutines/flow/Flow;
@@ -149,6 +158,10 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Locati
 	public abstract fun getPresets ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun savePreset (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/MultipartParser {
+	public abstract fun parse (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/ParsedBody {
@@ -178,6 +191,10 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Prefer
 	public abstract fun observePreferenceFiles ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun observePreferenceItems (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun setPreference (Ljava/lang/String;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/ProtobufDecoder {
+	public abstract fun decode ([B)Lcom/azikar24/wormaceptor/domain/entities/ProtobufDecodeResult;
 }
 
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/PushSimulatorRepository {
@@ -268,5 +285,9 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/WebVie
 	public abstract fun observeRequests ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun saveRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun updateRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/XmlFormatter {
+	public abstract fun format (Ljava/lang/String;)Ljava/util/List;
 }
 

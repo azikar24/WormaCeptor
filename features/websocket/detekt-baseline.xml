@@ -15,8 +15,6 @@
     <ID>MagicNumber:WebSocketDetailScreen.kt$150</ID>
     <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$150</ID>
     <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$5000</ID>
-    <ID>MaxLineLength:WebSocketDetailScreen.kt$alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle</ID>
-    <ID>MaximumLineLength:WebSocketDetailScreen.kt$ </ID>
     <ID>ParameterNaming:WebSocketDetailScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:WebSocketListScreen.kt$onSearchQueryChanged</ID>
     <ID>UnusedPrivateMember:WebSocketDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketDetailScreenPreview()</ID>

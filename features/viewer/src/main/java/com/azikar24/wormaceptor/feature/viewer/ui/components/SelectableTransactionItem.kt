@@ -88,7 +88,11 @@ fun SelectableTransactionItem(
                 .scale(scale)
                 .clip(WormaCeptorDesignSystem.Shapes.card)
                 .border(
-                    width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
+                    width = if (isSelected) {
+                        WormaCeptorDesignSystem.BorderWidth.thick
+                    } else {
+                        WormaCeptorDesignSystem.BorderWidth.regular
+                    },
                     color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {

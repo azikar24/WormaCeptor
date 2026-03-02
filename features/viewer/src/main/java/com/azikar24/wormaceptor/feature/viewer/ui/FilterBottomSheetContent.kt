@@ -376,7 +376,11 @@ private fun GridFilterCard(
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .background(backgroundColor)
             .border(
-                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin,
+                width = if (isSelected) {
+                    WormaCeptorDesignSystem.BorderWidth.regular
+                } else {
+                    WormaCeptorDesignSystem.BorderWidth.thin
+                },
                 color = borderColor,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
@@ -392,7 +396,11 @@ private fun GridFilterCard(
                 stateDescription = stateDesc
                 val actionText = if (count > 0) {
                     context.getString(
-                        if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select,
+                        if (isSelected) {
+                            R.string.viewer_filter_action_deselect
+                        } else {
+                            R.string.viewer_filter_action_select
+                        },
                     )
                 } else {
                     context.getString(R.string.viewer_filter_disabled)

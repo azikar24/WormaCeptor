@@ -44,7 +44,12 @@ interface TransactionDao {
 
     /** Searches transactions by URL or HTTP method, ordered by newest first. */
     @Query(
-        "SELECT * FROM transactions WHERE reqUrl LIKE '%' || :query || '%' OR reqMethod LIKE '%' || :query || '%' ORDER BY timestamp DESC",
+        """
+        SELECT * FROM transactions
+        WHERE reqUrl LIKE '%' || :query || '%'
+           OR reqMethod LIKE '%' || :query || '%'
+        ORDER BY timestamp DESC
+        """,
     )
     fun search(query: String): Flow<List<TransactionEntity>>
 
@@ -52,7 +57,9 @@ interface TransactionDao {
     @Query(
         """
         SELECT * FROM transactions
-        WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%')
+        WHERE (:searchQuery IS NULL
+            OR reqUrl LIKE '%' || :searchQuery || '%'
+            OR reqMethod LIKE '%' || :searchQuery || '%')
           AND (:statusMin IS NULL OR resCode >= :statusMin)
           AND (:statusMax IS NULL OR resCode <= :statusMax)
           AND (:method IS NULL OR reqMethod = :method)
@@ -73,7 +80,9 @@ interface TransactionDao {
     @Query(
         """
         SELECT COUNT(*) FROM transactions
-        WHERE (:searchQuery IS NULL OR reqUrl LIKE '%' || :searchQuery || '%' OR reqMethod LIKE '%' || :searchQuery || '%')
+        WHERE (:searchQuery IS NULL
+            OR reqUrl LIKE '%' || :searchQuery || '%'
+            OR reqMethod LIKE '%' || :searchQuery || '%')
     """,
     )
     suspend fun getTransactionCount(searchQuery: String?): Int

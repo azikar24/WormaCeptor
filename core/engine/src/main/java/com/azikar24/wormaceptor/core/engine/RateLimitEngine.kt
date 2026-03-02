@@ -305,22 +305,22 @@ class RateLimitEngine {
 
     /** Speed and latency range boundaries. */
     companion object {
-        /** Minimum speed in Kbps */
+        /** Minimum speed in Kbps. */
         const val MIN_SPEED_KBPS = 1L
 
-        /** Maximum speed in Kbps (100 Mbps) */
+        /** Maximum speed in Kbps (100 Mbps). */
         const val MAX_SPEED_KBPS = 100_000L
 
-        /** Minimum latency in ms */
+        /** Minimum latency in ms. */
         const val MIN_LATENCY_MS = 0L
 
-        /** Maximum latency in ms */
+        /** Maximum latency in ms. */
         const val MAX_LATENCY_MS = 5000L
 
-        /** Minimum packet loss percent */
+        /** Minimum packet loss percent. */
         const val MIN_PACKET_LOSS = 0f
 
-        /** Maximum packet loss percent */
+        /** Maximum packet loss percent. */
         const val MAX_PACKET_LOSS = 100f
     }
 }

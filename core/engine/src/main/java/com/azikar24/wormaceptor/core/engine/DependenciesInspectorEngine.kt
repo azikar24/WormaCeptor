@@ -941,7 +941,8 @@ class DependenciesInspectorEngine(
                 packageName = "kotlinx.coroutines.flow",
                 detectionClass = "kotlinx.coroutines.flow.Flow",
                 description = "Cold asynchronous data stream",
-                website = "https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/",
+                website =
+                "https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/",
             ),
 
             // ============ LOGGING ============

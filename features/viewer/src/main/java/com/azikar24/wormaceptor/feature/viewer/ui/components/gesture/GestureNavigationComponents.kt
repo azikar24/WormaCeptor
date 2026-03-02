@@ -145,7 +145,7 @@ fun ZoomControls(
 }
 
 /**
- * Visual zoom level indicator with progress bar
+ * Visual zoom level indicator with progress bar.
  */
 @Composable
 private fun ZoomLevelIndicator(

@@ -43,7 +43,7 @@ object DeepLinkHandler {
          */
         data class Tool(val route: String) : DeepLinkDestination()
 
-        /** Invalid or unrecognized deep link */
+        /** Invalid or unrecognized deep link. */
         data object Invalid : DeepLinkDestination()
 
         /** Tab index constants for deep link navigation targets. */

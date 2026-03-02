@@ -385,7 +385,7 @@ class ThreadViolationEngine(
 
     /** History size defaults. */
     companion object {
-        /** Default history size: 100 violations */
+        /** Default history size: 100 violations. */
         const val DEFAULT_HISTORY_SIZE = 100
     }
 }

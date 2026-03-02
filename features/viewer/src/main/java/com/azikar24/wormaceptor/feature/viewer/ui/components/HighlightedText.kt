@@ -183,7 +183,7 @@ private fun findAllMatches(
     while (true) {
         index = text.indexOf(searchQuery, index, ignoreCase = true)
         if (index < 0) break
-        matches.add(index until (index + searchQuery.length))
+        matches.add(index until index + searchQuery.length)
         index++
     }
     return matches

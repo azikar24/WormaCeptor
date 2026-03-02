@@ -126,10 +126,10 @@ class FavoritesRepository private constructor(context: Context) {
         private const val PREFS_NAME = "wormaceptor_favorites"
         private const val KEY_FAVORITES = "favorite_tools"
 
-        /** Maximum number of favorite tools allowed */
-        const val MAX_FAVORITES = 80 // TODO Revert
+        /** Maximum number of favorite tools allowed. */
+        const val MAX_FAVORITES = 10
 
-        /** Default favorites for new users */
+        /** Default favorites for new users. */
         val DEFAULT_FAVORITES: Set<Feature> = setOf(
             Feature.CONSOLE_LOGS,
             Feature.SHARED_PREFERENCES,

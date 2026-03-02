@@ -114,25 +114,25 @@ enum class DependencyCategory {
  * How the library or its version was detected.
  */
 enum class DetectionMethod {
-    /** Version found via static VERSION field */
+    /** Version found via static VERSION field. */
     VERSION_FIELD,
 
-    /** Version found via BuildConfig class */
+    /** Version found via BuildConfig class. */
     BUILD_CONFIG,
 
-    /** Version found via user-agent or other runtime string */
+    /** Version found via user-agent or other runtime string. */
     USER_AGENT,
 
-    /** Version found via package annotation */
+    /** Version found via package annotation. */
     PACKAGE_ANNOTATION,
 
-    /** Version found via manifest metadata */
+    /** Version found via manifest metadata. */
     MANIFEST_METADATA,
 
-    /** Library detected but version could not be determined */
+    /** Library detected but version could not be determined. */
     CLASS_PRESENCE_ONLY,
 
-    /** Version extracted from JAR manifest */
+    /** Version extracted from JAR manifest. */
     JAR_MANIFEST,
     ;
 

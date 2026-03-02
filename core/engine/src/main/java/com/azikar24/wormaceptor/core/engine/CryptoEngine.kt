@@ -435,7 +435,8 @@ class CryptoEngine {
         val expectedKeyLength = config.algorithm.keyLengthBits / 8
 
         require(keyBytes.size == expectedKeyLength) {
-            "Invalid key length: expected $expectedKeyLength bytes for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"
+            "Invalid key length: expected $expectedKeyLength bytes " +
+                "for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"
         }
     }
 
@@ -464,16 +465,16 @@ class CryptoEngine {
 
     /** Configuration constants and crypto parameters. */
     companion object {
-        /** Maximum number of results to keep in history */
+        /** Maximum number of results to keep in history. */
         const val MAX_HISTORY_SIZE = 50
 
-        /** GCM tag length in bits */
+        /** GCM tag length in bits. */
         private const val GCM_TAG_LENGTH_BITS = 128
 
-        /** Standard IV length in bytes */
+        /** Standard IV length in bytes. */
         private const val IV_LENGTH_BYTES = 16
 
-        /** GCM IV length in bytes (12 is recommended) */
+        /** GCM IV length in bytes (12 is recommended). */
         private const val GCM_IV_LENGTH_BYTES = 12
     }
 }

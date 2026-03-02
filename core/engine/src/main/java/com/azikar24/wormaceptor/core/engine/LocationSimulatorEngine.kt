@@ -96,7 +96,9 @@ class LocationSimulatorEngine(private val context: Context) {
             stopContinuousUpdates()
             isProviderAdded = false
             _isEnabled.value = false
-            _lastError.value = "Mock locations not enabled. Enable in Developer Options and select this app as mock location app."
+            _lastError.value = """
+                Mock locations not enabled. Enable in Developer Options and select this app as mock location app.
+            """.trimIndent()
             false
         } catch (e: IllegalArgumentException) {
             // Try to recover by re-adding providers
@@ -238,7 +240,8 @@ class LocationSimulatorEngine(private val context: Context) {
             // Provider might already exist, which is fine
             try {
                 locationManager.removeTestProvider(TEST_PROVIDER_CHECK)
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
             true
         }
     }
@@ -294,12 +297,14 @@ class LocationSimulatorEngine(private val context: Context) {
         try {
             locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, false)
             locationManager.removeTestProvider(LocationManager.GPS_PROVIDER)
-        } catch (_: Exception) { }
+        } catch (_: Exception) {
+        }
 
         try {
             locationManager.setTestProviderEnabled(LocationManager.NETWORK_PROVIDER, false)
             locationManager.removeTestProvider(LocationManager.NETWORK_PROVIDER)
-        } catch (_: Exception) { }
+        } catch (_: Exception) {
+        }
 
         isProviderAdded = false
     }

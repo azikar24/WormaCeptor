@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WormaceptorLogo(): ImageVector {
+fun rememberWormaceptorLogo(): ImageVector {
     val isDarkTheme = isSystemInDarkTheme()
     return remember(isDarkTheme) {
         Builder(

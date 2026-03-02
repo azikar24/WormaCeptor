@@ -56,7 +56,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.R
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.WormaceptorLogo
+import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.rememberWormaceptorLogo
 
 /**
  * Welcome screen for the WormaCeptor demo app.
@@ -119,7 +119,7 @@ private fun HeroSection() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            imageVector = WormaceptorLogo(),
+            imageVector = rememberWormaceptorLogo(),
             contentDescription = stringResource(id = R.string.app_name),
             modifier = Modifier.size(56.dp),
         )

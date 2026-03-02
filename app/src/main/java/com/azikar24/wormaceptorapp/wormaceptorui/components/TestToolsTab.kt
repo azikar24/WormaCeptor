@@ -51,18 +51,6 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
 
 /**
- * Status for tool list items that show feedback.
- */
-enum class ToolStatus {
-    Idle,
-    Running,
-    Done,
-
-    /** Waiting for user action such as rotating the screen. Shows hint message. */
-    WaitingForAction,
-}
-
-/**
  * Test Tools tab content for the demo app.
  * Displays grouped lists of testing features for developers.
  *

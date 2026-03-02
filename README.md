@@ -93,7 +93,7 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 | Traditional inspectors leak into release builds | Physical dependency separation via `debugImplementation` |
 | Monolithic architecture couples UI + Logic | Modular design with 50+ independent modules |
 | Debug tools can crash production apps | Reflection-based discovery with graceful No-Op fallback |
-| Limited to network inspection only | Comprehensive debugging toolkit with 30+ features |
+| Limited to network inspection only | Comprehensive debugging toolkit with 25+ features |
 
 ---
 
@@ -124,7 +124,6 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 - **Secure Storage Inspector**: View encrypted preferences (EncryptedSharedPreferences)
 - **File Browser**: Navigate app file system
 - **Device Info**: Comprehensive device and app details
-- **Cookies Manager**: View HTTP cookies
 - **Loaded Libraries**: List native .so files
 - **Dependencies Inspector**: Inspect Gradle dependencies and versions
 
@@ -142,12 +141,6 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 - **Push Token Manager**: View and copy FCM/push tokens
 - **Location Simulator**: Mock GPS location
 - **Crypto Tool**: Encrypt/decrypt with AES, RSA, hashing, and encoding
-
-### UI Debugging
-- **Touch Visualizer**: Visualize touch events on screen
-- **View Borders**: Highlight view boundaries
-- **Grid Overlay**: Display grid overlay for layout alignment
-- **Measurement Tool**: Measure screen elements
 
 ---
 
@@ -319,10 +312,6 @@ All deep links use the `wormaceptor://` scheme.
 | `wormaceptor://tools/dependencies` | Dependencies Inspector |
 | `wormaceptor://tools/logs` | Console Logs |
 | `wormaceptor://tools/deviceinfo` | Device Info |
-| `wormaceptor://tools/touchviz` | Touch Visualizer |
-| `wormaceptor://tools/viewborders` | View Borders |
-| `wormaceptor://tools/gridoverlay` | Grid Overlay |
-| `wormaceptor://tools/measurement` | Measurement Tool |
 
 Several routes accept aliases (e.g., `files` for `filebrowser`, `console` for `logs`). See the [Setup Guide](docs/SETUP_GUIDE.md#deep-links) for the full alias table.
 
@@ -429,7 +418,7 @@ See the [Setup Guide](docs/SETUP_GUIDE.md#troubleshooting) for expanded troubles
 | HTTP Clients | OkHttp only | OkHttp + Ktor + WebView |
 | Crash Reporting | Separate library | Integrated and correlated |
 | Performance Monitoring | Not included | FPS, Memory, CPU with overlay |
-| System Inspection | Limited | SQLite, SharedPrefs, Secure Storage, Files, Cookies |
+| System Inspection | Limited | SQLite, SharedPrefs, Secure Storage, Files |
 | Testing Tools | Not included | Push simulator, location mock, crypto tools |
 
 ---
@@ -449,6 +438,8 @@ See the [Setup Guide](docs/SETUP_GUIDE.md#troubleshooting) for expanded troubles
 - Extension provider system for custom metadata
 
 ### Planned
+- UI debugging tools (Touch Visualizer, View Borders, Grid Overlay, Measurement Tool)
+- Cookies Manager
 - GraphQL query/mutation parsing
 - gRPC/Protobuf native support
 - Custom formatter plugins

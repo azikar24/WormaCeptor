@@ -176,6 +176,7 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
         api.json().enqueue(callBack)
         api.xml().enqueue(callBack)
         api.html().enqueue(callBack)
+        api.protobuf().enqueue(callBack)
     }
 
     companion object {

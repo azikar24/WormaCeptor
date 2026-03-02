@@ -23,11 +23,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -358,21 +365,24 @@ private fun CrashListScreenPreview() {
                     timestamp = System.currentTimeMillis() - 120_000,
                     exceptionType = "java.lang.NullPointerException",
                     message = "Attempt to invoke virtual method on a null object reference",
-                    stackTrace = "java.lang.NullPointerException\n\tat com.example.app.MainActivity.onCreate(MainActivity.kt:42)",
+                    stackTrace = "java.lang.NullPointerException\n\tat " +
+                        "com.example.app.MainActivity.onCreate(MainActivity.kt:42)",
                 ),
                 Crash(
                     id = 2L,
                     timestamp = System.currentTimeMillis() - 3_600_000,
                     exceptionType = "java.lang.IllegalStateException",
                     message = "Fragment not attached to a context",
-                    stackTrace = "java.lang.IllegalStateException\n\tat com.example.app.HomeFragment.onResume(HomeFragment.kt:78)",
+                    stackTrace = "java.lang.IllegalStateException\n\tat " +
+                        "com.example.app.HomeFragment.onResume(HomeFragment.kt:78)",
                 ),
                 Crash(
                     id = 3L,
                     timestamp = System.currentTimeMillis() - 86_400_000,
                     exceptionType = "java.lang.OutOfMemoryError",
                     message = "Failed to allocate a 12288012 byte allocation",
-                    stackTrace = "java.lang.OutOfMemoryError\n\tat dalvik.system.VMRuntime.newNonMovableArray(VMRuntime.java)",
+                    stackTrace = "java.lang.OutOfMemoryError\n\tat " +
+                        "dalvik.system.VMRuntime.newNonMovableArray(VMRuntime.java)",
                 ),
             ),
             onCrashClick = {},

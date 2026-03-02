@@ -134,7 +134,7 @@ class ViewerActivity : ComponentActivity() {
                     val crashes by viewModel.crashes.collectAsState()
                     val isSelectionMode by viewModel.isSelectionMode.collectAsState()
                     val scope = rememberCoroutineScope()
-                    val snackbarMessage: (String) -> Unit = { message ->
+                    val snackBarMessage: (String) -> Unit = { message ->
                         onEvent(ViewerViewEvent.ShowMessage(message))
                     }
                     val navController = rememberNavController()
@@ -228,7 +228,7 @@ class ViewerActivity : ComponentActivity() {
                                                 ExportManager(
                                                     this@ViewerActivity,
                                                     qe,
-                                                    onMessage = snackbarMessage,
+                                                    onMessage = snackBarMessage,
                                                 )
                                             val allTransactionsForExport =
                                                 qe.getAllTransactionsForExport()
@@ -241,7 +241,7 @@ class ViewerActivity : ComponentActivity() {
                                             exportCrashes(
                                                 this@ViewerActivity,
                                                 allCrashes,
-                                                onMessage = snackbarMessage,
+                                                onMessage = snackBarMessage,
                                             )
                                         }
                                     },
@@ -284,7 +284,7 @@ class ViewerActivity : ComponentActivity() {
                                                 ExportManager(
                                                     this@ViewerActivity,
                                                     CoreHolder.queryEngine,
-                                                    onMessage = snackbarMessage,
+                                                    onMessage = snackBarMessage,
                                                 )
                                             val fullTransactions = selected.mapNotNull { summary ->
                                                 CoreHolder.queryEngine?.getDetails(summary.id)
@@ -335,7 +335,7 @@ class ViewerActivity : ComponentActivity() {
                                     onDeleteSelectedDialogVisibilityChanged = {
                                         onEvent(ViewerViewEvent.DeleteSelectedDialogVisibilityChanged(it))
                                     },
-                                    snackbarMessage = snackbarMessages,
+                                    snackBarMessage = snackbarMessages,
                                 )
                             }
 
@@ -358,7 +358,8 @@ class ViewerActivity : ComponentActivity() {
                                             initialTransactionIndex = initialIndex,
                                             getTransaction = { transactionId ->
                                                 requireNotNull(CoreHolder.queryEngine) {
-                                                    "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                                                    "WormaCeptor not initialized. " +
+                                                        "Call WormaCeptor.init() before launching ViewerActivity"
                                                 }.getDetails(transactionId)
                                             },
                                             queryEngine = CoreHolder.queryEngine,
@@ -372,7 +373,8 @@ class ViewerActivity : ComponentActivity() {
 
                                         androidx.compose.runtime.LaunchedEffect(uuid) {
                                             transaction = requireNotNull(CoreHolder.queryEngine) {
-                                                "WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"
+                                                "WormaCeptor not initialized. " +
+                                                    "Call WormaCeptor.init() before launching ViewerActivity"
                                             }.getDetails(uuid)
                                         }
 
@@ -549,7 +551,7 @@ class ViewerActivity : ComponentActivity() {
             appendLine("Status: ${transaction.code ?: "Pending"}")
             transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
         }
-        shareText(this, text, "Share Transaction")
+        shareText(this, text, getString(R.string.viewer_share_transaction))
     }
 
     private fun shareTransactions(transactions: List<TransactionSummary>) {
@@ -561,7 +563,7 @@ class ViewerActivity : ComponentActivity() {
                 transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
             }
         }
-        shareText(this, text, "Share ${transactions.size} Transactions")
+        shareText(this, text, getString(R.string.viewer_share_transactions, transactions.size))
     }
 
     private fun copyAsCurl(
@@ -571,7 +573,7 @@ class ViewerActivity : ComponentActivity() {
         lifecycleScope.launch {
             val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
             if (fullTransaction == null) {
-                viewModel.sendEvent(ViewerViewEvent.ShowMessage("Failed to load transaction details"))
+                viewModel.sendEvent(ViewerViewEvent.ShowMessage(getString(R.string.viewer_transaction_load_failed)))
                 return@launch
             }
 

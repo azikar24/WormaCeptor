@@ -84,6 +84,7 @@ import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import java.io.File

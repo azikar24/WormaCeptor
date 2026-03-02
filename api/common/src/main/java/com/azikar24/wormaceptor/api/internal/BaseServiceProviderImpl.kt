@@ -12,17 +12,31 @@ import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
+import com.azikar24.wormaceptor.core.engine.ParserRegistry
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.contracts.BlobStorage
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
+import com.azikar24.wormaceptor.domain.contracts.FormDataParser
+import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
+import com.azikar24.wormaceptor.domain.contracts.MultipartParser
+import com.azikar24.wormaceptor.domain.contracts.ProtobufDecoder
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.contracts.WebViewMonitorRepository
+import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
+import com.azikar24.wormaceptor.infra.parser.form.FormBodyParser
+import com.azikar24.wormaceptor.infra.parser.html.HtmlBodyParser
+import com.azikar24.wormaceptor.infra.parser.image.ImageParser
+import com.azikar24.wormaceptor.infra.parser.json.JsonBodyParser
+import com.azikar24.wormaceptor.infra.parser.multipart.MultipartBodyParser
+import com.azikar24.wormaceptor.infra.parser.pdf.PdfParser
+import com.azikar24.wormaceptor.infra.parser.protobuf.ProtobufBodyParser
+import com.azikar24.wormaceptor.infra.parser.xml.XmlBodyParser
 import com.azikar24.wormaceptor.infra.syntax.json.JsonHighlighter
 import com.azikar24.wormaceptor.infra.syntax.xml.XmlHighlighter
 import kotlinx.coroutines.CoroutineScope
@@ -108,6 +122,9 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
         // Register syntax highlighters
         configureHighlighters()
+
+        // Register body parsers
+        configureParsers(context)
     }
 
     private fun configureLeakDetection(
@@ -125,9 +142,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
             leakEngine.configure(
                 repository = leakRepository,
-                onLeakCallback = notificationHelper?.let { helper ->
-                    { leak -> helper.show(leak) }
-                },
+                onLeakCallback = notificationHelper?.let { helper -> helper::show },
             )
         } catch (e: RuntimeException) {
             Log.d(TAG, "LeakDetectionEngine not available in Koin", e)
@@ -150,6 +165,45 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
             registry.register(XmlHighlighter())
         } catch (e: RuntimeException) {
             Log.d(TAG, "HighlighterRegistry not available", e)
+        }
+    }
+
+    private fun configureParsers(context: Context) {
+        try {
+            val registry: ParserRegistry = get(ParserRegistry::class.java)
+            val protobufParser = ProtobufBodyParser()
+            val multipartParser = MultipartBodyParser()
+            val formParser = FormBodyParser()
+            val xmlParser = XmlBodyParser()
+            val htmlParser = HtmlBodyParser()
+            val jsonParser = JsonBodyParser()
+            val imageParser = ImageParser()
+            val pdfParser = PdfParser(context)
+
+            registry.register(protobufParser)
+            registry.register(multipartParser)
+            registry.register(formParser)
+            registry.register(xmlParser)
+            registry.register(htmlParser)
+            registry.register(jsonParser)
+            registry.register(imageParser)
+            registry.register(pdfParser)
+
+            // Register typed interfaces for direct Koin injection
+            val koin = WormaCeptorKoin.getKoin()
+            koin.loadModules(
+                listOf(
+                    module {
+                        single<ProtobufDecoder> { protobufParser }
+                        single<MultipartParser> { multipartParser }
+                        single<FormDataParser> { formParser }
+                        single<XmlFormatter> { xmlParser }
+                        single<ImageMetadataExtractor> { imageParser }
+                    },
+                ),
+            )
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "ParserRegistry not available", e)
         }
     }
 

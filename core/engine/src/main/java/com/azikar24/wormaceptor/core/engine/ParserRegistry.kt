@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.core.engine
 import com.azikar24.wormaceptor.domain.contracts.BodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import java.util.Locale
 
 /**
  * Registry for body parsers.
@@ -33,7 +32,7 @@ interface ParserRegistry {
     ): ParsedBody
 
     /**
-     * Detects the content type without fully parsing the body.
+     * Detects the content type from header and/or body bytes.
      *
      * @param contentType The Content-Type header value, may be null
      * @param body The raw body bytes
@@ -43,108 +42,26 @@ interface ParserRegistry {
         contentType: String?,
         body: ByteArray,
     ): ContentType
-}
 
-/**
- * Default implementation of [ParserRegistry].
- *
- * Parsers are sorted by priority (descending) and the first parser
- * that can handle the content is used.
- */
-class DefaultParserRegistry : ParserRegistry {
-    private val parsers = mutableListOf<BodyParser>()
+    /**
+     * Detects the content type from header and/or body string.
+     *
+     * Convenience overload for string-based content detection.
+     *
+     * @param contentTypeHeader The Content-Type header value, may be null
+     * @param body The body as a string, may be null
+     * @return The detected ContentType
+     */
+    fun detectContentType(
+        contentTypeHeader: String?,
+        body: String?,
+    ): ContentType
 
-    override fun register(parser: BodyParser) {
-        parsers.add(parser)
-        parsers.sortByDescending { it.priority }
-    }
-
-    override fun parseBody(
-        contentType: String?,
-        body: ByteArray,
-    ): ParsedBody {
-        if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "",
-                contentType = ContentType.UNKNOWN,
-                isValid = true,
-            )
-        }
-
-        val parser = findParser(contentType, body)
-        return parser?.parse(body) ?: createFallbackParsedBody(body)
-    }
-
-    override fun detectContentType(
-        contentType: String?,
-        body: ByteArray,
-    ): ContentType {
-        if (body.isEmpty()) {
-            return ContentType.UNKNOWN
-        }
-
-        val parser = findParser(contentType, body)
-        if (parser != null) {
-            // Get content type from parser's supported types
-            return parser.parse(body).contentType
-        }
-
-        // Fallback: try to determine if it's text or binary
-        return if (isLikelyText(body)) ContentType.PLAIN_TEXT else ContentType.BINARY
-    }
-
-    private fun findParser(
-        contentType: String?,
-        body: ByteArray,
-    ): BodyParser? {
-        return parsers.firstOrNull { it.canParse(contentType, body) }
-    }
-
-    private fun createFallbackParsedBody(body: ByteArray): ParsedBody {
-        return if (isLikelyText(body)) {
-            ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.PLAIN_TEXT,
-                isValid = true,
-            )
-        } else {
-            ParsedBody(
-                formatted = formatBinaryPreview(body),
-                contentType = ContentType.BINARY,
-                metadata = mapOf("size" to body.size.toString()),
-                isValid = true,
-            )
-        }
-    }
-
-    private fun isLikelyText(body: ByteArray): Boolean {
-        if (body.isEmpty()) return true
-
-        // Check first N bytes for printable ASCII/UTF-8
-        val sampleSize = minOf(body.size, 1024)
-        var nonPrintableCount = 0
-
-        for (i in 0 until sampleSize) {
-            val b = body[i].toInt() and 0xFF
-            // Allow common control chars (tab, newline, carriage return) and printable ASCII
-            if (b < 9 || b in 14..31 || b == 127) {
-                nonPrintableCount++
-            }
-        }
-
-        // If more than 10% non-printable, treat as binary
-        return nonPrintableCount.toFloat() / sampleSize < 0.1f
-    }
-
-    private fun formatBinaryPreview(body: ByteArray): String {
-        val previewSize = minOf(body.size, 256)
-        val hex = body.take(previewSize).joinToString(" ") {
-            String.format(Locale.US, "%02X", it)
-        }
-        return if (body.size > previewSize) {
-            "$hex\n... (${body.size} bytes total)"
-        } else {
-            hex
-        }
-    }
+    /**
+     * Extracts the boundary parameter from a multipart Content-Type header.
+     *
+     * @param contentType The full Content-Type header value
+     * @return The boundary string, or null if not found
+     */
+    fun extractMultipartBoundary(contentType: String): String?
 }

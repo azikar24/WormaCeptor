@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.database.navigation
 
+import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,8 +58,9 @@ private fun graphScopedViewModel(
     val graphEntry = remember(backStackEntry) {
         navController.getBackStackEntry(WormaCeptorNavKeys.Database.route)
     }
+    val application = remember { context.applicationContext as Application }
     val repository = remember { DatabaseFeature.createRepository(context) }
-    val factory = remember { DatabaseFeature.createViewModelFactory(repository) }
+    val factory = remember { DatabaseFeature.createViewModelFactory(repository, application) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 

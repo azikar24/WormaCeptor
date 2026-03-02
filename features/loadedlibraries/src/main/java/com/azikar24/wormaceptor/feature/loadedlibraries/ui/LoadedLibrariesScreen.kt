@@ -241,7 +241,7 @@ fun LoadedLibrariesScreen(
 private fun SummarySection(
     summary: LibrarySummary,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
@@ -287,7 +287,7 @@ private fun FilterSection(
     onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
@@ -431,7 +431,7 @@ private fun LibraryCard(
 private fun LibraryDetailContent(
     library: LoadedLibrary,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val (icon, color) = when (library.type) {
         LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo

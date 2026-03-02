@@ -602,7 +602,7 @@ private fun ThreadViolationScreenPreview() {
                 ),
                 ThreadViolation(
                     id = 3L,
-                    timestamp = System.currentTimeMillis() - 10000L,
+                    timestamp = System.currentTimeMillis() - 10_000L,
                     violationType = ViolationType.DISK_WRITE,
                     description = "Database write on main thread",
                     stackTrace = emptyList(),

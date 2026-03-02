@@ -372,8 +372,13 @@ private fun PresetChip(
 ) {
     val presetColor = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> colors.presetWifi
-        RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> colors.preset3G
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> colors.preset2G
+        RateLimitConfig.NetworkPreset.GOOD_3G,
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> colors.preset3G
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> colors.preset2G
         RateLimitConfig.NetworkPreset.EDGE -> colors.presetEdge
         RateLimitConfig.NetworkPreset.OFFLINE -> colors.presetOffline
     }
@@ -381,8 +386,12 @@ private fun PresetChip(
     val presetIcon = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> Icons.Default.Wifi
         RateLimitConfig.NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
-        RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> Icons.Default.SignalCellularAlt
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.EDGE -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
     }
@@ -483,7 +492,7 @@ private fun ConfigurationCard(
                 value = config.downloadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.downloadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.download,
                 onValueChange = { onDownloadSpeedChanged(it.toLong()) },
@@ -497,7 +506,7 @@ private fun ConfigurationCard(
                 value = config.uploadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.uploadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.upload,
                 onValueChange = { onUploadSpeedChanged(it.toLong()) },

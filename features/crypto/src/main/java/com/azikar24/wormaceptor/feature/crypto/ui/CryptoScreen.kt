@@ -353,12 +353,20 @@ internal fun CryptoToolContent(
                         onValueChange = onSetKey,
                         label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / 8)) },
                         modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        visualTransformation = if (showKeyPassword) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                         trailingIcon = {
                             Row {
                                 IconButton(onClick = { showKeyPassword = !showKeyPassword }) {
                                     Icon(
-                                        if (showKeyPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                        imageVector = if (showKeyPassword) {
+                                            Icons.Default.VisibilityOff
+                                        } else {
+                                            Icons.Default.Visibility
+                                        },
                                         contentDescription = if (showKeyPassword) {
                                             stringResource(
                                                 R.string.crypto_hide_key,
@@ -392,12 +400,20 @@ internal fun CryptoToolContent(
                             onValueChange = onSetIv,
                             label = { Text(ivLabel) },
                             modifier = Modifier.fillMaxWidth(),
-                            visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                            visualTransformation = if (showIvPassword) {
+                                VisualTransformation.None
+                            } else {
+                                PasswordVisualTransformation()
+                            },
                             trailingIcon = {
                                 Row {
                                     IconButton(onClick = { showIvPassword = !showIvPassword }) {
                                         Icon(
-                                            if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                            imageVector = if (showIvPassword) {
+                                                Icons.Default.VisibilityOff
+                                            } else {
+                                                Icons.Default.Visibility
+                                            },
                                             contentDescription = if (showIvPassword) hideIv else showIv,
                                         )
                                     }

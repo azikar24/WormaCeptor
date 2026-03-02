@@ -256,7 +256,7 @@ fun DependenciesInspectorScreen(
 private fun SummarySection(
     summary: DependencySummary,
     colors: DependenciesInspectorColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
@@ -295,7 +295,7 @@ private fun FilterSection(
     onCategorySelected: (DependencyCategory?) -> Unit,
     onShowVersionedOnlyChanged: (Boolean) -> Unit,
     colors: DependenciesInspectorColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         // Category filter chips - scrollable horizontally
@@ -466,7 +466,7 @@ private fun DependencyCard(
 private fun DependencyDetailContent(
     dependency: DependencyInfo,
     colors: DependenciesInspectorColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val categoryColor = colors.colorForCategory(dependency.category)
     val uriHandler = LocalUriHandler.current

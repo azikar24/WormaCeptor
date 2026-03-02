@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="push_template_alert_title">Alert</string>
+    <string name="push_template_message_title">New Message</string>
+    <string name="push_template_download_title">Download Complete</string>
+    <string name="push_action_open">Open</string>
+    <string name="push_action_share">Share</string>
+</resources>

@@ -170,7 +170,7 @@ internal fun LogsScreenContent(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Console Logs",
+                            text = stringResource(R.string.logs_console_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                     },
@@ -538,7 +538,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 5_000,
                     level = LogLevel.DEBUG,
                     tag = "OkHttp",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "Sending request https://api.example.com/users",
                 ),
                 LogEntry(
@@ -546,7 +546,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 3_000,
                     level = LogLevel.INFO,
                     tag = "MainActivity",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "User authenticated successfully",
                 ),
                 LogEntry(
@@ -554,7 +554,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 1_000,
                     level = LogLevel.ERROR,
                     tag = "CrashReporter",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "Failed to upload crash report: timeout",
                 ),
             ),
@@ -568,7 +568,7 @@ private fun LogsScreenContentPreview() {
                 LogLevel.INFO to 1,
                 LogLevel.ERROR to 1,
             ),
-            pid = 12345,
+            pid = 12_345,
             onSearchQueryChanged = {},
             onLevelToggle = {},
             onSetAutoScroll = {},

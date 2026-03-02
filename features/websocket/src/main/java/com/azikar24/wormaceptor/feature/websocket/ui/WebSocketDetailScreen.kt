@@ -270,12 +270,16 @@ private fun DirectionFilterChips(
                                 text = if (count > 999) "999+" else count.toString(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
+                                    val alpha = WormaCeptorDesignSystem.Alpha.intense +
+                                        WormaCeptorDesignSystem.Alpha.subtle
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                        alpha = alpha,
                                     )
                                 } else {
+                                    val alpha = WormaCeptorDesignSystem.Alpha.intense +
+                                        WormaCeptorDesignSystem.Alpha.subtle
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                        alpha = alpha,
                                     )
                                 },
                             )
@@ -460,7 +464,11 @@ private fun MessageItem(
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs))
+            Spacer(
+                modifier = Modifier.height(
+                    WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                ),
+            )
 
             // Payload preview or full content
             Text(

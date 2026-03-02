@@ -19,8 +19,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.R
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /** Reusable search bar with clear button and configurable keyboard action. */
@@ -42,7 +44,7 @@ fun WormaCeptorSearchBar(
     val leadingIcon: @Composable () -> Unit = {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = "Search",
+            contentDescription = stringResource(R.string.search_icon_description),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -98,7 +100,7 @@ private fun ClearButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = "Clear search",
+                contentDescription = stringResource(R.string.search_clear_description),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

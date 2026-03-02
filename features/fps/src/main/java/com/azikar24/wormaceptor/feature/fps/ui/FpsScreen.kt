@@ -127,7 +127,7 @@ internal fun FpsScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = "FPS Monitor",
+                            text = stringResource(R.string.fps_monitor_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         WormaCeptorMonitoringIndicator(isActive = isMonitoring)
@@ -250,7 +250,7 @@ private fun CurrentFpsCard(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Current FPS",
+                text = stringResource(R.string.fps_current),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -362,7 +362,7 @@ private fun DroppedFramesCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Dropped Frames",
+                    text = stringResource(R.string.fps_dropped_frames),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -379,7 +379,7 @@ private fun DroppedFramesCard(
                 )
 
                 Text(
-                    text = "> 16.67ms",
+                    text = stringResource(R.string.fps_threshold_dropped),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = WormaCeptorDesignSystem.Alpha.heavy,
@@ -404,7 +404,7 @@ private fun DroppedFramesCard(
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     Text(
-                        text = "Jank Frames",
+                        text = stringResource(R.string.fps_jank_frames),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -435,7 +435,7 @@ private fun DroppedFramesCard(
                 )
 
                 Text(
-                    text = "> 32ms",
+                    text = stringResource(R.string.fps_threshold_jank),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = WormaCeptorDesignSystem.Alpha.heavy,
@@ -463,7 +463,7 @@ private fun FpsChartCard(
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Text(
-                text = "FPS Over Time",
+                text = stringResource(R.string.fps_over_time),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.semantics { heading() },
@@ -477,7 +477,7 @@ private fun FpsChartCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No data yet",
+                        text = stringResource(R.string.fps_no_data),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                             alpha = WormaCeptorDesignSystem.Alpha.bold,
@@ -486,13 +486,14 @@ private fun FpsChartCard(
                 }
             } else {
                 val latestFps = history.lastOrNull()?.currentFps?.toInt() ?: 0
+                val chartDescription = stringResource(R.string.fps_chart_content_description, latestFps)
                 FpsChart(
                     data = history,
                     colors = colors,
                     modifier = Modifier
                         .fillMaxSize()
                         .semantics {
-                            contentDescription = "FPS chart showing current: $latestFps fps"
+                            contentDescription = chartDescription
                         },
                 )
             }
@@ -635,7 +636,7 @@ private fun EmptyState(
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
 
         Text(
-            text = "Ready to monitor",
+            text = stringResource(R.string.fps_ready_title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -644,7 +645,7 @@ private fun EmptyState(
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
 
         Text(
-            text = "Tap play to start measuring frame rate",
+            text = stringResource(R.string.fps_ready_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
         )
@@ -668,7 +669,7 @@ private fun EmptyState(
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 Text(
-                    text = "Start Monitoring",
+                    text = stringResource(R.string.fps_start_monitoring),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,

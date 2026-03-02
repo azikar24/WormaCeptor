@@ -90,7 +90,11 @@ fun TableDataScreen(
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = stringResource(R.string.database_table_data_schema),
-                            tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            tint = if (showSchema) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            },
                         )
                     }
                     IconButton(

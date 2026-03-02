@@ -85,7 +85,11 @@ internal fun PresetItem(
             .scale(scale)
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .border(
-                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
+                width = if (isSelected) {
+                    WormaCeptorDesignSystem.BorderWidth.thick
+                } else {
+                    WormaCeptorDesignSystem.BorderWidth.regular
+                },
                 color = if (isSelected) {
                     LocationColors.enabled
                 } else {

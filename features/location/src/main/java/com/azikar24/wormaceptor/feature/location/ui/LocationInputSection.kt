@@ -99,7 +99,8 @@ internal fun CoordinateInputCard(
                 supportingText = {
                     Text(stringResource(R.string.location_latitude_range))
                 },
-                isError = latitudeInput.isNotBlank() && latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true,
+                isError = latitudeInput.isNotBlank() &&
+                    latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
@@ -117,7 +118,8 @@ internal fun CoordinateInputCard(
                 supportingText = {
                     Text(stringResource(R.string.location_longitude_range))
                 },
-                isError = longitudeInput.isNotBlank() && longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true,
+                isError = longitudeInput.isNotBlank() &&
+                    longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true,
             )
 
             Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))

@@ -7,4 +7,16 @@
     <string name="fps_min">Min</string>
     <string name="fps_avg">Avg</string>
     <string name="fps_max">Max</string>
+    <string name="fps_monitor_title">FPS Monitor</string>
+    <string name="fps_current">Current FPS</string>
+    <string name="fps_dropped_frames">Dropped Frames</string>
+    <string name="fps_threshold_dropped">> 16.67ms</string>
+    <string name="fps_jank_frames">Jank Frames</string>
+    <string name="fps_threshold_jank">> 32ms</string>
+    <string name="fps_over_time">FPS Over Time</string>
+    <string name="fps_no_data">No data yet</string>
+    <string name="fps_ready_title">Ready to monitor</string>
+    <string name="fps_ready_subtitle">Tap play to start measuring frame rate</string>
+    <string name="fps_start_monitoring">Start Monitoring</string>
+    <string name="fps_chart_content_description">FPS chart showing current: %1$d fps</string>
 </resources>

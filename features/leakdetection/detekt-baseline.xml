@@ -9,7 +9,6 @@
     <ID>MagicNumber:LeakDetectionViewModel.kt$LeakDetectionViewModel$5000</ID>
     <ID>ParameterNaming:LeakDetectionScreen.kt$onLeakSelected</ID>
     <ID>ParameterNaming:LeakDetectionScreen.kt$onSeveritySelected</ID>
-    <ID>UnusedParameter:LeakDetectionColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>ViewModelInjection:LeakDetectionFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

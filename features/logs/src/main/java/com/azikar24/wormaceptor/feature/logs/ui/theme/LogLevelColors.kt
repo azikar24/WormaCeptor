@@ -1,10 +1,8 @@
 package com.azikar24.wormaceptor.feature.logs.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -78,7 +76,7 @@ private val AssertColor = Color(0xFFC2185B)
  * Delegates to WormaCeptorColors for status semantics and Material theme for surfaces.
  */
 @Composable
-fun logLevelColors(darkTheme: Boolean = isSystemInDarkTheme()): LogLevelColors {
+fun logLevelColors(): LogLevelColors {
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
 
     return LogLevelColors(
@@ -94,23 +92,5 @@ fun logLevelColors(darkTheme: Boolean = isSystemInDarkTheme()): LogLevelColors {
         warnBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
         errorBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
         assertBackground = AssertColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-    )
-}
-
-/** CompositionLocal providing the current [LogLevelColors] to descendant composables. */
-val LocalLogLevelColors = staticCompositionLocalOf {
-    LogLevelColors(
-        verbose = WormaCeptorColors.StatusGrey,
-        debug = WormaCeptorColors.StatusBlue,
-        info = WormaCeptorColors.StatusGreen,
-        warn = WormaCeptorColors.StatusAmber,
-        error = WormaCeptorColors.StatusRed,
-        assert = AssertColor,
-        verboseBackground = Color.Transparent,
-        debugBackground = Color.Transparent,
-        infoBackground = Color.Transparent,
-        warnBackground = Color.Transparent,
-        errorBackground = Color.Transparent,
-        assertBackground = Color.Transparent,
     )
 }

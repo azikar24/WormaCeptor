@@ -65,6 +65,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
+import com.azikar24.wormaceptor.feature.logs.ui.theme.LogLevelColors
 import com.azikar24.wormaceptor.feature.logs.ui.theme.logLevelColors
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -419,6 +420,7 @@ private fun LogList(
     listState: androidx.compose.foundation.lazy.LazyListState,
     modifier: Modifier = Modifier,
 ) {
+    val colors = logLevelColors()
     LazyColumn(
         state = listState,
         modifier = modifier,
@@ -430,6 +432,7 @@ private fun LogList(
         ) { entry ->
             LogEntryItem(
                 entry = entry,
+                colors = colors,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -439,9 +442,9 @@ private fun LogList(
 @Composable
 private fun LogEntryItem(
     entry: LogEntry,
+    colors: LogLevelColors,
     modifier: Modifier = Modifier,
 ) {
-    val colors = logLevelColors()
     val levelColor = colors.forLevel(entry.level)
     val backgroundColor = colors.backgroundForLevel(entry.level)
 

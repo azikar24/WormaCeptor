@@ -19,7 +19,6 @@
     <ID>MagicNumber:CpuScreen.kt$4</ID>
     <ID>MagicNumber:CpuScreen.kt$60</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$5000</ID>
-    <ID>UnusedParameter:CpuColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>ViewModelInjection:CpuFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

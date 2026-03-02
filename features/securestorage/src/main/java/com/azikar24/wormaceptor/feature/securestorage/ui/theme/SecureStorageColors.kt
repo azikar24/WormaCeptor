@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.securestorage.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -49,7 +48,7 @@ data class SecureStorageColors(
  * Returns the appropriate secure storage colors based on the current theme.
  */
 @Composable
-fun secureStorageColors(darkTheme: Boolean = isSystemInDarkTheme()): SecureStorageColors {
+fun secureStorageColors(): SecureStorageColors {
     val alpha = WormaCeptorDesignSystem.Alpha
     val surface = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant

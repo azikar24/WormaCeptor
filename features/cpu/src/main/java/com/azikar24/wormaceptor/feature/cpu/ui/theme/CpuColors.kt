@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.cpu.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -59,7 +58,7 @@ data class CpuColors(
  * Returns the appropriate CPU colors based on the current theme.
  */
 @Composable
-fun cpuColors(darkTheme: Boolean = isSystemInDarkTheme()): CpuColors {
+fun cpuColors(): CpuColors {
     val surfaceColor = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
     val outline = MaterialTheme.colorScheme.outline

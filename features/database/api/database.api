@@ -109,34 +109,6 @@ public final class com/azikar24/wormaceptor/feature/database/ui/TableListScreenK
 	public static final fun TableListScreen (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem;
-}
-
-public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$DataTypeColors {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$DataTypeColors;
-	public final fun forType-vNxB06k (Ljava/lang/String;)J
-	public final fun getBlob-0d7_KjU ()J
-	public final fun getInteger-0d7_KjU ()J
-	public final fun getNullValue-0d7_KjU ()J
-	public final fun getPrimaryKey-0d7_KjU ()J
-	public final fun getReal-0d7_KjU ()J
-	public final fun getText-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$SqlSyntaxColors {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/database/ui/theme/DatabaseDesignSystem$SqlSyntaxColors;
-	public final fun getComment-0d7_KjU ()J
-	public final fun getFunction-0d7_KjU ()J
-	public final fun getKeyword-0d7_KjU ()J
-	public final fun getNumber-0d7_KjU ()J
-	public final fun getOperator-0d7_KjU ()J
-	public final fun getString-0d7_KjU ()J
-	public final fun getTable-0d7_KjU ()J
-}
 
 public abstract class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect {
 	public static final field $stable I

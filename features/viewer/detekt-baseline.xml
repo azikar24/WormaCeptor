@@ -166,11 +166,8 @@
     <ID>MagicNumber:TransactionDetailScreen.kt$0.3f</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$0.4f</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$100</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$100_000</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$150</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$250</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$4</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$500_000</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$64</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$300</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$400</ID>
@@ -224,7 +221,6 @@
     <ID>TopLevelPropertyNaming:TransactionDetailScreen.kt$/** Maximum body size (in chars) for which syntax highlighting is attempted. */ private const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000</ID>
     <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
-    <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
     <ID>UnusedPrivateMember:CrashDetailScreen.kt$@Preview(showBackground = true) @Composable private fun CrashDetailScreenPreview()</ID>
     <ID>UnusedPrivateMember:CrashListScreen.kt$@Preview(showBackground = true) @Composable private fun CrashListScreenPreview()</ID>
     <ID>UnusedPrivateMember:FilterBottomSheetContent.kt$@Preview(showBackground = true) @Composable private fun FilterBottomSheetContentPreview()</ID>

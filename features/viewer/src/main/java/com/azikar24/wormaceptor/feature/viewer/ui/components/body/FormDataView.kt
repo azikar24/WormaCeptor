@@ -70,7 +70,7 @@ fun FormDataView(
                             .fillMaxWidth()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                                 ),
                             )
                             .padding(
@@ -132,7 +132,7 @@ private fun FormDataRow(
                 if (isEven) {
                     MaterialTheme.colorScheme.surface
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
                 },
             )
             .padding(

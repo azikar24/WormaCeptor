@@ -204,7 +204,7 @@ private fun EnableToggleCard(
 ) {
     val statusColor by animateColorAsState(
         targetValue = if (enabled) colors.enabled else colors.disabled,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "status",
     )
 
@@ -231,7 +231,7 @@ private fun EnableToggleCard(
                     modifier = Modifier
                         .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -268,7 +268,7 @@ private fun EnableToggleCard(
                 onCheckedChange = { onToggle() },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colors.enabled,
-                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
                 ),
             )
         }
@@ -322,7 +322,7 @@ private fun NetworkPresetsCard(
             selectedPreset?.let { preset ->
                 Surface(
                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Row(
                         modifier = Modifier
@@ -414,7 +414,7 @@ private fun PresetChip(
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
             selectedLabelColor = presetColor,
             selectedLeadingIconColor = presetColor,
         ),

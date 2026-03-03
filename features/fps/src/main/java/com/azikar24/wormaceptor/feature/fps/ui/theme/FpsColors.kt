@@ -77,13 +77,13 @@ fun fpsColors(darkTheme: Boolean = isSystemInDarkTheme()): FpsColors {
         good = WormaCeptorColors.StatusGreen,
         warning = WormaCeptorColors.StatusAmber,
         critical = WormaCeptorColors.StatusRed,
-        goodBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        warningBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        criticalBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+        goodBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        warningBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        criticalBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         chartLine = if (darkTheme) Color(0xFF64B5F6) else Color(0xFF1976D2),
         chartFill = (if (darkTheme) Color(0xFF64B5F6) else Color(0xFF1976D2))
-            .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
-        chartGrid = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+        chartGrid = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         jankIndicator = if (darkTheme) Color(0xFFF06292) else Color(0xFFE91E63),
     )
 }

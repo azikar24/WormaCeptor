@@ -96,13 +96,13 @@ fun SelectableTransactionItem(
                     color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
                     },
                     shape = WormaCeptorDesignSystem.Shapes.card,
                 )
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
                     } else {
                         statusColor.asSubtleBackground()
                     },
@@ -174,7 +174,7 @@ fun SelectableTransactionItem(
                     text = formatDuration(transaction.tookMs),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }
@@ -200,7 +200,7 @@ fun SelectableTransactionItem(
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
     ) {
         Text(

@@ -93,7 +93,7 @@ internal fun PresetItem(
                 color = if (isSelected) {
                     LocationColors.enabled
                 } else {
-                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
                 },
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
@@ -207,7 +207,7 @@ internal fun CollapsibleMapSection(
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         ),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -239,7 +239,7 @@ internal fun CollapsibleMapSection(
                     if (isMockActive) {
                         Surface(
                             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                            color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                            color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                         ) {
                             Text(
                                 text = stringResource(R.string.location_map_live),

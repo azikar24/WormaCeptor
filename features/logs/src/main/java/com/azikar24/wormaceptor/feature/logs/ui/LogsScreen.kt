@@ -330,11 +330,11 @@ private fun LevelFilterChips(
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                     )
                                 } else {
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                     )
                                 },
                             )
@@ -342,12 +342,12 @@ private fun LevelFilterChips(
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     selectedLabelColor = levelColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                     enabled = true,
                     selected = isSelected,
                 ),
@@ -455,7 +455,7 @@ private fun LogEntryItem(
 
     Surface(
         modifier = modifier,
-        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
     ) {
         Row(
             modifier = Modifier
@@ -469,7 +469,7 @@ private fun LogEntryItem(
             // Level badge
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                 modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxs),
             ) {
                 Text(
@@ -510,7 +510,7 @@ private fun LogEntryItem(
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Monospace,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                         ),
                     )
                 }
@@ -522,7 +522,7 @@ private fun LogEntryItem(
                     text = entry.message,
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
                     lineHeight = 18.sp,
                 )
             }

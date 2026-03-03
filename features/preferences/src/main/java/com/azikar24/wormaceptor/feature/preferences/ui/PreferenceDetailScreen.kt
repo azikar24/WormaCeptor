@@ -196,11 +196,11 @@ fun PreferenceDetailScreen(
             AnimatedVisibility(
                 visible = searchActive,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
             ) {
                 WormaCeptorSearchBar(
                     query = searchQuery,
@@ -239,7 +239,7 @@ fun PreferenceDetailScreen(
                             label = { Text(type) },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = typeColor.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                                 ),
                                 selectedLabelColor = typeColor,
                             ),
@@ -423,7 +423,7 @@ private fun PreferenceItemRow(
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
         Surface(
-            color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             contentColor = typeColor,
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
         ) {

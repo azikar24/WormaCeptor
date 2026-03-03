@@ -237,7 +237,7 @@ private fun SummarySection(
             color = colors.critical,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.criticalBackground,
-            labelColor = colors.critical.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.critical.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
         )
         WormaCeptorSummaryCard(
             count = summary.highCount.toString(),
@@ -245,7 +245,7 @@ private fun SummarySection(
             color = colors.high,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.highBackground,
-            labelColor = colors.high.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.high.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
         )
         WormaCeptorSummaryCard(
             count = summary.mediumCount.toString(),
@@ -253,7 +253,7 @@ private fun SummarySection(
             color = colors.medium,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.mediumBackground,
-            labelColor = colors.medium.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.medium.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
         )
         WormaCeptorSummaryCard(
             count = summary.lowCount.toString(),
@@ -261,7 +261,7 @@ private fun SummarySection(
             color = colors.low,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.lowBackground,
-            labelColor = colors.low.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.low.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
         )
     }
 }
@@ -293,7 +293,7 @@ private fun SeverityFilterChips(
                 label = { Text(severity.name) },
                 modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                 ),
             )

@@ -67,7 +67,7 @@ fun ZoomControls(
         shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
     ) {
         Column(
@@ -83,7 +83,7 @@ fun ZoomControls(
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
                     disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                     ),
                 ),
             ) {
@@ -109,7 +109,7 @@ fun ZoomControls(
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
                     disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                     ),
                 ),
             ) {

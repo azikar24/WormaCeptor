@@ -124,7 +124,7 @@ fun QueryScreen(
                     .fillMaxWidth()
                     .heightIn(min = 100.dp, max = 200.dp)
                     .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                     )
                     .padding(WormaCeptorDesignSystem.Spacing.md),
             ) {

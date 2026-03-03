@@ -37,17 +37,17 @@ fun WormaCeptorMonitoringIndicator(
 ) {
     val baseColor by animateColorAsState(
         targetValue = if (isActive) activeColor else inactiveColor,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.slow),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.SLOW),
         label = "monitoring_indicator_color",
     )
 
     val infiniteTransition = rememberInfiniteTransition(label = "monitoring_pulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.bold else 1f,
+        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.BOLD else 1f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                WormaCeptorDesignSystem.AnimationDuration.verySlow,
+                WormaCeptorDesignSystem.AnimationDuration.VERY_SLOW,
                 easing = LinearEasing,
             ),
             repeatMode = RepeatMode.Reverse,

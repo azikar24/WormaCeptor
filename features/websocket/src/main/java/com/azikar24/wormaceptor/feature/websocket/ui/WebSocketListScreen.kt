@@ -248,7 +248,7 @@ private fun ConnectionItem(
     Surface(
         modifier = modifier.clickable(onClick = onClick),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
         ),
     ) {
         Row(
@@ -289,7 +289,7 @@ private fun ConnectionItem(
                     // State badge
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Text(
                             text = connection.state.name,
@@ -328,7 +328,7 @@ private fun ConnectionItem(
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                    alpha = WormaCeptorDesignSystem.Alpha.INTENSE + WormaCeptorDesignSystem.Alpha.SUBTLE,
                 ),
             )
         }

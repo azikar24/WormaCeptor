@@ -123,7 +123,7 @@ fun LocationScreen(
                         if (isMockEnabled) {
                             Surface(
                                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                                color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                                color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                             ) {
                                 Text(
                                     text = stringResource(R.string.location_status_active),

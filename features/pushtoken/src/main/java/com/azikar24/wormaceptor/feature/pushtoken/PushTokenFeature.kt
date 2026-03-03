@@ -244,7 +244,7 @@ fun PushTokenManager(
                                 Surface(
                                     shape = WormaCeptorDesignSystem.Shapes.chip,
                                     color = WormaCeptorColors.StatusGreen.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.light,
+                                        alpha = WormaCeptorDesignSystem.Alpha.LIGHT,
                                     ),
                                 ) {
                                     Text(
@@ -351,7 +351,7 @@ fun PushTokenManager(
                         Text(
                             stringResource(R.string.pushtoken_no_history),
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                             ),
                         )
                     }
@@ -382,7 +382,7 @@ fun PushTokenManager(
                                 Modifier
                                     .size(WormaCeptorDesignSystem.IconSize.xl)
                                     .clip(WormaCeptorDesignSystem.Shapes.card)
-                                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                                 Alignment.Center,
                             ) {
                                 Icon(
@@ -409,7 +409,7 @@ fun PushTokenManager(
                                 formatDateShort(entry.timestamp),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                 ),
                             )
                         }

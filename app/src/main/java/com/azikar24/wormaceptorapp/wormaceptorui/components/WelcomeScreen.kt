@@ -138,7 +138,7 @@ private fun HeroSection() {
         Text(
             text = stringResource(id = R.string.app_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
             textAlign = TextAlign.Center,
         )
     }
@@ -174,7 +174,7 @@ private fun FeatureCard(
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "feature_card_scale",
     )
 
@@ -194,7 +194,7 @@ private fun FeatureCard(
                 },
             ),
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
         tonalElevation = 0.dp,
     ) {
         Row(
@@ -216,7 +216,7 @@ private fun FeatureIcon(feature: WelcomeFeature) {
         modifier = Modifier
             .size(44.dp)
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-            .background(feature.accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+            .background(feature.accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
@@ -247,7 +247,7 @@ private fun FeatureTextContent(
         Text(
             text = feature.description,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
         )
     }
 }
@@ -285,7 +285,7 @@ private fun PrimaryActionButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.96f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "primary_button_scale",
     )
 
@@ -323,7 +323,7 @@ private fun SecondaryActionButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.96f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "secondary_button_scale",
     )
 
@@ -353,7 +353,7 @@ private fun Footer(onGitHubClick: () -> Unit) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) 0.6f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "footer_alpha",
     )
 
@@ -364,12 +364,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
         // Version badge
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
         ) {
             Text(
                 text = stringResource(id = R.string.app_version),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorDesignSystem.Spacing.sm,
                     vertical = WormaCeptorDesignSystem.Spacing.xs,
@@ -400,12 +400,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
                 imageVector = IcGithubBuilder.build(),
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
             )
             Text(
                 text = stringResource(id = R.string.view_on_github),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
             )
         }
     }

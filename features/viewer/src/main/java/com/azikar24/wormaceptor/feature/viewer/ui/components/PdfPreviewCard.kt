@@ -235,7 +235,7 @@ fun PdfPreviewCard(
         colors = CardDefaults.cardColors(containerColor = surfaceColor),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
         ),
     ) {
         when (val state = loadState) {
@@ -329,7 +329,7 @@ private fun SuccessContent(
                     .align(Alignment.BottomCenter)
                     .background(
                         WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.medium,
+                            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                         ),
                     ),
             )
@@ -340,7 +340,7 @@ private fun SuccessContent(
                     .align(Alignment.TopEnd)
                     .padding(WormaCeptorDesignSystem.Spacing.md),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.opaque),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.OPAQUE),
                 shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
             ) {
                 Row(
@@ -375,7 +375,7 @@ private fun SuccessContent(
                 modifier = Modifier.align(Alignment.Center),
                 shape = CircleShape,
                 color = WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
                 ),
             ) {
                 Icon(
@@ -467,7 +467,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -484,7 +484,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -514,7 +514,7 @@ private fun MetadataChip(
                 imageVector = it,
                 contentDescription = text,
                 modifier = Modifier.size(14.dp),
-                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
         Text(
@@ -532,7 +532,7 @@ private fun ErrorContent(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)),
+            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -580,7 +580,7 @@ private fun PasswordProtectedContent(
         // Lock icon with subtle background
         Surface(
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
             modifier = Modifier.size(72.dp),
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {

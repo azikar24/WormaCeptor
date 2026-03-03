@@ -290,7 +290,7 @@ private fun ToolListItemTrailing(
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                 )
             } else {
                 Spacer(modifier = Modifier.size(20.dp))

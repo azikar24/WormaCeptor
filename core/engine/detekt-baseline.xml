@@ -9,7 +9,6 @@
     <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$gc()</ID>
     <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$runFinalization()</ID>
     <ID>InstanceOfCheckForException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e is SecurityException</ID>
-    <ID>LargeClass:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$Companion</ID>
     <ID>LongMethod:CryptoEngine.kt$CryptoEngine$fun decrypt(ciphertext: String): CryptoResult</ID>
     <ID>MagicNumber:CaptureEngine.kt$CaptureEngine$400</ID>
     <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000</ID>
@@ -61,7 +60,6 @@
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576</ID>
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576.0</ID>
     <ID>NestedBlockDepth:CpuMonitorEngine.kt$CpuMonitorEngine$private fun readCpuTemperature(): Float?</ID>
-    <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun scanDynamicDependencies(): List&lt;DependencyInfo&gt;</ID>
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryCommonVersionPatterns(spec: LibrarySpec): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryFindVersionDynamically(packageName: String): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:LeakDetectionEngine.kt$LeakDetectionEngine$private fun buildReferencePath(obj: Any): List&lt;String&gt;</ID>
@@ -71,8 +69,8 @@
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun buildKeyInfo( keyStore: KeyStore, alias: String, ): String</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>
     <ID>OutdatedDocumentation:WebSocketMonitorEngine.kt$WebSocketMonitorEngine</ID>
-    <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
     <ID>ReturnCount:DefaultParserRegistry.kt$DefaultParserRegistry$override fun detectContentType( contentType: String?, body: ByteArray, ): ContentType</ID>
+    <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
     <ID>TooGenericExceptionCaught:CrashReporter.kt$CrashReporter$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CryptoEngine.kt$CryptoEngine$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$e: Exception</ID>

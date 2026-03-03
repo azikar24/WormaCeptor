@@ -243,7 +243,7 @@ private fun HeapUsageCard(
                 if (isWarning) {
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -537,7 +537,7 @@ private fun MemoryLineChart(
 
         drawPath(
             path = areaPath,
-            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         )
     }
 }

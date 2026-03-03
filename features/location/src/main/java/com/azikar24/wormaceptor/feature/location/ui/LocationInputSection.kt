@@ -68,7 +68,7 @@ internal fun CoordinateInputCard(
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         ),
     ) {
         Column(

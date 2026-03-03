@@ -12,9 +12,6 @@
     <ID>MagicNumber:DeviceInfoScreen.kt$70</ID>
     <ID>MagicNumber:DeviceInfoScreen.kt$90</ID>
     <ID>MagicNumber:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$100f</ID>
-    <ID>MagicNumber:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$60f</ID>
-    <ID>SwallowedException:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$e: Exception</ID>
     <ID>TooManyFunctions:DeviceInfoScreen.kt$com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen.kt</ID>
     <ID>UnusedPrivateMember:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Preview(showBackground = true) @Composable private fun DeviceInfoScreenContentPreview()</ID>
   </CurrentIssues>

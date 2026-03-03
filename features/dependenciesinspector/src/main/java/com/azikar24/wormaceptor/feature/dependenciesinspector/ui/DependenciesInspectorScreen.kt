@@ -161,11 +161,11 @@ fun DependenciesInspectorScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -308,7 +308,7 @@ private fun FilterSection(
                 onClick = { onCategorySelected(null) },
                 label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                 ),
             )
 
@@ -324,7 +324,7 @@ private fun FilterSection(
                         },
                         label = { Text("${category.shortLabel()} ($count)") },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
+                            selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                             selectedLabelColor = color,
                         ),
                     )

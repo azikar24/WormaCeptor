@@ -129,7 +129,7 @@ fun CrashDetailPagerScreen(
     }
 
     // Smooth animation config
-    val animDuration = WormaCeptorDesignSystem.AnimationDuration.normal
+    val animDuration = WormaCeptorDesignSystem.AnimationDuration.NORMAL
     val slideOffset = 100
 
     // Smooth directional slide transition
@@ -318,7 +318,7 @@ private fun ExceptionInfoCard(
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.subtle,
+                alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
             ),
         ),
     ) {
@@ -400,7 +400,7 @@ private fun MessageCard(
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorDesignSystem.Shapes.card,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
         ),
     ) {
         Column(
@@ -565,7 +565,7 @@ private fun StackFrameItem(
     isHighlighted: Boolean,
 ) {
     val backgroundColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
     } else {
         Color.Transparent
     }
@@ -590,7 +590,7 @@ private fun StackFrameItem(
             SelectionContainer {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense))) {
+                        withStyle(SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE))) {
                             append("at ")
                         }
                         withStyle(
@@ -606,7 +606,7 @@ private fun StackFrameItem(
                         }
                         if (frame.fileName != null && frame.lineNumber != null) {
                             withStyle(
-                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense)),
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE)),
                             ) {
                                 append("(")
                             }
@@ -614,7 +614,7 @@ private fun StackFrameItem(
                                 append("${frame.fileName}:${frame.lineNumber}")
                             }
                             withStyle(
-                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.intense)),
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE)),
                             ) {
                                 append(")")
                             }

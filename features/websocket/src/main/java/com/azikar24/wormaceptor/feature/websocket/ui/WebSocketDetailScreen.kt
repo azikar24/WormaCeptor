@@ -270,14 +270,14 @@ private fun DirectionFilterChips(
                                 text = if (count > 999) "999+" else count.toString(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
-                                    val alpha = WormaCeptorDesignSystem.Alpha.intense +
-                                        WormaCeptorDesignSystem.Alpha.subtle
+                                    val alpha = WormaCeptorDesignSystem.Alpha.INTENSE +
+                                        WormaCeptorDesignSystem.Alpha.SUBTLE
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
                                         alpha = alpha,
                                     )
                                 } else {
-                                    val alpha = WormaCeptorDesignSystem.Alpha.intense +
-                                        WormaCeptorDesignSystem.Alpha.subtle
+                                    val alpha = WormaCeptorDesignSystem.Alpha.INTENSE +
+                                        WormaCeptorDesignSystem.Alpha.SUBTLE
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                         alpha = alpha,
                                     )
@@ -287,15 +287,15 @@ private fun DirectionFilterChips(
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = directionColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    selectedContainerColor = directionColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     selectedLabelColor = directionColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     borderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
                     ),
                     selectedBorderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.STRONG + WormaCeptorDesignSystem.Alpha.SUBTLE,
                     ),
                     enabled = true,
                     selected = isSelected,
@@ -386,7 +386,7 @@ private fun MessageItem(
             .clickable(onClick = onClick)
             .animateContentSize(),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
         ),
     ) {
         Column(
@@ -414,7 +414,7 @@ private fun MessageItem(
                 // Type badge
                 Surface(
                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Text(
                         text = message.type.name,
@@ -445,7 +445,7 @@ private fun MessageItem(
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.INTENSE + WormaCeptorDesignSystem.Alpha.SUBTLE,
                     ),
                 )
 
@@ -458,7 +458,7 @@ private fun MessageItem(
                         if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
                     ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.STRONG + WormaCeptorDesignSystem.Alpha.SUBTLE,
                     ),
                     modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
                 )

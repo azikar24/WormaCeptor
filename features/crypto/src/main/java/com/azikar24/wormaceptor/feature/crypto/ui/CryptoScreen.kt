@@ -541,8 +541,8 @@ private fun ResultCard(
 
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
-        backgroundColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        borderColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        backgroundColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        borderColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
@@ -632,7 +632,7 @@ private fun ResultCard(
             Text(
                 "${result.algorithm.displayName}/${result.mode.displayName} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
     }
@@ -646,8 +646,8 @@ private fun ErrorCard(
     val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
-        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
@@ -739,7 +739,7 @@ fun CryptoHistoryScreen(
                         null,
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.bold,
+                            alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                         ),
                     )
                     Text(
@@ -751,7 +751,7 @@ fun CryptoHistoryScreen(
                         stringResource(R.string.crypto_empty_history_description),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                         ),
                     )
                 }
@@ -836,7 +836,7 @@ private fun HistoryItem(
                     Date(result.timestamp),
                 )} | ${if (result.success) successText else failedText} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
         IconButton(onClick = onRemove) {

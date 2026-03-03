@@ -666,7 +666,7 @@ private fun CollapsibleInfoRow(
                         .padding(top = WormaCeptorDesignSystem.Spacing.xs)
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                             ),
                             RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                         )

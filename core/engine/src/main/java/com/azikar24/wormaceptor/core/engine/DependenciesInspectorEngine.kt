@@ -6,7 +6,6 @@ import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
 import com.azikar24.wormaceptor.domain.entities.DetectionMethod
 import dalvik.system.BaseDexClassLoader
-import dalvik.system.DexFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Method
 import java.util.Enumeration
 
 /**
@@ -148,45 +148,76 @@ class DependenciesInspectorEngine(
         val discoveredPackages = mutableSetOf<String>()
 
         try {
-            // Get all loaded class names from the ClassLoader
             val classLoader = context.classLoader
             if (classLoader is BaseDexClassLoader) {
-                val pathListField = BaseDexClassLoader::class.java.getDeclaredField("pathList")
-                pathListField.isAccessible = true
-                val pathList = pathListField.get(classLoader)
-
-                val dexElementsField = pathList.javaClass.getDeclaredField("dexElements")
-                dexElementsField.isAccessible = true
-                val dexElements = dexElementsField.get(pathList) as Array<*>
-
-                for (element in dexElements) {
-                    try {
-                        val dexFileField = element?.javaClass?.getDeclaredField("dexFile")
-                        dexFileField?.isAccessible = true
-                        val dexFile = dexFileField?.get(element) as? DexFile ?: continue
-
-                        val entries: Enumeration<String> = dexFile.entries()
-                        while (entries.hasMoreElements()) {
-                            val className = entries.nextElement()
-                            // Extract package name (up to 3 levels deep)
-                            val packageName = extractLibraryPackage(className)
-                            if (packageName != null && shouldIncludePackage(packageName)) {
-                                discoveredPackages.add(packageName)
-                            }
-                        }
-                    } catch (_: Exception) {
-                        // Skip this element
-                    }
-                }
+                val dexElements = extractDexElements(classLoader)
+                collectPackagesFromDex(dexElements, discoveredPackages)
             }
         } catch (_: Exception) {
             // Fallback: scanning failed, return empty
         }
 
-        // Convert discovered packages to DependencyInfo
         return discoveredPackages
             .filter { !isSystemPackage(it) && !isAppPackage(it) }
             .map { packageName -> createDynamicDependency(packageName) }
+    }
+
+    private fun extractDexElements(classLoader: BaseDexClassLoader): Array<*> {
+        val pathListField = BaseDexClassLoader::class.java.getDeclaredField("pathList")
+        pathListField.isAccessible = true
+        val pathList = pathListField.get(classLoader)
+
+        val dexElementsField = pathList.javaClass.getDeclaredField("dexElements")
+        dexElementsField.isAccessible = true
+        return dexElementsField.get(pathList) as Array<*>
+    }
+
+    private fun collectPackagesFromDex(
+        dexElements: Array<*>,
+        discoveredPackages: MutableSet<String>,
+    ) {
+        var cachedEntriesMethod: Method? = null
+
+        for (element in dexElements) {
+            cachedEntriesMethod = processElement(element, cachedEntriesMethod, discoveredPackages)
+        }
+    }
+
+    private fun processElement(
+        element: Any?,
+        cachedMethod: Method?,
+        discoveredPackages: MutableSet<String>,
+    ): Method? {
+        var entriesMethod = cachedMethod
+        try {
+            val dexFile = extractDexFile(element) ?: return entriesMethod
+            entriesMethod = entriesMethod
+                ?: dexFile.javaClass.getMethod("entries").also { entriesMethod = it }
+            val entries = entriesMethod?.invoke(dexFile) as? Enumeration<*> ?: return entriesMethod
+            collectPackagesFromEntries(entries, discoveredPackages)
+        } catch (_: Exception) {
+            // Skip this element
+        }
+        return entriesMethod
+    }
+
+    private fun extractDexFile(element: Any?): Any? {
+        val dexFileField = element?.javaClass?.getDeclaredField("dexFile")
+        dexFileField?.isAccessible = true
+        return dexFileField?.get(element)
+    }
+
+    private fun collectPackagesFromEntries(
+        entries: Enumeration<*>,
+        discoveredPackages: MutableSet<String>,
+    ) {
+        while (entries.hasMoreElements()) {
+            val className = entries.nextElement() as? String ?: continue
+            val packageName = extractLibraryPackage(className)
+            if (packageName != null && shouldIncludePackage(packageName)) {
+                discoveredPackages.add(packageName)
+            }
+        }
     }
 
     /**
@@ -702,15 +733,6 @@ class DependenciesInspectorEngine(
                 detectionClass = "org.koin.core.Koin",
                 description = "Pragmatic lightweight DI framework for Kotlin",
                 website = "https://insert-koin.io/",
-                customVersionExtractor = {
-                    try {
-                        val clazz = Class.forName("org.koin.core.context.KoinContext")
-                        // Koin 3.x stores version differently
-                        null
-                    } catch (_: Exception) {
-                        null
-                    }
-                },
             ),
             LibrarySpec(
                 name = "Dagger",

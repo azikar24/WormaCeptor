@@ -175,11 +175,11 @@ fun SecureStorageScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -470,7 +470,7 @@ private fun TypeFilterChips(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -517,7 +517,7 @@ private fun EntryCard(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light))
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT))
                     .semantics { stateDescription = encryptionState },
                 contentAlignment = Alignment.Center,
             ) {
@@ -564,7 +564,7 @@ private fun EntryCard(
             // Type badge
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     text = when (entry.storageType) {
@@ -610,7 +610,7 @@ private fun EntryDetailContent(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.Spacing.xxxl)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(

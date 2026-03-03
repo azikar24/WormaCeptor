@@ -224,7 +224,7 @@ private fun CurrentFpsCard(
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "fps_color",
     )
 
@@ -232,9 +232,9 @@ private fun CurrentFpsCard(
         targetValue = if (fpsInfo.currentFps > 0) {
             colors.backgroundForFps(fpsInfo.currentFps)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "fps_background",
     )
 
@@ -348,7 +348,7 @@ private fun DroppedFramesCard(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
     ) {
         Row(
             modifier = Modifier
@@ -382,7 +382,7 @@ private fun DroppedFramesCard(
                     text = stringResource(R.string.fps_threshold_dropped),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }
@@ -392,7 +392,7 @@ private fun DroppedFramesCard(
                 modifier = Modifier
                     .width(1.dp)
                     .height(WormaCeptorDesignSystem.Spacing.xxxl)
-                    .background(MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)),
+                    .background(MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)),
             )
 
             // Jank frames
@@ -438,7 +438,7 @@ private fun DroppedFramesCard(
                     text = stringResource(R.string.fps_threshold_jank),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }
@@ -455,7 +455,7 @@ private fun FpsChartCard(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
     ) {
         Column(
             modifier = Modifier
@@ -480,7 +480,7 @@ private fun FpsChartCard(
                         text = stringResource(R.string.fps_no_data),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.bold,
+                            alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                         ),
                     )
                 }
@@ -510,8 +510,8 @@ private fun FpsChart(
     val lineColor = colors.chartLine
     val fillColor = colors.chartFill
     val gridColor = colors.chartGrid
-    val goodThresholdColor = colors.good.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
-    val warningThresholdColor = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+    val goodThresholdColor = colors.good.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+    val warningThresholdColor = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
 
     // Calculate min/max for scaling
     val maxFps = remember(data) {
@@ -613,7 +613,7 @@ private fun EmptyState(
     ) {
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
             modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xxxl + WormaCeptorDesignSystem.Spacing.lg),
         ) {
             Box(
@@ -627,7 +627,7 @@ private fun EmptyState(
                         fontFamily = FontFamily.Monospace,
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense,
+                        alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
                     ),
                 )
             }
@@ -647,7 +647,7 @@ private fun EmptyState(
         Text(
             text = stringResource(R.string.fps_ready_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))

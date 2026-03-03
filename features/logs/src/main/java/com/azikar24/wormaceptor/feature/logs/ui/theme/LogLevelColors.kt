@@ -86,11 +86,11 @@ fun logLevelColors(): LogLevelColors {
         warn = WormaCeptorColors.StatusAmber,
         error = WormaCeptorColors.StatusRed,
         assert = AssertColor,
-        verboseBackground = surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        debugBackground = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        infoBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        warnBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        errorBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        assertBackground = AssertColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+        verboseBackground = surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        debugBackground = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        infoBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        warnBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        errorBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        assertBackground = AssertColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
     )
 }

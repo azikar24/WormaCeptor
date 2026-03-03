@@ -211,7 +211,7 @@ private fun CpuUsageGaugeCard(
     // Animated sweep angle for the gauge
     val animatedProgress by animateFloatAsState(
         targetValue = currentCpu.overallUsagePercent / 100f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.verySlow),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.VERY_SLOW),
         label = "gauge_progress",
     )
 
@@ -263,7 +263,7 @@ private fun CpuUsageGaugeCard(
                 if (isWarning) {
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -429,7 +429,7 @@ private fun CoreUsageBar(
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = usage / 100f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "core_progress_$coreIndex",
     )
 
@@ -573,7 +573,7 @@ private fun CpuLineChart(
         // 50% threshold (warning)
         val warningY = padding + chartHeight * 0.5f
         drawLine(
-            color = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            color = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
             start = Offset(padding, warningY),
             end = Offset(width - padding, warningY),
             strokeWidth = 1.dp.toPx(),
@@ -582,7 +582,7 @@ private fun CpuLineChart(
         // 80% threshold (critical)
         val criticalY = padding + chartHeight * 0.2f
         drawLine(
-            color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
             start = Offset(padding, criticalY),
             end = Offset(width - padding, criticalY),
             strokeWidth = 1.dp.toPx(),
@@ -629,7 +629,7 @@ private fun CpuLineChart(
 
         drawPath(
             path = areaPath,
-            color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         )
     }
 }

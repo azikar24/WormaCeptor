@@ -578,11 +578,11 @@ private fun TransactionDetailContent(
             AnimatedVisibility(
                 visible = showSearch && debouncedSearchQuery.isNotEmpty(),
                 enter = fadeIn(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 exit = fadeOut(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast),
-                ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST),
+                ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST)),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .imePadding()
@@ -782,12 +782,12 @@ private fun TransactionTimeline(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
@@ -809,7 +809,7 @@ private fun TransactionTimeline(
                     .weight(0.3f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                         shape = RoundedCornerShape(
                             topStart = WormaCeptorDesignSystem.CornerRadius.xs,
                             bottomStart = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -823,7 +823,7 @@ private fun TransactionTimeline(
                     .weight(0.4f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
                     ),
             )
 
@@ -834,9 +834,9 @@ private fun TransactionTimeline(
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
                         if (hasResponse) {
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
                         } else {
-                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
+                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG)
                         },
                         shape = RoundedCornerShape(
                             topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -892,9 +892,9 @@ private fun SslBadge(
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
             if (isSsl) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             },
         ),
         modifier = Modifier.wrapContentSize(),
@@ -946,7 +946,7 @@ private fun EnhancedOverviewCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -1907,8 +1907,8 @@ private fun PrettyRawToggle(
     val shape = RoundedCornerShape(radius)
 
     val borderColor by animateColorAsState(
-        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_border",
     )
 
@@ -1941,16 +1941,16 @@ private fun SegmentOption(
 ) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
-            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
         } else {
             Color.Transparent
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_bg",
     )
     val textColor by animateColorAsState(
         targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_text",
     )
 
@@ -2040,7 +2040,7 @@ private fun buildBaseHighlightedText(
     return androidx.compose.ui.text.buildAnnotatedString {
         append(base)
         val defaultStyle = androidx.compose.ui.text.SpanStyle(
-            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
         )
         matchRanges.forEach { range ->
             addStyle(defaultStyle, range.first, range.last + 1)
@@ -2095,7 +2095,7 @@ private fun HighlightedBodyText(
         }
     }
 
-    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
 
     Box(modifier = modifier) {
         // Current match overlay using Canvas to draw the actual path shape

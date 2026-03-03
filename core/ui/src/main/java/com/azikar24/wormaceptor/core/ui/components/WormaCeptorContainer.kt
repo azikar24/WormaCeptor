@@ -36,10 +36,10 @@ fun WormaCeptorContainer(
 ) {
     val defaultBackgroundColor = when (style) {
         ContainerStyle.Filled -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.strong,
+            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
         )
         ContainerStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
         )
     }
 
@@ -48,7 +48,7 @@ fun WormaCeptorContainer(
         ContainerStyle.Outlined -> BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium,
+                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
             ),
         )
     }
@@ -88,10 +88,10 @@ fun WormaCeptorContainer(
 ) {
     val defaultBackgroundColor = when (style) {
         ContainerStyle.Filled -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.strong,
+            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
         )
         ContainerStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
         )
     }
 
@@ -100,7 +100,7 @@ fun WormaCeptorContainer(
         ContainerStyle.Outlined -> BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium,
+                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
             ),
         )
     }

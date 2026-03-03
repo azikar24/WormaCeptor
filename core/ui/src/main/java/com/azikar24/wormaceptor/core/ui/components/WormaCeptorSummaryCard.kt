@@ -33,7 +33,7 @@ fun WormaCeptorSummaryCard(
     color: Color,
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant.copy(
-        alpha = WormaCeptorDesignSystem.Alpha.bold,
+        alpha = WormaCeptorDesignSystem.Alpha.BOLD,
     ),
     labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {

@@ -57,7 +57,7 @@ fun WormaCeptorSearchBar(
     val placeholderContent: @Composable () -> Unit = {
         Text(
             text = placeholder,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
         )
     }
 
@@ -75,7 +75,7 @@ fun WormaCeptorSearchBar(
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.bold,
+                alpha = WormaCeptorDesignSystem.Alpha.BOLD,
             ),
             focusedBorderColor = MaterialTheme.colorScheme.primary,
         ),

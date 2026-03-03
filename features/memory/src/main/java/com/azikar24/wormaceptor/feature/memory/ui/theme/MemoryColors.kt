@@ -72,9 +72,9 @@ fun memoryColors(): MemoryColors {
         critical = WormaCeptorColors.StatusRed,
         cardBackground = surfaceColor,
         chartBackground = surfaceVariant,
-        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     )
 }

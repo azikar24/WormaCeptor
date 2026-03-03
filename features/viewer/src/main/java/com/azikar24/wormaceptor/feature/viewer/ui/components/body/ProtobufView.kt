@@ -110,7 +110,7 @@ fun ProtobufView(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.light,
+                            alpha = WormaCeptorDesignSystem.Alpha.LIGHT,
                         ),
                     ),
                 ) {
@@ -178,7 +178,7 @@ private fun ProtobufFieldCard(
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -192,10 +192,10 @@ private fun ProtobufFieldCard(
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.thin,
             color = if (expanded) {
-                protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
                 MaterialTheme.colorScheme.outlineVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                 )
             },
         ),
@@ -226,7 +226,7 @@ private fun ProtobufFieldCard(
 
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Code,
@@ -259,10 +259,10 @@ private fun ProtobufFieldCard(
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
                 ),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
                 ),
             ) {
                 Box(
@@ -270,7 +270,7 @@ private fun ProtobufFieldCard(
                         .fillMaxWidth()
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                             ),
                         )
                         .padding(WormaCeptorDesignSystem.Spacing.md),

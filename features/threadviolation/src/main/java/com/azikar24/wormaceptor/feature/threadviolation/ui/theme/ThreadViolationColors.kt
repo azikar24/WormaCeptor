@@ -75,6 +75,6 @@ fun threadViolationColors(): ThreadViolationColors {
         detailBackground = surfaceVariant,
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     )
 }

@@ -100,7 +100,7 @@ fun MetricsCard(
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
     ) {
         Column(
@@ -173,7 +173,7 @@ fun MetricsCard(
             }
 
             // Expandable details
-            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.page
+            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.PAGE
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(
@@ -296,7 +296,7 @@ fun MetricsCard(
                                 ) {
                                     WormaCeptorStatusDot(
                                         color = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                         ),
                                         size = 6.dp,
                                     )

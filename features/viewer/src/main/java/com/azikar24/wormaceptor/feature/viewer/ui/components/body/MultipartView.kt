@@ -116,7 +116,7 @@ fun MultipartView(
                     text = stringResource(R.string.viewer_multipart_boundary, truncated),
                     style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }
@@ -141,7 +141,7 @@ private fun MultipartPartCard(
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -168,9 +168,9 @@ private fun MultipartPartCard(
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.thin,
             color = if (expanded) {
-                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             },
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
@@ -200,7 +200,7 @@ private fun MultipartPartCard(
 
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Icon(
                         imageVector = partIcon,
@@ -261,10 +261,10 @@ private fun MultipartPartCard(
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
                 ),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
                 ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -276,7 +276,7 @@ private fun MultipartPartCard(
                                 .fillMaxWidth()
                                 .background(
                                     MaterialTheme.colorScheme.surfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                                     ),
                                 )
                                 .padding(WormaCeptorDesignSystem.Spacing.md),

@@ -160,7 +160,7 @@ fun ImagePreviewCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -199,7 +199,7 @@ fun ImagePreviewCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = MaterialTheme.colorScheme.primaryContainer.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.intense,
+                                alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
                             ),
                         ) {
                             Text(
@@ -227,7 +227,7 @@ fun ImagePreviewCard(
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                             ),
                         )
                         .clickable(onClick = onFullscreen)
@@ -240,7 +240,7 @@ fun ImagePreviewCard(
                             .fillMaxSize()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                                 ),
                             ),
                     )
@@ -270,7 +270,7 @@ fun ImagePreviewCard(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -292,7 +292,7 @@ fun ImagePreviewCard(
                                 .fillMaxSize()
                                 .background(
                                     MaterialTheme.colorScheme.errorContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                                     ),
                                 ),
                             contentAlignment = Alignment.Center,
@@ -325,7 +325,7 @@ fun ImagePreviewCard(
                         Surface(
                             shape = CircleShape,
                             color = MaterialTheme.colorScheme.surface.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                                alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
                             ),
                             shadowElevation = 2.dp,
                         ) {
@@ -458,14 +458,14 @@ private fun ActionButton(
         color = if (isPrimary) {
             MaterialTheme.colorScheme.primary.asSubtleBackground()
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
         },
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
             if (isPrimary) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             },
         ),
     ) {

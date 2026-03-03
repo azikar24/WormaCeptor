@@ -74,11 +74,11 @@ fun cpuColors(): CpuColors {
         critical = WormaCeptorColors.StatusRed,
         cardBackground = surfaceColor,
         chartBackground = surfaceVariant,
-        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         gaugeBackground = surfaceVariant,
-        gaugeTrack = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+        gaugeTrack = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
     )
 }

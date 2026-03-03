@@ -178,40 +178,40 @@ object WormaCeptorDesignSystem {
      */
     object Alpha {
         /** Near-invisible overlay (4%). */
-        const val hint = 0.04f
+        const val HINT = 0.04f
 
         /** Barely visible overlay (8%). */
-        const val subtle = 0.08f
+        const val SUBTLE = 0.08f
 
         /** Light tint overlay (12%). */
-        const val light = 0.12f
+        const val LIGHT = 0.12f
 
         /** Soft overlay (16%). */
-        const val soft = 0.16f
+        const val SOFT = 0.16f
 
         /** Medium overlay (20%). */
-        const val medium = 0.20f
+        const val MEDIUM = 0.20f
 
         /** Moderate overlay (32%). */
-        const val moderate = 0.32f
+        const val MODERATE = 0.32f
 
         /** Strong overlay (40%). */
-        const val strong = 0.40f
+        const val STRONG = 0.40f
 
         /** Bold overlay (50%). */
-        const val bold = 0.50f
+        const val BOLD = 0.50f
 
         /** Intense heavy overlay (60%). */
-        const val intense = 0.60f
+        const val INTENSE = 0.60f
 
         /** Heavy emphasis overlay (72%). */
-        const val heavy = 0.72f
+        const val HEAVY = 0.72f
 
         /** Near-opaque overlay (87%). */
-        const val prominent = 0.87f
+        const val PROMINENT = 0.87f
 
         /** Fully opaque (100%). */
-        const val opaque = 1.0f
+        const val OPAQUE = 1.0f
     }
 
     /**
@@ -219,22 +219,22 @@ object WormaCeptorDesignSystem {
      */
     object AnimationDuration {
         /** Ultra-fast animation duration (100ms). */
-        const val ultraFast = 100
+        const val ULTRA_FAST = 100
 
         /** Fast animation duration (150ms). */
-        const val fast = 150
+        const val FAST = 150
 
         /** Normal/default animation duration (250ms). */
-        const val normal = 250
+        const val NORMAL = 250
 
         /** Slow animation duration (350ms). */
-        const val slow = 350
+        const val SLOW = 350
 
         /** Very slow animation duration (500ms). */
-        const val verySlow = 500
+        const val VERY_SLOW = 500
 
         /** Page transition animation duration (300ms). */
-        const val page = 300
+        const val PAGE = 300
     }
 
     /**
@@ -352,9 +352,6 @@ object WormaCeptorDesignSystem {
         /** Badge shape with extra-small corner radius. */
         val badge = RoundedCornerShape(CornerRadius.xs)
 
-        /** Search bar shape with large corner radius. */
-        val searchBar = RoundedCornerShape(CornerRadius.lg)
-
         /** Text field shape with small corner radius. */
         val textField = RoundedCornerShape(CornerRadius.sm)
 
@@ -372,4 +369,4 @@ object WormaCeptorDesignSystem {
 /**
  * Applies a subtle background tint with this status color.
  */
-fun Color.asSubtleBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+fun Color.asSubtleBackground(): Color = this.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE)

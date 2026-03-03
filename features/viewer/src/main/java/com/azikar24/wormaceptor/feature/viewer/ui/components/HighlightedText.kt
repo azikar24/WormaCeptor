@@ -142,7 +142,7 @@ private fun HighlightedTextWithLineNumbers(
         Box(
             modifier = Modifier
                 .width(1.dp)
-                .background(colors.lineNumberText.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)),
+                .background(colors.lineNumberText.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)),
         )
 
         // Code content with horizontal scroll

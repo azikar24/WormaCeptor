@@ -211,7 +211,7 @@ fun CrashItem(
             .clickable(onClick = onClick)
             .alpha(alpha),
         shape = WormaCeptorDesignSystem.Shapes.card,
-        color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+        color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
         tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
     ) {
         Row(
@@ -223,7 +223,7 @@ fun CrashItem(
             // Icon badge
             Surface(
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 contentColor = WormaCeptorColors.StatusRed,
                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
             ) {
@@ -268,7 +268,7 @@ fun CrashItem(
                         text = message,
                         style = WormaCeptorDesignSystem.Typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                            alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
                         ),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -284,7 +284,7 @@ fun CrashItem(
                             WormaCeptorDesignSystem.CornerRadius.xs,
                         ),
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.strong,
+                            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
                         ),
                     ) {
                         Text(
@@ -309,7 +309,7 @@ fun CrashItem(
                     text = relativeTime,
                     style = WormaCeptorDesignSystem.Typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }

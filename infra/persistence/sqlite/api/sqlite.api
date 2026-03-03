@@ -175,7 +175,6 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity$
 }
 
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao {
-	public abstract fun deleteAllUserPresets (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeAll ()Lkotlinx/coroutines/flow/Flow;
@@ -183,7 +182,6 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao {
 	public fun <init> (Landroidx/room/RoomDatabase;)V
-	public fun deleteAllUserPresets (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

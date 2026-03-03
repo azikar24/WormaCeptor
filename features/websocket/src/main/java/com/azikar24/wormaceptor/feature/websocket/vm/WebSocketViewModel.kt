@@ -41,9 +41,6 @@ class WebSocketViewModel(
 
     private val _selectedConnectionId = MutableStateFlow<Long?>(null)
 
-    /** ID of the currently selected connection, or null when no connection is selected. */
-    val selectedConnectionId: StateFlow<Long?> = _selectedConnectionId
-
     private val _messageSearchQuery = MutableStateFlow("")
 
     /** Current search query for filtering messages in the detail screen. */
@@ -201,13 +198,6 @@ class WebSocketViewModel(
     }
 
     /**
-     * Sets the direction filter.
-     */
-    fun setDirectionFilter(direction: WebSocketMessageDirection?) {
-        _directionFilter.value = direction
-    }
-
-    /**
      * Toggles the direction filter.
      */
     fun toggleDirectionFilter(direction: WebSocketMessageDirection) {
@@ -227,21 +217,6 @@ class WebSocketViewModel(
         } else {
             messageId
         }
-    }
-
-    /**
-     * Checks if a message is expanded.
-     */
-    fun isMessageExpanded(messageId: Long): Boolean {
-        return _expandedMessageId.value == messageId
-    }
-
-    /**
-     * Clears all message and direction filters.
-     */
-    fun clearFilters() {
-        _messageSearchQuery.value = ""
-        _directionFilter.value = null
     }
 
     /**

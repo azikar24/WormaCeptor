@@ -466,12 +466,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Fullscr
 	public static final fun shareImage (Landroid/content/Context;[BLjava/lang/String;)Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/HighlightedTextKt {
-	public static final fun HighlightedText (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/TextStyle;ZZLjava/lang/String;Ljava/lang/Integer;Lkotlin/jvm/functions/Function1;Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
-	public static final fun InlineCode (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
-	public static final fun SearchHighlightedText (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ImagePreviewCardKt {
 	public static final fun ImagePreviewCard ([BLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun isImageContentType (Ljava/lang/String;)Z

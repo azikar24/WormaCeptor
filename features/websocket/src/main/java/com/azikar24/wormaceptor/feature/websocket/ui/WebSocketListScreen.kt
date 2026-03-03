@@ -248,7 +248,7 @@ private fun ConnectionItem(
     Surface(
         modifier = modifier.clickable(onClick = onClick),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
+            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
         ),
     ) {
         Row(
@@ -328,7 +328,7 @@ private fun ConnectionItem(
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.INTENSE + WormaCeptorDesignSystem.Alpha.SUBTLE,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }

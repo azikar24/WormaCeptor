@@ -292,10 +292,10 @@ private fun DirectionFilterChips(
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     borderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
+                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                     ),
                     selectedBorderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.STRONG + WormaCeptorDesignSystem.Alpha.SUBTLE,
+                        alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                     ),
                     enabled = true,
                     selected = isSelected,
@@ -386,7 +386,7 @@ private fun MessageItem(
             .clickable(onClick = onClick)
             .animateContentSize(),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM + WormaCeptorDesignSystem.Alpha.SUBTLE,
+            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
         ),
     ) {
         Column(
@@ -445,7 +445,7 @@ private fun MessageItem(
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.INTENSE + WormaCeptorDesignSystem.Alpha.SUBTLE,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
 
@@ -458,7 +458,7 @@ private fun MessageItem(
                         if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
                     ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.STRONG + WormaCeptorDesignSystem.Alpha.SUBTLE,
+                        alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                     ),
                     modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )

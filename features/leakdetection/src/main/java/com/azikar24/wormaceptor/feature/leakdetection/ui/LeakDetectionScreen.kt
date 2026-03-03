@@ -237,7 +237,7 @@ private fun SummarySection(
             color = colors.critical,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.criticalBackground,
-            labelColor = colors.critical.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
+            labelColor = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.highCount.toString(),
@@ -245,7 +245,7 @@ private fun SummarySection(
             color = colors.high,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.highBackground,
-            labelColor = colors.high.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
+            labelColor = colors.high.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.mediumCount.toString(),
@@ -253,7 +253,7 @@ private fun SummarySection(
             color = colors.medium,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.mediumBackground,
-            labelColor = colors.medium.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
+            labelColor = colors.medium.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.lowCount.toString(),
@@ -261,7 +261,7 @@ private fun SummarySection(
             color = colors.low,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.lowBackground,
-            labelColor = colors.low.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.MEDIUM),
+            labelColor = colors.low.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
     }
 }

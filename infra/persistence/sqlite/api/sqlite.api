@@ -133,7 +133,6 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryWeb
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao {
 	public abstract fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getAll ()Lkotlinx/coroutines/flow/Flow;
-	public abstract fun getCount (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
@@ -141,7 +140,6 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao_Imp
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAll ()Lkotlinx/coroutines/flow/Flow;
-	public fun getCount (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }

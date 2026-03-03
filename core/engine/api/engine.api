@@ -55,9 +55,7 @@ public final class com/azikar24/wormaceptor/core/engine/CryptoEngine {
 	public final fun clearHistory ()V
 	public final fun clearResult ()V
 	public final fun decrypt (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
-	public final fun decryptBytes ([B)[B
 	public final fun encrypt (Ljava/lang/String;)Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
-	public final fun encryptBytes ([B)[B
 	public final fun generateIv ()Ljava/lang/String;
 	public final fun generateKey ()Ljava/lang/String;
 	public final fun getConfig ()Lkotlinx/coroutines/flow/StateFlow;
@@ -507,10 +505,7 @@ public final class com/azikar24/wormaceptor/core/engine/ThreadViolationEngine {
 	public final fun enable ()V
 	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getViolations ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMainThread ()Z
 	public final fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun recordViolation (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Ljava/lang/String;Ljava/lang/Long;)V
-	public static synthetic fun recordViolation$default (Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Ljava/lang/String;Ljava/lang/Long;ILjava/lang/Object;)V
 }
 
 public final class com/azikar24/wormaceptor/core/engine/ThreadViolationEngine$Companion {

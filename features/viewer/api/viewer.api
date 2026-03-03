@@ -656,10 +656,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/GestureNavigationComponentsKt {
-	public static final fun ZoomControls (FLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FFLandroidx/compose/runtime/Composer;II)V
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gestures/SwipeBackContainerKt {
 	public static final fun SwipeBackContainer (Lkotlin/jvm/functions/Function0;ZFFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }

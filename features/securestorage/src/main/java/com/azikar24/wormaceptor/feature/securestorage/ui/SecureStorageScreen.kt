@@ -573,7 +573,7 @@ private fun EntryCard(
                         StorageType.DATASTORE -> stringResource(R.string.securestorage_badge_datastore)
                     },
                     modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.xs + WormaCeptorDesignSystem.Spacing.xxs,
+                        horizontal = WormaCeptorDesignSystem.Spacing.xs,
                         vertical = WormaCeptorDesignSystem.Spacing.xxs,
                     ),
                     style = MaterialTheme.typography.labelSmall,

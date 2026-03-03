@@ -406,7 +406,7 @@ private fun MessageItem(
                     imageVector = directionIcon,
                     contentDescription = message.direction.name,
                     tint = directionColor,
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
 
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -422,7 +422,7 @@ private fun MessageItem(
                         fontWeight = FontWeight.SemiBold,
                         color = typeColor,
                         modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                            horizontal = WormaCeptorDesignSystem.Spacing.xs,
                             vertical = WormaCeptorDesignSystem.Spacing.xxs,
                         ),
                     )
@@ -460,13 +460,13 @@ private fun MessageItem(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = WormaCeptorDesignSystem.Alpha.STRONG + WormaCeptorDesignSystem.Alpha.SUBTLE,
                     ),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
             }
 
             Spacer(
                 modifier = Modifier.height(
-                    WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                    WormaCeptorDesignSystem.Spacing.xs,
                 ),
             )
 

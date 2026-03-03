@@ -299,7 +299,7 @@ fun PushTokenManager(
                             Box(
                                 Modifier
                                     .fillMaxWidth()
-                                    .height(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.xxl),
+                                    .height(80.dp),
                                 Alignment.Center,
                             ) {
                                 if (isLoading) {
@@ -345,7 +345,7 @@ fun PushTokenManager(
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .height(WormaCeptorDesignSystem.Spacing.xxxl + WormaCeptorDesignSystem.Spacing.xxxl),
+                            .height(96.dp),
                         Alignment.Center,
                     ) {
                         Text(

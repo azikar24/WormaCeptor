@@ -297,7 +297,7 @@ private fun ConnectionItem(
                             fontWeight = FontWeight.SemiBold,
                             color = stateColor,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorDesignSystem.Spacing.xs,
                                 vertical = WormaCeptorDesignSystem.Spacing.xxs,
                             ),
                         )

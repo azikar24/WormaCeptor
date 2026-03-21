@@ -103,11 +103,11 @@ fun webSocketColors(darkTheme: Boolean = isSystemInDarkTheme()): WebSocketColors
             textMessage = Color(0xFFE0E0E0),
             binaryMessage = WormaCeptorColors.WebSocket.BinaryMessage,
             pingPong = WormaCeptorColors.WebSocket.PingPong,
-            sentBackground = WormaCeptorColors.WebSocket.Sent.copy(alpha = alpha.medium),
-            receivedBackground = WormaCeptorColors.WebSocket.Received.copy(alpha = alpha.medium),
-            connectingBackground = WormaCeptorColors.WebSocket.Connecting.copy(alpha = alpha.medium),
-            openBackground = WormaCeptorColors.WebSocket.Open.copy(alpha = alpha.medium),
-            closingBackground = WormaCeptorColors.WebSocket.Closing.copy(alpha = alpha.medium),
+            sentBackground = WormaCeptorColors.WebSocket.Sent.copy(alpha = alpha.MEDIUM),
+            receivedBackground = WormaCeptorColors.WebSocket.Received.copy(alpha = alpha.MEDIUM),
+            connectingBackground = WormaCeptorColors.WebSocket.Connecting.copy(alpha = alpha.MEDIUM),
+            openBackground = WormaCeptorColors.WebSocket.Open.copy(alpha = alpha.MEDIUM),
+            closingBackground = WormaCeptorColors.WebSocket.Closing.copy(alpha = alpha.MEDIUM),
             closedBackground = Color(0xFF212121),
         )
     } else {
@@ -121,11 +121,11 @@ fun webSocketColors(darkTheme: Boolean = isSystemInDarkTheme()): WebSocketColors
             textMessage = WormaCeptorColors.WebSocket.TextMessage,
             binaryMessage = WormaCeptorColors.WebSocket.BinaryMessage,
             pingPong = WormaCeptorColors.WebSocket.PingPong,
-            sentBackground = WormaCeptorColors.WebSocket.Sent.copy(alpha = alpha.subtle),
-            receivedBackground = WormaCeptorColors.WebSocket.Received.copy(alpha = alpha.subtle),
-            connectingBackground = WormaCeptorColors.WebSocket.Connecting.copy(alpha = alpha.subtle),
-            openBackground = WormaCeptorColors.WebSocket.Open.copy(alpha = alpha.subtle),
-            closingBackground = WormaCeptorColors.WebSocket.Closing.copy(alpha = alpha.subtle),
+            sentBackground = WormaCeptorColors.WebSocket.Sent.copy(alpha = alpha.SUBTLE),
+            receivedBackground = WormaCeptorColors.WebSocket.Received.copy(alpha = alpha.SUBTLE),
+            connectingBackground = WormaCeptorColors.WebSocket.Connecting.copy(alpha = alpha.SUBTLE),
+            openBackground = WormaCeptorColors.WebSocket.Open.copy(alpha = alpha.SUBTLE),
+            closingBackground = WormaCeptorColors.WebSocket.Closing.copy(alpha = alpha.SUBTLE),
             closedBackground = Color(0xFFF5F5F5),
         )
     }

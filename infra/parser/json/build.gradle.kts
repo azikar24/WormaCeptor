@@ -22,4 +22,6 @@ android {
 dependencies {
     implementation(project(":domain:contracts"))
     implementation(libs.androidx.core.ktx)
+
+    testImplementation(libs.org.json)
 }

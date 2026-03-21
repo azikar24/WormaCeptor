@@ -43,6 +43,10 @@ owaspDependencyCheck = "12.2.0"
 dependencyAnalysis = "1.30.0"
 binaryCompatibilityValidator = "0.14.0"
 kover = "0.7.6"
+junit-jupiter = "5.11.0"
+android-junit5-plugin = "1.11.0.0"
+kotest = "5.9.1"
+turbine = "1.2.0"
 gradleDoctor = "0.9.1"
 sortDependencies = "0.6"
 
@@ -107,6 +111,12 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebase-messaging" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 osmdroid-android = { group = "org.osmdroid", name = "osmdroid-android", version.ref = "osmdroid" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit-jupiter" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+org-json = { group = "org.json", name = "json", version = "20231013" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -131,3 +141,4 @@ binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibil
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 sort-dependencies = { id = "com.squareup.sort-dependencies", version.ref = "sortDependencies" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5-plugin" }

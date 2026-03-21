@@ -64,11 +64,11 @@ fun secureStorageColors(): SecureStorageColors {
         datastore = WormaCeptorColors.SecureStorage.Datastore,
         cardBackground = surface,
         searchBackground = surfaceVariant,
-        chipBackground = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.subtle),
-        chipBackgroundSelected = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.light),
+        chipBackground = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.SUBTLE),
+        chipBackgroundSelected = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.LIGHT),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = alpha.prominent),
-        valueSecondary = onSurfaceVariant.copy(alpha = alpha.intense),
+        valuePrimary = onSurface.copy(alpha = alpha.PROMINENT),
+        valueSecondary = onSurfaceVariant.copy(alpha = alpha.INTENSE),
     )
 }

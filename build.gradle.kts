@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.android.junit5) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
     alias(libs.plugins.owasp.dependency.check)
@@ -219,6 +220,18 @@ subprojects {
                 checkAllWarnings = true
                 warningsAsErrors = false
             }
+        }
+
+        apply(plugin = "de.mannodermaus.android-junit5")
+
+        dependencies {
+            "testImplementation"(rootProject.libs.junit.jupiter.api)
+            "testRuntimeOnly"(rootProject.libs.junit.jupiter.engine)
+            "testImplementation"(rootProject.libs.junit.jupiter.params)
+            "testImplementation"(rootProject.libs.kotest.assertions.core)
+            "testImplementation"(rootProject.libs.mockk)
+            "testImplementation"(rootProject.libs.kotlinx.coroutines.test)
+            "testImplementation"(rootProject.libs.turbine)
         }
     }
 }

@@ -39,7 +39,7 @@ data class RateLimitConfig(
         val packetLoss: Float,
     ) {
         /** Fast Wi-Fi connection with minimal latency. */
-        WIFI("Wi-Fi", 50000, 20000, 10, 0f),
+        WIFI("Wi-Fi", 50_000, 20_000, 10, 0f),
 
         /** Good 3G mobile connection. */
         GOOD_3G("Good 3G", 2000, 500, 100, 0f),
@@ -70,8 +70,8 @@ data class RateLimitConfig(
          */
         fun default() = RateLimitConfig(
             enabled = false,
-            downloadSpeedKbps = 50000,
-            uploadSpeedKbps = 20000,
+            downloadSpeedKbps = 50_000,
+            uploadSpeedKbps = 20_000,
             latencyMs = 0,
             packetLossPercent = 0f,
             preset = null,

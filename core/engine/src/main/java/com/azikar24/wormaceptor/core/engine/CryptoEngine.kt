@@ -277,90 +277,6 @@ class CryptoEngine {
     }
 
     /**
-     * Encrypts raw bytes and returns encrypted bytes.
-     *
-     * @param data The bytes to encrypt
-     * @return The encrypted bytes, or null if encryption failed
-     */
-    fun encryptBytes(data: ByteArray): ByteArray? {
-        val config = _config.value
-
-        return try {
-            validateConfig(config)
-
-            val keyBytes = parseKeyOrIv(config.key, config.keyFormat)
-            val ivBytes = if (config.mode.requiresIv) {
-                parseKeyOrIv(config.iv, config.keyFormat)
-            } else {
-                null
-            }
-
-            val cipher = Cipher.getInstance(config.getTransformation())
-            val secretKey = SecretKeySpec(keyBytes, config.algorithm.algorithmName)
-
-            when {
-                config.mode == CipherMode.GCM -> {
-                    val gcmSpec = GCMParameterSpec(GCM_TAG_LENGTH_BITS, ivBytes)
-                    cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmSpec)
-                }
-                config.mode.requiresIv && ivBytes != null -> {
-                    cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(ivBytes))
-                }
-                else -> {
-                    cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-                }
-            }
-
-            cipher.doFinal(data)
-        } catch (e: Exception) {
-            _error.value = e.message ?: "Encryption failed"
-            null
-        }
-    }
-
-    /**
-     * Decrypts raw bytes and returns decrypted bytes.
-     *
-     * @param data The bytes to decrypt
-     * @return The decrypted bytes, or null if decryption failed
-     */
-    fun decryptBytes(data: ByteArray): ByteArray? {
-        val config = _config.value
-
-        return try {
-            validateConfig(config)
-
-            val keyBytes = parseKeyOrIv(config.key, config.keyFormat)
-            val ivBytes = if (config.mode.requiresIv) {
-                parseKeyOrIv(config.iv, config.keyFormat)
-            } else {
-                null
-            }
-
-            val cipher = Cipher.getInstance(config.getTransformation())
-            val secretKey = SecretKeySpec(keyBytes, config.algorithm.algorithmName)
-
-            when {
-                config.mode == CipherMode.GCM -> {
-                    val gcmSpec = GCMParameterSpec(GCM_TAG_LENGTH_BITS, ivBytes)
-                    cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec)
-                }
-                config.mode.requiresIv && ivBytes != null -> {
-                    cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(ivBytes))
-                }
-                else -> {
-                    cipher.init(Cipher.DECRYPT_MODE, secretKey)
-                }
-            }
-
-            cipher.doFinal(data)
-        } catch (e: Exception) {
-            _error.value = e.message ?: "Decryption failed"
-            null
-        }
-    }
-
-    /**
      * Generates a random key for the current algorithm.
      *
      * @return The generated key in the current key format
@@ -435,7 +351,8 @@ class CryptoEngine {
         val expectedKeyLength = config.algorithm.keyLengthBits / 8
 
         require(keyBytes.size == expectedKeyLength) {
-            "Invalid key length: expected $expectedKeyLength bytes for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"
+            "Invalid key length: expected $expectedKeyLength bytes " +
+                "for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"
         }
     }
 
@@ -464,16 +381,16 @@ class CryptoEngine {
 
     /** Configuration constants and crypto parameters. */
     companion object {
-        /** Maximum number of results to keep in history */
+        /** Maximum number of results to keep in history. */
         const val MAX_HISTORY_SIZE = 50
 
-        /** GCM tag length in bits */
+        /** GCM tag length in bits. */
         private const val GCM_TAG_LENGTH_BITS = 128
 
-        /** Standard IV length in bytes */
+        /** Standard IV length in bytes. */
         private const val IV_LENGTH_BYTES = 16
 
-        /** GCM IV length in bytes (12 is recommended) */
+        /** GCM IV length in bytes (12 is recommended). */
         private const val GCM_IV_LENGTH_BYTES = 12
     }
 }

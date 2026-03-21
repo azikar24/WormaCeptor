@@ -253,7 +253,7 @@ style:
     active: true
   UnnecessaryParentheses:
     active: true
-    allowForUnclearPrecedence: false
+    allowForUnclearPrecedence: true
   UntilInsteadOfRangeTo:
     active: true
   UnusedImports:

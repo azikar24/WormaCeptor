@@ -14,11 +14,6 @@
     <ID>LongParameterList:TableDataScreen.kt$( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:TableListScreen.kt$( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:DatabaseDataSource.kt$DatabaseDataSource$1000</ID>
-    <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%'"</ID>
-    <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%' ORDER BY name"</ID>
-    <ID>MaxLineLength:TableDataScreen.kt$tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface</ID>
-    <ID>MaximumLineLength:DatabaseDataSource.kt$DatabaseDataSource$ </ID>
-    <ID>MaximumLineLength:TableDataScreen.kt$ </ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTableSchema( databasePath: String, tableName: String, ): List&lt;ColumnInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTables(databasePath: String): List&lt;TableInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun countTables(databasePath: String): Int</ID>
@@ -26,7 +21,6 @@
     <ID>ParameterNaming:DatabaseListScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:QueryScreen.kt$onQueryChanged</ID>
     <ID>ParameterNaming:TableListScreen.kt$onSearchQueryChanged</ID>
-    <ID>SwallowedException:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
     <ID>UnusedPrivateMember:DatabaseListScreen.kt$@SuppressLint("SdCardPath") @Preview(showBackground = true) @Composable private fun DatabaseListScreenPreview()</ID>
     <ID>UnusedPrivateMember:QueryScreen.kt$@Preview(showBackground = true) @Composable private fun QueryScreenPreview()</ID>

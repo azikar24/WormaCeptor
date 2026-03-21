@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -65,119 +64,34 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.get
 
 /**
- * Metadata extracted from an image.
- *
- * @property width Image width in pixels.
- * @property height Image height in pixels.
- * @property format Detected image format (e.g. "PNG", "JPEG", "GIF").
- * @property fileSize Size of the raw image data in bytes.
- * @property hasAlpha Whether the image format supports an alpha channel.
- * @property colorDepth Bit depth of the color channels (e.g. "8-bit").
- */
-data class ImageMetadata(
-    val width: Int,
-    val height: Int,
-    val format: String,
-    val fileSize: Long,
-    val hasAlpha: Boolean = false,
-    val colorDepth: String = "8-bit",
-)
-
-/**
- * Extracts image metadata from raw byte data
- */
-suspend fun extractImageMetadata(data: ByteArray): ImageMetadata? = withContext(Dispatchers.Default) {
-    try {
-        val options = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-        }
-        BitmapFactory.decodeByteArray(data, 0, data.size, options)
-
-        if (options.outWidth <= 0 || options.outHeight <= 0) {
-            return@withContext null
-        }
-
-        val format = detectImageFormat(data)
-        val hasAlpha = options.outMimeType?.contains("png") == true ||
-            options.outMimeType?.contains("webp") == true
-
-        ImageMetadata(
-            width = options.outWidth,
-            height = options.outHeight,
-            format = format,
-            fileSize = data.size.toLong(),
-            hasAlpha = hasAlpha,
-            colorDepth = "8-bit",
-        )
-    } catch (_: Exception) {
-        null
-    }
-}
-
-/**
- * Detects image format from magic bytes
- */
-fun detectImageFormat(data: ByteArray): String {
-    if (data.size < 8) return "Unknown"
-
-    return when {
-        // PNG: 89 50 4E 47 0D 0A 1A 0A
-        data[0] == 0x89.toByte() && data[1] == 0x50.toByte() &&
-            data[2] == 0x4E.toByte() && data[3] == 0x47.toByte() -> "PNG"
-
-        // JPEG: FF D8 FF
-        data[0] == 0xFF.toByte() && data[1] == 0xD8.toByte() &&
-            data[2] == 0xFF.toByte() -> "JPEG"
-
-        // GIF: 47 49 46 38
-        data[0] == 0x47.toByte() && data[1] == 0x49.toByte() &&
-            data[2] == 0x46.toByte() && data[3] == 0x38.toByte() -> "GIF"
-
-        // WebP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50
-        data.size >= 12 && data[0] == 0x52.toByte() && data[1] == 0x49.toByte() &&
-            data[2] == 0x46.toByte() && data[3] == 0x46.toByte() &&
-            data[8] == 0x57.toByte() && data[9] == 0x45.toByte() &&
-            data[10] == 0x42.toByte() && data[11] == 0x50.toByte() -> "WebP"
-
-        // BMP: 42 4D
-        data[0] == 0x42.toByte() && data[1] == 0x4D.toByte() -> "BMP"
-
-        // ICO: 00 00 01 00
-        data[0] == 0x00.toByte() && data[1] == 0x00.toByte() &&
-            data[2] == 0x01.toByte() && data[3] == 0x00.toByte() -> "ICO"
-
-        else -> "Unknown"
-    }
-}
-
-/**
- * Checks if the given content type string indicates an image
+ * Checks if the given content type string indicates an image.
  */
 fun isImageContentType(contentType: String?): Boolean {
     if (contentType == null) return false
     val normalized = contentType.lowercase().trim()
-    return normalized.startsWith("image/") ||
-        normalized.contains("image/png") ||
-        normalized.contains("image/jpeg") ||
-        normalized.contains("image/jpg") ||
-        normalized.contains("image/gif") ||
-        normalized.contains("image/webp") ||
-        normalized.contains("image/svg") ||
-        normalized.contains("image/bmp")
+    return normalized.startsWith("image/")
 }
 
 /**
- * Checks if raw bytes likely represent an image by examining magic bytes
+ * Checks if raw bytes likely represent an image by examining magic bytes.
+ * Delegates to [ImageMetadataExtractor] via Koin.
  */
 fun isImageData(data: ByteArray?): Boolean {
     if (data == null || data.size < 4) return false
-    val format = detectImageFormat(data)
-    return format != "Unknown"
+    return try {
+        val extractor: ImageMetadataExtractor = get(ImageMetadataExtractor::class.java)
+        extractor.isImageData(data)
+    } catch (_: Exception) {
+        false
+    }
 }
 
 /**
@@ -222,10 +136,18 @@ fun ImagePreviewCard(
     var isLoadingMetadata by remember { mutableStateOf(true) }
     var imageLoadState by remember { mutableStateOf<AsyncImagePainter.State?>(null) }
 
-    // Extract metadata on composition
+    // Extract metadata via Koin-injected extractor
     LaunchedEffect(imageData) {
         isLoadingMetadata = true
-        metadata = extractImageMetadata(imageData)
+        metadata = withContext(Dispatchers.Default) {
+            try {
+                val extractor: ImageMetadataExtractor = get(ImageMetadataExtractor::class.java)
+                val extracted = extractor.extractMetadata(imageData)
+                if (extracted.width > 0 && extracted.height > 0) extracted else null
+            } catch (_: Exception) {
+                null
+            }
+        }
         isLoadingMetadata = false
     }
 
@@ -238,7 +160,7 @@ fun ImagePreviewCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -277,7 +199,7 @@ fun ImagePreviewCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = MaterialTheme.colorScheme.primaryContainer.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.intense,
+                                alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
                             ),
                         ) {
                             Text(
@@ -305,7 +227,7 @@ fun ImagePreviewCard(
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                             ),
                         )
                         .clickable(onClick = onFullscreen)
@@ -318,7 +240,7 @@ fun ImagePreviewCard(
                             .fillMaxSize()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                                 ),
                             ),
                     )
@@ -348,7 +270,7 @@ fun ImagePreviewCard(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -370,7 +292,7 @@ fun ImagePreviewCard(
                                 .fillMaxSize()
                                 .background(
                                     MaterialTheme.colorScheme.errorContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                                     ),
                                 ),
                             contentAlignment = Alignment.Center,
@@ -403,7 +325,7 @@ fun ImagePreviewCard(
                         Surface(
                             shape = CircleShape,
                             color = MaterialTheme.colorScheme.surface.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                                alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
                             ),
                             shadowElevation = 2.dp,
                         ) {
@@ -448,7 +370,7 @@ fun ImagePreviewCard(
                             MetadataItem(
                                 icon = Icons.Outlined.ColorLens,
                                 label = stringResource(R.string.viewer_image_color),
-                                value = if (meta.hasAlpha) "RGBA" else "RGB",
+                                value = meta.colorSpace ?: if (meta.hasAlpha) "RGBA" else "RGB",
                                 tint = MaterialTheme.colorScheme.tertiary,
                             )
                         }
@@ -536,14 +458,14 @@ private fun ActionButton(
         color = if (isPrimary) {
             MaterialTheme.colorScheme.primary.asSubtleBackground()
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
         },
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
             if (isPrimary) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             },
         ),
     ) {

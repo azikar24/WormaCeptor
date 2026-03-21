@@ -20,8 +20,4 @@ interface LocationPresetDao {
     /** Deletes a user-created preset by ID; built-in presets are protected. */
     @Query("DELETE FROM location_presets WHERE id = :id AND isBuiltIn = 0")
     suspend fun deleteById(id: String)
-
-    /** Deletes all user-created presets while preserving built-in ones. */
-    @Query("DELETE FROM location_presets WHERE isBuiltIn = 0")
-    suspend fun deleteAllUserPresets()
 }

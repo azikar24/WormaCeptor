@@ -22,16 +22,16 @@ data class LeakInfo(
      * Severity levels for memory leaks.
      */
     enum class LeakSeverity {
-        /** Low severity - minor leak, minimal impact */
+        /** Low severity - minor leak, minimal impact. */
         LOW,
 
-        /** Medium severity - moderate leak, should be investigated */
+        /** Medium severity - moderate leak, should be investigated. */
         MEDIUM,
 
-        /** High severity - significant leak, should be fixed soon */
+        /** High severity - significant leak, should be fixed soon. */
         HIGH,
 
-        /** Critical severity - severe leak, requires immediate attention */
+        /** Critical severity - severe leak, requires immediate attention. */
         CRITICAL,
     }
 

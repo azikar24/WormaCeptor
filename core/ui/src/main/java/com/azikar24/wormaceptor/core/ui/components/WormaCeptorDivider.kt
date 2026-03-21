@@ -25,11 +25,11 @@ fun WormaCeptorDivider(
         DividerStyle.Standard -> HorizontalDivider(modifier = modifier)
         DividerStyle.Subtle -> HorizontalDivider(
             modifier = modifier,
-            color = outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            color = outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         )
         DividerStyle.Section -> HorizontalDivider(
             modifier = modifier,
-            color = outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+            color = outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
         )
         DividerStyle.Thick -> HorizontalDivider(
             modifier = modifier,

@@ -41,7 +41,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,7 +61,6 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
-import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
 import com.azikar24.wormaceptor.domain.entities.LeakSummary
 import com.azikar24.wormaceptor.feature.leakdetection.R
 import com.azikar24.wormaceptor.feature.leakdetection.ui.theme.LeakDetectionColors
@@ -86,9 +84,9 @@ fun LeakDetectionScreen(
     leaks: ImmutableList<LeakInfo>,
     summary: LeakSummary,
     isRunning: Boolean,
-    selectedSeverity: LeakSeverity?,
+    selectedSeverity: LeakInfo.LeakSeverity?,
     selectedLeak: LeakInfo?,
-    onSeveritySelected: (LeakSeverity?) -> Unit,
+    onSeveritySelected: (LeakInfo.LeakSeverity?) -> Unit,
     onLeakSelected: (LeakInfo) -> Unit,
     onDismissDetail: () -> Unit,
     onTriggerCheck: () -> Unit,
@@ -173,7 +171,11 @@ fun LeakDetectionScreen(
             if (leaks.isEmpty()) {
                 WormaCeptorEmptyState(
                     title = stringResource(
-                        if (isRunning) R.string.leakdetection_empty_monitoring else R.string.leakdetection_empty_no_leaks,
+                        if (isRunning) {
+                            R.string.leakdetection_empty_monitoring
+                        } else {
+                            R.string.leakdetection_empty_no_leaks
+                        },
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -235,7 +237,7 @@ private fun SummarySection(
             color = colors.critical,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.criticalBackground,
-            labelColor = colors.critical.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.highCount.toString(),
@@ -243,7 +245,7 @@ private fun SummarySection(
             color = colors.high,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.highBackground,
-            labelColor = colors.high.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.high.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.mediumCount.toString(),
@@ -251,7 +253,7 @@ private fun SummarySection(
             color = colors.medium,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.mediumBackground,
-            labelColor = colors.medium.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.medium.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
         WormaCeptorSummaryCard(
             count = summary.lowCount.toString(),
@@ -259,7 +261,7 @@ private fun SummarySection(
             color = colors.low,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.lowBackground,
-            labelColor = colors.low.copy(alpha = 1f - WormaCeptorDesignSystem.Alpha.medium),
+            labelColor = colors.low.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
     }
 }
@@ -267,8 +269,8 @@ private fun SummarySection(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SeverityFilterChips(
-    selectedSeverity: LeakSeverity?,
-    onSeveritySelected: (LeakSeverity?) -> Unit,
+    selectedSeverity: LeakInfo.LeakSeverity?,
+    onSeveritySelected: (LeakInfo.LeakSeverity?) -> Unit,
     colors: LeakDetectionColors,
     modifier: Modifier = Modifier,
 ) {
@@ -282,7 +284,7 @@ private fun SeverityFilterChips(
             label = { Text(stringResource(R.string.leakdetection_filter_all)) },
             modifier = Modifier.semantics { selected = selectedSeverity == null },
         )
-        LeakSeverity.entries.forEach { severity ->
+        LeakInfo.LeakSeverity.entries.forEach { severity ->
             val color = colors.colorForSeverity(severity)
             val isSelected = selectedSeverity == severity
             FilterChip(
@@ -291,7 +293,7 @@ private fun SeverityFilterChips(
                 label = { Text(severity.name) },
                 modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                 ),
             )

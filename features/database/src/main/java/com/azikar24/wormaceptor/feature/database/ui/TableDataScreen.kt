@@ -37,12 +37,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
-import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -90,7 +90,11 @@ fun TableDataScreen(
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = stringResource(R.string.database_table_data_schema),
-                            tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            tint = if (showSchema) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            },
                         )
                     }
                     IconButton(
@@ -202,7 +206,7 @@ private fun SchemaView(
                             Text(
                                 text = stringResource(R.string.database_table_data_pk),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DatabaseDesignSystem.DataTypeColors.primaryKey,
+                                color = WormaCeptorColors.Database.PrimaryKey,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
@@ -213,7 +217,7 @@ private fun SchemaView(
                         Text(
                             text = column.type,
                             style = MaterialTheme.typography.bodySmall,
-                            color = DatabaseDesignSystem.DataTypeColors.forType(column.type),
+                            color = WormaCeptorColors.Database.forDataType(column.type),
                         )
                         if (column.isNullable) {
                             Text(
@@ -286,7 +290,7 @@ private fun DataTable(
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
                             color = if (cell == null) {
-                                DatabaseDesignSystem.DataTypeColors.nullValue
+                                WormaCeptorColors.Database.NullValue
                             } else {
                                 MaterialTheme.colorScheme.onSurface
                             },

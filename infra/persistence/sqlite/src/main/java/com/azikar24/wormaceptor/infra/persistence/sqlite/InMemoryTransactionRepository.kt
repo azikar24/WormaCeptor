@@ -136,8 +136,9 @@ class InMemoryTransactionRepository : TransactionRepository {
                             tx.request.method.contains(searchQuery, ignoreCase = true)
 
                         val statusRange = filters.statusRange
-                        val matchesStatus = statusRange == null ||
-                            (tx.response?.code?.let { it in statusRange } ?: false)
+                        val matchesStatus = statusRange == null || tx.response?.code?.let {
+                            it in statusRange
+                        } ?: false
 
                         val matchesMethod = filters.method == null ||
                             tx.request.method.equals(filters.method, ignoreCase = true)

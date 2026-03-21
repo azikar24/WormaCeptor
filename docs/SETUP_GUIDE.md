@@ -551,16 +551,12 @@ All deep links use the `wormaceptor://` scheme.
 | `wormaceptor://tools/database` | - | SQLite Browser |
 | `wormaceptor://tools/filebrowser` | `files` | File Browser |
 | `wormaceptor://tools/websocket` | - | WebSocket Monitor |
-| `wormaceptor://tools/touchviz` | `touch` | Touch Visualizer |
-| `wormaceptor://tools/viewborders` | `borders` | View Borders |
 | `wormaceptor://tools/location` | - | Location Simulator |
 | `wormaceptor://tools/pushsimulator` | `push` | Push Notification Simulator |
 | `wormaceptor://tools/leakdetection` | `leaks` | Leak Detection |
 | `wormaceptor://tools/threadviolation` | `threads` | Thread Violation Detection |
 | `wormaceptor://tools/webviewmonitor` | `webview` | WebView Monitor |
 | `wormaceptor://tools/crypto` | - | Crypto Tool |
-| `wormaceptor://tools/gridoverlay` | `grid` | Grid Overlay |
-| `wormaceptor://tools/measurement` | `measure` | Measurement Tool |
 | `wormaceptor://tools/securestorage` | `secure` | Secure Storage Inspector |
 | `wormaceptor://tools/ratelimit` | `rate` | Rate Limiter |
 | `wormaceptor://tools/pushtoken` | `token` | Push Token Manager |

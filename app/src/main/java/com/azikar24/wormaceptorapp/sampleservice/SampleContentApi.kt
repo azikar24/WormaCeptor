@@ -9,7 +9,8 @@ import retrofit2.http.Url
  * Sample API endpoints for testing content handling features:
  * - Image preview
  * - PDF viewer
- * - Various content types
+ * - Various content types.
+ *
  */
 interface SampleContentApi {
 
@@ -41,4 +42,8 @@ interface SampleContentApi {
     // HTML
     @GET
     fun html(@Url url: String = SampleDataConstants.Html.EXAMPLE): Call<ResponseBody>
+
+    // Protobuf (intercepted by MockProtobufInterceptor)
+    @GET("/protobuf")
+    fun protobuf(): Call<ResponseBody>
 }

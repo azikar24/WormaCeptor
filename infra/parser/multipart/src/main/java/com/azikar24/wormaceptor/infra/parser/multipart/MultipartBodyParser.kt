@@ -2,26 +2,27 @@ package com.azikar24.wormaceptor.infra.parser.multipart
 
 import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
+import com.azikar24.wormaceptor.domain.contracts.MultipartParser
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.entities.MultipartPart
 
 /**
- * Parser for multipart form data (multipart/form-data).
+ * Parser for multipart form data content.
  *
- * Features:
- * - Part boundary detection
- * - Individual part parsing with headers
- * - File metadata extraction (filename, content-type)
+ * Splits multipart data by boundary and extracts each part's headers,
+ * name, filename, content type, and body. Also implements [MultipartParser]
+ * for typed access from viewer composables.
  */
-class MultipartBodyParser : BaseBodyParser() {
+class MultipartBodyParser : BaseBodyParser(), MultipartParser {
 
     override val supportedContentTypes: List<String> = listOf(
         "multipart/form-data",
         "multipart/mixed",
-        "multipart/alternative",
         "multipart/related",
+        "multipart/alternative",
     )
 
-    override val priority: Int = 210
+    override val priority: Int = PRIORITY
 
     override val defaultContentType: ContentType = ContentType.MULTIPART
 
@@ -29,138 +30,65 @@ class MultipartBodyParser : BaseBodyParser() {
         contentType: String?,
         body: ByteArray,
     ): Boolean {
-        // Check content type first - must have boundary parameter
         if (contentType != null) {
-            val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
-            if (mimeType?.startsWith("multipart/") == true) {
-                // Must have boundary parameter
-                return extractBoundary(contentType) != null
+            val mime = contentType.split(";").firstOrNull()?.trim()?.lowercase() ?: ""
+            if (mime.startsWith("multipart/")) {
+                return true
             }
         }
-
-        // Content inspection is unreliable for multipart without boundary
         return false
     }
 
     override fun parseBody(body: ByteArray): ParsedBody {
-        return try {
-            // Note: When parsing, we need the Content-Type header with boundary
-            // For now, attempt to detect boundary from body
-            val content = String(body, Charsets.UTF_8)
-            val boundary = detectBoundaryFromBody(content)
-
-            if (boundary != null) {
-                val parts = parseParts(content, boundary)
-                val formatted = formatParts(parts)
-
-                ParsedBody(
-                    formatted = formatted,
-                    contentType = ContentType.MULTIPART,
-                    metadata = mapOf(
-                        "partCount" to parts.size.toString(),
-                        "boundary" to boundary,
-                    ),
-                    isValid = true,
-                )
-            } else {
-                ParsedBody(
-                    formatted = content,
-                    contentType = ContentType.MULTIPART,
-                    isValid = false,
-                    errorMessage = "Could not detect multipart boundary",
-                )
-            }
-        } catch (e: Exception) {
-            ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.MULTIPART,
-                isValid = false,
-                errorMessage = "Multipart parsing error: ${e.message}",
-            )
-        }
+        val text = String(body, Charsets.UTF_8)
+        val parts = parse(text, null)
+        return ParsedBody(
+            formatted = text,
+            contentType = ContentType.MULTIPART,
+            metadata = mapOf("partCount" to parts.size.toString()),
+            isValid = parts.isNotEmpty(),
+        )
     }
 
-    private fun extractBoundary(contentType: String): String? {
-        val boundaryRegex = """boundary\s*=\s*["']?([^"';\s]+)["']?""".toRegex(RegexOption.IGNORE_CASE)
-        return boundaryRegex.find(contentType)?.groupValues?.get(1)
-    }
-
-    private fun detectBoundaryFromBody(content: String): String? {
-        // Look for lines starting with -- followed by boundary string
-        val lines = content.lines()
-        for (line in lines) {
-            if (line.startsWith("--") && line.length > 2) {
-                val potentialBoundary = line.substring(2).trimEnd('\r')
-                // Verify this boundary appears again
-                if (content.contains("\n--$potentialBoundary")) {
-                    return potentialBoundary
-                }
-            }
-        }
-        return null
-    }
-
-    private fun parseParts(
-        content: String,
-        boundary: String,
+    override fun parse(
+        data: String,
+        boundary: String?,
     ): List<MultipartPart> {
+        if (data.isBlank()) return emptyList()
+
+        val resolvedBoundary = boundary ?: detectBoundary(data) ?: return emptyList()
+
         val parts = mutableListOf<MultipartPart>()
-        val delimiter = "--$boundary"
+        val delimiter = "--$resolvedBoundary"
 
-        // Split by boundary
-        val sections = content.split(delimiter)
+        val sections = data.split(delimiter)
+            .drop(1)
+            .filter { !it.trim().startsWith("--") && it.isNotBlank() }
 
-        for (section in sections.drop(1)) { // Skip preamble
-            if (section.trimStart().startsWith("--")) {
-                // This is the epilogue
-                break
+        for (section in sections) {
+            if (section.trim() == "--" || section.isBlank()) continue
+
+            val part = parseMultipartPart(section.trim())
+            if (part != null) {
+                parts.add(part)
             }
-
-            val trimmed = section.trimStart('\r', '\n')
-            if (trimmed.isEmpty()) continue
-
-            // Find header/body separator (blank line)
-            val separatorIndex = findHeaderBodySeparator(trimmed)
-            if (separatorIndex == -1) continue
-
-            val headerSection = trimmed.take(separatorIndex)
-            val bodyContent = trimmed.substring(separatorIndex).trimStart('\r', '\n')
-                .trimEnd('\r', '\n')
-
-            val headers = parseHeaders(headerSection)
-            val disposition = parseContentDisposition(headers["Content-Disposition"])
-
-            parts.add(
-                MultipartPart(
-                    name = disposition.name,
-                    filename = disposition.filename,
-                    contentType = headers["Content-Type"],
-                    headers = headers,
-                    content = bodyContent,
-                    isBinary = isBinaryContent(headers["Content-Type"], bodyContent),
-                ),
-            )
         }
 
         return parts
     }
 
-    private fun findHeaderBodySeparator(content: String): Int {
-        // Look for \r\n\r\n or \n\n
-        val crlfIdx = content.indexOf("\r\n\r\n")
-        if (crlfIdx != -1) return crlfIdx + 4
+    private fun parseMultipartPart(section: String): MultipartPart? {
+        val headerBodySplit = section.indexOf("\r\n\r\n").takeIf { it >= 0 }
+            ?: section.indexOf("\n\n").takeIf { it >= 0 }
+            ?: return null
 
-        val lfIdx = content.indexOf("\n\n")
-        if (lfIdx != -1) return lfIdx + 2
+        val headerSection = section.take(headerBodySplit)
+        val body = section.substring(
+            headerBodySplit + if (section.contains("\r\n\r\n")) 4 else 2,
+        ).trimEnd()
 
-        return -1
-    }
-
-    private fun parseHeaders(headerSection: String): Map<String, String> {
         val headers = mutableMapOf<String, String>()
-        val lines = headerSection.lines()
-
-        for (line in lines) {
+        headerSection.lines().forEach { line ->
             val colonIndex = line.indexOf(':')
             if (colonIndex > 0) {
                 val key = line.take(colonIndex).trim()
@@ -169,110 +97,48 @@ class MultipartBodyParser : BaseBodyParser() {
             }
         }
 
-        return headers
-    }
+        val contentDisposition = headers["Content-Disposition"] ?: ""
+        val name = extractDispositionParam(contentDisposition, "name")
+        val fileName = extractDispositionParam(contentDisposition, "filename")
+        val contentType = headers["Content-Type"]
 
-    private fun parseContentDisposition(value: String?): ContentDisposition {
-        if (value == null) return ContentDisposition()
-
-        val nameRegex = """name\s*=\s*["']?([^"';\s]+)["']?""".toRegex(RegexOption.IGNORE_CASE)
-        val filenameRegex = """filename\s*=\s*["']?([^"';\r\n]+)["']?""".toRegex(RegexOption.IGNORE_CASE)
-
-        val name = nameRegex.find(value)?.groupValues?.get(1)
-        val filename = filenameRegex.find(value)?.groupValues?.get(1)?.trim('"', '\'')
-
-        return ContentDisposition(name = name, filename = filename)
-    }
-
-    private fun isBinaryContent(
-        contentType: String?,
-        content: String,
-    ): Boolean {
-        if (contentType != null) {
-            val type = contentType.lowercase()
-            if (type.startsWith("image/") ||
-                type.startsWith("audio/") ||
-                type.startsWith("video/") ||
-                type.startsWith("application/octet-stream") ||
-                type.startsWith("application/pdf")
-            ) {
-                return true
-            }
+        val displayHeaders = headers.toMutableMap().apply {
+            remove("Content-Disposition")
+            remove("Content-Type")
         }
 
-        // Check for non-printable characters
-        val nonPrintable = content.count { c ->
-            val code = c.code
-            code < 9 || code in 14..31 || code == 127
-        }
-        return nonPrintable.toFloat() / content.length > 0.1f
+        return MultipartPart(
+            name = name ?: "unnamed",
+            fileName = fileName,
+            contentType = contentType,
+            headers = displayHeaders,
+            body = body,
+            size = body.length,
+        )
     }
 
-    private fun formatParts(parts: List<MultipartPart>): String {
-        if (parts.isEmpty()) return "[No parts found]"
+    private fun extractDispositionParam(
+        disposition: String,
+        param: String,
+    ): String? {
+        val regex = Regex("""$param\s*=\s*"?([^";]+)"?""", RegexOption.IGNORE_CASE)
+        return regex.find(disposition)?.groupValues?.getOrNull(1)?.trim()
+    }
 
-        return parts.mapIndexed { index, part ->
-            buildString {
-                appendLine("=== Part ${index + 1} ===")
+    private fun detectBoundary(data: String): String? {
+        val firstLine = data.lineSequence().firstOrNull { it.startsWith("--") } ?: return null
+        return firstLine.removePrefix("--").trim().takeIf { it.isNotEmpty() }
+    }
 
-                if (part.name != null) {
-                    appendLine("Name: ${part.name}")
-                }
-                if (part.filename != null) {
-                    appendLine("Filename: ${part.filename}")
-                }
-                if (part.contentType != null) {
-                    appendLine("Content-Type: ${part.contentType}")
-                }
+    /**
+     * Extracts the boundary parameter from a multipart Content-Type header.
+     */
+    fun extractMultipartBoundary(contentType: String): String? {
+        val regex = Regex("""boundary\s*=\s*"?([^";]+)"?""", RegexOption.IGNORE_CASE)
+        return regex.find(contentType)?.groupValues?.getOrNull(1)
+    }
 
-                // Show other headers
-                part.headers.filterKeys { key ->
-                    key !in setOf("Content-Disposition", "Content-Type")
-                }.forEach { (key, value) ->
-                    appendLine("$key: $value")
-                }
-
-                appendLine()
-
-                if (part.isBinary) {
-                    val size = part.content.length
-                    appendLine("[Binary content: $size bytes]")
-                } else {
-                    val preview = if (part.content.length > 500) {
-                        part.content.take(500) + "\n... (${part.content.length} chars total)"
-                    } else {
-                        part.content
-                    }
-                    append(preview)
-                }
-            }
-        }.joinToString("\n\n")
+    companion object {
+        private const val PRIORITY = 300
     }
 }
-
-/**
- * Represents a single part in a multipart message.
- *
- * @property name The name from the Content-Disposition header, if present.
- * @property filename The filename from the Content-Disposition header, if present.
- * @property contentType The MIME type of this part, if specified.
- * @property headers All parsed headers for this part.
- * @property content The body content of the part as a string.
- * @property isBinary Whether the part content is detected as binary data.
- */
-data class MultipartPart(
-    val name: String?,
-    val filename: String?,
-    val contentType: String?,
-    val headers: Map<String, String>,
-    val content: String,
-    val isBinary: Boolean,
-)
-
-/**
- * Parsed Content-Disposition header values.
- */
-private data class ContentDisposition(
-    val name: String? = null,
-    val filename: String? = null,
-)

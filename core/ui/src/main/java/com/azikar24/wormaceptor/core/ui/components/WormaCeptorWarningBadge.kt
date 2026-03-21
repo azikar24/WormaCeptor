@@ -21,7 +21,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /**
  * Animated pulsing warning icon badge for TopAppBar titles.
- * Fades between full opacity and [WormaCeptorDesignSystem.Alpha.bold].
+ * Fades between full opacity and [WormaCeptorDesignSystem.Alpha.BOLD].
  *
  * @param contentDescription Accessibility description for the warning icon
  * @param modifier Modifier for the root composable
@@ -34,9 +34,9 @@ fun WormaCeptorWarningBadge(
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = WormaCeptorDesignSystem.Alpha.bold,
+        targetValue = WormaCeptorDesignSystem.Alpha.BOLD,
         animationSpec = infiniteRepeatable(
-            animation = tween(WormaCeptorDesignSystem.AnimationDuration.verySlow, easing = LinearEasing),
+            animation = tween(WormaCeptorDesignSystem.AnimationDuration.VERY_SLOW, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "warning_alpha",

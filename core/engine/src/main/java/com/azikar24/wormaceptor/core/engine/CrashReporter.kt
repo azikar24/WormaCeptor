@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.engine
 
+import android.util.Log
 import com.azikar24.wormaceptor.domain.contracts.CrashRepository
 import com.azikar24.wormaceptor.domain.entities.Crash
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +54,7 @@ class CrashReporter(
             // Sleep briefly to allow DB write? (Hack but common)
             Thread.sleep(500)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("CrashReporter", "Failed to save crash", e)
         }
     }
 }

@@ -1,5 +1,6 @@
 # WormaCeptor V2
 
+[![GitHub Stars](https://img.shields.io/github/stars/azikar24/WormaCeptor?style=social)](https://github.com/azikar24/WormaCeptor)
 [![JitPack](https://jitpack.io/v/azikar24/WormaCeptor.svg)](https://jitpack.io/#azikar24/WormaCeptor)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://android-arsenal.com/api?level=23)
@@ -8,7 +9,7 @@
 
 ### The Clean-Architecture, Production-Safe Network Inspector and Debugging Toolkit for Android
 
-**WormaCeptor V2** is a complete architectural rewrite of the classic network interceptor, now expanded into a comprehensive debugging toolkit. Designed for modularity, safety, and zero-impact production builds, it decouples inspection logic from interception points.
+**What is WormaCeptor?** A highly modular Android debugging toolkit: network inspection, performance monitoring, SQLite/SharedPrefs browsing, leak detection, crash reporting, and more. It uses `debugImplementation` to physically prevent debug code from reaching production builds — no ProGuard rules, no runtime checks, just zero-risk separation.
 
 > **New to WormaCeptor?** See the [Setup Guide](docs/SETUP_GUIDE.md) for comprehensive integration instructions covering OkHttp, Ktor, WebView, redaction, feature toggles, and more.
 
@@ -91,9 +92,9 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 | Problem | Solution |
 |---------|----------|
 | Traditional inspectors leak into release builds | Physical dependency separation via `debugImplementation` |
-| Monolithic architecture couples UI + Logic | Modular design with 50+ independent modules |
+| Monolithic architecture couples UI + Logic | Highly modular design with independent modules |
 | Debug tools can crash production apps | Reflection-based discovery with graceful No-Op fallback |
-| Limited to network inspection only | Comprehensive debugging toolkit with 30+ features |
+| Limited to network inspection only | Comprehensive debugging toolkit with 25+ features |
 
 ---
 
@@ -124,7 +125,6 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 - **Secure Storage Inspector**: View encrypted preferences (EncryptedSharedPreferences)
 - **File Browser**: Navigate app file system
 - **Device Info**: Comprehensive device and app details
-- **Cookies Manager**: View HTTP cookies
 - **Loaded Libraries**: List native .so files
 - **Dependencies Inspector**: Inspect Gradle dependencies and versions
 
@@ -142,12 +142,6 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 - **Push Token Manager**: View and copy FCM/push tokens
 - **Location Simulator**: Mock GPS location
 - **Crypto Tool**: Encrypt/decrypt with AES, RSA, hashing, and encoding
-
-### UI Debugging
-- **Touch Visualizer**: Visualize touch events on screen
-- **View Borders**: Highlight view boundaries
-- **Grid Overlay**: Display grid overlay for layout alignment
-- **Measurement Tool**: Measure screen elements
 
 ---
 
@@ -188,7 +182,7 @@ For detailed integration, see the [Setup Guide](docs/SETUP_GUIDE.md).
 | **API** | client, common, impl-persistence, impl-imdb, impl-no-op | Public interface and implementations |
 | **Core** | engine | Business logic, monitoring engines, capture/query |
 | **Domain** | entities, contracts | Framework-agnostic data models and interfaces |
-| **Features** | 31 modules | UI screens for each debugging feature |
+| **Features** | 22 modules | UI screens for each debugging feature |
 | **Infra** | persistence, networking, parsers, syntax | Concrete implementations |
 | **Platform** | android | Android-specific utilities (notifications, shake, floating button) |
 
@@ -319,10 +313,6 @@ All deep links use the `wormaceptor://` scheme.
 | `wormaceptor://tools/dependencies` | Dependencies Inspector |
 | `wormaceptor://tools/logs` | Console Logs |
 | `wormaceptor://tools/deviceinfo` | Device Info |
-| `wormaceptor://tools/touchviz` | Touch Visualizer |
-| `wormaceptor://tools/viewborders` | View Borders |
-| `wormaceptor://tools/gridoverlay` | Grid Overlay |
-| `wormaceptor://tools/measurement` | Measurement Tool |
 
 Several routes accept aliases (e.g., `files` for `filebrowser`, `console` for `logs`). See the [Setup Guide](docs/SETUP_GUIDE.md#deep-links) for the full alias table.
 
@@ -420,17 +410,31 @@ See the [Setup Guide](docs/SETUP_GUIDE.md#troubleshooting) for expanded troubles
 
 ---
 
-## Comparison
+## Comparison with Other Tools
 
-| Feature | Traditional Tools | WormaCeptor V2 |
-|---------|-------------------|----------------|
-| Architecture | Monolithic | Modular (50+ modules) |
-| Release Safety | ProGuard rules | Physical dependency separation |
-| HTTP Clients | OkHttp only | OkHttp + Ktor + WebView |
-| Crash Reporting | Separate library | Integrated and correlated |
-| Performance Monitoring | Not included | FPS, Memory, CPU with overlay |
-| System Inspection | Limited | SQLite, SharedPrefs, Secure Storage, Files, Cookies |
-| Testing Tools | Not included | Push simulator, location mock, crypto tools |
+| Feature | Chucker | Flipper | Stetho | WormaCeptor V2 |
+|---------|---------|---------|--------|----------------|
+| **Network Inspection** | HTTP only | HTTP via plugin | HTTP via Chrome DevTools | HTTP + WebSocket + WebView |
+| **HTTP Client Support** | OkHttp | OkHttp (plugin) | OkHttp | OkHttp + Ktor (native) |
+| **Release Safety** | ProGuard `no-op` | Must remove manually | Must remove manually | Physical `debugImplementation` separation |
+| **Architecture** | Monolithic | Plugin-based (desktop app) | Monolithic | Clean Architecture (highly modular) |
+| **UI Framework** | XML Views | React Native (desktop) | Chrome DevTools | Jetpack Compose |
+| **Performance Monitoring** | None | Layout inspector | None | FPS + Memory + CPU with floating overlay |
+| **SQLite Browser** | None | Plugin | Via Chrome DevTools | Built-in with query execution |
+| **SharedPreferences** | None | Plugin | Via Chrome DevTools | Built-in viewer & editor |
+| **Leak Detection** | None | LeakCanary plugin | None | Built-in (Activities/Fragments) |
+| **Crash Reporting** | None | Crash reporter plugin | None | Integrated with stack traces |
+| **Push Simulator** | None | None | None | Built-in FCM simulator |
+| **Location Mocking** | None | None | None | Built-in GPS simulator |
+| **Crypto Tools** | None | None | None | AES, RSA, hashing, encoding |
+| **Deep Links** | None | Deep link plugin | None | `wormaceptor://` scheme for every tool |
+| **Feature Toggles** | None | None | None | 20 toggleable features at init |
+| **Desktop Required** | No | Yes (Flipper desktop app) | Yes (Chrome DevTools) | No |
+| **Active Maintenance** | Yes | [Deprecated](https://github.com/facebook/flipper) | No (archived) | Yes |
+| **Min SDK** | 21 | 21 | 14 | 23 |
+| **Kotlin/Compose** | Partial | No | No | 100% Kotlin + Compose |
+
+> **TL;DR:** Chucker does network inspection well but nothing else. Flipper is powerful but requires a desktop app and is now deprecated. Stetho is archived. WormaCeptor is the only actively maintained, all-in-one toolkit that runs entirely on-device with 20+ debugging features and zero release build risk.
 
 ---
 
@@ -449,6 +453,8 @@ See the [Setup Guide](docs/SETUP_GUIDE.md#troubleshooting) for expanded troubles
 - Extension provider system for custom metadata
 
 ### Planned
+- UI debugging tools (Touch Visualizer, View Borders, Grid Overlay, Measurement Tool)
+- Cookies Manager
 - GraphQL query/mutation parsing
 - gRPC/Protobuf native support
 - Custom formatter plugins

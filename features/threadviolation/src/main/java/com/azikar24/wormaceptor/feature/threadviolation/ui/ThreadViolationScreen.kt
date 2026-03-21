@@ -318,7 +318,7 @@ private fun TypeFilterChips(
                 },
                 modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -355,7 +355,7 @@ private fun ViolationCard(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -393,7 +393,7 @@ private fun ViolationCard(
             }
             Surface(
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     text = violation.violationType.name.take(1),
@@ -431,7 +431,7 @@ private fun ViolationDetailContent(
                     modifier = Modifier
                         .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -602,7 +602,7 @@ private fun ThreadViolationScreenPreview() {
                 ),
                 ThreadViolation(
                     id = 3L,
-                    timestamp = System.currentTimeMillis() - 10000L,
+                    timestamp = System.currentTimeMillis() - 10_000L,
                     violationType = ViolationType.DISK_WRITE,
                     description = "Database write on main thread",
                     stackTrace = emptyList(),

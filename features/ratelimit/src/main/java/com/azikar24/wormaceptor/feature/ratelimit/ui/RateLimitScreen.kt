@@ -204,7 +204,7 @@ private fun EnableToggleCard(
 ) {
     val statusColor by animateColorAsState(
         targetValue = if (enabled) colors.enabled else colors.disabled,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "status",
     )
 
@@ -231,7 +231,7 @@ private fun EnableToggleCard(
                     modifier = Modifier
                         .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -268,7 +268,7 @@ private fun EnableToggleCard(
                 onCheckedChange = { onToggle() },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colors.enabled,
-                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
                 ),
             )
         }
@@ -322,7 +322,7 @@ private fun NetworkPresetsCard(
             selectedPreset?.let { preset ->
                 Surface(
                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Row(
                         modifier = Modifier
@@ -372,8 +372,13 @@ private fun PresetChip(
 ) {
     val presetColor = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> colors.presetWifi
-        RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> colors.preset3G
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> colors.preset2G
+        RateLimitConfig.NetworkPreset.GOOD_3G,
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> colors.preset3G
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> colors.preset2G
         RateLimitConfig.NetworkPreset.EDGE -> colors.presetEdge
         RateLimitConfig.NetworkPreset.OFFLINE -> colors.presetOffline
     }
@@ -381,8 +386,12 @@ private fun PresetChip(
     val presetIcon = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> Icons.Default.Wifi
         RateLimitConfig.NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
-        RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> Icons.Default.SignalCellularAlt
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.EDGE -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
     }
@@ -405,7 +414,7 @@ private fun PresetChip(
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
             selectedLabelColor = presetColor,
             selectedLeadingIconColor = presetColor,
         ),
@@ -483,7 +492,7 @@ private fun ConfigurationCard(
                 value = config.downloadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.downloadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.download,
                 onValueChange = { onDownloadSpeedChanged(it.toLong()) },
@@ -497,7 +506,7 @@ private fun ConfigurationCard(
                 value = config.uploadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.uploadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.upload,
                 onValueChange = { onUploadSpeedChanged(it.toLong()) },

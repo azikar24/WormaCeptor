@@ -124,7 +124,7 @@ private fun JsonObjectNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -196,8 +196,8 @@ private fun JsonObjectNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             Column {
                 keys.forEachIndexed { index, key ->
@@ -258,7 +258,7 @@ private fun JsonArrayNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -328,8 +328,8 @@ private fun JsonArrayNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             Column {
                 for (i in 0 until array.length()) {

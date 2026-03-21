@@ -24,13 +24,6 @@
     <ID>MagicNumber:LocationScreen.kt$40.7128</ID>
     <ID>MagicNumber:LocationScreen.kt$51.5074</ID>
     <ID>MagicNumber:LocationScreen.kt$74.0060</ID>
-    <ID>MaxLineLength:LocationInputSection.kt$isError = latitudeInput.isNotBlank() &amp;&amp; latitudeInput.toDoubleOrNull()?.let { it !in -90.0..90.0 } == true</ID>
-    <ID>MaxLineLength:LocationInputSection.kt$isError = longitudeInput.isNotBlank() &amp;&amp; longitudeInput.toDoubleOrNull()?.let { it !in -180.0..180.0 } == true</ID>
-    <ID>MaxLineLength:LocationMapView.kt$targetValue = if (isMockActive) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
-    <ID>MaxLineLength:LocationPresetsSection.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
-    <ID>MaximumLineLength:LocationInputSection.kt$ </ID>
-    <ID>MaximumLineLength:LocationMapView.kt$ </ID>
-    <ID>MaximumLineLength:LocationPresetsSection.kt$ </ID>
     <ID>ParameterNaming:LocationInputSection.kt$onLatitudeChanged</ID>
     <ID>ParameterNaming:LocationInputSection.kt$onLongitudeChanged</ID>
     <ID>ParameterNaming:LocationScreen.kt$onLatitudeChanged</ID>

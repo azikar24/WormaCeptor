@@ -113,6 +113,7 @@ class JsonBodyParser(
      * - Trailing commas
      * - Single-line comments
      */
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun cleanJson5Syntax(json: String): String {
         val sb = StringBuilder()
         var i = 0

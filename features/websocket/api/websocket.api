@@ -6,14 +6,14 @@ public final class com/azikar24/wormaceptor/feature/websocket/WebSocketFeature {
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)Lcom/azikar24/wormaceptor/feature/websocket/WebSocketViewModelFactory;
 }
 
-public final class com/azikar24/wormaceptor/feature/websocket/WebSocketFeatureKt {
-	public static final fun WebSocketMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
-}
-
 public final class com/azikar24/wormaceptor/feature/websocket/WebSocketViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/navigation/WebSocketNavigationKt {
+	public static final fun webSocketGraph (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketDetailScreenKt {
@@ -95,7 +95,6 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewMo
 	public final fun clearAll ()V
 	public final fun clearConnectionSelection ()V
 	public final fun clearCurrentConnectionMessages ()V
-	public final fun clearFilters ()V
 	public final fun getConnectionSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getConnections ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getDirectionCounts ()Lkotlinx/coroutines/flow/StateFlow;
@@ -105,14 +104,11 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewMo
 	public final fun getMessageSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getMessages ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getSelectedConnection ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedConnectionId ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getTotalConnectionCount ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getTotalMessageCount ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMessageExpanded (J)Z
 	public final fun onConnectionSearchQueryChanged (Ljava/lang/String;)V
 	public final fun onMessageSearchQueryChanged (Ljava/lang/String;)V
 	public final fun selectConnection (J)V
-	public final fun setDirectionFilter (Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;)V
 	public final fun toggleDirectionFilter (Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;)V
 	public final fun toggleMessageExpanded (J)V
 }

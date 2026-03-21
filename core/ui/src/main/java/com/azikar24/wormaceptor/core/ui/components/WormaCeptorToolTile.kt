@@ -64,13 +64,13 @@ fun WormaCeptorToolTile(
             ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.strong,
+                alpha = WormaCeptorDesignSystem.Alpha.STRONG,
             ),
         ),
         shape = WormaCeptorDesignSystem.Shapes.cardLarge,
         border = BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -108,7 +108,7 @@ private fun TileContent(
             modifier = Modifier
                 .size(40.dp)
                 .background(
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     shape = WormaCeptorDesignSystem.Shapes.card,
                 ),
             contentAlignment = Alignment.Center,
@@ -117,7 +117,7 @@ private fun TileContent(
                 imageVector = icon,
                 contentDescription = label,
                 modifier = Modifier.size(22.dp),
-                tint = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                tint = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
             )
         }
 

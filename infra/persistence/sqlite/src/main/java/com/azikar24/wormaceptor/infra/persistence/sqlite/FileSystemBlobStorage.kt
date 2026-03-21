@@ -30,9 +30,10 @@ class FileSystemBlobStorage(private val context: Context) : BlobStorage {
         if (file.exists()) file.inputStream() else null
     }
 
-    override suspend fun deleteBlob(id: BlobID) = withContext(Dispatchers.IO) {
-        val file = File(blobDir, id)
-        if (file.exists()) file.delete()
-        Unit
+    override suspend fun deleteBlob(id: BlobID) {
+        withContext(Dispatchers.IO) {
+            val file = File(blobDir, id)
+            if (file.exists()) file.delete()
+        }
     }
 }

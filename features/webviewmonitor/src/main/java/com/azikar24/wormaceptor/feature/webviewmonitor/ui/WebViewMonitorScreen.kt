@@ -141,26 +141,26 @@ fun WebViewMonitor(
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         exitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         popEnterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         popExitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
     ) {
         composable("list") {
@@ -305,11 +305,11 @@ private fun ExpandableSearchBar(
     AnimatedVisibility(
         visible = visible,
         enter = expandVertically(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
         exit = shrinkVertically(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
     ) {
         WormaCeptorSearchBar(
             query = query,
@@ -518,7 +518,7 @@ private fun WebViewRequestItem(
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                 ),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
@@ -585,7 +585,7 @@ private fun RequestHostChip(host: String) {
         modifier = Modifier
             .background(
                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                    alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
                 ),
                 RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             )
@@ -629,7 +629,7 @@ private fun RequestStatusBadge(
                 text = formatDuration(duration),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }
@@ -647,7 +647,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
             ),
         )
         request.contentLength?.let { length ->
@@ -656,7 +656,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }

@@ -60,7 +60,7 @@ fun WormaCeptorInfoCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {

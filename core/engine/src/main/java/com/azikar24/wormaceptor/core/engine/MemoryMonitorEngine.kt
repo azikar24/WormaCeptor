@@ -185,13 +185,13 @@ class MemoryMonitorEngine(
 
     /** Sampling intervals, history size, and threshold defaults. */
     companion object {
-        /** Default sampling interval: 1 second */
+        /** Default sampling interval: 1 second. */
         const val DEFAULT_INTERVAL_MS = 1000L
 
-        /** Default history size: 60 samples (1 minute at 1-second intervals) */
+        /** Default history size: 60 samples (1 minute at 1-second intervals). */
         const val DEFAULT_HISTORY_SIZE = 60
 
-        /** Warning threshold for heap usage percentage */
+        /** Warning threshold for heap usage percentage. */
         const val HEAP_WARNING_THRESHOLD = 80f
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="floating_button_channel_name">WormaCeptor Floating Button</string>
+    <string name="floating_button_channel_description">Shows network inspector floating button</string>
+    <string name="floating_button_notification_title">WormaCeptor</string>
+    <string name="floating_button_notification_text">Network inspector is active</string>
+    <string name="floating_button_open_description">Open WormaCeptor</string>
+</resources>

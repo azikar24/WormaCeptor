@@ -344,7 +344,7 @@ fun SecureStorageTestScreen(
                             if (encryptedPrefs.isNotEmpty()) {
                                 Surface(
                                     shape = CircleShape,
-                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                                     modifier = Modifier.size(20.dp),
                                 ) {
                                     Box(
@@ -380,7 +380,7 @@ fun SecureStorageTestScreen(
                             if (keyStoreEntries.isNotEmpty()) {
                                 Surface(
                                     shape = CircleShape,
-                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                                    color = SecureGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                                     modifier = Modifier.size(20.dp),
                                 ) {
                                     Box(

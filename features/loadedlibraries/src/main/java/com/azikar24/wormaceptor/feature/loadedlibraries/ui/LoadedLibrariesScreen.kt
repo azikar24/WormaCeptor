@@ -152,11 +152,11 @@ fun LoadedLibrariesScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -241,7 +241,7 @@ fun LoadedLibrariesScreen(
 private fun SummarySection(
     summary: LibrarySummary,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
@@ -287,7 +287,7 @@ private fun FilterSection(
     onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
@@ -296,7 +296,7 @@ private fun FilterSection(
                 onClick = { onTypeSelected(null) },
                 label = { Text(stringResource(R.string.loadedlibraries_filter_all)) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                 ),
             )
             LoadedLibrary.LibraryType.entries.filter { it != LoadedLibrary.LibraryType.AAR_RESOURCE }.forEach { type ->
@@ -324,7 +324,7 @@ private fun FilterSection(
                     label = { Text(stringResource(labelRes)) },
                     leadingIcon = { Icon(icon, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm)) },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
+                        selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                         selectedLabelColor = color,
                         selectedLeadingIconColor = color,
                     ),
@@ -367,7 +367,7 @@ private fun LibraryCard(
             Box(
                 Modifier.size(
                     40.dp,
-                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.light)),
+                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.LIGHT)),
                 Alignment.Center,
             ) {
                 Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md))
@@ -410,7 +410,7 @@ private fun LibraryCard(
             Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Surface(
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = color.copy(WormaCeptorDesignSystem.Alpha.light),
+                color = color.copy(WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     library.type.name.take(3),
@@ -431,7 +431,7 @@ private fun LibraryCard(
 private fun LibraryDetailContent(
     library: LoadedLibrary,
     colors: LoadedLibrariesColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val (icon, color) = when (library.type) {
         LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
@@ -448,7 +448,7 @@ private fun LibraryDetailContent(
             Box(
                 Modifier.size(
                     WormaCeptorDesignSystem.Spacing.xxxl,
-                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.light)),
+                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.LIGHT)),
                 Alignment.Center,
             ) {
                 Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl))

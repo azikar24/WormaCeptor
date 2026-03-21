@@ -42,12 +42,12 @@ class DatabaseDataSource(private val context: Context) {
                             sizeBytes = sizeBytes,
                             tableCount = tableCount,
                         )
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null // Skip databases that can't be opened
                     }
                 }
                 .sortedBy { it.name }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -59,7 +59,9 @@ class DatabaseDataSource(private val context: Context) {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val cursor = db.rawQuery(
-                    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%' ORDER BY name",
+                    "SELECT name FROM sqlite_master WHERE type='table'" +
+                        " AND name NOT LIKE 'sqlite_%'" +
+                        " AND name NOT LIKE 'android_%' ORDER BY name",
                     null,
                 )
 
@@ -80,7 +82,7 @@ class DatabaseDataSource(private val context: Context) {
                     }
                     tables
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptyList()
             }
         } ?: emptyList()
@@ -116,7 +118,7 @@ class DatabaseDataSource(private val context: Context) {
                     }
                     columns
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptyList()
             }
         } ?: emptyList()
@@ -187,7 +189,7 @@ class DatabaseDataSource(private val context: Context) {
                 null,
                 SQLiteDatabase.OPEN_READONLY,
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -199,13 +201,15 @@ class DatabaseDataSource(private val context: Context) {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val cursor = db.rawQuery(
-                    "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%'",
+                    "SELECT COUNT(*) FROM sqlite_master WHERE type='table'" +
+                        " AND name NOT LIKE 'sqlite_%'" +
+                        " AND name NOT LIKE 'android_%'",
                     null,
                 )
                 cursor.use {
                     if (it.moveToFirst()) it.getInt(0) else 0
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 0
             }
         } ?: 0
@@ -223,7 +227,7 @@ class DatabaseDataSource(private val context: Context) {
             cursor.use {
                 if (it.moveToFirst()) it.getLong(0) else 0L
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0L
         }
     }
@@ -238,7 +242,7 @@ class DatabaseDataSource(private val context: Context) {
         return try {
             val cursor = db.rawQuery("SELECT * FROM `$tableName` LIMIT 0", null)
             cursor.use { it.columnCount }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
     }

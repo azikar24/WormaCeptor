@@ -47,14 +47,14 @@ fun ContentTypeChip(
     val chipInfo = getContentTypeChipInfo(contentType)
 
     val backgroundColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "chip_bg_color",
     )
 
     val borderColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "chip_border_color",
     )
 

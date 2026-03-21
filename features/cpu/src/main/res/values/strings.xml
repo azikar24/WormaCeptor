@@ -12,4 +12,19 @@
     <string name="cpu_measurement_system">System CPU</string>
     <string name="cpu_measurement_process">App Process CPU</string>
     <string name="cpu_per_core_unavailable_process">Per-core data unavailable in app process mode</string>
+    <string name="cpu_overall_usage">Overall CPU Usage</string>
+    <string name="cpu_high">HIGH</string>
+    <string name="cpu_per_core_usage">Per-Core Usage</string>
+    <string name="cpu_no_core_data">No core data available</string>
+    <string name="cpu_core_label">Core %1$d</string>
+    <string name="cpu_usage_over_time">CPU Usage Over Time</string>
+    <string name="cpu_no_data">No data yet</string>
+    <string name="cpu_system_info">System Info</string>
+    <string name="cpu_core_count">%1$d cores</string>
+    <string name="cpu_frequency_value">%1$d MHz</string>
+    <string name="cpu_temperature_value">%.1f C</string>
+    <string name="cpu_not_available">N/A</string>
+    <string name="cpu_uptime">Uptime: %1$s</string>
+    <string name="cpu_usage_content_description">CPU usage: %1$s%%</string>
+    <string name="cpu_chart_content_description">CPU usage chart showing current: %1$s%%</string>
 </resources>

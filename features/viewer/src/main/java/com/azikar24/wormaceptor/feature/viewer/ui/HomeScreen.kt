@@ -151,7 +151,7 @@ fun HomeScreen(
     showDeleteSelectedDialog: Boolean = false,
     onDeleteSelectedDialogVisibilityChanged: (Boolean) -> Unit = {},
     // Snackbar message flow from ViewModel
-    snackbarMessage: Flow<String>? = null,
+    snackBarMessage: Flow<String>? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -183,8 +183,8 @@ fun HomeScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     // Observe snackbar messages from ViewModel
-    LaunchedEffect(snackbarMessage) {
-        snackbarMessage?.collect { message ->
+    LaunchedEffect(snackBarMessage) {
+        snackBarMessage?.collect { message ->
             snackBarHostState.showSnackbar(message)
         }
     }
@@ -219,7 +219,9 @@ fun HomeScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
-            val isFiltering = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
+            val isFiltering = filterMethods.isNotEmpty() ||
+                filterStatusRanges.isNotEmpty() ||
+                searchQuery.isNotBlank()
             val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
 
             AnimatedVisibility(
@@ -393,7 +395,9 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
             if (pagerState.currentPage == 0 && !isSelectionMode) {
-                val hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()
+                val hasActiveFilters = filterMethods.isNotEmpty() ||
+                    filterStatusRanges.isNotEmpty() ||
+                    searchQuery.isNotBlank()
                 AnimatedVisibility(
                     visible = hasActiveFilters,
                     enter = expandVertically() + fadeIn(),
@@ -557,7 +561,9 @@ fun HomeScreen(
                         transactions = transactions,
                         onItemClick = onTransactionClick,
                         isInitialLoading = isInitialLoading,
-                        hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank(),
+                        hasActiveFilters = filterMethods.isNotEmpty() ||
+                            filterStatusRanges.isNotEmpty() ||
+                            searchQuery.isNotBlank(),
                         onClearFilters = {
                             onClearFilters()
                             onSearchChanged("")

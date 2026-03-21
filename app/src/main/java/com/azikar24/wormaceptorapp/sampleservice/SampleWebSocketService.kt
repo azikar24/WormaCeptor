@@ -26,7 +26,7 @@ object SampleWebSocketService {
             .addInterceptor(
                 WormaCeptorInterceptor()
                     .showNotification(true)
-                    .maxContentLength(250000L),
+                    .maxContentLength(250_000L),
             )
             .build()
     }

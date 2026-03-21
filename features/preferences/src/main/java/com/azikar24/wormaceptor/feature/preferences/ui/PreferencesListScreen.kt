@@ -109,11 +109,11 @@ fun PreferencesListScreen(
             AnimatedVisibility(
                 visible = searchActive,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
             ) {
                 WormaCeptorSearchBar(
                     query = searchQuery,
@@ -214,7 +214,7 @@ private fun PreferenceFileItem(
                     .align(Alignment.CenterVertically)
                     .size(WormaCeptorDesignSystem.IconSize.sm),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                 ),
             )
         }
@@ -225,7 +225,7 @@ private fun PreferenceFileItem(
 private fun PreferenceFileIcon() {
     Surface(
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         modifier = Modifier
             .padding(top = WormaCeptorDesignSystem.Spacing.xxs)
             .size(WormaCeptorDesignSystem.TouchTarget.minimum),

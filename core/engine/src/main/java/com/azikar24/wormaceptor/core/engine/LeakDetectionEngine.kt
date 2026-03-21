@@ -431,25 +431,25 @@ class LeakDetectionEngine(
 
     /** Timing, history size, and retained size estimation defaults. */
     companion object {
-        /** Default delay before checking if an object was collected (5 seconds) */
+        /** Default delay before checking if an object was collected (5 seconds). */
         const val DEFAULT_CHECK_DELAY_MS = 5000L
 
-        /** Default maximum number of leaks to keep in history */
+        /** Default maximum number of leaks to keep in history. */
         const val DEFAULT_MAX_LEAK_HISTORY = 100
 
-        /** Wait time after GC to allow collection to complete */
+        /** Wait time after GC to allow collection to complete. */
         private const val GC_WAIT_MS = 100L
 
-        /** Estimated retained size for an Activity (~2MB) */
+        /** Estimated retained size for an Activity (~2MB). */
         private const val ESTIMATED_ACTIVITY_SIZE = 2_097_152L
 
-        /** Default estimated size for unknown objects (~256KB) */
+        /** Default estimated size for unknown objects (~256KB). */
         private const val ESTIMATED_DEFAULT_SIZE = 262_144L
 
-        /** Size threshold for critical severity (10MB) */
+        /** Size threshold for critical severity (10MB). */
         private const val CRITICAL_SIZE_THRESHOLD = 10_485_760L
 
-        /** Size threshold for high severity (1MB) */
+        /** Size threshold for high severity (1MB). */
         private const val HIGH_SIZE_THRESHOLD = 1_048_576L
     }
 }

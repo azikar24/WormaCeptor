@@ -12,25 +12,6 @@ import androidx.compose.ui.graphics.Shape
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /**
- * Container style variants for consistent UI across WormaCeptor.
- */
-enum class ContainerStyle {
-    /**
-     * Filled container with no visible border.
-     * Uses surfaceVariant background at medium alpha.
-     * Best for: cards, tiles, content areas.
-     */
-    Filled,
-
-    /**
-     * Outlined container with subtle border and light background.
-     * Uses outlineVariant border with subtle surfaceVariant fill.
-     * Best for: list items, selectable cards, grouped content.
-     */
-    Outlined,
-}
-
-/**
  * Unified container component for WormaCeptor.
  *
  * Provides consistent styling for containers throughout the app with two variants:
@@ -55,10 +36,10 @@ fun WormaCeptorContainer(
 ) {
     val defaultBackgroundColor = when (style) {
         ContainerStyle.Filled -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.strong,
+            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
         )
         ContainerStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
         )
     }
 
@@ -67,7 +48,7 @@ fun WormaCeptorContainer(
         ContainerStyle.Outlined -> BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium,
+                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
             ),
         )
     }
@@ -107,10 +88,10 @@ fun WormaCeptorContainer(
 ) {
     val defaultBackgroundColor = when (style) {
         ContainerStyle.Filled -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.strong,
+            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
         )
         ContainerStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
         )
     }
 
@@ -119,7 +100,7 @@ fun WormaCeptorContainer(
         ContainerStyle.Outlined -> BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.medium,
+                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
             ),
         )
     }

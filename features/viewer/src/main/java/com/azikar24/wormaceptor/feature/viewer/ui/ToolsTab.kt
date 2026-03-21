@@ -182,11 +182,11 @@ fun ToolsTab(
         AnimatedVisibility(
             visible = searchActive,
             enter = expandVertically(
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
             exit = shrinkVertically(
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             WormaCeptorSearchBar(
                 query = searchQuery,
@@ -350,24 +350,24 @@ private fun ToolCategorySection(
 ) {
     val rotationAngle by animateFloatAsState(
         targetValue = if (isCollapsed) 0f else 180f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "collapse_rotation",
     )
 
     val headerBackground by animateColorAsState(
         targetValue = if (isCollapsed) {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
         } else {
-            categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+            categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE)
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "header_bg",
     )
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+            .animateContentSize(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
     ) {
         // Category header
         Surface(
@@ -404,7 +404,7 @@ private fun ToolCategorySection(
                     Icon(
                         imageVector = categoryIcon,
                         contentDescription = null,
-                        tint = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                        tint = categoryColor.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                         modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
                     )
 
@@ -457,11 +457,11 @@ private fun ToolCategorySection(
         AnimatedVisibility(
             visible = !isCollapsed,
             enter = expandVertically(
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
             exit = shrinkVertically(
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             Column {
                 if (headerContent != null) {
@@ -519,7 +519,7 @@ private fun EmptyToolsState(
             contentDescription = stringResource(R.string.viewer_tools_search_placeholder),
             modifier = Modifier
                 .size(WormaCeptorDesignSystem.IconSize.xxxl)
-                .alpha(WormaCeptorDesignSystem.Alpha.strong),
+                .alpha(WormaCeptorDesignSystem.Alpha.STRONG),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
@@ -541,7 +541,7 @@ private fun EmptyToolsState(
             Text(
                 text = stringResource(R.string.viewer_tools_try_different_search),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                 textAlign = TextAlign.Center,
             )
         }
@@ -581,15 +581,15 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
 
     val backgroundColor = when {
         !canDrawOverlays -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
         )
-        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
-        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT)
+        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
     }
     val borderColor = when {
-        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
-        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
-        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
+        isOverlayEnabled -> WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG)
+        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
     }
 
     Surface(
@@ -621,9 +621,9 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     .size(36.dp)
                     .background(
                         color = if (isOverlayEnabled && canDrawOverlays) {
-                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
                         } else {
-                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.soft)
+                            WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT)
                         },
                         shape = WormaCeptorDesignSystem.Shapes.card,
                     ),
@@ -636,7 +636,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     tint = if (isOverlayEnabled && canDrawOverlays) {
                         WormaCeptorColors.Category.Performance
                     } else {
-                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
                     },
                 )
             }
@@ -679,7 +679,7 @@ private fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     color = if (isOverlayEnabled) {
-                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                        WormaCeptorColors.Category.Performance.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     },

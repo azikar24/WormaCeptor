@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.threadviolation.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -57,7 +56,7 @@ data class ThreadViolationColors(
  * Returns the appropriate thread violation colors based on the current theme.
  */
 @Composable
-fun threadViolationColors(darkTheme: Boolean = isSystemInDarkTheme()): ThreadViolationColors {
+fun threadViolationColors(): ThreadViolationColors {
     val surface = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
     val onSurface = MaterialTheme.colorScheme.onSurface
@@ -76,6 +75,6 @@ fun threadViolationColors(darkTheme: Boolean = isSystemInDarkTheme()): ThreadVio
         detailBackground = surfaceVariant,
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     )
 }

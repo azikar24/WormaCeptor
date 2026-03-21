@@ -409,16 +409,16 @@ class CpuMonitorEngine(
 
     /** Sampling intervals, history size, and threshold defaults. */
     companion object {
-        /** Default sampling interval: 1 second */
+        /** Default sampling interval: 1 second. */
         const val DEFAULT_INTERVAL_MS = 1000L
 
-        /** Default history size: 60 samples (1 minute at 1-second intervals) */
+        /** Default history size: 60 samples (1 minute at 1-second intervals). */
         const val DEFAULT_HISTORY_SIZE = 60
 
-        /** Warning threshold for CPU usage percentage */
+        /** Warning threshold for CPU usage percentage. */
         const val CPU_WARNING_THRESHOLD = 80f
 
-        /** Medium threshold for CPU usage percentage */
+        /** Medium threshold for CPU usage percentage. */
         const val CPU_MEDIUM_THRESHOLD = 50f
 
         // System file paths

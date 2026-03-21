@@ -10,8 +10,6 @@
     <ID>MagicNumber:FloatingButtonService.kt$FloatingButtonService$4</ID>
     <ID>MutableStateAutoboxing:FloatingButtonService.kt$FloatingButtonService$mutableStateOf(1f)</ID>
     <ID>MutableStateParam:FloatingButtonService.kt$pressedScaleState</ID>
-    <ID>PrintStackTrace:FloatingButtonService.kt$FloatingButtonService$e</ID>
     <ID>TooGenericExceptionCaught:FloatingButtonService.kt$FloatingButtonService$e: Exception</ID>
-    <ID>UnnecessaryParentheses:FloatingButtonService.kt$FloatingButtonService$(resources.displayMetrics.heightPixels / 4)</ID>
   </CurrentIssues>
 </SmellBaseline>

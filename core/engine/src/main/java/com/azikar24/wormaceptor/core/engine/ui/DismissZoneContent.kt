@@ -113,7 +113,7 @@ private fun DismissCircle(isActive: Boolean) {
     )
 
     val iconAlpha by animateFloatAsState(
-        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.opaque else WormaCeptorDesignSystem.Alpha.bold,
+        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.OPAQUE else WormaCeptorDesignSystem.Alpha.BOLD,
         animationSpec = tween(ColorTransitionMs),
         label = "dismissIconAlpha",
     )

@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.core.engine
 
 import android.os.Build
-import android.os.Looper
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.RequiresApi
@@ -353,39 +352,9 @@ class ThreadViolationEngine(
         _stats.value = stats
     }
 
-    /**
-     * Manually records a custom violation.
-     * Useful for integrating with custom performance monitoring.
-     */
-    fun recordViolation(
-        type: ThreadViolation.ViolationType,
-        description: String,
-        durationMs: Long? = null,
-    ) {
-        val violation = ThreadViolation(
-            id = violationIdCounter.incrementAndGet(),
-            timestamp = System.currentTimeMillis(),
-            violationType = type,
-            description = description,
-            stackTrace = Thread.currentThread().stackTrace.map { it.toString() },
-            durationMs = durationMs,
-            threadName = Thread.currentThread().name,
-        )
-        scope.launch {
-            addViolation(violation)
-        }
-    }
-
-    /**
-     * Checks if the current thread is the main thread.
-     */
-    fun isMainThread(): Boolean {
-        return Looper.myLooper() == Looper.getMainLooper()
-    }
-
     /** History size defaults. */
     companion object {
-        /** Default history size: 100 violations */
+        /** Default history size: 100 violations. */
         const val DEFAULT_HISTORY_SIZE = 100
     }
 }

@@ -1,11 +1,13 @@
 package com.azikar24.wormaceptor.feature.database.vm
 
+import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.domain.entities.TableInfo
+import com.azikar24.wormaceptor.feature.database.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -31,6 +33,7 @@ private const val DefaultPageSize = 100
  */
 class DatabaseViewModel(
     private val repository: DatabaseRepository,
+    private val application: Application,
 ) : BaseViewModel<DatabaseViewState, DatabaseViewEffect, DatabaseViewEvent>(DatabaseViewState()) {
 
     private val _allDatabases = MutableStateFlow<List<DatabaseInfo>>(emptyList())
@@ -116,7 +119,9 @@ class DatabaseViewModel(
                 }
                 _allDatabases.value = databases
             } catch (e: IllegalStateException) {
-                updateState { copy(databasesError = e.message ?: "Failed to load databases") }
+                updateState {
+                    copy(databasesError = e.message ?: application.getString(R.string.database_error_load_databases))
+                }
             } finally {
                 updateState { copy(isDatabasesLoading = false) }
             }
@@ -146,7 +151,9 @@ class DatabaseViewModel(
                 }
                 _allTables.value = tables
             } catch (e: IllegalStateException) {
-                updateState { copy(tablesError = e.message ?: "Failed to load tables") }
+                updateState {
+                    copy(tablesError = e.message ?: application.getString(R.string.database_error_load_tables))
+                }
             } finally {
                 updateState { copy(isTablesLoading = false) }
             }
@@ -208,7 +215,7 @@ class DatabaseViewModel(
                             columns = emptyList(),
                             rows = emptyList(),
                             rowCount = 0,
-                            error = e.message ?: "Failed to load data",
+                            error = e.message ?: application.getString(R.string.database_error_load_data),
                         ),
                     )
                 }
@@ -245,7 +252,7 @@ class DatabaseViewModel(
                         columns = emptyList(),
                         rows = emptyList(),
                         rowCount = 0,
-                        error = "Query is empty",
+                        error = application.getString(R.string.database_error_query_empty),
                     ),
                 )
             }
@@ -274,7 +281,7 @@ class DatabaseViewModel(
                             columns = emptyList(),
                             rows = emptyList(),
                             rowCount = 0,
-                            error = e.message ?: "Query execution failed",
+                            error = e.message ?: application.getString(R.string.database_error_query_failed),
                         ),
                     )
                 }

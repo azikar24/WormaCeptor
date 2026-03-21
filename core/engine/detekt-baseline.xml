@@ -2,40 +2,13 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>ComplexCondition:DefaultParserRegistry.kt$DefaultParserRegistry$(trimmed.startsWith("{") &amp;&amp; trimmed.endsWith("}")) || (trimmed.startsWith("[") &amp;&amp; trimmed.endsWith("]"))</ID>
     <ID>CyclomaticComplexMethod:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun categorizePackage(packageName: String): Pair&lt;String, DependencyCategory&gt;</ID>
-    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
-    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Default sampling interval: 1 second </ID>
-    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Medium threshold for CPU usage percentage </ID>
-    <ID>EndOfSentenceFormat:CpuMonitorEngine.kt$CpuMonitorEngine.Companion$ Warning threshold for CPU usage percentage </ID>
-    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ GCM IV length in bytes (12 is recommended) </ID>
-    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ GCM tag length in bits </ID>
-    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ Maximum number of results to keep in history </ID>
-    <ID>EndOfSentenceFormat:CryptoEngine.kt$CryptoEngine.Companion$ Standard IV length in bytes </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default delay before checking if an object was collected (5 seconds) </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default estimated size for unknown objects (~256KB) </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Default maximum number of leaks to keep in history </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Estimated retained size for an Activity (~2MB) </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Size threshold for critical severity (10MB) </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Size threshold for high severity (1MB) </ID>
-    <ID>EndOfSentenceFormat:LeakDetectionEngine.kt$LeakDetectionEngine.Companion$ Wait time after GC to allow collection to complete </ID>
-    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Default history size: 60 samples (1 minute at 1-second intervals) </ID>
-    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Default sampling interval: 1 second </ID>
-    <ID>EndOfSentenceFormat:MemoryMonitorEngine.kt$MemoryMonitorEngine.Companion$ Warning threshold for heap usage percentage </ID>
-    <ID>EndOfSentenceFormat:QueryEngine.kt$QueryEngine$* Gets raw bytes from blob storage - useful for binary content like PDFs</ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum latency in ms </ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum packet loss percent </ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Maximum speed in Kbps (100 Mbps) </ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum latency in ms </ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum packet loss percent </ID>
-    <ID>EndOfSentenceFormat:RateLimitEngine.kt$RateLimitEngine.Companion$ Minimum speed in Kbps </ID>
-    <ID>EndOfSentenceFormat:ThreadViolationEngine.kt$ThreadViolationEngine.Companion$ Default history size: 100 violations </ID>
-    <ID>EndOfSentenceFormat:WebViewMonitorEngine.kt$WebViewMonitorEngine.Companion$ Default maximum number of requests to store </ID>
     <ID>ExplicitGarbageCollectionCall:LeakDetectionEngine.kt$LeakDetectionEngine$gc()</ID>
     <ID>ExplicitGarbageCollectionCall:LeakDetectionEngine.kt$LeakDetectionEngine$runFinalization()</ID>
     <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$gc()</ID>
     <ID>ExplicitGarbageCollectionCall:MemoryMonitorEngine.kt$MemoryMonitorEngine$runFinalization()</ID>
     <ID>InstanceOfCheckForException:LocationSimulatorEngine.kt$LocationSimulatorEngine$e is SecurityException</ID>
-    <ID>LargeClass:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$Companion</ID>
     <ID>LongMethod:CryptoEngine.kt$CryptoEngine$fun decrypt(ciphertext: String): CryptoResult</ID>
     <ID>MagicNumber:CaptureEngine.kt$CaptureEngine$400</ID>
     <ID>MagicNumber:CpuMonitorEngine.kt$CpuMonitorEngine$1000</ID>
@@ -66,14 +39,6 @@
     <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$6</ID>
     <ID>MagicNumber:LogCaptureEngine.kt$LogCaptureEngine$7</ID>
     <ID>MagicNumber:MemoryMonitorEngine.kt$MemoryMonitorEngine$100f</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0.1f</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$0xFF</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$1024</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$127</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$14</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$256</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$31</ID>
-    <ID>MagicNumber:ParserRegistry.kt$DefaultParserRegistry$9</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF1C1C1E</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF32D74B</ID>
     <ID>MagicNumber:PerformanceOverlayContent.kt$0xFF8E8E93</ID>
@@ -94,14 +59,7 @@
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_024.0</ID>
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576</ID>
     <ID>MagicNumber:SecureStorageEngine.kt$SecureStorageEngine$1_048_576.0</ID>
-    <ID>MaxLineLength:CryptoEngine.kt$CryptoEngine$"Invalid key length: expected $expectedKeyLength bytes for ${config.algorithm.displayName}, got ${keyBytes.size} bytes"</ID>
-    <ID>MaxLineLength:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$website = "https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/"</ID>
-    <ID>MaxLineLength:LocationSimulatorEngine.kt$LocationSimulatorEngine$_lastError.value = "Mock locations not enabled. Enable in Developer Options and select this app as mock location app."</ID>
-    <ID>MaximumLineLength:CryptoEngine.kt$CryptoEngine$ </ID>
-    <ID>MaximumLineLength:DependenciesInspectorEngine.kt$DependenciesInspectorEngine.Companion$ </ID>
-    <ID>MaximumLineLength:LocationSimulatorEngine.kt$LocationSimulatorEngine$ </ID>
     <ID>NestedBlockDepth:CpuMonitorEngine.kt$CpuMonitorEngine$private fun readCpuTemperature(): Float?</ID>
-    <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun scanDynamicDependencies(): List&lt;DependencyInfo&gt;</ID>
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryCommonVersionPatterns(spec: LibrarySpec): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryFindVersionDynamically(packageName: String): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:LeakDetectionEngine.kt$LeakDetectionEngine$private fun buildReferencePath(obj: Any): List&lt;String&gt;</ID>
@@ -111,7 +69,7 @@
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun buildKeyInfo( keyStore: KeyStore, alias: String, ): String</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>
     <ID>OutdatedDocumentation:WebSocketMonitorEngine.kt$WebSocketMonitorEngine</ID>
-    <ID>PrintStackTrace:CrashReporter.kt$CrashReporter$e</ID>
+    <ID>ReturnCount:DefaultParserRegistry.kt$DefaultParserRegistry$override fun detectContentType( contentType: String?, body: ByteArray, ): ContentType</ID>
     <ID>ReturnCount:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun extractVersion(spec: LibrarySpec): Pair&lt;String?, DetectionMethod&gt;</ID>
     <ID>TooGenericExceptionCaught:CrashReporter.kt$CrashReporter$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CryptoEngine.kt$CryptoEngine$e: Exception</ID>

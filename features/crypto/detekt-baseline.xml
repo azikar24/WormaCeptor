@@ -9,10 +9,6 @@
     <ID>LongParameterList:CryptoScreen.kt$( config: CryptoConfig, inputText: String, currentResult: CryptoResult?, history: ImmutableList&lt;CryptoResult&gt;, isProcessing: Boolean, error: String?, snackBarHostState: SnackbarHostState, onNavigateBack: (() -&gt; Unit)?, onNavigateToHistory: (() -&gt; Unit)?, onApplyPreset: (CryptoPreset) -&gt; Unit, onSetAlgorithm: (CryptoAlgorithm) -&gt; Unit, onSetMode: (CipherMode) -&gt; Unit, onSetPadding: (PaddingScheme) -&gt; Unit, onSetKeyFormat: (KeyFormat) -&gt; Unit, onSetKey: (String) -&gt; Unit, onSetIv: (String) -&gt; Unit, onGenerateKey: () -&gt; Unit, onGenerateIv: () -&gt; Unit, onInputTextChange: (String) -&gt; Unit, onEncrypt: () -&gt; Unit, onDecrypt: () -&gt; Unit, onCopyResult: (String) -&gt; Unit, onClearResult: () -&gt; Unit, onUseAsInput: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:CryptoScreen.kt$50</ID>
     <ID>MagicNumber:CryptoScreen.kt$8</ID>
-    <ID>MaxLineLength:CryptoScreen.kt$if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility</ID>
-    <ID>MaxLineLength:CryptoScreen.kt$visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation()</ID>
-    <ID>MaxLineLength:CryptoScreen.kt$visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation()</ID>
-    <ID>MaximumLineLength:CryptoScreen.kt$ </ID>
     <ID>OutdatedDocumentation:CryptoScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CryptoTool( engine: CryptoEngine, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, onNavigateToHistory: (() -&gt; Unit)? = null, )</ID>
     <ID>UnusedPrivateMember:CryptoScreen.kt$@Preview(showBackground = true) @Composable private fun CryptoToolContentPreview()</ID>
     <ID>ViewModelInjection:CryptoScreen.kt$viewModel</ID>

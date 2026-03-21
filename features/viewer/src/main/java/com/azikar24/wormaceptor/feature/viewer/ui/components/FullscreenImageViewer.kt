@@ -84,6 +84,7 @@ import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import java.io.File
@@ -376,7 +377,7 @@ private fun FullscreenImageContent(
         ) {
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
             ) {
                 Text(
                     text = "${String.format(Locale.US, "%.1f", scale)}x",
@@ -401,7 +402,7 @@ private fun TopControlBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
     ) {
         Row(
             modifier = Modifier
@@ -415,7 +416,7 @@ private fun TopControlBar(
             FilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     contentColor = ThemeColors.LightBackground,
                 ),
             ) {
@@ -434,13 +435,13 @@ private fun TopControlBar(
                     onClick = onZoomOut,
                     enabled = currentZoom > 1f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                         contentColor = ThemeColors.LightBackground,
                         disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
                         ),
                         disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         ),
                     ),
                 ) {
@@ -454,13 +455,13 @@ private fun TopControlBar(
                     onClick = onZoomIn,
                     enabled = currentZoom < 5f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                         contentColor = ThemeColors.LightBackground,
                         disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
                         ),
                         disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         ),
                     ),
                 ) {
@@ -484,7 +485,7 @@ private fun BottomControlBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
     ) {
         Column(
             modifier = Modifier
@@ -510,7 +511,7 @@ private fun BottomControlBar(
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     ) {
                         Text(
                             text = meta.format,
@@ -565,13 +566,13 @@ private fun MetadataChip(
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
     }
 }
@@ -585,7 +586,7 @@ private fun ActionChip(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
     ) {
         Row(
             modifier = Modifier.padding(

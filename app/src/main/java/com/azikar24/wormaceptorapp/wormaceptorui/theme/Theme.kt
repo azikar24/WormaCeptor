@@ -38,7 +38,7 @@ private val DarkColorScheme = darkColorScheme(
     outlineVariant = DarkTextTertiary,
     error = DarkDestructive,
     onError = DarkBackground,
-    errorContainer = DarkDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+    errorContainer = DarkDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
     onErrorContainer = DarkDestructive,
 )
 
@@ -65,7 +65,7 @@ private val LightColorScheme = lightColorScheme(
     outlineVariant = LightTextTertiary,
     error = LightDestructive,
     onError = LightBackground,
-    errorContainer = LightDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+    errorContainer = LightDestructive.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
     onErrorContainer = LightDestructive,
 )
 

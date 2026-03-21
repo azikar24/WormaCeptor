@@ -28,10 +28,10 @@ internal object FloatingButtonConstants {
      */
     object Animation {
         /** Duration for snap-to-edge animation. */
-        val SNAP_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.normal.toLong()
+        val SNAP_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.NORMAL.toLong()
 
         /** Duration for press scale animation. */
-        val SCALE_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.ultraFast
+        val SCALE_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST
     }
 
     /**
@@ -45,7 +45,7 @@ internal object FloatingButtonConstants {
         val ICON_TINT: Color = WormaCeptorDesignSystem.ThemeColors.LightBackground
 
         /** Icon alpha/opacity. */
-        val ICON_ALPHA = WormaCeptorDesignSystem.Alpha.prominent
+        val ICON_ALPHA = WormaCeptorDesignSystem.Alpha.PROMINENT
 
         /** Scale factor when button is pressed. */
         const val PRESSED_SCALE = 0.9f

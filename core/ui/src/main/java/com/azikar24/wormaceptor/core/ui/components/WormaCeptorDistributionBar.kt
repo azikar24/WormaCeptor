@@ -93,7 +93,7 @@ fun WormaCeptorDistributionBar(
                 .height(8.dp)
                 .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                 .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                 ),
         ) {
             Box(

@@ -49,7 +49,11 @@ fun LocationMapView(
 
     // Animate border based on mock active state
     val borderWidth by animateDpAsState(
-        targetValue = if (isMockActive) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular,
+        targetValue = if (isMockActive) {
+            WormaCeptorDesignSystem.BorderWidth.thick
+        } else {
+            WormaCeptorDesignSystem.BorderWidth.regular
+        },
         label = "borderWidth",
     )
     val borderColor by animateColorAsState(

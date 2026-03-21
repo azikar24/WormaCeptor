@@ -11,4 +11,10 @@
     <string name="memory_max">Max</string>
     <string name="memory_heap_used">Heap Used</string>
     <string name="memory_native">Native</string>
+    <string name="memory_java_heap">Java Heap</string>
+    <string name="memory_high">HIGH</string>
+    <string name="memory_over_time">Memory Over Time</string>
+    <string name="memory_no_data">No data yet</string>
+    <string name="memory_native_heap">Native Heap</string>
+    <string name="memory_force_gc">Force GC</string>
 </resources>

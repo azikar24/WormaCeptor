@@ -71,7 +71,7 @@ class QueryEngine(
     }
 
     /**
-     * Gets raw bytes from blob storage - useful for binary content like PDFs
+     * Gets raw bytes from blob storage - useful for binary content like PDFs.
      */
     suspend fun getBodyBytes(blobId: BlobID): ByteArray? = withContext(Dispatchers.IO) {
         blobStorage.readBlob(blobId)?.use { input ->

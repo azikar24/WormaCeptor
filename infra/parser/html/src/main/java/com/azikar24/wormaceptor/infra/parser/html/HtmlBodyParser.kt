@@ -83,6 +83,7 @@ class HtmlBodyParser(
         }
     }
 
+    @Suppress("CyclomaticComplexity", "NestedBlockDepth", "LongMethod")
     private fun formatHtml(html: String): String {
         val result = StringBuilder()
         var depth = 0
@@ -156,7 +157,8 @@ class HtmlBodyParser(
 
                     val tagContent = html.substring(i + 1, endTag)
                     val tagName = extractTagName(tagContent).lowercase()
-                    val isSelfClosing = tagContent.trimEnd().endsWith("/") || voidElements.contains(tagName)
+                    val isSelfClosing = tagContent.trimEnd().endsWith("/") ||
+                        voidElements.contains(tagName)
 
                     if (!inPreformatted) {
                         if (result.isNotEmpty() && !result.endsWith("\n")) {
@@ -196,8 +198,6 @@ class HtmlBodyParser(
                             if (result.isNotEmpty() && !result.endsWith("\n") && !result.endsWith(">")) {
                                 result.append("\n")
                                 result.append(indentString.repeat(depth))
-                            } else if (result.endsWith(">")) {
-                                // Inline text after tag
                             }
                             result.append(trimmed)
                         }
@@ -258,17 +258,19 @@ class HtmlBodyParser(
         }
 
         // Extract meta description
-        val descRegex = """<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
-            RegexOption.IGNORE_CASE,
-        )
+        val descRegex =
+            """<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
+                RegexOption.IGNORE_CASE,
+            )
         descRegex.find(html)?.let {
             metadata["description"] = it.groupValues[1]
         }
 
         // Also check alternate attribute order
-        val descRegex2 = """<meta\s+content\s*=\s*["']([^"']*)["']\s+name\s*=\s*["']description["']""".toRegex(
-            RegexOption.IGNORE_CASE,
-        )
+        val descRegex2 =
+            """<meta\s+content\s*=\s*["']([^"']*)["']\s+name\s*=\s*["']description["']""".toRegex(
+                RegexOption.IGNORE_CASE,
+            )
         if (!metadata.containsKey("description")) {
             descRegex2.find(html)?.let {
                 metadata["description"] = it.groupValues[1]
@@ -282,9 +284,10 @@ class HtmlBodyParser(
         }
 
         // Extract viewport
-        val viewportRegex = """<meta\s+name\s*=\s*["']viewport["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
-            RegexOption.IGNORE_CASE,
-        )
+        val viewportRegex =
+            """<meta\s+name\s*=\s*["']viewport["']\s+content\s*=\s*["']([^"']*)["']""".toRegex(
+                RegexOption.IGNORE_CASE,
+            )
         viewportRegex.find(html)?.let {
             metadata["viewport"] = it.groupValues[1]
         }

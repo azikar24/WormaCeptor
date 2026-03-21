@@ -11,6 +11,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
+import android.telephony.TelephonyManager
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.azikar24.wormaceptor.domain.entities.AppDetails
@@ -76,11 +77,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
             androidVersion = Build.VERSION.RELEASE,
             sdkLevel = Build.VERSION.SDK_INT,
             buildId = Build.ID,
-            securityPatch = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Build.VERSION.SECURITY_PATCH
-            } else {
-                null
-            },
+            securityPatch = Build.VERSION.SECURITY_PATCH,
             bootloader = Build.BOOTLOADER,
             fingerprint = Build.FINGERPRINT,
             incremental = Build.VERSION.INCREMENTAL,
@@ -104,7 +101,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
         }
 
         val refreshRate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display?.refreshRate ?: 60f
+            context.display.refreshRate
         } else {
             windowManager.defaultDisplay.refreshRate
         }
@@ -185,7 +182,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
                 externalTotal = externalStat.blockCountLong * externalStat.blockSizeLong
                 externalAvailable = externalStat.availableBlocksLong * externalStat.blockSizeLong
                 externalUsed = externalTotal - externalAvailable
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // External storage not accessible
             }
         }
@@ -219,7 +216,7 @@ class GetDeviceInfoUseCase(private val context: Context) {
         }
 
         val isDebuggable = applicationInfo != null &&
-            (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+            applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
 
         val minSdk = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             applicationInfo?.minSdkVersion ?: 1
@@ -247,78 +244,64 @@ class GetDeviceInfoUseCase(private val context: Context) {
         var isConnected = false
         var isWifiConnected = false
         var isCellularConnected = false
-        var isMetered = false
         var connectionType = "None"
         var cellularNetworkType: String? = null
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork
-            val capabilities = network?.let { connectivityManager.getNetworkCapabilities(it) }
+        val network = connectivityManager.activeNetwork
+        val capabilities = network?.let { connectivityManager.getNetworkCapabilities(it) }
 
-            if (capabilities != null) {
-                isConnected = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                isWifiConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                isCellularConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        if (capabilities != null) {
+            isConnected = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            isWifiConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            isCellularConnected = capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
 
-                connectionType = when {
-                    isWifiConnected -> "WiFi"
-                    isCellularConnected -> "Cellular"
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> "Bluetooth"
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) -> "VPN"
-                    else -> "Unknown"
-                }
+            connectionType = when {
+                isWifiConnected -> "WiFi"
+                isCellularConnected -> "Cellular"
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> "Bluetooth"
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) -> "VPN"
+                else -> "Unknown"
             }
-
-            isMetered = connectivityManager.isActiveNetworkMetered
-        } else {
-            @Suppress("DEPRECATION")
-            val networkInfo = connectivityManager.activeNetworkInfo
-            @Suppress("DEPRECATION")
-            isConnected = networkInfo?.isConnected == true
-            @Suppress("DEPRECATION")
-            connectionType = networkInfo?.typeName ?: "None"
-            @Suppress("DEPRECATION")
-            isWifiConnected = networkInfo?.type == ConnectivityManager.TYPE_WIFI
-            @Suppress("DEPRECATION")
-            isCellularConnected = networkInfo?.type == ConnectivityManager.TYPE_MOBILE
         }
+
+        val isMetered: Boolean = connectivityManager.isActiveNetworkMetered
 
         // Get cellular network type (2G/3G/4G/5G) if on cellular
         if (isCellularConnected && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 val telephonyManager =
-                    context.getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+                    context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
                 cellularNetworkType = when (telephonyManager?.dataNetworkType) {
-                    android.telephony.TelephonyManager.NETWORK_TYPE_GPRS,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_EDGE,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_CDMA,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_1xRTT,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_IDEN,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_GSM,
+                    TelephonyManager.NETWORK_TYPE_GPRS,
+                    TelephonyManager.NETWORK_TYPE_EDGE,
+                    TelephonyManager.NETWORK_TYPE_CDMA,
+                    TelephonyManager.NETWORK_TYPE_1xRTT,
+                    TelephonyManager.NETWORK_TYPE_IDEN,
+                    TelephonyManager.NETWORK_TYPE_GSM,
                     -> "2G"
 
-                    android.telephony.TelephonyManager.NETWORK_TYPE_UMTS,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_EVDO_0,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_EVDO_A,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_HSDPA,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_HSUPA,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_HSPA,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_EVDO_B,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_EHRPD,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_HSPAP,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_TD_SCDMA,
+                    TelephonyManager.NETWORK_TYPE_UMTS,
+                    TelephonyManager.NETWORK_TYPE_EVDO_0,
+                    TelephonyManager.NETWORK_TYPE_EVDO_A,
+                    TelephonyManager.NETWORK_TYPE_HSDPA,
+                    TelephonyManager.NETWORK_TYPE_HSUPA,
+                    TelephonyManager.NETWORK_TYPE_HSPA,
+                    TelephonyManager.NETWORK_TYPE_EVDO_B,
+                    TelephonyManager.NETWORK_TYPE_EHRPD,
+                    TelephonyManager.NETWORK_TYPE_HSPAP,
+                    TelephonyManager.NETWORK_TYPE_TD_SCDMA,
                     -> "3G"
 
-                    android.telephony.TelephonyManager.NETWORK_TYPE_LTE,
-                    android.telephony.TelephonyManager.NETWORK_TYPE_IWLAN,
+                    TelephonyManager.NETWORK_TYPE_LTE,
+                    TelephonyManager.NETWORK_TYPE_IWLAN,
                     -> "4G"
 
-                    android.telephony.TelephonyManager.NETWORK_TYPE_NR -> "5G"
+                    TelephonyManager.NETWORK_TYPE_NR -> "5G"
 
                     else -> null
                 }
-            } catch (e: SecurityException) {
+            } catch (_: SecurityException) {
                 // Permission not granted for reading phone state
                 cellularNetworkType = null
             }

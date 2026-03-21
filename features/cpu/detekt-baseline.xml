@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuChartCard( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@Composable private fun SystemInfoCard( currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
@@ -18,7 +19,6 @@
     <ID>MagicNumber:CpuScreen.kt$4</ID>
     <ID>MagicNumber:CpuScreen.kt$60</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$5000</ID>
-    <ID>UnusedParameter:CpuColors.kt$darkTheme: Boolean = isSystemInDarkTheme()</ID>
     <ID>ViewModelInjection:CpuFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

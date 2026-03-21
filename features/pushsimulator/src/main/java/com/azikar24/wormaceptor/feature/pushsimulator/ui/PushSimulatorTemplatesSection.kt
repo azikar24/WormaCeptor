@@ -120,10 +120,10 @@ internal fun TemplateCard(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = if (isPreset) {
                 PushSimulatorDesignSystem.TemplateColors.preset
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             } else {
                 MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             },
         ),
     ) {
@@ -164,7 +164,7 @@ internal fun TemplateCard(
                     // Priority badge
                     Surface(
                         shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                        color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -194,7 +194,7 @@ internal fun TemplateCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                         ) {
                             Row(
                                 modifier = Modifier.padding(
@@ -226,7 +226,7 @@ internal fun TemplateCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = PushSimulatorDesignSystem.TemplateColors.preset
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                         ) {
                             Text(
                                 text = stringResource(R.string.pushsimulator_template_preset),
@@ -276,7 +276,7 @@ internal fun TemplateCard(
                                 R.string.pushsimulator_template_delete,
                                 template.name,
                             ),
-                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                             modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                         )
                     }

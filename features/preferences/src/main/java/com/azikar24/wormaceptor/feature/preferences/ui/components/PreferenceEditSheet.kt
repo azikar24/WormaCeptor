@@ -307,7 +307,7 @@ private fun EditSheetTypeSelector(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Surface(
                                     color = typeColor.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                                     ),
                                     shape = RoundedCornerShape(
                                         WormaCeptorDesignSystem.CornerRadius.xs,

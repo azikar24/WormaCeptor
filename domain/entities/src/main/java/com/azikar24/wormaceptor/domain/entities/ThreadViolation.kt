@@ -27,19 +27,19 @@ data class ThreadViolation(
      * Types of thread violations that can be detected.
      */
     enum class ViolationType {
-        /** File read operation on main thread */
+        /** File read operation on main thread. */
         DISK_READ,
 
-        /** File write operation on main thread */
+        /** File write operation on main thread. */
         DISK_WRITE,
 
-        /** Network operation on main thread */
+        /** Network operation on main thread. */
         NETWORK,
 
-        /** Slow method call on main thread */
+        /** Slow method call on main thread. */
         SLOW_CALL,
 
-        /** Custom slow code block on main thread */
+        /** Custom slow code block on main thread. */
         CUSTOM_SLOW_CODE,
     }
 

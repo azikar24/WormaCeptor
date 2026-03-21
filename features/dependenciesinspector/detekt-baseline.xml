@@ -3,10 +3,10 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyCard( dependency: DependencyInfo, onClick: () -&gt; Unit, colors: DependenciesInspectorColors, )</ID>
-    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyDetailContent( dependency: DependencyInfo, colors: DependenciesInspectorColors, modifier: Modifier, )</ID>
+    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyDetailContent( dependency: DependencyInfo, colors: DependenciesInspectorColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:DependenciesInspectorScreen.kt$( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:DependenciesInspectorScreen.kt$( selectedCategory: DependencyCategory?, summary: DependencySummary, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, colors: DependenciesInspectorColors, modifier: Modifier, )</ID>
+    <ID>LongParameterList:DependenciesInspectorScreen.kt$( selectedCategory: DependencyCategory?, summary: DependencySummary, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, colors: DependenciesInspectorColors, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF009688</ID>
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF00BCD4</ID>
     <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF03A9F4</ID>
@@ -54,7 +54,6 @@
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$3</ID>
     <ID>MagicNumber:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$5000</ID>
-    <ID>ModifierWithoutDefault:DependenciesInspectorScreen.kt$modifier</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onCategorySelected</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onDependencySelected</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onSearchQueryChanged</ID>

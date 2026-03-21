@@ -69,4 +69,6 @@ dependencies {
     // DI
     implementation(libs.koin.compose)
     debugImplementation(libs.androidx.ui.tooling)
+
+    testImplementation(libs.org.json)
 }

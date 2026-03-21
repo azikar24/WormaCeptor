@@ -109,7 +109,7 @@ fun MemoryScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = "Memory Monitor",
+                            text = stringResource(R.string.memory_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         // Warning badge
@@ -232,7 +232,7 @@ private fun HeapUsageCard(
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
                     Text(
-                        text = "Java Heap",
+                        text = stringResource(R.string.memory_java_heap),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.labelPrimary,
@@ -243,7 +243,7 @@ private fun HeapUsageCard(
                 if (isWarning) {
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -260,7 +260,7 @@ private fun HeapUsageCard(
                                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
                             Text(
-                                text = "HIGH",
+                                text = stringResource(R.string.memory_high),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.critical,
@@ -382,7 +382,7 @@ private fun MemoryChartCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Memory Over Time",
+                text = stringResource(R.string.memory_over_time),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -400,7 +400,7 @@ private fun MemoryChartCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No data yet",
+                        text = stringResource(R.string.memory_no_data),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.labelSecondary,
                     )
@@ -537,7 +537,7 @@ private fun MemoryLineChart(
 
         drawPath(
             path = areaPath,
-            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         )
     }
 }
@@ -566,7 +566,7 @@ private fun NativeHeapCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Native Heap",
+                text = stringResource(R.string.memory_native_heap),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -630,7 +630,7 @@ private fun ActionButtons(
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text(
-                text = "Force GC",
+                text = stringResource(R.string.memory_force_gc),
                 fontWeight = FontWeight.SemiBold,
             )
         }

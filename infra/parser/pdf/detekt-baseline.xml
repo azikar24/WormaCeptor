@@ -2,20 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>EndOfSentenceFormat:PdfParser.kt$PdfParser$* Priority: 150 (binary format, higher than text formats)</ID>
-    <ID>EndOfSentenceFormat:PdfParser.kt$PdfParser.Companion$* PDF magic bytes: %PDF- (25 50 44 46 2D in hex)</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser$150</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$10</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$1024</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$1024.0</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$12</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$14</ID>
     <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$16</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$20</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$4</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$6</ID>
-    <ID>MagicNumber:PdfParser.kt$PdfParser.Companion$8</ID>
     <ID>SwallowedException:PdfParser.kt$PdfParser$e: SecurityException</ID>
-    <ID>TooGenericExceptionCaught:PdfParser.kt$PdfParser$e: Exception</ID>
+    <ID>UndocumentedPublicFunction:PdfParser.kt$PdfParser.Companion$@Suppress("MagicNumber") fun extractPdfVersion(body: ByteArray): String</ID>
+    <ID>UndocumentedPublicFunction:PdfParser.kt$PdfParser.Companion$@Suppress("MagicNumber") fun formatFileSize(bytes: Long): String</ID>
   </CurrentIssues>
 </SmellBaseline>

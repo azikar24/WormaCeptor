@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>Filename:HapticHelpers.kt$com.azikar24.wormaceptor.core.ui.components.HapticHelpers.kt</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
@@ -123,8 +122,6 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
-    <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
-    <ID>MatchingDeclarationName:WormaCeptorContainer.kt$ContainerStyle</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
   </CurrentIssues>
 </SmellBaseline>

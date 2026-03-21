@@ -35,9 +35,9 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 @Composable
 fun rememberShimmerBrush(): Brush {
     val shimmerColors = listOf(
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
     )
 
     val transition = rememberInfiniteTransition(label = "shimmer")

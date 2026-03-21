@@ -19,8 +19,4 @@ interface LeakDao {
     /** Deletes all leak records. */
     @Query("DELETE FROM leaks")
     suspend fun deleteAll()
-
-    /** Returns the total number of stored leak records. */
-    @Query("SELECT COUNT(*) FROM leaks")
-    suspend fun getCount(): Int
 }

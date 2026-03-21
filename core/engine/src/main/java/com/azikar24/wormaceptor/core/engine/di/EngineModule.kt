@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.core.engine.di
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.engine.DefaultHighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.DefaultParserRegistry
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
@@ -11,6 +12,7 @@ import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.engine.ParserRegistry
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
@@ -66,4 +68,7 @@ val engineModule = module {
 
     // Syntax highlighting
     single<HighlighterRegistry> { DefaultHighlighterRegistry() }
+
+    // Body parsing
+    single<ParserRegistry> { DefaultParserRegistry() }
 }

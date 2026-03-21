@@ -102,7 +102,7 @@ internal fun NotificationFormCard(
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = MaterialTheme.colorScheme.outlineVariant
-                .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
     ) {
         Column(
@@ -370,7 +370,7 @@ private fun ChannelSelector(
                         modifier = Modifier.background(
                             if (isSelected) {
                                 MaterialTheme.colorScheme.primaryContainer.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                    alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                                 )
                             } else {
                                 Color.Transparent
@@ -401,7 +401,7 @@ private fun ImportanceBadge(importance: Int) {
 
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
     ) {
         Text(
             text = label,
@@ -458,7 +458,7 @@ private fun PrioritySelector(
                     },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = priorityColor
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                            .copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                         selectedLabelColor = priorityColor,
                         selectedLeadingIconColor = priorityColor,
                     ),
@@ -466,9 +466,9 @@ private fun PrioritySelector(
                         enabled = true,
                         selected = isSelected,
                         borderColor = MaterialTheme.colorScheme.outline
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                         selectedBorderColor = priorityColor
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     ),
                 )
             }
@@ -554,18 +554,18 @@ private fun ActionButtonsSection(
                         },
                         colors = InputChipDefaults.inputChipColors(
                             selectedContainerColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                             selectedLabelColor = PushSimulatorDesignSystem.TemplateColors.action,
                             selectedLeadingIconColor = PushSimulatorDesignSystem.TemplateColors.action,
                             selectedTrailingIconColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
                         ),
                         border = InputChipDefaults.inputChipBorder(
                             enabled = true,
                             selected = true,
                             borderColor = Color.Transparent,
                             selectedBorderColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                         ),
                     )
                 }
@@ -633,7 +633,7 @@ private fun ActionButtonsSection(
                                 MaterialTheme.colorScheme.onPrimary
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                                 )
                             },
                         )

@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.cpu.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -59,7 +58,7 @@ data class CpuColors(
  * Returns the appropriate CPU colors based on the current theme.
  */
 @Composable
-fun cpuColors(darkTheme: Boolean = isSystemInDarkTheme()): CpuColors {
+fun cpuColors(): CpuColors {
     val surfaceColor = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
     val outline = MaterialTheme.colorScheme.outline
@@ -75,11 +74,11 @@ fun cpuColors(darkTheme: Boolean = isSystemInDarkTheme()): CpuColors {
         critical = WormaCeptorColors.StatusRed,
         cardBackground = surfaceColor,
         chartBackground = surfaceVariant,
-        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         gaugeBackground = surfaceVariant,
-        gaugeTrack = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+        gaugeTrack = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
     )
 }

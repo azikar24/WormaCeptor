@@ -11,6 +11,15 @@
     <string name="filebrowser_search_placeholder">Search files...</string>
     <string name="filebrowser_no_files_found">No files found</string>
 
+    <!-- Error messages -->
+    <string name="filebrowser_error_load_root">Failed to load root directories: %1$s</string>
+    <string name="filebrowser_error_list_directory">Failed to list directory: %1$s</string>
+    <string name="filebrowser_error_read_file">Failed to read file: %1$s</string>
+    <string name="filebrowser_error_file_info">Failed to get file info: %1$s</string>
+    <string name="filebrowser_error_delete_file">Failed to delete file</string>
+    <string name="filebrowser_error_delete_file_detail">Failed to delete file: %1$s</string>
+    <string name="filebrowser_error_filter_files">Failed to filter files: %1$s</string>
+
     <!-- FileInfoSheet -->
     <string name="filebrowser_file_information">File Information</string>
     <string name="filebrowser_label_name">Name</string>

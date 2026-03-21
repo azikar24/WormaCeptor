@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.leakdetection.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -76,7 +75,7 @@ data class LeakDetectionColors(
  * Returns the appropriate leak detection colors based on the current theme.
  */
 @Composable
-fun leakDetectionColors(darkTheme: Boolean = isSystemInDarkTheme()): LeakDetectionColors {
+fun leakDetectionColors(): LeakDetectionColors {
     val alpha = WormaCeptorDesignSystem.Alpha
     val surface = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
@@ -87,13 +86,13 @@ fun leakDetectionColors(darkTheme: Boolean = isSystemInDarkTheme()): LeakDetecti
 
     return LeakDetectionColors(
         critical = WormaCeptorColors.LeakDetection.Critical,
-        criticalBackground = WormaCeptorColors.LeakDetection.Critical.copy(alpha = alpha.subtle),
+        criticalBackground = WormaCeptorColors.LeakDetection.Critical.copy(alpha = alpha.SUBTLE),
         high = WormaCeptorColors.LeakDetection.High,
-        highBackground = WormaCeptorColors.LeakDetection.High.copy(alpha = alpha.subtle),
+        highBackground = WormaCeptorColors.LeakDetection.High.copy(alpha = alpha.SUBTLE),
         medium = WormaCeptorColors.LeakDetection.Medium,
-        mediumBackground = WormaCeptorColors.LeakDetection.Medium.copy(alpha = alpha.subtle),
+        mediumBackground = WormaCeptorColors.LeakDetection.Medium.copy(alpha = alpha.SUBTLE),
         low = WormaCeptorColors.LeakDetection.Low,
-        lowBackground = WormaCeptorColors.LeakDetection.Low.copy(alpha = alpha.subtle),
+        lowBackground = WormaCeptorColors.LeakDetection.Low.copy(alpha = alpha.SUBTLE),
         monitoring = WormaCeptorColors.LeakDetection.Monitoring,
         idle = WormaCeptorColors.LeakDetection.Idle,
         cardBackground = surface,
@@ -101,9 +100,9 @@ fun leakDetectionColors(darkTheme: Boolean = isSystemInDarkTheme()): LeakDetecti
         detailBackground = surfaceVariant,
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = alpha.PROMINENT),
         actionButton = primary,
         actionButtonText = MaterialTheme.colorScheme.onPrimary,
-        divider = outline.copy(alpha = alpha.medium),
+        divider = outline.copy(alpha = alpha.MEDIUM),
     )
 }

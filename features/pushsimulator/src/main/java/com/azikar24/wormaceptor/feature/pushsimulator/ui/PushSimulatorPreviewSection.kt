@@ -101,11 +101,11 @@ internal fun NotificationPreview(
             modifier = Modifier.fillMaxWidth(),
             shape = WormaCeptorDesignSystem.Shapes.card,
             color = MaterialTheme.colorScheme.surfaceVariant
-                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
             border = BorderStroke(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
             ),
         ) {
             Column(
@@ -235,7 +235,7 @@ internal fun PriorityIndicator(
 ) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
     ) {
         Row(
             modifier = Modifier.padding(

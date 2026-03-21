@@ -570,7 +570,7 @@ class WebViewMonitorEngine(
 
     /** Storage limits and monitoring defaults. */
     companion object {
-        /** Default maximum number of requests to store */
+        /** Default maximum number of requests to store. */
         const val DEFAULT_MAX_REQUESTS = 1000
     }
 }

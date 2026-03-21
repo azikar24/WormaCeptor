@@ -31,11 +31,6 @@ public final class com/azikar24/wormaceptor/feature/logs/ui/LogsScreenKt {
 	public static final fun LogsScreen (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogColorsKt {
-	public static final fun getLocalLogLevelColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun logLevelColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;
-}
-
 public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -70,6 +65,10 @@ public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors
 	public final fun getWarnBackground-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColorsKt {
+	public static final fun logLevelColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewModel : androidx/lifecycle/ViewModel {

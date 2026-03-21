@@ -29,4 +29,12 @@ dependencies {
     api(project(":features:viewer"))
     implementation(project(":infra:syntax:json"))
     implementation(project(":infra:syntax:xml"))
+    implementation(project(":infra:parser:protobuf"))
+    implementation(project(":infra:parser:multipart"))
+    implementation(project(":infra:parser:form"))
+    implementation(project(":infra:parser:xml"))
+    implementation(project(":infra:parser:html"))
+    implementation(project(":infra:parser:json"))
+    implementation(project(":infra:parser:image"))
+    implementation(project(":infra:parser:pdf"))
 }

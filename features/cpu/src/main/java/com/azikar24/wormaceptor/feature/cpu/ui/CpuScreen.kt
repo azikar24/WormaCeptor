@@ -111,7 +111,7 @@ fun CpuScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = "CPU Monitor",
+                            text = stringResource(R.string.cpu_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         // Warning badge
@@ -211,7 +211,7 @@ private fun CpuUsageGaugeCard(
     // Animated sweep angle for the gauge
     val animatedProgress by animateFloatAsState(
         targetValue = currentCpu.overallUsagePercent / 100f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.verySlow),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.VERY_SLOW),
         label = "gauge_progress",
     )
 
@@ -243,7 +243,7 @@ private fun CpuUsageGaugeCard(
                     )
                     Column {
                         Text(
-                            text = "Overall CPU Usage",
+                            text = stringResource(R.string.cpu_overall_usage),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.labelPrimary,
@@ -263,7 +263,7 @@ private fun CpuUsageGaugeCard(
                 if (isWarning) {
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -280,7 +280,7 @@ private fun CpuUsageGaugeCard(
                                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
                             Text(
-                                text = "HIGH",
+                                text = stringResource(R.string.cpu_high),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.critical,
@@ -298,6 +298,11 @@ private fun CpuUsageGaugeCard(
                 contentAlignment = Alignment.Center,
             ) {
                 val cpuPercentage = (animatedProgress * 100).toInt()
+                val cpuUsageDescription = stringResource(
+                    id = R.string.cpu_usage_content_description,
+                    cpuPercentage,
+                )
+
                 CpuGauge(
                     progress = animatedProgress,
                     statusColor = statusColor,
@@ -305,7 +310,7 @@ private fun CpuUsageGaugeCard(
                     modifier = Modifier
                         .size(160.dp)
                         .semantics {
-                            contentDescription = "CPU usage: $cpuPercentage%"
+                            contentDescription = cpuUsageDescription
                         },
                 )
 
@@ -320,7 +325,7 @@ private fun CpuUsageGaugeCard(
                         color = statusColor,
                     )
                     Text(
-                        text = "${currentCpu.coreCount} cores",
+                        text = stringResource(R.string.cpu_core_count, currentCpu.coreCount),
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.labelSecondary,
                     )
@@ -384,7 +389,7 @@ private fun PerCoreUsageCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Per-Core Usage",
+                text = stringResource(R.string.cpu_per_core_usage),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -395,7 +400,7 @@ private fun PerCoreUsageCard(
                     text = if (currentCpu.measurementSource == CpuMeasurementSource.PROCESS) {
                         stringResource(R.string.cpu_per_core_unavailable_process)
                     } else {
-                        "No core data available"
+                        stringResource(R.string.cpu_no_core_data)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = colors.labelSecondary,
@@ -424,7 +429,7 @@ private fun CoreUsageBar(
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = usage / 100f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "core_progress_$coreIndex",
     )
 
@@ -435,7 +440,7 @@ private fun CoreUsageBar(
     ) {
         // Core label
         Text(
-            text = "Core $coreIndex",
+            text = stringResource(R.string.cpu_core_label, coreIndex),
             style = MaterialTheme.typography.labelMedium,
             color = colors.labelSecondary,
             modifier = Modifier.width(56.dp),
@@ -481,7 +486,7 @@ private fun CpuChartCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "CPU Usage Over Time",
+                text = stringResource(R.string.cpu_usage_over_time),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -499,13 +504,14 @@ private fun CpuChartCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No data yet",
+                        text = stringResource(R.string.cpu_no_data),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.labelSecondary,
                     )
                 }
             } else {
-                val latestCpuPct = history.lastOrNull()?.overallUsagePercent?.toInt() ?: 0
+                val cpuPct = history.lastOrNull()?.overallUsagePercent?.toInt() ?: 0
+                val chartDescription = stringResource(R.string.cpu_chart_content_description, cpuPct)
                 CpuLineChart(
                     history = history,
                     colors = colors,
@@ -513,7 +519,7 @@ private fun CpuChartCard(
                         .fillMaxWidth()
                         .height(200.dp)
                         .semantics {
-                            contentDescription = "CPU usage chart showing current: $latestCpuPct%"
+                            contentDescription = chartDescription
                         },
                 )
             }
@@ -567,7 +573,7 @@ private fun CpuLineChart(
         // 50% threshold (warning)
         val warningY = padding + chartHeight * 0.5f
         drawLine(
-            color = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            color = colors.warning.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
             start = Offset(padding, warningY),
             end = Offset(width - padding, warningY),
             strokeWidth = 1.dp.toPx(),
@@ -576,7 +582,7 @@ private fun CpuLineChart(
         // 80% threshold (critical)
         val criticalY = padding + chartHeight * 0.2f
         drawLine(
-            color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
             start = Offset(padding, criticalY),
             end = Offset(width - padding, criticalY),
             strokeWidth = 1.dp.toPx(),
@@ -623,7 +629,7 @@ private fun CpuLineChart(
 
         drawPath(
             path = areaPath,
-            color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         )
     }
 }
@@ -646,7 +652,7 @@ private fun SystemInfoCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "System Info",
+                text = stringResource(R.string.cpu_system_info),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -662,9 +668,9 @@ private fun SystemInfoCard(
                     icon = Icons.Default.Speed,
                     label = stringResource(R.string.cpu_frequency_label),
                     value = if (currentCpu.cpuFrequencyMHz > 0) {
-                        "${currentCpu.cpuFrequencyMHz} MHz"
+                        stringResource(R.string.cpu_frequency_value, currentCpu.cpuFrequencyMHz)
                     } else {
-                        "N/A"
+                        stringResource(R.string.cpu_not_available)
                     },
                     iconTint = colors.cpuUsage,
                     colors = colors,
@@ -676,8 +682,8 @@ private fun SystemInfoCard(
                     icon = Icons.Default.Thermostat,
                     label = stringResource(R.string.cpu_temperature_label),
                     value = cpuTemp?.let {
-                        String.format(Locale.US, "%.1f C", it)
-                    } ?: "N/A",
+                        String.format(Locale.US, stringResource(R.string.cpu_temperature_value), it)
+                    } ?: stringResource(R.string.cpu_not_available),
                     iconTint = when {
                         cpuTemp != null && cpuTemp > 70f -> colors.critical
                         cpuTemp != null && cpuTemp > 50f -> colors.warning
@@ -703,7 +709,7 @@ private fun SystemInfoCard(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = "Uptime: ${formatUptime(currentCpu.uptime)}",
+                        text = stringResource(R.string.cpu_uptime, formatUptime(currentCpu.uptime)),
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.labelSecondary,
                         fontFamily = FontFamily.Monospace,

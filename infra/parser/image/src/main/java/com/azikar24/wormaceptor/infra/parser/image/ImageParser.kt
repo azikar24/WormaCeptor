@@ -1,8 +1,10 @@
 package com.azikar24.wormaceptor.infra.parser.image
 
-import com.azikar24.wormaceptor.domain.contracts.BodyParser
+import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
+import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import java.util.Locale
 
 /**
@@ -11,16 +13,12 @@ import java.util.Locale
  * Detects image formats using magic bytes and extracts metadata
  * (dimensions, color space, etc.) without requiring external image libraries.
  *
- * Supported formats:
- * - PNG: 8-byte signature
- * - JPEG: FF D8 FF signature
- * - GIF: GIF87a/GIF89a signature
- * - WebP: RIFF/WEBP container
- * - BMP: BM signature
- * - ICO: 00 00 01 00 signature
- * - SVG: XML-based, detected by content
+ * Also implements [ImageMetadataExtractor] for typed Koin injection,
+ * allowing viewer composables to access image metadata without depending on infra.
+ *
+ * Supported formats: PNG, JPEG, GIF, WebP, BMP, ICO, SVG.
  */
-class ImageParser : BodyParser {
+class ImageParser : BaseBodyParser(), ImageMetadataExtractor {
 
     override val supportedContentTypes: List<String> = listOf(
         "image/png",
@@ -40,7 +38,11 @@ class ImageParser : BodyParser {
      * Priority 150 - between binary formats (100-199) and structured text (200-299).
      * Images are binary but have structured headers we can parse.
      */
-    override val priority: Int = 150
+    override val priority: Int = PRIORITY
+
+    override val defaultContentType: ContentType = ContentType.IMAGE_OTHER
+
+    override val emptyBodyFormatted: String = "[Empty image data]"
 
     override fun canParse(
         contentType: String?,
@@ -62,17 +64,7 @@ class ImageParser : BodyParser {
         return MagicByteDetector.detect(body) != null
     }
 
-    override fun parse(body: ByteArray): ParsedBody {
-        if (body.isEmpty()) {
-            return ParsedBody(
-                formatted = "[Empty image data]",
-                contentType = ContentType.BINARY,
-                isValid = false,
-                errorMessage = "Empty body",
-            )
-        }
-
-        // Detect format
+    override fun parseBody(body: ByteArray): ParsedBody {
         val format = MagicByteDetector.detect(body)
 
         if (format == null) {
@@ -88,14 +80,12 @@ class ImageParser : BodyParser {
             )
         }
 
-        // Extract metadata
         val metadata = try {
-            ImageMetadataExtractor.extract(body, format)
+            ImageMetadataExtractorImpl.extract(body, format)
         } catch (_: Exception) {
             ImageMetadata.unknown(body.size.toLong()).copy(format = format.displayName)
         }
 
-        // Build formatted display string
         val formatted = buildFormattedString(metadata)
 
         return ParsedBody(
@@ -106,48 +96,28 @@ class ImageParser : BodyParser {
         )
     }
 
-    /**
-     * Parses image data and returns detailed metadata.
-     *
-     * This is a convenience method for callers who need the full ImageMetadata
-     * object rather than just the ParsedBody.
-     *
-     * @param body The raw image bytes
-     * @return ImageMetadata with extracted information, or unknown if parsing fails
-     */
-    fun parseMetadata(body: ByteArray): ImageMetadata {
-        if (body.isEmpty()) {
+    // --- ImageMetadataExtractor interface ---
+
+    override fun extractMetadata(data: ByteArray): ImageMetadata {
+        if (data.isEmpty()) {
             return ImageMetadata.unknown(0)
         }
 
-        val format = MagicByteDetector.detect(body)
-            ?: return ImageMetadata.unknown(body.size.toLong())
+        val format = MagicByteDetector.detect(data)
+            ?: return ImageMetadata.unknown(data.size.toLong())
 
         return try {
-            ImageMetadataExtractor.extract(body, format)
+            ImageMetadataExtractorImpl.extract(data, format)
         } catch (_: Exception) {
-            ImageMetadata.unknown(body.size.toLong()).copy(format = format.displayName)
+            ImageMetadata.unknown(data.size.toLong()).copy(format = format.displayName)
         }
     }
 
-    /**
-     * Detects the image format without parsing full metadata.
-     *
-     * @param body The raw image bytes
-     * @return The detected ImageFormat, or null if not recognized
-     */
-    fun detectFormat(body: ByteArray): ImageFormat? = MagicByteDetector.detect(body)
-
-    /**
-     * Detects the ContentType for the given image data.
-     *
-     * @param body The raw image bytes
-     * @return The appropriate ContentType enum value
-     */
-    fun detectContentType(body: ByteArray): ContentType {
-        val format = MagicByteDetector.detect(body)
-        return format?.contentType ?: ContentType.IMAGE_OTHER
+    override fun isImageData(data: ByteArray): Boolean {
+        return MagicByteDetector.detect(data) != null
     }
+
+    // --- Private helpers ---
 
     private fun buildFormattedString(metadata: ImageMetadata): String {
         return buildString {
@@ -178,6 +148,7 @@ class ImageParser : BodyParser {
         }
     }
 
+    @Suppress("MagicNumber")
     private fun formatSize(bytes: Long): String {
         return when {
             bytes < 1024 -> "$bytes B"
@@ -186,15 +157,7 @@ class ImageParser : BodyParser {
         }
     }
 
-    /** Utility helpers for image MIME-type detection. */
-    companion object {
-        /**
-         * Checks if the given content type string represents an image.
-         */
-        fun isImageMimeType(contentType: String?): Boolean {
-            if (contentType == null) return false
-            val normalized = contentType.lowercase().split(";").first().trim()
-            return normalized.startsWith("image/")
-        }
+    private companion object {
+        private const val PRIORITY = 150
     }
 }

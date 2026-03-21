@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.memory.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -56,7 +55,7 @@ data class MemoryColors(
  * Uses centralized WormaCeptorColors for chart colors and Material theme for surfaces.
  */
 @Composable
-fun memoryColors(darkTheme: Boolean = isSystemInDarkTheme()): MemoryColors {
+fun memoryColors(): MemoryColors {
     val surfaceColor = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
     val outline = MaterialTheme.colorScheme.outline
@@ -73,9 +72,9 @@ fun memoryColors(darkTheme: Boolean = isSystemInDarkTheme()): MemoryColors {
         critical = WormaCeptorColors.StatusRed,
         cardBackground = surfaceColor,
         chartBackground = surfaceVariant,
-        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        gridLines = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        valuePrimary = onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     )
 }

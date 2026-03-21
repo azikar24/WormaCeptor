@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.edit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -175,10 +176,10 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
-                "WormaCeptor Floating Button",
+                getString(R.string.floating_button_channel_name),
                 NotificationManager.IMPORTANCE_LOW,
             ).apply {
-                description = "Shows network inspector floating button"
+                description = getString(R.string.floating_button_channel_description)
                 setShowBadge(false)
             }
 
@@ -196,8 +197,8 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("WormaCeptor")
-                .setContentText("Network inspector is active")
+                .setContentTitle(getString(R.string.floating_button_notification_title))
+                .setContentText(getString(R.string.floating_button_notification_text))
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
@@ -205,8 +206,8 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         } else {
             @Suppress("DEPRECATION")
             Notification.Builder(this)
-                .setContentTitle("WormaCeptor")
-                .setContentText("Network inspector is active")
+                .setContentTitle(getString(R.string.floating_button_notification_title))
+                .setContentText(getString(R.string.floating_button_notification_text))
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
@@ -239,7 +240,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         ).apply {
             gravity = Gravity.TOP or Gravity.START
             x = if (savedX != Int.MIN_VALUE) savedX else 0
-            y = if (savedY != Int.MIN_VALUE) savedY else (resources.displayMetrics.heightPixels / 4)
+            y = if (savedY != Int.MIN_VALUE) savedY else resources.displayMetrics.heightPixels / 4
         }
 
         // Create ComposeView for the floating button
@@ -315,7 +316,7 @@ class FloatingButtonService : Service(), LifecycleOwner, SavedStateRegistryOwner
         try {
             windowManager.addView(composeView, layoutParams)
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e("FloatingButtonService", "Failed to add floating view", e)
             stopSelf()
         }
     }
@@ -501,7 +502,7 @@ private fun FloatingButtonContent(pressedScaleState: MutableState<Float>) {
     ) {
         Icon(
             imageVector = Icons.Default.BugReport,
-            contentDescription = "Open WormaCeptor",
+            contentDescription = stringResource(R.string.floating_button_open_description),
             tint = FloatingButtonConstants.Visual.ICON_TINT,
             modifier = Modifier
                 .size(FloatingButtonConstants.Dimensions.ICON_SIZE)

@@ -50,7 +50,7 @@ data class WebViewRequest(
      * Whether the request failed.
      */
     val isFailed: Boolean
-        get() = errorMessage != null || (statusCode != null && statusCode !in 200..399)
+        get() = errorMessage != null || statusCode != null && statusCode !in 200..399
 
     /**
      * Whether the request is still pending.

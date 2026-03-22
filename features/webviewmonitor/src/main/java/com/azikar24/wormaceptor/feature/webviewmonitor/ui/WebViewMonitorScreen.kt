@@ -13,7 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,6 +76,7 @@ import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorExpandableCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
@@ -456,7 +456,7 @@ private fun FilterSection(
             }
         },
     ) {
-        FlowRow(
+        WormaCeptorFlowRow(
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {

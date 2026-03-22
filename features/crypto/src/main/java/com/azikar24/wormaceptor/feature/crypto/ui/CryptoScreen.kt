@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,6 +75,7 @@ import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -279,7 +279,7 @@ internal fun CryptoToolContent(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text(stringResource(R.string.crypto_algorithm), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -294,7 +294,7 @@ internal fun CryptoToolContent(
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text(stringResource(R.string.crypto_mode), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -309,7 +309,7 @@ internal fun CryptoToolContent(
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text(stringResource(R.string.crypto_padding), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -334,7 +334,7 @@ internal fun CryptoToolContent(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text(stringResource(R.string.crypto_key_format), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {

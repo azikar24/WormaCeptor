@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.NotificationAction
@@ -196,7 +196,7 @@ internal fun NotificationPreview(
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
                         WormaCeptorDivider(style = DividerStyle.Section)
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-                        FlowRow(
+                        WormaCeptorFlowRow(
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                         ) {
                             actions.forEach { action ->

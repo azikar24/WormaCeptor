@@ -19,7 +19,11 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param size Dot diameter (defaults to [WormaCeptorDesignSystem.Spacing.sm])
  */
 @Composable
-fun WormaCeptorStatusDot(color: Color, modifier: Modifier = Modifier, size: Dp = WormaCeptorDesignSystem.Spacing.sm) {
+fun WormaCeptorStatusDot(
+    color: Color,
+    modifier: Modifier = Modifier,
+    size: Dp = WormaCeptorDesignSystem.Spacing.sm,
+) {
     Box(
         modifier = modifier
             .size(size)

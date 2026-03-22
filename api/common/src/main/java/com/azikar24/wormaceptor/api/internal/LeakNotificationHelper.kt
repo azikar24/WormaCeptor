@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import java.util.Locale
 
+/** Displays Android notifications when memory leaks are detected. */
 class LeakNotificationHelper(
     private val context: Context,
 ) {
@@ -34,6 +35,7 @@ class LeakNotificationHelper(
         }
     }
 
+    /** Displays a high-priority notification with details about the detected leak. */
     fun show(leak: LeakInfo) {
         // Deep link directly to the leak detection screen
         val launchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(LEAK_DETECTION_DEEP_LINK)).apply {
@@ -73,6 +75,7 @@ class LeakNotificationHelper(
         }
     }
 
+    /** Notification channel and identifier constants. */
     companion object {
         private const val CHANNEL_ID = "wormaceptor_leak_channel"
         private const val NOTIFICATION_ID = 4201

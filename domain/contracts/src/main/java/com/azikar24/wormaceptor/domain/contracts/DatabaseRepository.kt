@@ -28,7 +28,10 @@ interface DatabaseRepository {
      * @param databaseName The name of the database file
      * @param tableName The name of the table
      */
-    fun getTableSchema(databaseName: String, tableName: String): List<ColumnInfo>
+    fun getTableSchema(
+        databaseName: String,
+        tableName: String,
+    ): List<ColumnInfo>
 
     /**
      * Queries a table with pagination support.
@@ -38,7 +41,12 @@ interface DatabaseRepository {
      * @param limit Maximum number of rows to return
      * @param offset Number of rows to skip
      */
-    fun queryTable(databaseName: String, tableName: String, limit: Int = 100, offset: Int = 0): QueryResult
+    fun queryTable(
+        databaseName: String,
+        tableName: String,
+        limit: Int = 100,
+        offset: Int = 0,
+    ): QueryResult
 
     /**
      * Executes a custom SQL query.
@@ -46,5 +54,8 @@ interface DatabaseRepository {
      * @param databaseName The name of the database file
      * @param query The SQL query to execute
      */
-    fun executeQuery(databaseName: String, query: String): QueryResult
+    fun executeQuery(
+        databaseName: String,
+        query: String,
+    ): QueryResult
 }

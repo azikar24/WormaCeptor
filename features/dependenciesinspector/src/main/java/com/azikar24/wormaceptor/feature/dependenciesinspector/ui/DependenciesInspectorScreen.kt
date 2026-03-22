@@ -86,6 +86,7 @@ import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.theme.shortLabe
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+/** Displays the dependencies list with category filtering, search, and detail views. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DependenciesInspectorScreen(
@@ -160,11 +161,11 @@ fun DependenciesInspectorScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -252,7 +253,11 @@ fun DependenciesInspectorScreen(
 }
 
 @Composable
-private fun SummarySection(summary: DependencySummary, colors: DependenciesInspectorColors, modifier: Modifier) {
+private fun SummarySection(
+    summary: DependencySummary,
+    colors: DependenciesInspectorColors,
+    modifier: Modifier = Modifier,
+) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
             count = summary.totalDetected.toString(),
@@ -290,7 +295,7 @@ private fun FilterSection(
     onCategorySelected: (DependencyCategory?) -> Unit,
     onShowVersionedOnlyChanged: (Boolean) -> Unit,
     colors: DependenciesInspectorColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         // Category filter chips - scrollable horizontally
@@ -303,7 +308,7 @@ private fun FilterSection(
                 onClick = { onCategorySelected(null) },
                 label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                 ),
             )
 
@@ -319,7 +324,7 @@ private fun FilterSection(
                         },
                         label = { Text("${category.shortLabel()} ($count)") },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
+                            selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                             selectedLabelColor = color,
                         ),
                     )
@@ -339,7 +344,11 @@ private fun FilterSection(
 }
 
 @Composable
-private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colors: DependenciesInspectorColors) {
+private fun DependencyCard(
+    dependency: DependencyInfo,
+    onClick: () -> Unit,
+    colors: DependenciesInspectorColors,
+) {
     val categoryColor = colors.colorForCategory(dependency.category)
     val hasVersion = dependency.version != null
 
@@ -457,7 +466,7 @@ private fun DependencyCard(dependency: DependencyInfo, onClick: () -> Unit, colo
 private fun DependencyDetailContent(
     dependency: DependencyInfo,
     colors: DependenciesInspectorColors,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val categoryColor = colors.colorForCategory(dependency.category)
     val uriHandler = LocalUriHandler.current
@@ -590,7 +599,11 @@ private fun DependencyDetailContent(
 }
 
 @Composable
-private fun DetailSection(title: String, items: List<Pair<String, String>>, colors: DependenciesInspectorColors) {
+private fun DetailSection(
+    title: String,
+    items: List<Pair<String, String>>,
+    colors: DependenciesInspectorColors,
+) {
     if (items.isEmpty()) return
 
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {

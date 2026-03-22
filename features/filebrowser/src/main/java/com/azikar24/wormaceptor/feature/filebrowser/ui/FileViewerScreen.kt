@@ -65,7 +65,12 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FileViewerScreen(filePath: String, content: FileContent, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun FileViewerScreen(
+    filePath: String,
+    content: FileContent,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val fileName = File(filePath).name
 
     Scaffold(
@@ -279,10 +284,17 @@ private fun highlightJson(json: String): AnnotatedString {
                     }
                 }
                 // Number
-                json[i].isDigit() || (json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit()) -> {
+                json[i].isDigit() || json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit() -> {
                     val start = i
                     if (json[i] == '-') i++
-                    while (i < json.length && (json[i].isDigit() || json[i] == '.' || json[i] == 'e' || json[i] == 'E' || json[i] == '+' || json[i] == '-')) {
+                    while (
+                        i < json.length &&
+                        (
+                            json[i].isDigit() || json[i] == '.' ||
+                                json[i] == 'e' || json[i] == 'E' ||
+                                json[i] == '+' || json[i] == '-'
+                            )
+                    ) {
                         i++
                     }
                     withStyle(SpanStyle(color = colors.jsonNumber)) {
@@ -330,100 +342,107 @@ private fun highlightXml(xml: String): AnnotatedString {
     return buildAnnotatedString {
         var i = 0
         while (i < xml.length) {
-            when {
-                // Tag start
-                xml[i] == '<' -> {
-                    val start = i
+            if (xml[i] == '<') {
+                val start = i
+                i++
+
+                // Check for comment, CDATA, or processing instruction
+                if (i < xml.length && xml[i] == '!') {
+                    // Comment or CDATA
+                    while (i < xml.length && xml[i] != '>') i++
                     i++
+                    withStyle(SpanStyle(color = colors.xmlComment)) {
+                        append(xml.substring(start, minOf(i, xml.length)))
+                    }
+                } else if (i < xml.length && xml[i] == '?') {
+                    // Processing instruction
+                    while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
+                    i++
+                    withStyle(SpanStyle(color = colors.xmlComment)) {
+                        append(xml.substring(start, minOf(i, xml.length)))
+                    }
+                } else {
+                    // Regular tag
+                    withStyle(SpanStyle(color = colors.xmlTag)) {
+                        append("<")
+                    }
 
-                    // Check for comment, CDATA, or processing instruction
-                    if (i < xml.length && xml[i] == '!') {
-                        // Comment or CDATA
-                        while (i < xml.length && xml[i] != '>') i++
-                        i++
-                        withStyle(SpanStyle(color = colors.xmlComment)) {
-                            append(xml.substring(start, minOf(i, xml.length)))
-                        }
-                    } else if (i < xml.length && xml[i] == '?') {
-                        // Processing instruction
-                        while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
-                        i++
-                        withStyle(SpanStyle(color = colors.xmlComment)) {
-                            append(xml.substring(start, minOf(i, xml.length)))
-                        }
-                    } else {
-                        // Regular tag
+                    // Closing tag slash
+                    if (i < xml.length && xml[i] == '/') {
                         withStyle(SpanStyle(color = colors.xmlTag)) {
-                            append("<")
+                            append("/")
                         }
+                        i++
+                    }
 
-                        // Closing tag slash
-                        if (i < xml.length && xml[i] == '/') {
+                    // Tag name
+                    val nameStart = i
+                    while (
+                        i < xml.length &&
+                        !xml[i].isWhitespace() &&
+                        xml[i] != '>' &&
+                        xml[i] != '/'
+                        ) i++
+                    withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
+                        append(xml.substring(nameStart, i))
+                    }
+
+                    // Attributes
+                    while (i < xml.length && xml[i] != '>') {
+                        if (xml[i].isWhitespace()) {
+                            append(xml[i])
+                            i++
+                        } else if (xml[i] == '/') {
                             withStyle(SpanStyle(color = colors.xmlTag)) {
                                 append("/")
                             }
                             i++
-                        }
-
-                        // Tag name
-                        val nameStart = i
-                        while (i < xml.length && !xml[i].isWhitespace() && xml[i] != '>' && xml[i] != '/') i++
-                        withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
-                            append(xml.substring(nameStart, i))
-                        }
-
-                        // Attributes
-                        while (i < xml.length && xml[i] != '>') {
-                            if (xml[i].isWhitespace()) {
-                                append(xml[i])
-                                i++
-                            } else if (xml[i] == '/') {
-                                withStyle(SpanStyle(color = colors.xmlTag)) {
-                                    append("/")
-                                }
-                                i++
-                            } else if (xml[i] == '=') {
-                                append("=")
-                                i++
-                            } else if (xml[i] == '"' || xml[i] == '\'') {
-                                val quote = xml[i]
-                                val attrStart = i
-                                i++
-                                while (i < xml.length && xml[i] != quote) i++
-                                i++
-                                withStyle(SpanStyle(color = colors.xmlAttrValue)) {
-                                    append(xml.substring(attrStart, minOf(i, xml.length)))
-                                }
-                            } else {
-                                // Attribute name
-                                val attrNameStart = i
-                                while (i < xml.length && !xml[i].isWhitespace() && xml[i] != '=' && xml[i] != '>' && xml[i] != '/') i++
-                                withStyle(SpanStyle(color = colors.xmlAttrName)) {
-                                    append(xml.substring(attrNameStart, i))
-                                }
-                            }
-                        }
-
-                        if (i < xml.length && xml[i] == '>') {
-                            withStyle(SpanStyle(color = colors.xmlTag)) {
-                                append(">")
-                            }
+                        } else if (xml[i] == '=') {
+                            append("=")
                             i++
+                        } else if (xml[i] == '"' || xml[i] == '\'') {
+                            val quote = xml[i]
+                            val attrStart = i
+                            i++
+                            while (i < xml.length && xml[i] != quote) i++
+                            i++
+                            withStyle(SpanStyle(color = colors.xmlAttrValue)) {
+                                append(xml.substring(attrStart, minOf(i, xml.length)))
+                            }
+                        } else {
+                            // Attribute name
+                            val attrNameStart = i
+                            while (
+                                i < xml.length &&
+                                !xml[i].isWhitespace() &&
+                                xml[i] != '=' &&
+                                xml[i] != '>' &&
+                                xml[i] != '/'
+                                ) i++
+                            withStyle(SpanStyle(color = colors.xmlAttrName)) {
+                                append(xml.substring(attrNameStart, i))
+                            }
                         }
+                    }
+
+                    if (i < xml.length && xml[i] == '>') {
+                        withStyle(SpanStyle(color = colors.xmlTag)) {
+                            append(">")
+                        }
+                        i++
                     }
                 }
-                else -> {
-                    // Text content
-                    val contentStart = i
-                    while (i < xml.length && xml[i] != '<') i++
-                    val content = xml.substring(contentStart, i)
-                    if (content.isNotBlank()) {
-                        withStyle(SpanStyle(color = colors.xmlContent)) {
-                            append(content)
-                        }
-                    } else {
+            } else {
+                // Text content
+                val contentStart = i
+                while (i < xml.length && xml[i] != '<') i++
+                val content = xml.substring(contentStart, i)
+                if (content.isNotBlank()) {
+                    withStyle(SpanStyle(color = colors.xmlContent)) {
                         append(content)
                     }
+                } else {
+                    append(content)
                 }
             }
         }
@@ -463,7 +482,10 @@ private fun BinaryFileContent(content: FileContent.Binary) {
 }
 
 @Composable
-private fun HexDumpLine(bytes: ByteArray, lineIndex: Int) {
+private fun HexDumpLine(
+    bytes: ByteArray,
+    lineIndex: Int,
+) {
     val lineStart = lineIndex * BYTES_PER_LINE
     val lineText = remember(lineIndex) {
         buildHexLine(bytes, lineStart)
@@ -480,7 +502,10 @@ private fun HexDumpLine(bytes: ByteArray, lineIndex: Int) {
     )
 }
 
-private fun buildHexLine(bytes: ByteArray, lineStart: Int): String {
+private fun buildHexLine(
+    bytes: ByteArray,
+    lineStart: Int,
+): String {
     val builder = StringBuilder()
 
     // Address column
@@ -633,7 +658,10 @@ private fun PdfFileContent(content: FileContent.Pdf) {
 }
 
 @Composable
-private fun PdfPageCard(renderer: PdfRenderer, pageIndex: Int) {
+private fun PdfPageCard(
+    renderer: PdfRenderer,
+    pageIndex: Int,
+) {
     val pageNumber = pageIndex + 1
     val bitmap = remember(pageIndex) {
         val page = renderer.openPage(pageIndex)

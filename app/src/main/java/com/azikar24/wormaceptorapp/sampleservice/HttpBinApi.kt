@@ -1,7 +1,18 @@
 package com.azikar24.wormaceptorapp.sampleservice
 
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface HttpBinApi {
     @GET("/get")
@@ -83,7 +94,10 @@ interface HttpBinApi {
     fun cookieSet(@Query("k1") value: String?): Call<Void>
 
     @GET("/basic-auth/{user}/{passwd}")
-    fun basicAuth(@Path("user") user: String?, @Path("passwd") passwd: String?): Call<Void>
+    fun basicAuth(
+        @Path("user") user: String?,
+        @Path("passwd") passwd: String?,
+    ): Call<Void>
 
     @GET("/drip")
     fun drip(

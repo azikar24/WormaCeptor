@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -48,28 +49,28 @@ import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.contracts.MultipartParser
+import com.azikar24.wormaceptor.domain.entities.MultipartPart
 import com.azikar24.wormaceptor.feature.viewer.R
-
-/**
- * A data class representing a single part in multipart form data.
- */
-data class MultipartPart(
-    val name: String,
-    val fileName: String? = null,
-    val contentType: String? = null,
-    val headers: Map<String, String> = emptyMap(),
-    val body: String,
-    val size: Int = body.length,
-)
+import org.koin.java.KoinJavaComponent.get
 
 /**
  * An accordion-style view for multipart form data.
  * Each part is displayed as an expandable section showing its headers and content.
  */
 @Composable
-fun MultipartView(multipartData: String, boundary: String? = null, modifier: Modifier = Modifier) {
+fun MultipartView(
+    multipartData: String,
+    modifier: Modifier = Modifier,
+    boundary: String? = null,
+) {
     val parts = remember(multipartData, boundary) {
-        parseMultipartData(multipartData, boundary)
+        try {
+            val parser: MultipartParser = get(MultipartParser::class.java)
+            parser.parse(multipartData, boundary)
+        } catch (_: RuntimeException) {
+            emptyList()
+        }
     }
 
     if (parts.isEmpty()) {
@@ -80,7 +81,7 @@ fun MultipartView(multipartData: String, boundary: String? = null, modifier: Mod
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "No multipart data or invalid format",
+                text = stringResource(R.string.viewer_multipart_no_data),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -100,19 +101,22 @@ fun MultipartView(multipartData: String, boundary: String? = null, modifier: Mod
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${parts.size} ${if (parts.size == 1) "part" else "parts"}",
+                text = pluralStringResource(
+                    id = R.plurals.viewer_multipart_part_count,
+                    count = parts.size,
+                    parts.size,
+                ),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             if (boundary != null) {
+                val truncated = "${boundary.take(20)}${if (boundary.length > 20) "..." else ""}"
                 Text(
-                    text = "boundary: ${boundary.take(20)}${if (boundary.length > 20) "..." else ""}",
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontFamily = FontFamily.Monospace,
-                    ),
+                    text = stringResource(R.string.viewer_multipart_boundary, truncated),
+                    style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
             }
@@ -129,11 +133,15 @@ fun MultipartView(multipartData: String, boundary: String? = null, modifier: Mod
 }
 
 @Composable
-private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean) {
+private fun MultipartPartCard(
+    part: MultipartPart,
+    index: Int,
+    initiallyExpanded: Boolean,
+) {
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -160,9 +168,9 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
         border = BorderStroke(
             width = WormaCeptorDesignSystem.BorderWidth.thin,
             color = if (expanded) {
-                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             },
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
@@ -177,7 +185,11 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
             ) {
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
-                    contentDescription = if (expanded) "Collapse" else "Expand",
+                    contentDescription = if (expanded) {
+                        stringResource(R.string.viewer_body_collapse)
+                    } else {
+                        stringResource(R.string.viewer_body_expand)
+                    },
                     modifier = Modifier
                         .size(18.dp)
                         .rotate(rotation),
@@ -188,7 +200,7 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
 
                 Surface(
                     shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Icon(
                         imageVector = partIcon,
@@ -204,7 +216,9 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = part.name.ifEmpty { "Part ${index + 1}" },
+                        text = part.name.ifEmpty {
+                            stringResource(R.string.viewer_multipart_part_label, index + 1)
+                        },
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium,
                         ),
@@ -246,8 +260,12 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
 
             AnimatedVisibility(
                 visible = expanded,
-                enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
-                exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                enter = expandVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                ),
+                exit = shrinkVertically(
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     WormaCeptorDivider(style = DividerStyle.Subtle)
@@ -258,13 +276,13 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
                                 .fillMaxWidth()
                                 .background(
                                     MaterialTheme.colorScheme.surfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                                     ),
                                 )
                                 .padding(WormaCeptorDesignSystem.Spacing.md),
                         ) {
                             Text(
-                                text = "Headers",
+                                text = stringResource(R.string.viewer_multipart_headers),
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.SemiBold,
                                 ),
@@ -345,78 +363,4 @@ private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded
             }
         }
     }
-}
-
-private fun parseMultipartData(data: String, providedBoundary: String?): List<MultipartPart> {
-    if (data.isBlank()) return emptyList()
-
-    val boundary = providedBoundary ?: detectBoundary(data) ?: return emptyList()
-
-    val parts = mutableListOf<MultipartPart>()
-    val delimiter = "--$boundary"
-
-    val sections = data.split(delimiter)
-        .drop(1)
-        .filter { !it.trim().startsWith("--") && it.isNotBlank() }
-
-    for (section in sections) {
-        if (section.trim() == "--" || section.isBlank()) continue
-
-        val part = parseMultipartPart(section.trim())
-        if (part != null) {
-            parts.add(part)
-        }
-    }
-
-    return parts
-}
-
-private fun parseMultipartPart(section: String): MultipartPart? {
-    val headerBodySplit = section.indexOf("\r\n\r\n").takeIf { it >= 0 }
-        ?: section.indexOf("\n\n").takeIf { it >= 0 }
-        ?: return null
-
-    val headerSection = section.substring(0, headerBodySplit)
-    val body = section.substring(
-        headerBodySplit + if (section.contains("\r\n\r\n")) 4 else 2,
-    ).trimEnd()
-
-    val headers = mutableMapOf<String, String>()
-    headerSection.lines().forEach { line ->
-        val colonIndex = line.indexOf(':')
-        if (colonIndex > 0) {
-            val key = line.substring(0, colonIndex).trim()
-            val value = line.substring(colonIndex + 1).trim()
-            headers[key] = value
-        }
-    }
-
-    val contentDisposition = headers["Content-Disposition"] ?: ""
-    val name = extractDispositionParam(contentDisposition, "name")
-    val fileName = extractDispositionParam(contentDisposition, "filename")
-    val contentType = headers["Content-Type"]
-
-    val displayHeaders = headers.toMutableMap().apply {
-        remove("Content-Disposition")
-        remove("Content-Type")
-    }
-
-    return MultipartPart(
-        name = name ?: "unnamed",
-        fileName = fileName,
-        contentType = contentType,
-        headers = displayHeaders,
-        body = body,
-        size = body.length,
-    )
-}
-
-private fun extractDispositionParam(disposition: String, param: String): String? {
-    val regex = Regex("""$param\s*=\s*"?([^";]+)"?""", RegexOption.IGNORE_CASE)
-    return regex.find(disposition)?.groupValues?.getOrNull(1)?.trim()
-}
-
-private fun detectBoundary(data: String): String? {
-    val firstLine = data.lineSequence().firstOrNull { it.startsWith("--") } ?: return null
-    return firstLine.removePrefix("--").trim().takeIf { it.isNotEmpty() }
 }

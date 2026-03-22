@@ -1,45 +1,7 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>MagicNumber:ExtensionProvider.kt$ExtensionProvider$50</ID>
-    <ID>UndocumentedPublicClass:BlobStorage.kt$BlobStorage</ID>
-    <ID>UndocumentedPublicClass:CrashRepository.kt$CrashRepository</ID>
-    <ID>UndocumentedPublicClass:LeakRepository.kt$LeakRepository</ID>
-    <ID>UndocumentedPublicClass:TransactionRepository.kt$TransactionRepository</ID>
-    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun deleteBlob(id: BlobID)</ID>
-    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun readBlob(id: BlobID): InputStream?</ID>
-    <ID>UndocumentedPublicFunction:BlobStorage.kt$BlobStorage$suspend fun saveBlob(stream: InputStream): BlobID</ID>
-    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$fun observeCrashes(): kotlinx.coroutines.flow.Flow&lt;List&lt;Crash&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$suspend fun clearCrashes()</ID>
-    <ID>UndocumentedPublicFunction:CrashRepository.kt$CrashRepository$suspend fun saveCrash(crash: Crash)</ID>
-    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$fun observeLeaks(): Flow&lt;List&lt;LeakInfo&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$suspend fun clearLeaks()</ID>
-    <ID>UndocumentedPublicFunction:LeakRepository.kt$LeakRepository$suspend fun saveLeak(leak: LeakInfo)</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun getAllTransactions(): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun getTransactionsPaged( searchQuery: String?, filters: TransactionFilters, pageSize: Int = 30, ): Flow&lt;PagingData&lt;TransactionSummary&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$fun searchTransactions(query: String): Flow&lt;List&lt;TransactionSummary&gt;&gt;</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun clearAll()</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun deleteTransactions(ids: List&lt;UUID&gt;)</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun deleteTransactionsBefore(timestamp: Long)</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getAllTransactionsAsList(): List&lt;NetworkTransaction&gt;</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getTransactionById(id: UUID): NetworkTransaction?</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun getTransactionCount(searchQuery: String?): Int</ID>
-    <ID>UndocumentedPublicFunction:TransactionRepository.kt$TransactionRepository$suspend fun saveTransaction(transaction: NetworkTransaction)</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showConsoleLogs: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showCrashesTab: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showDeviceInfo: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showFileBrowser: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showNetworkTab: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showPreferences: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:FeatureConfig.kt$FeatureConfig$val showSqliteBrowser: Boolean = true</ID>
-    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val end: Int</ID>
-    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val start: Int</ID>
-    <ID>UndocumentedPublicProperty:SyntaxHighlighter.kt$Token$val type: TokenType</ID>
-    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val contentType: String? = null</ID>
-    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val maxDuration: Long? = null</ID>
-    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val method: String? = null</ID>
-    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val minDuration: Long? = null</ID>
-    <ID>UndocumentedPublicProperty:TransactionFilters.kt$TransactionFilters$val statusRange: IntRange? = null</ID>
   </CurrentIssues>
 </SmellBaseline>

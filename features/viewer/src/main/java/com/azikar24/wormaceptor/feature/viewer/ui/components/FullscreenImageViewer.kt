@@ -84,6 +84,7 @@ import coil.request.ImageRequest
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import java.io.File
@@ -376,7 +377,7 @@ private fun FullscreenImageContent(
         ) {
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
             ) {
                 Text(
                     text = "${String.format(Locale.US, "%.1f", scale)}x",
@@ -393,10 +394,15 @@ private fun FullscreenImageContent(
 }
 
 @Composable
-private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: () -> Unit, currentZoom: Float) {
+private fun TopControlBar(
+    onClose: () -> Unit,
+    onZoomIn: () -> Unit,
+    onZoomOut: () -> Unit,
+    currentZoom: Float,
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
     ) {
         Row(
             modifier = Modifier
@@ -410,7 +416,7 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
             FilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     contentColor = ThemeColors.LightBackground,
                 ),
             ) {
@@ -429,13 +435,13 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                     onClick = onZoomOut,
                     enabled = currentZoom > 1f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                         contentColor = ThemeColors.LightBackground,
                         disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
                         ),
                         disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         ),
                     ),
                 ) {
@@ -449,13 +455,13 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
                     onClick = onZoomIn,
                     enabled = currentZoom < 5f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                         contentColor = ThemeColors.LightBackground,
                         disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.hint,
+                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
                         ),
                         disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         ),
                     ),
                 ) {
@@ -470,12 +476,16 @@ private fun TopControlBar(onClose: () -> Unit, onZoomIn: () -> Unit, onZoomOut: 
 }
 
 @Composable
-private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, onShare: () -> Unit) {
+private fun BottomControlBar(
+    metadata: ImageMetadata?,
+    onDownload: () -> Unit,
+    onShare: () -> Unit,
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
     ) {
         Column(
             modifier = Modifier
@@ -501,7 +511,7 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
                     Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     ) {
                         Text(
                             text = meta.format,
@@ -545,7 +555,10 @@ private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -> Unit, o
 }
 
 @Composable
-private fun MetadataChip(icon: ImageVector, text: String) {
+private fun MetadataChip(
+    icon: ImageVector,
+    text: String,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
@@ -553,23 +566,27 @@ private fun MetadataChip(icon: ImageVector, text: String) {
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         )
     }
 }
 
 @Composable
-private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
+private fun ActionChip(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+) {
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
     ) {
         Row(
             modifier = Modifier.padding(
@@ -601,7 +618,11 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
  *
  * @return Result message to display to the user
  */
-fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): String {
+fun saveImageToGallery(
+    context: Context,
+    imageData: ByteArray,
+    format: String,
+): String {
     return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {
@@ -669,7 +690,11 @@ fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): 
  *
  * @return Error message if sharing failed, null on success (share sheet handles success)
  */
-fun shareImage(context: Context, imageData: ByteArray, format: String): String? {
+fun shareImage(
+    context: Context,
+    imageData: ByteArray,
+    format: String,
+): String? {
     return try {
         val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
         val mimeType = when (format.uppercase()) {

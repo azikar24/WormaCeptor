@@ -178,7 +178,7 @@ fun SwipeBackContainer(
                     .offset { IntOffset(0, 0) }
                     .background(
                         MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = progress * WormaCeptorDesignSystem.Alpha.strong,
+                            alpha = progress * WormaCeptorDesignSystem.Alpha.STRONG,
                         ),
                     ),
                 contentAlignment = Alignment.CenterStart,
@@ -203,8 +203,8 @@ fun SwipeBackContainer(
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
                     elevation = 16.dp * progress,
-                    ambientColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
-                    spotColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    ambientColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                    spotColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                 )
                 .background(MaterialTheme.colorScheme.surface),
             content = content,

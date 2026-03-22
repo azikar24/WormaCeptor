@@ -124,7 +124,7 @@ private fun JsonObjectNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -196,8 +196,8 @@ private fun JsonObjectNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             Column {
                 keys.forEachIndexed { index, key ->
@@ -258,7 +258,7 @@ private fun JsonArrayNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "chevron_rotation",
     )
 
@@ -328,8 +328,8 @@ private fun JsonArrayNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
         ) {
             Column {
                 for (i in 0 until array.length()) {
@@ -376,7 +376,13 @@ private fun JsonArrayNode(
 }
 
 @Composable
-private fun JsonValueNode(key: String, value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
+private fun JsonValueNode(
+    key: String,
+    value: Any?,
+    depth: Int,
+    isLast: Boolean,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
@@ -405,7 +411,12 @@ private fun JsonValueNode(key: String, value: Any?, depth: Int, isLast: Boolean,
 }
 
 @Composable
-private fun JsonArrayValueNode(value: Any?, depth: Int, isLast: Boolean, colors: ComposeSyntaxColors) {
+private fun JsonArrayValueNode(
+    value: Any?,
+    depth: Int,
+    isLast: Boolean,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
@@ -428,7 +439,10 @@ private fun JsonArrayValueNode(value: Any?, depth: Int, isLast: Boolean, colors:
 }
 
 @Composable
-private fun formatValue(value: Any?, colors: ComposeSyntaxColors): AnnotatedString {
+private fun formatValue(
+    value: Any?,
+    colors: ComposeSyntaxColors,
+): AnnotatedString {
     return buildAnnotatedString {
         when (value) {
             null, JSONObject.NULL -> {

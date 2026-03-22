@@ -1,13 +1,11 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:HtmlBodyParser.kt$HtmlBodyParser$private fun formatHtml(html: String): String</ID>
-    <ID>LongMethod:HtmlBodyParser.kt$HtmlBodyParser$private fun formatHtml(html: String): String</ID>
+    <ID>CyclomaticComplexMethod:HtmlBodyParser.kt$HtmlBodyParser$@Suppress("CyclomaticComplexity", "NestedBlockDepth", "LongMethod") private fun formatHtml(html: String): String</ID>
     <ID>LoopWithTooManyJumpStatements:HtmlBodyParser.kt$HtmlBodyParser$while</ID>
     <ID>MagicNumber:HtmlBodyParser.kt$HtmlBodyParser$230</ID>
     <ID>MagicNumber:HtmlBodyParser.kt$HtmlBodyParser$3</ID>
-    <ID>NestedBlockDepth:HtmlBodyParser.kt$HtmlBodyParser$private fun formatHtml(html: String): String</ID>
     <ID>TooGenericExceptionCaught:HtmlBodyParser.kt$HtmlBodyParser$e: Exception</ID>
   </CurrentIssues>
 </SmellBaseline>

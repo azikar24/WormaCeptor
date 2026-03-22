@@ -10,6 +10,22 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+/**
+ * Room entity representing a saved push notification template for the push simulator.
+ *
+ * @property id Unique identifier for the template.
+ * @property name User-visible display name of the template.
+ * @property notificationId Identifier assigned to the simulated notification.
+ * @property title Notification title text.
+ * @property body Notification body text.
+ * @property channelId Android notification channel identifier.
+ * @property smallIconRes Resource ID for the notification small icon.
+ * @property largeIconUri Optional URI string for the notification large icon.
+ * @property priority Stringified [NotificationPriority] level.
+ * @property actionsJson JSON-serialised list of notification action buttons.
+ * @property extrasJson JSON-serialised map of extra key-value data.
+ * @property timestamp Epoch millis when the template was created or last used.
+ */
 @Entity(tableName = "push_templates")
 data class PushTemplateEntity(
     @PrimaryKey val id: String,
@@ -25,6 +41,7 @@ data class PushTemplateEntity(
     val extrasJson: String = "{}",
     val timestamp: Long = 0L,
 ) {
+    /** Converts this entity to a domain [NotificationTemplate] model. */
     fun toDomain(): NotificationTemplate {
         val actions = try {
             json.decodeFromString<List<SerializedAction>>(actionsJson)
@@ -55,9 +72,11 @@ data class PushTemplateEntity(
         )
     }
 
+    /** JSON serialization and domain-entity conversion factory. */
     companion object {
         private val json = Json { ignoreUnknownKeys = true }
 
+        /** Creates a [PushTemplateEntity] from a domain [NotificationTemplate] model. */
         fun fromDomain(template: NotificationTemplate): PushTemplateEntity {
             val notification = template.notification
             val actionsStr = json.encodeToString(

@@ -270,12 +270,16 @@ private fun DirectionFilterChips(
                                 text = if (count > 999) "999+" else count.toString(),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
+                                    val alpha = WormaCeptorDesignSystem.Alpha.INTENSE +
+                                        WormaCeptorDesignSystem.Alpha.SUBTLE
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                        alpha = alpha,
                                     )
                                 } else {
+                                    val alpha = WormaCeptorDesignSystem.Alpha.INTENSE +
+                                        WormaCeptorDesignSystem.Alpha.SUBTLE
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                                        alpha = alpha,
                                     )
                                 },
                             )
@@ -283,15 +287,15 @@ private fun DirectionFilterChips(
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = directionColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    selectedContainerColor = directionColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     selectedLabelColor = directionColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
                     borderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                     ),
                     selectedBorderColor = directionColor.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                     ),
                     enabled = true,
                     selected = isSelected,
@@ -302,7 +306,11 @@ private fun DirectionFilterChips(
 }
 
 @Composable
-private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = Modifier) {
+private fun StatsBar(
+    totalCount: Int,
+    filteredCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -378,7 +386,7 @@ private fun MessageItem(
             .clickable(onClick = onClick)
             .animateContentSize(),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
         ),
     ) {
         Column(
@@ -398,7 +406,7 @@ private fun MessageItem(
                     imageVector = directionIcon,
                     contentDescription = message.direction.name,
                     tint = directionColor,
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
 
                 Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
@@ -406,7 +414,7 @@ private fun MessageItem(
                 // Type badge
                 Surface(
                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Text(
                         text = message.type.name,
@@ -414,7 +422,7 @@ private fun MessageItem(
                         fontWeight = FontWeight.SemiBold,
                         color = typeColor,
                         modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                            horizontal = WormaCeptorDesignSystem.Spacing.xs,
                             vertical = WormaCeptorDesignSystem.Spacing.xxs,
                         ),
                     )
@@ -437,7 +445,7 @@ private fun MessageItem(
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                     ),
                 )
 
@@ -450,13 +458,17 @@ private fun MessageItem(
                         if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
                     ),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.strong + WormaCeptorDesignSystem.Alpha.subtle,
+                        alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                     ),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg + WormaCeptorDesignSystem.Spacing.xs),
+                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs))
+            Spacer(
+                modifier = Modifier.height(
+                    WormaCeptorDesignSystem.Spacing.xs,
+                ),
+            )
 
             // Payload preview or full content
             Text(

@@ -67,6 +67,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableMap
 
+/** Bottom sheet UI for filtering network transactions by HTTP method and status code range. */
 @Composable
 fun FilterBottomSheetContent(
     initialSearchQuery: String,
@@ -174,7 +175,11 @@ fun FilterBottomSheetContent(
 }
 
 @Composable
-private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boolean) {
+private fun FilterHeader(
+    filteredCount: Int,
+    totalCount: Int,
+    filtersActive: Boolean,
+) {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -207,9 +212,9 @@ private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boo
         Surface(
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             color = if (filtersActive) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE)
             } else {
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold)
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
             },
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite
@@ -344,7 +349,7 @@ private fun GridFilterCard(
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
-            color.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+            color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
         } else {
             Color.Transparent
         },
@@ -371,7 +376,11 @@ private fun GridFilterCard(
             .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
             .background(backgroundColor)
             .border(
-                width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin,
+                width = if (isSelected) {
+                    WormaCeptorDesignSystem.BorderWidth.regular
+                } else {
+                    WormaCeptorDesignSystem.BorderWidth.thin
+                },
                 color = borderColor,
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
             )
@@ -387,7 +396,11 @@ private fun GridFilterCard(
                 stateDescription = stateDesc
                 val actionText = if (count > 0) {
                     context.getString(
-                        if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select,
+                        if (isSelected) {
+                            R.string.viewer_filter_action_deselect
+                        } else {
+                            R.string.viewer_filter_action_select
+                        },
                     )
                 } else {
                     context.getString(R.string.viewer_filter_disabled)
@@ -411,7 +424,7 @@ private fun GridFilterCard(
                         .size(8.dp)
                         .clip(CircleShape)
                         .background(
-                            if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                            if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                         ),
                 )
 
@@ -423,7 +436,7 @@ private fun GridFilterCard(
                         color = if (count > 0) {
                             MaterialTheme.colorScheme.onSurface
                         } else {
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG)
                         },
                     )
                     if (sublabel != null) {
@@ -433,9 +446,9 @@ private fun GridFilterCard(
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                                 alpha = if (count > 0) {
-                                    WormaCeptorDesignSystem.Alpha.intense
+                                    WormaCeptorDesignSystem.Alpha.INTENSE
                                 } else {
-                                    WormaCeptorDesignSystem.Alpha.moderate
+                                    WormaCeptorDesignSystem.Alpha.MODERATE
                                 },
                             ),
                         )
@@ -451,7 +464,7 @@ private fun GridFilterCard(
                     text = "$count",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    color = if (count > 0) color else color.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                 )
 
                 if (isSelected) {
@@ -476,7 +489,11 @@ private fun GridFilterCard(
 }
 
 @Composable
-private fun FilterActionButtons(filtersActive: Boolean, onClearAll: () -> Unit, onApply: () -> Unit) {
+private fun FilterActionButtons(
+    filtersActive: Boolean,
+    onClearAll: () -> Unit,
+    onApply: () -> Unit,
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         WormaCeptorDivider(style = DividerStyle.Subtle)
         Row(

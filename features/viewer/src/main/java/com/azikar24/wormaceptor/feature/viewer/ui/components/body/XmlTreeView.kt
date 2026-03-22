@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.ComposeSyntaxColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
+import org.koin.java.KoinJavaComponent.get
 import java.util.Locale
 
 /**
@@ -33,11 +35,15 @@ import java.util.Locale
 fun XmlTreeView(
     xmlString: String,
     modifier: Modifier = Modifier,
-    initiallyExpanded: Boolean = true,
     colors: ComposeSyntaxColors = syntaxColors(),
 ) {
     val formattedLines = remember(xmlString) {
-        formatXml(xmlString)
+        try {
+            val formatter: XmlFormatter = get(XmlFormatter::class.java)
+            formatter.format(xmlString)
+        } catch (_: RuntimeException) {
+            listOf(xmlString)
+        }
     }
 
     Box(
@@ -65,7 +71,11 @@ fun XmlTreeView(
 }
 
 @Composable
-private fun XmlLineView(line: String, lineNumber: Int, colors: ComposeSyntaxColors) {
+private fun XmlLineView(
+    line: String,
+    lineNumber: Int,
+    colors: ComposeSyntaxColors,
+) {
     Row(
         modifier = Modifier.padding(vertical = 1.dp),
         verticalAlignment = Alignment.Top,
@@ -89,98 +99,13 @@ private fun XmlLineView(line: String, lineNumber: Int, colors: ComposeSyntaxColo
 }
 
 /**
- * Formats XML string with proper indentation.
- */
-private fun formatXml(xml: String): List<String> {
-    val result = mutableListOf<String>()
-    var indent = 0
-    val indentString = "  "
-
-    var i = 0
-    val builder = StringBuilder()
-
-    while (i < xml.length) {
-        val c = xml[i]
-
-        when {
-            c == '<' -> {
-                val text = builder.toString().trim()
-                if (text.isNotEmpty()) {
-                    result.add(indentString.repeat(indent) + text)
-                }
-                builder.clear()
-
-                val tagEnd = xml.indexOf('>', i)
-                if (tagEnd == -1) {
-                    builder.append(c)
-                    i++
-                    continue
-                }
-
-                val tag = xml.substring(i, tagEnd + 1)
-
-                when {
-                    tag.startsWith("<?") -> {
-                        result.add(indentString.repeat(indent) + tag)
-                    }
-                    tag.startsWith("<!--") -> {
-                        val commentEnd = xml.indexOf("-->", i)
-                        if (commentEnd != -1) {
-                            val comment = xml.substring(i, commentEnd + 3)
-                            result.add(indentString.repeat(indent) + comment)
-                            i = commentEnd + 2
-                        } else {
-                            result.add(indentString.repeat(indent) + tag)
-                        }
-                    }
-                    tag.startsWith("<![CDATA[") -> {
-                        val cdataEnd = xml.indexOf("]]>", i)
-                        if (cdataEnd != -1) {
-                            val cdata = xml.substring(i, cdataEnd + 3)
-                            result.add(indentString.repeat(indent) + cdata)
-                            i = cdataEnd + 2
-                        } else {
-                            result.add(indentString.repeat(indent) + tag)
-                        }
-                    }
-                    tag.startsWith("</") -> {
-                        indent = maxOf(0, indent - 1)
-                        result.add(indentString.repeat(indent) + tag)
-                    }
-                    tag.endsWith("/>") -> {
-                        result.add(indentString.repeat(indent) + tag)
-                    }
-                    tag.uppercase().startsWith("<!DOCTYPE") -> {
-                        result.add(indentString.repeat(indent) + tag)
-                    }
-                    else -> {
-                        result.add(indentString.repeat(indent) + tag)
-                        indent++
-                    }
-                }
-
-                i = tagEnd
-            }
-            else -> {
-                builder.append(c)
-            }
-        }
-        i++
-    }
-
-    val remaining = builder.toString().trim()
-    if (remaining.isNotEmpty()) {
-        result.add(indentString.repeat(indent) + remaining)
-    }
-
-    return result.filter { it.isNotBlank() }
-}
-
-/**
  * Applies syntax highlighting to an XML line.
  */
 @Composable
-private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors) = buildAnnotatedString {
+private fun highlightXmlLine(
+    line: String,
+    colors: ComposeSyntaxColors,
+) = buildAnnotatedString {
     var i = 0
     while (i < line.length) {
         when {
@@ -259,7 +184,10 @@ private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors) = buildA
  * Highlights a single XML tag with attributes.
  */
 @Composable
-private fun highlightXmlTag(tag: String, colors: ComposeSyntaxColors) = buildAnnotatedString {
+private fun highlightXmlTag(
+    tag: String,
+    colors: ComposeSyntaxColors,
+) = buildAnnotatedString {
     withStyle(SpanStyle(color = colors.punctuation)) {
         append("<")
     }
@@ -292,7 +220,10 @@ private fun highlightXmlTag(tag: String, colors: ComposeSyntaxColors) = buildAnn
  * Parses and highlights XML attributes.
  */
 @Composable
-private fun highlightAttributes(attributes: String, colors: ComposeSyntaxColors): List<CharSequence> {
+private fun highlightAttributes(
+    attributes: String,
+    colors: ComposeSyntaxColors,
+): List<CharSequence> {
     val result = mutableListOf<CharSequence>()
     val attrRegex = Regex("""(\s*)(\w+(?::\w+)?)\s*=\s*("[^"]*"|'[^']*')""")
 

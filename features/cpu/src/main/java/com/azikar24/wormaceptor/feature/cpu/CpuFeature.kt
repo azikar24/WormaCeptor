@@ -49,7 +49,10 @@ class CpuViewModelFactory(
  * Displays real-time CPU usage with charts and controls.
  */
 @Composable
-fun CpuMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun CpuMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: CpuMonitorEngine = koinInject()
     val performanceOverlayEngine: PerformanceOverlayEngine = koinInject()
     LaunchedEffect(Unit) {

@@ -119,7 +119,12 @@ import java.io.FileOutputStream
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> Unit, onDownload: () -> Unit) {
+fun PdfViewerScreen(
+    pdfData: ByteArray,
+    onDismiss: () -> Unit,
+    onDownload: () -> Unit,
+    initialPage: Int = 0,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -164,6 +169,9 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
         }
     }
 
+    val pdfNoPagesMessage = stringResource(R.string.viewer_pdf_no_pages)
+    val pdfLoadFailedMessage = stringResource(R.string.viewer_pdf_load_failed)
+
     // Load PDF pages
     LaunchedEffect(pdfData) {
         isLoading = true
@@ -183,7 +191,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                 pageCount = renderer.pageCount
 
                 if (pageCount == 0) {
-                    error = "PDF has no pages"
+                    error = pdfNoPagesMessage
                     renderer.close()
                     fd.close()
                     return@withContext
@@ -222,7 +230,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                 error = "PDF is password protected"
                 isLoading = false
             } catch (e: Exception) {
-                error = e.message ?: "Failed to load PDF"
+                error = e.message ?: pdfLoadFailedMessage
                 isLoading = false
             }
         }
@@ -280,7 +288,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
                         modifier = Modifier.align(Alignment.TopCenter),
                     ) {
                         TopControlBar(
-                            title = metadata?.title ?: "PDF Document",
+                            title = metadata?.title ?: stringResource(R.string.viewer_pdf_document),
                             currentPage = pagerState.currentPage + 1,
                             totalPages = pageCount,
                             onClose = onDismiss,
@@ -368,7 +376,7 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
             ) { data ->
                 Snackbar(
                     snackbarData = data,
-                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
                     contentColor = ThemeColors.DarkBackground,
                 )
             }
@@ -377,7 +385,11 @@ fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -> U
 }
 
 @Composable
-private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
+private fun ZoomablePage(
+    bitmap: Bitmap?,
+    pageIndex: Int,
+    onTap: () -> Unit,
+) {
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     val minScale = 1f
@@ -452,7 +464,7 @@ private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -> Unit) {
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator(
-                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                     modifier = Modifier.size(32.dp),
                 )
             }
@@ -472,7 +484,7 @@ private fun TopControlBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     ) {
         Row(
             modifier = Modifier
@@ -506,9 +518,9 @@ private fun TopControlBar(
                     maxLines = 1,
                 )
                 Text(
-                    text = "Page $currentPage of $totalPages",
+                    text = stringResource(R.string.viewer_pdf_page_indicator, currentPage, totalPages),
                     style = MaterialTheme.typography.bodySmall,
-                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                    color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                     modifier = Modifier.clickable { onPageJump() },
                 )
             }
@@ -548,7 +560,7 @@ private fun BottomNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
     ) {
         Row(
             modifier = Modifier
@@ -572,7 +584,7 @@ private fun BottomNavigationBar(
                         ThemeColors.DarkTextPrimary
                     } else {
                         ThemeColors.DarkTextPrimary.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         )
                     },
                 )
@@ -590,7 +602,7 @@ private fun BottomNavigationBar(
                         ThemeColors.DarkTextPrimary
                     } else {
                         ThemeColors.DarkTextPrimary.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         )
                     },
                 )
@@ -599,7 +611,7 @@ private fun BottomNavigationBar(
             // Page indicator
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     text = "${currentPage + 1} / $totalPages",
@@ -625,7 +637,7 @@ private fun BottomNavigationBar(
                         ThemeColors.DarkTextPrimary
                     } else {
                         ThemeColors.DarkTextPrimary.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         )
                     },
                 )
@@ -643,7 +655,7 @@ private fun BottomNavigationBar(
                         ThemeColors.DarkTextPrimary
                     } else {
                         ThemeColors.DarkTextPrimary.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                         )
                     },
                 )
@@ -653,7 +665,11 @@ private fun BottomNavigationBar(
             IconButton(onClick = onToggleThumbnails) {
                 Icon(
                     imageVector = if (showThumbnails) Icons.Default.GridOff else Icons.Default.GridOn,
-                    contentDescription = if (showThumbnails) "Hide thumbnails" else "Show thumbnails",
+                    contentDescription = if (showThumbnails) {
+                        stringResource(R.string.viewer_pdf_hide_thumbnails)
+                    } else {
+                        stringResource(R.string.viewer_pdf_show_thumbnails)
+                    },
                     tint = if (showThumbnails) MaterialTheme.colorScheme.primary else ThemeColors.DarkTextPrimary,
                 )
             }
@@ -670,7 +686,7 @@ private fun ThumbnailStrip(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
         shape = RoundedCornerShape(
             topStart = WormaCeptorDesignSystem.CornerRadius.lg,
             topEnd = WormaCeptorDesignSystem.CornerRadius.lg,
@@ -697,10 +713,15 @@ private fun ThumbnailStrip(
 }
 
 @Composable
-private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, onClick: () -> Unit) {
+private fun ThumbnailItem(
+    bitmap: Bitmap,
+    pageNumber: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
     val borderColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
         label = "border",
     )
 
@@ -736,7 +757,7 @@ private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, 
                 MaterialTheme.colorScheme.primary
             } else {
                 ThemeColors.DarkTextPrimary.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 )
             },
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
@@ -745,7 +766,12 @@ private fun ThumbnailItem(bitmap: Bitmap, pageNumber: Int, isSelected: Boolean, 
 }
 
 @Composable
-private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> Unit, onPageSelected: (Int) -> Unit) {
+private fun PageJumpDialog(
+    currentPage: Int,
+    totalPages: Int,
+    onDismiss: () -> Unit,
+    onPageSelected: (Int) -> Unit,
+) {
     var pageInput by remember { mutableStateOf(currentPage.toString()) }
     var isError by remember { mutableStateOf(false) }
 
@@ -753,7 +779,7 @@ private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> U
         onDismissRequest = onDismiss,
         title = {
             Text(
-                "Go to Page",
+                stringResource(R.string.viewer_pdf_go_to_page),
                 fontWeight = FontWeight.SemiBold,
             )
         },
@@ -762,7 +788,7 @@ private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> U
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
-                    "Enter a page number (1-$totalPages)",
+                    stringResource(R.string.viewer_pdf_page_prompt, totalPages),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -795,7 +821,7 @@ private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -> U
 
                 if (isError) {
                     Text(
-                        text = "Please enter a valid page number",
+                        text = stringResource(R.string.viewer_pdf_invalid_page),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error,
                     )
@@ -840,16 +866,19 @@ private fun LoadingOverlay() {
                 strokeWidth = WormaCeptorDesignSystem.BorderWidth.bold,
             )
             Text(
-                text = "Loading PDF...",
+                text = stringResource(R.string.viewer_pdf_loading),
                 style = MaterialTheme.typography.bodyLarge,
-                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
     }
 }
 
 @Composable
-private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
+private fun ErrorOverlay(
+    message: String,
+    onDismiss: () -> Unit,
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -867,7 +896,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             )
 
             Text(
-                text = "Failed to open PDF",
+                text = stringResource(R.string.viewer_pdf_failed),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = ThemeColors.DarkTextPrimary,
@@ -876,7 +905,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                 textAlign = TextAlign.Center,
             )
 
@@ -885,7 +914,7 @@ private fun ErrorOverlay(message: String, onDismiss: () -> Unit) {
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    containerColor = ThemeColors.DarkTextPrimary.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                 ),
             ) {
                 Text(stringResource(R.string.viewer_pdf_close), color = ThemeColors.DarkTextPrimary)
@@ -919,7 +948,11 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+private fun sharePdfFromViewer(
+    context: Context,
+    pdfData: ByteArray,
+    existingFile: File?,
+): String? {
     return try {
         // Use existing file or create new one
         val file = existingFile ?: run {
@@ -941,7 +974,9 @@ private fun sharePdfFromViewer(context: Context, pdfData: ByteArray, existingFil
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        context.startActivity(Intent.createChooser(intent, "Share PDF"))
+        context.startActivity(
+            Intent.createChooser(intent, context.getString(R.string.viewer_pdf_share_chooser)),
+        )
         null // Success - share sheet handles it
     } catch (e: Exception) {
         "Failed to share PDF: ${e.message}"

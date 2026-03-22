@@ -23,33 +23,37 @@ class DependenciesInspectorViewModel(
     private val engine: DependenciesInspectorEngine,
 ) : ViewModel() {
 
-    // Filter by category
     private val _selectedCategory = MutableStateFlow<DependencyCategory?>(null)
+
+    /** Currently selected dependency category filter, or null for all categories. */
     val selectedCategory: StateFlow<DependencyCategory?> = _selectedCategory.asStateFlow()
 
-    // Search query
     private val _searchQuery = MutableStateFlow("")
+
+    /** Current text used to filter dependencies by name or package. */
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // Show only dependencies with detected versions
     private val _showVersionedOnly = MutableStateFlow(false)
+
+    /** When true, only dependencies with a detected version number are displayed. */
     val showVersionedOnly: StateFlow<Boolean> = _showVersionedOnly.asStateFlow()
 
-    // Selected dependency for detail view
     private val _selectedDependency = MutableStateFlow<DependencyInfo?>(null)
+
+    /** Dependency currently selected for detail view, or null if none. */
     val selectedDependency: StateFlow<DependencyInfo?> = _selectedDependency.asStateFlow()
 
-    // Loading state
+    /** Whether the engine is currently scanning for dependencies. */
     val isLoading: StateFlow<Boolean> = engine.isLoading
 
-    // Error state
+    /** Error message from the last scan, or null if none. */
     val error: StateFlow<String?> = engine.error
 
-    // Summary
+    /** Aggregate summary of all detected dependencies. */
     val summary: StateFlow<DependencySummary> = engine.summary
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DependencySummary.empty())
 
-    // Filtered dependencies (WormaCeptor's internal deps are already excluded by the engine)
+    /** Dependencies filtered by category, search query, and version presence. */
     val filteredDependencies: StateFlow<ImmutableList<DependencyInfo>> =
         combine(
             engine.dependencies,
@@ -83,29 +87,36 @@ class DependenciesInspectorViewModel(
             filtered.toImmutableList()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
+    /** Filters dependencies to show only the specified category, or all if null. */
     fun setSelectedCategory(category: DependencyCategory?) {
         _selectedCategory.value = category
     }
 
+    /** Updates the search query used to filter dependencies by name or package. */
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }
 
+    /** When true, only dependencies with a detected version number are shown. */
     fun setShowVersionedOnly(show: Boolean) {
         _showVersionedOnly.value = show
     }
 
+    /** Selects a dependency to display its details in the bottom sheet. */
     fun selectDependency(dependency: DependencyInfo) {
         _selectedDependency.value = dependency
     }
 
+    /** Closes the dependency detail bottom sheet. */
     fun dismissDetail() {
         _selectedDependency.value = null
     }
 
+    /** Re-scans the classpath for application dependencies. */
     fun refresh() {
         engine.refresh()
     }
 
+    /** Exports the current dependency list as a shareable plain-text summary. */
     fun exportAsText(): String = engine.exportAsText()
 }

@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -62,7 +64,11 @@ import kotlinx.coroutines.launch
  * Main screen for the Push Notification Simulator.
  */
 @Composable
-fun PushSimulatorScreen(viewModel: PushSimulatorViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun PushSimulatorScreen(
+    viewModel: PushSimulatorViewModel,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -281,7 +287,11 @@ internal fun PushSimulatorScreenContent(
 }
 
 @Composable
-private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit, isTitleEmpty: Boolean = false) {
+private fun ActionButtonsRow(
+    onSendClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    isTitleEmpty: Boolean = false,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
@@ -328,7 +338,10 @@ private fun ActionButtonsRow(onSendClick: () -> Unit, onSaveClick: () -> Unit, i
 }
 
 @Composable
-private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) {
+private fun SaveTemplateDialog(
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit,
+) {
     var templateName by remember { mutableStateOf("") }
     val isValid by remember(templateName) { derivedStateOf { templateName.isNotBlank() } }
 
@@ -336,7 +349,7 @@ private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) 
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.pushsimulator_dialog_save_title)) },
         text = {
-            androidx.compose.foundation.layout.Column(
+            Column(
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
             ) {
                 Text(
@@ -372,7 +385,7 @@ private fun SaveTemplateDialog(onDismiss: () -> Unit, onSave: (String) -> Unit) 
 }
 
 @Suppress("UnusedPrivateMember")
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 private fun PushSimulatorScreenContentPreview() {
     WormaCeptorTheme {

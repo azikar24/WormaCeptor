@@ -17,16 +17,26 @@ import com.azikar24.wormaceptor.api.WormaCeptorApi
  * }
  * ```
  */
+@Suppress("unused")
 class WormaCeptorKtorConfig {
 
     /**
      * Data retention period for captured network transactions.
      */
     enum class RetentionPeriod {
+        /** Retain captured data for one hour. */
         ONE_HOUR,
+
+        /** Retain captured data for one day. */
         ONE_DAY,
+
+        /** Retain captured data for one week. */
         ONE_WEEK,
+
+        /** Retain captured data for one month. */
         ONE_MONTH,
+
+        /** Retain captured data indefinitely. */
         FOREVER,
     }
 

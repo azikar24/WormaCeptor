@@ -36,6 +36,7 @@ data class CpuInfo(
     val uptime: Long = 0L,
     val measurementSource: CpuMeasurementSource = CpuMeasurementSource.SYSTEM,
 ) {
+    /** Factory methods for [CpuInfo]. */
     companion object {
         /**
          * Creates an empty CpuInfo instance with zero/default values.

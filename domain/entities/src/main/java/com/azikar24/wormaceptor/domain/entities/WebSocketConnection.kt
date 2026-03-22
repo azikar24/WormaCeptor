@@ -4,9 +4,16 @@ package com.azikar24.wormaceptor.domain.entities
  * Represents the state of a WebSocket connection.
  */
 enum class WebSocketState {
+    /** Connection handshake is in progress. */
     CONNECTING,
+
+    /** Connection is established and ready for data transfer. */
     OPEN,
+
+    /** Close handshake has been initiated but not yet completed. */
     CLOSING,
+
+    /** Connection has been fully closed. */
     CLOSED,
 }
 

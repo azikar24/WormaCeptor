@@ -119,7 +119,11 @@ class XmlHighlighter : SyntaxHighlighter {
      * @param baseOffset The starting position of attrString in the original code
      * @param tokens The token list to add to
      */
-    private fun tokenizeAttributes(attrString: String, baseOffset: Int, tokens: MutableList<Token>) {
+    private fun tokenizeAttributes(
+        attrString: String,
+        baseOffset: Int,
+        tokens: MutableList<Token>,
+    ) {
         // Match attribute: name="value" or name='value' or name=value or just name
         val attrRegex = """([a-zA-Z_:][a-zA-Z0-9_:.-]*)\s*(?:=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?""".toRegex()
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
@@ -46,7 +46,10 @@ import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 
 @Composable
-internal fun SectionHeader(text: String, count: Int = 0) {
+internal fun SectionHeader(
+    text: String,
+    count: Int = 0,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,10 +120,10 @@ internal fun TemplateCard(
             width = WormaCeptorDesignSystem.BorderWidth.regular,
             color = if (isPreset) {
                 PushSimulatorDesignSystem.TemplateColors.preset
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             } else {
                 MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
             },
         ),
     ) {
@@ -154,14 +157,14 @@ internal fun TemplateCard(
                 }
 
                 // Badges row
-                FlowRow(
+                WormaCeptorFlowRow(
                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
                 ) {
                     // Priority badge
                     Surface(
                         shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                        color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -191,7 +194,7 @@ internal fun TemplateCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                         ) {
                             Row(
                                 modifier = Modifier.padding(
@@ -223,7 +226,7 @@ internal fun TemplateCard(
                         Surface(
                             shape = WormaCeptorDesignSystem.Shapes.chip,
                             color = PushSimulatorDesignSystem.TemplateColors.preset
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                         ) {
                             Text(
                                 text = stringResource(R.string.pushsimulator_template_preset),
@@ -273,7 +276,7 @@ internal fun TemplateCard(
                                 R.string.pushsimulator_template_delete,
                                 template.name,
                             ),
-                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                             modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
                         )
                     }

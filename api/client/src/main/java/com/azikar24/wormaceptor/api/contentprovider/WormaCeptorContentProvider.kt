@@ -8,6 +8,7 @@ import android.database.MatrixCursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.api.TransactionDetailDto
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
@@ -103,7 +104,10 @@ class WormaCeptorContentProvider : ContentProvider() {
         return cursor
     }
 
-    private fun addTransactionToCursor(cursor: MatrixCursor, item: Any) {
+    private fun addTransactionToCursor(
+        cursor: MatrixCursor,
+        item: Any,
+    ) {
         try {
             // NetworkTransaction has nested request/response objects
             val request = getProperty(item, "request")
@@ -111,7 +115,7 @@ class WormaCeptorContentProvider : ContentProvider() {
 
             // Extract URL from request and parse host/path
             val url = request?.let { getProperty(it, "url")?.toString() }
-            val uri = url?.let { Uri.parse(it) }
+            val uri = url?.toUri()
             val host = uri?.host ?: ""
             val path = uri?.path ?: "/"
 
@@ -159,21 +163,24 @@ class WormaCeptorContentProvider : ContentProvider() {
         return try {
             val headers = getProperty(response, "headers") as? Map<String, List<String>> ?: return null
             headers.entries.find { it.key.equals("content-type", ignoreCase = true) }?.value?.firstOrNull()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
 
-    private fun getProperty(obj: Any, name: String): Any? {
+    private fun getProperty(
+        obj: Any,
+        name: String,
+    ): Any? {
         return try {
             obj.javaClass.getDeclaredField(name).apply { isAccessible = true }.get(obj)
-        } catch (e: NoSuchFieldException) {
+        } catch (_: NoSuchFieldException) {
             try {
                 obj.javaClass.getMethod("get${name.replaceFirstChar { it.uppercase() }}").invoke(obj)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 try {
                     obj.javaClass.getMethod(name).invoke(obj)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     null
                 }
             }
@@ -187,9 +194,16 @@ class WormaCeptorContentProvider : ContentProvider() {
         else -> null
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? = null
+    override fun insert(
+        uri: Uri,
+        values: ContentValues?,
+    ): Uri? = null
 
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+    override fun delete(
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+    ): Int {
         if (uriMatcher.match(uri) != CODE_TRANSACTIONS) return 0
         val provider = WormaCeptorApi.provider ?: return 0
         return try {
@@ -204,10 +218,17 @@ class WormaCeptorContentProvider : ContentProvider() {
         }
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int =
-        0
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+    ): Int = 0
 
-    override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
+    override fun openFile(
+        uri: Uri,
+        mode: String,
+    ): ParcelFileDescriptor? {
         if (uriMatcher.match(uri) != CODE_TRANSACTION_DETAIL) return null
 
         // Extract transaction ID from URI: transaction/{id}/detail
@@ -284,6 +305,7 @@ class WormaCeptorContentProvider : ContentProvider() {
         return json
     }
 
+    /** URI matchers, column definitions, and constants for the content provider. */
     companion object {
         private const val TAG = "WormaCeptorProvider"
         private const val CODE_TRANSACTIONS = 1

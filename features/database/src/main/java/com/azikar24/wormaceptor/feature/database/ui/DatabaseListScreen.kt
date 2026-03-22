@@ -105,11 +105,11 @@ fun DatabaseListScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -207,7 +207,11 @@ fun DatabaseListScreen(
 }
 
 @Composable
-private fun DatabaseListItem(database: DatabaseInfo, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun DatabaseListItem(
+    database: DatabaseInfo,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     ListItem(
         modifier = modifier.clickable(onClick = onClick),
         headlineContent = {

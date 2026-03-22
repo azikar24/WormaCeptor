@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -75,6 +74,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -84,6 +84,7 @@ import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.domain.entities.SecureStorageSummary
 import com.azikar24.wormaceptor.feature.securestorage.R
+import com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors
 import com.azikar24.wormaceptor.feature.securestorage.ui.theme.secureStorageColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -174,11 +175,11 @@ fun SecureStorageScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -303,7 +304,7 @@ private fun SummarySection(
     keystoreAccessible: Boolean,
     encryptedPrefsAccessible: Boolean,
     lastRefreshTime: Long?,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -373,7 +374,7 @@ private fun SummaryCard(
     isAccessible: Boolean,
     accessibleText: String,
     notAccessibleText: String,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -428,10 +429,10 @@ private fun SummaryCard(
 private fun TypeFilterChips(
     selectedType: StorageType?,
     onTypeSelected: (StorageType?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
-    FlowRow(
+    WormaCeptorFlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
@@ -469,7 +470,7 @@ private fun TypeFilterChips(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -482,7 +483,7 @@ private fun TypeFilterChips(
 private fun EntryCard(
     entry: SecureStorageEntry,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = when (entry.storageType) {
@@ -516,7 +517,7 @@ private fun EntryCard(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light))
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT))
                     .semantics { stateDescription = encryptionState },
                 contentAlignment = Alignment.Center,
             ) {
@@ -563,7 +564,7 @@ private fun EntryCard(
             // Type badge
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     text = when (entry.storageType) {
@@ -572,7 +573,7 @@ private fun EntryCard(
                         StorageType.DATASTORE -> stringResource(R.string.securestorage_badge_datastore)
                     },
                     modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.xs + WormaCeptorDesignSystem.Spacing.xxs,
+                        horizontal = WormaCeptorDesignSystem.Spacing.xs,
                         vertical = WormaCeptorDesignSystem.Spacing.xxs,
                     ),
                     style = MaterialTheme.typography.labelSmall,
@@ -587,7 +588,7 @@ private fun EntryCard(
 @Composable
 private fun EntryDetailContent(
     entry: SecureStorageEntry,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = when (entry.storageType) {
@@ -609,7 +610,7 @@ private fun EntryDetailContent(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.Spacing.xxxl)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -700,7 +701,7 @@ private fun EntryDetailContent(
 private fun DetailSection(
     label: String,
     value: String,
-    colors: com.azikar24.wormaceptor.feature.securestorage.ui.theme.SecureStorageColors,
+    colors: SecureStorageColors,
     modifier: Modifier = Modifier,
 ) {
     Column(

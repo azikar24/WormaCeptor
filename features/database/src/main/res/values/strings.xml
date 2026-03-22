@@ -33,6 +33,13 @@
     <string name="database_table_data_null_value">NULL</string>
     <string name="database_table_data_no_data">No data</string>
 
+    <!-- Error messages -->
+    <string name="database_error_load_databases">Failed to load databases</string>
+    <string name="database_error_load_tables">Failed to load tables</string>
+    <string name="database_error_load_data">Failed to load data</string>
+    <string name="database_error_query_empty">Query is empty</string>
+    <string name="database_error_query_failed">Query execution failed</string>
+
     <!-- TableListScreen -->
     <string name="database_table_list_back">Back</string>
     <string name="database_table_list_search">Search</string>

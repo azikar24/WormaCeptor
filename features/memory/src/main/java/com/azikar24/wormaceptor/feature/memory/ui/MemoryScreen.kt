@@ -66,6 +66,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import com.azikar24.wormaceptor.feature.memory.R
+import com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors
 import com.azikar24.wormaceptor.feature.memory.ui.theme.memoryColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -108,7 +109,7 @@ fun MemoryScreen(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
                         Text(
-                            text = "Memory Monitor",
+                            text = stringResource(R.string.memory_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                         // Warning badge
@@ -198,7 +199,7 @@ fun MemoryScreen(
 private fun HeapUsageCard(
     currentMemory: MemoryInfo,
     isWarning: Boolean,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     val statusColor = colors.statusColorForUsage(currentMemory.heapUsagePercent)
@@ -231,7 +232,7 @@ private fun HeapUsageCard(
                         modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl),
                     )
                     Text(
-                        text = "Java Heap",
+                        text = stringResource(R.string.memory_java_heap),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.labelPrimary,
@@ -242,7 +243,7 @@ private fun HeapUsageCard(
                 if (isWarning) {
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = colors.critical.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -259,7 +260,7 @@ private fun HeapUsageCard(
                                 modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.lg),
                             )
                             Text(
-                                text = "HIGH",
+                                text = stringResource(R.string.memory_high),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.critical,
@@ -341,7 +342,7 @@ private fun MemoryStatItem(
     label: String,
     value: String,
     color: Color,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -366,7 +367,7 @@ private fun MemoryStatItem(
 @Composable
 private fun MemoryChartCard(
     history: ImmutableList<MemoryInfo>,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -381,7 +382,7 @@ private fun MemoryChartCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Memory Over Time",
+                text = stringResource(R.string.memory_over_time),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -399,7 +400,7 @@ private fun MemoryChartCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No data yet",
+                        text = stringResource(R.string.memory_no_data),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.labelSecondary,
                     )
@@ -441,7 +442,7 @@ private fun MemoryChartCard(
 @Composable
 private fun MemoryLineChart(
     history: ImmutableList<MemoryInfo>,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     if (history.isEmpty()) return
@@ -536,7 +537,7 @@ private fun MemoryLineChart(
 
         drawPath(
             path = areaPath,
-            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = colors.heapUsed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         )
     }
 }
@@ -544,7 +545,7 @@ private fun MemoryLineChart(
 @Composable
 private fun NativeHeapCard(
     currentMemory: MemoryInfo,
-    colors: com.azikar24.wormaceptor.feature.memory.ui.theme.MemoryColors,
+    colors: MemoryColors,
     modifier: Modifier = Modifier,
 ) {
     val usagePercent = if (currentMemory.nativeHeapSize > 0) {
@@ -565,7 +566,7 @@ private fun NativeHeapCard(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
         ) {
             Text(
-                text = "Native Heap",
+                text = stringResource(R.string.memory_native_heap),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.labelPrimary,
@@ -606,7 +607,10 @@ private fun NativeHeapCard(
 }
 
 @Composable
-private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) {
+private fun ActionButtons(
+    onForceGc: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -626,7 +630,7 @@ private fun ActionButtons(onForceGc: () -> Unit, modifier: Modifier = Modifier) 
             )
             Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Text(
-                text = "Force GC",
+                text = stringResource(R.string.memory_force_gc),
                 fontWeight = FontWeight.SemiBold,
             )
         }

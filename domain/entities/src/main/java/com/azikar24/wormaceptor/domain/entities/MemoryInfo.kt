@@ -28,6 +28,7 @@ data class MemoryInfo(
     val nativeHeapFree: Long = nativeHeapSize - nativeHeapAllocated,
     val gcCount: Long = 0,
 ) {
+    /** Factory methods for [MemoryInfo]. */
     companion object {
         /**
          * Creates an empty MemoryInfo instance with zero values.

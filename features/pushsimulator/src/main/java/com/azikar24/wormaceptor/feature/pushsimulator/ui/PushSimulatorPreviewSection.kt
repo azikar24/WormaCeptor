@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,8 +37,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
@@ -51,7 +52,7 @@ internal fun NotificationPreview(
     body: String,
     priority: NotificationPriority,
     channelName: String?,
-    actions: List<com.azikar24.wormaceptor.domain.entities.NotificationAction>,
+    actions: List<NotificationAction>,
 ) {
     val priorityColor = PushSimulatorDesignSystem.PriorityColors.forPriority(priority.name)
     val isHighPriority = priority == NotificationPriority.HIGH || priority == NotificationPriority.MAX
@@ -100,11 +101,11 @@ internal fun NotificationPreview(
             modifier = Modifier.fillMaxWidth(),
             shape = WormaCeptorDesignSystem.Shapes.card,
             color = MaterialTheme.colorScheme.surfaceVariant
-                .copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
             border = BorderStroke(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
             ),
         ) {
             Column(
@@ -195,7 +196,7 @@ internal fun NotificationPreview(
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
                         WormaCeptorDivider(style = DividerStyle.Section)
                         Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-                        FlowRow(
+                        WormaCeptorFlowRow(
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                         ) {
                             actions.forEach { action ->
@@ -228,10 +229,13 @@ internal fun NotificationPreview(
 }
 
 @Composable
-internal fun PriorityIndicator(priority: NotificationPriority, color: Color) {
+internal fun PriorityIndicator(
+    priority: NotificationPriority,
+    color: Color,
+) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.subtle),
+        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
     ) {
         Row(
             modifier = Modifier.padding(

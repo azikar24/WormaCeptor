@@ -27,6 +27,9 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.azikar24.wormaceptor.core.engine.ui.DismissZoneContent
 import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
+import com.azikar24.wormaceptor.domain.entities.CpuInfo
+import com.azikar24.wormaceptor.domain.entities.FpsInfo
+import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -74,7 +77,10 @@ class PerformanceOverlayEngine(
     private var applicationRef: WeakReference<Application>? = null
     private var startedActivityCount = 1
     private val activityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) = Unit
         override fun onActivityStarted(activity: Activity) {
             startedActivityCount++
             if (startedActivityCount == 1) {
@@ -97,7 +103,10 @@ class PerformanceOverlayEngine(
             }
         }
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) = Unit
         override fun onActivityDestroyed(activity: Activity) = Unit
     }
     private var isLifecycleCallbacksRegistered = false
@@ -117,6 +126,8 @@ class PerformanceOverlayEngine(
 
     // State
     private val _state = MutableStateFlow(PerformanceOverlayState.EMPTY)
+
+    /** The current overlay state including position, metric values, and visibility. */
     val state: StateFlow<PerformanceOverlayState> = _state.asStateFlow()
 
     private val _isVisible = MutableStateFlow(false)
@@ -131,6 +142,14 @@ class PerformanceOverlayEngine(
 
     /**
      * Callbacks for overlay interactions.
+     *
+     * @property onDragStart Called when the user begins dragging the overlay.
+     * @property onDrag Called during a drag gesture with the delta offset.
+     * @property onDragEnd Called when the user releases the overlay.
+     * @property onHideOverlay Called when the user requests to hide the overlay.
+     * @property onRemoveFps Called when the user removes the FPS metric from the overlay.
+     * @property onRemoveMemory Called when the user removes the memory metric from the overlay.
+     * @property onRemoveCpu Called when the user removes the CPU metric from the overlay.
      */
     data class OverlayCallbacks(
         val onDragStart: () -> Unit,
@@ -442,7 +461,10 @@ class PerformanceOverlayEngine(
     /**
      * Sets the overlay enabled state.
      */
-    fun setOverlayEnabled(enabled: Boolean, activity: Activity? = null) {
+    fun setOverlayEnabled(
+        enabled: Boolean,
+        activity: Activity? = null,
+    ) {
         if (_state.value.isOverlayEnabled == enabled) return
 
         _state.value = _state.value.copy(isOverlayEnabled = enabled)
@@ -466,7 +488,11 @@ class PerformanceOverlayEngine(
      * @param memory Enable Memory metric
      * @param cpu Enable CPU metric
      */
-    fun enableMetricForMonitorScreen(fps: Boolean = false, memory: Boolean = false, cpu: Boolean = false) {
+    fun enableMetricForMonitorScreen(
+        fps: Boolean = false,
+        memory: Boolean = false,
+        cpu: Boolean = false,
+    ) {
         // Only enable metrics if the overlay master toggle is enabled
         if (!_state.value.isOverlayEnabled) return
 
@@ -543,11 +569,11 @@ class PerformanceOverlayEngine(
                 cpuMonitorEngine.currentCpu,
                 cpuMonitorEngine.isMonitoring,
             ) { values ->
-                val fpsInfo = values[0] as com.azikar24.wormaceptor.domain.entities.FpsInfo
+                val fpsInfo = values[0] as FpsInfo
                 val fpsRunning = values[1] as Boolean
-                val memoryInfo = values[2] as com.azikar24.wormaceptor.domain.entities.MemoryInfo
+                val memoryInfo = values[2] as MemoryInfo
                 val memoryRunning = values[3] as Boolean
-                val cpuInfo = values[4] as com.azikar24.wormaceptor.domain.entities.CpuInfo
+                val cpuInfo = values[4] as CpuInfo
                 val cpuRunning = values[5] as Boolean
 
                 val currentState = _state.value
@@ -620,7 +646,10 @@ class PerformanceOverlayEngine(
         WindowManager.LayoutParams.TYPE_PHONE
     }
 
-    private fun createOverlayLayoutParams(activity: Activity, windowType: Int): WindowManager.LayoutParams {
+    private fun createOverlayLayoutParams(
+        activity: Activity,
+        windowType: Int,
+    ): WindowManager.LayoutParams {
         val displayMetrics = activity.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         val screenHeight = displayMetrics.heightPixels
@@ -819,13 +848,17 @@ class PerformanceOverlayEngine(
      * Default overlay content using PerformanceOverlayContent composable.
      */
     @Composable
-    private fun DefaultOverlayContent(state: PerformanceOverlayState, callbacks: OverlayCallbacks) {
+    private fun DefaultOverlayContent(
+        state: PerformanceOverlayState,
+        callbacks: OverlayCallbacks,
+    ) {
         PerformanceOverlayContent(
             state = state,
             callbacks = callbacks,
         )
     }
 
+    /** SharedPreferences keys and overlay dimension constants. */
     companion object {
         // SharedPreferences keys
         private const val PREFS_NAME = "wormaceptor_performance_overlay_prefs"

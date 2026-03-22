@@ -45,7 +45,10 @@ class LoadedLibrariesViewModelFactory(
  * Main composable for the Loaded Libraries Inspector feature.
  */
 @Composable
-fun LoadedLibrariesInspector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun LoadedLibrariesInspector(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: LoadedLibrariesEngine = koinInject()
     val factory = remember { LoadedLibrariesFeature.createViewModelFactory(engine) }
     val viewModel: LoadedLibrariesViewModel = viewModel(factory = factory)

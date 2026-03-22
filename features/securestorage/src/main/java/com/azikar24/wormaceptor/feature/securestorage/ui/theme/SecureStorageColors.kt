@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.securestorage.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -11,6 +10,21 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 /**
  * Colors for the Secure Storage Viewer feature.
  * Uses centralized colors from WormaCeptorColors.SecureStorage.
+ *
+ * @property primary Main accent color for the feature.
+ * @property encrypted Color for encrypted storage entries.
+ * @property unencrypted Color for unencrypted storage entries.
+ * @property encryptedPrefs Color for EncryptedSharedPreferences entries.
+ * @property keystore Color for Android Keystore entries.
+ * @property datastore Color for DataStore entries.
+ * @property cardBackground Background color for card containers.
+ * @property searchBackground Background color for the search field.
+ * @property chipBackground Background color for unselected filter chips.
+ * @property chipBackgroundSelected Background color for selected filter chips.
+ * @property labelPrimary Primary text color for labels.
+ * @property labelSecondary Secondary text color for labels.
+ * @property valuePrimary Primary text color for values.
+ * @property valueSecondary Secondary text color for values.
  */
 @Immutable
 data class SecureStorageColors(
@@ -34,7 +48,7 @@ data class SecureStorageColors(
  * Returns the appropriate secure storage colors based on the current theme.
  */
 @Composable
-fun secureStorageColors(darkTheme: Boolean = isSystemInDarkTheme()): SecureStorageColors {
+fun secureStorageColors(): SecureStorageColors {
     val alpha = WormaCeptorDesignSystem.Alpha
     val surface = MaterialTheme.colorScheme.surface
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
@@ -50,11 +64,11 @@ fun secureStorageColors(darkTheme: Boolean = isSystemInDarkTheme()): SecureStora
         datastore = WormaCeptorColors.SecureStorage.Datastore,
         cardBackground = surface,
         searchBackground = surfaceVariant,
-        chipBackground = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.subtle),
-        chipBackgroundSelected = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.light),
+        chipBackground = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.SUBTLE),
+        chipBackgroundSelected = WormaCeptorColors.SecureStorage.Primary.copy(alpha = alpha.LIGHT),
         labelPrimary = onSurface,
         labelSecondary = onSurfaceVariant,
-        valuePrimary = onSurface.copy(alpha = alpha.prominent),
-        valueSecondary = onSurfaceVariant.copy(alpha = alpha.intense),
+        valuePrimary = onSurface.copy(alpha = alpha.PROMINENT),
+        valueSecondary = onSurfaceVariant.copy(alpha = alpha.INTENSE),
     )
 }

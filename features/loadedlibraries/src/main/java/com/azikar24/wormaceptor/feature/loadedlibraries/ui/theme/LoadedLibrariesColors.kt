@@ -15,36 +15,44 @@ import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
  * - JAR: Orange tones - Java archives
  * - System: Gray tones - system libraries
  * - App: Green tones - application libraries
+ *
+ * @property primary Primary accent color used for highlights and selected states.
+ * @property nativeSo Color for native shared-object (.so) libraries.
+ * @property dex Color for DEX bytecode libraries.
+ * @property jar Color for JAR archive libraries.
+ * @property aarResource Color for AAR resource libraries.
+ * @property systemLibrary Color representing system-provided libraries.
+ * @property appLibrary Color representing application-bundled libraries.
+ * @property systemBadge Color for the "System" badge label.
+ * @property cardBackground Background color for library cards.
+ * @property chipBackground Background color for unselected filter chips.
+ * @property selectedChipBackground Background color for selected filter chips.
+ * @property searchBackground Background color for the search bar area.
+ * @property labelPrimary Primary text color for labels and titles.
+ * @property labelSecondary Secondary text color for subtitles and hints.
+ * @property pathText Text color for file path display.
+ * @property valuePrimary Text color for detail values.
+ * @property searchHighlight Highlight color for search query matches.
+ * @property divider Color for divider lines.
  */
 @Immutable
 data class LoadedLibrariesColors(
-    // Primary accent
     val primary: Color,
-
-    // Library type colors
     val nativeSo: Color,
     val dex: Color,
     val jar: Color,
     val aarResource: Color,
-
-    // Source type colors
     val systemLibrary: Color,
     val appLibrary: Color,
     val systemBadge: Color,
-
-    // Background colors
     val cardBackground: Color,
     val chipBackground: Color,
     val selectedChipBackground: Color,
     val searchBackground: Color,
-
-    // Text colors
     val labelPrimary: Color,
     val labelSecondary: Color,
     val pathText: Color,
     val valuePrimary: Color,
-
-    // Accent colors
     val searchHighlight: Color,
     val divider: Color,
 ) {

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,6 +75,7 @@ import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -279,7 +279,7 @@ internal fun CryptoToolContent(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text(stringResource(R.string.crypto_algorithm), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -294,7 +294,7 @@ internal fun CryptoToolContent(
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text(stringResource(R.string.crypto_mode), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -309,7 +309,7 @@ internal fun CryptoToolContent(
 
                     Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                     Text(stringResource(R.string.crypto_padding), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -334,7 +334,7 @@ internal fun CryptoToolContent(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
                 ) {
                     Text(stringResource(R.string.crypto_key_format), fontWeight = FontWeight.SemiBold)
-                    FlowRow(
+                    WormaCeptorFlowRow(
                         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                     ) {
@@ -353,12 +353,20 @@ internal fun CryptoToolContent(
                         onValueChange = onSetKey,
                         label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / 8)) },
                         modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = if (showKeyPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        visualTransformation = if (showKeyPassword) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
                         trailingIcon = {
                             Row {
                                 IconButton(onClick = { showKeyPassword = !showKeyPassword }) {
                                     Icon(
-                                        if (showKeyPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                        imageVector = if (showKeyPassword) {
+                                            Icons.Default.VisibilityOff
+                                        } else {
+                                            Icons.Default.Visibility
+                                        },
                                         contentDescription = if (showKeyPassword) {
                                             stringResource(
                                                 R.string.crypto_hide_key,
@@ -392,12 +400,20 @@ internal fun CryptoToolContent(
                             onValueChange = onSetIv,
                             label = { Text(ivLabel) },
                             modifier = Modifier.fillMaxWidth(),
-                            visualTransformation = if (showIvPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                            visualTransformation = if (showIvPassword) {
+                                VisualTransformation.None
+                            } else {
+                                PasswordVisualTransformation()
+                            },
                             trailingIcon = {
                                 Row {
                                     IconButton(onClick = { showIvPassword = !showIvPassword }) {
                                         Icon(
-                                            if (showIvPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                            imageVector = if (showIvPassword) {
+                                                Icons.Default.VisibilityOff
+                                            } else {
+                                                Icons.Default.Visibility
+                                            },
                                             contentDescription = if (showIvPassword) hideIv else showIv,
                                         )
                                     }
@@ -525,8 +541,8 @@ private fun ResultCard(
 
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
-        backgroundColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        borderColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        backgroundColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        borderColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
@@ -616,19 +632,22 @@ private fun ResultCard(
             Text(
                 "${result.algorithm.displayName}/${result.mode.displayName} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
     }
 }
 
 @Composable
-private fun ErrorCard(message: String, onDismiss: () -> Unit) {
+private fun ErrorCard(
+    message: String,
+    onDismiss: () -> Unit,
+) {
     val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
     WormaCeptorContainer(
         style = ContainerStyle.Outlined,
-        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
@@ -666,9 +685,9 @@ private fun ErrorCard(message: String, onDismiss: () -> Unit) {
 @Composable
 fun CryptoHistoryScreen(
     engine: CryptoEngine,
-    modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
     onLoadResult: (CryptoResult) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val factory = remember { CryptoFeature.createViewModelFactory(engine) }
     val viewModel: CryptoViewModel = viewModel(factory = factory)
@@ -720,7 +739,7 @@ fun CryptoHistoryScreen(
                         null,
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.bold,
+                            alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                         ),
                     )
                     Text(
@@ -732,7 +751,7 @@ fun CryptoHistoryScreen(
                         stringResource(R.string.crypto_empty_history_description),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                         ),
                     )
                 }
@@ -767,7 +786,11 @@ fun CryptoHistoryScreen(
 }
 
 @Composable
-private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -> Unit) {
+private fun HistoryItem(
+    result: CryptoResult,
+    onLoad: () -> Unit,
+    onRemove: () -> Unit,
+) {
     val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
     val accentColor = when {
         !result.success -> WormaCeptorDesignSystem.ThemeColors.Error
@@ -813,7 +836,7 @@ private fun HistoryItem(result: CryptoResult, onLoad: () -> Unit, onRemove: () -
                     Date(result.timestamp),
                 )} | ${if (result.success) successText else failedText} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
         IconButton(onClick = onRemove) {

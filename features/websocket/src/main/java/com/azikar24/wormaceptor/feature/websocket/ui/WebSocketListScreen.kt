@@ -172,7 +172,11 @@ internal fun WebSocketListScreen(
 }
 
 @Composable
-private fun StatsBar(totalCount: Int, filteredCount: Int, modifier: Modifier = Modifier) {
+private fun StatsBar(
+    totalCount: Int,
+    filteredCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -244,7 +248,7 @@ private fun ConnectionItem(
     Surface(
         modifier = modifier.clickable(onClick = onClick),
         color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.medium + WormaCeptorDesignSystem.Alpha.subtle,
+            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
         ),
     ) {
         Row(
@@ -285,7 +289,7 @@ private fun ConnectionItem(
                     // State badge
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                     ) {
                         Text(
                             text = connection.state.name,
@@ -293,7 +297,7 @@ private fun ConnectionItem(
                             fontWeight = FontWeight.SemiBold,
                             color = stateColor,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm - WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorDesignSystem.Spacing.xs,
                                 vertical = WormaCeptorDesignSystem.Spacing.xxs,
                             ),
                         )
@@ -324,7 +328,7 @@ private fun ConnectionItem(
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.intense + WormaCeptorDesignSystem.Alpha.subtle,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }

@@ -57,7 +57,10 @@ class PreferencesDataSource(private val context: Context) {
     /**
      * Gets a specific preference value.
      */
-    fun getPreference(fileName: String, key: String): PreferenceValue? {
+    fun getPreference(
+        fileName: String,
+        key: String,
+    ): PreferenceValue? {
         val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         val value = prefs.all[key]
         return PreferenceValue.fromAny(value)
@@ -66,7 +69,11 @@ class PreferencesDataSource(private val context: Context) {
     /**
      * Sets a preference value.
      */
-    fun setPreference(fileName: String, key: String, value: PreferenceValue) {
+    fun setPreference(
+        fileName: String,
+        key: String,
+        value: PreferenceValue,
+    ) {
         val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         prefs.edit().apply {
             when (value) {
@@ -83,7 +90,10 @@ class PreferencesDataSource(private val context: Context) {
     /**
      * Deletes a specific preference key.
      */
-    fun deletePreference(fileName: String, key: String) {
+    fun deletePreference(
+        fileName: String,
+        key: String,
+    ) {
         val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
         prefs.edit().remove(key).apply()
     }

@@ -18,7 +18,11 @@ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB
  * @param text The text to copy
  * @return Confirmation message to display to the user
  */
-fun copyToClipboard(context: Context, label: String, text: String): String {
+fun copyToClipboard(
+    context: Context,
+    label: String,
+    text: String,
+): String {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
@@ -39,7 +43,18 @@ fun isContentTooLargeForClipboard(text: String): Boolean {
  * Result of a clipboard copy operation with size check.
  */
 sealed class ClipboardResult {
+    /**
+     * The content was successfully copied to the clipboard.
+     *
+     * @property message Confirmation message to display to the user.
+     */
     data class Success(val message: String) : ClipboardResult()
+
+    /**
+     * The content exceeds the maximum clipboard size.
+     *
+     * @property message Warning message describing the size limit.
+     */
     data class TooLarge(val message: String) : ClipboardResult()
 }
 
@@ -51,7 +66,11 @@ sealed class ClipboardResult {
  * @param text The text to copy
  * @return ClipboardResult indicating success or too-large warning
  */
-fun copyToClipboardWithSizeCheck(context: Context, label: String, text: String): ClipboardResult {
+fun copyToClipboardWithSizeCheck(
+    context: Context,
+    label: String,
+    text: String,
+): ClipboardResult {
     return if (isContentTooLargeForClipboard(text)) {
         ClipboardResult.TooLarge(
             "Content too large (${formatBytes(text.length.toLong())}). Use 'Share as File' instead.",

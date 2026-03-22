@@ -17,15 +17,15 @@ import androidx.compose.ui.unit.dp
  *
  * @param label Descriptive label text
  * @param value The metric value to display
- * @param color Color for the value text
  * @param modifier Modifier for the root composable
+ * @param color Color for the value text
  */
 @Composable
 fun WormaCeptorStatItem(
     label: String,
     value: String,
-    color: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary,
 ) {
     Column(
         modifier = modifier,

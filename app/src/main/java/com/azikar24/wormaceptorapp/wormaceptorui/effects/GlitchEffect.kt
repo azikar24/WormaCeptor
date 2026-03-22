@@ -134,7 +134,12 @@ private const val GLITCH_SHADER = """
 """
 
 @Composable
-fun GlitchEffect(isActive: Boolean, progress: Float, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+fun GlitchEffect(
+    isActive: Boolean,
+    progress: Float,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
     if (!isActive) {
         Box(modifier = modifier) {
             content()
@@ -158,7 +163,11 @@ fun GlitchEffect(isActive: Boolean, progress: Float, modifier: Modifier = Modifi
 }
 
 @Composable
-private fun GlitchMeltdownEffectAGSL(progress: Float, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+private fun GlitchMeltdownEffectAGSL(
+    progress: Float,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
         Box(modifier = modifier) { content() }
         return

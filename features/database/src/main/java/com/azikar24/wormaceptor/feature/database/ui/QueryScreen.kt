@@ -44,11 +44,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
-import com.azikar24.wormaceptor.feature.database.ui.theme.DatabaseDesignSystem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -124,7 +124,7 @@ fun QueryScreen(
                     .fillMaxWidth()
                     .heightIn(min = 100.dp, max = 200.dp)
                     .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                     )
                     .padding(WormaCeptorDesignSystem.Spacing.md),
             ) {
@@ -201,7 +201,10 @@ fun QueryScreen(
 }
 
 @Composable
-private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) {
+private fun QueryResultView(
+    result: QueryResult,
+    modifier: Modifier = Modifier,
+) {
     val horizontalScrollState = rememberScrollState()
 
     if (result.error != null) {
@@ -275,7 +278,7 @@ private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier) 
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
                                     color = if (cell == null) {
-                                        DatabaseDesignSystem.DataTypeColors.nullValue
+                                        WormaCeptorColors.Database.NullValue
                                     } else {
                                         MaterialTheme.colorScheme.onSurface
                                     },

@@ -1,37 +1,20 @@
 package com.azikar24.wormaceptor.feature.websocket
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
-import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
-import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
-import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewModel
-import org.koin.compose.koinInject
 
 /**
  * Entry point for the WebSocket Monitoring feature.
- * Provides factory methods and composable navigation host.
+ * Provides factory methods for creating engines and ViewModel factories.
+ *
+ * Navigation is handled by [com.azikar24.wormaceptor.feature.websocket.navigation.webSocketGraph].
  *
  * Usage:
  * ```kotlin
  * // Create the engine (typically a singleton)
  * val engine = WebSocketMonitorEngine()
- *
- * // In your composable
- * WebSocketMonitor(
- *     engine = engine,
- *     onNavigateBack = { navController.popBackStack() },
- * )
  *
  * // When creating WebSocket connections, wrap the listener
  * val listener = engine.wrap(yourWebSocketListener, url)
@@ -70,76 +53,5 @@ class WebSocketViewModelFactory(
             return WebSocketViewModel(engine) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-    }
-}
-
-/**
- * Main composable for the WebSocket Monitor feature.
- * Handles navigation between connection list and message detail screens.
- */
-@Composable
-fun WebSocketMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
-    val engine: WebSocketMonitorEngine = koinInject()
-    val factory = remember { WebSocketFeature.createViewModelFactory(engine) }
-    val viewModel: WebSocketViewModel = viewModel(factory = factory)
-    val navController = rememberNavController()
-
-    // Collect state
-    val connections by viewModel.connections.collectAsState()
-    val connectionSearchQuery by viewModel.connectionSearchQuery.collectAsState()
-    val totalConnectionCount by viewModel.totalConnectionCount.collectAsState()
-
-    val selectedConnection by viewModel.selectedConnection.collectAsState()
-    val messages by viewModel.messages.collectAsState()
-    val messageSearchQuery by viewModel.messageSearchQuery.collectAsState()
-    val directionFilter by viewModel.directionFilter.collectAsState()
-    val totalMessageCount by viewModel.totalMessageCount.collectAsState()
-    val directionCounts by viewModel.directionCounts.collectAsState()
-    val expandedMessageId by viewModel.expandedMessageId.collectAsState()
-
-    NavHost(
-        navController = navController,
-        startDestination = "connections",
-        modifier = modifier,
-        enterTransition = WormaCeptorNavTransitions.enterTransition,
-        exitTransition = WormaCeptorNavTransitions.exitTransition,
-        popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,
-        popExitTransition = WormaCeptorNavTransitions.popExitTransition,
-    ) {
-        composable("connections") {
-            WebSocketListScreen(
-                connections = connections,
-                searchQuery = connectionSearchQuery,
-                totalCount = totalConnectionCount,
-                onSearchQueryChanged = viewModel::onConnectionSearchQueryChanged,
-                onConnectionClick = { connection ->
-                    viewModel.selectConnection(connection.id)
-                    navController.navigate("messages")
-                },
-                onClearAll = viewModel::clearAll,
-                getMessageCount = viewModel::getMessageCountForConnection,
-                onBack = onNavigateBack,
-            )
-        }
-
-        composable("messages") {
-            WebSocketDetailScreen(
-                connection = selectedConnection,
-                messages = messages,
-                searchQuery = messageSearchQuery,
-                directionFilter = directionFilter,
-                totalMessageCount = totalMessageCount,
-                directionCounts = directionCounts,
-                expandedMessageId = expandedMessageId,
-                onSearchQueryChanged = viewModel::onMessageSearchQueryChanged,
-                onDirectionFilterToggle = viewModel::toggleDirectionFilter,
-                onMessageClick = viewModel::toggleMessageExpanded,
-                onClearMessages = viewModel::clearCurrentConnectionMessages,
-                onBack = {
-                    viewModel.clearConnectionSelection()
-                    navController.popBackStack()
-                },
-            )
-        }
     }
 }

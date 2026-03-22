@@ -34,24 +34,26 @@ class WebSocketViewModel(
     private val engine: WebSocketMonitorEngine,
 ) : ViewModel() {
 
-    // Connection list search query
     private val _connectionSearchQuery = MutableStateFlow("")
+
+    /** Current search query for filtering the connection list. */
     val connectionSearchQuery: StateFlow<String> = _connectionSearchQuery
 
-    // Currently selected connection ID
     private val _selectedConnectionId = MutableStateFlow<Long?>(null)
-    val selectedConnectionId: StateFlow<Long?> = _selectedConnectionId
 
-    // Message search query (for detail screen)
     private val _messageSearchQuery = MutableStateFlow("")
+
+    /** Current search query for filtering messages in the detail screen. */
     val messageSearchQuery: StateFlow<String> = _messageSearchQuery
 
-    // Direction filter (null = all directions)
     private val _directionFilter = MutableStateFlow<WebSocketMessageDirection?>(null)
+
+    /** Active message direction filter, or null to show all directions. */
     val directionFilter: StateFlow<WebSocketMessageDirection?> = _directionFilter
 
-    // Expanded message ID (for showing full payload)
     private val _expandedMessageId = MutableStateFlow<Long?>(null)
+
+    /** ID of the message whose payload is currently expanded, or null when collapsed. */
     val expandedMessageId: StateFlow<Long?> = _expandedMessageId
 
     // Raw connections from engine
@@ -196,13 +198,6 @@ class WebSocketViewModel(
     }
 
     /**
-     * Sets the direction filter.
-     */
-    fun setDirectionFilter(direction: WebSocketMessageDirection?) {
-        _directionFilter.value = direction
-    }
-
-    /**
      * Toggles the direction filter.
      */
     fun toggleDirectionFilter(direction: WebSocketMessageDirection) {
@@ -222,21 +217,6 @@ class WebSocketViewModel(
         } else {
             messageId
         }
-    }
-
-    /**
-     * Checks if a message is expanded.
-     */
-    fun isMessageExpanded(messageId: Long): Boolean {
-        return _expandedMessageId.value == messageId
-    }
-
-    /**
-     * Clears all message and direction filters.
-     */
-    fun clearFilters() {
-        _messageSearchQuery.value = ""
-        _directionFilter.value = null
     }
 
     /**

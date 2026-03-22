@@ -111,8 +111,14 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
         val api = SampleApiService.getInstance()
 
         val callBack = object : Callback<Void?> {
-            override fun onResponse(call: Call<Void?>, response: Response<Void?>) = Unit
-            override fun onFailure(call: Call<Void?>, t: Throwable) = Unit
+            override fun onResponse(
+                call: Call<Void?>,
+                response: Response<Void?>,
+            ) = Unit
+            override fun onFailure(
+                call: Call<Void?>,
+                t: Throwable,
+            ) = Unit
         }
 
         api.get().enqueue(callBack)
@@ -152,8 +158,14 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
         val api = SampleContentService.getInstance()
 
         val callBack = object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) = Unit
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) = Unit
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>,
+            ) = Unit
+            override fun onFailure(
+                call: Call<ResponseBody>,
+                t: Throwable,
+            ) = Unit
         }
 
         api.pdf().enqueue(callBack)
@@ -164,6 +176,7 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
         api.json().enqueue(callBack)
         api.xml().enqueue(callBack)
         api.html().enqueue(callBack)
+        api.protobuf().enqueue(callBack)
     }
 
     companion object {

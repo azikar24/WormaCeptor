@@ -36,7 +36,10 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WebViewTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun WebViewTestScreen(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -106,7 +109,10 @@ private fun WebViewTestContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun UrlButtonTopRow(webView: WebView?, onUrlChange: (String) -> Unit) {
+private fun UrlButtonTopRow(
+    webView: WebView?,
+    onUrlChange: (String) -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -142,7 +148,10 @@ private fun UrlButtonTopRow(webView: WebView?, onUrlChange: (String) -> Unit) {
 }
 
 @Composable
-private fun UrlButtonBottomRow(webView: WebView?, onUrlChange: (String) -> Unit) {
+private fun UrlButtonBottomRow(
+    webView: WebView?,
+    onUrlChange: (String) -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),

@@ -24,19 +24,20 @@ data class LoadedLibrary(
      * Type of loaded library.
      */
     enum class LibraryType {
-        /** Native shared object (.so) file */
+        /** Native shared object (.so) file. */
         NATIVE_SO,
 
-        /** Dalvik executable (.dex) file */
+        /** Dalvik executable (.dex) file. */
         DEX,
 
-        /** Java archive (.jar) file */
+        /** Java archive (.jar) file. */
         JAR,
 
-        /** Resource from AAR (Android Archive) */
+        /** Resource from AAR (Android Archive). */
         AAR_RESOURCE,
     }
 
+    /** Factory methods for [LoadedLibrary]. */
     companion object {
         /**
          * Creates an empty LoadedLibrary instance.
@@ -73,6 +74,7 @@ data class LibrarySummary(
     val systemLibraryCount: Int,
     val appLibraryCount: Int,
 ) {
+    /** Factory methods for [LibrarySummary]. */
     companion object {
         /**
          * Creates an empty LibrarySummary instance.

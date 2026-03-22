@@ -32,7 +32,10 @@ object WormaCeptorWebView {
      * @param delegate Optional delegate WebViewClient to forward calls to
      * @return A monitoring WebViewClient, or the [delegate] (or a no-op client) if monitoring is unavailable
      */
-    fun createMonitoringClient(webViewId: String, delegate: WebViewClient? = null): WebViewClient {
+    fun createMonitoringClient(
+        webViewId: String,
+        delegate: WebViewClient? = null,
+    ): WebViewClient {
         return try {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine",

@@ -10,21 +10,28 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import kotlin.math.sqrt
 
+/** Detects device shake gestures using the accelerometer sensor. */
 class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
 
     private var mListener: OnShakeListener? = null
     private var mShakeTimestamp: Long = 0
     private var mShakeCount = 0
 
+    /** Callback interface for receiving shake events with a count. */
     interface OnShakeListener {
+        /** Called when a shake gesture is detected. */
         fun onShake(count: Int)
     }
 
+    /** Sets the listener that receives shake event callbacks. */
     fun setOnShakeListener(listener: OnShakeListener?) {
         this.mListener = listener
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+    override fun onAccuracyChanged(
+        sensor: Sensor,
+        accuracy: Int,
+    ) {
         // ignore
     }
 
@@ -58,12 +65,17 @@ class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
         }
     }
 
+    /** Shake detection thresholds and timing constants. */
     companion object {
         private const val SHAKE_THRESHOLD_GRAVITY = 2.7f
         private const val SHAKE_SLOP_TIME_MS = 500
         private const val SHAKE_COUNT_RESET_TIME_MS = 3000
 
-        fun start(activity: ComponentActivity, onShake: () -> Unit) {
+        /** Registers a lifecycle-aware shake detector on the given activity. */
+        fun start(
+            activity: ComponentActivity,
+            onShake: () -> Unit,
+        ) {
             val sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) ?: return
 

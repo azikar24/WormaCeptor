@@ -8,7 +8,11 @@ import java.io.InputStream
 import java.util.UUID
 
 internal class ServiceProviderImpl : ServiceProvider {
-    override fun init(context: Context, logCrashes: Boolean, leakNotifications: Boolean) {}
+    override fun init(
+        context: Context,
+        logCrashes: Boolean,
+        leakNotifications: Boolean,
+    ) {}
     override fun startTransaction(
         url: String,
         method: String,

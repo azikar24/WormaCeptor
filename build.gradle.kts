@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.android.junit5) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
     alias(libs.plugins.owasp.dependency.check)
@@ -38,8 +39,9 @@ dependencyCheck {
     failBuildOnCVSS = 7.0f // Fail on HIGH and CRITICAL vulnerabilities
     suppressionFile = "$rootDir/config/owasp/suppressions.xml"
     formats = listOf("HTML", "JSON", "SARIF")
-    outputDirectory = "$buildDir/reports/dependency-check"
+    outputDirectory.set(layout.buildDirectory.dir("reports/dependency-check"))
     nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
+    nvd.delay = 10000 // 10s delay between NVD API requests to avoid rate limiting
 }
 
 // =============================================================================
@@ -219,6 +221,18 @@ subprojects {
                 warningsAsErrors = false
             }
         }
+
+        apply(plugin = "de.mannodermaus.android-junit5")
+
+        dependencies {
+            "testImplementation"(rootProject.libs.junit.jupiter.api)
+            "testRuntimeOnly"(rootProject.libs.junit.jupiter.engine)
+            "testImplementation"(rootProject.libs.junit.jupiter.params)
+            "testImplementation"(rootProject.libs.kotest.assertions.core)
+            "testImplementation"(rootProject.libs.mockk)
+            "testImplementation"(rootProject.libs.kotlinx.coroutines.test)
+            "testImplementation"(rootProject.libs.turbine)
+        }
     }
 }
 
@@ -241,6 +255,7 @@ spotless {
                     "ktlint_standard_value-parameter-comment" to "disabled",
                     "ktlint_standard_comment-wrapping" to "disabled",
                     "ktlint_standard_class-naming" to "disabled",
+                    "ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than" to 2,
                 ),
             )
     }
@@ -248,6 +263,11 @@ spotless {
         target("**/*.gradle.kts")
         targetExclude("**/build/**")
         ktlint("1.2.1")
+            .editorConfigOverride(
+                mapOf(
+                    "ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than" to 2,
+                ),
+            )
     }
 }
 
@@ -277,7 +297,7 @@ subprojects {
                                 project.path
                                     .removePrefix(":")
                                     .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.0.0"
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.1"
                         }
                     }
                 }
@@ -303,7 +323,7 @@ subprojects {
                                 project.path
                                     .removePrefix(":")
                                     .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.0.0"
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.1"
                         }
                     }
                 }

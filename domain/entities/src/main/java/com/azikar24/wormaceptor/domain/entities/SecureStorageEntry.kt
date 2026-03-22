@@ -16,13 +16,21 @@ data class SecureStorageEntry(
     val isEncrypted: Boolean,
     val lastModified: Long?,
 ) {
+    /** Type of secure storage backend. */
     enum class StorageType {
+        /** AndroidX EncryptedSharedPreferences. */
         ENCRYPTED_SHARED_PREFS,
+
+        /** Android KeyStore system for cryptographic keys and certificates. */
         KEYSTORE,
+
+        /** Jetpack DataStore (Proto or Preferences). */
         DATASTORE,
     }
 
+    /** Factory methods for [SecureStorageEntry]. */
     companion object {
+        /** Creates an empty entry with default storage type. */
         fun empty() = SecureStorageEntry("", "", StorageType.ENCRYPTED_SHARED_PREFS, false, null)
     }
 }
@@ -39,10 +47,13 @@ data class SecureStorageSummary(
     val keystoreAliasCount: Int,
     val dataStoreFileCount: Int,
 ) {
+    /** Combined count across all secure storage backends. */
     val totalCount: Int
         get() = encryptedPrefsCount + keystoreAliasCount + dataStoreFileCount
 
+    /** Factory methods for [SecureStorageSummary]. */
     companion object {
+        /** Creates an empty summary with zero counts. */
         fun empty() = SecureStorageSummary(0, 0, 0)
     }
 }

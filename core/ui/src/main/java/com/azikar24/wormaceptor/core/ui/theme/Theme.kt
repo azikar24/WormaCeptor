@@ -31,7 +31,7 @@ private val LightColorScheme = lightColorScheme(
     tertiaryContainer = ThemeColors.AccentSubtleLight,
     onTertiaryContainer = ThemeColors.AccentLight,
     error = ThemeColors.Error,
-    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
     onError = ThemeColors.LightBackground,
     onErrorContainer = ThemeColors.Error,
     background = ThemeColors.LightBackground,
@@ -70,7 +70,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiaryContainer = ThemeColors.AccentSubtleDark,
     onTertiaryContainer = ThemeColors.AccentDark,
     error = ThemeColors.ErrorDark,
-    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
     onError = ThemeColors.DarkBackground,
     onErrorContainer = ThemeColors.ErrorDark,
     background = ThemeColors.DarkBackground,
@@ -95,6 +95,7 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = ThemeColors.DarkSurfaceVariant,
 )
 
+/** Applies the WormaCeptor Material 3 theme with optional dynamic color support. */
 @Composable
 fun WormaCeptorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

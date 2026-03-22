@@ -59,7 +59,11 @@ private const val DismissZoneFraction = 1f - PerformanceOverlayState.DISMISS_ZON
  * @param modifier Optional modifier
  */
 @Composable
-fun DismissZoneContent(isDragging: Boolean, isInDismissZone: Boolean, modifier: Modifier = Modifier) {
+fun DismissZoneContent(
+    isDragging: Boolean,
+    isInDismissZone: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter,
@@ -109,7 +113,7 @@ private fun DismissCircle(isActive: Boolean) {
     )
 
     val iconAlpha by animateFloatAsState(
-        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.opaque else WormaCeptorDesignSystem.Alpha.bold,
+        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.OPAQUE else WormaCeptorDesignSystem.Alpha.BOLD,
         animationSpec = tween(ColorTransitionMs),
         label = "dismissIconAlpha",
     )

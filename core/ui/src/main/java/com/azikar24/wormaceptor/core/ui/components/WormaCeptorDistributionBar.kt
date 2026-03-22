@@ -40,7 +40,13 @@ private const val PercentMultiplier = 100f
  * @param modifier Modifier for the root composable
  */
 @Composable
-fun WormaCeptorDistributionBar(label: String, count: Int, total: Int, color: Color, modifier: Modifier = Modifier) {
+fun WormaCeptorDistributionBar(
+    label: String,
+    count: Int,
+    total: Int,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
     val percentage = if (total > 0) count.toFloat() / total.toFloat() * PercentMultiplier else 0f
     val animatedPercentage by animateFloatAsState(
         targetValue = percentage,
@@ -87,7 +93,7 @@ fun WormaCeptorDistributionBar(label: String, count: Int, total: Int, color: Col
                 .height(8.dp)
                 .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
                 .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                 ),
         ) {
             Box(

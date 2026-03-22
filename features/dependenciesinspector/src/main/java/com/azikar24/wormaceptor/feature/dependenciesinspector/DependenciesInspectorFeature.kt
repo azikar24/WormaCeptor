@@ -48,7 +48,10 @@ class DependenciesInspectorViewModelFactory(
  * Main composable for the Dependencies Inspector feature.
  */
 @Composable
-fun DependenciesInspector(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun DependenciesInspector(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: DependenciesInspectorEngine = koinInject()
     val factory = remember { DependenciesInspectorFeature.createViewModelFactory(engine) }
     val viewModel: DependenciesInspectorViewModel = viewModel(factory = factory)

@@ -1,13 +1,13 @@
 [versions]
-agp = "8.5.2"
+agp = "8.6.0"
 kotlin = "2.0.21"
 kotlinJvm = "2.0.21"
-detekt = "1.23.5"
+detekt = "1.23.8"
 preferenceKtx = "1.2.1"
 spotless = "6.25.0"
 intellijPlatform = "2.2.1"
 gson = "2.10.1"
-composeRulesDetekt = "0.3.11"
+composeRulesDetekt = "0.4.28"
 coreKtx = "1.13.1"
 constraintlayout = "2.2.1"
 lifecycle = "2.7.0"
@@ -17,7 +17,7 @@ pagingRuntime = "3.3.6"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
 room = "2.6.1"
-composeBom = "2024.10.01"
+composeBom = "2025.10.00"
 accompanist = "0.36.0"
 multidex = "2.0.1"
 ksp = "2.0.21-1.0.27"
@@ -39,10 +39,14 @@ security-crypto = "1.1.0-alpha06"
 osmdroid = "6.1.18"
 
 # Code Quality Plugins
-owaspDependencyCheck = "9.0.9"
+owaspDependencyCheck = "12.2.0"
 dependencyAnalysis = "1.30.0"
 binaryCompatibilityValidator = "0.14.0"
 kover = "0.7.6"
+junit-jupiter = "5.11.0"
+android-junit5-plugin = "1.11.0.0"
+kotest = "5.9.1"
+turbine = "1.2.0"
 gradleDoctor = "0.9.1"
 sortDependencies = "0.6"
 
@@ -53,9 +57,9 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "41"
+versionCode = "42"
 #noinspection UnusedVersionCatalogEntry
-versionName = "2.2.0"
+versionName = "2.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -107,6 +111,12 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebase-messaging" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 osmdroid-android = { group = "org.osmdroid", name = "osmdroid-android", version.ref = "osmdroid" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit-jupiter" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+org-json = { group = "org.json", name = "json", version = "20231013" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -131,3 +141,4 @@ binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibil
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 sort-dependencies = { id = "com.squareup.sort-dependencies", version.ref = "sortDependencies" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5-plugin" }

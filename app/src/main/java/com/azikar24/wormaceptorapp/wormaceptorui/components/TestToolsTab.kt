@@ -40,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -48,18 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
-
-/**
- * Status for tool list items that show feedback.
- */
-enum class ToolStatus {
-    Idle,
-    Running,
-    Done,
-
-    /** Waiting for user action such as rotating the screen. Shows hint message. */
-    WaitingForAction,
-}
 
 /**
  * Test Tools tab content for the demo app.
@@ -173,7 +162,10 @@ fun TestToolsTab(
  * Section header with uppercase styling.
  */
 @Composable
-private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
+private fun SectionHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = title,
         fontSize = 12.sp,
@@ -247,7 +239,7 @@ private fun ToolListItem(
 private fun ToolListItemLabel(
     label: String,
     description: String?,
-    textColor: androidx.compose.ui.graphics.Color,
+    textColor: Color,
     showDescription: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -270,7 +262,10 @@ private fun ToolListItemLabel(
 }
 
 @Composable
-private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
+private fun ToolListItemTrailing(
+    status: ToolStatus,
+    showChevron: Boolean,
+) {
     AnimatedContent(
         targetState = status,
         transitionSpec = {
@@ -295,7 +290,7 @@ private fun ToolListItemTrailing(status: ToolStatus, showChevron: Boolean) {
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                 )
             } else {
                 Spacer(modifier = Modifier.size(20.dp))

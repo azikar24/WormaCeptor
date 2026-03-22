@@ -70,7 +70,7 @@ public final class com/azikar24/wormaceptor/feature/securestorage/ui/theme/Secur
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColorsKt {
-	public static final fun secureStorageColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;
+	public static final fun secureStorageColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewModel : androidx/lifecycle/ViewModel {

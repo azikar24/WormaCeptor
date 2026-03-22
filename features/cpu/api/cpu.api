@@ -72,7 +72,7 @@ public final class com/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColors {
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColorsKt {
-	public static final fun cpuColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColors;
+	public static final fun cpuColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuViewModel : androidx/lifecycle/ViewModel {

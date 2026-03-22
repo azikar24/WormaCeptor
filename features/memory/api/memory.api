@@ -71,7 +71,7 @@ public final class com/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColors
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColorsKt {
-	public static final fun memoryColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColors;
+	public static final fun memoryColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewModel : androidx/lifecycle/ViewModel {

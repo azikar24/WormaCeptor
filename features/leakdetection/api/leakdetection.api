@@ -92,7 +92,7 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakD
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakDetectionColorsKt {
-	public static final fun leakDetectionColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakDetectionColors;
+	public static final fun leakDetectionColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakDetectionColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewModel : androidx/lifecycle/ViewModel {

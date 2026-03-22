@@ -8,6 +8,7 @@ import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
+import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -25,13 +26,19 @@ import java.net.URI
  * @param title Optional title for the share chooser dialog
  * @param subject Optional subject line (used by email apps)
  */
-fun shareText(context: Context, text: String, title: String = "Share", subject: String? = null) {
+fun shareText(
+    context: Context,
+    text: String,
+    title: String = "",
+    subject: String? = null,
+) {
+    val chooserTitle = title.ifEmpty { context.getString(R.string.viewer_share_title) }
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, text)
         subject?.let { putExtra(Intent.EXTRA_SUBJECT, it) }
     }
-    context.startActivity(Intent.createChooser(intent, title))
+    context.startActivity(Intent.createChooser(intent, chooserTitle))
 }
 
 /**
@@ -51,9 +58,10 @@ suspend fun shareAsFile(
     content: String,
     fileName: String,
     mimeType: String = "text/plain",
-    title: String = "Share File",
+    title: String = "",
     onMessage: (String) -> Unit = {},
 ) {
+    val chooserTitle = title.ifEmpty { context.getString(R.string.viewer_share_file_title) }
     // Show immediate feedback
     withContext(Dispatchers.Main) {
         onMessage("Preparing file (${formatBytes(content.length.toLong())})...")
@@ -85,7 +93,7 @@ suspend fun shareAsFile(
                 putExtra(Intent.EXTRA_STREAM, uri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            context.startActivity(Intent.createChooser(intent, title))
+            context.startActivity(Intent.createChooser(intent, chooserTitle))
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
@@ -136,7 +144,11 @@ fun extractUrlPath(url: String): String {
  * @param scheme The URL scheme (default: https)
  * @return The complete URL string
  */
-fun buildFullUrl(host: String, path: String, scheme: String = "https"): String {
+fun buildFullUrl(
+    host: String,
+    path: String,
+    scheme: String = "https",
+): String {
     return "$scheme://$host$path"
 }
 
@@ -159,7 +171,10 @@ fun buildFullUrl(host: String, path: String, scheme: String = "https"): String {
  * @return The appropriate Color for the status
  */
 @Composable
-fun getStatusColor(status: TransactionStatus, code: Int?): Color {
+fun getStatusColor(
+    status: TransactionStatus,
+    code: Int?,
+): Color {
     return when (status) {
         TransactionStatus.COMPLETED -> when {
             code == null -> WormaCeptorColors.StatusAmber

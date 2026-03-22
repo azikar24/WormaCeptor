@@ -21,6 +21,7 @@ import java.awt.GridBagLayout
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import javax.swing.JComponent
 import javax.swing.JPanel
 import javax.swing.SwingConstants
 import javax.swing.border.EmptyBorder
@@ -201,7 +202,7 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
             gbc: GridBagConstraints,
             row: Int,
             labelText: String,
-            valueComponent: javax.swing.JComponent,
+            valueComponent: JComponent,
         ) {
             gbc.gridx = 0
             gbc.gridy = row
@@ -349,7 +350,11 @@ class TransactionDetailPanel(private val project: Project) : JPanel(CardLayout()
             add(innerTabs, BorderLayout.CENTER)
         }
 
-        fun setData(headers: Map<String, List<String>>, body: String?, size: Long) {
+        fun setData(
+            headers: Map<String, List<String>>,
+            body: String?,
+            size: Long,
+        ) {
             // Format headers
             val headersText = buildString {
                 for ((key, values) in headers) {

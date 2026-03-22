@@ -2,7 +2,7 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeatu
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeature;
 	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;
-	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)Lcom/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewModelFactory;
+	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;Landroid/app/Application;)Lcom/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewModelFactory;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeatureKt {
@@ -11,7 +11,7 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserFeatu
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;Landroid/app/Application;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
 }
 
@@ -300,7 +300,7 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserVi
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/vm/FileBrowserViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;Landroid/app/Application;)V
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
 

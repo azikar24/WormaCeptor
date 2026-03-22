@@ -241,6 +241,26 @@
     <string name="viewer_pdf_open_fullscreen">Open fullscreen</string>
     <string name="viewer_pdf_error_loading">Error loading PDF</string>
     <string name="viewer_pdf_password_protected">Password protected</string>
+    <string name="viewer_pdf_go_to_page">Go to Page</string>
+    <string name="viewer_pdf_page_prompt">Enter a page number (1-%1$d)</string>
+    <string name="viewer_pdf_page_indicator">Page %1$d of %2$d</string>
+    <string name="viewer_pdf_invalid_page">Please enter a valid page number</string>
+    <string name="viewer_pdf_loading">Loading PDF…</string>
+    <string name="viewer_pdf_failed">Failed to open PDF</string>
+    <string name="viewer_pdf_rendering">Rendering PDF…</string>
+    <string name="viewer_pdf_load_failed">Failed to load PDF</string>
+    <string name="viewer_pdf_password_title">Password Protected</string>
+    <string name="viewer_pdf_password_message">This PDF requires a password to view</string>
+    <string name="viewer_pdf_hide_thumbnails">Hide thumbnails</string>
+    <string name="viewer_pdf_show_thumbnails">Show thumbnails</string>
+    <string name="viewer_pdf_document">PDF Document</string>
+    <string name="viewer_pdf_version">PDF %1$s</string>
+    <string name="viewer_pdf_no_pages">PDF has no pages</string>
+    <string name="viewer_pdf_share_chooser">Share PDF</string>
+    <plurals name="viewer_pdf_page_count_label">
+        <item quantity="one">%1$d page</item>
+        <item quantity="other">%1$d pages</item>
+    </plurals>
 
     <!-- Image Viewer -->
     <string name="viewer_image">Image</string>
@@ -268,9 +288,41 @@
 
     <!-- Multipart -->
     <string name="viewer_multipart_content_type">Multipart content type</string>
+    <string name="viewer_multipart_no_data">No multipart data or invalid format</string>
+    <string name="viewer_multipart_headers">Headers</string>
+    <string name="viewer_multipart_boundary">boundary: %1$s</string>
+    <string name="viewer_multipart_part_label">Part %1$d</string>
+    <plurals name="viewer_multipart_part_count">
+        <item quantity="one">%1$d part</item>
+        <item quantity="other">%1$d parts</item>
+    </plurals>
+
+    <!-- Protobuf -->
+    <string name="viewer_protobuf_field">Field %1$d</string>
+    <string name="viewer_protobuf_wire_type">Wire Type</string>
+    <string name="viewer_protobuf_decode_error">Could not decode protobuf</string>
+    <string name="viewer_protobuf_hex_dump">Hex Dump</string>
+    <plurals name="viewer_protobuf_fields_count">
+        <item quantity="one">%1$d field</item>
+        <item quantity="other">%1$d fields</item>
+    </plurals>
+
+    <!-- FormData -->
+    <string name="viewer_form_no_data">No form data</string>
+    <string name="viewer_form_key">Key</string>
+    <string name="viewer_form_value">Value</string>
 
     <!-- Quick Filter -->
     <string name="viewer_quick_filter_selected">Selected</string>
+
+    <!-- Share Utilities -->
+    <string name="viewer_share_title">Share</string>
+    <string name="viewer_share_file_title">Share File</string>
+    <string name="viewer_share_request_body">Share Request Body</string>
+    <string name="viewer_share_response_body">Share Response Body</string>
+    <string name="viewer_share_transaction">Share Transaction</string>
+    <string name="viewer_share_transactions">Share %1$d Transactions</string>
+    <string name="viewer_transaction_load_failed">Failed to load transaction details</string>
 
     <!-- Empty States -->
     <string name="viewer_empty_no_matches">No matches found</string>

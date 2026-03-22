@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,16 +23,26 @@ import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import java.net.URLDecoder
+import com.azikar24.wormaceptor.domain.contracts.FormDataParser
+import com.azikar24.wormaceptor.feature.viewer.R
+import org.koin.java.KoinJavaComponent.get
 
 /**
  * A table view for URL-encoded form data (application/x-www-form-urlencoded).
  * Parses key-value pairs and displays them in a structured table format.
  */
 @Composable
-fun FormDataView(formData: String, modifier: Modifier = Modifier) {
+fun FormDataView(
+    formData: String,
+    modifier: Modifier = Modifier,
+) {
     val parsedData = remember(formData) {
-        parseFormData(formData)
+        try {
+            val parser: FormDataParser = get(FormDataParser::class.java)
+            parser.parse(formData)
+        } catch (_: RuntimeException) {
+            emptyList()
+        }
     }
 
     Box(modifier = modifier.fillMaxWidth()) {
@@ -43,7 +54,7 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "No form data",
+                    text = stringResource(R.string.viewer_form_no_data),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -59,7 +70,7 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                             .fillMaxWidth()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.bold,
+                                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
                                 ),
                             )
                             .padding(
@@ -69,7 +80,7 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "Key",
+                            text = stringResource(R.string.viewer_form_key),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
@@ -77,7 +88,7 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
                             modifier = Modifier.weight(0.4f),
                         )
                         Text(
-                            text = "Value",
+                            text = stringResource(R.string.viewer_form_value),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
@@ -88,10 +99,10 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
 
                     WormaCeptorDivider(style = DividerStyle.Subtle)
 
-                    parsedData.forEachIndexed { index, (key, value) ->
+                    parsedData.forEachIndexed { index, param ->
                         FormDataRow(
-                            key = key,
-                            value = value,
+                            key = param.key,
+                            value = param.value,
                             isEven = index % 2 == 0,
                         )
 
@@ -109,7 +120,11 @@ fun FormDataView(formData: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun FormDataRow(key: String, value: String, isEven: Boolean) {
+private fun FormDataRow(
+    key: String,
+    value: String,
+    isEven: Boolean,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,7 +132,7 @@ private fun FormDataRow(key: String, value: String, isEven: Boolean) {
                 if (isEven) {
                     MaterialTheme.colorScheme.surface
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
                 },
             )
             .padding(
@@ -149,42 +164,5 @@ private fun FormDataRow(key: String, value: String, isEven: Boolean) {
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }
-    }
-}
-
-/**
- * Parses URL-encoded form data into key-value pairs.
- */
-private fun parseFormData(formData: String): List<Pair<String, String>> {
-    if (formData.isBlank()) return emptyList()
-
-    return try {
-        formData
-            .split("&")
-            .filter { it.isNotBlank() }
-            .mapNotNull { pair ->
-                val parts = pair.split("=", limit = 2)
-                if (parts.isEmpty()) return@mapNotNull null
-
-                val key = try {
-                    URLDecoder.decode(parts[0], "UTF-8")
-                } catch (e: Exception) {
-                    parts[0]
-                }
-
-                val value = if (parts.size > 1) {
-                    try {
-                        URLDecoder.decode(parts[1], "UTF-8")
-                    } catch (e: Exception) {
-                        parts[1]
-                    }
-                } else {
-                    ""
-                }
-
-                key to value
-            }
-    } catch (e: Exception) {
-        listOf("raw" to formData)
     }
 }

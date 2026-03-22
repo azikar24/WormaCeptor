@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
+/** In-memory [LocationSimulatorRepository] implementation with built-in city presets. */
 class InMemoryLocationSimulatorRepository : LocationSimulatorRepository {
 
     private val _presets = MutableStateFlow(builtInPresets)
@@ -36,6 +37,7 @@ class InMemoryLocationSimulatorRepository : LocationSimulatorRepository {
         _mockLocation.value = location
     }
 
+    /** Built-in location presets shipped with the library. */
     companion object {
         private val builtInPresets: List<LocationPreset> = listOf(
             LocationPreset(

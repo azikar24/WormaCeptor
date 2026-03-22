@@ -48,6 +48,7 @@ data class PerformanceOverlayState(
      */
     fun isInDismissZone(): Boolean = positionPercent.y >= DISMISS_ZONE_THRESHOLD
 
+    /** Positioning defaults and empty state factory. */
     companion object {
         /**
          * Default position: top-right corner with safe margin.
@@ -73,16 +74,22 @@ data class PerformanceOverlayState(
  * These define when metrics should show green (good), yellow (warning), or red (critical).
  */
 object PerformanceThresholds {
-    // FPS thresholds
+    /** FPS at or above this value is considered healthy. */
     const val FPS_GOOD = 55
+
+    /** FPS at or above this value (but below [FPS_GOOD]) triggers a warning. */
     const val FPS_WARNING = 30
 
-    // Memory usage thresholds (percentage)
+    /** Memory usage percentage below this value is considered healthy. */
     const val MEMORY_GOOD = 60
+
+    /** Memory usage percentage at or above this value is critical. */
     const val MEMORY_WARNING = 80
 
-    // CPU usage thresholds (percentage)
+    /** CPU usage percentage below this value is considered healthy. */
     const val CPU_GOOD = 50
+
+    /** CPU usage percentage at or above this value is critical. */
     const val CPU_WARNING = 80
 }
 
@@ -90,14 +97,20 @@ object PerformanceThresholds {
  * Enum representing the health status of a metric.
  */
 enum class MetricStatus {
+    /** Metric value is within healthy range. */
     GOOD,
+
+    /** Metric value is approaching a problematic threshold. */
     WARNING,
+
+    /** Metric value has exceeded the acceptable threshold. */
     CRITICAL,
 
     /** Metric is not being actively monitored (paused). */
     INACTIVE,
     ;
 
+    /** Threshold-based factories for deriving status from raw metric values. */
     companion object {
         /**
          * Determines FPS status based on value.
@@ -106,7 +119,10 @@ enum class MetricStatus {
          * @param fps The current FPS value
          * @param isMonitoring Whether the FPS monitor is actively running
          */
-        fun fromFps(fps: Int, isMonitoring: Boolean = true): MetricStatus = when {
+        fun fromFps(
+            fps: Int,
+            isMonitoring: Boolean = true,
+        ): MetricStatus = when {
             !isMonitoring -> INACTIVE
             fps >= PerformanceThresholds.FPS_GOOD -> GOOD
             fps >= PerformanceThresholds.FPS_WARNING -> WARNING
@@ -120,7 +136,10 @@ enum class MetricStatus {
          * @param percent The current memory usage percentage
          * @param isMonitoring Whether the memory monitor is actively running
          */
-        fun fromMemoryPercent(percent: Int, isMonitoring: Boolean = true): MetricStatus = when {
+        fun fromMemoryPercent(
+            percent: Int,
+            isMonitoring: Boolean = true,
+        ): MetricStatus = when {
             !isMonitoring -> INACTIVE
             percent < PerformanceThresholds.MEMORY_GOOD -> GOOD
             percent <= PerformanceThresholds.MEMORY_WARNING -> WARNING
@@ -134,7 +153,10 @@ enum class MetricStatus {
          * @param percent The current CPU usage percentage
          * @param isMonitoring Whether the CPU monitor is actively running
          */
-        fun fromCpuPercent(percent: Int, isMonitoring: Boolean = true): MetricStatus = when {
+        fun fromCpuPercent(
+            percent: Int,
+            isMonitoring: Boolean = true,
+        ): MetricStatus = when {
             !isMonitoring -> INACTIVE
             percent < PerformanceThresholds.CPU_GOOD -> GOOD
             percent <= PerformanceThresholds.CPU_WARNING -> WARNING

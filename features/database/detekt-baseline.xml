@@ -1,13 +1,12 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:DatabaseFeature.kt$@Composable fun DatabaseBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null)</ID>
     <ID>LongMethod:DatabaseListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DatabaseListScreen( databases: ImmutableList&lt;DatabaseInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:QueryScreen.kt$@Composable private fun QueryResultView(result: QueryResult, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:QueryScreen.kt$@Composable private fun QueryResultView( result: QueryResult, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:QueryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun QueryScreen( databaseName: String, sqlQuery: String, queryResult: QueryResult?, queryHistory: ImmutableList&lt;String&gt;, isExecuting: Boolean, onQueryChanged: (String) -&gt; Unit, onExecuteQuery: () -&gt; Unit, onClearQuery: () -&gt; Unit, onSelectFromHistory: (String) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TableDataScreen.kt$@Composable private fun DataTable(result: QueryResult, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:TableDataScreen.kt$@Composable private fun SchemaView(schema: ImmutableList&lt;ColumnInfo&gt;, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:TableDataScreen.kt$@Composable private fun DataTable( result: QueryResult, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:TableDataScreen.kt$@Composable private fun SchemaView( schema: ImmutableList&lt;ColumnInfo&gt;, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TableDataScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableDataScreen( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TableListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableListScreen( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:DatabaseListScreen.kt$( databases: ImmutableList&lt;DatabaseInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -15,37 +14,17 @@
     <ID>LongParameterList:TableDataScreen.kt$( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:TableListScreen.kt$( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:DatabaseDataSource.kt$DatabaseDataSource$1000</ID>
-    <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%'"</ID>
-    <ID>MaxLineLength:DatabaseDataSource.kt$DatabaseDataSource$"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%' ORDER BY name"</ID>
-    <ID>MaxLineLength:TableDataScreen.kt$tint = if (showSchema) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface</ID>
-    <ID>MaximumLineLength:DatabaseDataSource.kt$DatabaseDataSource$ </ID>
-    <ID>MaximumLineLength:TableDataScreen.kt$ </ID>
-    <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTableSchema(databasePath: String, tableName: String): List&lt;ColumnInfo&gt;</ID>
+    <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTableSchema( databasePath: String, tableName: String, ): List&lt;ColumnInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTables(databasePath: String): List&lt;TableInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun countTables(databasePath: String): Int</ID>
-    <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun executeRawQuery(db: SQLiteDatabase, query: String): QueryResult</ID>
-    <ID>SwallowedException:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
+    <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun executeRawQuery( db: SQLiteDatabase, query: String, ): QueryResult</ID>
+    <ID>ParameterNaming:DatabaseListScreen.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:QueryScreen.kt$onQueryChanged</ID>
+    <ID>ParameterNaming:TableListScreen.kt$onSearchQueryChanged</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
-    <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$DataTypeColors</ID>
-    <ID>UndocumentedPublicClass:DatabaseDesignSystem.kt$DatabaseDesignSystem$SqlSyntaxColors</ID>
-    <ID>UndocumentedPublicFunction:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$fun forType(type: String): Color</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val blob = WormaCeptorColors.Database.Blob</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val integer = WormaCeptorColors.Database.Integer</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val nullValue = WormaCeptorColors.Database.NullValue</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val primaryKey = WormaCeptorColors.Database.PrimaryKey</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val real = WormaCeptorColors.Database.Real</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.DataTypeColors$val text = WormaCeptorColors.Database.Text</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val comment = WormaCeptorColors.Database.SqlComment</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val function = WormaCeptorColors.Database.SqlFunction</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val keyword = WormaCeptorColors.Database.SqlKeyword</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val number = WormaCeptorColors.Database.SqlNumber</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val operator = WormaCeptorColors.Database.SqlOperator</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val string = WormaCeptorColors.Database.SqlString</ID>
-    <ID>UndocumentedPublicProperty:DatabaseDesignSystem.kt$DatabaseDesignSystem.SqlSyntaxColors$val table = WormaCeptorColors.Database.SqlTable</ID>
     <ID>UnusedPrivateMember:DatabaseListScreen.kt$@SuppressLint("SdCardPath") @Preview(showBackground = true) @Composable private fun DatabaseListScreenPreview()</ID>
     <ID>UnusedPrivateMember:QueryScreen.kt$@Preview(showBackground = true) @Composable private fun QueryScreenPreview()</ID>
     <ID>UnusedPrivateMember:TableDataScreen.kt$@Preview(showBackground = true) @Composable private fun TableDataScreenPreview()</ID>
     <ID>UnusedPrivateMember:TableListScreen.kt$@Preview(showBackground = true) @Composable private fun TableListScreenPreview()</ID>
-    <ID>ViewModelInjection:DatabaseFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

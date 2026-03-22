@@ -42,12 +42,12 @@ class DatabaseDataSource(private val context: Context) {
                             sizeBytes = sizeBytes,
                             tableCount = tableCount,
                         )
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null // Skip databases that can't be opened
                     }
                 }
                 .sortedBy { it.name }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -59,7 +59,9 @@ class DatabaseDataSource(private val context: Context) {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val cursor = db.rawQuery(
-                    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%' ORDER BY name",
+                    "SELECT name FROM sqlite_master WHERE type='table'" +
+                        " AND name NOT LIKE 'sqlite_%'" +
+                        " AND name NOT LIKE 'android_%' ORDER BY name",
                     null,
                 )
 
@@ -80,7 +82,7 @@ class DatabaseDataSource(private val context: Context) {
                     }
                     tables
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptyList()
             }
         } ?: emptyList()
@@ -89,7 +91,10 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Gets schema information for a table.
      */
-    fun getTableSchema(databasePath: String, tableName: String): List<ColumnInfo> {
+    fun getTableSchema(
+        databasePath: String,
+        tableName: String,
+    ): List<ColumnInfo> {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val cursor = db.rawQuery("PRAGMA table_info('$tableName')", null)
@@ -113,7 +118,7 @@ class DatabaseDataSource(private val context: Context) {
                     }
                     columns
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptyList()
             }
         } ?: emptyList()
@@ -122,7 +127,12 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Queries a table with pagination.
      */
-    fun queryTable(databasePath: String, tableName: String, limit: Int, offset: Int): QueryResult {
+    fun queryTable(
+        databasePath: String,
+        tableName: String,
+        limit: Int,
+        offset: Int,
+    ): QueryResult {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val query = "SELECT * FROM `$tableName` LIMIT $limit OFFSET $offset"
@@ -146,7 +156,10 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Executes a custom SQL query.
      */
-    fun executeQuery(databasePath: String, query: String): QueryResult {
+    fun executeQuery(
+        databasePath: String,
+        query: String,
+    ): QueryResult {
         return openDatabase(databasePath)?.use { db ->
             try {
                 executeRawQuery(db, query)
@@ -176,7 +189,7 @@ class DatabaseDataSource(private val context: Context) {
                 null,
                 SQLiteDatabase.OPEN_READONLY,
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -188,13 +201,15 @@ class DatabaseDataSource(private val context: Context) {
         return openDatabase(databasePath)?.use { db ->
             try {
                 val cursor = db.rawQuery(
-                    "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'android_%'",
+                    "SELECT COUNT(*) FROM sqlite_master WHERE type='table'" +
+                        " AND name NOT LIKE 'sqlite_%'" +
+                        " AND name NOT LIKE 'android_%'",
                     null,
                 )
                 cursor.use {
                     if (it.moveToFirst()) it.getInt(0) else 0
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 0
             }
         } ?: 0
@@ -203,13 +218,16 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Gets the row count for a table.
      */
-    private fun getRowCount(db: SQLiteDatabase, tableName: String): Long {
+    private fun getRowCount(
+        db: SQLiteDatabase,
+        tableName: String,
+    ): Long {
         return try {
             val cursor = db.rawQuery("SELECT COUNT(*) FROM `$tableName`", null)
             cursor.use {
                 if (it.moveToFirst()) it.getLong(0) else 0L
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0L
         }
     }
@@ -217,11 +235,14 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Gets the column count for a table.
      */
-    private fun getColumnCount(db: SQLiteDatabase, tableName: String): Int {
+    private fun getColumnCount(
+        db: SQLiteDatabase,
+        tableName: String,
+    ): Int {
         return try {
             val cursor = db.rawQuery("SELECT * FROM `$tableName` LIMIT 0", null)
             cursor.use { it.columnCount }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0
         }
     }
@@ -229,7 +250,10 @@ class DatabaseDataSource(private val context: Context) {
     /**
      * Executes a raw query and converts the cursor to a QueryResult.
      */
-    private fun executeRawQuery(db: SQLiteDatabase, query: String): QueryResult {
+    private fun executeRawQuery(
+        db: SQLiteDatabase,
+        query: String,
+    ): QueryResult {
         val cursor = db.rawQuery(query, null)
 
         return cursor.use {

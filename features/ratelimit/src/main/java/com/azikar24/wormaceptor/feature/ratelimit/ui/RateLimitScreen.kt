@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,6 +60,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -68,6 +68,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import com.azikar24.wormaceptor.feature.ratelimit.R
+import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors
 import com.azikar24.wormaceptor.feature.ratelimit.ui.theme.rateLimitColors
 import java.util.Locale
 
@@ -198,12 +199,12 @@ fun RateLimitScreen(
 private fun EnableToggleCard(
     enabled: Boolean,
     onToggle: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     val statusColor by animateColorAsState(
         targetValue = if (enabled) colors.enabled else colors.disabled,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
         label = "status",
     )
 
@@ -230,7 +231,7 @@ private fun EnableToggleCard(
                     modifier = Modifier
                         .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                        .background(statusColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -267,7 +268,7 @@ private fun EnableToggleCard(
                 onCheckedChange = { onToggle() },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colors.enabled,
-                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+                    checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
                 ),
             )
         }
@@ -280,7 +281,7 @@ private fun NetworkPresetsCard(
     selectedPreset: RateLimitConfig.NetworkPreset?,
     enabled: Boolean,
     onPresetSelected: (RateLimitConfig.NetworkPreset?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -302,7 +303,7 @@ private fun NetworkPresetsCard(
                 modifier = Modifier.semantics { heading() },
             )
 
-            FlowRow(
+            WormaCeptorFlowRow(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             ) {
@@ -321,7 +322,7 @@ private fun NetworkPresetsCard(
             selectedPreset?.let { preset ->
                 Surface(
                     shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
-                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                    color = colors.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
                 ) {
                     Row(
                         modifier = Modifier
@@ -366,13 +367,18 @@ private fun PresetChip(
     selected: Boolean,
     enabled: Boolean,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     val presetColor = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> colors.presetWifi
-        RateLimitConfig.NetworkPreset.GOOD_3G, RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> colors.preset3G
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> colors.preset2G
+        RateLimitConfig.NetworkPreset.GOOD_3G,
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> colors.preset3G
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> colors.preset2G
         RateLimitConfig.NetworkPreset.EDGE -> colors.presetEdge
         RateLimitConfig.NetworkPreset.OFFLINE -> colors.presetOffline
     }
@@ -380,8 +386,12 @@ private fun PresetChip(
     val presetIcon = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> Icons.Default.Wifi
         RateLimitConfig.NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
-        RateLimitConfig.NetworkPreset.REGULAR_3G, RateLimitConfig.NetworkPreset.SLOW_3G -> Icons.Default.SignalCellularAlt
-        RateLimitConfig.NetworkPreset.GOOD_2G, RateLimitConfig.NetworkPreset.SLOW_2G -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.REGULAR_3G,
+        RateLimitConfig.NetworkPreset.SLOW_3G,
+        -> Icons.Default.SignalCellularAlt
+        RateLimitConfig.NetworkPreset.GOOD_2G,
+        RateLimitConfig.NetworkPreset.SLOW_2G,
+        -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.EDGE -> Icons.Default.SignalCellularAlt
         RateLimitConfig.NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
     }
@@ -404,7 +414,7 @@ private fun PresetChip(
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            selectedContainerColor = presetColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
             selectedLabelColor = presetColor,
             selectedLeadingIconColor = presetColor,
         ),
@@ -453,7 +463,7 @@ private fun ConfigurationCard(
     onUploadSpeedChanged: (Long) -> Unit,
     onLatencyChanged: (Long) -> Unit,
     onPacketLossChanged: (Float) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -482,7 +492,7 @@ private fun ConfigurationCard(
                 value = config.downloadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.downloadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.download,
                 onValueChange = { onDownloadSpeedChanged(it.toLong()) },
@@ -496,7 +506,7 @@ private fun ConfigurationCard(
                 value = config.uploadSpeedKbps.toFloat(),
                 valueText = formatSpeed(config.uploadSpeedKbps),
                 minValue = 1f,
-                maxValue = 100000f,
+                maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.upload,
                 onValueChange = { onUploadSpeedChanged(it.toLong()) },
@@ -545,7 +555,7 @@ private fun ConfigSlider(
     enabled: Boolean,
     color: Color,
     onValueChange: (Float) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -602,7 +612,7 @@ private fun ConfigSlider(
 @Composable
 private fun StatisticsCard(
     stats: ThrottleStats,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -680,7 +690,7 @@ private fun StatItem(
     label: String,
     value: String,
     color: Color,
-    colors: com.azikar24.wormaceptor.feature.ratelimit.ui.theme.RateLimitColors,
+    colors: RateLimitColors,
     modifier: Modifier = Modifier,
 ) {
     Column(

@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Room-backed [LeakRepository] that persists memory leak reports to SQLite. */
 class RoomLeakRepository(
     private val dao: LeakDao,
 ) : LeakRepository {

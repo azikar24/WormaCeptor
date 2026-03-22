@@ -135,7 +135,7 @@ internal fun MockLocationStatusCard(
     } else {
         BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         )
     }
     Card(

@@ -199,7 +199,11 @@ fun TableListScreen(
 }
 
 @Composable
-private fun TableListItem(table: TableInfo, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun TableListItem(
+    table: TableInfo,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     ListItem(
         modifier = modifier.clickable(onClick = onClick),
         headlineContent = {

@@ -26,33 +26,51 @@ object SampleWebSocketService {
             .addInterceptor(
                 WormaCeptorInterceptor()
                     .showNotification(true)
-                    .maxContentLength(250000L),
+                    .maxContentLength(250_000L),
             )
             .build()
     }
 
     private val listener = object : WebSocketListener() {
-        override fun onOpen(webSocket: WebSocket, response: Response) {
+        override fun onOpen(
+            webSocket: WebSocket,
+            response: Response,
+        ) {
             Log.d(TAG, "WebSocket opened: ${response.message}")
             // Send some test messages and record them
             sendAndRecord("Hello from WormaCeptor!")
             sendAndRecord("""{"type":"test","message":"JSON message","timestamp":${System.currentTimeMillis()}}""")
         }
 
-        override fun onMessage(webSocket: WebSocket, text: String) {
+        override fun onMessage(
+            webSocket: WebSocket,
+            text: String,
+        ) {
             Log.d(TAG, "WebSocket message received: $text")
         }
 
-        override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        override fun onClosing(
+            webSocket: WebSocket,
+            code: Int,
+            reason: String,
+        ) {
             Log.d(TAG, "WebSocket closing: $code - $reason")
             webSocket.close(1000, null)
         }
 
-        override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+        override fun onClosed(
+            webSocket: WebSocket,
+            code: Int,
+            reason: String,
+        ) {
             Log.d(TAG, "WebSocket closed: $code - $reason")
         }
 
-        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        override fun onFailure(
+            webSocket: WebSocket,
+            t: Throwable,
+            response: Response?,
+        ) {
             Log.e(TAG, "WebSocket failure: ${t.message}", t)
         }
     }

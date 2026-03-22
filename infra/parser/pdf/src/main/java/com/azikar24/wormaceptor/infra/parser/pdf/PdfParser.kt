@@ -6,6 +6,7 @@ import android.os.ParcelFileDescriptor
 import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
+import com.azikar24.wormaceptor.domain.entities.PdfMetadata
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -32,27 +33,24 @@ class PdfParser(
         "text/x-pdf",
     )
 
-    /**
-     * Priority: 150 (binary format, higher than text formats)
-     */
-    override val priority: Int = 150
+    override val priority: Int = PRIORITY
 
     override val defaultContentType: ContentType = ContentType.PDF
 
     override val emptyBodyFormatted: String = "[Empty PDF]"
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
-        // Check content type header
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         if (contentType?.contains("pdf", ignoreCase = true) == true) {
             return true
         }
-
-        // Check magic bytes: %PDF- (25 50 44 46 2D in hex)
         return hasPdfMagicBytes(body)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun parseBody(body: ByteArray): ParsedBody {
-        // Verify magic bytes
         if (!hasPdfMagicBytes(body)) {
             return ParsedBody(
                 formatted = "[Invalid PDF - Missing magic bytes]",
@@ -73,7 +71,6 @@ class PdfParser(
                 isValid = true,
             )
         } catch (e: SecurityException) {
-            // Password-protected PDF
             val version = extractPdfVersion(body)
             val metadata = PdfMetadata(
                 pageCount = 0,
@@ -106,16 +103,12 @@ class PdfParser(
         }
     }
 
-    /**
-     * Extracts metadata from PDF using Android's PdfRenderer.
-     */
     private fun extractMetadata(body: ByteArray): PdfMetadata {
         var pdfRenderer: PdfRenderer? = null
         var fileDescriptor: ParcelFileDescriptor? = null
         var tempFile: File? = null
 
         try {
-            // Write PDF to temp file for PdfRenderer
             tempFile = File.createTempFile("pdf_parse_", ".pdf", context.cacheDir)
             FileOutputStream(tempFile).use { fos ->
                 fos.write(body)
@@ -152,9 +145,6 @@ class PdfParser(
         }
     }
 
-    /**
-     * Formats PDF metadata as a human-readable summary.
-     */
     private fun formatPdfSummary(metadata: PdfMetadata): String = buildString {
         append("[PDF Document]\n")
         append("Version: ${metadata.version}\n")
@@ -175,10 +165,10 @@ class PdfParser(
         metadata.keywords?.let { append("Keywords: $it\n") }
     }.trimEnd()
 
+    /** PDF magic-byte detection and metadata extraction helpers. */
     companion object {
-        /**
-         * PDF magic bytes: %PDF- (25 50 44 46 2D in hex)
-         */
+        private const val PRIORITY = 150
+
         private val PDF_MAGIC_BYTES = byteArrayOf(0x25, 0x50, 0x44, 0x46, 0x2D)
 
         private fun hasPdfMagicBytes(body: ByteArray): Boolean {
@@ -195,21 +185,17 @@ class PdfParser(
             return true
         }
 
-        /**
-         * Extracts PDF version from the header.
-         * Example: %PDF-1.7 -> "1.7"
-         */
+        @Suppress("MagicNumber")
         fun extractPdfVersion(body: ByteArray): String {
             if (body.size < 8) {
                 return "Unknown"
             }
 
             return try {
-                // Find the version number after %PDF-
                 val header = body.take(20).toByteArray().decodeToString()
                 val versionMatch = Regex("%PDF-(\\d+\\.\\d+)").find(header)
                 versionMatch?.groupValues?.get(1) ?: "Unknown"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 "Unknown"
             }
         }
@@ -220,7 +206,6 @@ class PdfParser(
             try {
                 val content = String(body, Charsets.ISO_8859_1)
 
-                // List of metadata fields to extract
                 val fields = listOf(
                     "Title",
                     "Author",
@@ -237,23 +222,19 @@ class PdfParser(
                         info[field] = value
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignore parsing errors - metadata is optional
             }
 
             return info
         }
 
-        /**
-         * Extracts a string field value from PDF content.
-         * Handles both literal strings (parentheses) and hex strings (angle brackets).
-         */
-        private fun extractPdfStringField(content: String, fieldName: String): String? {
-            // Look for /FieldName followed by string value
+        private fun extractPdfStringField(
+            content: String,
+            fieldName: String,
+        ): String? {
             val patterns = listOf(
-                // Literal string: /Title (Some Title)
                 Regex("/$fieldName\\s*\\(([^)]+)\\)"),
-                // Hex string: /Title <48656C6C6F>
                 Regex("/$fieldName\\s*<([0-9A-Fa-f]+)>"),
             )
 
@@ -261,11 +242,9 @@ class PdfParser(
                 val match = pattern.find(content)
                 if (match != null) {
                     val value = match.groupValues[1]
-                    // If hex string, convert to text
                     return if (pattern.pattern.contains("<")) {
                         decodeHexString(value)
                     } else {
-                        // Handle PDF escape sequences
                         decodePdfLiteralString(value)
                     }
                 }
@@ -274,22 +253,16 @@ class PdfParser(
             return null
         }
 
-        /**
-         * Decodes a PDF hex string to text.
-         */
         private fun decodeHexString(hex: String): String {
             return try {
                 hex.chunked(2)
                     .map { it.toInt(16).toChar() }
                     .joinToString("")
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 hex
             }
         }
 
-        /**
-         * Decodes PDF literal string escape sequences.
-         */
         private fun decodePdfLiteralString(literal: String): String {
             return literal
                 .replace("\\n", "\n")
@@ -300,6 +273,7 @@ class PdfParser(
                 .replace("\\\\", "\\")
         }
 
+        @Suppress("MagicNumber")
         private fun convertPdfDate(pdfDate: String): String {
             if (!pdfDate.startsWith("D:")) {
                 return pdfDate
@@ -307,7 +281,7 @@ class PdfParser(
 
             return try {
                 val dateStr = pdfDate.removePrefix("D:")
-                val year = dateStr.substring(0, 4)
+                val year = dateStr.take(4)
                 val month = dateStr.substring(4, 6)
                 val day = dateStr.substring(6, 8)
 
@@ -321,14 +295,12 @@ class PdfParser(
                 }
 
                 "$year-$month-$day$time"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 pdfDate
             }
         }
 
-        /**
-         * Formats file size in human-readable format.
-         */
+        @Suppress("MagicNumber")
         fun formatFileSize(bytes: Long): String {
             return when {
                 bytes < 1024 -> "$bytes B"

@@ -25,15 +25,17 @@ class LeakDetectionViewModel(
     private val engine: LeakDetectionEngine,
 ) : ViewModel() {
 
-    // Filter by severity
     private val _selectedSeverity = MutableStateFlow<LeakSeverity?>(null)
+
+    /** Currently selected severity filter, or null for all severities. */
     val selectedSeverity: StateFlow<LeakSeverity?> = _selectedSeverity.asStateFlow()
 
-    // Selected leak for detail view
     private val _selectedLeak = MutableStateFlow<LeakInfo?>(null)
+
+    /** Currently selected leak for the detail view, or null when none is selected. */
     val selectedLeak: StateFlow<LeakInfo?> = _selectedLeak.asStateFlow()
 
-    // Is running state
+    /** Whether leak detection is currently running. */
     val isRunning: StateFlow<Boolean> = engine.isRunning
         .stateIn(
             viewModelScope,
@@ -41,7 +43,7 @@ class LeakDetectionViewModel(
             false,
         )
 
-    // Leak summary
+    /** Aggregated leak summary with counts per severity level. */
     val summary: StateFlow<LeakSummary> = engine.leakSummary
         .stateIn(
             viewModelScope,
@@ -49,7 +51,7 @@ class LeakDetectionViewModel(
             LeakSummary.empty(),
         )
 
-    // Filtered leaks
+    /** Detected leaks filtered by the currently selected severity. */
     val filteredLeaks: StateFlow<ImmutableList<LeakInfo>> =
         combine(
             engine.detectedLeaks,

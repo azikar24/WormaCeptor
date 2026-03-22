@@ -65,6 +65,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
+import com.azikar24.wormaceptor.feature.logs.ui.theme.LogLevelColors
 import com.azikar24.wormaceptor.feature.logs.ui.theme.logLevelColors
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -84,7 +85,11 @@ import java.util.Locale
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogsScreen(viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null) {
+fun LogsScreen(
+    viewModel: LogsViewModel,
+    modifier: Modifier = Modifier,
+    onBack: (() -> Unit)? = null,
+) {
     val logs by viewModel.logs.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedLevels by viewModel.selectedLevels.collectAsState()
@@ -166,7 +171,7 @@ internal fun LogsScreenContent(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Console Logs",
+                            text = stringResource(R.string.logs_console_title),
                             fontWeight = FontWeight.SemiBold,
                         )
                     },
@@ -325,11 +330,11 @@ private fun LevelFilterChips(
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                     )
                                 } else {
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                     )
                                 },
                             )
@@ -337,12 +342,12 @@ private fun LevelFilterChips(
                     }
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                     selectedLabelColor = levelColor,
                 ),
                 border = FilterChipDefaults.filterChipBorder(
-                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
                     enabled = true,
                     selected = isSelected,
                 ),
@@ -415,6 +420,7 @@ private fun LogList(
     listState: androidx.compose.foundation.lazy.LazyListState,
     modifier: Modifier = Modifier,
 ) {
+    val colors = logLevelColors()
     LazyColumn(
         state = listState,
         modifier = modifier,
@@ -426,6 +432,7 @@ private fun LogList(
         ) { entry ->
             LogEntryItem(
                 entry = entry,
+                colors = colors,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -433,8 +440,11 @@ private fun LogList(
 }
 
 @Composable
-private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
-    val colors = logLevelColors()
+private fun LogEntryItem(
+    entry: LogEntry,
+    colors: LogLevelColors,
+    modifier: Modifier = Modifier,
+) {
     val levelColor = colors.forLevel(entry.level)
     val backgroundColor = colors.backgroundForLevel(entry.level)
 
@@ -445,7 +455,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
 
     Surface(
         modifier = modifier,
-        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
     ) {
         Row(
             modifier = Modifier
@@ -459,7 +469,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
             // Level badge
             Surface(
                 shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
                 modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxs),
             ) {
                 Text(
@@ -500,7 +510,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Monospace,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                         ),
                     )
                 }
@@ -512,7 +522,7 @@ private fun LogEntryItem(entry: LogEntry, modifier: Modifier = Modifier) {
                     text = entry.message,
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
                     lineHeight = 18.sp,
                 )
             }
@@ -531,7 +541,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 5_000,
                     level = LogLevel.DEBUG,
                     tag = "OkHttp",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "Sending request https://api.example.com/users",
                 ),
                 LogEntry(
@@ -539,7 +549,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 3_000,
                     level = LogLevel.INFO,
                     tag = "MainActivity",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "User authenticated successfully",
                 ),
                 LogEntry(
@@ -547,7 +557,7 @@ private fun LogsScreenContentPreview() {
                     timestamp = System.currentTimeMillis() - 1_000,
                     level = LogLevel.ERROR,
                     tag = "CrashReporter",
-                    pid = 12345,
+                    pid = 12_345,
                     message = "Failed to upload crash report: timeout",
                 ),
             ),
@@ -561,7 +571,7 @@ private fun LogsScreenContentPreview() {
                 LogLevel.INFO to 1,
                 LogLevel.ERROR to 1,
             ),
-            pid = 12345,
+            pid = 12_345,
             onSearchQueryChanged = {},
             onLevelToggle = {},
             onSetAutoScroll = {},

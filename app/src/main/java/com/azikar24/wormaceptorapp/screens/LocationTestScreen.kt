@@ -74,7 +74,10 @@ private val LocationGreen = Color(0xFF4CAF50)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocationTestScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun LocationTestScreen(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
 
     // Initialize OSMDroid configuration
@@ -260,7 +263,11 @@ private fun startLocationUpdates(
         }
 
         @Deprecated("Deprecated in Java")
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+        override fun onStatusChanged(
+            provider: String?,
+            status: Int,
+            extras: Bundle?,
+        ) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
     }
@@ -314,7 +321,10 @@ private fun startLocationUpdates(
     }
 }
 
-private fun stopLocationUpdates(locationManager: LocationManager?, listener: LocationListener?) {
+private fun stopLocationUpdates(
+    locationManager: LocationManager?,
+    listener: LocationListener?,
+) {
     if (locationManager != null && listener != null) {
         try {
             locationManager.removeUpdates(listener)
@@ -337,7 +347,11 @@ private fun isLocationFromMockProvider(location: Location): Boolean {
 }
 
 @Composable
-private fun CurrentLocationMap(location: GeoPoint?, isMockActive: Boolean, modifier: Modifier = Modifier) {
+private fun CurrentLocationMap(
+    location: GeoPoint?,
+    isMockActive: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
     val mapView = remember { createMapView(context) }
 
@@ -396,7 +410,12 @@ private fun createMapView(context: Context): MapView {
     }
 }
 
-private fun updateMapMarker(mapView: MapView, context: Context, location: GeoPoint?, isMockActive: Boolean) {
+private fun updateMapMarker(
+    mapView: MapView,
+    context: Context,
+    location: GeoPoint?,
+    isMockActive: Boolean,
+) {
     mapView.overlays.removeAll { it is Marker }
 
     location?.let {

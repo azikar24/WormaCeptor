@@ -1,88 +1,68 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ComposableParamOrder:GestureNavigationComponents.kt$ZoomControls</ID>
-    <ID>ComposableParamOrder:MultipartView.kt$MultipartView</ID>
-    <ID>ComposableParamOrder:PdfPreviewCard.kt$PdfPreviewCard</ID>
-    <ID>ComposableParamOrder:PdfViewerScreen.kt$PdfViewerScreen</ID>
-    <ID>CyclomaticComplexMethod:BodyParsingUtils.kt$BodyParsingUtils$fun detectContentType(contentTypeHeader: String?, body: String?): ContentType</ID>
     <ID>CyclomaticComplexMethod:FilterBottomSheetContent.kt$@Composable private fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
-    <ID>CyclomaticComplexMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: Flow&lt;String&gt;? = null, )</ID>
-    <ID>CyclomaticComplexMethod:ImagePreviewCard.kt$fun detectImageFormat(data: ByteArray): String</ID>
-    <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
-    <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
-    <ID>CyclomaticComplexMethod:PdfViewerScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit)</ID>
+    <ID>CyclomaticComplexMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: () -&gt; Unit, onClearCrashes: () -&gt; Unit, onExportTransactions: () -&gt; Unit, onExportCrashes: () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Dialog and menu visibility state showFilterSheet: Boolean = false, onFilterSheetVisibilityChanged: (Boolean) -&gt; Unit = {}, showOverflowMenu: Boolean = false, onOverflowMenuVisibilityChanged: (Boolean) -&gt; Unit = {}, toolsSearchActive: Boolean = false, onToolsSearchActiveChanged: (Boolean) -&gt; Unit = {}, toolsSearchQuery: String = "", onToolsSearchQueryChanged: (String) -&gt; Unit = {}, showClearTransactionsDialog: Boolean = false, onClearTransactionsDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showClearCrashesDialog: Boolean = false, onClearCrashesDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showDeleteSelectedDialog: Boolean = false, onDeleteSelectedDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
+    <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard( transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard( part: MultipartPart, index: Int, initiallyExpanded: Boolean, )</ID>
+    <ID>CyclomaticComplexMethod:PdfViewerScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PdfViewerScreen( pdfData: ByteArray, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, initialPage: Int = 0, )</ID>
     <ID>CyclomaticComplexMethod:ToolsTab.kt$@Composable private fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@Composable private fun RequestTab( transaction: NetworkTransaction, queryEngine: QueryEngine?, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>CyclomaticComplexMethod:TransactionDetailScreen.kt$@Composable private fun ResponseTab( transaction: NetworkTransaction, queryEngine: QueryEngine?, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>CyclomaticComplexMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onLongClick: (UUID) -&gt; Unit = {}, onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>CyclomaticComplexMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors)</ID>
-    <ID>CyclomaticComplexMethod:XmlTreeView.kt$private fun formatXml(xml: String): List&lt;String&gt;</ID>
-    <ID>EndOfSentenceFormat:CrashDetailScreen.kt$* Crash detail content - the actual content</ID>
-    <ID>EndOfSentenceFormat:CrashDetailScreen.kt$* Original CrashDetailScreen - kept for backward compatibility</ID>
-    <ID>EndOfSentenceFormat:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Invalid$ Invalid or unrecognized deep link </ID>
-    <ID>EndOfSentenceFormat:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tab$ Navigate to the home screen with a specific tab selected </ID>
-    <ID>EndOfSentenceFormat:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tool$ Navigate directly to a tool screen </ID>
-    <ID>EndOfSentenceFormat:FavoritesRepository.kt$FavoritesRepository.Companion$ Default favorites for new users </ID>
-    <ID>EndOfSentenceFormat:FavoritesRepository.kt$FavoritesRepository.Companion$ Maximum number of favorite tools allowed </ID>
-    <ID>EndOfSentenceFormat:GestureNavigationComponents.kt$* Visual zoom level indicator with progress bar</ID>
-    <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Checks if raw bytes likely represent an image by examining magic bytes</ID>
-    <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Checks if the given content type string indicates an image</ID>
-    <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Detects image format from magic bytes</ID>
-    <ID>EndOfSentenceFormat:ImagePreviewCard.kt$* Extracts image metadata from raw byte data</ID>
-    <ID>EndOfSentenceFormat:ImagePreviewCard.kt$ImageMetadata$* Metadata extracted from an image</ID>
-    <ID>EndOfSentenceFormat:PdfPreviewCard.kt$* Checks if the response body appears to be a PDF document</ID>
-    <ID>EndOfSentenceFormat:PdfPreviewCard.kt$PdfLoadState$* State representing the PDF loading status</ID>
-    <ID>EndOfSentenceFormat:PdfPreviewCard.kt$PdfMetadata$* PDF metadata extracted from the document</ID>
-    <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$* Transaction detail content - the actual content without swipe-back wrapper * * UX Behavior: * - Swipe on toolbar/topBar area: Switch between transactions * - Swipe on content area (HorizontalPager): Switch between Overview/Request/Response tabs</ID>
-    <ID>EndOfSentenceFormat:TransactionDetailScreen.kt$MatchInfo$* Data class holding information about a single search match</ID>
+    <ID>CyclomaticComplexMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine( line: String, colors: ComposeSyntaxColors, )</ID>
+    <ID>LambdaParameterInRestartableEffect:HomeScreen.kt$onClearSelection</ID>
+    <ID>LambdaParameterInRestartableEffect:HomeScreen.kt$onTabSelected</ID>
+    <ID>LambdaParameterInRestartableEffect:TransactionDetailScreen.kt$getTransaction</ID>
+    <ID>LambdaParameterInRestartableEffect:TransactionDetailScreen.kt$onMatchCountChanged</ID>
     <ID>LongMethod:ContentTypeChip.kt$@Composable fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo</ID>
-    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard(crash: Crash, dateFormat: SimpleDateFormat)</ID>
-    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem(frame: CrashUtils.StackFrame, isHighlighted: Boolean)</ID>
-    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackTraceSection(stackFrames: List&lt;CrashUtils.StackFrame&gt;, fullStackTrace: String, context: Context)</ID>
-    <ID>LongMethod:CrashListScreen.kt$@Composable fun CrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard( crash: Crash, dateFormat: SimpleDateFormat, )</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem( frame: CrashUtils.StackFrame, isHighlighted: Boolean, )</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackTraceSection( stackFrames: List&lt;CrashUtils.StackFrame&gt;, fullStackTrace: String, context: Context, )</ID>
+    <ID>LongMethod:CrashListScreen.kt$@Composable fun CrashItem( crash: Crash, onClick: () -&gt; Unit, )</ID>
     <ID>LongMethod:CrashListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashListScreen( crashes: ImmutableList&lt;Crash&gt;, onCrashClick: (Crash) -&gt; Unit, modifier: Modifier = Modifier, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:ExportManager.kt$ExportManager$suspend fun exportTransactions(transactions: List&lt;NetworkTransaction&gt;)</ID>
     <ID>LongMethod:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:FilterBottomSheetContent.kt$@Composable private fun FilterHeader(filteredCount: Int, totalCount: Int, filtersActive: Boolean)</ID>
+    <ID>LongMethod:FilterBottomSheetContent.kt$@Composable private fun FilterHeader( filteredCount: Int, totalCount: Int, filtersActive: Boolean, )</ID>
     <ID>LongMethod:FilterBottomSheetContent.kt$@Composable private fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
-    <ID>LongMethod:FormDataView.kt$@Composable fun FormDataView(formData: String, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun BottomControlBar(metadata: ImageMetadata?, onDownload: () -&gt; Unit, onShare: () -&gt; Unit)</ID>
+    <ID>LongMethod:FormDataView.kt$@Composable fun FormDataView( formData: String, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun BottomControlBar( metadata: ImageMetadata?, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
     <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun FullscreenImageContent( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
-    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun TopControlBar(onClose: () -&gt; Unit, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, currentZoom: Float)</ID>
-    <ID>LongMethod:GestureNavigationComponents.kt$@Composable fun ZoomControls( currentZoom: Float, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, onReset: () -&gt; Unit, minZoom: Float = 0.5f, maxZoom: Float = 3f, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: Flow&lt;String&gt;? = null, )</ID>
+    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun TopControlBar( onClose: () -&gt; Unit, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, currentZoom: Float, )</ID>
+    <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun HomeScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: () -&gt; Unit, onClearCrashes: () -&gt; Unit, onExportTransactions: () -&gt; Unit, onExportCrashes: () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Dialog and menu visibility state showFilterSheet: Boolean = false, onFilterSheetVisibilityChanged: (Boolean) -&gt; Unit = {}, showOverflowMenu: Boolean = false, onOverflowMenuVisibilityChanged: (Boolean) -&gt; Unit = {}, toolsSearchActive: Boolean = false, onToolsSearchActiveChanged: (Boolean) -&gt; Unit = {}, toolsSearchQuery: String = "", onToolsSearchQueryChanged: (String) -&gt; Unit = {}, showClearTransactionsDialog: Boolean = false, onClearTransactionsDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showClearCrashesDialog: Boolean = false, onClearCrashesDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showDeleteSelectedDialog: Boolean = false, onDeleteSelectedDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
     <ID>LongMethod:ImagePreviewCard.kt$@Composable fun ImagePreviewCard( imageData: ByteArray, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonArrayNode( array: JSONArray, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
     <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonObjectNode( obj: JSONObject, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
-    <ID>LongMethod:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
-    <ID>LongMethod:MultipartView.kt$@Composable private fun MultipartPartCard(part: MultipartPart, index: Int, initiallyExpanded: Boolean)</ID>
-    <ID>LongMethod:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit = {}, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MetricsCard.kt$@Composable fun MetricsCard( transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MultipartView.kt$@Composable fun MultipartView( multipartData: String, modifier: Modifier = Modifier, boundary: String? = null, )</ID>
+    <ID>LongMethod:MultipartView.kt$@Composable private fun MultipartPartCard( part: MultipartPart, index: Int, initiallyExpanded: Boolean, )</ID>
+    <ID>LongMethod:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, modifier: Modifier = Modifier, onShowMessage: (String) -&gt; Unit = {}, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun PasswordProtectedContent( metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PdfPreviewCard.kt$@Composable private fun SuccessContent( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongMethod:PdfViewerScreen.kt$@Composable private fun BottomNavigationBar( currentPage: Int, totalPages: Int, showThumbnails: Boolean, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onFirstPage: () -&gt; Unit, onLastPage: () -&gt; Unit, onToggleThumbnails: () -&gt; Unit, )</ID>
-    <ID>LongMethod:PdfViewerScreen.kt$@Composable private fun PageJumpDialog(currentPage: Int, totalPages: Int, onDismiss: () -&gt; Unit, onPageSelected: (Int) -&gt; Unit)</ID>
-    <ID>LongMethod:PdfViewerScreen.kt$@Composable private fun ZoomablePage(bitmap: Bitmap?, pageIndex: Int, onTap: () -&gt; Unit)</ID>
-    <ID>LongMethod:PdfViewerScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PdfViewerScreen(pdfData: ByteArray, initialPage: Int = 0, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit)</ID>
+    <ID>LongMethod:PdfViewerScreen.kt$@Composable private fun PageJumpDialog( currentPage: Int, totalPages: Int, onDismiss: () -&gt; Unit, onPageSelected: (Int) -&gt; Unit, )</ID>
+    <ID>LongMethod:PdfViewerScreen.kt$@Composable private fun ZoomablePage( bitmap: Bitmap?, pageIndex: Int, onTap: () -&gt; Unit, )</ID>
+    <ID>LongMethod:PdfViewerScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PdfViewerScreen( pdfData: ByteArray, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, initialPage: Int = 0, )</ID>
+    <ID>LongMethod:ProtobufView.kt$@Composable fun ProtobufView( data: ByteArray, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ProtobufView.kt$@Composable private fun ProtobufFieldCard( field: ProtobufField, initiallyExpanded: Boolean, )</ID>
     <ID>LongMethod:SelectableTransactionItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun SelectableTransactionItem( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SwipeBackContainer.kt$@Composable fun SwipeBackContainer( onBack: () -&gt; Unit, enabled: Boolean = true, edgeWidth: Float = 48f, thresholdFraction: Float = 0.35f, content: @Composable BoxScope.() -&gt; Unit, )</ID>
     <ID>LongMethod:ToolsTab.kt$@Composable private fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:TransactionContextMenu.kt$@Composable fun TransactionContextMenu( transaction: TransactionSummary, expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun CollapsibleSection( title: String, isExpanded: Boolean, onToggle: () -&gt; Unit, onCopy: (() -&gt; Unit)? = null, isCopyLoading: Boolean = false, trailingContent: @Composable (() -&gt; Unit)? = null, content: @Composable () -&gt; Unit, )</ID>
-    <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun OverviewTab( transaction: NetworkTransaction, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun RequestTab( transaction: NetworkTransaction, queryEngine: QueryEngine?, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun ResponseTab( transaction: NetworkTransaction, queryEngine: QueryEngine?, searchQuery: String, currentMatchIndex: Int, onMatchCountChanged: (Int) -&gt; Unit, isSearchActive: Boolean, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean)</ID>
+    <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun TransactionTimeline( durationMs: Long, hasResponse: Boolean, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionDetailPagerScreen( transactionIds: List&lt;UUID&gt;, initialTransactionIndex: Int, getTransaction: suspend (UUID) -&gt; NetworkTransaction?, queryEngine: QueryEngine?, onBack: () -&gt; Unit, )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun TransactionDetailContent( transaction: NetworkTransaction, queryEngine: QueryEngine?, onBack: () -&gt; Unit, onNavigatePrevTransaction: () -&gt; Unit = {}, onNavigateNextTransaction: () -&gt; Unit = {}, canNavigatePrev: Boolean = false, canNavigateNext: Boolean = false, )</ID>
     <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onLongClick: (UUID) -&gt; Unit = {}, onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:ViewerActivity.kt$ViewerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine(line: String, colors: ComposeSyntaxColors)</ID>
-    <ID>LongMethod:XmlTreeView.kt$private fun formatXml(xml: String): List&lt;String&gt;</ID>
+    <ID>LongMethod:XmlTreeView.kt$@Composable private fun highlightXmlLine( line: String, colors: ComposeSyntaxColors, )</ID>
     <ID>LongParameterList:BulkActionBar.kt$( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:FilterBottomSheetContent.kt$( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:HomeScreen.kt$( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: suspend () -&gt; Unit, onClearCrashes: suspend () -&gt; Unit, onExportTransactions: suspend () -&gt; Unit, onExportCrashes: suspend () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: suspend () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackbarMessage: Flow&lt;String&gt;? = null, )</ID>
+    <ID>LongParameterList:HomeScreen.kt$( transactions: ImmutableList&lt;TransactionSummary&gt;, crashes: ImmutableList&lt;Crash&gt;, searchQuery: String, onSearchChanged: (String) -&gt; Unit, onTransactionClick: (TransactionSummary) -&gt; Unit, onCrashClick: (Crash) -&gt; Unit, filterMethods: Set&lt;String&gt;, filterStatusRanges: Set&lt;IntRange&gt;, onMethodFiltersChanged: (Set&lt;String&gt;) -&gt; Unit, onStatusFiltersChanged: (Set&lt;IntRange&gt;) -&gt; Unit, onClearFilters: () -&gt; Unit, onClearTransactions: () -&gt; Unit, onClearCrashes: () -&gt; Unit, onExportTransactions: () -&gt; Unit, onExportCrashes: () -&gt; Unit, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, allTransactions: ImmutableList&lt;TransactionSummary&gt; = transactions, // Loading state isInitialLoading: Boolean = false, // Pull-to-refresh parameters isRefreshingTransactions: Boolean = false, isRefreshingCrashes: Boolean = false, onRefreshTransactions: () -&gt; Unit = {}, onRefreshCrashes: () -&gt; Unit = {}, // Selection parameters selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onSelectAll: () -&gt; Unit = {}, onClearSelection: () -&gt; Unit = {}, onDeleteSelected: () -&gt; Unit = {}, onShareSelected: () -&gt; Unit = {}, onExportSelected: () -&gt; Unit = {}, // Context menu action parameters onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, // Generic tool navigation for Tools tab onToolNavigate: (String) -&gt; Unit = {}, // Tool category collapse state collapsedToolCategories: Set&lt;String&gt; = emptySet(), onToolCategoryCollapseToggled: (String) -&gt; Unit = {}, // Dialog and menu visibility state showFilterSheet: Boolean = false, onFilterSheetVisibilityChanged: (Boolean) -&gt; Unit = {}, showOverflowMenu: Boolean = false, onOverflowMenuVisibilityChanged: (Boolean) -&gt; Unit = {}, toolsSearchActive: Boolean = false, onToolsSearchActiveChanged: (Boolean) -&gt; Unit = {}, toolsSearchQuery: String = "", onToolsSearchQueryChanged: (String) -&gt; Unit = {}, showClearTransactionsDialog: Boolean = false, onClearTransactionsDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showClearCrashesDialog: Boolean = false, onClearCrashesDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, showDeleteSelectedDialog: Boolean = false, onDeleteSelectedDialogVisibilityChanged: (Boolean) -&gt; Unit = {}, // Snackbar message flow from ViewModel snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
     <ID>LongParameterList:PdfPreviewCard.kt$( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
     <ID>LongParameterList:PdfViewerScreen.kt$( currentPage: Int, totalPages: Int, showThumbnails: Boolean, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onFirstPage: () -&gt; Unit, onLastPage: () -&gt; Unit, onToggleThumbnails: () -&gt; Unit, )</ID>
     <ID>LongParameterList:PdfViewerScreen.kt$( title: String, currentPage: Int, totalPages: Int, onClose: () -&gt; Unit, onPageJump: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
@@ -126,9 +106,6 @@
     <ID>MagicNumber:FullscreenImageViewer.kt$2.5f</ID>
     <ID>MagicNumber:FullscreenImageViewer.kt$200f</ID>
     <ID>MagicNumber:FullscreenImageViewer.kt$5f</ID>
-    <ID>MagicNumber:HighlightedText.kt$10</ID>
-    <ID>MagicNumber:HighlightedText.kt$16</ID>
-    <ID>MagicNumber:HighlightedText.kt$64</ID>
     <ID>MagicNumber:HomeScreen.kt$200</ID>
     <ID>MagicNumber:HomeScreen.kt$299</ID>
     <ID>MagicNumber:HomeScreen.kt$300</ID>
@@ -138,16 +115,10 @@
     <ID>MagicNumber:HomeScreen.kt$500</ID>
     <ID>MagicNumber:HomeScreen.kt$599</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$0.5f</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$10</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$11</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$12</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$16f</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$2.5f</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$28</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$3</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$4</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$8</ID>
-    <ID>MagicNumber:ImagePreviewCard.kt$9</ID>
     <ID>MagicNumber:ImagePreviewCard.kt$9f</ID>
     <ID>MagicNumber:JsonTreeView.kt$14</ID>
     <ID>MagicNumber:JsonTreeView.kt$16</ID>
@@ -165,7 +136,6 @@
     <ID>MagicNumber:MultipartView.kt$0xFF6366F1</ID>
     <ID>MagicNumber:MultipartView.kt$1000</ID>
     <ID>MagicNumber:MultipartView.kt$20</ID>
-    <ID>MagicNumber:MultipartView.kt$4</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$0.75f</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$20</ID>
     <ID>MagicNumber:PdfPreviewCard.kt$5</ID>
@@ -175,83 +145,69 @@
     <ID>MagicNumber:PdfViewerScreen.kt$4000</ID>
     <ID>MagicNumber:PdfViewerScreen.kt$5</ID>
     <ID>MagicNumber:PdfViewerScreen.kt$5f</ID>
-    <ID>MagicNumber:QuickFilterBar.kt$QuickFilter$1000</ID>
-    <ID>MagicNumber:QuickFilterBar.kt$QuickFilter$400</ID>
-    <ID>MagicNumber:QuickFilterBar.kt$QuickFilter$599</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x07</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x08</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x12</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x65</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x67</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x69</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x6E</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x73</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x74</ID>
+    <ID>MagicNumber:ProtobufView.kt$0xFF8B5CF6</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$1000</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$400</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$599</ID>
     <ID>MagicNumber:SwipeBackContainer.kt$16f</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$0.3f</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$0.4f</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$100</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$100_000</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$150</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$250</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$4</ID>
-    <ID>MagicNumber:TransactionDetailScreen.kt$500_000</ID>
     <ID>MagicNumber:TransactionDetailScreen.kt$64</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$300</ID>
     <ID>MagicNumber:ViewerActivity.kt$ViewerActivity$400</ID>
     <ID>MagicNumber:XmlTreeView.kt$3</ID>
     <ID>MagicNumber:XmlTreeView.kt$9</ID>
-    <ID>MatchingDeclarationName:ImagePreviewCard.kt$ImageMetadata</ID>
-    <ID>MatchingDeclarationName:MultipartView.kt$MultipartPart</ID>
-    <ID>MatchingDeclarationName:QuickFilterBar.kt$QuickFilter</ID>
-    <ID>MaxLineLength:CrashListScreen.kt$stackTrace = "java.lang.IllegalStateException\n\tat com.example.app.HomeFragment.onResume(HomeFragment.kt:78)"</ID>
-    <ID>MaxLineLength:CrashListScreen.kt$stackTrace = "java.lang.NullPointerException\n\tat com.example.app.MainActivity.onCreate(MainActivity.kt:42)"</ID>
-    <ID>MaxLineLength:CrashListScreen.kt$stackTrace = "java.lang.OutOfMemoryError\n\tat dalvik.system.VMRuntime.newNonMovableArray(VMRuntime.java)"</ID>
-    <ID>MaxLineLength:FilterBottomSheetContent.kt$if (isSelected) R.string.viewer_filter_action_deselect else R.string.viewer_filter_action_select</ID>
-    <ID>MaxLineLength:FilterBottomSheetContent.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.regular else WormaCeptorDesignSystem.BorderWidth.thin</ID>
-    <ID>MaxLineLength:HomeScreen.kt$hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
-    <ID>MaxLineLength:HomeScreen.kt$val hasActiveFilters = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
-    <ID>MaxLineLength:SelectableTransactionItem.kt$width = if (isSelected) WormaCeptorDesignSystem.BorderWidth.thick else WormaCeptorDesignSystem.BorderWidth.regular</ID>
-    <ID>MaxLineLength:TransactionDetailScreen.kt$fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal</ID>
-    <ID>MaxLineLength:ViewerActivity.kt$ViewerActivity$"WormaCeptor not initialized. Call WormaCeptor.init() before launching ViewerActivity"</ID>
-    <ID>MaximumLineLength:CrashListScreen.kt$ </ID>
-    <ID>MaximumLineLength:FilterBottomSheetContent.kt$ </ID>
-    <ID>MaximumLineLength:HomeScreen.kt$ </ID>
-    <ID>MaximumLineLength:SelectableTransactionItem.kt$ </ID>
-    <ID>MaximumLineLength:TransactionDetailScreen.kt$ </ID>
-    <ID>MaximumLineLength:ViewerActivity.kt$ViewerActivity$ </ID>
     <ID>ModifierMissing:CrashDetailScreen.kt$CrashDetailPagerScreen</ID>
     <ID>ModifierMissing:CrashListScreen.kt$CrashItem</ID>
     <ID>ModifierMissing:HomeScreen.kt$HomeScreen</ID>
-    <ID>ModifierMissing:PdfViewerScreen.kt$PdfViewerScreen</ID>
     <ID>ModifierMissing:SwipeBackContainer.kt$SwipeBackContainer</ID>
     <ID>ModifierMissing:TransactionDetailScreen.kt$TransactionDetailPagerScreen</ID>
-    <ID>ModifierReused:MultipartView.kt$Box( modifier = modifier .fillMaxWidth() .padding(WormaCeptorDesignSystem.Spacing.lg), contentAlignment = Alignment.Center, ) { Text( text = "No multipart data or invalid format", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, ) }</ID>
-    <ID>ModifierReused:MultipartView.kt$Column( modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm), ) { Row( modifier = Modifier .fillMaxWidth() .padding(bottom = WormaCeptorDesignSystem.Spacing.xs), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, ) { Text( text = "${parts.size} ${if (parts.size == 1) "part" else "parts"}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, ) if (boundary != null) { Text( text = "boundary: ${boundary.take(20)}${if (boundary.length &gt; 20) "..." else ""}", style = MaterialTheme.typography.labelSmall.copy( fontFamily = FontFamily.Monospace, ), color = MaterialTheme.colorScheme.onSurfaceVariant.copy( alpha = WormaCeptorDesignSystem.Alpha.heavy, ), ) } } parts.forEachIndexed { index, part -&gt; MultipartPartCard( part = part, index = index, initiallyExpanded = parts.size &lt;= 3, ) } }</ID>
-    <ID>NestedBlockDepth:FullscreenImageViewer.kt$fun saveImageToGallery(context: Context, imageData: ByteArray, format: String): String</ID>
-    <ID>NestedBlockDepth:TransactionDetailScreen.kt$private fun savePdfToDownloads(context: Context, pdfData: ByteArray): String</ID>
-    <ID>NestedBlockDepth:XmlTreeView.kt$private fun formatXml(xml: String): List&lt;String&gt;</ID>
-    <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:CrashDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:CrashListScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:CrashListScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
-    <ID>NoWildcardImports:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:TransactionDetailScreen.kt$import androidx.compose.animation.*</ID>
-    <ID>NoWildcardImports:TransactionDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>NoWildcardImports:TransactionDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>NoWildcardImports:TransactionListScreen.kt$import androidx.compose.runtime.*</ID>
+    <ID>NestedBlockDepth:FullscreenImageViewer.kt$fun saveImageToGallery( context: Context, imageData: ByteArray, format: String, ): String</ID>
+    <ID>NestedBlockDepth:TransactionDetailScreen.kt$private fun savePdfToDownloads( context: Context, pdfData: ByteArray, ): String</ID>
     <ID>OutdatedDocumentation:CrashListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashListScreen( crashes: ImmutableList&lt;Crash&gt;, onCrashClick: (Crash) -&gt; Unit, modifier: Modifier = Modifier, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, )</ID>
     <ID>OutdatedDocumentation:ToolsTab.kt$@Suppress("LongMethod", "LongParameterList") @Composable fun ToolsTab( onNavigate: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, searchActive: Boolean, searchQuery: String, onSearchQueryChanged: (String) -&gt; Unit, collapsedCategories: Set&lt;String&gt;, onToggleCollapse: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>OutdatedDocumentation:TransactionDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TransactionDetailPagerScreen( transactionIds: List&lt;UUID&gt;, initialTransactionIndex: Int, getTransaction: suspend (UUID) -&gt; NetworkTransaction?, queryEngine: QueryEngine?, onBack: () -&gt; Unit, )</ID>
     <ID>OutdatedDocumentation:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, selectedIds: Set&lt;UUID&gt; = emptySet(), isSelectionMode: Boolean = false, onSelectionToggle: (UUID) -&gt; Unit = {}, onLongClick: (UUID) -&gt; Unit = {}, onCopyUrl: (TransactionSummary) -&gt; Unit = {}, onShare: (TransactionSummary) -&gt; Unit = {}, onDelete: (TransactionSummary) -&gt; Unit = {}, onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}, header: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>ReturnCount:BodyParsingUtils.kt$BodyParsingUtils$fun detectContentType(contentTypeHeader: String?, body: String?): ContentType</ID>
-    <ID>SwallowedException:BodyParsingUtils.kt$BodyParsingUtils$e: Exception</ID>
-    <ID>SwallowedException:FavoritesRepository.kt$FavoritesRepository$e: IllegalArgumentException</ID>
-    <ID>SwallowedException:FormDataView.kt$e: Exception</ID>
+    <ID>ParameterNaming:FilterBottomSheetContent.kt$onMethodToggled</ID>
+    <ID>ParameterNaming:FilterBottomSheetContent.kt$onStatusToggled</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onClearCrashesDialogVisibilityChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onClearTransactionsDialogVisibilityChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onDeleteSelected</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onDeleteSelectedDialogVisibilityChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onExportSelected</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onFilterSheetVisibilityChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onMethodFiltersChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onOverflowMenuVisibilityChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onSearchChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onShareSelected</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onStatusFiltersChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onTabSelected</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onToolCategoryCollapseToggled</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onToolsSearchActiveChanged</ID>
+    <ID>ParameterNaming:HomeScreen.kt$onToolsSearchQueryChanged</ID>
+    <ID>ParameterNaming:PdfViewerScreen.kt$onPageSelected</ID>
+    <ID>ParameterNaming:ToolsTab.kt$onSearchQueryChanged</ID>
+    <ID>ParameterNaming:TransactionDetailScreen.kt$onMatchCountChanged</ID>
     <ID>SwallowedException:JsonTreeView.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: SecurityException</ID>
     <ID>SwallowedException:PdfViewerScreen.kt$e: Exception</ID>
     <ID>SwallowedException:PdfViewerScreen.kt$e: SecurityException</ID>
-    <ID>TooGenericExceptionCaught:BodyParsingUtils.kt$BodyParsingUtils$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CommonUtils.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CrashExport.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ExportManager.kt$ExportManager$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:FormDataView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:FullscreenImageViewer.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
@@ -259,88 +215,8 @@
     <ID>TooGenericExceptionCaught:TransactionDetailScreen.kt$e: Exception</ID>
     <ID>TooManyFunctions:TransactionDetailScreen.kt$com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen.kt</ID>
     <ID>TopLevelPropertyNaming:TransactionDetailScreen.kt$/** Maximum body size (in chars) for which syntax highlighting is attempted. */ private const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000</ID>
-    <ID>UndocumentedPublicClass:ExportManager.kt$ExportManager</ID>
-    <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$Error : PdfLoadState</ID>
-    <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$Loading : PdfLoadState</ID>
-    <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$PasswordProtected : PdfLoadState</ID>
-    <ID>UndocumentedPublicClass:PdfPreviewCard.kt$PdfLoadState$Success : PdfLoadState</ID>
-    <ID>UndocumentedPublicClass:ViewerActivity.kt$ViewerActivity : ComponentActivity</ID>
-    <ID>UndocumentedPublicFunction:CrashExport.kt$suspend fun exportCrashes(context: Context, crashes: List&lt;Crash&gt;, onMessage: (String) -&gt; Unit = {})</ID>
-    <ID>UndocumentedPublicFunction:CrashListScreen.kt$@Composable fun CrashItem(crash: Crash, onClick: () -&gt; Unit)</ID>
-    <ID>UndocumentedPublicFunction:ExportManager.kt$ExportManager$suspend fun exportTransactions(transactions: List&lt;NetworkTransaction&gt;)</ID>
-    <ID>UndocumentedPublicFunction:FavoritesRepository.kt$FavoritesRepository.Companion$fun getInstance(context: Context): FavoritesRepository</ID>
-    <ID>UndocumentedPublicFunction:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( initialSearchQuery: String, initialFilterMethods: Set&lt;String&gt;, initialFilterStatusRanges: Set&lt;IntRange&gt;, onApply: (searchQuery: String, methods: Set&lt;String&gt;, statusRanges: Set&lt;IntRange&gt;) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
-    <ID>UndocumentedPublicFunction:MetricsCard.kt$@Composable fun MetricsCard(transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier)</ID>
-    <ID>UndocumentedPublicProperty:ContentTypeChip.kt$ContentTypeChipInfo$val color: Color</ID>
-    <ID>UndocumentedPublicProperty:ContentTypeChip.kt$ContentTypeChipInfo$val displayName: String</ID>
-    <ID>UndocumentedPublicProperty:ContentTypeChip.kt$ContentTypeChipInfo$val icon: ImageVector</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val className: String?</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val fileName: String?</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val fullLine: String</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val isAppCode: Boolean</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val lineNumber: Int?</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val methodName: String?</ID>
-    <ID>UndocumentedPublicProperty:CrashUtils.kt$CrashUtils.StackFrame$val packageName: String?</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler$const val SCHEME = "wormaceptor"</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Companion$const val TAB_CRASHES = 1</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Companion$const val TAB_TOOLS = 2</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Companion$const val TAB_TRANSACTIONS = 0</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tab$val tabIndex: Int</ID>
-    <ID>UndocumentedPublicProperty:DeepLinkHandler.kt$DeepLinkHandler.DeepLinkDestination.Tool$val route: String</ID>
-    <ID>UndocumentedPublicProperty:FavoritesRepository.kt$FavoritesRepository$val favorites: StateFlow&lt;Set&lt;Feature&gt;&gt;</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val colorDepth: String = "8-bit"</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val fileSize: Long</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val format: String</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val hasAlpha: Boolean = false</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val height: Int</ID>
-    <ID>UndocumentedPublicProperty:ImagePreviewCard.kt$ImageMetadata$val width: Int</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val body: String</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val contentType: String? = null</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val fileName: String? = null</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val headers: Map&lt;String, String&gt; = emptyMap()</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val name: String</ID>
-    <ID>UndocumentedPublicProperty:MultipartView.kt$MultipartPart$val size: Int = body.length</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.Error$val message: String</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.PasswordProtected$val metadata: PdfMetadata</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.Success$val metadata: PdfMetadata</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfLoadState.Success$val thumbnail: Bitmap</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val author: String?</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val creationDate: String?</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val creator: String?</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val fileSize: Long</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val isPasswordProtected: Boolean = false</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val pageCount: Int</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val title: String?</ID>
-    <ID>UndocumentedPublicProperty:PdfPreviewCard.kt$PdfMetadata$val version: String?</ID>
-    <ID>UndocumentedPublicProperty:QuickFilterBar.kt$QuickFilter$val label: String</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategory$val name: String</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolCategory$val tools: List&lt;ToolItem&gt;</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val feature: Feature</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val icon: ImageVector</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val name: String</ID>
-    <ID>UndocumentedPublicProperty:ToolCategory.kt$ToolItem$val route: String</ID>
-    <ID>UnnecessaryParentheses:HighlightedText.kt$(index + searchQuery.length)</ID>
-    <ID>UnnecessaryParentheses:HomeScreen.kt$(it.code ?: 0)</ID>
-    <ID>UnnecessaryParentheses:MetricsCard.kt$(it.code ?: 0)</ID>
-    <ID>UnnecessaryParentheses:MetricsCard.kt$(it.tookMs ?: 0)</ID>
-    <ID>UnnecessaryParentheses:ViewerViewModel.kt$ViewerViewModel$(transaction.code?.let { code -&gt; statusRanges.any { code in it } } ?: false)</ID>
-    <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;Crash&gt;</ID>
-    <ID>UnstableCollections:CrashDetailScreen.kt$List&lt;CrashUtils.StackFrame&gt;</ID>
-    <ID>UnstableCollections:FilterBottomSheetContent.kt$Set&lt;IntRange&gt;</ID>
-    <ID>UnstableCollections:FilterBottomSheetContent.kt$Set&lt;String&gt;</ID>
-    <ID>UnstableCollections:HomeScreen.kt$Set&lt;IntRange&gt;</ID>
-    <ID>UnstableCollections:HomeScreen.kt$Set&lt;String&gt;</ID>
-    <ID>UnstableCollections:HomeScreen.kt$Set&lt;UUID&gt;</ID>
-    <ID>UnstableCollections:PdfViewerScreen.kt$List&lt;Bitmap&gt;</ID>
-    <ID>UnstableCollections:ToolsTab.kt$List&lt;ToolItem&gt;</ID>
-    <ID>UnstableCollections:ToolsTab.kt$Set&lt;Feature&gt;</ID>
-    <ID>UnstableCollections:ToolsTab.kt$Set&lt;String&gt;</ID>
-    <ID>UnstableCollections:TransactionDetailScreen.kt$List&lt;UUID&gt;</ID>
-    <ID>UnstableCollections:TransactionDetailScreen.kt$Map&lt;String, List&lt;String&gt;&gt;</ID>
-    <ID>UnstableCollections:TransactionListScreen.kt$Set&lt;UUID&gt;</ID>
     <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
     <ID>UnusedParameter:TransactionContextMenu.kt$transaction: TransactionSummary</ID>
-    <ID>UnusedParameter:XmlTreeView.kt$initiallyExpanded: Boolean = true</ID>
     <ID>UnusedPrivateMember:CrashDetailScreen.kt$@Preview(showBackground = true) @Composable private fun CrashDetailScreenPreview()</ID>
     <ID>UnusedPrivateMember:CrashListScreen.kt$@Preview(showBackground = true) @Composable private fun CrashListScreenPreview()</ID>
     <ID>UnusedPrivateMember:FilterBottomSheetContent.kt$@Preview(showBackground = true) @Composable private fun FilterBottomSheetContentPreview()</ID>
@@ -349,18 +225,5 @@
     <ID>UnusedPrivateMember:ToolsTab.kt$@Preview(showBackground = true) @Composable private fun ToolsTabPreview()</ID>
     <ID>UnusedPrivateMember:TransactionDetailScreen.kt$@Preview(showBackground = true) @Composable private fun TransactionDetailScreenPreview()</ID>
     <ID>UnusedPrivateMember:TransactionListScreen.kt$@Preview(showBackground = true) @Composable private fun SelectableTransactionListScreenPreview()</ID>
-    <ID>UseIfInsteadOfWhen:XmlTreeView.kt$when { c == '&lt;' -&gt; { val text = builder.toString().trim() if (text.isNotEmpty()) { result.add(indentString.repeat(indent) + text) } builder.clear() val tagEnd = xml.indexOf('&gt;', i) if (tagEnd == -1) { builder.append(c) i++ continue } val tag = xml.substring(i, tagEnd + 1) when { tag.startsWith("&lt;?") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.startsWith("&lt;!--") -&gt; { val commentEnd = xml.indexOf("--&gt;", i) if (commentEnd != -1) { val comment = xml.substring(i, commentEnd + 3) result.add(indentString.repeat(indent) + comment) i = commentEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;![CDATA[") -&gt; { val cdataEnd = xml.indexOf("]]&gt;", i) if (cdataEnd != -1) { val cdata = xml.substring(i, cdataEnd + 3) result.add(indentString.repeat(indent) + cdata) i = cdataEnd + 2 } else { result.add(indentString.repeat(indent) + tag) } } tag.startsWith("&lt;/") -&gt; { indent = maxOf(0, indent - 1) result.add(indentString.repeat(indent) + tag) } tag.endsWith("/&gt;") -&gt; { result.add(indentString.repeat(indent) + tag) } tag.uppercase().startsWith("&lt;!DOCTYPE") -&gt; { result.add(indentString.repeat(indent) + tag) } else -&gt; { result.add(indentString.repeat(indent) + tag) indent++ } } i = tagEnd } else -&gt; { builder.append(c) } }</ID>
-    <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:CrashDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:CrashListScreen.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:CrashListScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.material3.*</ID>
-    <ID>WildcardImport:PdfPreviewCard.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:TransactionDetailScreen.kt$import androidx.compose.animation.*</ID>
-    <ID>WildcardImport:TransactionDetailScreen.kt$import androidx.compose.foundation.layout.*</ID>
-    <ID>WildcardImport:TransactionDetailScreen.kt$import androidx.compose.runtime.*</ID>
-    <ID>WildcardImport:TransactionListScreen.kt$import androidx.compose.runtime.*</ID>
   </CurrentIssues>
 </SmellBaseline>

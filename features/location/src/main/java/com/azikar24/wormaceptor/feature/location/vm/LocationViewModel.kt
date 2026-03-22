@@ -304,7 +304,10 @@ class LocationViewModel(
         }
     }
 
-    private fun handleMapTapped(latitude: Double, longitude: Double) {
+    private fun handleMapTapped(
+        latitude: Double,
+        longitude: Double,
+    ) {
         updateState {
             copy(
                 latitudeInput = "%.6f".format(latitude),

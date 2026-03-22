@@ -94,4 +94,53 @@ sealed class ViewerViewEvent {
      * @property category The category name that was toggled.
      */
     data class ToolCategoryCollapseToggled(val category: String) : ViewerViewEvent()
+
+    /**
+     * Filter bottom sheet visibility changed.
+     *
+     * @property visible Whether the sheet should be visible.
+     */
+    data class FilterSheetVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
+
+    /**
+     * Overflow menu visibility changed.
+     *
+     * @property visible Whether the menu should be visible.
+     */
+    data class OverflowMenuVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
+
+    /**
+     * Tools tab search bar active state changed.
+     *
+     * @property active Whether the search bar should be active. When set to false, the search query is also cleared.
+     */
+    data class ToolsSearchActiveChanged(val active: Boolean) : ViewerViewEvent()
+
+    /**
+     * Tools tab search query text changed.
+     *
+     * @property query The current text in the tools search field.
+     */
+    data class ToolsSearchQueryChanged(val query: String) : ViewerViewEvent()
+
+    /**
+     * Clear-transactions confirmation dialog visibility changed.
+     *
+     * @property visible Whether the dialog should be visible.
+     */
+    data class ClearTransactionsDialogVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
+
+    /**
+     * Clear-crashes confirmation dialog visibility changed.
+     *
+     * @property visible Whether the dialog should be visible.
+     */
+    data class ClearCrashesDialogVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
+
+    /**
+     * Delete-selected confirmation dialog visibility changed.
+     *
+     * @property visible Whether the dialog should be visible.
+     */
+    data class DeleteSelectedDialogVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
 }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
+/** In-memory [LeakRepository] implementation for non-persistent debug builds. */
 class InMemoryLeakRepository : LeakRepository {
     private val _leaksFlow = MutableStateFlow<List<LeakInfo>>(emptyList())
 

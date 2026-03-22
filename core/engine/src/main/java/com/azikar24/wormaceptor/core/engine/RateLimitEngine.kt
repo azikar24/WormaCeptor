@@ -42,10 +42,14 @@ class RateLimitEngine {
 
     // Current configuration
     private val _config = MutableStateFlow(RateLimitConfig.default())
+
+    /** The current rate limiting configuration (speed, latency, packet loss). */
     val config: StateFlow<RateLimitConfig> = _config.asStateFlow()
 
     // Throttle statistics
     private val _stats = MutableStateFlow(ThrottleStats.empty())
+
+    /** Accumulated throttle statistics since last reset. */
     val stats: StateFlow<ThrottleStats> = _stats.asStateFlow()
 
     // Atomic counters for thread-safe stat tracking
@@ -97,7 +101,12 @@ class RateLimitEngine {
      * @param latencyMs Additional latency in milliseconds
      * @param packetLossPercent Packet loss percentage (0-100)
      */
-    fun setCustomConfig(downloadSpeedKbps: Long, uploadSpeedKbps: Long, latencyMs: Long, packetLossPercent: Float) {
+    fun setCustomConfig(
+        downloadSpeedKbps: Long,
+        uploadSpeedKbps: Long,
+        latencyMs: Long,
+        packetLossPercent: Float,
+    ) {
         _config.value = RateLimitConfig(
             enabled = true,
             downloadSpeedKbps = downloadSpeedKbps,
@@ -217,7 +226,10 @@ class RateLimitEngine {
      * @param speedKbps Speed limit in kilobits per second
      * @return Delay in milliseconds
      */
-    private fun calculateThrottleDelay(bytes: Long, speedKbps: Long): Long {
+    private fun calculateThrottleDelay(
+        bytes: Long,
+        speedKbps: Long,
+    ): Long {
         if (speedKbps <= 0) return 0
 
         // Convert Kbps to bytes per second: Kbps * 1000 / 8
@@ -259,7 +271,10 @@ class RateLimitEngine {
         private var bytesRead = 0L
         private var startTime = System.currentTimeMillis()
 
-        override fun read(sink: Buffer, byteCount: Long): Long {
+        override fun read(
+            sink: Buffer,
+            byteCount: Long,
+        ): Long {
             val bytesReadNow = super.read(sink, byteCount)
 
             if (bytesReadNow > 0) {
@@ -288,23 +303,24 @@ class RateLimitEngine {
         }
     }
 
+    /** Speed and latency range boundaries. */
     companion object {
-        /** Minimum speed in Kbps */
+        /** Minimum speed in Kbps. */
         const val MIN_SPEED_KBPS = 1L
 
-        /** Maximum speed in Kbps (100 Mbps) */
+        /** Maximum speed in Kbps (100 Mbps). */
         const val MAX_SPEED_KBPS = 100_000L
 
-        /** Minimum latency in ms */
+        /** Minimum latency in ms. */
         const val MIN_LATENCY_MS = 0L
 
-        /** Maximum latency in ms */
+        /** Maximum latency in ms. */
         const val MAX_LATENCY_MS = 5000L
 
-        /** Minimum packet loss percent */
+        /** Minimum packet loss percent. */
         const val MIN_PACKET_LOSS = 0f
 
-        /** Maximum packet loss percent */
+        /** Maximum packet loss percent. */
         const val MAX_PACKET_LOSS = 100f
     }
 }

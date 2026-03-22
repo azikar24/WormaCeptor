@@ -15,6 +15,17 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * - Good (>= 55 FPS): Green - excellent performance
  * - Warning (30-54 FPS): Yellow/Amber - moderate performance
  * - Critical (< 30 FPS): Red - poor performance
+ *
+ * @property good Foreground color for good FPS (>= 55).
+ * @property warning Foreground color for moderate FPS (30-54).
+ * @property critical Foreground color for poor FPS (< 30).
+ * @property goodBackground Background color for good FPS status badges.
+ * @property warningBackground Background color for warning FPS status badges.
+ * @property criticalBackground Background color for critical FPS status badges.
+ * @property chartLine Line color for the FPS time-series chart.
+ * @property chartFill Fill color beneath the FPS chart line.
+ * @property chartGrid Grid line color for the FPS chart.
+ * @property jankIndicator Color used to highlight jank (frame drop) events.
  */
 @Immutable
 data class FpsColors(
@@ -29,20 +40,26 @@ data class FpsColors(
     val chartGrid: Color,
     val jankIndicator: Color,
 ) {
+    /** Returns the foreground color indicating FPS quality (good, warning, or critical). */
     fun forFps(fps: Float): Color = when {
         fps >= FPS_GOOD_THRESHOLD -> good
         fps >= FPS_WARNING_THRESHOLD -> warning
         else -> critical
     }
 
+    /** Returns the background color indicating FPS quality (good, warning, or critical). */
     fun backgroundForFps(fps: Float): Color = when {
         fps >= FPS_GOOD_THRESHOLD -> goodBackground
         fps >= FPS_WARNING_THRESHOLD -> warningBackground
         else -> criticalBackground
     }
 
+    /** FPS threshold constants for performance classification. */
     companion object {
+        /** Minimum FPS considered good performance. */
         const val FPS_GOOD_THRESHOLD = 55f
+
+        /** Minimum FPS before performance is classified as critical. */
         const val FPS_WARNING_THRESHOLD = 30f
     }
 }
@@ -60,13 +77,13 @@ fun fpsColors(darkTheme: Boolean = isSystemInDarkTheme()): FpsColors {
         good = WormaCeptorColors.StatusGreen,
         warning = WormaCeptorColors.StatusAmber,
         critical = WormaCeptorColors.StatusRed,
-        goodBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        warningBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        criticalBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+        goodBackground = WormaCeptorColors.StatusGreen.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        warningBackground = WormaCeptorColors.StatusAmber.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        criticalBackground = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
         chartLine = if (darkTheme) Color(0xFF64B5F6) else Color(0xFF1976D2),
         chartFill = (if (darkTheme) Color(0xFF64B5F6) else Color(0xFF1976D2))
-            .copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
-        chartGrid = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+        chartGrid = outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
         jankIndicator = if (darkTheme) Color(0xFFF06292) else Color(0xFFE91E63),
     )
 }

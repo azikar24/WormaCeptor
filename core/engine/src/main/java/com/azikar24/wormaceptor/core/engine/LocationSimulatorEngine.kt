@@ -43,12 +43,18 @@ class LocationSimulatorEngine(private val context: Context) {
     private var updateJob: Job? = null
 
     private val _currentMockLocation = MutableStateFlow<MockLocation?>(null)
+
+    /** The currently active mock location, or null if not mocking. */
     val currentMockLocation: StateFlow<MockLocation?> = _currentMockLocation.asStateFlow()
 
     private val _isEnabled = MutableStateFlow(false)
+
+    /** Whether mock location simulation is currently active. */
     val isEnabled: StateFlow<Boolean> = _isEnabled.asStateFlow()
 
     private val _lastError = MutableStateFlow<String?>(null)
+
+    /** The most recent error message from a failed mock location operation. */
     val lastError: StateFlow<String?> = _lastError.asStateFlow()
 
     private var isProviderAdded = false
@@ -85,12 +91,14 @@ class LocationSimulatorEngine(private val context: Context) {
             startContinuousUpdates()
 
             true
-        } catch (e: SecurityException) {
+        } catch (_: SecurityException) {
             // Reset state if we failed
             stopContinuousUpdates()
             isProviderAdded = false
             _isEnabled.value = false
-            _lastError.value = "Mock locations not enabled. Enable in Developer Options and select this app as mock location app."
+            _lastError.value = """
+                Mock locations not enabled. Enable in Developer Options and select this app as mock location app.
+            """.trimIndent()
             false
         } catch (e: IllegalArgumentException) {
             // Try to recover by re-adding providers
@@ -169,7 +177,7 @@ class LocationSimulatorEngine(private val context: Context) {
             if (isProviderAdded) {
                 removeTestProviders()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Log but don't fail - we still want to clear the state
         } finally {
             // Always reset state even if provider removal fails
@@ -226,13 +234,14 @@ class LocationSimulatorEngine(private val context: Context) {
             )
             locationManager.removeTestProvider(TEST_PROVIDER_CHECK)
             true
-        } catch (e: SecurityException) {
+        } catch (_: SecurityException) {
             false
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             // Provider might already exist, which is fine
             try {
                 locationManager.removeTestProvider(TEST_PROVIDER_CHECK)
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
             true
         }
     }
@@ -288,17 +297,22 @@ class LocationSimulatorEngine(private val context: Context) {
         try {
             locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, false)
             locationManager.removeTestProvider(LocationManager.GPS_PROVIDER)
-        } catch (_: Exception) { }
+        } catch (_: Exception) {
+        }
 
         try {
             locationManager.setTestProviderEnabled(LocationManager.NETWORK_PROVIDER, false)
             locationManager.removeTestProvider(LocationManager.NETWORK_PROVIDER)
-        } catch (_: Exception) { }
+        } catch (_: Exception) {
+        }
 
         isProviderAdded = false
     }
 
-    private fun createAndroidLocation(mockLocation: MockLocation, provider: String): Location {
+    private fun createAndroidLocation(
+        mockLocation: MockLocation,
+        provider: String,
+    ): Location {
         return Location(provider).apply {
             latitude = mockLocation.latitude
             longitude = mockLocation.longitude
@@ -321,6 +335,7 @@ class LocationSimulatorEngine(private val context: Context) {
         }
     }
 
+    /** Provider names and update interval constants. */
     companion object {
         private const val TEST_PROVIDER_CHECK = "wormaceptor_test_check"
         private const val LOCATION_UPDATE_INTERVAL_MS = 500L

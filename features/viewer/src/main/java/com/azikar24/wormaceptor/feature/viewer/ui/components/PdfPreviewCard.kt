@@ -7,9 +7,20 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,8 +31,24 @@ import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,11 +57,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
+import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -44,7 +73,16 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * PDF metadata extracted from the document
+ * PDF metadata extracted from the document.
+ *
+ * @property pageCount Total number of pages in the PDF.
+ * @property title Document title from PDF metadata, or null if absent.
+ * @property author Document author from PDF metadata, or null if absent.
+ * @property creator Application that created the PDF, or null if absent.
+ * @property creationDate Creation date string from PDF metadata, or null if absent.
+ * @property fileSize Size of the PDF data in bytes.
+ * @property version PDF specification version (e.g. "1.7"), or null if undetected.
+ * @property isPasswordProtected Whether the PDF requires a password to open.
  */
 data class PdfMetadata(
     val pageCount: Int,
@@ -58,12 +96,32 @@ data class PdfMetadata(
 )
 
 /**
- * State representing the PDF loading status
+ * State representing the PDF loading status.
  */
 sealed class PdfLoadState {
+    /** The PDF is currently being loaded and rendered. */
     data object Loading : PdfLoadState()
+
+    /**
+     * The PDF was loaded successfully with a rendered thumbnail.
+     *
+     * @property thumbnail Bitmap of the rendered first page.
+     * @property metadata Parsed PDF metadata.
+     */
     data class Success(val thumbnail: Bitmap, val metadata: PdfMetadata) : PdfLoadState()
+
+    /**
+     * The PDF failed to load.
+     *
+     * @property message Human-readable error description.
+     */
     data class Error(val message: String) : PdfLoadState()
+
+    /**
+     * The PDF requires a password to open.
+     *
+     * @property metadata Partial PDF metadata available without decryption.
+     */
     data class PasswordProtected(val metadata: PdfMetadata) : PdfLoadState()
 }
 
@@ -80,12 +138,15 @@ fun PdfPreviewCard(
     contentType: String?,
     onFullscreen: () -> Unit,
     onDownload: () -> Unit,
-    onShowMessage: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onShowMessage: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     var loadState by remember { mutableStateOf<PdfLoadState>(PdfLoadState.Loading) }
     var tempFile by remember { mutableStateOf<File?>(null) }
+
+    val pdfNoPagesMessage = stringResource(R.string.viewer_pdf_no_pages)
+    val pdfLoadFailedMessage = stringResource(R.string.viewer_pdf_load_failed)
 
     // Load PDF on mount
     LaunchedEffect(pdfData) {
@@ -103,7 +164,7 @@ fun PdfPreviewCard(
 
                 val pageCount = renderer.pageCount
                 if (pageCount == 0) {
-                    loadState = PdfLoadState.Error("PDF has no pages")
+                    loadState = PdfLoadState.Error(pdfNoPagesMessage)
                     renderer.close()
                     fd.close()
                     return@withContext
@@ -112,13 +173,14 @@ fun PdfPreviewCard(
                 // Render first page as thumbnail
                 val page = renderer.openPage(0)
                 val scale = 2f // Higher resolution thumbnail
-                val bitmap = Bitmap.createBitmap(
-                    (page.width * scale).toInt(),
-                    (page.height * scale).toInt(),
-                    Bitmap.Config.ARGB_8888,
-                )
+                val bitmap = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
                 bitmap.eraseColor(android.graphics.Color.WHITE)
-                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                page.render(
+                    bitmap,
+                    null,
+                    null,
+                    PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY,
+                )
                 page.close()
 
                 val metadata = PdfMetadata(
@@ -150,7 +212,7 @@ fun PdfPreviewCard(
                     ),
                 )
             } catch (e: Exception) {
-                loadState = PdfLoadState.Error(e.message ?: "Failed to load PDF")
+                loadState = PdfLoadState.Error(e.message ?: pdfLoadFailedMessage)
             }
         }
     }
@@ -173,7 +235,7 @@ fun PdfPreviewCard(
         colors = CardDefaults.cardColors(containerColor = surfaceColor),
         border = androidx.compose.foundation.BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.soft),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
         ),
     ) {
         when (val state = loadState) {
@@ -187,6 +249,7 @@ fun PdfPreviewCard(
                 onDownload = onDownload,
                 onShowMessage = onShowMessage,
             )
+
             is PdfLoadState.Error -> ErrorContent(message = state.message)
             is PdfLoadState.PasswordProtected -> PasswordProtectedContent(
                 metadata = state.metadata,
@@ -217,7 +280,7 @@ private fun LoadingContent() {
                 color = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = "Rendering PDF...",
+                text = stringResource(R.string.viewer_pdf_rendering),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -266,7 +329,7 @@ private fun SuccessContent(
                     .align(Alignment.BottomCenter)
                     .background(
                         WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.medium,
+                            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                         ),
                     ),
             )
@@ -277,7 +340,7 @@ private fun SuccessContent(
                     .align(Alignment.TopEnd)
                     .padding(WormaCeptorDesignSystem.Spacing.md),
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.opaque),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.OPAQUE),
                 shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
             ) {
                 Row(
@@ -295,7 +358,11 @@ private fun SuccessContent(
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
-                        text = "${metadata.pageCount} page${if (metadata.pageCount != 1) "s" else ""}",
+                        text = pluralStringResource(
+                            R.plurals.viewer_pdf_page_count_label,
+                            metadata.pageCount,
+                            metadata.pageCount,
+                        ),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -308,7 +375,7 @@ private fun SuccessContent(
                 modifier = Modifier.align(Alignment.Center),
                 shape = CircleShape,
                 color = WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.intense,
+                    alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
                 ),
             ) {
                 Icon(
@@ -331,7 +398,7 @@ private fun SuccessContent(
         ) {
             // Title or filename
             Text(
-                text = metadata.title ?: "PDF Document",
+                text = metadata.title ?: stringResource(R.string.viewer_pdf_document),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 2,
@@ -352,7 +419,7 @@ private fun SuccessContent(
                 metadata.version?.let { version ->
                     MetadataChip(
                         icon = null,
-                        text = "PDF $version",
+                        text = stringResource(R.string.viewer_pdf_version, version),
                         tint = MaterialTheme.colorScheme.secondary,
                     )
                 }
@@ -400,7 +467,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -417,7 +484,7 @@ private fun SuccessContent(
                     shape = WormaCeptorDesignSystem.Shapes.button,
                     border = androidx.compose.foundation.BorderStroke(
                         WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
+                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
                     ),
                     contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
                 ) {
@@ -433,7 +500,11 @@ private fun SuccessContent(
 }
 
 @Composable
-private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
+private fun MetadataChip(
+    icon: ImageVector?,
+    text: String,
+    tint: Color,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
@@ -443,7 +514,7 @@ private fun MetadataChip(icon: ImageVector?, text: String, tint: Color) {
                 imageVector = it,
                 contentDescription = text,
                 modifier = Modifier.size(14.dp),
-                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
             )
         }
         Text(
@@ -461,7 +532,7 @@ private fun ErrorContent(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)),
+            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -475,7 +546,7 @@ private fun ErrorContent(message: String) {
                 tint = MaterialTheme.colorScheme.error,
             )
             Text(
-                text = "Failed to load PDF",
+                text = stringResource(R.string.viewer_pdf_load_failed),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.error,
@@ -509,7 +580,7 @@ private fun PasswordProtectedContent(
         // Lock icon with subtle background
         Surface(
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.bold),
+            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
             modifier = Modifier.size(72.dp),
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -527,13 +598,13 @@ private fun PasswordProtectedContent(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
             Text(
-                text = "Password Protected",
+                text = stringResource(R.string.viewer_pdf_password_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = "This PDF requires a password to view",
+                text = stringResource(R.string.viewer_pdf_password_message),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -602,7 +673,11 @@ private fun extractPdfVersion(data: ByteArray): String? {
     }
 }
 
-private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?): String? {
+private fun sharePdf(
+    context: Context,
+    pdfData: ByteArray,
+    existingFile: File?,
+): String? {
     return try {
         // Use existing file or create new one
         val file = existingFile ?: run {
@@ -624,7 +699,9 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?):
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        context.startActivity(Intent.createChooser(intent, "Share PDF"))
+        context.startActivity(
+            Intent.createChooser(intent, context.getString(R.string.viewer_pdf_share_chooser)),
+        )
         null // Success - share sheet handles it
     } catch (e: Exception) {
         "Failed to share PDF: ${e.message}"
@@ -632,9 +709,12 @@ private fun sharePdf(context: Context, pdfData: ByteArray, existingFile: File?):
 }
 
 /**
- * Checks if the response body appears to be a PDF document
+ * Checks if the response body appears to be a PDF document.
  */
-fun isPdfContent(contentType: String?, bodyBytes: ByteArray?): Boolean {
+fun isPdfContent(
+    contentType: String?,
+    bodyBytes: ByteArray?,
+): Boolean {
     // Check content type
     if (contentType?.contains("pdf", ignoreCase = true) == true) {
         return true

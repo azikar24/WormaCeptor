@@ -22,19 +22,20 @@ data class LeakInfo(
      * Severity levels for memory leaks.
      */
     enum class LeakSeverity {
-        /** Low severity - minor leak, minimal impact */
+        /** Low severity - minor leak, minimal impact. */
         LOW,
 
-        /** Medium severity - moderate leak, should be investigated */
+        /** Medium severity - moderate leak, should be investigated. */
         MEDIUM,
 
-        /** High severity - significant leak, should be fixed soon */
+        /** High severity - significant leak, should be fixed soon. */
         HIGH,
 
-        /** Critical severity - severe leak, requires immediate attention */
+        /** Critical severity - severe leak, requires immediate attention. */
         CRITICAL,
     }
 
+    /** Factory methods for [LeakInfo]. */
     companion object {
         /**
          * Creates an empty LeakInfo instance with default values.
@@ -68,6 +69,7 @@ data class LeakSummary(
     val lowCount: Int,
     val totalRetainedBytes: Long,
 ) {
+    /** Factory methods for [LeakSummary]. */
     companion object {
         /**
          * Creates an empty LeakSummary instance with zero values.

@@ -9,6 +9,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 import com.azikar24.wormaceptor.domain.contracts.WebViewMonitorRepository
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
@@ -58,14 +59,20 @@ class WebViewMonitorEngine(
 
     // Whether monitoring is enabled (default: true)
     private val _isEnabled = MutableStateFlow(true)
+
+    /** Whether WebView network monitoring is currently enabled. */
     val isEnabled: StateFlow<Boolean> = _isEnabled.asStateFlow()
 
     // All captured requests
     private val _requests = MutableStateFlow<List<WebViewRequest>>(emptyList())
+
+    /** All captured WebView network requests. */
     val requests: StateFlow<List<WebViewRequest>> = _requests.asStateFlow()
 
     // Statistics about captured requests
     private val _stats = MutableStateFlow(WebViewRequestStats.empty())
+
+    /** Aggregated statistics about captured WebView requests. */
     val stats: StateFlow<WebViewRequestStats> = _stats.asStateFlow()
 
     // Track pending requests for timing
@@ -76,14 +83,20 @@ class WebViewMonitorEngine(
 
     // URL pattern filter
     private val _urlFilter = MutableStateFlow<String?>(null)
+
+    /** The active URL pattern filter, or null if no URL filter is applied. */
     val urlFilter: StateFlow<String?> = _urlFilter.asStateFlow()
 
     // Resource type filter
     private val _resourceTypeFilter = MutableStateFlow<Set<WebViewResourceType>>(emptySet())
+
+    /** The set of resource types to capture; empty means all types are captured. */
     val resourceTypeFilter: StateFlow<Set<WebViewResourceType>> = _resourceTypeFilter.asStateFlow()
 
     // WebView ID filter
     private val _webViewIdFilter = MutableStateFlow<String?>(null)
+
+    /** The active WebView instance ID filter, or null if capturing from all WebViews. */
     val webViewIdFilter: StateFlow<String?> = _webViewIdFilter.asStateFlow()
 
     /**
@@ -236,7 +249,10 @@ class WebViewMonitorEngine(
      * @param delegate Optional existing WebViewClient to delegate calls to
      * @return A WebViewClient that monitors requests and delegates to the provided client
      */
-    fun createMonitoringClient(webViewId: String, delegate: WebViewClient? = null): WebViewClient {
+    fun createMonitoringClient(
+        webViewId: String,
+        delegate: WebViewClient? = null,
+    ): WebViewClient {
         return MonitoringWebViewClient(webViewId, delegate)
     }
 
@@ -344,7 +360,10 @@ class WebViewMonitorEngine(
         private val delegate: WebViewClient?,
     ) : WebViewClient() {
 
-        override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
+        override fun shouldInterceptRequest(
+            view: WebView?,
+            request: WebResourceRequest?,
+        ): WebResourceResponse? {
             if (_isEnabled.value && request != null) {
                 val url = request.url.toString()
                 val method = request.method ?: "GET"
@@ -376,8 +395,12 @@ class WebViewMonitorEngine(
             return delegate?.shouldInterceptRequest(view, request)
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
-        override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
+        override fun shouldInterceptRequest(
+            view: WebView?,
+            url: String?,
+        ): WebResourceResponse? {
             if (_isEnabled.value && url != null) {
                 val resourceType = WebViewResourceType.fromUrl(url)
 
@@ -399,22 +422,29 @@ class WebViewMonitorEngine(
             return delegate?.shouldInterceptRequest(view, url)
         }
 
-        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        override fun onPageStarted(
+            view: WebView?,
+            url: String?,
+            favicon: Bitmap?,
+        ) {
             delegate?.onPageStarted(view, url, favicon)
         }
 
-        override fun onPageFinished(view: WebView?, url: String?) {
+        override fun onPageFinished(
+            view: WebView?,
+            url: String?,
+        ) {
             delegate?.onPageFinished(view, url)
         }
 
-        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+        override fun onReceivedError(
+            view: WebView?,
+            request: WebResourceRequest?,
+            error: WebResourceError?,
+        ) {
             if (_isEnabled.value && request != null && error != null) {
                 val url = request.url.toString()
-                val errorDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    error.description?.toString() ?: "Unknown error"
-                } else {
-                    "Error"
-                }
+                val errorDescription = error.description?.toString() ?: "Unknown error"
 
                 // Find and update the matching request
                 _requests.value.find { it.url == url && it.webViewId == webViewId && it.isPending }?.let { req ->
@@ -428,8 +458,14 @@ class WebViewMonitorEngine(
             delegate?.onReceivedError(view, request, error)
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
-        override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+        override fun onReceivedError(
+            view: WebView?,
+            errorCode: Int,
+            description: String?,
+            failingUrl: String?,
+        ) {
             if (_isEnabled.value && failingUrl != null) {
                 _requests.value.find { it.url == failingUrl && it.webViewId == webViewId && it.isPending }?.let { req ->
                     updateRequest(
@@ -465,7 +501,11 @@ class WebViewMonitorEngine(
             delegate?.onReceivedHttpError(view, request, errorResponse)
         }
 
-        override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+        override fun onReceivedSslError(
+            view: WebView?,
+            handler: SslErrorHandler?,
+            error: SslError?,
+        ) {
             if (_isEnabled.value && error != null) {
                 val url = error.url
 
@@ -480,13 +520,20 @@ class WebViewMonitorEngine(
             delegate?.onReceivedSslError(view, handler, error)
         }
 
-        @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.N)
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        @RequiresApi(Build.VERSION_CODES.N)
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?,
+        ): Boolean {
             return delegate?.shouldOverrideUrlLoading(view, request) ?: false
         }
 
+        @Deprecated("Deprecated in Java")
         @Suppress("DEPRECATION")
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            url: String?,
+        ): Boolean {
             @Suppress("DEPRECATION")
             return delegate?.shouldOverrideUrlLoading(view, url) ?: false
         }
@@ -521,8 +568,9 @@ class WebViewMonitorEngine(
         }
     }
 
+    /** Storage limits and monitoring defaults. */
     companion object {
-        /** Default maximum number of requests to store */
+        /** Default maximum number of requests to store. */
         const val DEFAULT_MAX_REQUESTS = 1000
     }
 }

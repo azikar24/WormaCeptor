@@ -22,7 +22,7 @@ object SampleApiService {
             .addInterceptor(
                 WormaCeptorInterceptor()
                     .showNotification(true)
-                    .maxContentLength(250000L)
+                    .maxContentLength(250_000L)
                     .retainDataFor(WormaCeptorInterceptor.Period.FOREVER)
                     .redactHeader("Authorization")
                     .redactJsonValue("password"),

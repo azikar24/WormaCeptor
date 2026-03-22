@@ -3,256 +3,136 @@ package com.azikar24.wormaceptor.infra.parser.xml
 import com.azikar24.wormaceptor.domain.contracts.BaseBodyParser
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ParsedBody
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserException
-import org.xmlpull.v1.XmlPullParserFactory
-import java.io.StringReader
-import java.io.StringWriter
+import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
 
 /**
- * Parser for XML content.
+ * Parser and formatter for XML content.
  *
- * Features:
- * - Pretty-print with proper indentation
- * - Namespace-aware formatting
- * - DTD/schema reference display in metadata
+ * Formats raw XML with proper indentation for display.
+ * Also implements [XmlFormatter] for typed access from viewer composables.
  */
-class XmlBodyParser(
-    private val indentString: String = "  ",
-) : BaseBodyParser() {
+class XmlBodyParser : BaseBodyParser(), XmlFormatter {
 
     override val supportedContentTypes: List<String> = listOf(
         "application/xml",
         "text/xml",
         "application/xhtml+xml",
-        "application/atom+xml",
-        "application/rss+xml",
         "application/soap+xml",
+        "application/rss+xml",
+        "application/atom+xml",
     )
 
-    override val priority: Int = 240
+    override val priority: Int = PRIORITY
 
     override val defaultContentType: ContentType = ContentType.XML
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
-        // Check content type first
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         if (contentType != null) {
-            val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
-            if (mimeType != null && supportedContentTypes.any { it == mimeType }) {
-                return true
-            }
-            // Also check for +xml suffix
-            if (mimeType?.endsWith("+xml") == true) {
+            val mime = contentType.split(";").firstOrNull()?.trim()?.lowercase() ?: ""
+            if (mime.contains("xml") || mime.endsWith("+xml")) {
                 return true
             }
         }
-
-        // Content inspection
-        if (body.isEmpty()) return false
-
-        val trimmed = String(body, Charsets.UTF_8).trimStart()
-        return trimmed.startsWith("<?xml") ||
-            trimmed.startsWith("<") && !trimmed.startsWith("<!DOCTYPE html", ignoreCase = true)
+        return false
     }
 
     override fun parseBody(body: ByteArray): ParsedBody {
-        return try {
-            val xmlString = String(body, Charsets.UTF_8)
-            val metadata = extractMetadata(xmlString)
-            val formatted = formatXml(xmlString)
-
-            ParsedBody(
-                formatted = formatted,
-                contentType = ContentType.XML,
-                metadata = metadata,
-                isValid = true,
-            )
-        } catch (e: XmlPullParserException) {
-            ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.XML,
-                isValid = false,
-                errorMessage = "Invalid XML: ${e.message}",
-            )
-        } catch (e: Exception) {
-            ParsedBody(
-                formatted = String(body, Charsets.UTF_8),
-                contentType = ContentType.XML,
-                isValid = false,
-                errorMessage = "XML parsing error: ${e.message}",
-            )
-        }
+        val text = String(body, Charsets.UTF_8)
+        val formatted = format(text).joinToString("\n")
+        return ParsedBody(
+            formatted = formatted,
+            contentType = ContentType.XML,
+            isValid = true,
+        )
     }
 
-    private fun formatXml(xml: String): String {
-        val factory = XmlPullParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        val parser = factory.newPullParser()
-        parser.setInput(StringReader(xml))
+    @Suppress("CyclomaticComplexity", "NestedBlockDepth")
+    override fun format(xml: String): List<String> {
+        val result = mutableListOf<String>()
+        var indent = 0
+        val indentString = "  "
 
-        val writer = StringWriter()
-        var depth = 0
-        var lastEvent = XmlPullParser.START_DOCUMENT
-        var hasTextContent = false
+        var i = 0
+        val builder = StringBuilder()
 
-        while (true) {
-            val event = parser.next()
-            if (event == XmlPullParser.END_DOCUMENT) break
+        while (i < xml.length) {
+            val c = xml[i]
 
-            when (event) {
-                XmlPullParser.START_TAG -> {
-                    if (lastEvent != XmlPullParser.START_DOCUMENT && lastEvent != XmlPullParser.TEXT) {
-                        writer.append("\n")
+            if (c == '<') {
+                val text = builder.toString().trim()
+                if (text.isNotEmpty()) {
+                    result.add(indentString.repeat(indent) + text)
+                }
+                builder.clear()
+
+                val tagEnd = xml.indexOf('>', i)
+                if (tagEnd == -1) {
+                    builder.append(c)
+                    i++
+                    continue
+                }
+
+                val tag = xml.substring(i, tagEnd + 1)
+
+                when {
+                    tag.startsWith("<?") -> {
+                        result.add(indentString.repeat(indent) + tag)
                     }
-                    if (!hasTextContent) {
-                        writer.append(indentString.repeat(depth))
-                    }
-
-                    writer.append("<")
-                    if (parser.prefix != null) {
-                        writer.append(parser.prefix).append(":")
-                    }
-                    writer.append(parser.name)
-
-                    // Write namespace declarations
-                    for (i in 0 until parser.getNamespaceCount(depth)) {
-                        val prefix = parser.getNamespacePrefix(i)
-                        val uri = parser.getNamespaceUri(i)
-                        writer.append(" xmlns")
-                        if (prefix != null) {
-                            writer.append(":").append(prefix)
+                    tag.startsWith("<!--") -> {
+                        val commentEnd = xml.indexOf("-->", i)
+                        if (commentEnd != -1) {
+                            val comment = xml.substring(i, commentEnd + 3)
+                            result.add(indentString.repeat(indent) + comment)
+                            i = commentEnd + 2
+                        } else {
+                            result.add(indentString.repeat(indent) + tag)
                         }
-                        writer.append("=\"").append(escapeXml(uri)).append("\"")
                     }
-
-                    // Write attributes
-                    for (i in 0 until parser.attributeCount) {
-                        writer.append(" ")
-                        if (parser.getAttributePrefix(i) != null) {
-                            writer.append(parser.getAttributePrefix(i)).append(":")
+                    tag.startsWith("<![CDATA[") -> {
+                        val cdataEnd = xml.indexOf("]]>", i)
+                        if (cdataEnd != -1) {
+                            val cdata = xml.substring(i, cdataEnd + 3)
+                            result.add(indentString.repeat(indent) + cdata)
+                            i = cdataEnd + 2
+                        } else {
+                            result.add(indentString.repeat(indent) + tag)
                         }
-                        writer.append(parser.getAttributeName(i))
-                        writer.append("=\"")
-                        writer.append(escapeXml(parser.getAttributeValue(i)))
-                        writer.append("\"")
                     }
-                    writer.append(">")
-                    depth++
-                    hasTextContent = false
-                }
-
-                XmlPullParser.END_TAG -> {
-                    depth--
-                    if (lastEvent != XmlPullParser.TEXT && lastEvent != XmlPullParser.START_TAG) {
-                        writer.append("\n")
-                        writer.append(indentString.repeat(depth))
-                    } else if (!hasTextContent && lastEvent != XmlPullParser.START_TAG) {
-                        writer.append("\n")
-                        writer.append(indentString.repeat(depth))
+                    tag.startsWith("</") -> {
+                        indent = maxOf(0, indent - 1)
+                        result.add(indentString.repeat(indent) + tag)
                     }
-
-                    writer.append("</")
-                    if (parser.prefix != null) {
-                        writer.append(parser.prefix).append(":")
+                    tag.endsWith("/>") -> {
+                        result.add(indentString.repeat(indent) + tag)
                     }
-                    writer.append(parser.name)
-                    writer.append(">")
-                    hasTextContent = false
-                }
-
-                XmlPullParser.TEXT -> {
-                    val text = parser.text?.trim()
-                    if (!text.isNullOrEmpty()) {
-                        writer.append(escapeXml(text))
-                        hasTextContent = true
+                    tag.uppercase().startsWith("<!DOCTYPE") -> {
+                        result.add(indentString.repeat(indent) + tag)
+                    }
+                    else -> {
+                        result.add(indentString.repeat(indent) + tag)
+                        indent++
                     }
                 }
 
-                XmlPullParser.CDSECT -> {
-                    writer.append("<![CDATA[")
-                    writer.append(parser.text)
-                    writer.append("]]>")
-                    hasTextContent = true
-                }
-
-                XmlPullParser.COMMENT -> {
-                    if (lastEvent != XmlPullParser.START_DOCUMENT) {
-                        writer.append("\n")
-                        writer.append(indentString.repeat(depth))
-                    }
-                    writer.append("<!--")
-                    writer.append(parser.text)
-                    writer.append("-->")
-                }
-
-                XmlPullParser.PROCESSING_INSTRUCTION -> {
-                    writer.append("<?")
-                    writer.append(parser.text)
-                    writer.append("?>")
-                    writer.append("\n")
-                }
+                i = tagEnd
+            } else {
+                builder.append(c)
             }
-            lastEvent = event
+            i++
         }
 
-        return writer.toString().trimStart('\n')
+        val remaining = builder.toString().trim()
+        if (remaining.isNotEmpty()) {
+            result.add(indentString.repeat(indent) + remaining)
+        }
+
+        return result.filter { it.isNotBlank() }
     }
 
-    private fun extractMetadata(xml: String): Map<String, String> {
-        val metadata = mutableMapOf<String, String>()
-
-        // Extract XML declaration version and encoding
-        val declRegex = """<\?xml\s+version\s*=\s*["']([^"']+)["'](\s+encoding\s*=\s*["']([^"']+)["'])?""".toRegex()
-        declRegex.find(xml)?.let { match ->
-            metadata["version"] = match.groupValues[1]
-            if (match.groupValues.size > 3 && match.groupValues[3].isNotEmpty()) {
-                metadata["encoding"] = match.groupValues[3]
-            }
-        }
-
-        // Extract root element
-        val factory = XmlPullParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        try {
-            val parser = factory.newPullParser()
-            parser.setInput(StringReader(xml))
-
-            while (parser.next() != XmlPullParser.END_DOCUMENT) {
-                if (parser.eventType == XmlPullParser.START_TAG) {
-                    metadata["rootElement"] = parser.name
-                    parser.getNamespace(parser.prefix)?.let { ns ->
-                        if (ns.isNotEmpty()) {
-                            metadata["rootNamespace"] = ns
-                        }
-                    }
-                    break
-                }
-            }
-        } catch (e: Exception) {
-            // Ignore metadata extraction errors
-        }
-
-        // Extract DOCTYPE
-        val doctypeRegex = """<!DOCTYPE\s+(\S+)(\s+PUBLIC\s+["']([^"']+)["'])?(\s+["']([^"']+)["'])?""".toRegex()
-        doctypeRegex.find(xml)?.let { match ->
-            metadata["doctype"] = match.groupValues[1]
-            if (match.groupValues.size > 3 && match.groupValues[3].isNotEmpty()) {
-                metadata["publicId"] = match.groupValues[3]
-            }
-            if (match.groupValues.size > 5 && match.groupValues[5].isNotEmpty()) {
-                metadata["systemId"] = match.groupValues[5]
-            }
-        }
-
-        return metadata
-    }
-
-    private fun escapeXml(text: String): String {
-        return text
-            .replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-            .replace("\"", "&quot;")
-            .replace("'", "&apos;")
+    companion object {
+        private const val PRIORITY = 200
     }
 }

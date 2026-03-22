@@ -30,11 +30,24 @@ import androidx.room.TypeConverters
 )
 @TypeConverters(Converters::class)
 abstract class WormaCeptorDatabase : RoomDatabase() {
+    /** Provides access to network transaction CRUD operations. */
     abstract fun transactionDao(): TransactionDao
+
+    /** Provides access to crash report CRUD operations. */
     abstract fun crashDao(): CrashDao
+
+    /** Provides access to memory leak record CRUD operations. */
     abstract fun leakDao(): LeakDao
+
+    /** Provides access to location preset CRUD operations. */
     abstract fun locationPresetDao(): LocationPresetDao
+
+    /** Provides access to mock location state CRUD operations. */
     abstract fun mockLocationDao(): MockLocationDao
+
+    /** Provides access to push notification template CRUD operations. */
     abstract fun pushTemplateDao(): PushTemplateDao
+
+    /** Provides access to WebView request CRUD operations. */
     abstract fun webViewRequestDao(): WebViewRequestDao
 }

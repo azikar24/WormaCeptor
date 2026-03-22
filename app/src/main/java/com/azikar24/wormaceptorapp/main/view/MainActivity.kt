@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -49,6 +51,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsTab
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WelcomeScreen
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchEffect
 import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -139,7 +142,7 @@ class MainActivity : ComponentActivity() {
     private fun MainNavHost(
         state: MainViewState,
         onEvent: (MainViewEvent) -> Unit,
-        navController: androidx.navigation.NavHostController,
+        navController: NavHostController,
         glitchProgress: Float,
     ) {
         Box(
@@ -188,7 +191,11 @@ class MainActivity : ComponentActivity() {
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
-    private fun HomeScreen(state: MainViewState, onEvent: (MainViewEvent) -> Unit, glitchProgress: Float) {
+    private fun HomeScreen(
+        state: MainViewState,
+        onEvent: (MainViewEvent) -> Unit,
+        glitchProgress: Float,
+    ) {
         GlitchEffect(
             isActive = state.isGlitchEffectActive,
             progress = glitchProgress,
@@ -232,7 +239,7 @@ class MainActivity : ComponentActivity() {
     private fun TestToolsSheet(
         state: MainViewState,
         onEvent: (MainViewEvent) -> Unit,
-        sheetState: androidx.compose.material3.SheetState,
+        sheetState: SheetState,
     ) {
         if (state.showTestToolsSheet) {
             ModalBottomSheet(
@@ -263,9 +270,9 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     private fun handleEffect(
         effect: MainViewEffect,
-        navController: androidx.navigation.NavHostController,
-        sheetState: androidx.compose.material3.SheetState,
-        scope: kotlinx.coroutines.CoroutineScope,
+        navController: NavHostController,
+        sheetState: SheetState,
+        scope: CoroutineScope,
     ) {
         when (effect) {
             MainViewEffect.OpenWormaCeptor -> {

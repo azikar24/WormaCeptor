@@ -13,7 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,6 +76,7 @@ import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorExpandableCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
@@ -97,7 +97,10 @@ import org.koin.compose.koinInject
 
 /** Main composable for the WebView Monitor feature. */
 @Composable
-fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun WebViewMonitor(
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val engine: WebViewMonitorEngine = koinInject()
     WebViewMonitor(
         engine = engine,
@@ -109,7 +112,11 @@ fun WebViewMonitor(modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? 
 /** Main composable for the WebView Monitor feature with external engine. */
 @Suppress("LongMethod")
 @Composable
-fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun WebViewMonitor(
+    engine: WebViewMonitorEngine,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val factory = remember(engine) { WebViewMonitorFeature.createViewModelFactory(engine) }
     val viewModel: WebViewMonitorViewModel = viewModel(factory = factory)
     val navController = rememberNavController()
@@ -134,26 +141,26 @@ fun WebViewMonitor(engine: WebViewMonitorEngine, modifier: Modifier = Modifier, 
         enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         exitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         popEnterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
         popExitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.page))
+                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
         },
     ) {
         composable("list") {
@@ -290,15 +297,19 @@ private fun ListTopBar(
 }
 
 @Composable
-private fun ExpandableSearchBar(visible: Boolean, query: String, onQueryChange: (String) -> Unit) {
+private fun ExpandableSearchBar(
+    visible: Boolean,
+    query: String,
+    onQueryChange: (String) -> Unit,
+) {
     AnimatedVisibility(
         visible = visible,
         enter = expandVertically(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
         exit = shrinkVertically(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-        ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
     ) {
         WormaCeptorSearchBar(
             query = query,
@@ -378,7 +389,10 @@ private fun ListContent(
 }
 
 @Composable
-private fun StatsRow(stats: WebViewRequestStats, modifier: Modifier = Modifier) {
+private fun StatsRow(
+    stats: WebViewRequestStats,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
@@ -442,7 +456,7 @@ private fun FilterSection(
             }
         },
     ) {
-        FlowRow(
+        WormaCeptorFlowRow(
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
         ) {
@@ -469,7 +483,11 @@ private fun FilterSection(
 }
 
 @Composable
-private fun CountText(filteredCount: Int, totalCount: Int, modifier: Modifier = Modifier) {
+private fun CountText(
+    filteredCount: Int,
+    totalCount: Int,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = if (filteredCount == totalCount) {
             stringResource(R.string.webviewmonitor_request_count, totalCount)
@@ -483,7 +501,10 @@ private fun CountText(filteredCount: Int, totalCount: Int, modifier: Modifier = 
 }
 
 @Composable
-private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
+private fun WebViewRequestItem(
+    request: WebViewRequest,
+    onClick: () -> Unit,
+) {
     val statusColor = getStatusColor(request)
 
     Row(
@@ -497,7 +518,7 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                 ),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
@@ -516,7 +537,10 @@ private fun WebViewRequestItem(request: WebViewRequest, onClick: () -> Unit) {
 }
 
 @Composable
-private fun RequestItemContent(request: WebViewRequest, modifier: Modifier = Modifier) {
+private fun RequestItemContent(
+    request: WebViewRequest,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -561,7 +585,7 @@ private fun RequestHostChip(host: String) {
         modifier = Modifier
             .background(
                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.prominent,
+                    alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
                 ),
                 RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
             )
@@ -573,7 +597,10 @@ private fun RequestHostChip(host: String) {
 }
 
 @Composable
-private fun RequestStatusBadge(request: WebViewRequest, statusColor: Color) {
+private fun RequestStatusBadge(
+    request: WebViewRequest,
+    statusColor: Color,
+) {
     Column(horizontalAlignment = Alignment.End) {
         val statusText = when {
             request.isPending -> "..."
@@ -602,7 +629,7 @@ private fun RequestStatusBadge(request: WebViewRequest, statusColor: Color) {
                 text = formatDuration(duration),
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }
@@ -620,7 +647,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
             ),
         )
         request.contentLength?.let { length ->
@@ -629,7 +656,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                 ),
             )
         }

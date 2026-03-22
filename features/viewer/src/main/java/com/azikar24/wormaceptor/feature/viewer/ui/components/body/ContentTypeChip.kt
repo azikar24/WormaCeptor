@@ -39,18 +39,22 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
  * Uses semantic colors for each content type for quick visual identification.
  */
 @Composable
-fun ContentTypeChip(contentType: ContentType, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
+fun ContentTypeChip(
+    contentType: ContentType,
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+) {
     val chipInfo = getContentTypeChipInfo(contentType)
 
     val backgroundColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "chip_bg_color",
     )
 
     val borderColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "chip_border_color",
     )
 
@@ -92,6 +96,10 @@ fun ContentTypeChip(contentType: ContentType, modifier: Modifier = Modifier, onC
 
 /**
  * Information about a content type for display purposes.
+ *
+ * @property displayName Human-readable label for the content type (e.g. "JSON", "XML").
+ * @property icon Material icon representing the content type.
+ * @property color Semantic color used for the chip background and text tint.
  */
 data class ContentTypeChipInfo(
     val displayName: String,

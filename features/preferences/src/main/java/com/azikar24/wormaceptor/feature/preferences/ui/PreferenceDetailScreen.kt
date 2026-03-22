@@ -11,7 +11,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -67,6 +66,7 @@ import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -196,11 +196,11 @@ fun PreferenceDetailScreen(
             AnimatedVisibility(
                 visible = searchActive,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
             ) {
                 WormaCeptorSearchBar(
                     query = searchQuery,
@@ -216,7 +216,7 @@ fun PreferenceDetailScreen(
 
             // Type filter chips - always visible when types available
             if (availableTypes.isNotEmpty()) {
-                FlowRow(
+                WormaCeptorFlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = WormaCeptorDesignSystem.Spacing.md)
@@ -239,7 +239,7 @@ fun PreferenceDetailScreen(
                             label = { Text(type) },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = typeColor.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.medium,
+                                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
                                 ),
                                 selectedLabelColor = typeColor,
                             ),
@@ -376,7 +376,10 @@ private fun PreferenceItemContent(
 }
 
 @Composable
-private fun PreferenceItemRow(item: PreferenceItem, typeColor: Color) {
+private fun PreferenceItemRow(
+    item: PreferenceItem,
+    typeColor: Color,
+) {
     Row(
         modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
@@ -420,7 +423,7 @@ private fun PreferenceItemRow(item: PreferenceItem, typeColor: Color) {
         Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
 
         Surface(
-            color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+            color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             contentColor = typeColor,
             shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
         ) {

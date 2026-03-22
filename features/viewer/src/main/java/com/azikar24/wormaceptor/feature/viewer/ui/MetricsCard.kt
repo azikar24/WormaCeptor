@@ -52,8 +52,12 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
 
+/** Expandable card showing aggregate network metrics (count, average duration, status breakdown). */
 @Composable
-fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modifier = Modifier) {
+fun MetricsCard(
+    transactions: ImmutableList<TransactionSummary>,
+    modifier: Modifier = Modifier,
+) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -96,7 +100,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
     ) {
         Column(
@@ -169,7 +173,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
             }
 
             // Expandable details
-            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.page
+            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.PAGE
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(
@@ -292,7 +296,7 @@ fun MetricsCard(transactions: ImmutableList<TransactionSummary>, modifier: Modif
                                 ) {
                                     WormaCeptorStatusDot(
                                         color = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = WormaCeptorDesignSystem.Alpha.heavy,
+                                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
                                         ),
                                         size = 6.dp,
                                     )

@@ -23,7 +23,7 @@ class CpuViewModel(
     private val engine: CpuMonitorEngine,
 ) : ViewModel() {
 
-    // Current CPU snapshot
+    /** Current CPU snapshot with usage percentages and per-core data. */
     val currentCpu: StateFlow<CpuInfo> = engine.currentCpu
         .stateIn(
             viewModelScope,
@@ -31,7 +31,7 @@ class CpuViewModel(
             CpuInfo.empty(),
         )
 
-    // CPU history for charts
+    /** Historical CPU snapshots used for rendering time-series charts. */
     val cpuHistory: StateFlow<ImmutableList<CpuInfo>> = engine.cpuHistory
         .map { it.toImmutableList() }
         .stateIn(
@@ -40,10 +40,10 @@ class CpuViewModel(
             persistentListOf(),
         )
 
-    // Monitoring state
+    /** Whether CPU monitoring is currently active. */
     val isMonitoring: StateFlow<Boolean> = engine.isMonitoring
 
-    // CPU warning indicator (when usage exceeds threshold)
+    /** Whether CPU usage exceeds the warning threshold. */
     val isCpuWarning: StateFlow<Boolean> = engine.currentCpu
         .map { it.overallUsagePercent >= CpuMonitorEngine.CPU_WARNING_THRESHOLD }
         .stateIn(
@@ -71,11 +71,5 @@ class CpuViewModel(
      */
     fun clearHistory() {
         engine.clearHistory()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Note: We don't stop the engine here - monitoring persists across navigation.
-        // The engine lifecycle is managed by the user via explicit start/stop.
     }
 }

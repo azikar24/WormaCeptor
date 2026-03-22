@@ -17,13 +17,42 @@ import com.azikar24.wormaceptor.domain.entities.DependencyCategory
  * - Serialization: Orange - data transformation
  * - Database: Amber - persistence
  * - Reactive: Pink - async patterns
+ *
+ * @property primary Primary accent color used for highlights and selected states.
+ * @property networking Color for the networking dependency category.
+ * @property dependencyInjection Color for the dependency injection category.
+ * @property uiFramework Color for the UI framework category.
+ * @property imageLoading Color for the image loading category.
+ * @property serialization Color for the serialization category.
+ * @property database Color for the database category.
+ * @property reactive Color for the reactive/async patterns category.
+ * @property logging Color for the logging category.
+ * @property analytics Color for the analytics category.
+ * @property testing Color for the testing category.
+ * @property security Color for the security category.
+ * @property utility Color for the utility category.
+ * @property androidx Color for the AndroidX category.
+ * @property kotlin Color for the Kotlin standard library category.
+ * @property other Color for uncategorized dependencies.
+ * @property versionDetected Color indicating a detected version number.
+ * @property versionUnknown Color indicating an unknown version.
+ * @property highConfidence Color for high-confidence detections.
+ * @property mediumConfidence Color for medium-confidence detections.
+ * @property lowConfidence Color for low-confidence detections.
+ * @property cardBackground Background color for dependency cards.
+ * @property chipBackground Background color for unselected filter chips.
+ * @property selectedChipBackground Background color for selected filter chips.
+ * @property searchBackground Background color for the search bar area.
+ * @property labelPrimary Primary text color for labels and titles.
+ * @property labelSecondary Secondary text color for subtitles and hints.
+ * @property valuePrimary Text color for detail values.
+ * @property versionText Text color for version badges.
+ * @property divider Color for divider lines.
+ * @property link Color for clickable links.
  */
 @Immutable
 data class DependenciesInspectorColors(
-    // Primary accent
     val primary: Color,
-
-    // Category colors
     val networking: Color,
     val dependencyInjection: Color,
     val uiFramework: Color,
@@ -39,27 +68,19 @@ data class DependenciesInspectorColors(
     val androidx: Color,
     val kotlin: Color,
     val other: Color,
-
-    // Version status colors
     val versionDetected: Color,
     val versionUnknown: Color,
     val highConfidence: Color,
     val mediumConfidence: Color,
     val lowConfidence: Color,
-
-    // Background colors
     val cardBackground: Color,
     val chipBackground: Color,
     val selectedChipBackground: Color,
     val searchBackground: Color,
-
-    // Text colors
     val labelPrimary: Color,
     val labelSecondary: Color,
     val valuePrimary: Color,
     val versionText: Color,
-
-    // Accent colors
     val divider: Color,
     val link: Color,
 ) {

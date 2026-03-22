@@ -95,6 +95,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
+/** Displays detailed hardware, software, and storage information about the device. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreen(onBack: () -> Unit) {
@@ -281,7 +282,10 @@ internal fun DeviceInfoScreenContent(
 }
 
 @Composable
-private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit) {
+private fun DeviceSection(
+    device: DeviceDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_device)
     val yes = stringResource(R.string.deviceinfo_yes)
@@ -308,7 +312,10 @@ private fun DeviceSection(device: DeviceDetails, onShowMessage: (String) -> Unit
 }
 
 @Composable
-private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
+private fun OsSection(
+    os: OsDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_os)
     WormaCeptorInfoCard(
@@ -332,7 +339,10 @@ private fun OsSection(os: OsDetails, onShowMessage: (String) -> Unit) {
 }
 
 @Composable
-private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit) {
+private fun ScreenSection(
+    screen: ScreenDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_display)
     WormaCeptorInfoCard(
@@ -368,7 +378,10 @@ private fun ScreenSection(screen: ScreenDetails, onShowMessage: (String) -> Unit
 }
 
 @Composable
-private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit) {
+private fun MemorySection(
+    memory: MemoryDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_memory)
     val yes = stringResource(R.string.deviceinfo_yes)
@@ -428,7 +441,10 @@ private fun MemorySection(memory: MemoryDetails, onShowMessage: (String) -> Unit
 }
 
 @Composable
-private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> Unit) {
+private fun StorageSection(
+    storage: StorageDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_storage)
     val totalLabel = stringResource(R.string.deviceinfo_label_total)
@@ -514,7 +530,10 @@ private fun StorageSection(storage: StorageDetails, onShowMessage: (String) -> U
 }
 
 @Composable
-private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
+private fun AppSection(
+    app: AppDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_application)
     val yes = stringResource(R.string.deviceinfo_yes)
@@ -544,7 +563,10 @@ private fun AppSection(app: AppDetails, onShowMessage: (String) -> Unit) {
 }
 
 @Composable
-private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> Unit) {
+private fun NetworkSection(
+    network: NetworkDetails,
+    onShowMessage: (String) -> Unit,
+) {
     val context = LocalContext.current
     val sectionTitle = stringResource(R.string.deviceinfo_section_network)
     val yes = stringResource(R.string.deviceinfo_yes)
@@ -585,7 +607,10 @@ private fun NetworkSection(network: NetworkDetails, onShowMessage: (String) -> U
 }
 
 @Composable
-private fun CollapsibleInfoRow(label: String, value: String) {
+private fun CollapsibleInfoRow(
+    label: String,
+    value: String,
+) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val collapse = stringResource(R.string.deviceinfo_collapse)
     val expand = stringResource(R.string.deviceinfo_expand)
@@ -641,7 +666,7 @@ private fun CollapsibleInfoRow(label: String, value: String) {
                         .padding(top = WormaCeptorDesignSystem.Spacing.xs)
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.moderate,
+                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
                             ),
                             RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
                         )
@@ -668,12 +693,18 @@ internal data class DeviceInfoUiState(
     val isRefreshing: Boolean = false,
 )
 
-private fun copyAllToClipboard(context: Context, info: DeviceInfo): String {
+private fun copyAllToClipboard(
+    context: Context,
+    info: DeviceInfo,
+): String {
     val text = generateCompactReport(info)
     return copyToClipboard(context, "Device Information", text)
 }
 
-private fun shareDeviceInfo(context: Context, info: DeviceInfo) {
+private fun shareDeviceInfo(
+    context: Context,
+    info: DeviceInfo,
+) {
     val text = generateFullReport(info)
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"

@@ -25,10 +25,6 @@ public final class com/azikar24/wormaceptor/core/ui/components/DividerStyle : ja
 	public static fun values ()[Lcom/azikar24/wormaceptor/core/ui/components/DividerStyle;
 }
 
-public final class com/azikar24/wormaceptor/core/ui/components/HapticHelpersKt {
-	public static final fun rememberHapticOnce (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/core/ui/components/HapticOnceState;
-}
-
 public final class com/azikar24/wormaceptor/core/ui/components/HapticOnceState {
 	public static final field $stable I
 	public fun <init> (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
@@ -38,6 +34,10 @@ public final class com/azikar24/wormaceptor/core/ui/components/HapticOnceState {
 	public final fun isTriggered ()Z
 	public final fun resetHaptic ()V
 	public final fun triggerHaptic ()V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/HapticOnceStateKt {
+	public static final fun rememberHapticOnce (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/core/ui/components/HapticOnceState;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorChartLegendItemKt {
@@ -71,7 +71,7 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorExpand
 
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorFABKt {
 	public static final fun WormaCeptorExtendedFAB (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun WormaCeptorFAB (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorFAB (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/runtime/Composer;II)V
 	public static final fun WormaCeptorSmallFAB-wBJOh4Y (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;JJLandroidx/compose/runtime/Composer;II)V
 }
 
@@ -110,7 +110,7 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorSectio
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorStatItemKt {
-	public static final fun WormaCeptorStatItem-cf5BqRc (Ljava/lang/String;Ljava/lang/String;JLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorStatItem-ww6aTOc (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorStatusDotKt {
@@ -127,6 +127,199 @@ public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorToolTi
 
 public final class com/azikar24/wormaceptor/core/ui/components/WormaCeptorWarningBadgeKt {
 	public static final fun WormaCeptorWarningBadge (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Cpu {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Cpu;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$CrashDetail {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$CrashDetail;
+	public static final field route Ljava/lang/String;
+	public final fun createRoute (J)Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Crypto {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Crypto;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Database {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Database;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseList {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseList;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseQuery {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseQuery;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseTableData {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseTableData;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseTables {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DatabaseTables;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Dependencies {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Dependencies;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DeviceInfo {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DeviceInfo;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$FileBrowser {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$FileBrowser;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Fps {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Fps;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Home {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Home;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$LeakDetection {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$LeakDetection;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$LoadedLibraries {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$LoadedLibraries;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Location {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Location;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Logs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Logs;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Memory {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Memory;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Preferences {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Preferences;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PreferencesDetail {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PreferencesDetail;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PreferencesList {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PreferencesList;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PushSimulator {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PushSimulator;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PushToken {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$PushToken;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$RateLimit {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$RateLimit;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$SecureStorage {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$SecureStorage;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$ThreadViolation {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$ThreadViolation;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$TransactionDetail {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$TransactionDetail;
+	public static final field route Ljava/lang/String;
+	public final fun createRoute (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocket {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocket;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocketConnections {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocketConnections;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocketMessages {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebSocketMessages;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebViewMonitor {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$WebViewMonitor;
+	public static final field route Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavTransitions {
@@ -183,6 +376,13 @@ public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColorsKt {
+	public static final fun buildHighlightedString (Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Ljava/lang/String;Ljava/util/List;)Landroidx/compose/ui/text/AnnotatedString;
+	public static final fun getDarkComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+	public static final fun getLightComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+	public static final fun syntaxColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
+}
+
 public final class com/azikar24/wormaceptor/core/ui/theme/DarkSyntaxColors : com/azikar24/wormaceptor/core/ui/theme/SyntaxColors {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/DarkSyntaxColors;
@@ -227,13 +427,6 @@ public abstract interface class com/azikar24/wormaceptor/core/ui/theme/SyntaxCol
 	public abstract fun getString ()J
 	public abstract fun getTag ()J
 	public abstract fun getTypeAnnotation ()J
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/SyntaxColorsKt {
-	public static final fun buildHighlightedString (Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Ljava/lang/String;Ljava/util/List;)Landroidx/compose/ui/text/AnnotatedString;
-	public static final fun getDarkComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
-	public static final fun getLightComposeSyntaxColors ()Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
-	public static final fun syntaxColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/ThemeKt {

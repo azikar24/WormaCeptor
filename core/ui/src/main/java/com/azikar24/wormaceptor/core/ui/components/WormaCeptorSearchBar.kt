@@ -19,8 +19,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.R
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 
 /** Reusable search bar with clear button and configurable keyboard action. */
@@ -42,7 +44,7 @@ fun WormaCeptorSearchBar(
     val leadingIcon: @Composable () -> Unit = {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = "Search",
+            contentDescription = stringResource(R.string.search_icon_description),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -55,7 +57,7 @@ fun WormaCeptorSearchBar(
     val placeholderContent: @Composable () -> Unit = {
         Text(
             text = placeholder,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
         )
     }
 
@@ -73,7 +75,7 @@ fun WormaCeptorSearchBar(
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.bold,
+                alpha = WormaCeptorDesignSystem.Alpha.BOLD,
             ),
             focusedBorderColor = MaterialTheme.colorScheme.primary,
         ),
@@ -81,7 +83,11 @@ fun WormaCeptorSearchBar(
 }
 
 @Composable
-private fun ClearButton(visible: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun ClearButton(
+    visible: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(),
@@ -94,7 +100,7 @@ private fun ClearButton(visible: Boolean, onClick: () -> Unit, modifier: Modifie
         ) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = "Clear search",
+                contentDescription = stringResource(R.string.search_clear_description),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

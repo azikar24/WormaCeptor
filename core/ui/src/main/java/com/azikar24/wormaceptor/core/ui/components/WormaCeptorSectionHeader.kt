@@ -31,7 +31,7 @@ fun WormaCeptorSectionHeader(
     title: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    iconTint: Color = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+    iconTint: Color = MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     Row(

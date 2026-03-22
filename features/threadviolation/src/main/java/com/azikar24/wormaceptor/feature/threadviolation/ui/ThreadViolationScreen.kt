@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,6 +56,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
@@ -68,6 +68,7 @@ import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import com.azikar24.wormaceptor.feature.threadviolation.R
+import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors
 import com.azikar24.wormaceptor.feature.threadviolation.ui.theme.threadViolationColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -217,7 +218,7 @@ fun ThreadViolationScreen(
 @Composable
 private fun SummarySection(
     stats: ViolationStats,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -263,9 +264,9 @@ private fun SummarySection(
 private fun TypeFilterChips(
     selectedType: ViolationType?,
     onTypeSelected: (ViolationType?) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
-    FlowRow(
+    WormaCeptorFlowRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
     ) {
@@ -317,7 +318,7 @@ private fun TypeFilterChips(
                 },
                 modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = color.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                     selectedLabelColor = color,
                     selectedLeadingIconColor = color,
                 ),
@@ -330,7 +331,7 @@ private fun TypeFilterChips(
 private fun ViolationCard(
     violation: ThreadViolation,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     val typeColor = colors.colorForType(violation.violationType)
     val icon = when (violation.violationType) {
@@ -354,7 +355,7 @@ private fun ViolationCard(
                 modifier = Modifier
                     .size(WormaCeptorDesignSystem.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                    .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -392,7 +393,7 @@ private fun ViolationCard(
             }
             Surface(
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light),
+                color = typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     text = violation.violationType.name.take(1),
@@ -412,7 +413,7 @@ private fun ViolationCard(
 @Composable
 private fun ViolationDetailContent(
     violation: ThreadViolation,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
     modifier: Modifier = Modifier,
 ) {
     val typeColor = colors.colorForType(violation.violationType)
@@ -430,7 +431,7 @@ private fun ViolationDetailContent(
                     modifier = Modifier
                         .size(WormaCeptorDesignSystem.Spacing.xxxl)
                         .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
-                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)),
+                        .background(typeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -535,7 +536,7 @@ private fun ViolationDetailContent(
 private fun DetailSection(
     title: String,
     items: List<Pair<String, String>>,
-    colors: com.azikar24.wormaceptor.feature.threadviolation.ui.theme.ThreadViolationColors,
+    colors: ThreadViolationColors,
 ) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(
@@ -601,7 +602,7 @@ private fun ThreadViolationScreenPreview() {
                 ),
                 ThreadViolation(
                     id = 3L,
-                    timestamp = System.currentTimeMillis() - 10000L,
+                    timestamp = System.currentTimeMillis() - 10_000L,
                     violationType = ViolationType.DISK_WRITE,
                     description = "Database write on main thread",
                     stackTrace = emptyList(),

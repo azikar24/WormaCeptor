@@ -1,9 +1,11 @@
 package com.azikar24.wormaceptor.feature.filebrowser.vm
 
+import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.FileSystemRepository
 import com.azikar24.wormaceptor.domain.entities.FileEntry
+import com.azikar24.wormaceptor.feature.filebrowser.R
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
  */
 class FileBrowserViewModel(
     private val repository: FileSystemRepository,
+    private val application: Application,
 ) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent>(FileBrowserViewState()) {
 
     init {
@@ -52,7 +55,10 @@ class FileBrowserViewModel(
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to load root directories: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_load_root, e.message),
+                    )
                 }
             }
         }
@@ -76,7 +82,10 @@ class FileBrowserViewModel(
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_list_directory, e.message),
+                    )
                 }
             }
         }
@@ -114,7 +123,10 @@ class FileBrowserViewModel(
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_list_directory, e.message),
+                    )
                 }
             }
         }
@@ -151,7 +163,10 @@ class FileBrowserViewModel(
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_list_directory, e.message),
+                    )
                 }
             }
         }
@@ -189,7 +204,10 @@ class FileBrowserViewModel(
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to read file: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_read_file, e.message),
+                    )
                 }
             }
         }
@@ -201,7 +219,7 @@ class FileBrowserViewModel(
                 val info = repository.getFileInfo(path)
                 updateState { copy(fileInfo = info) }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                updateState { copy(error = "Failed to get file info: ${e.message}") }
+                updateState { copy(error = application.getString(R.string.filebrowser_error_file_info, e.message)) }
             }
         }
     }
@@ -214,11 +232,19 @@ class FileBrowserViewModel(
                 if (success) {
                     refreshCurrentDirectory()
                 } else {
-                    updateState { copy(isLoading = false, error = "Failed to delete file") }
+                    updateState {
+                        copy(
+                            isLoading = false,
+                            error = application.getString(R.string.filebrowser_error_delete_file),
+                        )
+                    }
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 updateState {
-                    copy(isLoading = false, error = "Failed to delete file: ${e.message}")
+                    copy(
+                        isLoading = false,
+                        error = application.getString(R.string.filebrowser_error_delete_file_detail, e.message),
+                    )
                 }
             }
         }
@@ -239,7 +265,10 @@ class FileBrowserViewModel(
                     }
                 } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                     updateState {
-                        copy(isLoading = false, error = "Failed to list directory: ${e.message}")
+                        copy(
+                            isLoading = false,
+                            error = application.getString(R.string.filebrowser_error_list_directory, e.message),
+                        )
                     }
                 }
             }
@@ -259,7 +288,11 @@ class FileBrowserViewModel(
                     val filtered = filterFiles(sorted, query)
                     updateState { copy(filteredFiles = filtered.toImmutableList()) }
                 } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                    updateState { copy(error = "Failed to filter files: ${e.message}") }
+                    updateState {
+                        copy(
+                            error = application.getString(R.string.filebrowser_error_filter_files, e.message),
+                        )
+                    }
                 }
             }
         } else {
@@ -269,13 +302,20 @@ class FileBrowserViewModel(
                     val filtered = filterFiles(roots, query)
                     updateState { copy(filteredFiles = filtered.toImmutableList()) }
                 } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                    updateState { copy(error = "Failed to filter files: ${e.message}") }
+                    updateState {
+                        copy(
+                            error = application.getString(R.string.filebrowser_error_filter_files, e.message),
+                        )
+                    }
                 }
             }
         }
     }
 
-    private fun filterFiles(files: List<FileEntry>, query: String): List<FileEntry> {
+    private fun filterFiles(
+        files: List<FileEntry>,
+        query: String,
+    ): List<FileEntry> {
         return if (query.isBlank()) {
             files
         } else {
@@ -283,7 +323,10 @@ class FileBrowserViewModel(
         }
     }
 
-    private fun applySorting(files: List<FileEntry>, sortMode: SortMode): List<FileEntry> {
+    private fun applySorting(
+        files: List<FileEntry>,
+        sortMode: SortMode,
+    ): List<FileEntry> {
         return when (sortMode) {
             SortMode.NAME -> files.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
             SortMode.SIZE -> files.sortedWith(compareBy({ !it.isDirectory }, { -it.sizeBytes }))

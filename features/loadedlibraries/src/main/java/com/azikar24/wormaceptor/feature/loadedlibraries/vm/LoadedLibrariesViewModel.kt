@@ -23,33 +23,37 @@ class LoadedLibrariesViewModel(
     private val engine: LoadedLibrariesEngine,
 ) : ViewModel() {
 
-    // Filter by type
     private val _selectedType = MutableStateFlow<LibraryType?>(null)
+
+    /** Currently selected library type filter, or null for all types. */
     val selectedType: StateFlow<LibraryType?> = _selectedType.asStateFlow()
 
-    // Filter by system/app
     private val _showSystemLibs = MutableStateFlow(true)
+
+    /** Whether system libraries are included in the displayed list. */
     val showSystemLibs: StateFlow<Boolean> = _showSystemLibs.asStateFlow()
 
-    // Search query
     private val _searchQuery = MutableStateFlow("")
+
+    /** Current text used to filter libraries by name or path. */
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // Selected library for detail view
     private val _selectedLibrary = MutableStateFlow<LoadedLibrary?>(null)
+
+    /** Library currently selected for detail view, or null if none. */
     val selectedLibrary: StateFlow<LoadedLibrary?> = _selectedLibrary.asStateFlow()
 
-    // Loading state
+    /** Whether the engine is currently scanning for loaded libraries. */
     val isLoading: StateFlow<Boolean> = engine.isLoading
 
-    // Error state
+    /** Error message from the last scan, or null if none. */
     val error: StateFlow<String?> = engine.error
 
-    // Summary
+    /** Aggregate summary of all loaded libraries. */
     val summary: StateFlow<LibrarySummary> = engine.summary
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), LibrarySummary.empty())
 
-    // Filtered libraries
+    /** Libraries filtered by type, system/app origin, and search query. */
     val filteredLibraries: StateFlow<ImmutableList<LoadedLibrary>> =
         combine(engine.libraries, _selectedType, _showSystemLibs, _searchQuery) { libs, type, showSystem, query ->
             var filtered = libs
@@ -66,23 +70,36 @@ class LoadedLibrariesViewModel(
             filtered.toImmutableList()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
 
+    /** Filters the library list to show only the specified type, or all if null. */
     fun setSelectedType(type: LibraryType?) {
         _selectedType.value = type
     }
+
+    /** Controls whether system libraries are included in the list. */
     fun setShowSystemLibs(show: Boolean) {
         _showSystemLibs.value = show
     }
+
+    /** Updates the search query used to filter libraries by name or path. */
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }
+
+    /** Selects a library to show its details in the bottom sheet. */
     fun selectLibrary(library: LoadedLibrary) {
         _selectedLibrary.value = library
     }
+
+    /** Closes the library detail bottom sheet. */
     fun dismissDetail() {
         _selectedLibrary.value = null
     }
+
+    /** Re-scans the device for loaded libraries. */
     fun refresh() {
         engine.refresh()
     }
+
+    /** Exports the current library list as a shareable plain-text summary. */
     fun exportAsText(): String = engine.exportAsText()
 }

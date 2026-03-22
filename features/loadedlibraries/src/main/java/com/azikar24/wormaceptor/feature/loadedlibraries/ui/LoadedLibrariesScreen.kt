@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -68,6 +67,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
@@ -76,10 +76,12 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
+import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.loadedLibrariesColors
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+/** Displays the loaded libraries list with filtering, search, and detail views. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadedLibrariesScreen(
@@ -150,11 +152,11 @@ fun LoadedLibrariesScreen(
                 AnimatedVisibility(
                     visible = searchActive,
                     enter = expandVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                     exit = shrinkVertically(
-                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
-                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal)),
+                        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL)),
                 ) {
                     WormaCeptorSearchBar(
                         query = searchQuery,
@@ -238,8 +240,8 @@ fun LoadedLibrariesScreen(
 @Composable
 private fun SummarySection(
     summary: LibrarySummary,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
+    colors: LoadedLibrariesColors,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         WormaCeptorSummaryCard(
@@ -284,17 +286,19 @@ private fun FilterSection(
     showSystemLibs: Boolean,
     onTypeSelected: (LoadedLibrary.LibraryType?) -> Unit,
     onShowSystemLibsChanged: (Boolean) -> Unit,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
+    colors: LoadedLibrariesColors,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
+        WormaCeptorFlowRow(
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        ) {
             FilterChip(
                 selected = selectedType == null,
                 onClick = { onTypeSelected(null) },
                 label = { Text(stringResource(R.string.loadedlibraries_filter_all)) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.medium),
+                    selectedContainerColor = colors.primary.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                 ),
             )
             LoadedLibrary.LibraryType.entries.filter { it != LoadedLibrary.LibraryType.AAR_RESOURCE }.forEach { type ->
@@ -322,7 +326,7 @@ private fun FilterSection(
                     label = { Text(stringResource(labelRes)) },
                     leadingIcon = { Icon(icon, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm)) },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.medium),
+                        selectedContainerColor = color.copy(WormaCeptorDesignSystem.Alpha.MEDIUM),
                         selectedLabelColor = color,
                         selectedLeadingIconColor = color,
                     ),
@@ -344,7 +348,7 @@ private fun FilterSection(
 private fun LibraryCard(
     library: LoadedLibrary,
     onClick: () -> Unit,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
 ) {
     val (icon, color) = when (library.type) {
         LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
@@ -365,7 +369,7 @@ private fun LibraryCard(
             Box(
                 Modifier.size(
                     40.dp,
-                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.light)),
+                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.LIGHT)),
                 Alignment.Center,
             ) {
                 Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md))
@@ -408,7 +412,7 @@ private fun LibraryCard(
             Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
             Surface(
                 shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = color.copy(WormaCeptorDesignSystem.Alpha.light),
+                color = color.copy(WormaCeptorDesignSystem.Alpha.LIGHT),
             ) {
                 Text(
                     library.type.name.take(3),
@@ -428,8 +432,8 @@ private fun LibraryCard(
 @Composable
 private fun LibraryDetailContent(
     library: LoadedLibrary,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
-    modifier: Modifier,
+    colors: LoadedLibrariesColors,
+    modifier: Modifier = Modifier,
 ) {
     val (icon, color) = when (library.type) {
         LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
@@ -446,7 +450,7 @@ private fun LibraryDetailContent(
             Box(
                 Modifier.size(
                     WormaCeptorDesignSystem.Spacing.xxxl,
-                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.light)),
+                ).clip(WormaCeptorDesignSystem.Shapes.card).background(color.copy(WormaCeptorDesignSystem.Alpha.LIGHT)),
                 Alignment.Center,
             ) {
                 Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xl))
@@ -491,7 +495,7 @@ private fun LibraryDetailContent(
 private fun DetailSection(
     title: String,
     items: List<Pair<String, String>>,
-    colors: com.azikar24.wormaceptor.feature.loadedlibraries.ui.theme.LoadedLibrariesColors,
+    colors: LoadedLibrariesColors,
 ) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm)) {
         Text(

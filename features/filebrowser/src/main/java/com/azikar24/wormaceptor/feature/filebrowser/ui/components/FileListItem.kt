@@ -30,7 +30,12 @@ import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSy
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun FileListItem(file: FileEntry, onClick: () -> Unit, onLongClick: () -> Unit, modifier: Modifier = Modifier) {
+fun FileListItem(
+    file: FileEntry,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()

@@ -10,7 +10,10 @@ import com.intellij.ui.content.ContentFactory
  */
 class WormaCeptorToolWindowFactory : ToolWindowFactory {
 
-    override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+    override fun createToolWindowContent(
+        project: Project,
+        toolWindow: ToolWindow,
+    ) {
         val panel = WormaCeptorToolWindowPanel(project)
         val content = ContentFactory.getInstance().createContent(panel, "Transactions", false)
         toolWindow.contentManager.addContent(content)

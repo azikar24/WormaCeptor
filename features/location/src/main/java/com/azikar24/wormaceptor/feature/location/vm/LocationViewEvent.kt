@@ -7,22 +7,42 @@ import com.azikar24.wormaceptor.domain.entities.MockLocation
  * User-initiated events for the Location Simulation feature.
  */
 sealed class LocationViewEvent {
-    /** Latitude input text changed. */
+    /**
+     * Latitude input text changed.
+     *
+     * @property value The new latitude text.
+     */
     data class LatitudeChanged(val value: String) : LocationViewEvent()
 
-    /** Longitude input text changed. */
+    /**
+     * Longitude input text changed.
+     *
+     * @property value The new longitude text.
+     */
     data class LongitudeChanged(val value: String) : LocationViewEvent()
 
-    /** Search query for presets changed. */
+    /**
+     * Search query for presets changed.
+     *
+     * @property query The new search text.
+     */
     data class SearchQueryChanged(val query: String) : LocationViewEvent()
 
     /** User requested to set mock location from the current input fields. */
     data object SetMockLocationFromInput : LocationViewEvent()
 
-    /** User selected a preset to apply. */
+    /**
+     * User selected a preset to apply.
+     *
+     * @property preset The location preset to apply.
+     */
     data class SetMockLocationFromPreset(val preset: LocationPreset) : LocationViewEvent()
 
-    /** User requested to set a specific mock location. */
+    /**
+     * User requested to set a specific mock location.
+     *
+     * @property location The mock location to set.
+     */
     data class SetMockLocation(val location: MockLocation) : LocationViewEvent()
 
     /** User requested to clear the current mock location. */
@@ -34,13 +54,26 @@ sealed class LocationViewEvent {
     /** User requested to use the device's current real location. */
     data object SetToCurrentRealLocation : LocationViewEvent()
 
-    /** User requested to save current input as a new preset. */
+    /**
+     * User requested to save current input as a new preset.
+     *
+     * @property name The display name for the new preset.
+     */
     data class SaveCurrentAsPreset(val name: String) : LocationViewEvent()
 
-    /** User requested to delete a preset. */
+    /**
+     * User requested to delete a preset.
+     *
+     * @property presetId The unique identifier of the preset to delete.
+     */
     data class DeletePreset(val presetId: String) : LocationViewEvent()
 
-    /** User tapped a location on the map. */
+    /**
+     * User tapped a location on the map.
+     *
+     * @property latitude The tapped latitude coordinate.
+     * @property longitude The tapped longitude coordinate.
+     */
     data class MapTapped(val latitude: Double, val longitude: Double) : LocationViewEvent()
 
     /** Refresh mock location availability (e.g., after returning from settings). */

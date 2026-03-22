@@ -22,6 +22,14 @@ object CrashUtils {
 
     /**
      * Represents a single frame in a stack trace.
+     *
+     * @property fullLine The complete original line from the stack trace.
+     * @property packageName The Java/Kotlin package name, or null if unparseable.
+     * @property className The simple class name, or null if unparseable.
+     * @property methodName The method name, or null if unparseable.
+     * @property fileName The source file name (e.g. "MyClass.kt"), or null if unparseable.
+     * @property lineNumber The line number in the source file, or null if unparseable.
+     * @property isAppCode Whether this frame belongs to the application (not a library/framework).
      */
     data class StackFrame(
         val fullLine: String,
@@ -36,7 +44,10 @@ object CrashUtils {
     /**
      * Parses a stack trace string into individual frames.
      */
-    fun parseStackTrace(stackTrace: String, appPackage: String = "com.azikar24.wormaceptor"): List<StackFrame> {
+    fun parseStackTrace(
+        stackTrace: String,
+        appPackage: String = "com.azikar24.wormaceptor",
+    ): List<StackFrame> {
         return stackTrace.lines()
             .filter { it.isNotBlank() }
             .mapNotNull { line ->
@@ -51,7 +62,10 @@ object CrashUtils {
      * - at com.example.MyClass$inner.method(MyClass.kt:123)
      * - at java.lang.Thread.run(Thread.java:764)
      */
-    private fun parseStackFrame(line: String, appPackage: String): StackFrame {
+    private fun parseStackFrame(
+        line: String,
+        appPackage: String,
+    ): StackFrame {
         val trimmed = line.trim()
 
         // Match pattern: at package.Class.method(File.kt:line)

@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.filebrowser
 
+import android.app.Application
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -39,8 +40,11 @@ object FileBrowserFeature {
     /**
      * Creates a FileBrowserViewModel factory for use with viewModel().
      */
-    fun createViewModelFactory(repository: FileSystemRepository): FileBrowserViewModelFactory {
-        return FileBrowserViewModelFactory(repository)
+    fun createViewModelFactory(
+        repository: FileSystemRepository,
+        application: Application,
+    ): FileBrowserViewModelFactory {
+        return FileBrowserViewModelFactory(repository, application)
     }
 }
 
@@ -49,11 +53,12 @@ object FileBrowserFeature {
  */
 class FileBrowserViewModelFactory(
     private val repository: FileSystemRepository,
+    private val application: Application,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FileBrowserViewModel::class.java)) {
-            return FileBrowserViewModel(repository) as T
+            return FileBrowserViewModel(repository, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
@@ -64,9 +69,15 @@ class FileBrowserViewModelFactory(
  * Handles navigation between browser, viewer, and info screens.
  */
 @Composable
-fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -> Unit)? = null) {
+fun FileBrowser(
+    context: Context,
+    modifier: Modifier = Modifier,
+    onNavigateBack: (() -> Unit)? = null,
+) {
     val repository = remember { FileBrowserFeature.createRepository(context) }
-    val factory = remember { FileBrowserFeature.createViewModelFactory(repository) }
+    val factory = remember {
+        FileBrowserFeature.createViewModelFactory(repository, context.applicationContext as Application)
+    }
     val viewModel: FileBrowserViewModel = viewModel(factory = factory)
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -105,9 +116,9 @@ fun FileBrowser(context: Context, modifier: Modifier = Modifier, onNavigateBack:
                 onSortModeChanged = { onEvent(FileBrowserViewEvent.SetSortMode(it)) },
                 onNavigateBack = {
                     onEvent(FileBrowserViewEvent.NavigateBack)
-                    state.navigationStack.isNotEmpty()
+                    true
                 },
-                onExitBrowser = { onNavigateBack?.invoke() },
+                onExitBrowser = { },
                 onClearError = { onEvent(FileBrowserViewEvent.ClearError) },
                 modifier = modifier,
                 snackBarHostState = snackBarHostState,

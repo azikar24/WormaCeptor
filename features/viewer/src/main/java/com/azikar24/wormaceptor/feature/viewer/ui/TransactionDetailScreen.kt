@@ -2,16 +2,44 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.content.Context
 import android.view.HapticFeedbackConstants
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -52,8 +80,16 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.surfaceColorAtElevation
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -73,6 +109,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.ParserRegistry
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
@@ -88,22 +125,25 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
+import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
+import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.Request
+import com.azikar24.wormaceptor.domain.entities.Response
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.feature.viewer.R
+import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
-import com.azikar24.wormaceptor.feature.viewer.ui.components.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
 import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfPreviewCard
 import com.azikar24.wormaceptor.feature.viewer.ui.components.PdfViewerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
-import com.azikar24.wormaceptor.feature.viewer.ui.components.body.BodyParsingUtils
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.FormDataView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
+import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ProtobufView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
-import com.azikar24.wormaceptor.feature.viewer.ui.components.detectImageFormat
-import com.azikar24.wormaceptor.feature.viewer.ui.components.extractImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
@@ -115,8 +155,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
 import java.util.UUID
 
 /**
@@ -243,7 +281,11 @@ fun TransactionDetailPagerScreen(
  * Transaction detail screen with swipe-back navigation.
  */
 @Composable
-fun TransactionDetailScreen(transaction: NetworkTransaction, queryEngine: QueryEngine?, onBack: () -> Unit) {
+fun TransactionDetailScreen(
+    transaction: NetworkTransaction,
+    queryEngine: QueryEngine?,
+    onBack: () -> Unit,
+) {
     SwipeBackContainer(onBack = onBack) {
         TransactionDetailContent(
             transaction = transaction,
@@ -254,7 +296,7 @@ fun TransactionDetailScreen(transaction: NetworkTransaction, queryEngine: QueryE
 }
 
 /**
- * Transaction detail content - the actual content without swipe-back wrapper
+ * Transaction detail content - the actual content without swipe-back wrapper.
  *
  * UX Behavior:
  * - Swipe on toolbar/topBar area: Switch between transactions
@@ -273,7 +315,11 @@ private fun TransactionDetailContent(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val tabs = listOf("Overview", "Request", "Response")
+    val tabs = listOf(
+        stringResource(R.string.viewer_transaction_detail_tab_overview),
+        stringResource(R.string.viewer_transaction_detail_tab_request),
+        stringResource(R.string.viewer_transaction_detail_tab_response),
+    )
     val snackBarHostState = remember { SnackbarHostState() }
 
     // Tab pager state for content swipe
@@ -428,7 +474,7 @@ private fun TransactionDetailContent(
                                     onClick = {
                                         showMenu = false
                                         val exportManager =
-                                            com.azikar24.wormaceptor.feature.viewer.export.ExportManager(
+                                            ExportManager(
                                                 context,
                                                 queryEngine,
                                             )
@@ -457,7 +503,11 @@ private fun TransactionDetailContent(
                                 Text(
                                     text = tabTitle,
                                     style = MaterialTheme.typography.labelLarge,
-                                    fontWeight = if (tabPagerState.currentPage == index) FontWeight.SemiBold else FontWeight.Normal,
+                                    fontWeight = if (tabPagerState.currentPage == index) {
+                                        FontWeight.SemiBold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
                                 )
                             },
                         )
@@ -528,11 +578,11 @@ private fun TransactionDetailContent(
             AnimatedVisibility(
                 visible = showSearch && debouncedSearchQuery.isNotEmpty(),
                 enter = fadeIn(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast),
-                ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.fast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+                ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
                 exit = fadeOut(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast),
-                ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ultraFast)),
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST),
+                ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST)),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .imePadding()
@@ -636,7 +686,10 @@ private fun SwipeableTopBar(
 }
 
 @Composable
-private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Modifier) {
+private fun OverviewTab(
+    transaction: NetworkTransaction,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -721,23 +774,26 @@ private fun OverviewTab(transaction: NetworkTransaction, modifier: Modifier = Mo
 }
 
 @Composable
-private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
+private fun TransactionTimeline(
+    durationMs: Long,
+    hasResponse: Boolean,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.prominent),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .border(
                 width = WormaCeptorDesignSystem.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
                 shape = WormaCeptorDesignSystem.Shapes.card,
             )
             .padding(WormaCeptorDesignSystem.Spacing.md),
     ) {
         Text(
-            text = "Request/Response Timeline",
+            text = stringResource(R.string.viewer_overview_timeline_title),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
@@ -753,7 +809,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.3f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy),
+                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
                         shape = RoundedCornerShape(
                             topStart = WormaCeptorDesignSystem.CornerRadius.xs,
                             bottomStart = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -767,7 +823,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .weight(0.4f)
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.intense),
+                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
                     ),
             )
 
@@ -778,9 +834,9 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                     .height(WormaCeptorDesignSystem.Spacing.sm)
                     .background(
                         if (hasResponse) {
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
                         } else {
-                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.strong)
+                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG)
                         },
                         shape = RoundedCornerShape(
                             topEnd = WormaCeptorDesignSystem.CornerRadius.xs,
@@ -797,7 +853,7 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "Request",
+                text = stringResource(R.string.viewer_overview_timeline_request),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -809,7 +865,11 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = if (hasResponse) "Response" else "Failed",
+                text = if (hasResponse) {
+                    stringResource(R.string.viewer_overview_timeline_response)
+                } else {
+                    stringResource(R.string.viewer_overview_timeline_failed)
+                },
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -818,7 +878,10 @@ private fun TransactionTimeline(durationMs: Long, hasResponse: Boolean) {
 }
 
 @Composable
-private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
+private fun SslBadge(
+    isSsl: Boolean,
+    tlsVersion: String?,
+) {
     Surface(
         shape = WormaCeptorDesignSystem.Shapes.chip,
         color = if (isSsl) {
@@ -829,9 +892,9 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
             if (isSsl) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate)
+                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
             },
         ),
         modifier = Modifier.wrapContentSize(),
@@ -846,12 +909,20 @@ private fun SslBadge(isSsl: Boolean, tlsVersion: String?) {
         ) {
             Icon(
                 imageVector = if (isSsl) Icons.Default.Lock else Icons.Default.LockOpen,
-                contentDescription = if (isSsl) "Secure" else "Insecure",
+                contentDescription = if (isSsl) {
+                    stringResource(R.string.viewer_overview_secure)
+                } else {
+                    stringResource(R.string.viewer_overview_insecure)
+                },
                 tint = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
             )
             Text(
-                text = if (isSsl) tlsVersion ?: "Secure Connection" else "Insecure Connection",
+                text = if (isSsl) {
+                    tlsVersion ?: stringResource(R.string.viewer_overview_secure_connection)
+                } else {
+                    stringResource(R.string.viewer_overview_insecure_connection)
+                },
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
@@ -875,7 +946,7 @@ private fun EnhancedOverviewCard(
         ),
         border = BorderStroke(
             WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.medium),
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
         ),
         shape = WormaCeptorDesignSystem.Shapes.card,
     ) {
@@ -906,7 +977,7 @@ private fun EnhancedOverviewCard(
 }
 
 /**
- * Data class holding information about a single search match
+ * Data class holding information about a single search match.
  */
 private data class MatchInfo(
     val globalPosition: Int,
@@ -927,6 +998,7 @@ private fun RequestTab(
     val blobId = transaction.request.bodyRef
     var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
     var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
+    var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
     var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
     var copyRequested by remember { mutableStateOf(false) }
     var isCopying by remember { mutableStateOf(false) }
@@ -934,6 +1006,7 @@ private fun RequestTab(
     var isPrettyMode by remember { mutableStateOf(true) }
     var headersExpanded by rememberSaveable { mutableStateOf(true) }
     var bodyExpanded by rememberSaveable { mutableStateOf(true) }
+    var parsedContentType by remember(blobId) { mutableStateOf(ContentType.UNKNOWN) }
 
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
@@ -945,20 +1018,31 @@ private fun RequestTab(
         .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
         ?.value?.firstOrNull()
 
-    // 1. Body Loading
+    val shareRequestBodyTitle = stringResource(R.string.viewer_share_request_body)
+
+    // 1. Body Loading - get raw bytes first to detect binary content
     LaunchedEffect(blobId) {
         if (blobId != null) {
             isLoading = true
-            val raw = queryEngine?.getBody(blobId)
-            rawBody = raw
-            val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                if (raw != null) formatJson(raw) else null
+            val bytes = queryEngine?.getBodyBytes(blobId)
+            rawBodyBytes = bytes
+
+            if (bytes != null && isProtobufContentType(requestContentType)) {
+                // Protobuf is binary - keep raw bytes, don't UTF-8 decode
+            } else if (bytes != null) {
+                val raw = String(bytes, Charsets.UTF_8)
+                rawBody = raw
+                val result = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                    parseBodyViaRegistry(requestContentType, bytes, raw)
+                }
+                requestBody = result.first
+                parsedContentType = result.second
             }
-            requestBody = formatted
             isLoading = false
         } else {
             requestBody = null
             rawBody = null
+            rawBodyBytes = null
         }
     }
 
@@ -976,7 +1060,7 @@ private fun RequestTab(
                             content = bodyContent,
                             fileName = "request_body.$ext",
                             mimeType = mime,
-                            title = "Share Request Body",
+                            title = shareRequestBodyTitle,
                         )
                     } else {
                         copyToClipboard(context, "Request Body", bodyContent)
@@ -1073,10 +1157,18 @@ private fun RequestTab(
                             style = MaterialTheme.typography.bodySmall,
                         )
                     }
-                } else if (requestBody != null || rawBody != null) {
-                    val detectedContentType = remember(rawBody, requestContentType) {
-                        BodyParsingUtils.detectContentType(requestContentType, rawBody)
+                } else if (isProtobufContentType(requestContentType)) {
+                    val protobufBytes = rawBodyBytes ?: return@Column
+                    CollapsibleSection(
+                        title = stringResource(R.string.viewer_body_body),
+                        isExpanded = bodyExpanded,
+                        onToggle = { bodyExpanded = !bodyExpanded },
+                        onCopy = null,
+                    ) {
+                        ProtobufView(data = protobufBytes)
                     }
+                } else if (requestBody != null || rawBody != null) {
+                    val detectedContentType = parsedContentType
                     val colors = syntaxColors()
 
                     CollapsibleSection(
@@ -1140,7 +1232,6 @@ private fun RequestTab(
                                 ContentType.XML, ContentType.HTML -> {
                                     XmlTreeView(
                                         xmlString = displayBody,
-                                        initiallyExpanded = true,
                                         colors = colors,
                                     )
                                 }
@@ -1153,7 +1244,7 @@ private fun RequestTab(
 
                                 ContentType.MULTIPART -> {
                                     val boundary = requestContentType?.let {
-                                        BodyParsingUtils.extractMultipartBoundary(
+                                        extractMultipartBoundaryViaRegistry(
                                             it,
                                         )
                                     }
@@ -1263,6 +1354,7 @@ private fun ResponseTab(
     var showImageViewer by remember { mutableStateOf(false) }
     var showPdfViewer by remember { mutableStateOf(false) }
     var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
+    var parsedContentType by remember(blobId) { mutableStateOf(ContentType.UNKNOWN) }
 
     // Syntax highlighting colors
     val colors = syntaxColors()
@@ -1273,6 +1365,8 @@ private fun ResponseTab(
             ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
             ?.value?.firstOrNull()
     }
+
+    val shareResponseBodyTitle = stringResource(R.string.viewer_share_response_body)
 
     // Handle copy request - copies if small, shares as file if large
     LaunchedEffect(copyRequested) {
@@ -1288,7 +1382,7 @@ private fun ResponseTab(
                             content = bodyContent,
                             fileName = "response_body.$ext",
                             mimeType = mime,
-                            title = "Share Response Body",
+                            title = shareResponseBodyTitle,
                         )
                     } else {
                         copyToClipboard(context, "Response Body", bodyContent)
@@ -1311,6 +1405,11 @@ private fun ResponseTab(
         isPdfContent(contentType, rawBodyBytes)
     }
 
+    // Determine if content is protobuf
+    val isProtobufContentDetected = remember(contentType) {
+        isProtobufContentType(contentType)
+    }
+
     // Pixel-based scrolling
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
@@ -1326,18 +1425,28 @@ private fun ResponseTab(
 
             // Check for image content and extract metadata
             if (bytes != null && (isImageContentType(contentType) || isImageData(bytes))) {
-                imageMetadata = extractImageMetadata(bytes)
+                imageMetadata = try {
+                    val extractor: ImageMetadataExtractor =
+                        org.koin.java.KoinJavaComponent.get(ImageMetadataExtractor::class.java)
+                    val meta = extractor.extractMetadata(bytes)
+                    if (meta.width > 0 && meta.height > 0) meta else null
+                } catch (_: Exception) {
+                    null
+                }
             } else if (bytes != null && isPdfContent(contentType, bytes)) {
                 // PDF content - raw bytes are stored, no text decoding needed
                 // Just keep rawBodyBytes for the PDF viewer
+            } else if (bytes != null && isProtobufContentType(contentType)) {
+                // Protobuf is binary - keep raw bytes, don't UTF-8 decode
             } else if (bytes != null) {
                 // Decode as text if not image or PDF
                 val raw = String(bytes, Charsets.UTF_8)
                 rawBody = raw
-                val formatted = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                    formatJson(raw)
+                val result = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+                    parseBodyViaRegistry(contentType, bytes, raw)
                 }
-                responseBody = formatted
+                responseBody = result.first
+                parsedContentType = result.second
             }
             isLoading = false
         } else {
@@ -1448,12 +1557,12 @@ private fun ResponseTab(
                                 imageData = imageBytes,
                                 onFullscreen = { showImageViewer = true },
                                 onDownload = {
-                                    val format = imageMetadata?.format ?: detectImageFormat(imageBytes)
+                                    val format = imageMetadata?.format ?: "Unknown"
                                     val message = saveImageToGallery(context, imageBytes, format)
                                     onShowMessage(message)
                                 },
                                 onShare = {
-                                    val format = imageMetadata?.format ?: detectImageFormat(imageBytes)
+                                    val format = imageMetadata?.format ?: "Unknown"
                                     shareImage(context, imageBytes, format)?.let { onShowMessage(it) }
                                 },
                             )
@@ -1478,11 +1587,18 @@ private fun ResponseTab(
                                 onShowMessage = onShowMessage,
                             )
                         }
-                    } else if (responseBody != null || rawBody != null) {
-                        // Detect content type
-                        val detectedContentType = remember(rawBody, contentType) {
-                            BodyParsingUtils.detectContentType(contentType, rawBody)
+                    } else if (isProtobufContentDetected) {
+                        val protobufBytes = rawBodyBytes ?: return@Column
+                        CollapsibleSection(
+                            title = stringResource(R.string.viewer_body_body),
+                            isExpanded = bodyExpanded,
+                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onCopy = null,
+                        ) {
+                            ProtobufView(data = protobufBytes)
                         }
+                    } else if (responseBody != null || rawBody != null) {
+                        val detectedContentType = parsedContentType
 
                         CollapsibleSection(
                             title = stringResource(R.string.viewer_body_body),
@@ -1545,7 +1661,6 @@ private fun ResponseTab(
                                     ContentType.XML, ContentType.HTML -> {
                                         XmlTreeView(
                                             xmlString = displayBody,
-                                            initiallyExpanded = true,
                                             colors = colors,
                                         )
                                     }
@@ -1558,7 +1673,7 @@ private fun ResponseTab(
 
                                     ContentType.MULTIPART -> {
                                         val boundary = contentType?.let {
-                                            BodyParsingUtils.extractMultipartBoundary(
+                                            extractMultipartBoundaryViaRegistry(
                                                 it,
                                             )
                                         }
@@ -1662,12 +1777,12 @@ private fun ResponseTab(
                     metadata = imageMetadata,
                     onDismiss = { showImageViewer = false },
                     onDownload = {
-                        val format = imageMetadata?.format ?: detectImageFormat(bytes)
+                        val format = imageMetadata?.format ?: "Unknown"
                         val message = saveImageToGallery(context, bytes, format)
                         onShowMessage(message)
                     },
                     onShare = {
-                        val format = imageMetadata?.format ?: detectImageFormat(bytes)
+                        val format = imageMetadata?.format ?: "Unknown"
                         shareImage(context, bytes, format)?.let { onShowMessage(it) }
                     },
                 )
@@ -1783,14 +1898,17 @@ private fun CollapsibleSection(
 }
 
 @Composable
-private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
+private fun PrettyRawToggle(
+    isPretty: Boolean,
+    onToggle: () -> Unit,
+) {
     val activeColor = MaterialTheme.colorScheme.primary
     val radius = WormaCeptorDesignSystem.CornerRadius.xs
     val shape = RoundedCornerShape(radius)
 
     val borderColor by animateColorAsState(
-        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.moderate),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_border",
     )
 
@@ -1800,13 +1918,13 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
             .border(WormaCeptorDesignSystem.BorderWidth.thin, borderColor, shape),
     ) {
         SegmentOption(
-            text = "Pretty",
+            text = stringResource(R.string.viewer_body_pretty),
             isSelected = isPretty,
             activeColor = activeColor,
             onClick = { if (!isPretty) onToggle() },
         )
         SegmentOption(
-            text = "Raw",
+            text = stringResource(R.string.viewer_body_raw),
             isSelected = !isPretty,
             activeColor = activeColor,
             onClick = { if (isPretty) onToggle() },
@@ -1815,19 +1933,24 @@ private fun PrettyRawToggle(isPretty: Boolean, onToggle: () -> Unit) {
 }
 
 @Composable
-private fun SegmentOption(text: String, isSelected: Boolean, activeColor: Color, onClick: () -> Unit) {
+private fun SegmentOption(
+    text: String,
+    isSelected: Boolean,
+    activeColor: Color,
+    onClick: () -> Unit,
+) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
-            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.light)
+            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
         } else {
             Color.Transparent
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_bg",
     )
     val textColor by animateColorAsState(
         targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.normal),
+        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
         label = "segment_text",
     )
 
@@ -1885,7 +2008,10 @@ private const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000
  * Find all match positions using indexOf - faster than regex for simple substring matching.
  * O(n) where n = text length.
  */
-private fun findMatchRanges(text: String, query: String): List<IntRange> {
+private fun findMatchRanges(
+    text: String,
+    query: String,
+): List<IntRange> {
     if (query.isEmpty()) return emptyList()
     val matches = ArrayList<IntRange>(64) // Pre-size for typical case
     var index = 0
@@ -1914,7 +2040,7 @@ private fun buildBaseHighlightedText(
     return androidx.compose.ui.text.buildAnnotatedString {
         append(base)
         val defaultStyle = androidx.compose.ui.text.SpanStyle(
-            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.strong),
+            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
         )
         matchRanges.forEach { range ->
             addStyle(defaultStyle, range.first, range.last + 1)
@@ -1969,7 +2095,7 @@ private fun HighlightedBodyText(
         }
     }
 
-    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.heavy)
+    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
 
     Box(modifier = modifier) {
         // Current match overlay using Canvas to draw the actual path shape
@@ -1997,7 +2123,10 @@ private fun HighlightedBodyText(
 }
 
 @Composable
-private fun DetailRow(label: String, value: String) {
+private fun DetailRow(
+    label: String,
+    value: String,
+) {
     Row(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs)) {
         Text(
             text = "$label: ",
@@ -2052,32 +2181,63 @@ private fun generateCurlCommand(transaction: NetworkTransaction): String = build
     // we could fetch the body if small.
 }
 
-private fun formatJson(json: String): String {
-    // Skip formatting for massive strings to prevent UI freeze and memory pressure
-    if (json.length > 500_000) {
-        return json.take(100_000) + "\n\n... (Rest of content truncated for performance) ..."
-    }
+private fun isProtobufContentType(contentType: String?): Boolean {
+    return detectContentTypeViaRegistry(contentType, null) == ContentType.PROTOBUF
+}
 
+private fun detectContentTypeViaRegistry(
+    contentTypeHeader: String?,
+    body: String?,
+): ContentType {
     return try {
-        val trimmed = json.trim()
-        if (trimmed.startsWith("{")) {
-            JSONObject(trimmed).toString(4)
-        } else if (trimmed.startsWith("[")) {
-            JSONArray(trimmed).toString(4)
-        } else {
-            json
-        }
-    } catch (_: Exception) {
-        json
+        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+        registry.detectContentType(contentTypeHeader, body)
+    } catch (_: RuntimeException) {
+        ContentType.UNKNOWN
     }
 }
+
+private fun extractMultipartBoundaryViaRegistry(contentType: String): String? {
+    return try {
+        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+        registry.extractMultipartBoundary(contentType)
+    } catch (_: RuntimeException) {
+        null
+    }
+}
+
+private fun parseBodyViaRegistry(
+    contentType: String?,
+    bytes: ByteArray,
+    rawFallback: String,
+): Pair<String, ContentType> {
+    if (bytes.size > MaxParseBodySize) {
+        val truncated = rawFallback.take(TruncatedDisplaySize) +
+            "\n\n... (Rest of content truncated for performance) ..."
+        return truncated to ContentType.PLAIN_TEXT
+    }
+    return try {
+        val registry: ParserRegistry =
+            org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+        val parsed = registry.parseBody(contentType, bytes)
+        parsed.formatted to parsed.contentType
+    } catch (_: RuntimeException) {
+        rawFallback to ContentType.UNKNOWN
+    }
+}
+
+private const val MaxParseBodySize = 500_000
+private const val TruncatedDisplaySize = 100_000
 
 /**
  * Saves PDF data to the device's Downloads directory.
  *
  * @return Message describing the result of the operation
  */
-private fun savePdfToDownloads(context: Context, pdfData: ByteArray): String {
+private fun savePdfToDownloads(
+    context: Context,
+    pdfData: ByteArray,
+): String {
     return try {
         val fileName = "wormaceptor_${System.currentTimeMillis()}.pdf"
 
@@ -2128,7 +2288,7 @@ private fun TransactionDetailScreenPreview() {
     WormaCeptorTheme {
         TransactionDetailScreen(
             transaction = NetworkTransaction(
-                request = com.azikar24.wormaceptor.domain.entities.Request(
+                request = Request(
                     url = "https://api.example.com/users/123",
                     method = "GET",
                     headers = mapOf(
@@ -2137,7 +2297,7 @@ private fun TransactionDetailScreenPreview() {
                     ),
                     bodyRef = null,
                 ),
-                response = com.azikar24.wormaceptor.domain.entities.Response(
+                response = Response(
                     code = 200,
                     message = "OK",
                     headers = mapOf(
@@ -2149,7 +2309,7 @@ private fun TransactionDetailScreenPreview() {
                     bodySize = 1024L,
                 ),
                 durationMs = 142L,
-                status = com.azikar24.wormaceptor.domain.entities.TransactionStatus.COMPLETED,
+                status = TransactionStatus.COMPLETED,
             ),
             queryEngine = null,
             onBack = {},

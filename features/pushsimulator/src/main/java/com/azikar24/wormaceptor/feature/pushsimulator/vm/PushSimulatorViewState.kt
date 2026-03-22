@@ -9,6 +9,15 @@ import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Consolidated UI state for the Push Simulator screen.
+ *
+ * @property title Notification title entered in the form.
+ * @property body Notification body text entered in the form.
+ * @property selectedChannelId ID of the notification channel selected for delivery.
+ * @property priority Priority level for the notification.
+ * @property actions Action buttons attached to the notification.
+ * @property newActionTitle Text of the action button currently being composed.
+ * @property templates Saved notification templates available for reuse.
+ * @property channels Available notification channels on the device.
  */
 data class PushSimulatorViewState(
     val title: String = "",

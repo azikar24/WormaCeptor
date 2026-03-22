@@ -50,12 +50,18 @@ class LeakDetectionEngine(
 
     // StateFlows for UI observation
     private val _detectedLeaks = MutableStateFlow<List<LeakInfo>>(emptyList())
+
+    /** All memory leaks detected so far, most recent first. */
     val detectedLeaks: StateFlow<List<LeakInfo>> = _detectedLeaks.asStateFlow()
 
     private val _leakSummary = MutableStateFlow(LeakSummary.empty())
+
+    /** Aggregated summary of detected leaks by severity. */
     val leakSummary: StateFlow<LeakSummary> = _leakSummary.asStateFlow()
 
     private val _isRunning = MutableStateFlow(false)
+
+    /** Whether the leak detection engine is actively monitoring. */
     val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
     // Persistence and notification configuration
@@ -65,7 +71,10 @@ class LeakDetectionEngine(
     // Activity lifecycle callbacks
     private var application: Application? = null
     private val lifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) = Unit
 
         override fun onActivityStarted(activity: Activity) = Unit
 
@@ -75,7 +84,10 @@ class LeakDetectionEngine(
 
         override fun onActivityStopped(activity: Activity) = Unit
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) = Unit
 
         override fun onActivityDestroyed(activity: Activity) {
             if (_isRunning.value) {
@@ -126,7 +138,10 @@ class LeakDetectionEngine(
      * @param repository Optional repository for persisting detected leaks
      * @param onLeakCallback Optional callback invoked when a leak is detected (for notifications)
      */
-    fun configure(repository: LeakRepository? = null, onLeakCallback: ((LeakInfo) -> Unit)? = null) {
+    fun configure(
+        repository: LeakRepository? = null,
+        onLeakCallback: ((LeakInfo) -> Unit)? = null,
+    ) {
         this.leakRepository = repository
         this.onLeakDetected = onLeakCallback
     }
@@ -160,7 +175,10 @@ class LeakDetectionEngine(
      * @param obj The object to track
      * @param description Optional description for the tracked object
      */
-    fun watchObject(obj: Any, description: String = "") {
+    fun watchObject(
+        obj: Any,
+        description: String = "",
+    ) {
         if (!_isRunning.value) return
 
         val id = UUID.randomUUID().toString()
@@ -258,7 +276,10 @@ class LeakDetectionEngine(
     /**
      * Reports a detected memory leak.
      */
-    private fun reportLeak(check: PendingCheck, leakedObject: Any) {
+    private fun reportLeak(
+        check: PendingCheck,
+        leakedObject: Any,
+    ) {
         val retainedSize = estimateRetainedSize(leakedObject)
         val severity = classifySeverity(check.className, retainedSize)
         val referencePath = buildReferencePath(leakedObject)
@@ -303,7 +324,10 @@ class LeakDetectionEngine(
     /**
      * Classifies the severity of a leak based on object type and retained size.
      */
-    private fun classifySeverity(className: String, retainedSize: Long): LeakSeverity {
+    private fun classifySeverity(
+        className: String,
+        retainedSize: Long,
+    ): LeakSeverity {
         // Activities are always high or critical severity
         val isActivity = className.contains("Activity")
 
@@ -349,7 +373,7 @@ class LeakDetectionEngine(
                         val fieldTypeName = field.type.simpleName
                         path.add("   .${field.name} ($fieldTypeName)")
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // Field access failed, skip
                 }
             }
@@ -405,26 +429,27 @@ class LeakDetectionEngine(
         )
     }
 
+    /** Timing, history size, and retained size estimation defaults. */
     companion object {
-        /** Default delay before checking if an object was collected (5 seconds) */
+        /** Default delay before checking if an object was collected (5 seconds). */
         const val DEFAULT_CHECK_DELAY_MS = 5000L
 
-        /** Default maximum number of leaks to keep in history */
+        /** Default maximum number of leaks to keep in history. */
         const val DEFAULT_MAX_LEAK_HISTORY = 100
 
-        /** Wait time after GC to allow collection to complete */
+        /** Wait time after GC to allow collection to complete. */
         private const val GC_WAIT_MS = 100L
 
-        /** Estimated retained size for an Activity (~2MB) */
+        /** Estimated retained size for an Activity (~2MB). */
         private const val ESTIMATED_ACTIVITY_SIZE = 2_097_152L
 
-        /** Default estimated size for unknown objects (~256KB) */
+        /** Default estimated size for unknown objects (~256KB). */
         private const val ESTIMATED_DEFAULT_SIZE = 262_144L
 
-        /** Size threshold for critical severity (10MB) */
+        /** Size threshold for critical severity (10MB). */
         private const val CRITICAL_SIZE_THRESHOLD = 10_485_760L
 
-        /** Size threshold for high severity (1MB) */
+        /** Size threshold for high severity (1MB). */
         private const val HIGH_SIZE_THRESHOLD = 1_048_576L
     }
 }

@@ -43,14 +43,20 @@ class CpuMonitorEngine(
 
     // Current CPU snapshot
     private val _currentCpu = MutableStateFlow(CpuInfo.empty())
+
+    /** The most recent CPU usage snapshot. */
     val currentCpu: StateFlow<CpuInfo> = _currentCpu.asStateFlow()
 
     // CPU history for charts (circular buffer)
     private val _cpuHistory = MutableStateFlow<List<CpuInfo>>(emptyList())
+
+    /** Historical CPU snapshots for charting, stored in a circular buffer. */
     val cpuHistory: StateFlow<List<CpuInfo>> = _cpuHistory.asStateFlow()
 
     // Monitoring state
     private val _isMonitoring = MutableStateFlow(false)
+
+    /** Whether the CPU monitor is actively sampling. */
     val isMonitoring: StateFlow<Boolean> = _isMonitoring.asStateFlow()
 
     // History buffer
@@ -209,7 +215,7 @@ class CpuMonitorEngine(
             previousPerCoreStats = currentPerCoreStats
 
             Pair(overallUsage, perCoreUsage)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // /proc/stat inaccessible — switch to process fallback immediately
             useProcessFallback = true
             previousProcessCpuTicks = null
@@ -263,7 +269,7 @@ class CpuMonitorEngine(
             } else {
                 Pair(0f, emptyList())
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Pair(0f, emptyList())
         }
     }
@@ -302,7 +308,10 @@ class CpuMonitorEngine(
     /**
      * Calculates CPU usage percentage from the delta between two stat readings.
      */
-    private fun calculateUsagePercent(previous: CpuStats?, current: CpuStats?): Float {
+    private fun calculateUsagePercent(
+        previous: CpuStats?,
+        current: CpuStats?,
+    ): Float {
         if (previous == null || current == null) return 0f
 
         val prevTotal = previous.total
@@ -339,7 +348,7 @@ class CpuMonitorEngine(
             }
 
             0L
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0L
         }
     }
@@ -361,12 +370,12 @@ class CpuMonitorEngine(
                             return tempMilliCelsius / 1000f
                         }
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // Try next path
                 }
             }
             null
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -398,17 +407,18 @@ class CpuMonitorEngine(
             get() = user + nice + system + idle + iowait + irq + softirq + steal
     }
 
+    /** Sampling intervals, history size, and threshold defaults. */
     companion object {
-        /** Default sampling interval: 1 second */
+        /** Default sampling interval: 1 second. */
         const val DEFAULT_INTERVAL_MS = 1000L
 
-        /** Default history size: 60 samples (1 minute at 1-second intervals) */
+        /** Default history size: 60 samples (1 minute at 1-second intervals). */
         const val DEFAULT_HISTORY_SIZE = 60
 
-        /** Warning threshold for CPU usage percentage */
+        /** Warning threshold for CPU usage percentage. */
         const val CPU_WARNING_THRESHOLD = 80f
 
-        /** Medium threshold for CPU usage percentage */
+        /** Medium threshold for CPU usage percentage. */
         const val CPU_MEDIUM_THRESHOLD = 50f
 
         // System file paths

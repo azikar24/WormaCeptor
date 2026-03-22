@@ -9,6 +9,7 @@ import java.io.File
 import java.io.InputStream
 import java.util.UUID
 
+/** [BlobStorage] implementation that persists request/response bodies as files on disk. */
 class FileSystemBlobStorage(private val context: Context) : BlobStorage {
 
     private val blobDir: File by lazy {
@@ -29,9 +30,10 @@ class FileSystemBlobStorage(private val context: Context) : BlobStorage {
         if (file.exists()) file.inputStream() else null
     }
 
-    override suspend fun deleteBlob(id: BlobID) = withContext(Dispatchers.IO) {
-        val file = File(blobDir, id)
-        if (file.exists()) file.delete()
-        Unit
+    override suspend fun deleteBlob(id: BlobID) {
+        withContext(Dispatchers.IO) {
+            val file = File(blobDir, id)
+            if (file.exists()) file.delete()
+        }
     }
 }

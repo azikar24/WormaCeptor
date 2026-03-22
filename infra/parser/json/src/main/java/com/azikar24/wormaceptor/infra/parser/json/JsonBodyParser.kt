@@ -33,7 +33,10 @@ class JsonBodyParser(
 
     override val defaultContentType: ContentType = ContentType.JSON
 
-    override fun canParse(contentType: String?, body: ByteArray): Boolean {
+    override fun canParse(
+        contentType: String?,
+        body: ByteArray,
+    ): Boolean {
         // Check content type first
         if (contentType != null) {
             val mimeType = contentType.split(";").firstOrNull()?.trim()?.lowercase()
@@ -110,6 +113,7 @@ class JsonBodyParser(
      * - Trailing commas
      * - Single-line comments
      */
+    @Suppress("LoopWithTooManyJumpStatements")
     private fun cleanJson5Syntax(json: String): String {
         val sb = StringBuilder()
         var i = 0

@@ -4,9 +4,16 @@ package com.azikar24.wormaceptor.domain.entities
  * Type of WebSocket message.
  */
 enum class WebSocketMessageType {
+    /** UTF-8 text data frame. */
     TEXT,
+
+    /** Binary data frame. */
     BINARY,
+
+    /** Control frame used to check connection liveness. */
     PING,
+
+    /** Control frame sent in response to a ping. */
     PONG,
 }
 
@@ -14,7 +21,10 @@ enum class WebSocketMessageType {
  * Direction of the WebSocket message.
  */
 enum class WebSocketMessageDirection {
+    /** Message was sent from the client to the server. */
     SENT,
+
+    /** Message was received from the server by the client. */
     RECEIVED,
 }
 

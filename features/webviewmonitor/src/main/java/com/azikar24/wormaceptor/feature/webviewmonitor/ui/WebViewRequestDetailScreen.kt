@@ -53,7 +53,10 @@ import com.azikar24.wormaceptor.feature.webviewmonitor.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack: () -> Unit) {
+internal fun WebViewRequestDetailScreen(
+    request: WebViewRequest,
+    onNavigateBack: () -> Unit,
+) {
     val statusColor = getStatusColor(request)
 
     Scaffold(
@@ -132,7 +135,10 @@ internal fun WebViewRequestDetailScreen(request: WebViewRequest, onNavigateBack:
 }
 
 @Composable
-private fun DetailStatusBadge(request: WebViewRequest, statusColor: Color) {
+private fun DetailStatusBadge(
+    request: WebViewRequest,
+    statusColor: Color,
+) {
     val statusText = when {
         request.isPending -> "..."
         request.statusCode != null -> request.statusCode.toString()
@@ -251,7 +257,12 @@ private fun RequestInfoCard(request: WebViewRequest) {
 }
 
 @Composable
-private fun HeadersCard(title: String, headers: Map<String, String>, icon: ImageVector, iconTint: Color) {
+private fun HeadersCard(
+    title: String,
+    headers: Map<String, String>,
+    icon: ImageVector,
+    iconTint: Color,
+) {
     WormaCeptorInfoCard(
         title = title,
         icon = icon,

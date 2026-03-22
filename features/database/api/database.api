@@ -109,7 +109,6 @@ public final class com/azikar24/wormaceptor/feature/database/ui/TableListScreenK
 	public static final fun TableListScreen (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Ljava/lang/String;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
-
 public abstract class com/azikar24/wormaceptor/feature/database/vm/DatabaseViewEffect {
 	public static final field $stable I
 }

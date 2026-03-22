@@ -73,7 +73,7 @@ public final class com/azikar24/wormaceptor/feature/threadviolation/ui/theme/Thr
 }
 
 public final class com/azikar24/wormaceptor/feature/threadviolation/ui/theme/ThreadViolationColorsKt {
-	public static final fun threadViolationColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/threadviolation/ui/theme/ThreadViolationColors;
+	public static final fun threadViolationColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/threadviolation/ui/theme/ThreadViolationColors;
 }
 
 public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewModel : androidx/lifecycle/ViewModel {

@@ -636,18 +636,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Pr
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/XmlTreeViewKt {
-	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ComposableSingletons$GestureNavigationComponentsKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/gesture/ComposableSingletons$GestureNavigationComponentsKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/theme/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gestures/SwipeBackContainerKt {

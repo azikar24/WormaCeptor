@@ -116,9 +116,9 @@ fun FileBrowser(
                 onSortModeChanged = { onEvent(FileBrowserViewEvent.SetSortMode(it)) },
                 onNavigateBack = {
                     onEvent(FileBrowserViewEvent.NavigateBack)
-                    state.navigationStack.isNotEmpty()
+                    true
                 },
-                onExitBrowser = { onNavigateBack?.invoke() },
+                onExitBrowser = { },
                 onClearError = { onEvent(FileBrowserViewEvent.ClearError) },
                 modifier = modifier,
                 snackBarHostState = snackBarHostState,

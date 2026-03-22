@@ -43,8 +43,8 @@ Try WormaCeptor V2 in action with the demo app on the Google Play Store:
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.0")
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.0")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.1")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.1")
 }
 ```
 
@@ -68,8 +68,8 @@ val client = OkHttpClient.Builder()
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.0")
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.0")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.1")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.1")
     compileOnly("io.ktor:ktor-client-core:<ktor-version>")
 }
 ```
@@ -208,15 +208,15 @@ Add dependencies:
 ```kotlin
 dependencies {
     // Required: Lightweight API client (safe for all build types)
-    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.0")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.1")
 
     // Debug: Choose one implementation
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.0")  // Room-based (persists across app restarts)
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.1")  // Room-based (persists across app restarts)
     // OR for in-memory (clears on app kill):
-    // debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:2.2.0")
+    // debugImplementation("com.github.azikar24.WormaCeptor:api-impl-imdb:2.2.1")
 
     // Optional: Explicit no-op for release (usually not needed)
-    // releaseImplementation("com.github.azikar24.WormaCeptor:api-impl-no-op:2.2.0")
+    // releaseImplementation("com.github.azikar24.WormaCeptor:api-impl-no-op:2.2.1")
 }
 ```
 

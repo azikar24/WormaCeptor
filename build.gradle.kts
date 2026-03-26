@@ -297,7 +297,7 @@ subprojects {
                                 project.path
                                     .removePrefix(":")
                                     .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.1"
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.2"
                         }
                     }
                 }
@@ -323,7 +323,7 @@ subprojects {
                                 project.path
                                     .removePrefix(":")
                                     .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.1"
+                            version = findProperty("VERSION_NAME")?.toString() ?: "2.2.2"
                         }
                     }
                 }

@@ -26,6 +26,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -75,7 +76,7 @@ class ExportManagerTest {
                 response = null,
             )
 
-            val json = serializeTransactions(listOf(transaction))
+            val json = exportManager.serializeTransactions(listOf(transaction))
 
             json.length() shouldBe 1
             val obj = json.getJSONObject(0)
@@ -114,23 +115,26 @@ class ExportManagerTest {
                 ),
             )
 
-            coEvery { queryEngine.getBody("req-blob-1") } returns "{\"name\":\"John\"}"
-            coEvery { queryEngine.getBody("resp-blob-1") } returns "{\"id\":1}"
+            coEvery { queryEngine.getBody("req-blob-1") } returns """{"name":"John"}"""
+            coEvery { queryEngine.getBody("resp-blob-1") } returns """{"id":1}"""
 
-            val json = serializeTransactions(listOf(transaction))
+            val json = exportManager.serializeTransactions(listOf(transaction))
 
             val obj = json.getJSONObject(0)
             obj.getString("status") shouldBe "COMPLETED"
             obj.getLong("durationMs") shouldBe 150
 
             val requestJson = obj.getJSONObject("request")
-            requestJson.getString("body") shouldBe "{\"name\":\"John\"}"
+            // Body should be parsed as nested JSON object, not a string
+            val reqBody = requestJson.getJSONObject("body")
+            reqBody.getString("name") shouldBe "John"
             requestJson.getLong("bodySize") shouldBe 42
 
             val responseJson = obj.getJSONObject("response")
             responseJson.getInt("code") shouldBe 200
             responseJson.getString("message") shouldBe "OK"
-            responseJson.getString("body") shouldBe "{\"id\":1}"
+            val respBody = responseJson.getJSONObject("body")
+            respBody.getInt("id") shouldBe 1
             responseJson.getLong("bodySize") shouldBe 1024
         }
 
@@ -148,7 +152,7 @@ class ExportManagerTest {
                 ),
             )
 
-            val json = serializeTransactions(listOf(transaction))
+            val json = exportManager.serializeTransactions(listOf(transaction))
 
             val headers = json.getJSONObject(0)
                 .getJSONObject("request")
@@ -176,7 +180,7 @@ class ExportManagerTest {
                 ),
             )
 
-            val json = serializeTransactions(listOf(transaction))
+            val json = exportManager.serializeTransactions(listOf(transaction))
 
             val headers = json.getJSONObject(0)
                 .getJSONObject("response")
@@ -201,7 +205,7 @@ class ExportManagerTest {
                 ),
             )
 
-            val json = serializeTransactions(listOf(transaction))
+            val json = exportManager.serializeTransactions(listOf(transaction))
 
             val obj = json.getJSONObject(0)
             obj.getJSONObject("request").has("body") shouldBe false
@@ -222,7 +226,7 @@ class ExportManagerTest {
                 ),
             )
 
-            val json = serializeTransactions(transactions)
+            val json = exportManager.serializeTransactions(transactions)
 
             json.length() shouldBe 3
             val urls = (0 until json.length()).map { i ->
@@ -237,9 +241,324 @@ class ExportManagerTest {
 
         @Test
         fun `should serialize empty transaction list`() = runTest {
-            val json = serializeTransactions(emptyList())
+            val json = exportManager.serializeTransactions(emptyList())
 
             json.length() shouldBe 0
+        }
+    }
+
+    @Nested
+    inner class ResponseMetadata {
+
+        @Test
+        fun `should serialize error field when present`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/timeout",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 0,
+                    message = "",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                    error = "java.net.SocketTimeoutException: connect timed out",
+                ),
+            )
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val responseJson = json.getJSONObject(0).getJSONObject("response")
+            responseJson.getString("error") shouldBe "java.net.SocketTimeoutException: connect timed out"
+        }
+
+        @Test
+        fun `should serialize protocol field when present`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/data",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                    protocol = "h2",
+                ),
+            )
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val responseJson = json.getJSONObject(0).getJSONObject("response")
+            responseJson.getString("protocol") shouldBe "h2"
+        }
+
+        @Test
+        fun `should serialize tlsVersion field when present`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/secure",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                    tlsVersion = "TLSv1.3",
+                ),
+            )
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val responseJson = json.getJSONObject(0).getJSONObject("response")
+            responseJson.getString("tlsVersion") shouldBe "TLSv1.3"
+        }
+
+        @Test
+        fun `should serialize all response metadata fields together`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/full",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                    error = null,
+                    protocol = "http/1.1",
+                    tlsVersion = "TLSv1.2",
+                ),
+            )
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val responseJson = json.getJSONObject(0).getJSONObject("response")
+            responseJson.has("error") shouldBe false // null should be omitted
+            responseJson.getString("protocol") shouldBe "http/1.1"
+            responseJson.getString("tlsVersion") shouldBe "TLSv1.2"
+        }
+
+        @Test
+        fun `should omit null metadata fields`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/plain",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                    error = null,
+                    protocol = null,
+                    tlsVersion = null,
+                ),
+            )
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val responseJson = json.getJSONObject(0).getJSONObject("response")
+            responseJson.has("error") shouldBe false
+            responseJson.has("protocol") shouldBe false
+            responseJson.has("tlsVersion") shouldBe false
+        }
+    }
+
+    @Nested
+    inner class JsonBodyParsing {
+
+        @Test
+        fun `should parse JSON object body as nested object`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/users",
+                    method = "POST",
+                    headers = emptyMap(),
+                    bodyRef = "req-json-obj",
+                ),
+                response = null,
+            )
+            coEvery { queryEngine.getBody("req-json-obj") } returns """{"name":"Alice","age":30}"""
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("request").getJSONObject("body")
+            body.getString("name") shouldBe "Alice"
+            body.getInt("age") shouldBe 30
+        }
+
+        @Test
+        fun `should parse JSON array body as nested array`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/batch",
+                    method = "POST",
+                    headers = emptyMap(),
+                    bodyRef = "req-json-arr",
+                ),
+                response = null,
+            )
+            coEvery { queryEngine.getBody("req-json-arr") } returns """[1,2,3]"""
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("request").getJSONArray("body")
+            body.length() shouldBe 3
+            body.getInt(0) shouldBe 1
+        }
+
+        @Test
+        fun `should keep non-JSON body as string`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/upload",
+                    method = "POST",
+                    headers = emptyMap(),
+                    bodyRef = "req-plain",
+                ),
+                response = null,
+            )
+            coEvery { queryEngine.getBody("req-plain") } returns "key1=value1&key2=value2"
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("request").getString("body")
+            body shouldBe "key1=value1&key2=value2"
+        }
+
+        @Test
+        fun `should keep XML body as string`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/soap",
+                    method = "POST",
+                    headers = emptyMap(),
+                    bodyRef = "req-xml",
+                ),
+                response = null,
+            )
+            coEvery { queryEngine.getBody("req-xml") } returns "<root><item>test</item></root>"
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("request").getString("body")
+            body shouldBe "<root><item>test</item></root>"
+        }
+
+        @Test
+        fun `should handle malformed JSON gracefully as string`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/broken",
+                    method = "POST",
+                    headers = emptyMap(),
+                    bodyRef = "req-broken",
+                ),
+                response = null,
+            )
+            coEvery { queryEngine.getBody("req-broken") } returns """{"unclosed": "bracket" """
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("request").getString("body")
+            body shouldBe """{"unclosed": "bracket" """
+        }
+
+        @Test
+        fun `should parse response JSON body as nested object`() = runTest {
+            val transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/data",
+                    method = "GET",
+                    headers = emptyMap(),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = emptyMap(),
+                    bodyRef = "resp-json",
+                    bodySize = 100,
+                ),
+            )
+            coEvery { queryEngine.getBody("resp-json") } returns """{"status":"ok","count":42}"""
+
+            val json = exportManager.serializeTransactions(listOf(transaction))
+
+            val body = json.getJSONObject(0).getJSONObject("response").getJSONObject("body")
+            body.getString("status") shouldBe "ok"
+            body.getInt("count") shouldBe 42
+        }
+    }
+
+    @Nested
+    inner class ParseJsonOrString {
+
+        @Test
+        fun `should parse valid JSON object`() {
+            val result = ExportManager.parseJsonOrString("""{"key":"value"}""")
+            (result is JSONObject) shouldBe true
+            (result as JSONObject).getString("key") shouldBe "value"
+        }
+
+        @Test
+        fun `should parse valid JSON array`() {
+            val result = ExportManager.parseJsonOrString("""[1, 2, 3]""")
+            (result is JSONArray) shouldBe true
+            (result as JSONArray).length() shouldBe 3
+        }
+
+        @Test
+        fun `should return string for plain text`() {
+            val result = ExportManager.parseJsonOrString("hello world")
+            (result is String) shouldBe true
+            result shouldBe "hello world"
+        }
+
+        @Test
+        fun `should return string for form-encoded data`() {
+            val result = ExportManager.parseJsonOrString("a=1&b=2")
+            (result is String) shouldBe true
+        }
+
+        @Test
+        fun `should handle whitespace around JSON`() {
+            val result = ExportManager.parseJsonOrString("""  {"key": "value"}  """)
+            (result is JSONObject) shouldBe true
+        }
+
+        @Test
+        fun `should return string for malformed JSON starting with brace`() {
+            val result = ExportManager.parseJsonOrString("""{not json""")
+            (result is String) shouldBe true
+        }
+
+        @Test
+        fun `should return string for malformed JSON starting with bracket`() {
+            val result = ExportManager.parseJsonOrString("""[not json""")
+            (result is String) shouldBe true
+        }
+
+        @Test
+        fun `should return string for empty input`() {
+            val result = ExportManager.parseJsonOrString("")
+            (result is String) shouldBe true
+            result shouldBe ""
         }
     }
 
@@ -326,6 +645,7 @@ class ExportManagerTest {
 
         @Test
         fun `should include exception message in error output`() = runTest {
+            every { context.cacheDir } returns File(System.getProperty("java.io.tmpdir")!!)
             val failingEngine = mockk<QueryEngine> {
                 coEvery { getBody(any()) } throws RuntimeException("disk full")
             }
@@ -348,72 +668,5 @@ class ExportManagerTest {
             val errorMessage = messages.first { it.startsWith("Export failed:") }
             errorMessage shouldContain "disk full"
         }
-    }
-
-    /**
-     * Helper that replicates the serialization logic from ExportManager
-     * so we can unit-test the JSON output without needing Android intents.
-     */
-    private suspend fun serializeTransactions(transactions: List<NetworkTransaction>): JSONArray {
-        val jsonArray = JSONArray()
-        transactions.forEach { transaction ->
-            val requestBody = transaction.request.bodyRef?.let { blobId ->
-                queryEngine.getBody(blobId)
-            }
-            val responseBody = transaction.response?.bodyRef?.let { blobId ->
-                queryEngine.getBody(blobId)
-            }
-
-            val jsonObject = JSONObject().apply {
-                put("id", transaction.id.toString())
-                put("timestamp", transaction.timestamp)
-                put("status", transaction.status.name)
-                put("durationMs", transaction.durationMs)
-
-                put(
-                    "request",
-                    JSONObject().apply {
-                        put("url", transaction.request.url)
-                        put("method", transaction.request.method)
-                        put(
-                            "headers",
-                            JSONObject(
-                                transaction.request.headers.mapValues {
-                                    it.value.joinToString(", ")
-                                },
-                            ),
-                        )
-                        put("bodySize", transaction.request.bodySize)
-                        if (requestBody != null) {
-                            put("body", requestBody)
-                        }
-                    },
-                )
-
-                transaction.response?.let { response ->
-                    put(
-                        "response",
-                        JSONObject().apply {
-                            put("code", response.code)
-                            put("message", response.message)
-                            put(
-                                "headers",
-                                JSONObject(
-                                    response.headers.mapValues {
-                                        it.value.joinToString(", ")
-                                    },
-                                ),
-                            )
-                            put("bodySize", response.bodySize)
-                            if (responseBody != null) {
-                                put("body", responseBody)
-                            }
-                        },
-                    )
-                }
-            }
-            jsonArray.put(jsonObject)
-        }
-        return jsonArray
     }
 }

@@ -60,6 +60,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
+import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
 import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEffect
@@ -577,7 +578,15 @@ class ViewerActivity : ComponentActivity() {
                 return@launch
             }
 
-            val curl = buildCurlCommand(fullTransaction)
+            val body = fullTransaction.request.bodyRef?.let { blobId ->
+                CoreHolder.queryEngine?.getBody(blobId)
+            }
+            val curl = CurlGenerator.generate(
+                method = fullTransaction.request.method,
+                url = fullTransaction.request.url,
+                headers = fullTransaction.request.headers,
+                body = body,
+            )
             val message = copyToClipboard(this@ViewerActivity, "cURL", curl)
             viewModel.sendEvent(ViewerViewEvent.ShowMessage(message))
         }
@@ -628,26 +637,6 @@ class ViewerActivity : ComponentActivity() {
 
             is DeepLinkHandler.DeepLinkDestination.Invalid -> {
                 // Do nothing for invalid deep links
-            }
-        }
-    }
-
-    private suspend fun buildCurlCommand(transaction: NetworkTransaction): String = buildString {
-        append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
-        transaction.request.headers.forEach { (key, values) ->
-            values.forEach { value ->
-                val escapedKey = key.replace("'", "'\\''")
-                val escapedValue = value.replace("'", "'\\''")
-                append(" -H '$escapedKey: $escapedValue'")
-            }
-        }
-        // Include request body for methods that typically have a body
-        val methodsWithBody = setOf("POST", "PUT", "PATCH", "DELETE")
-        val bodyRef = transaction.request.bodyRef
-        if (transaction.request.method.uppercase() in methodsWithBody && bodyRef != null) {
-            CoreHolder.queryEngine?.getBody(bodyRef)?.let { body ->
-                val escapedBody = body.replace("'", "'\\''")
-                append(" -d '$escapedBody'")
             }
         }
     }

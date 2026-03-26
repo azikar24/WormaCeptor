@@ -150,11 +150,14 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
 import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
 import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
+import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
 import com.azikar24.wormaceptor.feature.viewer.ui.util.extractUrlPath
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 /**
@@ -302,6 +305,7 @@ fun TransactionDetailScreen(
  * - Swipe on toolbar/topBar area: Switch between transactions
  * - Swipe on content area (HorizontalPager): Switch between Overview/Request/Response tabs
  */
+@Suppress("CyclomaticComplexMethod", "LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TransactionDetailContent(
@@ -450,7 +454,32 @@ private fun TransactionDetailContent(
                                     },
                                     onClick = {
                                         showMenu = false
-                                        copyToClipboard(context, "Transaction", generateTextSummary(transaction))
+                                        scope.launch {
+                                            val (requestBody, responseBody) = withContext(Dispatchers.IO) {
+                                                val reqBody = transaction.request.bodyRef?.let {
+                                                    queryEngine?.getBody(
+                                                        it,
+                                                    )
+                                                }
+                                                val resBody = transaction.response?.bodyRef?.let {
+                                                    queryEngine?.getBody(
+                                                        it,
+                                                    )
+                                                }
+                                                reqBody to resBody
+                                            }
+                                            val summary = generateTextSummary(
+                                                transaction,
+                                                requestBody,
+                                                responseBody,
+                                            )
+                                            val message = copyToClipboard(
+                                                context,
+                                                "Transaction",
+                                                summary,
+                                            )
+                                            snackBarHostState.showSnackbar(message)
+                                        }
                                     },
                                 )
                                 DropdownMenuItem(
@@ -461,7 +490,21 @@ private fun TransactionDetailContent(
                                     },
                                     onClick = {
                                         showMenu = false
-                                        copyToClipboard(context, "cURL", generateCurlCommand(transaction))
+                                        scope.launch {
+                                            val body = withContext(Dispatchers.IO) {
+                                                transaction.request.bodyRef?.let { blobId ->
+                                                    queryEngine?.getBody(blobId)
+                                                }
+                                            }
+                                            val curl = CurlGenerator.generate(
+                                                method = transaction.request.method,
+                                                url = transaction.request.url,
+                                                headers = transaction.request.headers,
+                                                body = body,
+                                            )
+                                            val message = copyToClipboard(context, "cURL", curl)
+                                            snackBarHostState.showSnackbar(message)
+                                        }
                                     },
                                 )
                                 WormaCeptorDivider()
@@ -2152,33 +2195,42 @@ private fun formatHeaders(headers: Map<String, List<String>>): String {
     return headers.entries.joinToString("\n") { "${it.key}: ${it.value.joinToString(", ")}" }
 }
 
-private fun generateTextSummary(transaction: NetworkTransaction): String = buildString {
+private fun generateTextSummary(
+    transaction: NetworkTransaction,
+    requestBody: String? = null,
+    responseBody: String? = null,
+): String = buildString {
     appendLine("--- WormaCeptor Transaction ---")
     appendLine("URL: ${transaction.request.url}")
     appendLine("Method: ${transaction.request.method}")
     appendLine("Status: ${transaction.status.name}")
-    appendLine("Code: ${transaction.response?.code ?: "-"}")
+    transaction.response?.let { res ->
+        append("Code: ${res.code}")
+        if (res.message.isNotBlank()) append(" ${res.message}")
+        appendLine()
+        res.protocol?.let { appendLine("Protocol: $it") }
+        res.tlsVersion?.let { appendLine("TLS: $it") }
+        res.error?.let { appendLine("Error: $it") }
+    } ?: appendLine("Code: -")
     appendLine("Duration: ${formatDuration(transaction.durationMs)}")
+
     appendLine("\n[Request Headers]")
     appendLine(formatHeaders(transaction.request.headers))
+
+    if (!requestBody.isNullOrBlank()) {
+        appendLine("\n[Request Body]")
+        appendLine(requestBody)
+    }
+
     transaction.response?.let { res ->
         appendLine("\n[Response Headers]")
         appendLine(formatHeaders(res.headers))
-    }
-}
 
-private fun generateCurlCommand(transaction: NetworkTransaction): String = buildString {
-    append("curl -X ${transaction.request.method} \"${transaction.request.url}\"")
-    transaction.request.headers.forEach { (key, values) ->
-        values.forEach { value ->
-            val escapedKey = key.replace("'", "'\\''")
-            val escapedValue = value.replace("'", "'\\''")
-            append(" -H '$escapedKey: $escapedValue'")
+        if (!responseBody.isNullOrBlank()) {
+            appendLine("\n[Response Body]")
+            appendLine(responseBody)
         }
     }
-    // Note: We don't include the body in the cURL command here as it might be binary or huge,
-    // and we only have the blobId in the domain entity. In a future version,
-    // we could fetch the body if small.
 }
 
 private fun isProtobufContentType(contentType: String?): Boolean {

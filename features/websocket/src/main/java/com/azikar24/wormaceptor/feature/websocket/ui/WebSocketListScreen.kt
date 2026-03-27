@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -71,6 +74,7 @@ internal fun WebSocketListScreen(
     onBack: (() -> Unit)? = null,
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
             Column {
@@ -209,7 +213,12 @@ private fun ConnectionList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = WormaCeptorDesignSystem.Spacing.sm),
+        contentPadding = PaddingValues(
+            top = WormaCeptorDesignSystem.Spacing.sm,
+            bottom = WormaCeptorDesignSystem.Spacing.sm +
+                WindowInsets.navigationBars.asPaddingValues()
+                    .calculateBottomPadding(),
+        ),
     ) {
         items(
             items = connections,

@@ -29,15 +29,15 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -383,6 +383,7 @@ private fun TransactionDetailContent(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
             Column {
@@ -564,8 +565,6 @@ private fun TransactionDetailContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .consumeWindowInsets(padding)
-                    .windowInsetsPadding(WindowInsets.statusBars)
                     .windowInsetsPadding(WindowInsets.ime),
             ) {
                 // Inline search bar in content area
@@ -733,11 +732,17 @@ private fun OverviewTab(
     transaction: NetworkTransaction,
     modifier: Modifier = Modifier,
 ) {
+    val navBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
+            .padding(
+                start = WormaCeptorDesignSystem.Spacing.lg,
+                top = WormaCeptorDesignSystem.Spacing.lg,
+                end = WormaCeptorDesignSystem.Spacing.lg,
+                bottom = WormaCeptorDesignSystem.Spacing.lg + navBarPadding,
+            ),
         verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
     ) {
         // Status & Timing Card with Timeline
@@ -1165,7 +1170,13 @@ private fun RequestTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(
+                    start = WormaCeptorDesignSystem.Spacing.lg,
+                    top = WormaCeptorDesignSystem.Spacing.lg,
+                    end = WormaCeptorDesignSystem.Spacing.lg,
+                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                ),
         ) {
             // Only show Headers section if headers exist
             if (transaction.request.headers.isNotEmpty()) {
@@ -1544,7 +1555,13 @@ private fun ResponseTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(
+                    start = WormaCeptorDesignSystem.Spacing.lg,
+                    top = WormaCeptorDesignSystem.Spacing.lg,
+                    end = WormaCeptorDesignSystem.Spacing.lg,
+                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                ),
         ) {
             if (transaction.response != null) {
                 val hasHeaders = transaction.response?.headers?.isNotEmpty() == true

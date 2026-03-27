@@ -37,6 +37,6 @@ object CurlGenerator {
 
     /** Strips non-alpha characters to prevent shell injection via method names. */
     internal fun sanitizeMethod(method: String): String {
-        return method.replace(Regex("[^A-Za-z]"), "")
+        return method.replace(Regex("[^A-Za-z]"), "").ifEmpty { "GET" }
     }
 }

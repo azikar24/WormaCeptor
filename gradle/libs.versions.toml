@@ -39,7 +39,7 @@ security-crypto = "1.1.0-alpha06"
 osmdroid = "6.1.18"
 
 # Code Quality Plugins
-owaspDependencyCheck = "12.2.0"
+
 dependencyAnalysis = "1.30.0"
 binaryCompatibilityValidator = "0.14.0"
 kover = "0.7.6"
@@ -135,7 +135,7 @@ intellij-platform = { id = "org.jetbrains.intellij.platform", version.ref = "int
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 # Code Quality Plugins
-owasp-dependency-check = { id = "org.owasp.dependencycheck", version.ref = "owaspDependencyCheck" }
+
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

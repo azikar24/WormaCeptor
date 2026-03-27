@@ -123,51 +123,41 @@ fun TableDataScreen(
         },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                        .navigationBarsPadding(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            queryResult?.error != null -> {
-                val errorMessage = queryResult.error ?: ""
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = errorMessage,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .navigationBarsPadding(),
+        ) {
+            when {
+                isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
-            }
 
-            showSchema -> {
-                SchemaView(
-                    schema = schema,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                )
-            }
+                queryResult?.error != null -> {
+                    Text(
+                        text = queryResult.error ?: "",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
 
-            queryResult != null -> {
-                DataTable(
-                    result = queryResult,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                )
+                showSchema -> {
+                    SchemaView(
+                        schema = schema,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+
+                queryResult != null -> {
+                    DataTable(
+                        result = queryResult,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }

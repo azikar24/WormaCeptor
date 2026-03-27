@@ -295,6 +295,16 @@ class CurlGeneratorTest {
             CurlGenerator.sanitizeMethod("HEAD") shouldBe "HEAD"
             CurlGenerator.sanitizeMethod("OPTIONS") shouldBe "OPTIONS"
         }
+
+        @Test
+        fun `should fall back to GET for all-numeric method`() {
+            CurlGenerator.sanitizeMethod("123") shouldBe "GET"
+        }
+
+        @Test
+        fun `should fall back to GET for empty method`() {
+            CurlGenerator.sanitizeMethod("") shouldBe "GET"
+        }
     }
 
     @Nested

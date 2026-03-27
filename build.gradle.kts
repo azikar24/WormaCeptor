@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.android.junit5) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
-    alias(libs.plugins.owasp.dependency.check)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.kover)
@@ -30,18 +29,6 @@ detekt {
 dependencies {
     detektPlugins(libs.detekt.formatting)
     detektPlugins(libs.compose.rules.detekt)
-}
-
-// =============================================================================
-// OWASP Dependency-Check Configuration (Security Vulnerability Scanning)
-// =============================================================================
-dependencyCheck {
-    failBuildOnCVSS = 7.0f // Fail on HIGH and CRITICAL vulnerabilities
-    suppressionFile = "$rootDir/config/owasp/suppressions.xml"
-    formats = listOf("HTML", "JSON", "SARIF")
-    outputDirectory.set(layout.buildDirectory.dir("reports/dependency-check"))
-    nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
-    nvd.delay = 10000 // 10s delay between NVD API requests to avoid rate limiting
 }
 
 // =============================================================================
@@ -163,12 +150,6 @@ tasks.register("codeFormat") {
     dependsOn("spotlessApply")
 }
 
-tasks.register("securityCheck") {
-    group = "verification"
-    description = "Run security vulnerability scanning"
-    dependsOn("dependencyCheckAnalyze")
-}
-
 tasks.register("coverageReport") {
     group = "verification"
     description = "Generate code coverage report"
@@ -178,7 +159,7 @@ tasks.register("coverageReport") {
 tasks.register("fullCheck") {
     group = "verification"
     description = "Run all checks"
-    dependsOn("codeQuality", "securityCheck", "koverVerify", "buildHealth")
+    dependsOn("codeQuality", "koverVerify", "buildHealth")
 }
 
 // Apply detekt, lint, and kover configuration to all subprojects

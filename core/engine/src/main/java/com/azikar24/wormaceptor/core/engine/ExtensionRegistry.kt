@@ -83,6 +83,6 @@ class DefaultExtensionRegistry : ExtensionRegistry {
     }
 
     override fun getRegisteredProviders(): List<String> {
-        return providers.keys.toList()
+        return providers.entries.map { it.key }
     }
 }

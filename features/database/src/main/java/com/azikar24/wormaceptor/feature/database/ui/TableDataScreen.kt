@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -65,6 +67,7 @@ fun TableDataScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = {
@@ -120,50 +123,41 @@ fun TableDataScreen(
         },
         modifier = modifier,
     ) { padding ->
-        when {
-            isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            queryResult?.error != null -> {
-                val errorMessage = queryResult.error ?: ""
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = errorMessage,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .navigationBarsPadding(),
+        ) {
+            when {
+                isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
-            }
 
-            showSchema -> {
-                SchemaView(
-                    schema = schema,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                )
-            }
+                queryResult?.error != null -> {
+                    Text(
+                        text = queryResult.error ?: "",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
 
-            queryResult != null -> {
-                DataTable(
-                    result = queryResult,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                )
+                showSchema -> {
+                    SchemaView(
+                        schema = schema,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+
+                queryResult != null -> {
+                    DataTable(
+                        result = queryResult,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }

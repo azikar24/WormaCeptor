@@ -1,9 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
+import java.util.Calendar
 
 /**
  * Quick filters that can be applied to the transaction list.
@@ -52,11 +50,10 @@ enum class QuickFilter(val label: String) {
     }
 
     private fun isToday(timestampMillis: Long): Boolean {
-        val today = LocalDate.now()
-        val transactionDate = Instant.ofEpochMilli(timestampMillis)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-        return today == transactionDate
+        val now = Calendar.getInstance()
+        val transaction = Calendar.getInstance().apply { timeInMillis = timestampMillis }
+        return now.get(Calendar.YEAR) == transaction.get(Calendar.YEAR) &&
+            now.get(Calendar.DAY_OF_YEAR) == transaction.get(Calendar.DAY_OF_YEAR)
     }
 }
 

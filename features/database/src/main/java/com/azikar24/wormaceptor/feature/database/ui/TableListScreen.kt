@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,6 +70,7 @@ fun TableListScreen(
     var searchActive by remember { mutableStateOf(false) }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             Column {
                 TopAppBar(
@@ -179,7 +183,11 @@ fun TableListScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding),
-                        contentPadding = PaddingValues(bottom = WormaCeptorDesignSystem.Spacing.lg),
+                        contentPadding = PaddingValues(
+                            bottom = WormaCeptorDesignSystem.Spacing.lg +
+                                WindowInsets.navigationBars.asPaddingValues()
+                                    .calculateBottomPadding(),
+                        ),
                     ) {
                         items(
                             items = tables,

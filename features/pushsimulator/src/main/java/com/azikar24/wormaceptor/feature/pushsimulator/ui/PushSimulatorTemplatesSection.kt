@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -131,40 +130,47 @@ internal fun TemplateCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(WormaCeptorDesignSystem.Spacing.md),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
         ) {
-            // Header with template name, badges, and metadata
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top,
+            // Badges row
+            WormaCeptorFlowRow(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
             ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = template.name,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-
-                    Text(
-                        text = template.notification.title,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                // Priority badge
+                Surface(
+                    shape = WormaCeptorDesignSystem.Shapes.chip,
+                    color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            WormaCeptorDesignSystem.Spacing.xxs,
+                        ),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .background(color = priorityColor, shape = CircleShape),
+                        )
+                        Text(
+                            text = template.notification.priority.name,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = priorityColor,
+                        )
+                    }
                 }
 
-                // Badges row
-                WormaCeptorFlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                ) {
-                    // Priority badge
+                // Action count badge
+                if (actionCount > 0) {
                     Surface(
                         shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                        color = PushSimulatorDesignSystem.TemplateColors.action
+                            .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -176,75 +182,60 @@ internal fun TemplateCard(
                                 WormaCeptorDesignSystem.Spacing.xxs,
                             ),
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .background(color = priorityColor, shape = CircleShape),
+                            Icon(
+                                imageVector = Icons.Default.TouchApp,
+                                contentDescription = null,
+                                modifier = Modifier.size(10.dp),
+                                tint = PushSimulatorDesignSystem.TemplateColors.action,
                             )
                             Text(
-                                text = template.notification.priority.name.take(3),
+                                text = actionCount.toString(),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = priorityColor,
-                            )
-                        }
-                    }
-
-                    // Action count badge
-                    if (actionCount > 0) {
-                        Surface(
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
-                            color = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(
-                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                                ),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(
-                                    WormaCeptorDesignSystem.Spacing.xxs,
-                                ),
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.TouchApp,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(10.dp),
-                                    tint = PushSimulatorDesignSystem.TemplateColors.action,
-                                )
-                                Text(
-                                    text = actionCount.toString(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = PushSimulatorDesignSystem.TemplateColors.action,
-                                )
-                            }
-                        }
-                    }
-
-                    // Preset badge
-                    if (isPreset) {
-                        Surface(
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
-                            color = PushSimulatorDesignSystem.TemplateColors.preset
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.pushsimulator_template_preset),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = PushSimulatorDesignSystem.TemplateColors.preset,
-                                modifier = Modifier.padding(
-                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                                ),
+                                color = PushSimulatorDesignSystem.TemplateColors.action,
                             )
                         }
                     }
                 }
+
+                // Preset badge
+                if (isPreset) {
+                    Surface(
+                        shape = WormaCeptorDesignSystem.Shapes.chip,
+                        color = PushSimulatorDesignSystem.TemplateColors.preset
+                            .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.pushsimulator_template_preset),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = PushSimulatorDesignSystem.TemplateColors.preset,
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
+                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            ),
+                        )
+                    }
+                }
             }
 
-            // Body preview
+            // Template name
+            Text(
+                text = template.name,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+            )
+
+            // Notification title — subtitle
+            Text(
+                text = template.notification.title,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            // Body preview — lighter to distinguish from title
             if (template.notification.body.isNotBlank()) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
                 Text(
                     text = template.notification.body,
                     style = MaterialTheme.typography.bodySmall,
@@ -253,8 +244,6 @@ internal fun TemplateCard(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
 
             // Actions row
             Row(

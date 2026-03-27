@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
@@ -38,7 +39,11 @@ fun shareText(
         putExtra(Intent.EXTRA_TEXT, text)
         subject?.let { putExtra(Intent.EXTRA_SUBJECT, it) }
     }
-    context.startActivity(Intent.createChooser(intent, chooserTitle))
+    val chooser = Intent.createChooser(intent, chooserTitle)
+    if (context !is Activity) {
+        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(chooser)
 }
 
 /**
@@ -68,13 +73,13 @@ suspend fun shareAsFile(
     }
 
     try {
-        // Write file on IO thread
         val uri = withContext(Dispatchers.IO) {
             val cacheDir = File(context.cacheDir, "shared_bodies")
             cacheDir.mkdirs()
+            cleanupStaleFiles(cacheDir)
+
             val file = File(cacheDir, fileName)
 
-            // Use buffered writer for large content
             file.bufferedWriter().use { writer ->
                 writer.write(content)
             }
@@ -93,12 +98,40 @@ suspend fun shareAsFile(
                 putExtra(Intent.EXTRA_STREAM, uri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            context.startActivity(Intent.createChooser(intent, chooserTitle))
+            val chooser = Intent.createChooser(intent, chooserTitle)
+            if (context !is Activity) {
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(chooser)
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
             onMessage("Failed to share file: ${e.message}")
         }
+    }
+}
+
+/** Maximum age (ms) for temporary shared files before cleanup. */
+private const val StaleFileMaxAgeMs = 60 * 60 * 1000L // 1 hour
+
+/**
+ * Removes temporary files older than [StaleFileMaxAgeMs] from the given directory.
+ * Best-effort: failures are silently ignored to avoid blocking the caller.
+ */
+internal fun cleanupStaleFiles(
+    cacheDir: File,
+    maxAgeMs: Long = StaleFileMaxAgeMs,
+) {
+    try {
+        if (!cacheDir.exists()) return
+        val cutoff = System.currentTimeMillis() - maxAgeMs
+        cacheDir.listFiles()?.forEach { file ->
+            if (file.lastModified() < cutoff) {
+                file.delete()
+            }
+        }
+    } catch (_: Exception) {
+        // Best-effort cleanup
     }
 }
 

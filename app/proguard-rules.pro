@@ -99,6 +99,12 @@
 -keep class com.azikar24.wormaceptor.** { *; }
 -keepclassmembers class com.azikar24.wormaceptor.** { *; }
 
+# -------------------- Ktor --------------------
+# Ktor classes are referenced by the WormaCeptor Ktor interceptor module
+# but are optional runtime dependencies (only needed if the consumer uses Ktor)
+-dontwarn io.ktor.**
+-dontwarn kotlinx.io.**
+
 # -------------------- Firebase --------------------
 # Keep Firebase Messaging classes (accessed via reflection in PushTokenEngine)
 -keep class com.google.firebase.messaging.FirebaseMessaging { *; }

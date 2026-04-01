@@ -23,6 +23,9 @@ object WormaCeptorColors {
     /** Warning, pending, and caution states. */
     val StatusAmber = Color(0xFFF59E0B) // Amber-500 - Clear visibility
 
+    /** Elevated severity, approaching-critical states. */
+    val StatusOrange = Color(0xFFFF9800) // Orange-500 - Between amber and red
+
     /** Error, failure, critical, and destructive states. */
     val StatusRed = Color(0xFFEF4444) // Red-500 - Attention-grabbing
 

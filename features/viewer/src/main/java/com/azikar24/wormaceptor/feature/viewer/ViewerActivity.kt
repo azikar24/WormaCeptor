@@ -15,12 +15,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,29 +30,11 @@ import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import com.azikar24.wormaceptor.core.ui.navigation.FeatureRegistry
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
-import com.azikar24.wormaceptor.domain.entities.TransactionSummary
-import com.azikar24.wormaceptor.feature.cpu.CpuMonitor
-import com.azikar24.wormaceptor.feature.crypto.CryptoScreen
-import com.azikar24.wormaceptor.feature.database.navigation.databaseGraph
-import com.azikar24.wormaceptor.feature.dependenciesinspector.DependenciesInspector
-import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoScreen
-import com.azikar24.wormaceptor.feature.filebrowser.FileBrowser
-import com.azikar24.wormaceptor.feature.fps.FpsMonitor
-import com.azikar24.wormaceptor.feature.leakdetection.LeakDetector
-import com.azikar24.wormaceptor.feature.loadedlibraries.LoadedLibrariesInspector
-import com.azikar24.wormaceptor.feature.location.LocationSimulator
-import com.azikar24.wormaceptor.feature.logs.LogViewer
-import com.azikar24.wormaceptor.feature.memory.MemoryMonitor
-import com.azikar24.wormaceptor.feature.preferences.navigation.preferencesGraph
-import com.azikar24.wormaceptor.feature.pushsimulator.PushSimulator
-import com.azikar24.wormaceptor.feature.pushtoken.PushTokenManager
-import com.azikar24.wormaceptor.feature.ratelimit.RateLimiter
-import com.azikar24.wormaceptor.feature.securestorage.SecureStorageViewer
-import com.azikar24.wormaceptor.feature.threadviolation.ThreadViolationMonitor
 import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
 import com.azikar24.wormaceptor.feature.viewer.export.exportCrashes
 import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
@@ -60,18 +42,16 @@ import com.azikar24.wormaceptor.feature.viewer.ui.CrashDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.HomeScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailPagerScreen
 import com.azikar24.wormaceptor.feature.viewer.ui.TransactionDetailScreen
-import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
-import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareText
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewModel
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionPagerViewModel
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEffect
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEvent
 import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
-import com.azikar24.wormaceptor.feature.websocket.navigation.webSocketGraph
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import com.azikar24.wormaceptor.feature.webviewmonitor.ui.WebViewMonitor as WebViewMonitorScreen
 
 /** Main activity hosting the WormaCeptor debugging UI with navigation and deep link support. */
 class ViewerActivity : ComponentActivity() {
@@ -126,7 +106,44 @@ class ViewerActivity : ComponentActivity() {
                     viewModel = viewModel,
                     onEffect = { effect ->
                         when (effect) {
-                            is ViewerViewEffect.ShowSnackbar -> snackbarMessages.tryEmit(effect.message)
+                            is ViewerViewEffect.ShowSnackBar ->
+                                snackbarMessages.tryEmit(effect.message)
+
+                            is ViewerViewEffect.ShareText ->
+                                shareText(this@ViewerActivity, effect.text, effect.title)
+
+                            is ViewerViewEffect.CopyToClipboard -> {
+                                val message = copyToClipboard(
+                                    this@ViewerActivity,
+                                    effect.label,
+                                    effect.content,
+                                )
+                                snackbarMessages.tryEmit(message)
+                            }
+
+                            is ViewerViewEffect.ExportTransactions -> {
+                                lifecycleScope.launch {
+                                    val exportManager = ExportManager(
+                                        this@ViewerActivity,
+                                        CoreHolder.queryEngine,
+                                        onMessage = { snackbarMessages.tryEmit(it) },
+                                    )
+                                    exportManager.exportTransactions(
+                                        effect.transactions,
+                                        format = effect.format,
+                                    )
+                                }
+                            }
+
+                            is ViewerViewEffect.ExportCrashes -> {
+                                lifecycleScope.launch {
+                                    exportCrashes(
+                                        this@ViewerActivity,
+                                        effect.crashes,
+                                        onMessage = { snackbarMessages.tryEmit(it) },
+                                    )
+                                }
+                            }
                         }
                     },
                 ) { state, onEvent ->
@@ -134,10 +151,6 @@ class ViewerActivity : ComponentActivity() {
                     val allTransactions by viewModel.allTransactions.collectAsState()
                     val crashes by viewModel.crashes.collectAsState()
                     val isSelectionMode by viewModel.isSelectionMode.collectAsState()
-                    val scope = rememberCoroutineScope()
-                    val snackBarMessage: (String) -> Unit = { message ->
-                        onEvent(ViewerViewEvent.ShowMessage(message))
-                    }
                     val navController = rememberNavController()
 
                     // Handle deep link navigation
@@ -188,154 +201,26 @@ class ViewerActivity : ComponentActivity() {
                             composable(WormaCeptorNavKeys.Home.route) {
                                 HomeScreen(
                                     transactions = transactions,
+                                    allTransactions = allTransactions,
                                     crashes = crashes,
-                                    searchQuery = state.searchQuery,
-                                    onSearchChanged = {
-                                        onEvent(ViewerViewEvent.SearchQueryChanged(it))
-                                    },
+                                    isSelectionMode = isSelectionMode,
+                                    state = state,
+                                    onEvent = onEvent,
                                     onTransactionClick = {
                                         navController.navigate(
-                                            WormaCeptorNavKeys.TransactionDetail.createRoute(it.id.toString()),
+                                            WormaCeptorNavKeys.TransactionDetail.createRoute(
+                                                it.id.toString(),
+                                            ),
                                         )
                                     },
                                     onCrashClick = { crash ->
                                         navController.navigate(
-                                            WormaCeptorNavKeys.CrashDetail.createRoute(crash.timestamp),
+                                            WormaCeptorNavKeys.CrashDetail.createRoute(
+                                                crash.timestamp,
+                                            ),
                                         )
-                                    },
-                                    filterMethods = state.filterMethods,
-                                    filterStatusRanges = state.filterStatusRanges,
-                                    onMethodFiltersChanged = {
-                                        onEvent(ViewerViewEvent.MethodFiltersChanged(it))
-                                    },
-                                    onStatusFiltersChanged = {
-                                        onEvent(ViewerViewEvent.StatusFiltersChanged(it))
-                                    },
-                                    onClearFilters = {
-                                        onEvent(ViewerViewEvent.ClearFilters)
-                                    },
-                                    onClearTransactions = {
-                                        onEvent(ViewerViewEvent.ClearAllTransactions)
-                                    },
-                                    onClearCrashes = {
-                                        onEvent(ViewerViewEvent.ClearAllCrashes)
-                                    },
-                                    onExportTransactions = {
-                                        scope.launch {
-                                            val qe = requireNotNull(CoreHolder.queryEngine) {
-                                                "WormaCeptor not initialized"
-                                            }
-                                            val exportManager =
-                                                ExportManager(
-                                                    this@ViewerActivity,
-                                                    qe,
-                                                    onMessage = snackBarMessage,
-                                                )
-                                            val allTransactionsForExport =
-                                                qe.getAllTransactionsForExport()
-                                            exportManager.exportTransactions(allTransactionsForExport)
-                                        }
-                                    },
-                                    onExportCrashes = {
-                                        scope.launch {
-                                            val allCrashes = crashes
-                                            exportCrashes(
-                                                this@ViewerActivity,
-                                                allCrashes,
-                                                onMessage = snackBarMessage,
-                                            )
-                                        }
-                                    },
-                                    selectedTabIndex = state.selectedTabIndex,
-                                    onTabSelected = {
-                                        onEvent(ViewerViewEvent.TabSelected(it))
-                                    },
-                                    allTransactions = allTransactions,
-                                    isInitialLoading = state.isInitialLoading,
-                                    isRefreshingTransactions = state.isRefreshingTransactions,
-                                    isRefreshingCrashes = state.isRefreshingCrashes,
-                                    onRefreshTransactions = {
-                                        onEvent(ViewerViewEvent.RefreshTransactions)
-                                    },
-                                    onRefreshCrashes = {
-                                        onEvent(ViewerViewEvent.RefreshCrashes)
-                                    },
-                                    selectedIds = state.selectedIds,
-                                    isSelectionMode = isSelectionMode,
-                                    onSelectionToggle = {
-                                        onEvent(ViewerViewEvent.SelectionToggled(it))
-                                    },
-                                    onSelectAll = {
-                                        onEvent(ViewerViewEvent.SelectAllClicked)
-                                    },
-                                    onClearSelection = {
-                                        onEvent(ViewerViewEvent.SelectionCleared)
-                                    },
-                                    onDeleteSelected = {
-                                        onEvent(ViewerViewEvent.DeleteSelectedClicked)
-                                    },
-                                    onShareSelected = {
-                                        val selected = viewModel.getSelectedTransactions()
-                                        shareTransactions(selected)
-                                    },
-                                    onExportSelected = {
-                                        scope.launch {
-                                            val selected = viewModel.getSelectedTransactions()
-                                            val exportManager =
-                                                ExportManager(
-                                                    this@ViewerActivity,
-                                                    CoreHolder.queryEngine,
-                                                    onMessage = snackBarMessage,
-                                                )
-                                            val fullTransactions = selected.mapNotNull { summary ->
-                                                CoreHolder.queryEngine?.getDetails(summary.id)
-                                            }
-                                            exportManager.exportTransactions(fullTransactions)
-                                        }
-                                    },
-                                    onCopyUrl = { transaction -> copyUrlToClipboard(transaction) },
-                                    onShare = { transaction -> shareTransaction(transaction) },
-                                    onDelete = { transaction ->
-                                        onEvent(
-                                            ViewerViewEvent.DeleteTransaction(transaction.id),
-                                        )
-                                    },
-                                    onCopyAsCurl = { transaction ->
-                                        copyAsCurl(transaction, viewModel)
                                     },
                                     onToolNavigate = { route -> navController.navigate(route) },
-                                    collapsedToolCategories = state.collapsedToolCategories,
-                                    onToolCategoryCollapseToggled = {
-                                        onEvent(ViewerViewEvent.ToolCategoryCollapseToggled(it))
-                                    },
-                                    showFilterSheet = state.showFilterSheet,
-                                    onFilterSheetVisibilityChanged = {
-                                        onEvent(ViewerViewEvent.FilterSheetVisibilityChanged(it))
-                                    },
-                                    showOverflowMenu = state.showOverflowMenu,
-                                    onOverflowMenuVisibilityChanged = {
-                                        onEvent(ViewerViewEvent.OverflowMenuVisibilityChanged(it))
-                                    },
-                                    toolsSearchActive = state.toolsSearchActive,
-                                    onToolsSearchActiveChanged = {
-                                        onEvent(ViewerViewEvent.ToolsSearchActiveChanged(it))
-                                    },
-                                    toolsSearchQuery = state.toolsSearchQuery,
-                                    onToolsSearchQueryChanged = {
-                                        onEvent(ViewerViewEvent.ToolsSearchQueryChanged(it))
-                                    },
-                                    showClearTransactionsDialog = state.showClearTransactionsDialog,
-                                    onClearTransactionsDialogVisibilityChanged = {
-                                        onEvent(ViewerViewEvent.ClearTransactionsDialogVisibilityChanged(it))
-                                    },
-                                    showClearCrashesDialog = state.showClearCrashesDialog,
-                                    onClearCrashesDialogVisibilityChanged = {
-                                        onEvent(ViewerViewEvent.ClearCrashesDialogVisibilityChanged(it))
-                                    },
-                                    showDeleteSelectedDialog = state.showDeleteSelectedDialog,
-                                    onDeleteSelectedDialogVisibilityChanged = {
-                                        onEvent(ViewerViewEvent.DeleteSelectedDialogVisibilityChanged(it))
-                                    },
                                     snackBarMessage = snackbarMessages,
                                 )
                             }
@@ -353,17 +238,35 @@ class ViewerActivity : ComponentActivity() {
                                         ids to index
                                     }
 
+                                    val queryEngine = requireNotNull(CoreHolder.queryEngine) {
+                                        "WormaCeptor not initialized. " +
+                                            "Call WormaCeptor.init() before launching ViewerActivity"
+                                    }
+
+                                    val detailViewModel: TransactionDetailViewModel = viewModel(
+                                        factory = object : ViewModelProvider.Factory {
+                                            @Suppress("UNCHECKED_CAST")
+                                            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                                return TransactionDetailViewModel(queryEngine) as T
+                                            }
+                                        },
+                                    )
+
                                     if (transactionIds.isNotEmpty()) {
+                                        val pagerViewModel: TransactionPagerViewModel = viewModel(
+                                            factory = object : ViewModelProvider.Factory {
+                                                @Suppress("UNCHECKED_CAST")
+                                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                                    return TransactionPagerViewModel(queryEngine) as T
+                                                }
+                                            },
+                                        )
+
                                         TransactionDetailPagerScreen(
                                             transactionIds = transactionIds,
                                             initialTransactionIndex = initialIndex,
-                                            getTransaction = { transactionId ->
-                                                requireNotNull(CoreHolder.queryEngine) {
-                                                    "WormaCeptor not initialized. " +
-                                                        "Call WormaCeptor.init() before launching ViewerActivity"
-                                                }.getDetails(transactionId)
-                                            },
-                                            queryEngine = CoreHolder.queryEngine,
+                                            pagerViewModel = pagerViewModel,
+                                            detailViewModel = detailViewModel,
                                             onBack = { navController.popBackStack() },
                                         )
                                     } else {
@@ -373,16 +276,13 @@ class ViewerActivity : ComponentActivity() {
                                         }
 
                                         androidx.compose.runtime.LaunchedEffect(uuid) {
-                                            transaction = requireNotNull(CoreHolder.queryEngine) {
-                                                "WormaCeptor not initialized. " +
-                                                    "Call WormaCeptor.init() before launching ViewerActivity"
-                                            }.getDetails(uuid)
+                                            transaction = queryEngine.getDetails(uuid)
                                         }
 
                                         transaction?.let {
                                             TransactionDetailScreen(
                                                 transaction = it,
-                                                queryEngine = CoreHolder.queryEngine,
+                                                detailViewModel = detailViewModel,
                                                 onBack = { navController.popBackStack() },
                                             )
                                         }
@@ -412,183 +312,17 @@ class ViewerActivity : ComponentActivity() {
                                 }
                             }
 
-                            // Multi-screen feature graphs
-                            preferencesGraph(
+                            // Feature tools (dynamically registered via FeatureRegistry)
+                            FeatureRegistry.contributeAll(
+                                builder = this@NavHost,
                                 navController = navController,
                                 context = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
+                                onBack = { navController.popBackStack() },
                             )
-
-                            // Single-screen tools
-                            composable(WormaCeptorNavKeys.Logs.route) {
-                                LogViewer(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.DeviceInfo.route) {
-                                DeviceInfoScreen(
-                                    onBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            databaseGraph(
-                                navController = navController,
-                                context = this@ViewerActivity,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-
-                            composable(WormaCeptorNavKeys.FileBrowser.route) {
-                                FileBrowser(
-                                    context = this@ViewerActivity,
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.Memory.route) {
-                                MemoryMonitor(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.Fps.route) {
-                                FpsMonitor(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            webSocketGraph(
-                                navController = navController,
-                                onNavigateBack = { navController.popBackStack() },
-                            )
-
-                            composable(WormaCeptorNavKeys.Cpu.route) {
-                                CpuMonitor(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.Location.route) {
-                                LocationSimulator(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.PushSimulator.route) {
-                                PushSimulator(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.LeakDetection.route) {
-                                LeakDetector(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.ThreadViolation.route) {
-                                ThreadViolationMonitor(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.WebViewMonitor.route) {
-                                WebViewMonitorScreen(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.Crypto.route) {
-                                CryptoScreen(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.SecureStorage.route) {
-                                SecureStorageViewer(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.RateLimit.route) {
-                                RateLimiter(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.PushToken.route) {
-                                PushTokenManager(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.LoadedLibraries.route) {
-                                LoadedLibrariesInspector(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
-
-                            composable(WormaCeptorNavKeys.Dependencies.route) {
-                                DependenciesInspector(
-                                    onNavigateBack = { navController.popBackStack() },
-                                )
-                            }
                         }
                     }
                 }
             }
-        }
-    }
-
-    private fun copyUrlToClipboard(transaction: TransactionSummary) {
-        val url = buildFullUrl(transaction.host, transaction.path)
-        copyToClipboard(this, "URL", url)
-    }
-
-    private fun shareTransaction(transaction: TransactionSummary) {
-        val url = buildFullUrl(transaction.host, transaction.path)
-        val text = buildString {
-            appendLine("${transaction.method} $url")
-            appendLine("Status: ${transaction.code ?: "Pending"}")
-            transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
-        }
-        shareText(this, text, getString(R.string.viewer_share_transaction))
-    }
-
-    private fun shareTransactions(transactions: List<TransactionSummary>) {
-        val text = transactions.joinToString("\n\n") { transaction ->
-            val url = buildFullUrl(transaction.host, transaction.path)
-            buildString {
-                appendLine("${transaction.method} $url")
-                appendLine("Status: ${transaction.code ?: "Pending"}")
-                transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
-            }
-        }
-        shareText(this, text, getString(R.string.viewer_share_transactions, transactions.size))
-    }
-
-    private fun copyAsCurl(
-        transaction: TransactionSummary,
-        viewModel: ViewerViewModel,
-    ) {
-        lifecycleScope.launch {
-            val fullTransaction = CoreHolder.queryEngine?.getDetails(transaction.id)
-            if (fullTransaction == null) {
-                viewModel.sendEvent(ViewerViewEvent.ShowMessage(getString(R.string.viewer_transaction_load_failed)))
-                return@launch
-            }
-
-            val body = fullTransaction.request.bodyRef?.let { blobId ->
-                CoreHolder.queryEngine?.getBody(blobId)
-            }
-            val curl = CurlGenerator.generate(
-                method = fullTransaction.request.method,
-                url = fullTransaction.request.url,
-                headers = fullTransaction.request.headers,
-                body = body,
-            )
-            val message = copyToClipboard(this@ViewerActivity, "cURL", curl)
-            viewModel.sendEvent(ViewerViewEvent.ShowMessage(message))
         }
     }
 

@@ -8,9 +8,12 @@ import androidx.paging.cachedIn
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
+import com.azikar24.wormaceptor.domain.entities.ExportFormat
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
 import com.azikar24.wormaceptor.feature.viewer.ui.components.applyQuickFilters
+import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
+import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -45,7 +48,7 @@ class ViewerViewModel(
     context: Context,
 ) : BaseViewModel<ViewerViewState, ViewerViewEffect, ViewerViewEvent>(ViewerViewState()) {
 
-    private val collapsePrefs = context.getSharedPreferences(COLLAPSE_PREFS_NAME, Context.MODE_PRIVATE)
+    private val collapsePrefs by lazy { context.getSharedPreferences(COLLAPSE_PREFS_NAME, Context.MODE_PRIVATE) }
 
     init {
         viewModelScope.launch {
@@ -156,7 +159,7 @@ class ViewerViewModel(
             is ViewerViewEvent.RefreshTransactions -> handleRefreshTransactions()
             is ViewerViewEvent.RefreshCrashes -> handleRefreshCrashes()
 
-            is ViewerViewEvent.ShowMessage -> emitEffect(ViewerViewEffect.ShowSnackbar(event.message))
+            is ViewerViewEvent.ShowMessage -> emitEffect(ViewerViewEffect.ShowSnackBar(event.message))
             is ViewerViewEvent.ToolCategoryCollapseToggled -> handleToolCategoryCollapseToggle(event.category)
 
             is ViewerViewEvent.FilterSheetVisibilityChanged ->
@@ -180,6 +183,22 @@ class ViewerViewModel(
 
             is ViewerViewEvent.DeleteSelectedDialogVisibilityChanged ->
                 updateState { copy(showDeleteSelectedDialog = event.visible) }
+
+            // Export
+            is ViewerViewEvent.ExportAllTransactions -> handleExportAll(ExportFormat.JSON)
+            is ViewerViewEvent.ExportAllTransactionsAsHar -> handleExportAll(ExportFormat.HAR)
+            is ViewerViewEvent.ExportCrashesClicked -> handleExportCrashes()
+            is ViewerViewEvent.ExportSelectedTransactions -> handleExportSelected(ExportFormat.JSON)
+            is ViewerViewEvent.ExportSelectedTransactionsAsHar -> handleExportSelected(ExportFormat.HAR)
+
+            // Share
+            is ViewerViewEvent.ShareSelectedTransactions -> handleShareSelected()
+            is ViewerViewEvent.ShareTransactionAsHar -> handleShareAsHar(event.id)
+            is ViewerViewEvent.ShareTransaction -> handleShareTransaction(event.summary)
+
+            // Clipboard
+            is ViewerViewEvent.CopyTransactionUrl -> handleCopyUrl(event.summary)
+            is ViewerViewEvent.CopyTransactionAsCurl -> handleCopyAsCurl(event.id)
         }
     }
 
@@ -274,6 +293,89 @@ class ViewerViewModel(
         }
     }
 
+    // ── Export / Share / Clipboard handlers ───────────────────────────
+
+    private fun handleExportAll(format: ExportFormat) {
+        viewModelScope.launch {
+            val allTx = queryEngine.getAllTransactionsForExport()
+            emitEffect(ViewerViewEffect.ExportTransactions(allTx, format))
+        }
+    }
+
+    private fun handleExportCrashes() {
+        emitEffect(ViewerViewEffect.ExportCrashes(crashes.value))
+    }
+
+    private fun handleExportSelected(format: ExportFormat) {
+        viewModelScope.launch {
+            val selected = getSelectedTransactions()
+            val fullTransactions = selected.mapNotNull { summary ->
+                queryEngine.getDetails(summary.id)
+            }
+            emitEffect(ViewerViewEffect.ExportTransactions(fullTransactions, format))
+        }
+    }
+
+    private fun handleShareSelected() {
+        val selected = getSelectedTransactions()
+        val text = selected.joinToString("\n\n") { transaction ->
+            val url = buildFullUrl(transaction.host, transaction.path)
+            buildString {
+                appendLine("${transaction.method} $url")
+                appendLine("Status: ${transaction.code ?: "Pending"}")
+                transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
+            }
+        }
+        emitEffect(
+            ViewerViewEffect.ShareText(
+                text = text,
+                title = "${selected.size} Transactions",
+            ),
+        )
+    }
+
+    private fun handleShareAsHar(id: UUID) {
+        viewModelScope.launch {
+            val full = queryEngine.getDetails(id) ?: return@launch
+            emitEffect(ViewerViewEffect.ExportTransactions(listOf(full), ExportFormat.HAR))
+        }
+    }
+
+    private fun handleShareTransaction(summary: TransactionSummary) {
+        val url = buildFullUrl(summary.host, summary.path)
+        val text = buildString {
+            appendLine("${summary.method} $url")
+            appendLine("Status: ${summary.code ?: "Pending"}")
+            summary.tookMs?.let { appendLine("Duration: ${it}ms") }
+        }
+        emitEffect(ViewerViewEffect.ShareText(text = text, title = "Transaction"))
+    }
+
+    private fun handleCopyUrl(summary: TransactionSummary) {
+        val url = buildFullUrl(summary.host, summary.path)
+        emitEffect(ViewerViewEffect.CopyToClipboard(label = "URL", content = url))
+    }
+
+    private fun handleCopyAsCurl(id: UUID) {
+        viewModelScope.launch {
+            val fullTransaction = queryEngine.getDetails(id)
+            if (fullTransaction == null) {
+                emitEffect(ViewerViewEffect.ShowSnackBar("Failed to load transaction details"))
+                return@launch
+            }
+            val body = fullTransaction.request.bodyRef?.let { blobId ->
+                queryEngine.getBody(blobId)
+            }
+            val curl = CurlGenerator.generate(
+                method = fullTransaction.request.method,
+                url = fullTransaction.request.url,
+                headers = fullTransaction.request.headers,
+                body = body,
+            )
+            emitEffect(ViewerViewEffect.CopyToClipboard(label = "cURL", content = curl))
+        }
+    }
+
     /** Timeout and debounce constants for reactive streams. */
     companion object {
         private const val SUBSCRIPTION_TIMEOUT = 5000L
@@ -283,5 +385,11 @@ class ViewerViewModel(
         private const val REFRESH_DELAY = 500L
         private const val COLLAPSE_PREFS_NAME = "wormaceptor_tools_collapse"
         private const val COLLAPSE_KEY = "collapsed"
+
+        fun formatHeaders(headers: Map<String, List<String>>): String {
+            return headers.entries.joinToString("\n") { (key, values) ->
+                "$key: ${values.joinToString(", ")}"
+            }
+        }
     }
 }

@@ -6,41 +6,59 @@ import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 internal sealed class TransactionDetailViewEvent {
 
     // -- Lifecycle --
-    data class TransactionLoaded(val transaction: NetworkTransaction) : TransactionDetailViewEvent()
+
+    sealed class Lifecycle : TransactionDetailViewEvent() {
+        data class TransactionLoaded(val transaction: NetworkTransaction) : Lifecycle()
+    }
 
     // -- Search --
-    data class SearchVisibilityChanged(val visible: Boolean) : TransactionDetailViewEvent()
-    data class SearchQueryChanged(val query: String) : TransactionDetailViewEvent()
-    data object NavigateToNextMatch : TransactionDetailViewEvent()
-    data object NavigateToPreviousMatch : TransactionDetailViewEvent()
-    data class ActiveTabChanged(val tabIndex: Int) : TransactionDetailViewEvent()
+
+    sealed class Search : TransactionDetailViewEvent() {
+        data class VisibilityChanged(val visible: Boolean) : Search()
+        data class QueryChanged(val query: String) : Search()
+        data object NavigateToNext : Search()
+        data object NavigateToPrevious : Search()
+        data class ActiveTabChanged(val tabIndex: Int) : Search()
+    }
 
     // -- Menu --
-    data class MenuVisibilityChanged(val visible: Boolean) : TransactionDetailViewEvent()
-    data object CopyAsText : TransactionDetailViewEvent()
-    data object CopyAsCurl : TransactionDetailViewEvent()
-    data object ShareAsJson : TransactionDetailViewEvent()
-    data object ShareAsHar : TransactionDetailViewEvent()
+
+    sealed class Menu : TransactionDetailViewEvent() {
+        data class VisibilityChanged(val visible: Boolean) : Menu()
+        data object CopyAsText : Menu()
+        data object CopyAsCurl : Menu()
+        data object ShareAsJson : Menu()
+        data object ShareAsHar : Menu()
+    }
 
     // -- Request section --
-    data object ToggleRequestPrettyMode : TransactionDetailViewEvent()
-    data object ToggleRequestHeadersExpanded : TransactionDetailViewEvent()
-    data object ToggleRequestBodyExpanded : TransactionDetailViewEvent()
-    data object CopyRequestBody : TransactionDetailViewEvent()
-    data object CopyRequestHeaders : TransactionDetailViewEvent()
+
+    sealed class Request : TransactionDetailViewEvent() {
+        data object TogglePrettyMode : Request()
+        data object ToggleHeadersExpanded : Request()
+        data object ToggleBodyExpanded : Request()
+        data object CopyBody : Request()
+        data object CopyHeaders : Request()
+        data object CopyAllContent : Request()
+    }
 
     // -- Response section --
-    data object ToggleResponsePrettyMode : TransactionDetailViewEvent()
-    data object ToggleResponseHeadersExpanded : TransactionDetailViewEvent()
-    data object ToggleResponseBodyExpanded : TransactionDetailViewEvent()
-    data object CopyResponseBody : TransactionDetailViewEvent()
-    data object CopyResponseHeaders : TransactionDetailViewEvent()
-    data class ShowImageViewer(val show: Boolean) : TransactionDetailViewEvent()
-    data class ShowPdfViewer(val show: Boolean) : TransactionDetailViewEvent()
-    data object DownloadImage : TransactionDetailViewEvent()
-    data object ShareImage : TransactionDetailViewEvent()
-    data object DownloadPdf : TransactionDetailViewEvent()
 
-    // -- Snackbar --
+    sealed class Response : TransactionDetailViewEvent() {
+        data object TogglePrettyMode : Response()
+        data object ToggleHeadersExpanded : Response()
+        data object ToggleBodyExpanded : Response()
+        data object CopyBody : Response()
+        data object CopyHeaders : Response()
+        data object CopyAllContent : Response()
+        data class ShowImageViewer(val show: Boolean) : Response()
+        data class ShowPdfViewer(val show: Boolean) : Response()
+        data object DownloadImage : Response()
+        data object ShareImage : Response()
+        data object DownloadPdf : Response()
+    }
+
+    // -- SnackBar --
+
     data class ShowMessage(val message: String) : TransactionDetailViewEvent()
 }

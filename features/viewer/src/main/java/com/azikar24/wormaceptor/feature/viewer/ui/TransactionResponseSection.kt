@@ -31,24 +31,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
-import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.buildHighlightedString
 import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
-import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
-import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
-import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
-import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
@@ -63,42 +56,37 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
-import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
-import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
-import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
-import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
+import com.azikar24.wormaceptor.feature.viewer.vm.BodySectionState
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
 @Composable
 internal fun ResponseTab(
     transaction: NetworkTransaction,
-    queryEngine: QueryEngine?,
+    responseState: BodySectionState,
     searchQuery: String,
     currentMatchIndex: Int,
-    onMatchCountChanged: (Int) -> Unit,
     isSearchActive: Boolean,
-    onShowMessage: (String) -> Unit,
+    onEvent: (TransactionDetailViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val blobId = transaction.response?.bodyRef
-    var responseBody by remember(blobId) { mutableStateOf<String?>(null) }
-    var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
-    var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
-    var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
-    var copyRequested by remember { mutableStateOf(false) }
-    var isCopying by remember { mutableStateOf(false) }
-    var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
-    var isPrettyMode by remember { mutableStateOf(true) }
-    var headersExpanded by rememberSaveable { mutableStateOf(true) }
-    var bodyExpanded by rememberSaveable { mutableStateOf(true) }
-    var showImageViewer by remember { mutableStateOf(false) }
-    var showPdfViewer by remember { mutableStateOf(false) }
-    var imageMetadata by remember(blobId) { mutableStateOf<ImageMetadata?>(null) }
-    var parsedContentType by remember(blobId) { mutableStateOf(ContentType.UNKNOWN) }
+
+    // Derive local vals from responseState
+    val isLoading = responseState.isLoading
+    val responseBody = responseState.parsedBody
+    val rawBody = responseState.rawBody
+    val rawBodyBytes = responseState.rawBodyBytes
+    val isPrettyMode = responseState.isPrettyMode
+    val headersExpanded = responseState.headersExpanded
+    val bodyExpanded = responseState.bodyExpanded
+    val matches = responseState.matches
+    val parsedContentType = responseState.parsedContentType
+    val imageMetadata = responseState.imageMetadata
+    val showImageViewer = responseState.showImageViewer
+    val showPdfViewer = responseState.showPdfViewer
 
     // Syntax highlighting colors
     val colors = syntaxColors()
@@ -110,121 +98,23 @@ internal fun ResponseTab(
             ?.value?.firstOrNull()
     }
 
-    val shareResponseBodyTitle = stringResource(R.string.viewer_share_response_body)
-
-    // Handle copy request - copies if small, shares as file if large
-    LaunchedEffect(copyRequested) {
-        if (copyRequested) {
-            isCopying = true
-            try {
-                val bodyContent = if (isPrettyMode) responseBody ?: rawBody else rawBody ?: responseBody
-                if (bodyContent != null) {
-                    if (isContentTooLargeForClipboard(bodyContent)) {
-                        val (ext, mime) = getFileInfoForContentType(contentType)
-                        shareAsFile(
-                            context = context,
-                            content = bodyContent,
-                            fileName = "response_body.$ext",
-                            mimeType = mime,
-                            title = shareResponseBodyTitle,
-                        )
-                    } else {
-                        copyToClipboard(context, "Response Body", bodyContent)
-                    }
-                }
-            } finally {
-                isCopying = false
-                copyRequested = false
-            }
-        }
-    }
-
-    // Determine if content is an image
+    // Content type detection (pure computation from state)
     val isImageContent = remember(contentType, rawBodyBytes) {
         isImageContentType(contentType) || rawBodyBytes?.let { isImageData(it) } == true
     }
-
-    // Determine if content is a PDF
     val isPdfContentDetected = remember(contentType, rawBodyBytes) {
         isPdfContent(contentType, rawBodyBytes)
     }
-
-    // Determine if content is protobuf
     val isProtobufContentDetected = remember(contentType) {
         isProtobufContentType(contentType)
     }
 
-    // Pixel-based scrolling
+    // Pixel-based scrolling (rendering concerns stay local)
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     val isScrolling = scrollState.value > 100
 
-    // 1. Body Loading - get raw bytes first to detect binary content
-    LaunchedEffect(blobId) {
-        if (blobId != null) {
-            isLoading = true
-            // Get raw bytes first to detect binary content like images or PDFs
-            val bytes = queryEngine?.getBodyBytes(blobId)
-            rawBodyBytes = bytes
-
-            // Check for image content and extract metadata
-            if (bytes != null && (isImageContentType(contentType) || isImageData(bytes))) {
-                imageMetadata = try {
-                    val extractor: ImageMetadataExtractor =
-                        org.koin.java.KoinJavaComponent.get(ImageMetadataExtractor::class.java)
-                    val meta = extractor.extractMetadata(bytes)
-                    if (meta.width > 0 && meta.height > 0) meta else null
-                } catch (_: Exception) {
-                    null
-                }
-            } else if (bytes != null && isPdfContent(contentType, bytes)) {
-                // PDF content - raw bytes are stored, no text decoding needed
-                // Just keep rawBodyBytes for the PDF viewer
-            } else if (bytes != null && isProtobufContentType(contentType)) {
-                // Protobuf is binary - keep raw bytes, don't UTF-8 decode
-            } else if (bytes != null) {
-                // Decode as text if not image or PDF
-                val raw = String(bytes, Charsets.UTF_8)
-                rawBody = raw
-                val result = withContext(Dispatchers.Default) {
-                    parseBodyViaRegistry(contentType, bytes, raw)
-                }
-                responseBody = result.first
-                parsedContentType = result.second
-            }
-            isLoading = false
-        } else {
-            responseBody = null
-            rawBody = null
-            rawBodyBytes = null
-            imageMetadata = null
-        }
-    }
-
-    // 2. Search: Find matches
-    LaunchedEffect(responseBody, rawBody, searchQuery, isPrettyMode) {
-        val body = if (isPrettyMode) responseBody else rawBody
-        if (body == null || searchQuery.isEmpty()) {
-            matches = emptyList()
-            onMatchCountChanged(0)
-            return@LaunchedEffect
-        }
-
-        delay(250) // Debounce
-
-        withContext(Dispatchers.Default) {
-            val foundMatches = mutableListOf<MatchInfo>()
-            var index = body.indexOf(searchQuery, ignoreCase = true)
-            while (index >= 0) {
-                foundMatches.add(MatchInfo(globalPosition = index, lineIndex = 0))
-                index = body.indexOf(searchQuery, index + 1, ignoreCase = true)
-            }
-            matches = foundMatches
-            onMatchCountChanged(foundMatches.size)
-        }
-    }
-
-    // 3. Scroll to current match using TextLayoutResult
+    // Scroll to current match using TextLayoutResult
     LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
         if (matches.isEmpty()) return@LaunchedEffect
         val layout = textLayoutResult ?: return@LaunchedEffect
@@ -262,16 +152,8 @@ internal fun ResponseTab(
                     CollapsibleSection(
                         title = stringResource(R.string.viewer_body_headers),
                         isExpanded = headersExpanded,
-                        onToggle = { headersExpanded = !headersExpanded },
-                        onCopy = {
-                            transaction.response?.headers?.let {
-                                copyToClipboard(
-                                    context,
-                                    "Response Headers",
-                                    formatHeaders(it),
-                                )
-                            }
-                        },
+                        onToggle = { onEvent(TransactionDetailViewEvent.Response.ToggleHeadersExpanded) },
+                        onCopy = { onEvent(TransactionDetailViewEvent.Response.CopyHeaders) },
                     ) {
                         transaction.response?.headers?.let { HeadersView(it) }
                     }
@@ -300,21 +182,14 @@ internal fun ResponseTab(
                         CollapsibleSection(
                             title = stringResource(R.string.viewer_body_body_image),
                             isExpanded = bodyExpanded,
-                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onToggle = { onEvent(TransactionDetailViewEvent.Response.ToggleBodyExpanded) },
                             onCopy = null,
                         ) {
                             ImagePreviewCard(
                                 imageData = imageBytes,
-                                onFullscreen = { showImageViewer = true },
-                                onDownload = {
-                                    val format = imageMetadata?.format ?: "Unknown"
-                                    val message = saveImageToGallery(context, imageBytes, format)
-                                    onShowMessage(message)
-                                },
-                                onShare = {
-                                    val format = imageMetadata?.format ?: "Unknown"
-                                    shareImage(context, imageBytes, format)?.let { onShowMessage(it) }
-                                },
+                                onFullscreen = { onEvent(TransactionDetailViewEvent.Response.ShowImageViewer(true)) },
+                                onDownload = { onEvent(TransactionDetailViewEvent.Response.DownloadImage) },
+                                onShare = { onEvent(TransactionDetailViewEvent.Response.ShareImage) },
                             )
                         }
                     } else if (isPdfContentDetected) {
@@ -323,18 +198,15 @@ internal fun ResponseTab(
                         CollapsibleSection(
                             title = stringResource(R.string.viewer_body_body_pdf),
                             isExpanded = bodyExpanded,
-                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onToggle = { onEvent(TransactionDetailViewEvent.Response.ToggleBodyExpanded) },
                             onCopy = null,
                         ) {
                             PdfPreviewCard(
                                 pdfData = pdfBytes,
                                 contentType = contentType,
-                                onFullscreen = { showPdfViewer = true },
-                                onDownload = {
-                                    val message = savePdfToDownloads(context, pdfBytes)
-                                    onShowMessage(message)
-                                },
-                                onShowMessage = onShowMessage,
+                                onFullscreen = { onEvent(TransactionDetailViewEvent.Response.ShowPdfViewer(true)) },
+                                onDownload = { onEvent(TransactionDetailViewEvent.Response.DownloadPdf) },
+                                onShowMessage = { onEvent(TransactionDetailViewEvent.ShowMessage(it)) },
                             )
                         }
                     } else if (isProtobufContentDetected) {
@@ -342,7 +214,7 @@ internal fun ResponseTab(
                         CollapsibleSection(
                             title = stringResource(R.string.viewer_body_body),
                             isExpanded = bodyExpanded,
-                            onToggle = { bodyExpanded = !bodyExpanded },
+                            onToggle = { onEvent(TransactionDetailViewEvent.Response.ToggleBodyExpanded) },
                             onCopy = null,
                         ) {
                             ProtobufView(data = protobufBytes)
@@ -353,14 +225,15 @@ internal fun ResponseTab(
                         CollapsibleSection(
                             title = stringResource(R.string.viewer_body_body),
                             isExpanded = bodyExpanded,
-                            onToggle = { bodyExpanded = !bodyExpanded },
-                            onCopy = { copyRequested = true },
-                            isCopyLoading = isCopying,
+                            onToggle = { onEvent(TransactionDetailViewEvent.Response.ToggleBodyExpanded) },
+                            onCopy = { onEvent(TransactionDetailViewEvent.Response.CopyBody) },
                             trailingContent = {
                                 BodyControlsRow(
                                     contentType = detectedContentType,
                                     isPrettyMode = isPrettyMode,
-                                    onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
+                                    onPrettyModeToggle = {
+                                        onEvent(TransactionDetailViewEvent.Response.TogglePrettyMode)
+                                    },
                                 )
                             },
                         ) {
@@ -500,20 +373,7 @@ internal fun ResponseTab(
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             WormaCeptorFAB(
-                onClick = {
-                    val fullContent = buildString {
-                        transaction.response?.headers?.let {
-                            appendLine("=== RESPONSE HEADERS ===")
-                            appendLine(formatHeaders(it))
-                        }
-                        if (responseBody != null || rawBody != null) {
-                            appendLine("\n=== RESPONSE BODY ===")
-                            val body = if (isPrettyMode) responseBody ?: rawBody else rawBody ?: responseBody
-                            body?.let { appendLine(it) }
-                        }
-                    }
-                    copyToClipboard(context, "Response Content", fullContent)
-                },
+                onClick = { onEvent(TransactionDetailViewEvent.Response.CopyAllContent) },
                 icon = Icons.Default.ContentCopy,
                 contentDescription = stringResource(R.string.viewer_body_copy_all),
             )
@@ -525,16 +385,9 @@ internal fun ResponseTab(
                 FullscreenImageViewer(
                     imageData = bytes,
                     metadata = imageMetadata,
-                    onDismiss = { showImageViewer = false },
-                    onDownload = {
-                        val format = imageMetadata?.format ?: "Unknown"
-                        val message = saveImageToGallery(context, bytes, format)
-                        onShowMessage(message)
-                    },
-                    onShare = {
-                        val format = imageMetadata?.format ?: "Unknown"
-                        shareImage(context, bytes, format)?.let { onShowMessage(it) }
-                    },
+                    onDismiss = { onEvent(TransactionDetailViewEvent.Response.ShowImageViewer(false)) },
+                    onDownload = { onEvent(TransactionDetailViewEvent.Response.DownloadImage) },
+                    onShare = { onEvent(TransactionDetailViewEvent.Response.ShareImage) },
                 )
             }
 
@@ -542,11 +395,8 @@ internal fun ResponseTab(
             if (showPdfViewer) {
                 PdfViewerScreen(
                     pdfData = bytes,
-                    onDismiss = { showPdfViewer = false },
-                    onDownload = {
-                        val message = savePdfToDownloads(context, bytes)
-                        onShowMessage(message)
-                    },
+                    onDismiss = { onEvent(TransactionDetailViewEvent.Response.ShowPdfViewer(false)) },
+                    onDownload = { onEvent(TransactionDetailViewEvent.Response.DownloadPdf) },
                 )
             }
         }

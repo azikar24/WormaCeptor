@@ -31,21 +31,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
-import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.buildHighlightedString
 import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
-import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
-import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -54,131 +49,46 @@ import com.azikar24.wormaceptor.feature.viewer.ui.components.body.JsonTreeView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.MultipartView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ProtobufView
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.XmlTreeView
-import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
-import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
+import com.azikar24.wormaceptor.feature.viewer.vm.BodySectionState
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
 @Composable
 internal fun RequestTab(
     transaction: NetworkTransaction,
-    queryEngine: QueryEngine?,
+    requestState: BodySectionState,
     searchQuery: String,
     currentMatchIndex: Int,
-    onMatchCountChanged: (Int) -> Unit,
     isSearchActive: Boolean,
+    onEvent: (TransactionDetailViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val blobId = transaction.request.bodyRef
-    var requestBody by remember(blobId) { mutableStateOf<String?>(null) }
-    var rawBody by remember(blobId) { mutableStateOf<String?>(null) }
-    var rawBodyBytes by remember(blobId) { mutableStateOf<ByteArray?>(null) }
-    var isLoading by remember(blobId) { mutableStateOf(blobId != null) }
-    var copyRequested by remember { mutableStateOf(false) }
-    var isCopying by remember { mutableStateOf(false) }
-    var matches by remember { mutableStateOf<List<MatchInfo>>(emptyList()) }
-    var isPrettyMode by remember { mutableStateOf(true) }
-    var headersExpanded by rememberSaveable { mutableStateOf(true) }
-    var bodyExpanded by rememberSaveable { mutableStateOf(true) }
-    var parsedContentType by remember(blobId) { mutableStateOf(ContentType.UNKNOWN) }
 
-    // Pixel-based scrolling
+    // Derive local vals from requestState
+    val isLoading = requestState.isLoading
+    val requestBody = requestState.parsedBody
+    val rawBody = requestState.rawBody
+    val rawBodyBytes = requestState.rawBodyBytes
+    val isPrettyMode = requestState.isPrettyMode
+    val headersExpanded = requestState.headersExpanded
+    val bodyExpanded = requestState.bodyExpanded
+    val matches = requestState.matches
+    val parsedContentType = requestState.parsedContentType
+
+    // Pixel-based scrolling (rendering concerns stay local)
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     val isScrolling = scrollState.value > 100
 
-    // Get content type for sharing
+    // Get content type from headers for multipart boundary extraction
     val requestContentType = transaction.request.headers.entries
         .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
         ?.value?.firstOrNull()
 
-    val shareRequestBodyTitle = stringResource(R.string.viewer_share_request_body)
-
-    // 1. Body Loading - get raw bytes first to detect binary content
-    LaunchedEffect(blobId) {
-        if (blobId != null) {
-            isLoading = true
-            val bytes = queryEngine?.getBodyBytes(blobId)
-            rawBodyBytes = bytes
-
-            if (bytes != null && isProtobufContentType(requestContentType)) {
-                // Protobuf is binary - keep raw bytes, don't UTF-8 decode
-            } else if (bytes != null) {
-                val raw = String(bytes, Charsets.UTF_8)
-                rawBody = raw
-                val result = withContext(Dispatchers.Default) {
-                    parseBodyViaRegistry(requestContentType, bytes, raw)
-                }
-                requestBody = result.first
-                parsedContentType = result.second
-            }
-            isLoading = false
-        } else {
-            requestBody = null
-            rawBody = null
-            rawBodyBytes = null
-        }
-    }
-
-    // Handle copy request - copies if small, shares as file if large
-    LaunchedEffect(copyRequested) {
-        if (copyRequested) {
-            isCopying = true
-            try {
-                val bodyContent = if (isPrettyMode) requestBody ?: rawBody else rawBody ?: requestBody
-                if (bodyContent != null) {
-                    if (isContentTooLargeForClipboard(bodyContent)) {
-                        val (ext, mime) = getFileInfoForContentType(requestContentType)
-                        shareAsFile(
-                            context = context,
-                            content = bodyContent,
-                            fileName = "request_body.$ext",
-                            mimeType = mime,
-                            title = shareRequestBodyTitle,
-                        )
-                    } else {
-                        copyToClipboard(context, "Request Body", bodyContent)
-                    }
-                }
-            } finally {
-                isCopying = false
-                copyRequested = false
-            }
-        }
-    }
-
-    // 2. Search: Find matches
-    LaunchedEffect(requestBody, rawBody, searchQuery, isPrettyMode) {
-        val body = if (isPrettyMode) requestBody else rawBody
-        if (body == null || searchQuery.isEmpty()) {
-            matches = emptyList()
-            onMatchCountChanged(0)
-            return@LaunchedEffect
-        }
-
-        delay(250) // Debounce
-
-        withContext(Dispatchers.Default) {
-            val foundMatches = mutableListOf<MatchInfo>()
-            var index = body.indexOf(searchQuery, ignoreCase = true)
-            while (index >= 0) {
-                foundMatches.add(
-                    MatchInfo(
-                        globalPosition = index,
-                        lineIndex = 0,
-                    ),
-                ) // lineIndex not used for pixel scroll
-                index = body.indexOf(searchQuery, index + 1, ignoreCase = true)
-            }
-            matches = foundMatches
-            onMatchCountChanged(foundMatches.size)
-        }
-    }
-
-    // 3. Scroll to current match using TextLayoutResult
+    // Scroll to current match using TextLayoutResult
     LaunchedEffect(currentMatchIndex, matches, textLayoutResult) {
         if (matches.isEmpty()) return@LaunchedEffect
         val layout = textLayoutResult ?: return@LaunchedEffect
@@ -212,14 +122,8 @@ internal fun RequestTab(
                 CollapsibleSection(
                     title = stringResource(R.string.viewer_body_headers),
                     isExpanded = headersExpanded,
-                    onToggle = { headersExpanded = !headersExpanded },
-                    onCopy = {
-                        copyToClipboard(
-                            context,
-                            "Request Headers",
-                            formatHeaders(transaction.request.headers),
-                        )
-                    },
+                    onToggle = { onEvent(TransactionDetailViewEvent.Request.ToggleHeadersExpanded) },
+                    onCopy = { onEvent(TransactionDetailViewEvent.Request.CopyHeaders) },
                 ) {
                     HeadersView(transaction.request.headers)
                 }
@@ -245,7 +149,7 @@ internal fun RequestTab(
                     CollapsibleSection(
                         title = stringResource(R.string.viewer_body_body),
                         isExpanded = bodyExpanded,
-                        onToggle = { bodyExpanded = !bodyExpanded },
+                        onToggle = { onEvent(TransactionDetailViewEvent.Request.ToggleBodyExpanded) },
                         onCopy = null,
                     ) {
                         ProtobufView(data = protobufBytes)
@@ -257,14 +161,13 @@ internal fun RequestTab(
                     CollapsibleSection(
                         title = stringResource(R.string.viewer_body_body),
                         isExpanded = bodyExpanded,
-                        onToggle = { bodyExpanded = !bodyExpanded },
-                        onCopy = { copyRequested = true },
-                        isCopyLoading = isCopying,
+                        onToggle = { onEvent(TransactionDetailViewEvent.Request.ToggleBodyExpanded) },
+                        onCopy = { onEvent(TransactionDetailViewEvent.Request.CopyBody) },
                         trailingContent = {
                             BodyControlsRow(
                                 contentType = detectedContentType,
                                 isPrettyMode = isPrettyMode,
-                                onPrettyModeToggle = { isPrettyMode = !isPrettyMode },
+                                onPrettyModeToggle = { onEvent(TransactionDetailViewEvent.Request.TogglePrettyMode) },
                             )
                         },
                     ) {
@@ -392,18 +295,7 @@ internal fun RequestTab(
                 .padding(WormaCeptorDesignSystem.Spacing.lg),
         ) {
             WormaCeptorFAB(
-                onClick = {
-                    val fullContent = buildString {
-                        appendLine("=== REQUEST HEADERS ===")
-                        appendLine(formatHeaders(transaction.request.headers))
-                        if (requestBody != null || rawBody != null) {
-                            appendLine("\n=== REQUEST BODY ===")
-                            val body = if (isPrettyMode) requestBody ?: rawBody else rawBody ?: requestBody
-                            body?.let { appendLine(it) }
-                        }
-                    }
-                    copyToClipboard(context, "Request Content", fullContent)
-                },
+                onClick = { onEvent(TransactionDetailViewEvent.Request.CopyAllContent) },
                 icon = Icons.Default.ContentCopy,
                 contentDescription = stringResource(R.string.viewer_body_copy_all),
             )

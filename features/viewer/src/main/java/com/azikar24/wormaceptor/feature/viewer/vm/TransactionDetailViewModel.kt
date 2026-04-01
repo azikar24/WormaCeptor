@@ -8,6 +8,7 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.entities.ExportFormat
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.MatchInfo
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
@@ -37,72 +38,92 @@ internal class TransactionDetailViewModel(
 ) {
 
     private var searchDebounceJob: Job? = null
-    private var activeTabIndex: Int = 0
 
     override fun handleEvent(event: TransactionDetailViewEvent) {
         when (event) {
-            is TransactionDetailViewEvent.TransactionLoaded -> handleTransactionLoaded(event.transaction)
-
-            is TransactionDetailViewEvent.SearchVisibilityChanged -> handleSearchVisibilityChanged(event.visible)
-            is TransactionDetailViewEvent.SearchQueryChanged -> handleSearchQueryChanged(event.query)
-            is TransactionDetailViewEvent.NavigateToNextMatch -> handleNavigateToNextMatch()
-            is TransactionDetailViewEvent.NavigateToPreviousMatch -> handleNavigateToPreviousMatch()
-            is TransactionDetailViewEvent.ActiveTabChanged -> handleActiveTabChanged(event.tabIndex)
-
-            is TransactionDetailViewEvent.MenuVisibilityChanged ->
-                updateState { copy(showMenu = event.visible) }
-
-            is TransactionDetailViewEvent.CopyAsText -> handleCopyAsText()
-            is TransactionDetailViewEvent.CopyAsCurl -> handleCopyAsCurl()
-            is TransactionDetailViewEvent.ShareAsJson -> handleExport(ExportFormat.JSON)
-            is TransactionDetailViewEvent.ShareAsHar -> handleExport(ExportFormat.HAR)
-
-            is TransactionDetailViewEvent.ToggleRequestPrettyMode -> handleToggleRequestPrettyMode()
-            is TransactionDetailViewEvent.ToggleRequestHeadersExpanded ->
-                updateState { copy(requestState = requestState.copy(headersExpanded = !requestState.headersExpanded)) }
-
-            is TransactionDetailViewEvent.ToggleRequestBodyExpanded ->
-                updateState { copy(requestState = requestState.copy(bodyExpanded = !requestState.bodyExpanded)) }
-
-            is TransactionDetailViewEvent.CopyRequestBody -> handleCopyBody(isRequest = true)
-            is TransactionDetailViewEvent.CopyRequestHeaders -> handleCopyHeaders(isRequest = true)
-
-            is TransactionDetailViewEvent.ToggleResponsePrettyMode -> handleToggleResponsePrettyMode()
-            is TransactionDetailViewEvent.ToggleResponseHeadersExpanded ->
-                updateState { copy(responseState = responseState.copy(headersExpanded = !responseState.headersExpanded)) }
-
-            is TransactionDetailViewEvent.ToggleResponseBodyExpanded ->
-                updateState { copy(responseState = responseState.copy(bodyExpanded = !responseState.bodyExpanded)) }
-
-            is TransactionDetailViewEvent.CopyResponseBody -> handleCopyBody(isRequest = false)
-            is TransactionDetailViewEvent.CopyResponseHeaders -> handleCopyHeaders(isRequest = false)
-            is TransactionDetailViewEvent.ShowImageViewer ->
-                updateState { copy(responseState = responseState.copy(showImageViewer = event.show)) }
-
-            is TransactionDetailViewEvent.ShowPdfViewer ->
-                updateState { copy(responseState = responseState.copy(showPdfViewer = event.show)) }
-
-            is TransactionDetailViewEvent.DownloadImage -> handleDownloadImage()
-            is TransactionDetailViewEvent.ShareImage -> handleShareImage()
-            is TransactionDetailViewEvent.DownloadPdf -> handleDownloadPdf()
-
+            is TransactionDetailViewEvent.Lifecycle -> handleLifecycleEvent(event)
+            is TransactionDetailViewEvent.Search -> handleSearchEvent(event)
+            is TransactionDetailViewEvent.Menu -> handleMenuEvent(event)
+            is TransactionDetailViewEvent.Request -> handleRequestEvent(event)
+            is TransactionDetailViewEvent.Response -> handleResponseEvent(event)
             is TransactionDetailViewEvent.ShowMessage ->
-                emitEffect(TransactionDetailViewEffect.ShowSnackbar(event.message))
+                emitEffect(TransactionDetailViewEffect.ShowSnackBar(event.message))
         }
     }
 
-    // -- Lifecycle ----------------------------------------------------------------
+    private fun handleLifecycleEvent(event: TransactionDetailViewEvent.Lifecycle) {
+        when (event) {
+            is TransactionDetailViewEvent.Lifecycle.TransactionLoaded ->
+                handleTransactionLoaded(event.transaction)
+        }
+    }
+
+    private fun handleSearchEvent(event: TransactionDetailViewEvent.Search) {
+        when (event) {
+            is TransactionDetailViewEvent.Search.VisibilityChanged ->
+                handleSearchVisibilityChanged(event.visible)
+            is TransactionDetailViewEvent.Search.QueryChanged ->
+                handleSearchQueryChanged(event.query)
+            is TransactionDetailViewEvent.Search.NavigateToNext -> handleNavigateToNextMatch()
+            is TransactionDetailViewEvent.Search.NavigateToPrevious -> handleNavigateToPreviousMatch()
+            is TransactionDetailViewEvent.Search.ActiveTabChanged ->
+                handleActiveTabChanged(event.tabIndex)
+        }
+    }
+
+    private fun handleMenuEvent(event: TransactionDetailViewEvent.Menu) {
+        when (event) {
+            is TransactionDetailViewEvent.Menu.VisibilityChanged ->
+                updateState { copy(showMenu = event.visible) }
+            is TransactionDetailViewEvent.Menu.CopyAsText -> handleCopyAsText()
+            is TransactionDetailViewEvent.Menu.CopyAsCurl -> handleCopyAsCurl()
+            is TransactionDetailViewEvent.Menu.ShareAsJson -> handleExport(ExportFormat.JSON)
+            is TransactionDetailViewEvent.Menu.ShareAsHar -> handleExport(ExportFormat.HAR)
+        }
+    }
+
+    private fun handleRequestEvent(event: TransactionDetailViewEvent.Request) {
+        when (event) {
+            is TransactionDetailViewEvent.Request.TogglePrettyMode -> handleToggleRequestPrettyMode()
+            is TransactionDetailViewEvent.Request.ToggleHeadersExpanded ->
+                updateState { copy(requestState = requestState.copy(headersExpanded = !requestState.headersExpanded)) }
+            is TransactionDetailViewEvent.Request.ToggleBodyExpanded ->
+                updateState { copy(requestState = requestState.copy(bodyExpanded = !requestState.bodyExpanded)) }
+            is TransactionDetailViewEvent.Request.CopyBody -> handleCopyBody(isRequest = true)
+            is TransactionDetailViewEvent.Request.CopyHeaders -> handleCopyHeaders(isRequest = true)
+            is TransactionDetailViewEvent.Request.CopyAllContent -> handleCopyAllContent(isRequest = true)
+        }
+    }
+
+    private fun handleResponseEvent(event: TransactionDetailViewEvent.Response) {
+        when (event) {
+            is TransactionDetailViewEvent.Response.TogglePrettyMode -> handleToggleResponsePrettyMode()
+            is TransactionDetailViewEvent.Response.ToggleHeadersExpanded ->
+                updateState {
+                    copy(responseState = responseState.copy(headersExpanded = !responseState.headersExpanded))
+                }
+            is TransactionDetailViewEvent.Response.ToggleBodyExpanded ->
+                updateState { copy(responseState = responseState.copy(bodyExpanded = !responseState.bodyExpanded)) }
+            is TransactionDetailViewEvent.Response.CopyBody -> handleCopyBody(isRequest = false)
+            is TransactionDetailViewEvent.Response.CopyHeaders -> handleCopyHeaders(isRequest = false)
+            is TransactionDetailViewEvent.Response.CopyAllContent -> handleCopyAllContent(isRequest = false)
+            is TransactionDetailViewEvent.Response.ShowImageViewer ->
+                updateState { copy(responseState = responseState.copy(showImageViewer = event.show)) }
+            is TransactionDetailViewEvent.Response.ShowPdfViewer ->
+                updateState { copy(responseState = responseState.copy(showPdfViewer = event.show)) }
+            is TransactionDetailViewEvent.Response.DownloadImage -> handleDownloadImage()
+            is TransactionDetailViewEvent.Response.ShareImage -> handleShareImage()
+            is TransactionDetailViewEvent.Response.DownloadPdf -> handleDownloadPdf()
+        }
+    }
 
     private fun handleTransactionLoaded(transaction: NetworkTransaction) {
         updateState {
             TransactionDetailViewState(transaction = transaction)
         }
-        activeTabIndex = 0
         loadRequestBody(transaction)
         loadResponseBody(transaction)
     }
-
-    // -- Body Loading -------------------------------------------------------------
 
     private fun loadRequestBody(transaction: NetworkTransaction) {
         val blobId = transaction.request.bodyRef ?: return
@@ -237,8 +258,6 @@ internal class TransactionDetailViewModel(
         }
     }
 
-    // -- Search -------------------------------------------------------------------
-
     private fun handleSearchVisibilityChanged(visible: Boolean) {
         if (visible) {
             updateState { copy(showSearch = true) }
@@ -352,7 +371,7 @@ internal class TransactionDetailViewModel(
     }
 
     private fun getActiveTabMatchCount(state: TransactionDetailViewState): Int {
-        return when (activeTabIndex) {
+        return when (state.activeTabIndex) {
             TAB_REQUEST -> state.requestMatchCount
             TAB_RESPONSE -> state.responseMatchCount
             else -> 0
@@ -360,14 +379,12 @@ internal class TransactionDetailViewModel(
     }
 
     private fun handleActiveTabChanged(tabIndex: Int) {
-        activeTabIndex = tabIndex
+        updateState { copy(activeTabIndex = tabIndex) }
         // Close search when switching tabs (matches existing behavior)
         if (uiState.value.showSearch) {
             handleSearchVisibilityChanged(false)
         }
     }
-
-    // -- Pretty Mode Toggle -------------------------------------------------------
 
     private fun handleToggleRequestPrettyMode() {
         updateState {
@@ -388,8 +405,6 @@ internal class TransactionDetailViewModel(
             findMatches(debouncedQuery)
         }
     }
-
-    // -- Copy / Share -------------------------------------------------------------
 
     private fun handleCopyBody(isRequest: Boolean) {
         val state = uiState.value
@@ -416,16 +431,26 @@ internal class TransactionDetailViewModel(
             val (ext, mime) = getFileInfoForContentType(contentTypeHeader)
             val prefix = if (isRequest) "request" else "response"
             emitEffect(
-                TransactionDetailViewEffect.ShareAsFile(
+                TransactionDetailViewEffect.Share.AsFile(
                     content = bodyContent,
                     fileName = "${prefix}_body.$ext",
                     mimeType = mime,
-                    title = if (isRequest) "Share Request Body" else "Share Response Body",
+                    titleResId = if (isRequest) {
+                        R.string.viewer_share_request_body
+                    } else {
+                        R.string.viewer_share_response_body
+                    },
                 ),
             )
         } else {
-            val label = if (isRequest) "Request Body" else "Response Body"
-            emitEffect(TransactionDetailViewEffect.CopyToClipboard(label = label, content = bodyContent))
+            val labelResId = if (isRequest) {
+                R.string.viewer_clipboard_request_body
+            } else {
+                R.string.viewer_clipboard_response_body
+            }
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = bodyContent),
+            )
         }
     }
 
@@ -437,8 +462,58 @@ internal class TransactionDetailViewModel(
             transaction.response?.headers ?: return
         }
         val formatted = ViewerViewModel.formatHeaders(headers)
-        val label = if (isRequest) "Request Headers" else "Response Headers"
-        emitEffect(TransactionDetailViewEffect.CopyToClipboard(label = label, content = formatted))
+        val labelResId = if (isRequest) {
+            R.string.viewer_clipboard_request_headers
+        } else {
+            R.string.viewer_clipboard_response_headers
+        }
+        emitEffect(
+            TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = formatted),
+        )
+    }
+
+    private fun handleCopyAllContent(isRequest: Boolean) {
+        val state = uiState.value
+        val transaction = state.transaction ?: return
+        val content = buildString {
+            if (isRequest) {
+                appendLine("=== REQUEST HEADERS ===")
+                appendLine(ViewerViewModel.formatHeaders(transaction.request.headers))
+                val section = state.requestState
+                val body = if (section.isPrettyMode) {
+                    section.parsedBody ?: section.rawBody
+                } else {
+                    section.rawBody ?: section.parsedBody
+                }
+                if (body != null) {
+                    appendLine("\n=== REQUEST BODY ===")
+                    appendLine(body)
+                }
+            } else {
+                transaction.response?.headers?.let { headers ->
+                    appendLine("=== RESPONSE HEADERS ===")
+                    appendLine(ViewerViewModel.formatHeaders(headers))
+                }
+                val section = state.responseState
+                val body = if (section.isPrettyMode) {
+                    section.parsedBody ?: section.rawBody
+                } else {
+                    section.rawBody ?: section.parsedBody
+                }
+                if (body != null) {
+                    appendLine("\n=== RESPONSE BODY ===")
+                    appendLine(body)
+                }
+            }
+        }
+        val labelResId = if (isRequest) {
+            R.string.viewer_clipboard_request_content
+        } else {
+            R.string.viewer_clipboard_response_content
+        }
+        emitEffect(
+            TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = content),
+        )
     }
 
     private fun handleCopyAsText() {
@@ -452,7 +527,12 @@ internal class TransactionDetailViewModel(
                 reqBody to resBody
             }
             val summary = generateTextSummary(transaction, requestBody, responseBody)
-            emitEffect(TransactionDetailViewEffect.CopyToClipboard(label = "Transaction", content = summary))
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(
+                    labelResId = R.string.viewer_clipboard_transaction,
+                    content = summary,
+                ),
+            )
         }
     }
 
@@ -470,36 +550,39 @@ internal class TransactionDetailViewModel(
                 headers = transaction.request.headers,
                 body = body,
             )
-            emitEffect(TransactionDetailViewEffect.CopyToClipboard(label = "cURL", content = curl))
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(
+                    labelResId = R.string.viewer_clipboard_curl,
+                    content = curl,
+                ),
+            )
         }
     }
 
     private fun handleExport(format: ExportFormat) {
         updateState { copy(showMenu = false) }
         val transaction = uiState.value.transaction ?: return
-        emitEffect(TransactionDetailViewEffect.ExportTransactions(listOf(transaction), format))
+        emitEffect(TransactionDetailViewEffect.Save.ExportTransactions(listOf(transaction), format))
     }
-
-    // -- Image / PDF Actions ------------------------------------------------------
 
     private fun handleDownloadImage() {
         val state = uiState.value
         val bytes = state.responseState.rawBodyBytes ?: return
         val format = state.responseState.imageMetadata?.format ?: "Unknown"
-        emitEffect(TransactionDetailViewEffect.SaveImageToGallery(bytes = bytes, format = format))
+        emitEffect(TransactionDetailViewEffect.Save.ImageToGallery(BinaryPayload(bytes = bytes, format = format)))
     }
 
     private fun handleShareImage() {
         val state = uiState.value
         val bytes = state.responseState.rawBodyBytes ?: return
         val format = state.responseState.imageMetadata?.format ?: "Unknown"
-        emitEffect(TransactionDetailViewEffect.ShareImageBytes(bytes = bytes, format = format))
+        emitEffect(TransactionDetailViewEffect.Share.Image(BinaryPayload(bytes = bytes, format = format)))
     }
 
     private fun handleDownloadPdf() {
         val state = uiState.value
         val bytes = state.responseState.rawBodyBytes ?: return
-        emitEffect(TransactionDetailViewEffect.SavePdfToDownloads(bytes = bytes))
+        emitEffect(TransactionDetailViewEffect.Save.PdfToDownloads(bytes = bytes))
     }
 
     companion object {

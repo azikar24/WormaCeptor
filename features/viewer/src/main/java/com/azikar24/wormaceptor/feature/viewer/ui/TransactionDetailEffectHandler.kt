@@ -24,13 +24,15 @@ internal fun handleTransactionDetailEffect(
     when (effect) {
         // -- Clipboard --
         is TransactionDetailViewEffect.Clipboard.CopyText -> {
-            val message = copyToClipboard(context, effect.label, effect.content)
+            val label = context.getString(effect.labelResId)
+            val message = copyToClipboard(context, label, effect.content)
             scope.launch { snackBarHostState.showSnackbar(message) }
         }
 
         // -- Share --
         is TransactionDetailViewEffect.Share.AsFile -> {
-            scope.launch { shareAsFile(context, effect.content, effect.fileName, effect.mimeType, effect.title) }
+            val title = context.getString(effect.titleResId)
+            scope.launch { shareAsFile(context, effect.content, effect.fileName, effect.mimeType, title) }
         }
 
         is TransactionDetailViewEffect.Share.Image -> {

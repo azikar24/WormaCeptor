@@ -6,6 +6,7 @@
     <string name="viewer_home_filter">Filter</string>
     <string name="viewer_home_more_options">More options</string>
     <string name="viewer_home_export_transactions">Export Transactions</string>
+    <string name="viewer_home_export_transactions_as_har">Export as HAR</string>
     <string name="viewer_home_clear_all_transactions">Clear All Transactions</string>
     <string name="viewer_home_export_crashes">Export Crashes</string>
     <string name="viewer_home_clear_all_crashes">Clear All Crashes</string>
@@ -40,6 +41,7 @@
     <string name="viewer_transaction_detail_copy_as_text">Copy as Text</string>
     <string name="viewer_transaction_detail_copy_as_curl">Copy as cURL</string>
     <string name="viewer_transaction_detail_share_as_json">Share as JSON</string>
+    <string name="viewer_transaction_detail_share_as_har">Share as HAR</string>
     <string name="viewer_transaction_detail_tab_overview">Overview</string>
     <string name="viewer_transaction_detail_tab_request">Request</string>
     <string name="viewer_transaction_detail_tab_response">Response</string>
@@ -189,6 +191,7 @@
     <string name="viewer_bulk_deselect_all">Deselect all</string>
     <string name="viewer_bulk_share_selected">Share selected</string>
     <string name="viewer_bulk_export_selected">Export selected</string>
+    <string name="viewer_bulk_export_selected_as_har">Export as HAR</string>
     <string name="viewer_bulk_delete_selected">Delete selected</string>
 
     <!-- SelectableTransactionItem -->
@@ -200,6 +203,8 @@
     <string name="viewer_context_menu_share_transaction">Share transaction</string>
     <string name="viewer_context_menu_copy_as_curl">Copy as cURL</string>
     <string name="viewer_context_menu_copy_as_curl_description">Copy as cURL command</string>
+    <string name="viewer_context_menu_share_as_har">Share as HAR</string>
+    <string name="viewer_context_menu_share_as_har_description">Export as HAR 1.2 file</string>
     <string name="viewer_context_menu_delete">Delete</string>
     <string name="viewer_context_menu_delete_transaction">Delete transaction</string>
 
@@ -314,6 +319,16 @@
 
     <!-- Quick Filter -->
     <string name="viewer_quick_filter_selected">Selected</string>
+
+    <!-- Clipboard Labels -->
+    <string name="viewer_clipboard_request_body">Request Body</string>
+    <string name="viewer_clipboard_response_body">Response Body</string>
+    <string name="viewer_clipboard_request_headers">Request Headers</string>
+    <string name="viewer_clipboard_response_headers">Response Headers</string>
+    <string name="viewer_clipboard_request_content">Request Content</string>
+    <string name="viewer_clipboard_response_content">Response Content</string>
+    <string name="viewer_clipboard_transaction">Transaction</string>
+    <string name="viewer_clipboard_curl">cURL</string>
 
     <!-- Share Utilities -->
     <string name="viewer_share_title">Share</string>

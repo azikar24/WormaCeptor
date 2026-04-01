@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.cpu.ui.CpuScreen
+import com.azikar24.wormaceptor.feature.cpu.vm.CpuEvent
 import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewModel
 import org.koin.compose.koinInject
 
@@ -61,20 +62,17 @@ fun CpuMonitor(
     val factory = remember { CpuFeature.createViewModelFactory(engine) }
     val viewModel: CpuViewModel = viewModel(factory = factory)
 
-    // Collect state
-    val currentCpu by viewModel.currentCpu.collectAsState()
-    val cpuHistory by viewModel.cpuHistory.collectAsState()
-    val isMonitoring by viewModel.isMonitoring.collectAsState()
-    val isCpuWarning by viewModel.isCpuWarning.collectAsState()
+    val state by viewModel.uiState.collectAsState()
 
     CpuScreen(
-        currentCpu = currentCpu,
-        cpuHistory = cpuHistory,
-        isMonitoring = isMonitoring,
-        isCpuWarning = isCpuWarning,
-        onStartMonitoring = viewModel::startMonitoring,
-        onStopMonitoring = viewModel::stopMonitoring,
-        onClearHistory = viewModel::clearHistory,
+        currentCpu = state.currentCpu,
+        cpuHistory = state.cpuHistory,
+        isMonitoring = state.isMonitoring,
+        isCpuWarning = state.isCpuWarning,
+        formattedUptime = state.formattedUptime,
+        onStartMonitoring = { viewModel.sendEvent(CpuEvent.StartMonitoring) },
+        onStopMonitoring = { viewModel.sendEvent(CpuEvent.StopMonitoring) },
+        onClearHistory = { viewModel.sendEvent(CpuEvent.ClearHistory) },
         onBack = onNavigateBack,
         modifier = modifier,
     )

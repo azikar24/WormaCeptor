@@ -1,75 +1,62 @@
 package com.azikar24.wormaceptor.feature.cpu.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
-import com.azikar24.wormaceptor.domain.entities.CpuInfo
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 
 /**
  * ViewModel for the CPU Monitoring screen.
  *
- * Provides access to CPU metrics and controls for monitoring behavior.
- * Monitoring state is managed by the engine and persists across navigation.
- * User must explicitly start/stop monitoring.
+ * Consolidates CPU metrics from [CpuMonitorEngine] into a single [CpuViewState]
+ * and exposes user actions via [CpuEvent].
  */
 class CpuViewModel(
     private val engine: CpuMonitorEngine,
-) : ViewModel() {
+) : BaseViewModel<CpuViewState, CpuEffect, CpuEvent>(
+    initialState = CpuViewState(),
+) {
 
-    /** Current CPU snapshot with usage percentages and per-core data. */
-    val currentCpu: StateFlow<CpuInfo> = engine.currentCpu
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            CpuInfo.empty(),
-        )
-
-    /** Historical CPU snapshots used for rendering time-series charts. */
-    val cpuHistory: StateFlow<ImmutableList<CpuInfo>> = engine.cpuHistory
-        .map { it.toImmutableList() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            persistentListOf(),
-        )
-
-    /** Whether CPU monitoring is currently active. */
-    val isMonitoring: StateFlow<Boolean> = engine.isMonitoring
-
-    /** Whether CPU usage exceeds the warning threshold. */
-    val isCpuWarning: StateFlow<Boolean> = engine.currentCpu
-        .map { it.overallUsagePercent >= CpuMonitorEngine.CPU_WARNING_THRESHOLD }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            false,
-        )
-
-    /**
-     * Starts CPU monitoring.
-     */
-    fun startMonitoring() {
-        engine.start()
+    init {
+        combine(
+            engine.currentCpu,
+            engine.cpuHistory,
+            engine.isMonitoring,
+        ) { currentCpu, history, monitoring ->
+            updateState {
+                copy(
+                    currentCpu = currentCpu,
+                    cpuHistory = history.toImmutableList(),
+                    isMonitoring = monitoring,
+                    isCpuWarning = currentCpu.overallUsagePercent >= CpuMonitorEngine.CPU_WARNING_THRESHOLD,
+                    formattedUptime = formatUptime(currentCpu.uptime),
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
-    /**
-     * Stops CPU monitoring.
-     */
-    fun stopMonitoring() {
-        engine.stop()
+    override fun handleEvent(event: CpuEvent) {
+        when (event) {
+            is CpuEvent.StartMonitoring -> engine.start()
+            is CpuEvent.StopMonitoring -> engine.stop()
+            is CpuEvent.ClearHistory -> engine.clearHistory()
+        }
     }
 
-    /**
-     * Clears the CPU history.
-     */
-    fun clearHistory() {
-        engine.clearHistory()
+    private fun formatUptime(uptimeMs: Long): String {
+        if (uptimeMs <= 0) return ""
+        val seconds = uptimeMs / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return when {
+            days > 0 -> "${days}d ${hours % 24}h ${minutes % 60}m"
+            hours > 0 -> "${hours}h ${minutes % 60}m ${seconds % 60}s"
+            minutes > 0 -> "${minutes}m ${seconds % 60}s"
+            else -> "${seconds}s"
+        }
     }
 }

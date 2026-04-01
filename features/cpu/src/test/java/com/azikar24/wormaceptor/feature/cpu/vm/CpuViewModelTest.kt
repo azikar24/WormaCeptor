@@ -53,8 +53,8 @@ class CpuViewModelTest {
 
         @Test
         fun `initial value is empty`() = runTest {
-            viewModel.currentCpu.test {
-                awaitItem() shouldBe CpuInfo.empty()
+            viewModel.uiState.test {
+                awaitItem().currentCpu shouldBe CpuInfo.empty()
             }
         }
 
@@ -62,10 +62,10 @@ class CpuViewModelTest {
         fun `emits updated cpu info`() = runTest {
             val updated = CpuInfo.empty().copy(overallUsagePercent = 45f)
 
-            viewModel.currentCpu.test {
+            viewModel.uiState.test {
                 awaitItem()
                 currentCpuFlow.value = updated
-                awaitItem() shouldBe updated
+                awaitItem().currentCpu shouldBe updated
             }
         }
     }
@@ -75,8 +75,8 @@ class CpuViewModelTest {
 
         @Test
         fun `initial value is empty list`() = runTest {
-            viewModel.cpuHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().cpuHistory.shouldBeEmpty()
             }
         }
 
@@ -86,10 +86,10 @@ class CpuViewModelTest {
                 CpuInfo.empty().copy(overallUsagePercent = 10f),
                 CpuInfo.empty().copy(overallUsagePercent = 20f),
             )
-            viewModel.cpuHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().cpuHistory.shouldBeEmpty()
                 cpuHistoryFlow.value = entries
-                awaitItem() shouldHaveSize 2
+                awaitItem().cpuHistory shouldHaveSize 2
             }
         }
     }
@@ -100,16 +100,16 @@ class CpuViewModelTest {
         @Test
         fun `reflects engine state when not monitoring`() = runTest {
             isMonitoringFlow.value = false
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe false
             }
         }
 
         @Test
         fun `reflects engine state when monitoring`() = runTest {
             isMonitoringFlow.value = true
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe true
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe true
             }
         }
     }
@@ -121,8 +121,8 @@ class CpuViewModelTest {
         fun `false when below threshold`() = runTest {
             currentCpuFlow.value = CpuInfo.empty().copy(overallUsagePercent = 50f)
 
-            viewModel.isCpuWarning.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isCpuWarning shouldBe false
             }
         }
 
@@ -132,8 +132,8 @@ class CpuViewModelTest {
                 overallUsagePercent = CpuMonitorEngine.CPU_WARNING_THRESHOLD,
             )
 
-            viewModel.isCpuWarning.test {
-                awaitItem() shouldBe true
+            viewModel.uiState.test {
+                awaitItem().isCpuWarning shouldBe true
             }
         }
     }
@@ -143,19 +143,19 @@ class CpuViewModelTest {
 
         @Test
         fun `startMonitoring delegates to engine`() {
-            viewModel.startMonitoring()
+            viewModel.sendEvent(CpuEvent.StartMonitoring)
             verify { engine.start() }
         }
 
         @Test
         fun `stopMonitoring delegates to engine`() {
-            viewModel.stopMonitoring()
+            viewModel.sendEvent(CpuEvent.StopMonitoring)
             verify { engine.stop() }
         }
 
         @Test
         fun `clearHistory delegates to engine`() {
-            viewModel.clearHistory()
+            viewModel.sendEvent(CpuEvent.ClearHistory)
             verify { engine.clearHistory() }
         }
     }

@@ -18,13 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.feature.recomposition.R
+import com.azikar24.wormaceptor.feature.recomposition.ui.theme.recompositionColors
+import com.azikar24.wormaceptor.feature.recomposition.ui.theme.statusLabelForRate
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionItem
 
 @Composable
@@ -33,7 +34,8 @@ internal fun RecomposerRow(
     item: RecompositionItem,
     modifier: Modifier = Modifier,
 ) {
-    val rateColor = colorForRate(item.ratePerSecond)
+    val colors = recompositionColors()
+    val rateColor = colors.colorForRate(item.ratePerSecond)
     val statusText = statusLabelForRate(item.ratePerSecond)
 
     Surface(
@@ -97,24 +99,4 @@ internal fun RecomposerRow(
             }
         }
     }
-}
-
-private val RateGreen = Color(0xFF4CAF50)
-private val RateYellow = Color(0xFFFFC107)
-private val RateOrange = Color(0xFFFF9800)
-private val RateRed = Color(0xFFF44336)
-
-private fun colorForRate(ratePerSecond: Float): Color = when {
-    ratePerSecond <= 2f -> RateGreen
-    ratePerSecond <= 5f -> RateYellow
-    ratePerSecond <= 10f -> RateOrange
-    else -> RateRed
-}
-
-@Composable
-private fun statusLabelForRate(ratePerSecond: Float): String = when {
-    ratePerSecond <= 2f -> stringResource(R.string.recomposition_status_normal)
-    ratePerSecond <= 5f -> stringResource(R.string.recomposition_status_elevated)
-    ratePerSecond <= 10f -> stringResource(R.string.recomposition_status_excessive)
-    else -> stringResource(R.string.recomposition_status_critical)
 }

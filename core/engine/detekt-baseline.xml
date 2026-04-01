@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>CollapsibleIfStatements:MockEngine.kt$MockEngine$if (matchesUrl(url, rule.matcher.urlPattern, rule.matcher.matchType) &amp;&amp; matchesMethod(method, rule.matcher.method) &amp;&amp; matchesHeaders(headers, rule.matcher.headers) ) { if (shouldApply(rule)) { return rule } }</ID>
     <ID>ComplexCondition:DefaultParserRegistry.kt$DefaultParserRegistry$(trimmed.startsWith("{") &amp;&amp; trimmed.endsWith("}")) || (trimmed.startsWith("[") &amp;&amp; trimmed.endsWith("]"))</ID>
     <ID>CyclomaticComplexMethod:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun categorizePackage(packageName: String): Pair&lt;String, DependencyCategory&gt;</ID>
     <ID>ExplicitGarbageCollectionCall:LeakDetectionEngine.kt$LeakDetectionEngine$gc()</ID>

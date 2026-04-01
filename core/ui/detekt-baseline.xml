@@ -2,16 +2,20 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>FunctionOnlyReturningConstant:WormaCeptorNavKeys.kt$WormaCeptorNavKeys.MockRuleEditor$fun createNewRoute()</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
     <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
     <ID>MagicNumber:Theme.kt$0xFF000000</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF10B981</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF3B82F6</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF6B7280</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFEF4444</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFF59E0B</ID>
+    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFFF9800</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF14B8A6</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFFFBBF24</ID>
     <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF10B981</ID>
@@ -122,6 +126,7 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
+    <ID>ModifierComposed:TrackRecompositionModifier.kt$trackRecomposition</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
   </CurrentIssues>
 </SmellBaseline>

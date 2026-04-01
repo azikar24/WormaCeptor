@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recomposition_title">Recomposition Inspector</string>
+    <string name="recomposition_back">Navigate back</string>
+    <string name="recomposition_reset">Reset statistics</string>
+    <string name="recomposition_session_duration">Session Duration</string>
+    <string name="recomposition_total_recompositions">Total Recompositions</string>
+    <string name="recomposition_top_recomposers">Top Recomposers</string>
+    <string name="recomposition_rate_per_second">%1$.1f/s</string>
+    <string name="recomposition_count_label">%1$d recompositions</string>
+    <string name="recomposition_status_normal">Normal</string>
+    <string name="recomposition_status_elevated">Elevated</string>
+    <string name="recomposition_status_excessive">Excessive</string>
+    <string name="recomposition_status_critical">Critical</string>
+    <string name="recomposition_empty_title">No Recomposition Data</string>
+    <string name="recomposition_empty_subtitle">Add Modifier.trackRecomposition(\"name\") to composables you want to monitor.</string>
+    <string name="recomposition_duration_format">%1$02d:%2$02d</string>
+</resources>

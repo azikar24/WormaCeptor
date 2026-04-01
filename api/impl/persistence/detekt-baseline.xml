@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ImportOrdering:ServiceProviderImpl.kt$import android.content.Context import androidx.room.Room import com.azikar24.wormaceptor.infra.persistence.sqlite.KeystoreKeyManager import net.sqlcipher.database.SupportFactory import com.azikar24.wormaceptor.infra.persistence.sqlite.FileSystemBlobStorage import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomCrashRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLeakRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLocationSimulatorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomPushSimulatorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomTransactionRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomWebViewMonitorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.WormaCeptorDatabase</ID>
+  </CurrentIssues>
+</SmellBaseline>

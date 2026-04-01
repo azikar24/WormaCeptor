@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ImplicitDefaultLocale:SummaryRow.kt$String.format("%.1fK", count / 1_000.0)</ID>
+    <ID>ImplicitDefaultLocale:SummaryRow.kt$String.format("%.1fM", count / 1_000_000.0)</ID>
+    <ID>LongMethod:RecomposerRow.kt$@Composable internal fun RecomposerRow( index: Int, item: RecompositionItem, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun RecompositionSummaryContent( state: RecompositionViewState, onReset: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:RecompositionColors.kt$10f</ID>
+    <ID>MagicNumber:RecompositionColors.kt$5f</ID>
+    <ID>MagicNumber:RecompositionColors.kt$RecompositionColors$10f</ID>
+    <ID>MagicNumber:RecompositionColors.kt$RecompositionColors$5f</ID>
+    <ID>MagicNumber:SummaryRow.kt$1000</ID>
+    <ID>MagicNumber:SummaryRow.kt$1_000</ID>
+    <ID>MagicNumber:SummaryRow.kt$1_000.0</ID>
+    <ID>MagicNumber:SummaryRow.kt$1_000_000</ID>
+    <ID>MagicNumber:SummaryRow.kt$1_000_000.0</ID>
+    <ID>MagicNumber:SummaryRow.kt$60</ID>
+    <ID>UndocumentedPublicClass:RecompositionColors.kt$RecompositionColors</ID>
+    <ID>UndocumentedPublicClass:RecompositionEvent.kt$RecompositionEvent$Reset : RecompositionEvent</ID>
+    <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel$Companion</ID>
+    <ID>UndocumentedPublicFunction:RecompositionColors.kt$@Composable fun recompositionColors(): RecompositionColors</ID>
+    <ID>UndocumentedPublicProperty:RecompositionColors.kt$RecompositionColors$val critical: Color</ID>
+    <ID>UndocumentedPublicProperty:RecompositionColors.kt$RecompositionColors$val elevated: Color</ID>
+    <ID>UndocumentedPublicProperty:RecompositionColors.kt$RecompositionColors$val excessive: Color</ID>
+    <ID>UndocumentedPublicProperty:RecompositionColors.kt$RecompositionColors$val normal: Color</ID>
+    <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val count: Long</ID>
+    <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val name: String</ID>
+    <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val ratePerSecond: Float</ID>
+    <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val sessionDurationMs: Long = 0L</ID>
+    <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val topRecomposers: ImmutableList&lt;RecompositionItem&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val totalRecompositions: Long = 0L</ID>
+    <ID>ViewModelForwarding:RecompositionSummaryScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; RecompositionSummaryContent( state = state, onReset = { onEvent(RecompositionEvent.Reset) }, onBack = onBack, modifier = modifier, ) }</ID>
+    <ID>ViewModelInjection:RecompositionFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

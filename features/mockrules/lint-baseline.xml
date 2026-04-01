@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.6.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.6.0)" variant="all" version="8.6.0">
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Lint found an issue registry (`androidx.compose.foundation.lint.FoundationIssueRegistry`) which requires a newer API level. That means that the custom lint checks are intended for a newer lint version; please upgrade.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.11.1/transforms/5b49205c114843e42e20df4cce6f0458/transformed/foundation-release/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Lint found an issue registry (`androidx.compose.runtime.lint.RuntimeIssueRegistry`) which requires a newer API level. That means that the custom lint checks are intended for a newer lint version; please upgrade.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.11.1/transforms/9f232354f92c4d27c032a13873806ecd/transformed/runtime/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Lint found an issue registry (`androidx.compose.ui.lint.UiIssueRegistry`) which requires a newer API level. That means that the custom lint checks are intended for a newer lint version; please upgrade.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.11.1/transforms/a96aa744873c6524ed7a039ddbff4ce4/transformed/ui-release/jars/lint.jar"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLintCustomCheck"
+        message="Lint found an issue registry (`androidx.lifecycle.lint.LiveDataCoreIssueRegistry`) which requires a newer API level. That means that the custom lint checks are intended for a newer lint version; please upgrade.">
+        <location
+            file="$GRADLE_USER_HOME/caches/8.11.1/transforms/72e3eb74cb0880a81a767126a387d860/transformed/lifecycle-livedata-core-2.9.4/jars/lint.jar"/>
+    </issue>
+
+</issues>

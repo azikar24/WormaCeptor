@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MockRuleEditorScreen -->
+    <string name="mock_editor_title_new">New Rule</string>
+    <string name="mock_editor_title_edit">Edit Rule</string>
+    <string name="mock_editor_back">Back</string>
+    <string name="mock_editor_save">Save rule</string>
+
+    <string name="mock_editor_section_basic_info">Basic Info</string>
+    <string name="mock_editor_section_request_matching">Request Matching</string>
+    <string name="mock_editor_section_response">Response</string>
+    <string name="mock_editor_section_delay">Delay</string>
+
+    <string name="mock_editor_rule_name">Rule Name</string>
+    <string name="mock_editor_rule_name_placeholder">e.g., Login Error Mock</string>
+
+    <string name="mock_editor_url_pattern">URL Pattern</string>
+    <string name="mock_editor_url_pattern_placeholder">e.g., https://api.example.com/login*</string>
+    <string name="mock_editor_match_exact_hint">Exact: URL must match exactly</string>
+    <string name="mock_editor_match_prefix_hint">Prefix: URL must start with this (use * at end)</string>
+    <string name="mock_editor_match_regex_hint">Regex: Pattern is a regular expression</string>
+
+    <string name="mock_editor_match_type">Match Type</string>
+    <string name="mock_editor_http_method">HTTP Method</string>
+    <string name="mock_editor_method_any">Any</string>
+
+    <string name="mock_editor_status_code">Status Code</string>
+    <string name="mock_editor_status_message">Status Message</string>
+    <string name="mock_editor_content_type">Content Type</string>
+    <string name="mock_editor_response_body">Response Body</string>
+    <string name="mock_editor_response_body_placeholder">e.g., {\"error\": \"Internal Server Error\"}</string>
+
+    <string name="mock_editor_delay_type">Delay Type</string>
+    <string name="mock_editor_delay_ms">Delay (ms)</string>
+    <string name="mock_editor_delay_min_ms">Min (ms)</string>
+    <string name="mock_editor_delay_max_ms">Max (ms)</string>
+</resources>

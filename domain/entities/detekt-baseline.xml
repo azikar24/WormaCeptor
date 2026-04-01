@@ -14,5 +14,87 @@
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$200</ID>
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$299</ID>
     <ID>MagicNumber:WebViewRequest.kt$WebViewRequest$399</ID>
+    <ID>MaxLineLength:CrashTest.kt$CrashTest$stackTrace = "at com.example.App.onCreate(App.kt:42)\nat android.app.Activity.performCreate(Activity.java:8000)"</ID>
+    <ID>MaxLineLength:CrashTest.kt$CrashTest.Construction$crash.stackTrace shouldBe "at com.example.App.onCreate(App.kt:42)\nat android.app.Activity.performCreate(Activity.java:8000)"</ID>
+    <ID>MaximumLineLength:CrashTest.kt$CrashTest$ </ID>
+    <ID>MaximumLineLength:CrashTest.kt$CrashTest.Construction$ </ID>
+    <ID>UndocumentedPublicClass:RequestMatcher.kt$RequestMatcher$Companion</ID>
+    <ID>UndocumentedPublicProperty:HarContent.kt$HarContent$val encoding: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarContent.kt$HarContent$val mimeType: String</ID>
+    <ID>UndocumentedPublicProperty:HarContent.kt$HarContent$val size: Long</ID>
+    <ID>UndocumentedPublicProperty:HarContent.kt$HarContent$val text: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val domain: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val expires: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val httpOnly: Boolean? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val name: String</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val path: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val secure: Boolean? = null</ID>
+    <ID>UndocumentedPublicProperty:HarCookie.kt$HarCookie$val value: String</ID>
+    <ID>UndocumentedPublicProperty:HarCreator.kt$HarCreator$val name: String</ID>
+    <ID>UndocumentedPublicProperty:HarCreator.kt$HarCreator$val version: String</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val connection: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val request: HarRequest</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val response: HarResponse</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val serverIPAddress: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val startedDateTime: String</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val time: Long</ID>
+    <ID>UndocumentedPublicProperty:HarEntry.kt$HarEntry$val timings: HarTimings</ID>
+    <ID>UndocumentedPublicProperty:HarHeader.kt$HarHeader$val name: String</ID>
+    <ID>UndocumentedPublicProperty:HarHeader.kt$HarHeader$val value: String</ID>
+    <ID>UndocumentedPublicProperty:HarLog.kt$HarLog$val creator: HarCreator</ID>
+    <ID>UndocumentedPublicProperty:HarLog.kt$HarLog$val entries: List&lt;HarEntry&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarLog.kt$HarLog$val version: String = "1.2"</ID>
+    <ID>UndocumentedPublicProperty:HarPostData.kt$HarPostData$val mimeType: String</ID>
+    <ID>UndocumentedPublicProperty:HarPostData.kt$HarPostData$val params: List&lt;HarPostParam&gt;? = null</ID>
+    <ID>UndocumentedPublicProperty:HarPostData.kt$HarPostData$val text: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarPostParam.kt$HarPostParam$val contentType: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarPostParam.kt$HarPostParam$val fileName: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarPostParam.kt$HarPostParam$val name: String</ID>
+    <ID>UndocumentedPublicProperty:HarPostParam.kt$HarPostParam$val value: String? = null</ID>
+    <ID>UndocumentedPublicProperty:HarQueryParam.kt$HarQueryParam$val name: String</ID>
+    <ID>UndocumentedPublicProperty:HarQueryParam.kt$HarQueryParam$val value: String</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val bodySize: Long</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val cookies: List&lt;HarCookie&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val headers: List&lt;HarHeader&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val headersSize: Long</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val httpVersion: String</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val method: String</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val postData: HarPostData? = null</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val queryString: List&lt;HarQueryParam&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarRequest.kt$HarRequest$val url: String</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val bodySize: Long</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val content: HarContent</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val cookies: List&lt;HarCookie&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val headers: List&lt;HarHeader&gt;</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val headersSize: Long</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val httpVersion: String</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val redirectURL: String</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val status: Int</ID>
+    <ID>UndocumentedPublicProperty:HarResponse.kt$HarResponse$val statusText: String</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val blocked: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val connect: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val dns: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val receive: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val send: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val ssl: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarTimings.kt$HarTimings$val wait: Long = -1</ID>
+    <ID>UndocumentedPublicProperty:HarWebSocketFrame.kt$HarWebSocketFrame$val data: String</ID>
+    <ID>UndocumentedPublicProperty:HarWebSocketFrame.kt$HarWebSocketFrame$val direction: String</ID>
+    <ID>UndocumentedPublicProperty:HarWebSocketFrame.kt$HarWebSocketFrame$val size: Long</ID>
+    <ID>UndocumentedPublicProperty:HarWebSocketFrame.kt$HarWebSocketFrame$val timestamp: String</ID>
+    <ID>UndocumentedPublicProperty:HarWebSocketFrame.kt$HarWebSocketFrame$val type: String</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.BooleanValue$val value: Boolean</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.FloatValue$val value: Float</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.IntValue$val value: Int</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.LongValue$val value: Long</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.StringSetValue$val value: Set&lt;String&gt;</ID>
+    <ID>UndocumentedPublicProperty:Preference.kt$PreferenceValue.StringValue$val value: String</ID>
+    <ID>UndocumentedPublicProperty:UrlMatchType.kt$UrlMatchType$EXACT</ID>
+    <ID>UndocumentedPublicProperty:UrlMatchType.kt$UrlMatchType$PREFIX</ID>
+    <ID>UndocumentedPublicProperty:UrlMatchType.kt$UrlMatchType$REGEX</ID>
+    <ID>UnnecessaryParentheses:CryptoResultTest.kt$CryptoPresetTest.EnumValues$(preset.description.isNotBlank())</ID>
+    <ID>UnnecessaryParentheses:PreferenceTest.kt$PreferenceValueTest.StringSetValueSubtype$(pv.displayValue.contains("a"))</ID>
+    <ID>UnnecessaryParentheses:PreferenceTest.kt$PreferenceValueTest.StringSetValueSubtype$(pv.displayValue.contains("b"))</ID>
+    <ID>UnnecessaryParentheses:PreferenceTest.kt$PreferenceValueTest.StringSetValueSubtype$(pv.displayValue.contains("c"))</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -2,23 +2,73 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuChartCard( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@Composable private fun SystemInfoCard( currentCpu: CpuInfo, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:CpuScreen.kt$( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CpuChartSection.kt$@Composable internal fun CpuChartCard( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CpuChartSection.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, formattedUptime: String, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CpuSystemInfo.kt$@Composable internal fun SystemInfoCard( currentCpu: CpuInfo, formattedUptime: String, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:CpuUsageGauge.kt$@Composable internal fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:CpuScreen.kt$( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, formattedUptime: String, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:CpuChartSection.kt$0.2f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$0.5f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$100f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$15f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$18f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$22f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$25f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$28f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$30f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$38f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$4</ID>
+    <ID>MagicNumber:CpuChartSection.kt$40f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$42f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$48f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$50f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$52f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$60f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$62f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$65f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$68f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$77f</ID>
+    <ID>MagicNumber:CpuChartSection.kt$78f</ID>
     <ID>MagicNumber:CpuColors.kt$CpuColors$50f</ID>
     <ID>MagicNumber:CpuColors.kt$CpuColors$80f</ID>
-    <ID>MagicNumber:CpuScreen.kt$0.2f</ID>
-    <ID>MagicNumber:CpuScreen.kt$0.5f</ID>
-    <ID>MagicNumber:CpuScreen.kt$100</ID>
-    <ID>MagicNumber:CpuScreen.kt$1000</ID>
-    <ID>MagicNumber:CpuScreen.kt$100f</ID>
-    <ID>MagicNumber:CpuScreen.kt$24</ID>
-    <ID>MagicNumber:CpuScreen.kt$4</ID>
-    <ID>MagicNumber:CpuScreen.kt$60</ID>
-    <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$5000</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$14f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$25f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$33f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$46f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$58f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$67f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$82f</ID>
+    <ID>MagicNumber:CpuPerCoreSection.kt$91f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$20f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$30f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$55f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$65f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$82f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$85f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$90f</ID>
+    <ID>MagicNumber:CpuSystemInfo.kt$95f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$100</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$20f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$22f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$28f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$30f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$80f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$82f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$88f</ID>
+    <ID>MagicNumber:CpuUsageGauge.kt$90f</ID>
+    <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$1000</ID>
+    <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$24</ID>
+    <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$60</ID>
+    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$ClearHistory : CpuEvent</ID>
+    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$StartMonitoring : CpuEvent</ID>
+    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$StopMonitoring : CpuEvent</ID>
+    <ID>UndocumentedPublicClass:CpuViewState.kt$CpuViewState</ID>
+    <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val cpuHistory: ImmutableList&lt;CpuInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val currentCpu: CpuInfo = CpuInfo.empty()</ID>
+    <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val formattedUptime: String = ""</ID>
+    <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val isCpuWarning: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val isMonitoring: Boolean = false</ID>
     <ID>ViewModelInjection:CpuFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

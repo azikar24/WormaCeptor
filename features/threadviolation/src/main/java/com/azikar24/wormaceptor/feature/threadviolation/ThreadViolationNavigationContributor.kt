@@ -1,0 +1,22 @@
+package com.azikar24.wormaceptor.feature.threadviolation
+
+import android.content.Context
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import com.azikar24.wormaceptor.core.ui.navigation.FeatureNavigationContributor
+import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
+
+/** Registers [ThreadViolation] navigation routes with the main NavHost. */
+class ThreadViolationNavigationContributor : FeatureNavigationContributor {
+    override fun contribute(
+        builder: NavGraphBuilder,
+        navController: NavHostController,
+        context: Context,
+        onBack: () -> Unit,
+    ) {
+        builder.composable(WormaCeptorNavKeys.ThreadViolation.route) {
+            ThreadViolationMonitor(onNavigateBack = onBack)
+        }
+    }
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:DelaySection.kt$@Composable internal fun DelaySection( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MockRuleEditorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun MockRuleEditorContent( state: MockRuleEditorState, onEvent: (MockRuleEditorEvent) -&gt; Unit, onSave: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MockRulesScreen.kt$@Composable private fun MockRuleItem( rule: MockRule, onToggle: () -&gt; Unit, onDelete: () -&gt; Unit, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( rules: ImmutableList&lt;MockRule&gt;, mockingEnabled: Boolean, onToggleMocking: () -&gt; Unit, onToggleRule: (String) -&gt; Unit, onDeleteRule: (String) -&gt; Unit, onDeleteAll: () -&gt; Unit, onAddRule: () -&gt; Unit, onEditRule: (String) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:DelaySection.kt$( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:MockRulesScreen.kt$( rules: ImmutableList&lt;MockRule&gt;, mockingEnabled: Boolean, onToggleMocking: () -&gt; Unit, onToggleRule: (String) -&gt; Unit, onDeleteRule: (String) -&gt; Unit, onDeleteAll: () -&gt; Unit, onAddRule: () -&gt; Unit, onEditRule: (String) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:RequestMatchingSection.kt$( urlPattern: String, matchType: UrlMatchType, method: String, methodDropdownExpanded: Boolean, onUrlPatternChange: (String) -&gt; Unit, onMatchTypeChange: (UrlMatchType) -&gt; Unit, onMethodChange: (String) -&gt; Unit, onMethodDropdownExpandedChange: (Boolean) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ResponseSection.kt$( statusCode: Int, statusMessage: String, contentType: String, responseBody: String, onStatusCodeChange: (String) -&gt; Unit, onStatusMessageChange: (String) -&gt; Unit, onContentTypeChange: (String) -&gt; Unit, onResponseBodyChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$200</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$299</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$300</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$399</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$400</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$499</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$500</ID>
+    <ID>MagicNumber:MockRulesScreen.kt$599</ID>
+    <ID>ParameterNaming:MethodDropdown.kt$onMethodSelected</ID>
+    <ID>UndocumentedPublicClass:MockRuleEditorState.kt$DelayType</ID>
+    <ID>UndocumentedPublicClass:MockRuleEditorState.kt$MockRuleEditorState</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewState.kt$MockRulesViewState</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$DelayType$FIXED : DelayType</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$DelayType$NONE : DelayType</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$DelayType$RANGE : DelayType</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$DelayType$val displayName: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val contentType: String = "application/json"</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val delayMaxMs: String = "1000"</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val delayMinMs: String = "0"</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val delayMs: String = "0"</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val delayType: DelayType = DelayType.NONE</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val isEditing: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val isValid: Boolean get() = name.isNotBlank() &amp;&amp; urlPattern.isNotBlank()</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val matchType: UrlMatchType = UrlMatchType.PREFIX</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val method: String = ""</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val methodDropdownExpanded: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val name: String = ""</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val responseBody: String = ""</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val statusCode: Int = 200</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val statusMessage: String = "OK"</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEditorState.kt$MockRuleEditorState$val urlPattern: String = ""</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val isLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val mockingEnabled: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val rules: ImmutableList&lt;MockRule&gt; = persistentListOf()</ID>
+    <ID>ViewModelInjection:MockRulesFeature.kt$editorViewModel</ID>
+    <ID>ViewModelInjection:MockRulesFeature.kt$rulesViewModel</ID>
+    <ID>ViewModelInjection:MockRulesFeature.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

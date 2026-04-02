@@ -130,6 +130,11 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryWeb
 	public fun updateRequest (Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/KeystoreKeyManager {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/infra/persistence/sqlite/KeystoreKeyManager;
+	public final fun getOrCreatePassphrase (Landroid/content/Context;)[B
+}
+
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao {
 	public abstract fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getAll ()Lkotlinx/coroutines/flow/Flow;

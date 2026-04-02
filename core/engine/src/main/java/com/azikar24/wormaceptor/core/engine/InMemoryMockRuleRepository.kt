@@ -1,7 +1,7 @@
 package com.azikar24.wormaceptor.core.engine
 
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
-import com.azikar24.wormaceptor.domain.entities.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.concurrent.ConcurrentHashMap
@@ -22,12 +22,11 @@ class InMemoryMockRuleRepository : MockRuleRepository {
 
     override suspend fun getById(id: String): MockRule? = store[id]
 
-    override suspend fun insert(rule: MockRule) {
-        store[rule.id] = rule
-        emitSnapshot()
-    }
+    override suspend fun insert(rule: MockRule) = upsert(rule)
 
-    override suspend fun update(rule: MockRule) {
+    override suspend fun update(rule: MockRule) = upsert(rule)
+
+    private fun upsert(rule: MockRule) {
         store[rule.id] = rule
         emitSnapshot()
     }

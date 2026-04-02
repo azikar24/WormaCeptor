@@ -197,4 +197,28 @@ object WormaCeptorNavKeys {
         /** Route string for the dependencies inspector. */
         const val route = "dependencies"
     }
+
+    /** Compose Recomposition Inspector screen. */
+    object Recomposition {
+        /** Route string for the recomposition inspector. */
+        const val route = "recomposition"
+    }
+
+    /** Mock rules management screen. */
+    object MockRules {
+        /** Graph route for the mock rules feature. */
+        const val route = "mockrules"
+    }
+
+    /** Mock rule editor screen. */
+    object MockRuleEditor {
+        /** Route template with optional `{ruleId}` placeholder (null = create new). */
+        const val route = "mockrules/editor/{ruleId}"
+
+        /** Builds a concrete route for editing an existing rule. */
+        fun createRoute(ruleId: String) = "mockrules/editor/$ruleId"
+
+        /** Route for creating a new rule. */
+        fun createNewRoute() = "mockrules/editor/new"
+    }
 }

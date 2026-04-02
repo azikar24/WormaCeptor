@@ -7,11 +7,13 @@ import com.azikar24.wormaceptor.core.engine.DefaultParserRegistry
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.InMemoryMockRuleRepository
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.engine.MockEngine
 import com.azikar24.wormaceptor.core.engine.ParserRegistry
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
@@ -21,6 +23,7 @@ import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
+import com.azikar24.wormaceptor.core.ui.RecompositionTracker
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -55,6 +58,8 @@ val engineModule = module {
 
     // Network engines
     single { RateLimitEngine() }
+    single { MockEngine() }
+    single<com.azikar24.wormaceptor.domain.contracts.MockRuleRepository> { InMemoryMockRuleRepository() }
     single { WebViewMonitorEngine() }
 
     // Tool engines (previously created by Feature objects)
@@ -65,6 +70,9 @@ val engineModule = module {
     single { PushTokenEngine(androidContext()) }
     single { LocationSimulatorEngine(androidContext()) }
     single { PushSimulatorEngine(androidContext()) }
+
+    // Compose recomposition tracking (singleton object, exposed for DI consumers)
+    single { RecompositionTracker }
 
     // Syntax highlighting
     single<HighlighterRegistry> { DefaultHighlighterRegistry() }

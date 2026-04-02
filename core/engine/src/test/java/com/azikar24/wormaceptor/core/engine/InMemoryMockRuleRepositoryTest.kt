@@ -1,10 +1,10 @@
 package com.azikar24.wormaceptor.core.engine
 
 import app.cash.turbine.test
-import com.azikar24.wormaceptor.domain.entities.MockResponse
-import com.azikar24.wormaceptor.domain.entities.MockRule
-import com.azikar24.wormaceptor.domain.entities.RequestMatcher
-import com.azikar24.wormaceptor.domain.entities.UrlMatchType
+import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
+import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize

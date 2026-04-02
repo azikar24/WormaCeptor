@@ -1,37 +1,17 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    id("wormaceptor.android.compose")
 }
 
 android {
     namespace = "com.azikar24.wormaceptor.core.ui"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    buildFeatures {
-        compose = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
+        consumerProguardFiles("consumer-rules.pro")
     }
 }
 
 dependencies {
     implementation(project(":domain:contracts"))
 
-    implementation(libs.androidx.core.ktx)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.navigation.compose)
-    debugImplementation(libs.androidx.ui.tooling)
+    api(libs.androidx.navigation.compose)
 }

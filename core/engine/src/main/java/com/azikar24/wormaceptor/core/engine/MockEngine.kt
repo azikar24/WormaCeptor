@@ -1,10 +1,10 @@
 package com.azikar24.wormaceptor.core.engine
 
-import com.azikar24.wormaceptor.domain.entities.MockBehavior
-import com.azikar24.wormaceptor.domain.entities.MockDelay
-import com.azikar24.wormaceptor.domain.entities.MockResponse
-import com.azikar24.wormaceptor.domain.entities.MockRule
-import com.azikar24.wormaceptor.domain.entities.UrlMatchType
+import com.azikar24.wormaceptor.domain.entities.mock.MockBehavior
+import com.azikar24.wormaceptor.domain.entities.mock.MockDelay
+import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,6 +38,14 @@ class MockEngine {
     /** Tracks how many times each rule has been matched (rule id -> count). */
     private val hitCounters = ConcurrentHashMap<String, AtomicInteger>()
 
+    /** Pre-compiled regex patterns keyed by their source string. */
+    @Volatile
+    private var compiledPatterns: Map<String, Regex> = emptyMap()
+
+    /** Enabled rules pre-sorted by descending priority. */
+    @Volatile
+    private var sortedEnabledRules: List<MockRule> = emptyList()
+
     /** Enables or disables all mocking globally. */
     fun setMockingEnabled(enabled: Boolean) {
         _mockingEnabled.value = enabled
@@ -46,6 +54,22 @@ class MockEngine {
     /** Replaces all rules with the given list. */
     fun setRules(rules: List<MockRule>) {
         _rules.value = rules
+
+        sortedEnabledRules = rules
+            .filter { it.enabled }
+            .sortedByDescending { it.priority }
+
+        compiledPatterns = rules
+            .filter { it.matcher.matchType == UrlMatchType.REGEX }
+            .mapNotNull { rule ->
+                val raw = rule.matcher.urlPattern.trimStart('~').trim()
+                try {
+                    raw to Regex(raw)
+                } catch (_: Exception) {
+                    null
+                }
+            }
+            .toMap()
     }
 
     /**
@@ -63,11 +87,7 @@ class MockEngine {
     ): MockRule? {
         if (!_mockingEnabled.value) return null
 
-        val enabledRules = _rules.value
-            .filter { it.enabled }
-            .sortedByDescending { it.priority }
-
-        for (rule in enabledRules) {
+        for (rule in sortedEnabledRules) {
             if (matchesUrl(url, rule.matcher.urlPattern, rule.matcher.matchType) &&
                 matchesMethod(method, rule.matcher.method) &&
                 matchesHeaders(headers, rule.matcher.headers)
@@ -172,11 +192,8 @@ class MockEngine {
             }
             UrlMatchType.REGEX -> {
                 val regexPattern = pattern.trimStart('~').trim()
-                try {
-                    Regex(regexPattern).containsMatchIn(url)
-                } catch (_: Exception) {
-                    false
-                }
+                val cached = compiledPatterns[regexPattern] ?: return false
+                cached.containsMatchIn(url)
             }
         }
     }

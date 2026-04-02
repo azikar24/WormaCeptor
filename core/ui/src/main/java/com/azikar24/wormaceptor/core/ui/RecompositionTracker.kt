@@ -18,11 +18,13 @@ object RecompositionTracker {
      * @property name Identifier of the tracked composable.
      * @property count Total recomposition count since tracking began.
      * @property lastTimestamp Epoch millis of the most recent recomposition.
+     * @property ratePerSecond Computed recompositions per second over the session.
      */
     data class RecompositionData(
         val name: String,
         val count: Long,
         val lastTimestamp: Long,
+        val ratePerSecond: Float = 0f,
     )
 
     /**
@@ -80,8 +82,11 @@ object RecompositionTracker {
         val sessionMs = getSessionDuration().coerceAtLeast(1)
         val sessionSeconds = (sessionMs / 1000f).coerceAtLeast(0.001f)
         return tracked.values
-            .map { it.snapshot() }
-            .sortedByDescending { it.count.toFloat() / sessionSeconds }
+            .map { entry ->
+                val snapshot = entry.snapshot()
+                snapshot.copy(ratePerSecond = snapshot.count.toFloat() / sessionSeconds)
+            }
+            .sortedByDescending { it.ratePerSecond }
             .take(limit)
     }
 

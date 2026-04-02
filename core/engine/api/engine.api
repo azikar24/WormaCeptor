@@ -153,6 +153,17 @@ public abstract interface class com/azikar24/wormaceptor/core/engine/Highlighter
 	public abstract fun register (Lcom/azikar24/wormaceptor/domain/contracts/SyntaxHighlighter;)V
 }
 
+public final class com/azikar24/wormaceptor/core/engine/InMemoryMockRuleRepository : com/azikar24/wormaceptor/domain/contracts/MockRuleRepository {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun delete (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAll ()Lkotlinx/coroutines/flow/Flow;
+	public fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun insert (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun update (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/azikar24/wormaceptor/core/engine/LeakDetectionEngine {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/LeakDetectionEngine$Companion;
@@ -264,6 +275,20 @@ public final class com/azikar24/wormaceptor/core/engine/MetricStatus$Companion {
 	public static synthetic fun fromFps$default (Lcom/azikar24/wormaceptor/core/engine/MetricStatus$Companion;IZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/MetricStatus;
 	public final fun fromMemoryPercent (IZ)Lcom/azikar24/wormaceptor/core/engine/MetricStatus;
 	public static synthetic fun fromMemoryPercent$default (Lcom/azikar24/wormaceptor/core/engine/MetricStatus$Companion;IZILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/MetricStatus;
+}
+
+public final class com/azikar24/wormaceptor/core/engine/MockEngine {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun buildOkHttpResponse (Lcom/azikar24/wormaceptor/domain/entities/mock/MockResponse;Lokhttp3/Request;)Lokhttp3/Response;
+	public final fun computeDelayMs (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)J
+	public final fun findMatchingRule (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
+	public final fun getMockingEnabled ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getRules ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun resetCounters ()V
+	public final fun resolveResponse (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)Lcom/azikar24/wormaceptor/domain/entities/mock/MockResponse;
+	public final fun setMockingEnabled (Z)V
+	public final fun setRules (Ljava/util/List;)V
 }
 
 public final class com/azikar24/wormaceptor/core/engine/NotificationPermissionException : java/lang/Exception {

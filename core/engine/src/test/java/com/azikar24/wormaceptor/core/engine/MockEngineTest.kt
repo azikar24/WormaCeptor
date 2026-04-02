@@ -1,11 +1,11 @@
 package com.azikar24.wormaceptor.core.engine
 
-import com.azikar24.wormaceptor.domain.entities.MockBehavior
-import com.azikar24.wormaceptor.domain.entities.MockDelay
-import com.azikar24.wormaceptor.domain.entities.MockResponse
-import com.azikar24.wormaceptor.domain.entities.MockRule
-import com.azikar24.wormaceptor.domain.entities.RequestMatcher
-import com.azikar24.wormaceptor.domain.entities.UrlMatchType
+import com.azikar24.wormaceptor.domain.entities.mock.MockBehavior
+import com.azikar24.wormaceptor.domain.entities.mock.MockDelay
+import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
+import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import io.kotest.matchers.longs.shouldBeGreaterThanOrEqual
 import io.kotest.matchers.longs.shouldBeLessThanOrEqual
 import io.kotest.matchers.nulls.shouldBeNull
@@ -55,9 +55,8 @@ class MockEngineTest {
         priority = priority,
     )
 
-    private fun okHttpRequest(
-        url: String = "https://api.example.com/test",
-    ): Request = Request.Builder().url(url).build()
+    private fun okHttpRequest(url: String = "https://api.example.com/test"): Request =
+        Request.Builder().url(url).build()
 
     // ── URL Matching ────────────────────────────────────────────────────
 
@@ -626,15 +625,15 @@ class MockEngineTest {
             }
 
             // Requests 1..9: matches at positions 3, 6, 9 (count % 3 == 0)
-            results[0].shouldBeNull()  // count=1
-            results[1].shouldBeNull()  // count=2
-            results[2] shouldBe rule   // count=3
-            results[3].shouldBeNull()  // count=4
-            results[4].shouldBeNull()  // count=5
-            results[5] shouldBe rule   // count=6
-            results[6].shouldBeNull()  // count=7
-            results[7].shouldBeNull()  // count=8
-            results[8] shouldBe rule   // count=9
+            results[0].shouldBeNull() // count=1
+            results[1].shouldBeNull() // count=2
+            results[2] shouldBe rule // count=3
+            results[3].shouldBeNull() // count=4
+            results[4].shouldBeNull() // count=5
+            results[5] shouldBe rule // count=6
+            results[6].shouldBeNull() // count=7
+            results[7].shouldBeNull() // count=8
+            results[8] shouldBe rule // count=9
         }
 
         @Test
@@ -650,12 +649,12 @@ class MockEngineTest {
                 )
             }
 
-            results[0] shouldBe rule   // count=1 <= 3
-            results[1] shouldBe rule   // count=2 <= 3
-            results[2] shouldBe rule   // count=3 <= 3
-            results[3].shouldBeNull()  // count=4 > 3
-            results[4].shouldBeNull()  // count=5 > 3
-            results[5].shouldBeNull()  // count=6 > 3
+            results[0] shouldBe rule // count=1 <= 3
+            results[1] shouldBe rule // count=2 <= 3
+            results[2] shouldBe rule // count=3 <= 3
+            results[3].shouldBeNull() // count=4 > 3
+            results[4].shouldBeNull() // count=5 > 3
+            results[5].shouldBeNull() // count=6 > 3
         }
 
         @Test

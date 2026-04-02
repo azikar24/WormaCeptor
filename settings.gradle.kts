@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
         google()
@@ -51,6 +52,8 @@ include(":features:ratelimit")
 include(":features:pushtoken")
 include(":features:loadedlibraries")
 include(":features:dependenciesinspector")
+include(":features:recomposition")
+include(":features:mockrules")
 include(":infra:persistence:sqlite")
 include(":infra:networking:okhttp")
 include(":infra:parser:protobuf")
@@ -65,6 +68,7 @@ include(":infra:syntax:json")
 include(":infra:syntax:xml")
 include(":platform:android")
 include(":common:presentation")
+include(":wiring")
 include(":test:architecture")
 
 // IDE Integration (Android Studio Plugin - built separately with IntelliJ Gradle Plugin)

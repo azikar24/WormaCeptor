@@ -19,4 +19,9 @@
     <string name="fps_ready_subtitle">Tap play to start measuring frame rate</string>
     <string name="fps_start_monitoring">Start Monitoring</string>
     <string name="fps_chart_content_description">FPS chart showing current: %1$d fps</string>
+    <string name="fps_status_excellent">Excellent</string>
+    <string name="fps_status_moderate">Moderate</string>
+    <string name="fps_status_poor">Poor</string>
+    <string name="fps_status_not_monitoring">Not monitoring</string>
+    <string name="fps_empty_state_fps">60</string>
 </resources>

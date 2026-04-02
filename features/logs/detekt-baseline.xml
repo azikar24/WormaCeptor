@@ -3,11 +3,12 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LambdaParameterInRestartableEffect:LogsScreen.kt$onSetAutoScroll</ID>
+    <ID>LongMethod:LogsScreen.kt$@Composable private fun LevelFilterChips( selectedLevels: Set&lt;LogLevel&gt;, levelCounts: Map&lt;LogLevel, Int&gt;, onLevelToggle: (LogLevel) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LogsScreen.kt$@Composable private fun LogEntryItem( entry: LogEntry, colors: LogLevelColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LogsScreen.kt$@Suppress("LongParameterList") @OptIn(ExperimentalMaterial3Api::class) @Composable internal fun LogsScreenContent( logs: ImmutableList&lt;LogEntry&gt;, searchQuery: String, selectedLevels: Set&lt;LogLevel&gt;, autoScroll: Boolean, isCapturing: Boolean, totalCount: Int, levelCounts: Map&lt;LogLevel, Int&gt;, pid: Int, onSearchQueryChanged: (String) -&gt; Unit, onLevelToggle: (LogLevel) -&gt; Unit, onSetAutoScroll: (Boolean) -&gt; Unit, onToggleCapture: () -&gt; Unit, onStartCapture: () -&gt; Unit, onClearLogs: () -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>MagicNumber:LogLevelColors.kt$0xFFC2185B</ID>
-    <ID>MagicNumber:LogsViewModel.kt$100</ID>
     <ID>ParameterNaming:LogsScreen.kt$onSearchQueryChanged</ID>
+    <ID>ViewModelForwarding:LogsScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; LogsScreenContent( logs = state.logs, searchQuery = state.searchQuery, selectedLevels = state.selectedLevels, autoScroll = state.autoScroll, isCapturing = state.isCapturing, totalCount = state.totalCount, levelCounts = state.levelCounts, pid = state.currentPid, onSearchQueryChanged = { query -&gt; onEvent(LogsViewEvent.SearchQueryChanged(query)) }, onLevelToggle = { level -&gt; onEvent(LogsViewEvent.LevelToggled(level)) }, onSetAutoScroll = { enabled -&gt; onEvent(LogsViewEvent.AutoScrollSet(enabled)) }, onToggleCapture = { if (state.isCapturing) { onEvent(LogsViewEvent.CaptureStopped) } else { onEvent(LogsViewEvent.CaptureStarted) } }, onStartCapture = { onEvent(LogsViewEvent.CaptureStarted) }, onClearLogs = { onEvent(LogsViewEvent.LogsCleared) }, modifier = modifier, onBack = onBack, ) }</ID>
     <ID>ViewModelInjection:LogsFeature.kt$logsViewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

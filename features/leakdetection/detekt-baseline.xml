@@ -8,6 +8,19 @@
     <ID>LongParameterList:LeakDetectionScreen.kt$( leaks: ImmutableList&lt;LeakInfo&gt;, summary: LeakSummary, isRunning: Boolean, selectedSeverity: LeakInfo.LeakSeverity?, selectedLeak: LeakInfo?, onSeveritySelected: (LeakInfo.LeakSeverity?) -&gt; Unit, onLeakSelected: (LeakInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onTriggerCheck: () -&gt; Unit, onClearLeaks: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>ParameterNaming:LeakDetectionScreen.kt$onLeakSelected</ID>
     <ID>ParameterNaming:LeakDetectionScreen.kt$onSeveritySelected</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$ClearLeaks : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$DismissDetail : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectLeak : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectSeverity : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$TriggerCheck : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewState.kt$LeakDetectionViewState</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectLeak$val leak: LeakInfo</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectSeverity$val severity: LeakSeverity?</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val filteredLeaks: ImmutableList&lt;LeakInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val isRunning: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedLeak: LeakInfo? = null</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedSeverity: LeakSeverity? = null</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val summary: LeakSummary = LeakSummary.empty()</ID>
     <ID>ViewModelInjection:LeakDetectionFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

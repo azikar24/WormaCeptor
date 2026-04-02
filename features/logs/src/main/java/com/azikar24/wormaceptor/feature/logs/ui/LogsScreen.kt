@@ -44,7 +44,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -58,6 +57,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
@@ -70,6 +70,7 @@ import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
 import com.azikar24.wormaceptor.feature.logs.ui.theme.LogLevelColors
 import com.azikar24.wormaceptor.feature.logs.ui.theme.logLevelColors
+import com.azikar24.wormaceptor.feature.logs.vm.LogsViewEvent
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import kotlinx.collections.immutable.ImmutableList
 import java.text.SimpleDateFormat
@@ -86,39 +87,38 @@ import java.util.Locale
  * - Play/pause capture controls
  * - Clear logs button
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LogsScreen(
     viewModel: LogsViewModel,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
 ) {
-    val logs by viewModel.logs.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val selectedLevels by viewModel.selectedLevels.collectAsState()
-    val autoScroll by viewModel.autoScroll.collectAsState()
-    val isCapturing by viewModel.isCapturing.collectAsState()
-    val totalCount by viewModel.totalCount.collectAsState()
-    val levelCounts by viewModel.levelCounts.collectAsState()
-
-    LogsScreenContent(
-        logs = logs,
-        searchQuery = searchQuery,
-        selectedLevels = selectedLevels,
-        autoScroll = autoScroll,
-        isCapturing = isCapturing,
-        totalCount = totalCount,
-        levelCounts = levelCounts,
-        pid = viewModel.currentPid,
-        onSearchQueryChanged = viewModel::onSearchQueryChanged,
-        onLevelToggle = viewModel::toggleLevel,
-        onSetAutoScroll = viewModel::setAutoScroll,
-        onToggleCapture = { if (isCapturing) viewModel.stopCapture() else viewModel.startCapture() },
-        onStartCapture = viewModel::startCapture,
-        onClearLogs = viewModel::clearLogs,
-        modifier = modifier,
-        onBack = onBack,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        LogsScreenContent(
+            logs = state.logs,
+            searchQuery = state.searchQuery,
+            selectedLevels = state.selectedLevels,
+            autoScroll = state.autoScroll,
+            isCapturing = state.isCapturing,
+            totalCount = state.totalCount,
+            levelCounts = state.levelCounts,
+            pid = state.currentPid,
+            onSearchQueryChanged = { query -> onEvent(LogsViewEvent.SearchQueryChanged(query)) },
+            onLevelToggle = { level -> onEvent(LogsViewEvent.LevelToggled(level)) },
+            onSetAutoScroll = { enabled -> onEvent(LogsViewEvent.AutoScrollSet(enabled)) },
+            onToggleCapture = {
+                if (state.isCapturing) {
+                    onEvent(LogsViewEvent.CaptureStopped)
+                } else {
+                    onEvent(LogsViewEvent.CaptureStarted)
+                }
+            },
+            onStartCapture = { onEvent(LogsViewEvent.CaptureStarted) },
+            onClearLogs = { onEvent(LogsViewEvent.LogsCleared) },
+            modifier = modifier,
+            onBack = onBack,
+        )
+    }
 }
 
 @Suppress("LongParameterList")
@@ -193,8 +193,8 @@ internal fun LogsScreenContent(
                         WormaCeptorPlayPauseButton(
                             isActive = isCapturing,
                             onToggle = onToggleCapture,
-                            activeContentDescription = "Pause capture",
-                            inactiveContentDescription = "Start capture",
+                            activeContentDescription = stringResource(R.string.logs_pause_capture),
+                            inactiveContentDescription = stringResource(R.string.logs_start_capture),
                         )
 
                         // Clear logs
@@ -267,17 +267,21 @@ internal fun LogsScreenContent(
         Box(modifier = Modifier.imePadding()) {
             if (logs.isEmpty()) {
                 WormaCeptorEmptyState(
-                    title = if (isCapturing) "Waiting for logs..." else "No logs captured",
+                    title = if (isCapturing) {
+                        stringResource(R.string.logs_empty_capturing_title)
+                    } else {
+                        stringResource(R.string.logs_empty_paused_title)
+                    },
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
                     subtitle = if (isCapturing) {
-                        "Logs will appear here as they are generated"
+                        stringResource(R.string.logs_empty_capturing_subtitle)
                     } else {
-                        "Tap play to start capturing logs"
+                        stringResource(R.string.logs_empty_paused_subtitle)
                     },
                     icon = Icons.Default.VerticalAlignBottom,
-                    actionLabel = if (!isCapturing) "Start Capture" else null,
+                    actionLabel = if (!isCapturing) stringResource(R.string.logs_start_capture_action) else null,
                     onAction = if (!isCapturing) onStartCapture else null,
                 )
             } else {
@@ -330,7 +334,13 @@ private fun LevelFilterChips(
                         )
                         if (count > 0) {
                             Text(
-                                text = if (count > 999) "999+" else count.toString(),
+                                text = if (count > 999) {
+                                    stringResource(
+                                        R.string.logs_count_overflow,
+                                    )
+                                } else {
+                                    count.toString()
+                                },
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isSelected) {
                                     MaterialTheme.colorScheme.onPrimaryContainer.copy(
@@ -390,7 +400,13 @@ private fun StatsBar(
                     },
                 )
                 Text(
-                    text = if (isCapturing) "Capturing" else "Paused",
+                    text = if (isCapturing) {
+                        stringResource(
+                            R.string.logs_status_capturing,
+                        )
+                    } else {
+                        stringResource(R.string.logs_status_paused)
+                    },
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -398,7 +414,7 @@ private fun StatsBar(
 
             // PID
             Text(
-                text = "PID: $pid",
+                text = stringResource(R.string.logs_pid, pid),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = FontFamily.Monospace,
@@ -408,9 +424,9 @@ private fun StatsBar(
         // Counts
         Text(
             text = if (filteredCount != totalCount) {
-                "$filteredCount / $totalCount entries"
+                stringResource(R.string.logs_entries_filtered, filteredCount, totalCount)
             } else {
-                "$totalCount entries"
+                stringResource(R.string.logs_entries_total, totalCount)
             },
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -539,6 +555,7 @@ private fun LogEntryItem(
     }
 }
 
+@Suppress("HardcodedString")
 @Preview(showBackground = true)
 @Composable
 private fun LogsScreenContentPreview() {

@@ -40,7 +40,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -67,7 +66,6 @@ import com.azikar24.wormaceptor.domain.entities.FpsInfo
 import com.azikar24.wormaceptor.feature.fps.R
 import com.azikar24.wormaceptor.feature.fps.ui.theme.FpsColors
 import com.azikar24.wormaceptor.feature.fps.ui.theme.fpsColors
-import com.azikar24.wormaceptor.feature.fps.vm.FpsViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.max
@@ -83,32 +81,10 @@ import kotlin.math.roundToInt
  * - Real-time FPS chart
  * - Play/Pause and reset controls
  */
-@Composable
-fun FpsScreen(
-    viewModel: FpsViewModel,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-) {
-    val currentInfo by viewModel.currentFpsInfo.collectAsState()
-    val history by viewModel.fpsHistory.collectAsState()
-    val isMonitoring by viewModel.isMonitoring.collectAsState()
-
-    FpsScreenContent(
-        currentFps = currentInfo,
-        fpsHistory = history,
-        isMonitoring = isMonitoring,
-        onStartMonitoring = { viewModel.startMonitoring() },
-        onToggleMonitoring = { viewModel.toggleMonitoring() },
-        onResetStats = { viewModel.resetStats() },
-        onBack = onBack,
-        modifier = modifier,
-    )
-}
-
 @Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FpsScreenContent(
+fun FpsScreen(
     currentFps: FpsInfo,
     fpsHistory: ImmutableList<FpsInfo>,
     isMonitoring: Boolean,
@@ -288,10 +264,12 @@ private fun CurrentFpsCard(
 
             Text(
                 text = when {
-                    fpsInfo.currentFps >= FpsColors.FPS_GOOD_THRESHOLD -> "Excellent"
-                    fpsInfo.currentFps >= FpsColors.FPS_WARNING_THRESHOLD -> "Moderate"
-                    fpsInfo.currentFps > 0 -> "Poor"
-                    else -> "Not monitoring"
+                    fpsInfo.currentFps >= FpsColors.FPS_GOOD_THRESHOLD -> stringResource(R.string.fps_status_excellent)
+                    fpsInfo.currentFps >= FpsColors.FPS_WARNING_THRESHOLD -> stringResource(
+                        R.string.fps_status_moderate,
+                    )
+                    fpsInfo.currentFps > 0 -> stringResource(R.string.fps_status_poor)
+                    else -> stringResource(R.string.fps_status_not_monitoring)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (fpsInfo.currentFps > 0) fpsColor else MaterialTheme.colorScheme.onSurfaceVariant,
@@ -545,8 +523,8 @@ private fun FpsChart(
             val y = padding + chartHeight * (1 - fps / maxFps)
 
             // Draw threshold color bands
-            when {
-                fps == 55f -> {
+            when (fps) {
+                55f -> {
                     drawLine(
                         color = goodThresholdColor,
                         start = Offset(padding, y),
@@ -554,7 +532,7 @@ private fun FpsChart(
                         strokeWidth = 2f,
                     )
                 }
-                fps == 30f -> {
+                30f -> {
                     drawLine(
                         color = warningThresholdColor,
                         start = Offset(padding, y),
@@ -634,7 +612,7 @@ private fun EmptyState(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 Text(
-                    text = "60",
+                    text = stringResource(R.string.fps_empty_state_fps),
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Monospace,
@@ -695,9 +673,9 @@ private fun EmptyState(
 @Suppress("MagicNumber")
 @Preview(showBackground = true)
 @Composable
-private fun FpsScreenContentPreview() {
+private fun FpsScreenPreview() {
     WormaCeptorTheme {
-        FpsScreenContent(
+        FpsScreen(
             currentFps = FpsInfo(
                 currentFps = 58.5f,
                 averageFps = 55.2f,

@@ -45,8 +45,8 @@ Add the dependencies in your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.azikar24.WormaCeptor:api-client:2.2.2")
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.2")
+    implementation("com.github.azikar24.WormaCeptor:api-client:2.3.0")
+    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.3.0")
 }
 ```
 

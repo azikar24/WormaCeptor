@@ -2,6 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ImportOrdering:ServiceProviderImpl.kt$import android.content.Context import androidx.room.Room import com.azikar24.wormaceptor.infra.persistence.sqlite.KeystoreKeyManager import net.sqlcipher.database.SupportFactory import com.azikar24.wormaceptor.infra.persistence.sqlite.FileSystemBlobStorage import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomCrashRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLeakRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLocationSimulatorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomPushSimulatorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomTransactionRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomWebViewMonitorRepository import com.azikar24.wormaceptor.infra.persistence.sqlite.WormaCeptorDatabase</ID>
+    <ID>LongMethod:ServiceProviderImpl.kt$ServiceProviderImpl$private fun encryptDatabaseIfNeeded( context: Context, dbName: String, passphrase: ByteArray, )</ID>
+    <ID>MagicNumber:ServiceProviderImpl.kt$ServiceProviderImpl$15</ID>
+    <ID>MagicNumber:ServiceProviderImpl.kt$ServiceProviderImpl$16</ID>
+    <ID>TooGenericExceptionCaught:ServiceProviderImpl.kt$ServiceProviderImpl$e: Exception</ID>
   </CurrentIssues>
 </SmellBaseline>

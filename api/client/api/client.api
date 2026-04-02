@@ -1,4 +1,5 @@
 public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
+	public static final field COMPOSE_RECOMPOSITION_INSPECTOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CONSOLE_LOGS Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CPU_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field CRYPTO_TOOL Lcom/azikar24/wormaceptor/api/Feature;
@@ -12,6 +13,7 @@ public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
 	public static final field LOADED_LIBRARIES Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field LOCATION_SIMULATOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field MEMORY_MONITOR Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field MOCK_RULES Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field PUSH_SIMULATOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field PUSH_TOKEN_MANAGER Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field RATE_LIMITER Lcom/azikar24/wormaceptor/api/Feature;

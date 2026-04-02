@@ -272,6 +272,7 @@ class WormaCeptorContentProvider : ContentProvider() {
     }
 
     private fun transactionDetailToJson(detail: TransactionDetailDto): String {
+        val redaction = WormaCeptorApi.redactionConfig
         val json = JSONObject().apply {
             put("id", detail.id)
             put("method", detail.method)
@@ -282,11 +283,11 @@ class WormaCeptorContentProvider : ContentProvider() {
             put("duration", detail.duration)
             put("status", detail.status)
             put("timestamp", detail.timestamp)
-            put("request_headers", headersToJson(detail.requestHeaders))
-            put("request_body", detail.requestBody)
+            put("request_headers", headersToJson(detail.requestHeaders, redaction))
+            put("request_body", detail.requestBody?.let { redaction.applyRedactions(it) })
             put("request_size", detail.requestSize)
-            put("response_headers", headersToJson(detail.responseHeaders))
-            put("response_body", detail.responseBody)
+            put("response_headers", headersToJson(detail.responseHeaders, redaction))
+            put("response_body", detail.responseBody?.let { redaction.applyRedactions(it) })
             put("response_size", detail.responseSize)
             put("response_message", detail.responseMessage)
             put("protocol", detail.protocol)
@@ -297,10 +298,18 @@ class WormaCeptorContentProvider : ContentProvider() {
         return json.toString()
     }
 
-    private fun headersToJson(headers: Map<String, List<String>>): JSONObject {
+    private fun headersToJson(
+        headers: Map<String, List<String>>,
+        redaction: com.azikar24.wormaceptor.api.RedactionConfig,
+    ): JSONObject {
         val json = JSONObject()
         headers.forEach { (key, values) ->
-            json.put(key, JSONArray(values))
+            val redactedValues = if (redaction.headersToRedact.contains(key.lowercase())) {
+                listOf(redaction.replacementText)
+            } else {
+                values
+            }
+            json.put(key, JSONArray(redactedValues))
         }
         return json
     }

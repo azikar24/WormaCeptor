@@ -92,8 +92,14 @@ class BinaryContentDetectorTest {
         @Test
         fun `detects JPEG by magic bytes`() {
             val jpeg = byteArrayOf(
-                0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte(), 0xE0.toByte(),
-                0x00, 0x10, 0x4A, 0x46,
+                0xFF.toByte(),
+                0xD8.toByte(),
+                0xFF.toByte(),
+                0xE0.toByte(),
+                0x00,
+                0x10,
+                0x4A,
+                0x46,
             )
             BinaryContentDetector.isBinaryByMagicBytes(jpeg) shouldBe true
         }

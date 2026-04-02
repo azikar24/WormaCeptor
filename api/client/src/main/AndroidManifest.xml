@@ -10,14 +10,18 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
 
+    <permission
+        android:name="${applicationId}.wormaceptor.CONTENT_PROVIDER"
+        android:protectionLevel="signature" />
+
     <application>
         <!-- Content provider for IDE communication via ADB -->
         <provider
             android:name="com.azikar24.wormaceptor.api.contentprovider.WormaCeptorContentProvider"
             android:authorities="${applicationId}.wormaceptor.provider"
+            android:permission="${applicationId}.wormaceptor.CONTENT_PROVIDER"
             android:exported="true"
-            android:enabled="true"
-            tools:ignore="ExportedContentProvider" />
+            android:enabled="true" />
 
         <!-- Floating button service -->
         <service

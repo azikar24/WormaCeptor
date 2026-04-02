@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -265,10 +266,10 @@ private fun DataTable(
         }
 
         // Data rows
-        items(
+        itemsIndexed(
             items = result.rows,
-            key = { it.hashCode() },
-        ) { row ->
+            key = { index, _ -> "row_$index" },
+        ) { _, row ->
             Row(
                 modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
             ) {

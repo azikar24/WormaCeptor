@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -31,9 +30,10 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.engine.ParserRegistry
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
@@ -48,9 +48,6 @@ internal data class MatchInfo(
 
 /** Maximum body size (in chars) for which syntax highlighting is attempted. */
 internal const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000
-
-internal const val MaxParseBodySize = 500_000
-internal const val TruncatedDisplaySize = 100_000
 
 @Composable
 internal fun PrettyRawToggle(
@@ -274,138 +271,24 @@ internal fun HighlightedBodyText(
     }
 }
 
-internal fun isProtobufContentType(contentType: String?): Boolean {
-    return detectContentTypeViaRegistry(contentType, null) == ContentType.PROTOBUF
-}
-
-internal fun detectContentTypeViaRegistry(
-    contentTypeHeader: String?,
-    body: String?,
-): ContentType {
-    return try {
-        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
-        registry.detectContentType(contentTypeHeader, body)
-    } catch (_: RuntimeException) {
-        ContentType.UNKNOWN
+@Preview(showBackground = true)
+@Composable
+private fun PrettyRawTogglePrettyPreview() {
+    WormaCeptorTheme {
+        PrettyRawToggle(
+            isPretty = true,
+            onToggle = {},
+        )
     }
 }
 
-internal fun extractMultipartBoundaryViaRegistry(contentType: String): String? {
-    return try {
-        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
-        registry.extractMultipartBoundary(contentType)
-    } catch (_: RuntimeException) {
-        null
-    }
-}
-
-internal fun parseBodyViaRegistry(
-    contentType: String?,
-    bytes: ByteArray,
-    rawFallback: String,
-): Pair<String, ContentType> {
-    if (bytes.size > MaxParseBodySize) {
-        val truncated = rawFallback.take(TruncatedDisplaySize) +
-            "\n\n... (Rest of content truncated for performance) ..."
-        return truncated to ContentType.PLAIN_TEXT
-    }
-    return try {
-        val registry: ParserRegistry =
-            org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
-        val parsed = registry.parseBody(contentType, bytes)
-        parsed.formatted to parsed.contentType
-    } catch (_: RuntimeException) {
-        rawFallback to ContentType.UNKNOWN
-    }
-}
-
-/**
- * Saves PDF data to the device's Downloads directory.
- *
- * @return Message describing the result of the operation
- */
-internal fun savePdfToDownloads(
-    context: Context,
-    pdfData: ByteArray,
-): String {
-    return try {
-        val fileName = "wormaceptor_${System.currentTimeMillis()}.pdf"
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            // Android 10+ use MediaStore
-            val contentValues = android.content.ContentValues().apply {
-                put(android.provider.MediaStore.Downloads.DISPLAY_NAME, fileName)
-                put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/pdf")
-                put(android.provider.MediaStore.Downloads.IS_PENDING, 1)
-            }
-
-            val uri = context.contentResolver.insert(
-                android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                contentValues,
-            )
-
-            if (uri != null) {
-                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    outputStream.write(pdfData)
-                }
-
-                contentValues.clear()
-                contentValues.put(android.provider.MediaStore.Downloads.IS_PENDING, 0)
-                context.contentResolver.update(uri, contentValues, null, null)
-
-                "PDF saved to Downloads"
-            } else {
-                "Failed to save PDF"
-            }
-        } else {
-            // Legacy approach for older Android versions
-            @Suppress("DEPRECATION")
-            val downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(
-                android.os.Environment.DIRECTORY_DOWNLOADS,
-            )
-            val file = java.io.File(downloadsDir, fileName)
-            java.io.FileOutputStream(file).use { it.write(pdfData) }
-            "PDF saved to Downloads"
-        }
-    } catch (e: Exception) {
-        "Failed to save PDF: ${e.message}"
-    }
-}
-
-internal fun generateTextSummary(
-    transaction: com.azikar24.wormaceptor.domain.entities.NetworkTransaction,
-    requestBody: String? = null,
-    responseBody: String? = null,
-): String = buildString {
-    appendLine("--- WormaCeptor Transaction ---")
-    appendLine("URL: ${transaction.request.url}")
-    appendLine("Method: ${transaction.request.method}")
-    appendLine("Status: ${transaction.status.name}")
-    transaction.response?.let { res ->
-        append("Code: ${res.code}")
-        if (res.message.isNotBlank()) append(" ${res.message}")
-        appendLine()
-        res.protocol?.let { appendLine("Protocol: $it") }
-        res.tlsVersion?.let { appendLine("TLS: $it") }
-        res.error?.let { appendLine("Error: $it") }
-    } ?: appendLine("Code: -")
-    appendLine("Duration: ${com.azikar24.wormaceptor.core.ui.util.formatDuration(transaction.durationMs)}")
-
-    appendLine("\n[Request Headers]")
-    appendLine(formatHeaders(transaction.request.headers))
-
-    if (!requestBody.isNullOrBlank()) {
-        appendLine("\n[Request Body]")
-        appendLine(requestBody)
-    }
-
-    transaction.response?.let { res ->
-        appendLine("\n[Response Headers]")
-        appendLine(formatHeaders(res.headers))
-
-        if (!responseBody.isNullOrBlank()) {
-            appendLine("\n[Response Body]")
-            appendLine(responseBody)
-        }
+@Preview(showBackground = true)
+@Composable
+private fun PrettyRawToggleRawPreview() {
+    WormaCeptorTheme {
+        PrettyRawToggle(
+            isPretty = false,
+            onToggle = {},
+        )
     }
 }

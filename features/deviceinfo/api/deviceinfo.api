@@ -13,6 +13,12 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/ComposableSinglet
 	public final fun getLambda-5$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoScreenKt {
 	public static final fun DeviceInfoScreen (Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
 }

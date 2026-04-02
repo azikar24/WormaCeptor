@@ -24,12 +24,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 
 @Composable
 internal fun PerCoreUsageCard(
@@ -80,7 +83,7 @@ internal fun PerCoreUsageCard(
 }
 
 @Composable
-internal fun CoreUsageBar(
+private fun CoreUsageBar(
     coreIndex: Int,
     usage: Float,
     color: Color,
@@ -124,6 +127,54 @@ internal fun CoreUsageBar(
             fontFamily = FontFamily.Monospace,
             color = colors.statusColorForUsage(usage),
             modifier = Modifier.width(36.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PerCoreUsageCardPreview() {
+    WormaCeptorTheme {
+        PerCoreUsageCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 42f,
+                perCoreUsage = listOf(25f, 58f, 82f, 14f, 67f, 91f, 33f, 46f),
+                coreCount = 8,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = 44f,
+            ),
+            colors = cpuColors(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PerCoreUsageCardEmptyPreview() {
+    WormaCeptorTheme {
+        PerCoreUsageCard(
+            currentCpu = CpuInfo.empty(),
+            colors = cpuColors(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PerCoreUsageCardProcessSourcePreview() {
+    WormaCeptorTheme {
+        PerCoreUsageCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 30f,
+                perCoreUsage = emptyList(),
+                coreCount = 4,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = null,
+                measurementSource = CpuMeasurementSource.PROCESS,
+            ),
+            colors = cpuColors(),
         )
     }
 }

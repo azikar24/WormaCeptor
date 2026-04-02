@@ -18,7 +18,7 @@ fun RecompositionInspector(
 
     RecompositionSummaryScreen(
         viewModel = viewModel,
-        onBack = { onNavigateBack?.invoke() },
+        onBack = onNavigateBack,
         modifier = modifier,
     )
 }

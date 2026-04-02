@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.feature.viewer.R
 
 @Composable
@@ -153,6 +155,20 @@ internal fun DetailRow(
     }
 }
 
-internal fun formatHeaders(headers: Map<String, List<String>>): String {
-    return headers.entries.joinToString("\n") { "${it.key}: ${it.value.joinToString(", ")}" }
+@Preview(showBackground = true)
+@Composable
+private fun CollapsibleSectionPreview() {
+    WormaCeptorTheme {
+        CollapsibleSection(
+            title = "Headers",
+            isExpanded = true,
+            onToggle = {},
+            onCopy = {},
+        ) {
+            Text(
+                text = "Content-Type: application/json",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
 }

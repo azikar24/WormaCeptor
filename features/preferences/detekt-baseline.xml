@@ -15,6 +15,5 @@
     <ID>ParameterNaming:PreferenceDetailScreen.kt$onTypeFilterChanged</ID>
     <ID>ParameterNaming:PreferenceEditSheet.kt$onTypeSelected</ID>
     <ID>ParameterNaming:PreferencesListScreen.kt$onSearchQueryChanged</ID>
-    <ID>UnusedPrivateMember:PreferenceDetailScreen.kt$@Suppress("MagicNumber") @Preview(showBackground = true) @Composable private fun PreferenceDetailScreenPreview()</ID>
   </CurrentIssues>
 </SmellBaseline>

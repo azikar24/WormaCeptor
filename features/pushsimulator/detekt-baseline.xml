@@ -18,7 +18,6 @@
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$0xFF81C784</ID>
     <ID>MagicNumber:PushSimulatorDesignSystem.kt$PushSimulatorDesignSystem.TemplateColors$0xFFBA68C8</ID>
     <ID>MagicNumber:PushSimulatorFormSection.kt$3</ID>
-    <ID>MagicNumber:PushSimulatorTemplatesSection.kt$3</ID>
     <ID>ParameterNaming:PushSimulatorFormSection.kt$onChannelSelected</ID>
     <ID>ParameterNaming:PushSimulatorFormSection.kt$onPrioritySelected</ID>
     <ID>SwallowedException:PushSimulatorViewModel.kt$PushSimulatorViewModel$e: NotificationPermissionException</ID>

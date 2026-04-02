@@ -6,8 +6,6 @@
     <ID>LongMethod:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
     <ID>LongMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen( request: WebViewRequest, onNavigateBack: () -&gt; Unit, )</ID>
     <ID>ParameterNaming:WebViewMonitorScreen.kt$onSearchQueryChanged</ID>
-    <ID>UnusedPrivateMember:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
-    <ID>UnusedPrivateMember:WebViewRequestDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewRequestDetailScreenPreview()</ID>
     <ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

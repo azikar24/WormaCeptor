@@ -8,10 +8,36 @@ public final class com/azikar24/wormaceptor/feature/cpu/CpuFeatureKt {
 	public static final fun CpuMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/azikar24/wormaceptor/feature/cpu/CpuNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/cpu/CpuViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuChartSectionKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuChartSectionKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuPerCoreSectionKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuPerCoreSectionKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuScreenKt {
@@ -27,8 +53,26 @@ public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$
 	public final fun getLambda-4$cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuSystemInfoKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuSystemInfoKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuUsageGaugeKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuUsageGaugeKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/azikar24/wormaceptor/feature/cpu/ui/CpuScreenKt {
-	public static final fun CpuScreen (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun CpuScreen (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLjava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColors {
@@ -75,15 +119,63 @@ public final class com/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColorsKt {
 	public static final fun cpuColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/cpu/ui/theme/CpuColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/cpu/vm/CpuEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$ClearHistory : com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$ClearHistory;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$StartMonitoring : com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$StartMonitoring;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$StopMonitoring : com/azikar24/wormaceptor/feature/cpu/vm/CpuEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuEvent$StopMonitoring;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;)V
-	public final fun clearHistory ()V
-	public final fun getCpuHistory ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getCurrentCpu ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isCpuWarning ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun startMonitoring ()V
-	public final fun stopMonitoring ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/cpu/vm/CpuViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLjava/lang/String;)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;
+	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLjava/lang/String;)Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuViewState;Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;Lkotlinx/collections/immutable/ImmutableList;ZZLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/cpu/vm/CpuViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCpuHistory ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getCurrentCpu ()Lcom/azikar24/wormaceptor/domain/entities/CpuInfo;
+	public final fun getFormattedUptime ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isCpuWarning ()Z
+	public final fun isMonitoring ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

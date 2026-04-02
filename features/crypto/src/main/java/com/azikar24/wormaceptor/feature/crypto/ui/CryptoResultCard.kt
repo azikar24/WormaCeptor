@@ -29,11 +29,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.domain.entities.CipherMode
+import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
 import com.azikar24.wormaceptor.domain.entities.CryptoOperation
 import com.azikar24.wormaceptor.domain.entities.CryptoResult
 import com.azikar24.wormaceptor.feature.crypto.R
@@ -154,42 +158,43 @@ internal fun ResultCard(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-internal fun ErrorCard(
-    message: String,
-    onDismiss: () -> Unit,
-) {
-    val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
-    WormaCeptorContainer(
-        style = ContainerStyle.Outlined,
-        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                modifier = Modifier.weight(1f),
-            ) {
-                Icon(Icons.Default.Error, null, tint = errorColor)
-                Text(
-                    message,
-                    color = errorColor,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-            IconButton(onClick = onDismiss) {
-                Icon(
-                    Icons.Default.Delete,
-                    stringResource(R.string.crypto_dismiss),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
+private fun ResultCardSuccessPreview() {
+    WormaCeptorTheme {
+        ResultCard(
+            result = CryptoResult.encryptSuccess(
+                id = "1",
+                input = "Hello, World!",
+                output = "dGhpcyBpcyBlbmNyeXB0ZWQ=",
+                algorithm = CryptoAlgorithm.AES_256,
+                mode = CipherMode.GCM,
+                durationMs = 12,
+            ),
+            onCopy = {},
+            onClear = {},
+            onUseAsInput = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ResultCardFailurePreview() {
+    WormaCeptorTheme {
+        ResultCard(
+            result = CryptoResult.failure(
+                id = "2",
+                operation = CryptoOperation.DECRYPT,
+                input = "invalid-ciphertext",
+                algorithm = CryptoAlgorithm.AES_256,
+                mode = CipherMode.CBC,
+                errorMessage = "Invalid key length: expected 32 bytes",
+                durationMs = 3,
+            ),
+            onCopy = {},
+            onClear = {},
+            onUseAsInput = {},
+        )
     }
 }

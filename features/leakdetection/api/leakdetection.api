@@ -14,6 +14,12 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionF
 	public static final fun LeakDetector (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LeakDetectionEngine;)V

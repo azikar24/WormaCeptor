@@ -8,6 +8,12 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/Depend
 	public static final fun DependenciesInspector (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/DependenciesInspectorViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)V

@@ -37,6 +37,7 @@ fun BulkActionBar(
     onShare: () -> Unit,
     onDelete: () -> Unit,
     onExport: () -> Unit,
+    onExportAsHar: () -> Unit,
     onSelectAll: () -> Unit,
     onDeselectAll: () -> Unit,
     onCancel: () -> Unit,
@@ -86,6 +87,13 @@ fun BulkActionBar(
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = stringResource(R.string.viewer_bulk_export_selected),
+                )
+            }
+
+            IconButton(onClick = onExportAsHar) {
+                Icon(
+                    imageVector = Icons.Default.Download,
+                    contentDescription = stringResource(R.string.viewer_bulk_export_selected_as_har),
                 )
             }
 

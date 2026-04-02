@@ -58,7 +58,6 @@
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onDependencySelected</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onShowVersionedOnlyChanged</ID>
-    <ID>UnusedPrivateMember:DependenciesInspectorScreen.kt$@Preview(showBackground = true) @Composable private fun DependenciesInspectorScreenPreview()</ID>
     <ID>ViewModelInjection:DependenciesInspectorFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

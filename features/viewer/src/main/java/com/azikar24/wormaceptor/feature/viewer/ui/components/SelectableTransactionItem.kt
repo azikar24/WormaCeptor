@@ -57,6 +57,7 @@ fun SelectableTransactionItem(
     onLongClick: () -> Unit,
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
+    onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier,
@@ -182,11 +183,11 @@ fun SelectableTransactionItem(
 
         // Context menu
         TransactionContextMenu(
-            transaction = transaction,
             expanded = showContextMenu,
             onDismiss = { showContextMenu = false },
             onCopyUrl = onCopyUrl,
             onShare = onShare,
+            onShareAsHar = onShareAsHar,
             onDelete = onDelete,
             onCopyAsCurl = onCopyAsCurl,
             offset = DpOffset(

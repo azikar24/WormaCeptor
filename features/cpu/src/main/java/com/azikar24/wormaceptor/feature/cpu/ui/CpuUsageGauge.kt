@@ -34,12 +34,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import java.text.DecimalFormat
 
 @Composable
@@ -180,7 +183,7 @@ internal fun CpuUsageGaugeCard(
 }
 
 @Composable
-internal fun CpuGauge(
+private fun CpuGauge(
     progress: Float,
     statusColor: Color,
     colors: CpuColors,
@@ -211,6 +214,45 @@ internal fun CpuGauge(
             topLeft = Offset(center.x - radius, center.y - radius),
             size = Size(radius * 2, radius * 2),
             style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CpuUsageGaugeCardNormalPreview() {
+    WormaCeptorTheme {
+        CpuUsageGaugeCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 25f,
+                perCoreUsage = listOf(20f, 30f, 22f, 28f),
+                coreCount = 4,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = 38f,
+            ),
+            isWarning = false,
+            colors = cpuColors(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CpuUsageGaugeCardWarningPreview() {
+    WormaCeptorTheme {
+        CpuUsageGaugeCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 85f,
+                perCoreUsage = listOf(80f, 90f, 82f, 88f),
+                coreCount = 4,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = 72f,
+                measurementSource = CpuMeasurementSource.PROCESS,
+            ),
+            isWarning = true,
+            colors = cpuColors(),
         )
     }
 }

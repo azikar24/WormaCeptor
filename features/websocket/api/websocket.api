@@ -6,6 +6,12 @@ public final class com/azikar24/wormaceptor/feature/websocket/WebSocketFeature {
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)Lcom/azikar24/wormaceptor/feature/websocket/WebSocketViewModelFactory;
 }
 
+public final class com/azikar24/wormaceptor/feature/websocket/WebSocketNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/websocket/WebSocketViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)V

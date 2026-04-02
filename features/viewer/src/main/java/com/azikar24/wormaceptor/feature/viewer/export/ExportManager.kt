@@ -7,6 +7,7 @@ import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.util.MAX_CLIPBOARD_SIZE
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.domain.entities.ExportFormat
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.Request
 import com.azikar24.wormaceptor.domain.entities.Response
@@ -20,15 +21,25 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/** Handles exporting network transactions as JSON files via the system share sheet. */
+/** Handles exporting network transactions via the system share sheet. */
 class ExportManager(
     private val context: Context,
     private val queryEngine: QueryEngine?,
     private val onMessage: (String) -> Unit = {},
 ) {
 
-    /** Exports the given transactions as a JSON file and opens the system share sheet. */
-    suspend fun exportTransactions(transactions: List<NetworkTransaction>) {
+    /**
+     * Exports the given transactions in the specified [format].
+     *
+     * @param transactions the transactions to export
+     * @param format the desired export format (defaults to [ExportFormat.JSON])
+     * @param appVersion app version string embedded in HAR creator metadata
+     */
+    suspend fun exportTransactions(
+        transactions: List<NetworkTransaction>,
+        format: ExportFormat = ExportFormat.JSON,
+        appVersion: String = "2.0.0",
+    ) {
         withContext(Dispatchers.Main) {
             onMessage("Preparing export...")
         }
@@ -37,14 +48,46 @@ class ExportManager(
             try {
                 cleanupStaleFiles(File(context.cacheDir, "shared_bodies"))
 
-                val jsonArray = serializeTransactions(transactions)
-                val jsonContent = jsonArray.toString(2)
+                val content = when (format) {
+                    ExportFormat.JSON -> {
+                        val jsonArray = serializeTransactions(transactions)
+                        jsonArray.toString(2)
+                    }
+                    ExportFormat.HAR -> {
+                        // Pre-resolve all body blobs so HarExporter can stay non-suspending.
+                        val bodyCache = mutableMapOf<String, String>()
+                        transactions.forEach { tx ->
+                            tx.request.bodyRef?.let { ref ->
+                                queryEngine?.getBody(ref)?.let { bodyCache[ref] = it }
+                            }
+                            tx.response?.bodyRef?.let { ref ->
+                                queryEngine?.getBody(ref)?.let { bodyCache[ref] = it }
+                            }
+                        }
+                        val harLog = HarExporter.toHarLog(
+                            transactions = transactions,
+                            version = appVersion,
+                            bodyProvider = { ref -> bodyCache[ref] },
+                        )
+                        HarExporter.toJsonString(harLog)
+                    }
+                    ExportFormat.CURL -> {
+                        // cURL is single-transaction; handled elsewhere
+                        val jsonArray = serializeTransactions(transactions)
+                        jsonArray.toString(2)
+                    }
+                }
 
-                if (jsonContent.length > MAX_CLIPBOARD_SIZE) {
-                    shareAsFile(jsonContent)
+                val extension = when (format) {
+                    ExportFormat.HAR -> ".har"
+                    else -> ".json"
+                }
+
+                if (content.length > MAX_CLIPBOARD_SIZE) {
+                    shareAsFile(content, extension)
                 } else {
                     withContext(Dispatchers.Main) {
-                        shareText(jsonContent)
+                        shareText(content)
                     }
                 }
             } catch (e: Exception) {
@@ -94,12 +137,15 @@ class ExportManager(
         }
     }
 
-    private suspend fun shareAsFile(content: String) {
+    private suspend fun shareAsFile(
+        content: String,
+        extension: String = ".json",
+    ) {
         try {
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
             val cacheDir = File(context.cacheDir, "shared_bodies")
             cacheDir.mkdirs()
-            val file = File(cacheDir, "wormaceptor_export_$timestamp.json")
+            val file = File(cacheDir, "wormaceptor_export_$timestamp$extension")
 
             file.bufferedWriter().use { writer ->
                 writer.write(content)

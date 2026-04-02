@@ -27,13 +27,17 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorChartLegendItem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun CpuChartCard(
@@ -106,7 +110,7 @@ internal fun CpuChartCard(
 }
 
 @Composable
-internal fun CpuLineChart(
+private fun CpuLineChart(
     history: ImmutableList<CpuInfo>,
     colors: CpuColors,
     modifier: Modifier = Modifier,
@@ -197,6 +201,69 @@ internal fun CpuLineChart(
         drawPath(
             path = areaPath,
             color = colors.cpuUsage.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CpuChartCardEmptyPreview() {
+    WormaCeptorTheme {
+        CpuChartCard(
+            history = persistentListOf(),
+            colors = cpuColors(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CpuChartCardWithDataPreview() {
+    WormaCeptorTheme {
+        CpuChartCard(
+            history = persistentListOf(
+                CpuInfo(
+                    timestamp = 1L,
+                    overallUsagePercent = 20f,
+                    perCoreUsage = listOf(15f, 25f, 18f, 22f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 38f,
+                ),
+                CpuInfo(
+                    timestamp = 2L,
+                    overallUsagePercent = 35f,
+                    perCoreUsage = listOf(30f, 40f, 28f, 42f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 40f,
+                ),
+                CpuInfo(
+                    timestamp = 3L,
+                    overallUsagePercent = 55f,
+                    perCoreUsage = listOf(50f, 60f, 48f, 62f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 44f,
+                ),
+                CpuInfo(
+                    timestamp = 4L,
+                    overallUsagePercent = 72f,
+                    perCoreUsage = listOf(68f, 78f, 65f, 77f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 48f,
+                ),
+                CpuInfo(
+                    timestamp = 5L,
+                    overallUsagePercent = 45f,
+                    perCoreUsage = listOf(40f, 50f, 38f, 52f),
+                    coreCount = 4,
+                    cpuFrequencyMHz = 2400L,
+                    cpuTemperature = 42f,
+                ),
+            ),
+            colors = cpuColors(),
         )
     }
 }

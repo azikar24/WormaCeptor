@@ -120,7 +120,10 @@ class DatabaseViewModel(
                 _allDatabases.value = databases
             } catch (e: IllegalStateException) {
                 updateState {
-                    copy(databasesError = e.message ?: application.getString(R.string.database_error_load_databases))
+                    copy(
+                        databasesError = e.message ?: application.getString(R.string.database_error_load_databases),
+                        isDatabasesLoading = false,
+                    )
                 }
             } finally {
                 updateState { copy(isDatabasesLoading = false) }

@@ -8,6 +8,12 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public static synthetic fun createViewModelFactory$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorFeature;IILjava/lang/Object;)Landroidx/lifecycle/ViewModelProvider$Factory;
 }
 
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel : androidx/lifecycle/ViewModel {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonitorViewModel$Companion;

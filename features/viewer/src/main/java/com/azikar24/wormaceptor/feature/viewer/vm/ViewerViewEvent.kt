@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.vm
 
+import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
 import java.util.UUID
 
@@ -143,4 +144,56 @@ sealed class ViewerViewEvent {
      * @property visible Whether the dialog should be visible.
      */
     data class DeleteSelectedDialogVisibilityChanged(val visible: Boolean) : ViewerViewEvent()
+
+    // ── Export events ──────────────────────────────────────────────────
+
+    /** User requested exporting all transactions as JSON. */
+    data object ExportAllTransactions : ViewerViewEvent()
+
+    /** User requested exporting all transactions as HAR. */
+    data object ExportAllTransactionsAsHar : ViewerViewEvent()
+
+    /** User requested exporting all crashes. */
+    data object ExportCrashesClicked : ViewerViewEvent()
+
+    /** User requested exporting the selected transactions as JSON. */
+    data object ExportSelectedTransactions : ViewerViewEvent()
+
+    /** User requested exporting the selected transactions as HAR. */
+    data object ExportSelectedTransactionsAsHar : ViewerViewEvent()
+
+    // ── Share events ───────────────────────────────────────────────────
+
+    /** User requested sharing the selected transactions as text. */
+    data object ShareSelectedTransactions : ViewerViewEvent()
+
+    /**
+     * User requested sharing a single transaction as HAR.
+     *
+     * @property id The transaction to export and share.
+     */
+    data class ShareTransactionAsHar(val id: UUID) : ViewerViewEvent()
+
+    /**
+     * User requested sharing a single transaction summary as text.
+     *
+     * @property summary The transaction summary to share.
+     */
+    data class ShareTransaction(val summary: TransactionSummary) : ViewerViewEvent()
+
+    // ── Clipboard events ───────────────────────────────────────────────
+
+    /**
+     * User requested copying a transaction URL to clipboard.
+     *
+     * @property summary The transaction whose URL to copy.
+     */
+    data class CopyTransactionUrl(val summary: TransactionSummary) : ViewerViewEvent()
+
+    /**
+     * User requested copying a transaction as a cURL command.
+     *
+     * @property id The transaction to generate cURL for.
+     */
+    data class CopyTransactionAsCurl(val id: UUID) : ViewerViewEvent()
 }

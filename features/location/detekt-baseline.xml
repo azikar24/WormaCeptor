@@ -31,7 +31,6 @@
     <ID>ParameterNaming:LocationScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:LocationScreen.kt$onToggleMapExpanded</ID>
     <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
-    <ID>UnusedPrivateMember:LocationScreen.kt$@Preview(showBackground = true) @Composable private fun LocationScreenPreview()</ID>
     <ID>ViewModelInjection:LocationFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

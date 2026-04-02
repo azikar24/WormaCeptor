@@ -8,6 +8,13 @@ public final class com/azikar24/wormaceptor/feature/recomposition/RecompositionN
 	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
 }
 
+public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$EmptyRecompositionStateKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$EmptyRecompositionStateKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -15,18 +22,56 @@ public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableS
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function3;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$recomposition_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$recomposition_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-5$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$recomposition_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/RecompositionSummaryScreenKt {
 	public static final fun RecompositionSummaryScreen (Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun colorForRate-vNxB06k (F)J
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;JJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCritical-0d7_KjU ()J
+	public final fun getElevated-0d7_KjU ()J
+	public final fun getExcessive-0d7_KjU ()J
+	public final fun getNormal-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColorsKt {
+	public static final fun recompositionColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
+	public static final fun statusLabelForRate (FLandroidx/compose/runtime/Composer;I)Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent$Reset : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent$Reset;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionItem {
@@ -45,14 +90,13 @@ public final class com/azikar24/wormaceptor/feature/recomposition/vm/Recompositi
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel : androidx/lifecycle/ViewModel {
+public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel$Companion;
 	public fun <init> ()V
 	public fun <init> (Lcom/azikar24/wormaceptor/core/ui/RecompositionTracker;)V
 	public synthetic fun <init> (Lcom/azikar24/wormaceptor/core/ui/RecompositionTracker;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getState ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun reset ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel$Companion {

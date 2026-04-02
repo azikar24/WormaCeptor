@@ -26,15 +26,19 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.R
 import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
+import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
 import java.util.Locale
 
 @Composable
 internal fun SystemInfoCard(
     currentCpu: CpuInfo,
+    formattedUptime: String,
     colors: CpuColors,
     modifier: Modifier = Modifier,
 ) {
@@ -101,13 +105,13 @@ internal fun SystemInfoCard(
             }
 
             // Uptime
-            if (currentCpu.uptime > 0) {
+            if (formattedUptime.isNotEmpty()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = stringResource(R.string.cpu_uptime, formatUptime(currentCpu.uptime)),
+                        text = stringResource(R.string.cpu_uptime, formattedUptime),
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.labelSecondary,
                         fontFamily = FontFamily.Monospace,
@@ -153,19 +157,41 @@ private fun SystemInfoItem(
     }
 }
 
-/**
- * Formats uptime in milliseconds to a human-readable string.
- */
-internal fun formatUptime(uptimeMs: Long): String {
-    val seconds = uptimeMs / 1000
-    val minutes = seconds / 60
-    val hours = minutes / 60
-    val days = hours / 24
+@Preview(showBackground = true)
+@Composable
+private fun SystemInfoCardPreview() {
+    WormaCeptorTheme {
+        SystemInfoCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 42f,
+                perCoreUsage = listOf(30f, 55f, 20f, 65f),
+                coreCount = 8,
+                cpuFrequencyMHz = 2400L,
+                cpuTemperature = 42.5f,
+                uptime = 3_600_000L,
+            ),
+            formattedUptime = "1h 0m 0s",
+            colors = cpuColors(),
+        )
+    }
+}
 
-    return when {
-        days > 0 -> "${days}d ${hours % 24}h ${minutes % 60}m"
-        hours > 0 -> "${hours}h ${minutes % 60}m ${seconds % 60}s"
-        minutes > 0 -> "${minutes}m ${seconds % 60}s"
-        else -> "${seconds}s"
+@Preview(showBackground = true)
+@Composable
+private fun SystemInfoCardHighTempPreview() {
+    WormaCeptorTheme {
+        SystemInfoCard(
+            currentCpu = CpuInfo(
+                timestamp = System.currentTimeMillis(),
+                overallUsagePercent = 88f,
+                perCoreUsage = listOf(85f, 90f, 82f, 95f),
+                coreCount = 4,
+                cpuFrequencyMHz = 3200L,
+                cpuTemperature = 75f,
+            ),
+            formattedUptime = "",
+            colors = cpuColors(),
+        )
     }
 }

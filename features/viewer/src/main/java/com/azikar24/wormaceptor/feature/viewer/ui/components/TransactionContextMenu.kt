@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
@@ -27,11 +26,11 @@ import com.azikar24.wormaceptor.feature.viewer.R
  */
 @Composable
 fun TransactionContextMenu(
-    transaction: TransactionSummary,
     expanded: Boolean,
     onDismiss: () -> Unit,
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
+    onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier,
@@ -70,6 +69,21 @@ fun TransactionContextMenu(
             },
             onClick = {
                 onShare()
+                onDismiss()
+            },
+        )
+
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.viewer_context_menu_share_as_har)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = stringResource(R.string.viewer_context_menu_share_as_har_description),
+                    modifier = Modifier.size(20.dp),
+                )
+            },
+            onClick = {
+                onShareAsHar()
                 onDismiss()
             },
         )

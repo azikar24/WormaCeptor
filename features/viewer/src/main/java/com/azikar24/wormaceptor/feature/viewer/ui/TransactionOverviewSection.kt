@@ -42,11 +42,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.Request
+import com.azikar24.wormaceptor.domain.entities.Response
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.feature.viewer.R
 
 @Composable
@@ -343,5 +348,38 @@ internal fun EnhancedOverviewCard(
             }
             content()
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun OverviewTabPreview() {
+    WormaCeptorTheme {
+        OverviewTab(
+            transaction = NetworkTransaction(
+                request = Request(
+                    url = "https://api.example.com/users/123",
+                    method = "GET",
+                    headers = mapOf(
+                        "Content-Type" to listOf("application/json"),
+                        "Authorization" to listOf("Bearer token123"),
+                    ),
+                    bodyRef = null,
+                ),
+                response = Response(
+                    code = 200,
+                    message = "OK",
+                    headers = mapOf(
+                        "Content-Type" to listOf("application/json"),
+                    ),
+                    bodyRef = null,
+                    protocol = "HTTP/2",
+                    tlsVersion = "TLSv1.3",
+                    bodySize = 1024L,
+                ),
+                durationMs = 142L,
+                status = TransactionStatus.COMPLETED,
+            ),
+        )
     }
 }

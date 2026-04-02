@@ -12,9 +12,11 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Loop
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.NetworkCheck
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Speed
@@ -114,6 +116,12 @@ object ToolCategories {
             Icons.Default.Warning,
             WormaCeptorNavKeys.ThreadViolation.route,
         ),
+        ToolItem(
+            Feature.COMPOSE_RECOMPOSITION_INSPECTOR,
+            "Recomposition",
+            Icons.Default.Loop,
+            WormaCeptorNavKeys.Recomposition.route,
+        ),
     )
 
     /** Tools for monitoring network activity like WebSocket connections. */
@@ -125,6 +133,7 @@ object ToolCategories {
             WormaCeptorNavKeys.WebSocket.route,
         ),
         ToolItem(Feature.RATE_LIMITER, "Rate Limiter", Icons.Default.NetworkCheck, WormaCeptorNavKeys.RateLimit.route),
+        ToolItem(Feature.MOCK_RULES, "Mock Rules", Icons.Default.Science, WormaCeptorNavKeys.MockRules.route),
     )
 
     /** Tools for simulating device features like location and push notifications. */

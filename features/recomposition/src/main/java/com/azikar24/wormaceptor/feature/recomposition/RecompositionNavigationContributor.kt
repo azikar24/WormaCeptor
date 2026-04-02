@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.azikar24.wormaceptor.core.ui.navigation.FeatureNavigationContributor
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
+import com.google.auto.service.AutoService
 
 /** Registers the Recomposition Inspector navigation route with the main NavHost. */
+@AutoService(FeatureNavigationContributor::class)
 class RecompositionNavigationContributor : FeatureNavigationContributor {
     override fun contribute(
         builder: NavGraphBuilder,

@@ -5,6 +5,12 @@ public final class com/azikar24/wormaceptor/feature/database/DatabaseFeature {
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Landroid/app/Application;)Lcom/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory;
 }
 
+public final class com/azikar24/wormaceptor/feature/database/DatabaseNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+}
+
 public final class com/azikar24/wormaceptor/feature/database/DatabaseViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Landroid/app/Application;)V

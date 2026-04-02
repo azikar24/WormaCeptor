@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.azikar24.wormaceptor.core.ui.navigation.FeatureNavigationContributor
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
+import com.google.auto.service.AutoService
 
 /** Registers Mock Rules navigation routes with the main NavHost. */
+@AutoService(FeatureNavigationContributor::class)
 class MockRulesNavigationContributor : FeatureNavigationContributor {
     override fun contribute(
         builder: NavGraphBuilder,

@@ -1,19 +1,19 @@
 package com.azikar24.wormaceptor.feature.viewer.export
 
-import android.net.Uri
 import android.util.Base64
-import com.azikar24.wormaceptor.domain.entities.HarContent
-import com.azikar24.wormaceptor.domain.entities.HarCookie
-import com.azikar24.wormaceptor.domain.entities.HarCreator
-import com.azikar24.wormaceptor.domain.entities.HarEntry
-import com.azikar24.wormaceptor.domain.entities.HarHeader
-import com.azikar24.wormaceptor.domain.entities.HarLog
-import com.azikar24.wormaceptor.domain.entities.HarPostData
-import com.azikar24.wormaceptor.domain.entities.HarQueryParam
-import com.azikar24.wormaceptor.domain.entities.HarRequest
-import com.azikar24.wormaceptor.domain.entities.HarResponse
-import com.azikar24.wormaceptor.domain.entities.HarTimings
+import androidx.core.net.toUri
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.har.HarContent
+import com.azikar24.wormaceptor.domain.entities.har.HarCookie
+import com.azikar24.wormaceptor.domain.entities.har.HarCreator
+import com.azikar24.wormaceptor.domain.entities.har.HarEntry
+import com.azikar24.wormaceptor.domain.entities.har.HarHeader
+import com.azikar24.wormaceptor.domain.entities.har.HarLog
+import com.azikar24.wormaceptor.domain.entities.har.HarPostData
+import com.azikar24.wormaceptor.domain.entities.har.HarQueryParam
+import com.azikar24.wormaceptor.domain.entities.har.HarRequest
+import com.azikar24.wormaceptor.domain.entities.har.HarResponse
+import com.azikar24.wormaceptor.domain.entities.har.HarTimings
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -31,6 +31,13 @@ object HarExporter {
 
     private const val DEFAULT_HTTP_VERSION = "HTTP/1.1"
     private const val CREATOR_NAME = "WormaCeptor"
+
+    private val iso8601Format = object : ThreadLocal<SimpleDateFormat>() {
+        override fun initialValue(): SimpleDateFormat =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).apply {
+                timeZone = TimeZone.getDefault()
+            }
+    }
 
     /**
      * Builds a [HarLog] from captured transactions.
@@ -57,10 +64,6 @@ object HarExporter {
         root.put("log", serializeLog(harLog))
         return root.toString(2)
     }
-
-    // -----------------------------------------------------------------------
-    // Conversion helpers
-    // -----------------------------------------------------------------------
 
     private fun toHarEntry(
         tx: NetworkTransaction,
@@ -154,10 +157,6 @@ object HarExporter {
         )
     }
 
-    // -----------------------------------------------------------------------
-    // Header / cookie / query helpers
-    // -----------------------------------------------------------------------
-
     internal fun flattenHeaders(headers: Map<String, List<String>>): List<HarHeader> =
         headers.flatMap { (name, values) ->
             values.map { value -> HarHeader(name = name, value = value) }
@@ -165,7 +164,7 @@ object HarExporter {
 
     internal fun parseQueryString(url: String): List<HarQueryParam> {
         return try {
-            val uri = Uri.parse(url)
+            val uri = url.toUri()
             uri.queryParameterNames.flatMap { name ->
                 uri.getQueryParameters(name).map { value ->
                     HarQueryParam(name = name, value = value)
@@ -247,10 +246,6 @@ object HarExporter {
             secure = secure,
         )
     }
-
-    // -----------------------------------------------------------------------
-    // Serialization to JSONObject
-    // -----------------------------------------------------------------------
 
     private fun serializeLog(log: HarLog): JSONObject = JSONObject().apply {
         put("version", log.version)
@@ -402,15 +397,7 @@ object HarExporter {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Utility functions
-    // -----------------------------------------------------------------------
-
-    internal fun formatIso8601(epochMillis: Long): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
-        sdf.timeZone = TimeZone.getDefault()
-        return sdf.format(Date(epochMillis))
-    }
+    internal fun formatIso8601(epochMillis: Long): String = iso8601Format.get()!!.format(Date(epochMillis))
 
     private fun calculateHeadersSize(headers: List<HarHeader>): Long = if (headers.isEmpty()) {
         -1

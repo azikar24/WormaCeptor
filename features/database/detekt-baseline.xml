@@ -22,9 +22,5 @@
     <ID>ParameterNaming:QueryScreen.kt$onQueryChanged</ID>
     <ID>ParameterNaming:TableListScreen.kt$onSearchQueryChanged</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
-    <ID>UnusedPrivateMember:DatabaseListScreen.kt$@SuppressLint("SdCardPath") @Preview(showBackground = true) @Composable private fun DatabaseListScreenPreview()</ID>
-    <ID>UnusedPrivateMember:QueryScreen.kt$@Preview(showBackground = true) @Composable private fun QueryScreenPreview()</ID>
-    <ID>UnusedPrivateMember:TableDataScreen.kt$@Preview(showBackground = true) @Composable private fun TableDataScreenPreview()</ID>
-    <ID>UnusedPrivateMember:TableListScreen.kt$@Preview(showBackground = true) @Composable private fun TableListScreenPreview()</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -39,12 +39,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.domain.entities.CipherMode
+import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
 import com.azikar24.wormaceptor.domain.entities.CryptoOperation
 import com.azikar24.wormaceptor.domain.entities.CryptoResult
 import com.azikar24.wormaceptor.feature.crypto.CryptoFeature
@@ -171,7 +175,7 @@ fun CryptoHistoryScreen(
 }
 
 @Composable
-internal fun HistoryItem(
+private fun HistoryItem(
     result: CryptoResult,
     onLoad: () -> Unit,
     onRemove: () -> Unit,
@@ -231,5 +235,44 @@ internal fun HistoryItem(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HistoryItemSuccessPreview() {
+    WormaCeptorTheme {
+        HistoryItem(
+            result = CryptoResult.encryptSuccess(
+                id = "1",
+                input = "Hello, World! This is a sample encryption input",
+                output = "dGhpcyBpcyBlbmNyeXB0ZWQ=",
+                algorithm = CryptoAlgorithm.AES_256,
+                mode = CipherMode.GCM,
+                durationMs = 12,
+            ),
+            onLoad = {},
+            onRemove = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HistoryItemFailurePreview() {
+    WormaCeptorTheme {
+        HistoryItem(
+            result = CryptoResult.failure(
+                id = "2",
+                operation = CryptoOperation.DECRYPT,
+                input = "invalid-ciphertext-data",
+                algorithm = CryptoAlgorithm.AES_128,
+                mode = CipherMode.CBC,
+                errorMessage = "Bad padding",
+                durationMs = 5,
+            ),
+            onLoad = {},
+            onRemove = {},
+        )
     }
 }

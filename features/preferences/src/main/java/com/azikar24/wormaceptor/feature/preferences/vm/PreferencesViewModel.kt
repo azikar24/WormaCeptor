@@ -1,28 +1,23 @@
 package com.azikar24.wormaceptor.feature.preferences.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
-import com.azikar24.wormaceptor.domain.entities.PreferenceFile
-import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+private const val DebounceMillis = 150L
 
 /**
  * ViewModel for the SharedPreferences Inspector feature.
@@ -31,182 +26,205 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class PreferencesViewModel(
     private val repository: PreferencesRepository,
-) : ViewModel() {
+) : BaseViewModel<PreferencesViewState, PreferencesViewEffect, PreferencesViewEvent>(
+    PreferencesViewState(),
+) {
 
     private val _fileSearchQuery = MutableStateFlow("")
-
-    /** Current search query for filtering the preference file list. */
-    val fileSearchQuery: StateFlow<String> = _fileSearchQuery
-
     private val _selectedFileName = MutableStateFlow<String?>(null)
-
-    /** Name of the currently selected preference file, or null if none selected. */
-    val selectedFileName: StateFlow<String?> = _selectedFileName
-
     private val _itemSearchQuery = MutableStateFlow("")
-
-    /** Current search query for filtering items within the selected file. */
-    val itemSearchQuery: StateFlow<String> = _itemSearchQuery
-
     private val _typeFilter = MutableStateFlow<String?>(null)
 
-    /** Active type filter name, or null to show all types. */
-    val typeFilter: StateFlow<String?> = _typeFilter
-
-    private val _isLoading = MutableStateFlow(false)
-
-    /** Whether a write or delete operation is in progress. */
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    /** Filtered and sorted list of discovered SharedPreferences files. */
-    val preferenceFiles: StateFlow<ImmutableList<PreferenceFile>> = combine(
-        repository.observePreferenceFiles(),
-        _fileSearchQuery.debounce(150),
-    ) { files, query ->
-        files.filter { file ->
-            query.isBlank() || file.name.contains(query, ignoreCase = true)
-        }.sortedBy { it.name.lowercase() }.toImmutableList()
-    }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /** Filtered preference items for the currently selected file. */
-    val preferenceItems: StateFlow<ImmutableList<PreferenceItem>> = _selectedFileName
-        .flatMapLatest { fileName ->
-            if (fileName == null) {
-                flowOf(emptyList())
-            } else {
-                combine(
-                    repository.observePreferenceItems(fileName),
-                    _itemSearchQuery.debounce(150),
-                    _typeFilter,
-                ) { items, query, typeFilter ->
-                    items.filter { item ->
-                        val matchesQuery = query.isBlank() ||
-                            item.key.contains(query, ignoreCase = true) ||
-                            item.value.displayValue.contains(query, ignoreCase = true)
-
-                        val matchesType = typeFilter == null ||
-                            item.value.typeName == typeFilter
-
-                        matchesQuery && matchesType
-                    }
-                }
-            }
-        }
-        .map { it.toImmutableList() }
-        .flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /** Distinct value type names available in the selected file, for filter chips. */
-    val availableTypes: StateFlow<ImmutableList<String>> = _selectedFileName
-        .flatMapLatest { fileName ->
-            if (fileName == null) {
-                flowOf(emptyList())
-            } else {
-                repository.observePreferenceItems(fileName).map { items ->
-                    items.map { it.value.typeName }.distinct().sorted()
-                }
-            }
-        }
-        .map { it.toImmutableList() }
-        .flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /** Total number of preference entries in the selected file, before filtering. */
-    val totalItemCount: StateFlow<Int> = _selectedFileName
-        .flatMapLatest { fileName ->
-            if (fileName == null) {
-                flowOf(0)
-            } else {
-                repository.observePreferenceItems(fileName).map { it.size }
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    /** Updates the search query used to filter the preference file list. */
-    fun onFileSearchQueryChanged(query: String) {
-        _fileSearchQuery.value = query
+    init {
+        observePreferenceFiles()
+        observePreferenceItems()
+        observeAvailableTypes()
+        observeTotalItemCount()
     }
 
-    /** Selects a preference file to display its entries. */
-    fun selectFile(fileName: String) {
+    override fun handleEvent(event: PreferencesViewEvent) {
+        when (event) {
+            is PreferencesViewEvent.FileSearchQueryChanged -> handleFileSearchQueryChanged(event.query)
+            is PreferencesViewEvent.SelectFile -> handleSelectFile(event.fileName)
+            is PreferencesViewEvent.ClearFileSelection -> handleClearFileSelection()
+            is PreferencesViewEvent.ItemSearchQueryChanged -> handleItemSearchQueryChanged(event.query)
+            is PreferencesViewEvent.SetTypeFilter -> handleSetTypeFilter(event.typeName)
+            is PreferencesViewEvent.ClearFilters -> handleClearFilters()
+            is PreferencesViewEvent.SetPreference -> handleSetPreference(event.key, event.value)
+            is PreferencesViewEvent.DeletePreference -> handleDeletePreference(event.key)
+            is PreferencesViewEvent.ClearCurrentFile -> handleClearCurrentFile()
+            is PreferencesViewEvent.CreatePreference -> handleSetPreference(event.key, event.value)
+        }
+    }
+
+    private fun handleFileSearchQueryChanged(query: String) {
+        _fileSearchQuery.value = query
+        updateState { copy(fileSearchQuery = query) }
+    }
+
+    private fun handleSelectFile(fileName: String) {
         _selectedFileName.value = fileName
         _itemSearchQuery.value = ""
         _typeFilter.value = null
+        updateState {
+            copy(
+                selectedFileName = fileName,
+                itemSearchQuery = "",
+                typeFilter = null,
+            )
+        }
     }
 
-    /** Deselects the current file and resets item filters. */
-    fun clearFileSelection() {
+    private fun handleClearFileSelection() {
         _selectedFileName.value = null
         _itemSearchQuery.value = ""
         _typeFilter.value = null
+        updateState {
+            copy(
+                selectedFileName = null,
+                itemSearchQuery = "",
+                typeFilter = null,
+            )
+        }
     }
 
-    /** Updates the search query used to filter items within the selected file. */
-    fun onItemSearchQueryChanged(query: String) {
+    private fun handleItemSearchQueryChanged(query: String) {
         _itemSearchQuery.value = query
+        updateState { copy(itemSearchQuery = query) }
     }
 
-    /** Applies a type-based filter to show only items of the given type, or all if null. */
-    fun setTypeFilter(typeName: String?) {
+    private fun handleSetTypeFilter(typeName: String?) {
         _typeFilter.value = typeName
+        updateState { copy(typeFilter = typeName) }
     }
 
-    /** Resets item search query and type filter to their defaults. */
-    fun clearFilters() {
+    private fun handleClearFilters() {
         _itemSearchQuery.value = ""
         _typeFilter.value = null
+        updateState { copy(itemSearchQuery = "", typeFilter = null) }
     }
 
-    /** Writes or updates a preference value in the currently selected file. */
-    fun setPreference(
+    private fun handleSetPreference(
         key: String,
         value: PreferenceValue,
     ) {
-        val fileName = _selectedFileName.value ?: return
+        val fileName = uiState.value.selectedFileName ?: return
         viewModelScope.launch {
-            _isLoading.value = true
+            updateState { copy(isLoading = true) }
             try {
                 repository.setPreference(fileName, key, value)
             } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
             }
         }
     }
 
-    /** Removes a preference entry by key from the currently selected file. */
-    fun deletePreference(key: String) {
-        val fileName = _selectedFileName.value ?: return
+    private fun handleDeletePreference(key: String) {
+        val fileName = uiState.value.selectedFileName ?: return
         viewModelScope.launch {
-            _isLoading.value = true
+            updateState { copy(isLoading = true) }
             try {
                 repository.deletePreference(fileName, key)
             } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
             }
         }
     }
 
-    /** Removes all preference entries from the currently selected file. */
-    fun clearCurrentFile() {
-        val fileName = _selectedFileName.value ?: return
+    private fun handleClearCurrentFile() {
+        val fileName = uiState.value.selectedFileName ?: return
         viewModelScope.launch {
-            _isLoading.value = true
+            updateState { copy(isLoading = true) }
             try {
                 repository.clearFile(fileName)
             } finally {
-                _isLoading.value = false
+                updateState { copy(isLoading = false) }
             }
         }
     }
 
-    /**
-     * Creates a new preference item in the current file.
-     */
-    fun createPreference(
-        key: String,
-        value: PreferenceValue,
-    ) {
-        setPreference(key, value)
+    private fun observePreferenceFiles() {
+        viewModelScope.launch {
+            combine(
+                repository.observePreferenceFiles(),
+                _fileSearchQuery.debounce(DebounceMillis),
+            ) { files, query ->
+                files.filter { file ->
+                    query.isBlank() || file.name.contains(query, ignoreCase = true)
+                }.sortedBy { it.name.lowercase() }.toImmutableList()
+            }.flowOn(Dispatchers.Default)
+                .collect { files ->
+                    updateState { copy(preferenceFiles = files) }
+                }
+        }
+    }
+
+    private fun observePreferenceItems() {
+        viewModelScope.launch {
+            _selectedFileName
+                .flatMapLatest { fileName ->
+                    if (fileName == null) {
+                        flowOf(emptyList())
+                    } else {
+                        combine(
+                            repository.observePreferenceItems(fileName),
+                            _itemSearchQuery.debounce(DebounceMillis),
+                            _typeFilter,
+                        ) { items, query, typeFilter ->
+                            items.filter { item ->
+                                val matchesQuery = query.isBlank() ||
+                                    item.key.contains(query, ignoreCase = true) ||
+                                    item.value.displayValue.contains(query, ignoreCase = true)
+
+                                val matchesType = typeFilter == null ||
+                                    item.value.typeName == typeFilter
+
+                                matchesQuery && matchesType
+                            }
+                        }
+                    }
+                }
+                .map { it.toImmutableList() }
+                .flowOn(Dispatchers.Default)
+                .collect { items ->
+                    updateState { copy(preferenceItems = items) }
+                }
+        }
+    }
+
+    private fun observeAvailableTypes() {
+        viewModelScope.launch {
+            _selectedFileName
+                .flatMapLatest { fileName ->
+                    if (fileName == null) {
+                        flowOf(emptyList())
+                    } else {
+                        repository.observePreferenceItems(fileName).map { items ->
+                            items.map { it.value.typeName }.distinct().sorted()
+                        }
+                    }
+                }
+                .map { it.toImmutableList() }
+                .flowOn(Dispatchers.Default)
+                .collect { types ->
+                    updateState { copy(availableTypes = types) }
+                }
+        }
+    }
+
+    private fun observeTotalItemCount() {
+        viewModelScope.launch {
+            _selectedFileName
+                .flatMapLatest { fileName ->
+                    if (fileName == null) {
+                        flowOf(0)
+                    } else {
+                        repository.observePreferenceItems(fileName).map { it.size }
+                    }
+                }
+                .collect { count ->
+                    updateState { copy(totalItemCount = count) }
+                }
+        }
     }
 }

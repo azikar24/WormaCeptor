@@ -144,27 +144,159 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/theme/Prefere
 	public final fun getStringSet-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearCurrentFile : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearCurrentFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearFileSelection : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearFileSelection;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearFilters : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ClearFilters;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$CreatePreference : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$CreatePreference;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$CreatePreference;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$CreatePreference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getValue ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$DeletePreference : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$DeletePreference;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$DeletePreference;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$DeletePreference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$FileSearchQueryChanged : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$FileSearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$FileSearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$FileSearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ItemSearchQueryChanged : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ItemSearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ItemSearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$ItemSearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SelectFile : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SelectFile;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SelectFile;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SelectFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFileName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetPreference : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetPreference;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetPreference;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetPreference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getValue ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetTypeFilter : com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetTypeFilter;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetTypeFilter;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewEvent$SetTypeFilter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTypeName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PreferencesRepository;)V
-	public final fun clearCurrentFile ()V
-	public final fun clearFileSelection ()V
-	public final fun clearFilters ()V
-	public final fun createPreference (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)V
-	public final fun deletePreference (Ljava/lang/String;)V
-	public final fun getAvailableTypes ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getFileSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getItemSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getPreferenceFiles ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getPreferenceItems ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedFileName ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTotalItemCount ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTypeFilter ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun onFileSearchQueryChanged (Ljava/lang/String;)V
-	public final fun onItemSearchQueryChanged (Ljava/lang/String;)V
-	public final fun selectFile (Ljava/lang/String;)V
-	public final fun setPreference (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/PreferenceValue;)V
-	public final fun setTypeFilter (Ljava/lang/String;)V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;I)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Z
+	public final fun component6 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component7 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component8 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component9 ()I
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;I)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAvailableTypes ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getFileSearchQuery ()Ljava/lang/String;
+	public final fun getItemSearchQuery ()Ljava/lang/String;
+	public final fun getPreferenceFiles ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getPreferenceItems ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getSelectedFileName ()Ljava/lang/String;
+	public final fun getTotalItemCount ()I
+	public final fun getTypeFilter ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isLoading ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

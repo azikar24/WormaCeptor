@@ -7,8 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:presentation"))
     implementation(project(":domain:contracts"))
     implementation(project(":core:ui"))
-
     implementation(libs.androidx.datastore.preferences)
 }

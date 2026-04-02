@@ -55,19 +55,19 @@ class SettingsViewModelTest {
     inner class `initial state` {
 
         @Test
-        fun `featureConfig starts with default values`() = runTest {
-            viewModel.featureConfig.test {
-                awaitItem() shouldBe FeatureConfig.DEFAULT
+        fun `uiState starts with default feature config`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().featureConfig shouldBe FeatureConfig.DEFAULT
             }
         }
     }
 
     @Nested
-    inner class `toggleNetworkTab` {
+    inner class `ToggleNetworkTab event` {
 
         @Test
         fun `calls updateConfig with toggled showNetworkTab`() = runTest {
-            viewModel.toggleNetworkTab()
+            viewModel.sendEvent(SettingsViewEvent.ToggleNetworkTab)
 
             coVerify {
                 repository.updateConfig(
@@ -80,10 +80,10 @@ class SettingsViewModelTest {
         fun `toggles from false to true`() = runTest {
             configFlow.value = FeatureConfig.DEFAULT.copy(showNetworkTab = false)
 
-            viewModel.featureConfig.test {
-                awaitUntil { !it.showNetworkTab }
+            viewModel.uiState.test {
+                awaitUntil { !it.featureConfig.showNetworkTab }
 
-                viewModel.toggleNetworkTab()
+                viewModel.sendEvent(SettingsViewEvent.ToggleNetworkTab)
 
                 coVerify {
                     repository.updateConfig(
@@ -96,11 +96,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `toggleCrashesTab` {
+    inner class `ToggleCrashesTab event` {
 
         @Test
         fun `calls updateConfig with toggled showCrashesTab`() = runTest {
-            viewModel.toggleCrashesTab()
+            viewModel.sendEvent(SettingsViewEvent.ToggleCrashesTab)
 
             coVerify {
                 repository.updateConfig(
@@ -111,11 +111,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `togglePreferences` {
+    inner class `TogglePreferences event` {
 
         @Test
         fun `calls updateConfig with toggled showPreferences`() = runTest {
-            viewModel.togglePreferences()
+            viewModel.sendEvent(SettingsViewEvent.TogglePreferences)
 
             coVerify {
                 repository.updateConfig(
@@ -126,11 +126,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `toggleConsoleLogs` {
+    inner class `ToggleConsoleLogs event` {
 
         @Test
         fun `calls updateConfig with toggled showConsoleLogs`() = runTest {
-            viewModel.toggleConsoleLogs()
+            viewModel.sendEvent(SettingsViewEvent.ToggleConsoleLogs)
 
             coVerify {
                 repository.updateConfig(
@@ -141,11 +141,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `toggleDeviceInfo` {
+    inner class `ToggleDeviceInfo event` {
 
         @Test
         fun `calls updateConfig with toggled showDeviceInfo`() = runTest {
-            viewModel.toggleDeviceInfo()
+            viewModel.sendEvent(SettingsViewEvent.ToggleDeviceInfo)
 
             coVerify {
                 repository.updateConfig(
@@ -156,11 +156,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `toggleSqliteBrowser` {
+    inner class `ToggleSqliteBrowser event` {
 
         @Test
         fun `calls updateConfig with toggled showSqliteBrowser`() = runTest {
-            viewModel.toggleSqliteBrowser()
+            viewModel.sendEvent(SettingsViewEvent.ToggleSqliteBrowser)
 
             coVerify {
                 repository.updateConfig(
@@ -171,11 +171,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `toggleFileBrowser` {
+    inner class `ToggleFileBrowser event` {
 
         @Test
         fun `calls updateConfig with toggled showFileBrowser`() = runTest {
-            viewModel.toggleFileBrowser()
+            viewModel.sendEvent(SettingsViewEvent.ToggleFileBrowser)
 
             coVerify {
                 repository.updateConfig(
@@ -186,11 +186,11 @@ class SettingsViewModelTest {
     }
 
     @Nested
-    inner class `resetToDefaults` {
+    inner class `ResetToDefaults event` {
 
         @Test
         fun `delegates to repository`() = runTest {
-            viewModel.resetToDefaults()
+            viewModel.sendEvent(SettingsViewEvent.ResetToDefaults)
 
             coVerify { repository.resetToDefaults() }
         }
@@ -200,32 +200,32 @@ class SettingsViewModelTest {
     inner class `reactive pipeline` {
 
         @Test
-        fun `featureConfig emits updated config from repository`() = runTest {
+        fun `uiState emits updated config from repository`() = runTest {
             val updated = FeatureConfig.DEFAULT.copy(
                 showNetworkTab = false,
                 showConsoleLogs = false,
             )
 
-            viewModel.featureConfig.test {
-                awaitItem() shouldBe FeatureConfig.DEFAULT
+            viewModel.uiState.test {
+                awaitItem().featureConfig shouldBe FeatureConfig.DEFAULT
                 configFlow.value = updated
-                awaitItem() shouldBe updated
+                awaitItem().featureConfig shouldBe updated
             }
         }
 
         @Test
-        fun `featureConfig reflects multiple sequential updates`() = runTest {
-            viewModel.featureConfig.test {
-                awaitItem() shouldBe FeatureConfig.DEFAULT
+        fun `uiState reflects multiple sequential updates`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().featureConfig shouldBe FeatureConfig.DEFAULT
 
                 configFlow.value = FeatureConfig.DEFAULT.copy(showNetworkTab = false)
-                awaitItem().showNetworkTab shouldBe false
+                awaitItem().featureConfig.showNetworkTab shouldBe false
 
                 configFlow.value = FeatureConfig.DEFAULT.copy(
                     showNetworkTab = false,
                     showCrashesTab = false,
                 )
-                val latest = awaitItem()
+                val latest = awaitItem().featureConfig
                 latest.showNetworkTab shouldBe false
                 latest.showCrashesTab shouldBe false
             }

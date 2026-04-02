@@ -13,8 +13,6 @@
     <ID>MagicNumber:WebSocketColors.kt$0xFFE0E0E0</ID>
     <ID>MagicNumber:WebSocketColors.kt$0xFFF5F5F5</ID>
     <ID>MagicNumber:WebSocketDetailScreen.kt$150</ID>
-    <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$150</ID>
-    <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$5000</ID>
     <ID>ParameterNaming:WebSocketDetailScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:WebSocketListScreen.kt$onSearchQueryChanged</ID>
   </CurrentIssues>

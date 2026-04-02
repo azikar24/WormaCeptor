@@ -7,9 +7,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:presentation"))
     implementation(project(":core:ui"))
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
-
     implementation(libs.androidx.navigation.compose)
 }

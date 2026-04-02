@@ -8,10 +8,28 @@
     <ID>LongParameterList:SecureStorageScreen.kt$( count: Int, label: String, icon: ImageVector, color: Color, isAccessible: Boolean, accessibleText: String, notAccessibleText: String, colors: SecureStorageColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:SecureStorageScreen.kt$( entries: ImmutableList&lt;SecureStorageEntry&gt;, summary: SecureStorageSummary, isLoading: Boolean, error: String?, selectedType: StorageType?, searchQuery: String, selectedEntry: SecureStorageEntry?, keystoreAccessible: Boolean, encryptedPrefsAccessible: Boolean, lastRefreshTime: Long?, onTypeSelected: (StorageType?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onEntrySelected: (SecureStorageEntry) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:SecureStorageScreen.kt$100</ID>
-    <ID>MagicNumber:SecureStorageViewModel.kt$SecureStorageViewModel$5000</ID>
     <ID>ParameterNaming:SecureStorageScreen.kt$onEntrySelected</ID>
     <ID>ParameterNaming:SecureStorageScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:SecureStorageScreen.kt$onTypeSelected</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$DismissDetail : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$Refresh : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$SelectEntry : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$SelectType : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$UpdateSearchQuery : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewState.kt$SecureStorageViewState</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.SelectEntry$val entry: SecureStorageEntry</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.SelectType$val type: StorageType?</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.UpdateSearchQuery$val query: String</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val encryptedPrefsAccessible: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val filteredEntries: ImmutableList&lt;SecureStorageEntry&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val keystoreAccessible: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val lastRefreshTime: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val selectedEntry: SecureStorageEntry? = null</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val selectedType: StorageType? = null</ID>
+    <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val summary: SecureStorageSummary = SecureStorageSummary.empty()</ID>
     <ID>ViewModelInjection:SecureStorageFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

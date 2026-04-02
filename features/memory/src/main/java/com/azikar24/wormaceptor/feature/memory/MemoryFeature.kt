@@ -2,16 +2,16 @@ package com.azikar24.wormaceptor.feature.memory
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.memory.ui.MemoryScreen
+import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewEvent
 import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewModel
 import org.koin.compose.koinInject
 
@@ -61,22 +61,18 @@ fun MemoryMonitor(
     val factory = remember { MemoryFeature.createViewModelFactory(engine) }
     val viewModel: MemoryViewModel = viewModel(factory = factory)
 
-    // Collect state
-    val currentMemory by viewModel.currentMemory.collectAsState()
-    val memoryHistory by viewModel.memoryHistory.collectAsState()
-    val isMonitoring by viewModel.isMonitoring.collectAsState()
-    val isHeapWarning by viewModel.isHeapWarning.collectAsState()
-
-    MemoryScreen(
-        currentMemory = currentMemory,
-        memoryHistory = memoryHistory,
-        isMonitoring = isMonitoring,
-        isHeapWarning = isHeapWarning,
-        onStartMonitoring = viewModel::startMonitoring,
-        onStopMonitoring = viewModel::stopMonitoring,
-        onForceGc = viewModel::forceGc,
-        onClearHistory = viewModel::clearHistory,
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        MemoryScreen(
+            currentMemory = state.currentMemory,
+            memoryHistory = state.memoryHistory,
+            isMonitoring = state.isMonitoring,
+            isHeapWarning = state.isHeapWarning,
+            onStartMonitoring = { onEvent(MemoryViewEvent.StartMonitoring) },
+            onStopMonitoring = { onEvent(MemoryViewEvent.StopMonitoring) },
+            onForceGc = { onEvent(MemoryViewEvent.ForceGc) },
+            onClearHistory = { onEvent(MemoryViewEvent.ClearHistory) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

@@ -5,6 +5,9 @@ import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewEffect
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewEvent
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewModel
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
@@ -70,140 +73,103 @@ class WebViewMonitorViewModelTest {
     )
 
     @Nested
-    inner class `isEnabled` {
+    inner class `uiState initial values` {
 
         @Test
-        fun `initial value is true`() = runTest {
-            viewModel.isEnabled.test {
-                awaitItem() shouldBe true
+        fun `requests starts empty`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().requests.shouldBeEmpty()
             }
         }
 
         @Test
-        fun `reflects engine state changes`() = runTest {
-            viewModel.isEnabled.test {
-                awaitItem() shouldBe true
-                isEnabledFlow.value = false
-                awaitItem() shouldBe false
+        fun `stats starts as empty stats`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().stats shouldBe WebViewRequestStats.empty()
+            }
+        }
+
+        @Test
+        fun `searchQuery starts as empty string`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().searchQuery shouldBe ""
+            }
+        }
+
+        @Test
+        fun `selectedRequest starts as null`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().selectedRequest.shouldBeNull()
             }
         }
     }
 
     @Nested
-    inner class `requests` {
-
-        @Test
-        fun `initial value is empty list`() = runTest {
-            viewModel.requests.test {
-                awaitItem().shouldBeEmpty()
-            }
-        }
+    inner class `engine observation` {
 
         @Test
         fun `reflects engine request updates`() = runTest {
             val request = makeSampleRequest()
 
-            viewModel.requests.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().requests.shouldBeEmpty()
                 requestsFlow.value = listOf(request)
-                awaitItem() shouldHaveSize 1
+                awaitItem().requests shouldHaveSize 1
             }
         }
     }
 
     @Nested
-    inner class `stats` {
+    inner class `SetSearchQuery event` {
 
         @Test
-        fun `initial value is empty stats`() = runTest {
-            viewModel.stats.test {
-                awaitItem() shouldBe WebViewRequestStats.empty()
+        fun `updates searchQuery in state`() = runTest {
+            viewModel.uiState.test {
+                awaitItem().searchQuery shouldBe ""
+                viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery("api"))
+                awaitItem().searchQuery shouldBe "api"
             }
         }
     }
 
     @Nested
-    inner class `searchQuery` {
+    inner class `SelectRequest event` {
 
         @Test
-        fun `initial value is empty string`() = runTest {
-            viewModel.searchQuery.test {
-                awaitItem() shouldBe ""
-            }
-        }
-
-        @Test
-        fun `updates when setSearchQuery called`() = runTest {
-            viewModel.searchQuery.test {
-                awaitItem() shouldBe ""
-                viewModel.setSearchQuery("api")
-                awaitItem() shouldBe "api"
-            }
-        }
-    }
-
-    @Nested
-    inner class `selectedRequest` {
-
-        @Test
-        fun `initial value is null`() = runTest {
-            viewModel.selectedRequest.test {
-                awaitItem().shouldBeNull()
-            }
-        }
-
-        @Test
-        fun `selectRequest sets value`() = runTest {
+        fun `sets selectedRequest in state`() = runTest {
             val request = makeSampleRequest()
 
-            viewModel.selectedRequest.test {
-                awaitItem().shouldBeNull()
-                viewModel.selectRequest(request)
-                awaitItem() shouldBe request
+            viewModel.uiState.test {
+                awaitItem().selectedRequest.shouldBeNull()
+                viewModel.sendEvent(WebViewMonitorViewEvent.SelectRequest(request))
+                awaitItem().selectedRequest shouldBe request
             }
         }
 
         @Test
-        fun `clearSelection resets to null`() = runTest {
+        fun `emits NavigateToDetail effect`() = runTest {
             val request = makeSampleRequest()
 
-            viewModel.selectedRequest.test {
-                awaitItem().shouldBeNull()
-                viewModel.selectRequest(request)
-                awaitItem() shouldBe request
-                viewModel.clearSelection()
-                awaitItem().shouldBeNull()
+            viewModel.effects.test {
+                viewModel.sendEvent(WebViewMonitorViewEvent.SelectRequest(request))
+                awaitItem() shouldBe WebViewMonitorViewEffect.NavigateToDetail
             }
         }
     }
 
     @Nested
-    inner class `showFilters` {
+    inner class `ClearSelection event` {
 
         @Test
-        fun `initial value is false`() = runTest {
-            viewModel.showFilters.test {
-                awaitItem() shouldBe false
-            }
-        }
+        fun `resets selectedRequest to null`() = runTest {
+            val request = makeSampleRequest()
 
-        @Test
-        fun `toggleFilters toggles from false to true`() = runTest {
-            viewModel.showFilters.test {
-                awaitItem() shouldBe false
-                viewModel.toggleFilters()
-                awaitItem() shouldBe true
-            }
-        }
-
-        @Test
-        fun `toggleFilters toggles back to false`() = runTest {
-            viewModel.showFilters.test {
-                awaitItem() shouldBe false
-                viewModel.toggleFilters()
-                awaitItem() shouldBe true
-                viewModel.toggleFilters()
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().selectedRequest.shouldBeNull()
+                viewModel.sendEvent(WebViewMonitorViewEvent.SelectRequest(request))
+                awaitItem().selectedRequest shouldBe request
+                viewModel.sendEvent(WebViewMonitorViewEvent.ClearSelection)
+                awaitItem().selectedRequest.shouldBeNull()
             }
         }
     }
@@ -213,8 +179,8 @@ class WebViewMonitorViewModelTest {
 
         @Test
         fun `initial value is empty list`() = runTest {
-            viewModel.filteredRequests.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredRequests.shouldBeEmpty()
             }
         }
 
@@ -224,10 +190,10 @@ class WebViewMonitorViewModelTest {
             val nonMatchingRequest = makeSampleRequest(id = "2", url = "https://cdn.example.com/image.png")
             requestsFlow.value = listOf(matchingRequest, nonMatchingRequest)
 
-            viewModel.setSearchQuery("api")
+            viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery("api"))
 
-            viewModel.filteredRequests.test {
-                val items = awaitItem()
+            viewModel.uiState.test {
+                val items = awaitItem().filteredRequests
                 items shouldHaveSize 1
                 items.first().id shouldBe "1"
             }
@@ -239,10 +205,10 @@ class WebViewMonitorViewModelTest {
             val getRequest = makeSampleRequest(id = "2", method = "GET")
             requestsFlow.value = listOf(postRequest, getRequest)
 
-            viewModel.setSearchQuery("post")
+            viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery("post"))
 
-            viewModel.filteredRequests.test {
-                val items = awaitItem()
+            viewModel.uiState.test {
+                val items = awaitItem().filteredRequests
                 items shouldHaveSize 1
                 items.first().id shouldBe "1"
             }
@@ -260,10 +226,10 @@ class WebViewMonitorViewModelTest {
             )
             requestsFlow.value = listOf(matchingRequest, nonMatchingRequest)
 
-            viewModel.setSearchQuery("special")
+            viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery("special"))
 
-            viewModel.filteredRequests.test {
-                val items = awaitItem()
+            viewModel.uiState.test {
+                val items = awaitItem().filteredRequests
                 items shouldHaveSize 1
                 items.first().id shouldBe "1"
             }
@@ -275,10 +241,10 @@ class WebViewMonitorViewModelTest {
             val req2 = makeSampleRequest(id = "2")
             requestsFlow.value = listOf(req1, req2)
 
-            viewModel.setSearchQuery("")
+            viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery(""))
 
-            viewModel.filteredRequests.test {
-                awaitItem() shouldHaveSize 2
+            viewModel.uiState.test {
+                awaitItem().filteredRequests shouldHaveSize 2
             }
         }
     }
@@ -287,31 +253,32 @@ class WebViewMonitorViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `toggleEnabled delegates to engine toggle`() {
-            viewModel.toggleEnabled()
+        fun `EnsureEnabled toggles engine when disabled`() {
+            isEnabledFlow.value = false
+            viewModel.sendEvent(WebViewMonitorViewEvent.EnsureEnabled)
             verify { engine.toggle() }
         }
 
         @Test
-        fun `toggleResourceTypeFilter delegates to engine`() {
-            viewModel.toggleResourceTypeFilter(WebViewResourceType.SCRIPT)
+        fun `ToggleResourceTypeFilter delegates to engine`() {
+            viewModel.sendEvent(WebViewMonitorViewEvent.ToggleResourceTypeFilter(WebViewResourceType.SCRIPT))
             verify { engine.toggleResourceTypeFilter(WebViewResourceType.SCRIPT) }
         }
 
         @Test
-        fun `clearFilters resets search and delegates to engine`() = runTest {
-            viewModel.setSearchQuery("api")
-            viewModel.clearFilters()
+        fun `ClearFilters resets search and delegates to engine`() = runTest {
+            viewModel.sendEvent(WebViewMonitorViewEvent.SetSearchQuery("api"))
+            viewModel.sendEvent(WebViewMonitorViewEvent.ClearFilters)
 
-            viewModel.searchQuery.test {
-                awaitItem() shouldBe ""
+            viewModel.uiState.test {
+                awaitItem().searchQuery shouldBe ""
             }
             verify { engine.clearFilters() }
         }
 
         @Test
-        fun `clearRequests delegates to engine`() {
-            viewModel.clearRequests()
+        fun `ClearRequests delegates to engine`() {
+            viewModel.sendEvent(WebViewMonitorViewEvent.ClearRequests)
             verify { engine.clearRequests() }
         }
     }

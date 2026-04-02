@@ -80,16 +80,69 @@ public final class com/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColors
 	public static final fun memoryColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/memory/ui/theme/MemoryColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$ClearHistory : com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$ClearHistory;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$ForceGc : com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$ForceGc;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$StartMonitoring : com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$StartMonitoring;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$StopMonitoring : com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewEvent$StopMonitoring;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;)V
-	public final fun clearHistory ()V
-	public final fun forceGc ()V
-	public final fun getCurrentMemory ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getMemoryHistory ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isHeapWarning ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun startMonitoring ()V
-	public final fun stopMonitoring ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;Lkotlinx/collections/immutable/ImmutableList;ZZ)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;Lkotlinx/collections/immutable/ImmutableList;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;
+	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;Lkotlinx/collections/immutable/ImmutableList;ZZ)Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewState;Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;Lkotlinx/collections/immutable/ImmutableList;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/memory/vm/MemoryViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrentMemory ()Lcom/azikar24/wormaceptor/domain/entities/MemoryInfo;
+	public final fun getMemoryHistory ()Lkotlinx/collections/immutable/ImmutableList;
+	public fun hashCode ()I
+	public final fun isHeapWarning ()Z
+	public final fun isMonitoring ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

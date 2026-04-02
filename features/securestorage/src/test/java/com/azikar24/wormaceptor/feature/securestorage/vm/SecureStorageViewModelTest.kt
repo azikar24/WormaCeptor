@@ -85,43 +85,43 @@ class SecureStorageViewModelTest {
 
         @Test
         fun `selectedType is null`() = runTest {
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
         fun `searchQuery is empty`() = runTest {
-            viewModel.searchQuery.value shouldBe ""
+            viewModel.uiState.value.searchQuery shouldBe ""
         }
 
         @Test
         fun `selectedEntry is null`() = runTest {
-            viewModel.selectedEntry.value shouldBe null
+            viewModel.uiState.value.selectedEntry shouldBe null
         }
 
         @Test
         fun `filteredEntries is empty`() = runTest {
-            viewModel.filteredEntries.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredEntries.shouldBeEmpty()
             }
         }
     }
 
     @Nested
-    inner class `setSelectedType` {
+    inner class `SelectType event` {
 
         @Test
         fun `updates selected type`() = runTest {
-            viewModel.setSelectedType(StorageType.KEYSTORE)
+            viewModel.sendEvent(SecureStorageViewEvent.SelectType(StorageType.KEYSTORE))
 
-            viewModel.selectedType.value shouldBe StorageType.KEYSTORE
+            viewModel.uiState.value.selectedType shouldBe StorageType.KEYSTORE
         }
 
         @Test
         fun `setting null clears the type filter`() = runTest {
-            viewModel.setSelectedType(StorageType.KEYSTORE)
-            viewModel.setSelectedType(null)
+            viewModel.sendEvent(SecureStorageViewEvent.SelectType(StorageType.KEYSTORE))
+            viewModel.sendEvent(SecureStorageViewEvent.SelectType(null))
 
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
@@ -136,27 +136,28 @@ class SecureStorageViewModelTest {
                 storageType = StorageType.KEYSTORE,
             )
             entriesFlow.value = listOf(prefsEntry, keystoreEntry)
-            viewModel.setSelectedType(StorageType.KEYSTORE)
+            viewModel.sendEvent(SecureStorageViewEvent.SelectType(StorageType.KEYSTORE))
 
-            viewModel.filteredEntries.test {
-                val items = awaitUntil {
-                    it.size == 1 && it.first().storageType == StorageType.KEYSTORE
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredEntries.size == 1 &&
+                        it.filteredEntries.first().storageType == StorageType.KEYSTORE
                 }
-                items shouldHaveSize 1
-                items.first().key shouldBe "keystore_alias"
+                state.filteredEntries shouldHaveSize 1
+                state.filteredEntries.first().key shouldBe "keystore_alias"
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `setSearchQuery` {
+    inner class `UpdateSearchQuery event` {
 
         @Test
         fun `updates search query`() = runTest {
-            viewModel.setSearchQuery("token")
+            viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery("token"))
 
-            viewModel.searchQuery.value shouldBe "token"
+            viewModel.uiState.value.searchQuery shouldBe "token"
         }
 
         @Test
@@ -164,12 +165,14 @@ class SecureStorageViewModelTest {
             val tokenEntry = makeEntry(key = "auth_token", value = "abc123")
             val userEntry = makeEntry(key = "user_name", value = "John")
             entriesFlow.value = listOf(tokenEntry, userEntry)
-            viewModel.setSearchQuery("TOKEN")
+            viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery("TOKEN"))
 
-            viewModel.filteredEntries.test {
-                val items = awaitUntil { it.size == 1 && it.first().key == "auth_token" }
-                items shouldHaveSize 1
-                items.first().key shouldBe "auth_token"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredEntries.size == 1 && it.filteredEntries.first().key == "auth_token"
+                }
+                state.filteredEntries shouldHaveSize 1
+                state.filteredEntries.first().key shouldBe "auth_token"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -179,12 +182,14 @@ class SecureStorageViewModelTest {
             val tokenEntry = makeEntry(key = "auth_token", value = "secret_abc123")
             val userEntry = makeEntry(key = "user_name", value = "John")
             entriesFlow.value = listOf(tokenEntry, userEntry)
-            viewModel.setSearchQuery("secret")
+            viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery("secret"))
 
-            viewModel.filteredEntries.test {
-                val items = awaitUntil { it.size == 1 && it.first().key == "auth_token" }
-                items shouldHaveSize 1
-                items.first().value shouldBe "secret_abc123"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredEntries.size == 1 && it.filteredEntries.first().key == "auth_token"
+                }
+                state.filteredEntries shouldHaveSize 1
+                state.filteredEntries.first().value shouldBe "secret_abc123"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -194,37 +199,37 @@ class SecureStorageViewModelTest {
             val entry1 = makeEntry(key = "key1")
             val entry2 = makeEntry(key = "key2", value = "val2")
             entriesFlow.value = listOf(entry1, entry2)
-            viewModel.setSearchQuery("key1")
+            viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery("key1"))
 
-            viewModel.filteredEntries.test {
-                awaitUntil { it.size == 1 }
+            viewModel.uiState.test {
+                awaitUntil { it.filteredEntries.size == 1 }
 
-                viewModel.setSearchQuery("")
-                val items = awaitUntil { it.size == 2 }
-                items shouldHaveSize 2
+                viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery(""))
+                val state = awaitUntil { it.filteredEntries.size == 2 }
+                state.filteredEntries shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `selectEntry and dismissDetail` {
+    inner class `SelectEntry and DismissDetail events` {
 
         @Test
-        fun `selectEntry sets the selected entry`() = runTest {
+        fun `SelectEntry sets the selected entry`() = runTest {
             val entry = makeEntry()
 
-            viewModel.selectEntry(entry)
+            viewModel.sendEvent(SecureStorageViewEvent.SelectEntry(entry))
 
-            viewModel.selectedEntry.value shouldBe entry
+            viewModel.uiState.value.selectedEntry shouldBe entry
         }
 
         @Test
-        fun `dismissDetail clears the selected entry`() = runTest {
-            viewModel.selectEntry(makeEntry())
-            viewModel.dismissDetail()
+        fun `DismissDetail clears the selected entry`() = runTest {
+            viewModel.sendEvent(SecureStorageViewEvent.SelectEntry(makeEntry()))
+            viewModel.sendEvent(SecureStorageViewEvent.DismissDetail)
 
-            viewModel.selectedEntry.value shouldBe null
+            viewModel.uiState.value.selectedEntry shouldBe null
         }
     }
 
@@ -232,55 +237,55 @@ class SecureStorageViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `refresh delegates to engine`() {
-            viewModel.refresh()
+        fun `Refresh delegates to engine`() {
+            viewModel.sendEvent(SecureStorageViewEvent.Refresh)
 
             verify { engine.refresh() }
         }
 
         @Test
         fun `isLoading reflects engine state`() = runTest {
-            viewModel.isLoading.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isLoading shouldBe false
                 isLoadingFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.isLoading }.isLoading shouldBe true
             }
         }
 
         @Test
         fun `error reflects engine state`() = runTest {
-            viewModel.error.test {
-                awaitItem() shouldBe null
+            viewModel.uiState.test {
+                awaitItem().error shouldBe null
                 errorFlow.value = "KeyStore inaccessible"
-                awaitItem() shouldBe "KeyStore inaccessible"
+                awaitUntil { it.error != null }.error shouldBe "KeyStore inaccessible"
             }
         }
 
         @Test
         fun `keystoreAccessible reflects engine state`() = runTest {
-            viewModel.keystoreAccessible.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().keystoreAccessible shouldBe false
                 keystoreAccessibleFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.keystoreAccessible }.keystoreAccessible shouldBe true
             }
         }
 
         @Test
         fun `encryptedPrefsAccessible reflects engine state`() = runTest {
-            viewModel.encryptedPrefsAccessible.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().encryptedPrefsAccessible shouldBe false
                 encryptedPrefsAccessibleFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.encryptedPrefsAccessible }.encryptedPrefsAccessible shouldBe true
             }
         }
 
         @Test
         fun `lastRefreshTime reflects engine state`() = runTest {
-            viewModel.lastRefreshTime.test {
-                awaitItem() shouldBe null
+            viewModel.uiState.test {
+                awaitItem().lastRefreshTime shouldBe null
                 val now = System.currentTimeMillis()
                 lastRefreshTimeFlow.value = now
-                awaitItem() shouldBe now
+                awaitUntil { it.lastRefreshTime != null }.lastRefreshTime shouldBe now
             }
         }
     }
@@ -305,13 +310,15 @@ class SecureStorageViewModelTest {
                 storageType = StorageType.KEYSTORE,
             )
             entriesFlow.value = listOf(prefsToken, prefsUser, keystoreToken)
-            viewModel.setSelectedType(StorageType.ENCRYPTED_SHARED_PREFS)
-            viewModel.setSearchQuery("token")
+            viewModel.sendEvent(SecureStorageViewEvent.SelectType(StorageType.ENCRYPTED_SHARED_PREFS))
+            viewModel.sendEvent(SecureStorageViewEvent.UpdateSearchQuery("token"))
 
-            viewModel.filteredEntries.test {
-                val items = awaitUntil { it.size == 1 && it.first().key == "auth_token" }
-                items shouldHaveSize 1
-                items.first().key shouldBe "auth_token"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredEntries.size == 1 && it.filteredEntries.first().key == "auth_token"
+                }
+                state.filteredEntries shouldHaveSize 1
+                state.filteredEntries.first().key shouldBe "auth_token"
                 cancelAndIgnoreRemainingEvents()
             }
         }

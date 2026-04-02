@@ -36,11 +36,28 @@
     <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFFB74D</ID>
     <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFFEB3B</ID>
     <ID>MagicNumber:LoadedLibrariesScreen.kt$3</ID>
-    <ID>MagicNumber:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel$5000</ID>
     <ID>ParameterNaming:LoadedLibrariesScreen.kt$onLibrarySelected</ID>
     <ID>ParameterNaming:LoadedLibrariesScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:LoadedLibrariesScreen.kt$onShowSystemLibsChanged</ID>
     <ID>ParameterNaming:LoadedLibrariesScreen.kt$onTypeSelected</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$DismissDetail : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$Refresh : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SelectLibrary : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetSearchQuery : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetSelectedType : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetShowSystemLibs : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SelectLibrary$val library: LoadedLibrary</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSearchQuery$val query: String</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSelectedType$val type: LoadedLibrary.LibraryType?</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetShowSystemLibs$val show: Boolean</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val filteredLibraries: ImmutableList&lt;LoadedLibrary&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val selectedLibrary: LoadedLibrary? = null</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val selectedType: LoadedLibrary.LibraryType? = null</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val showSystemLibs: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val summary: LibrarySummary = LibrarySummary.empty()</ID>
     <ID>ViewModelInjection:LoadedLibrariesFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -53,8 +53,8 @@ class MemoryViewModelTest {
 
         @Test
         fun `initial value is empty`() = runTest {
-            viewModel.currentMemory.test {
-                awaitItem() shouldBe MemoryInfo.empty()
+            viewModel.uiState.test {
+                awaitItem().currentMemory shouldBe MemoryInfo.empty()
             }
         }
 
@@ -62,10 +62,10 @@ class MemoryViewModelTest {
         fun `emits updated memory info`() = runTest {
             val updated = MemoryInfo.empty().copy(usedMemory = 1024, heapUsagePercent = 50f)
 
-            viewModel.currentMemory.test {
+            viewModel.uiState.test {
                 awaitItem()
                 currentMemoryFlow.value = updated
-                awaitItem() shouldBe updated
+                awaitItem().currentMemory shouldBe updated
             }
         }
     }
@@ -75,8 +75,8 @@ class MemoryViewModelTest {
 
         @Test
         fun `initial value is empty list`() = runTest {
-            viewModel.memoryHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().memoryHistory.shouldBeEmpty()
             }
         }
 
@@ -86,10 +86,10 @@ class MemoryViewModelTest {
                 MemoryInfo.empty().copy(usedMemory = 512),
                 MemoryInfo.empty().copy(usedMemory = 1024),
             )
-            viewModel.memoryHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().memoryHistory.shouldBeEmpty()
                 memoryHistoryFlow.value = entries
-                awaitItem() shouldHaveSize 2
+                awaitItem().memoryHistory shouldHaveSize 2
             }
         }
     }
@@ -100,16 +100,16 @@ class MemoryViewModelTest {
         @Test
         fun `reflects engine state when not monitoring`() = runTest {
             isMonitoringFlow.value = false
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe false
             }
         }
 
         @Test
         fun `reflects engine state when monitoring`() = runTest {
             isMonitoringFlow.value = true
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe true
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe true
             }
         }
     }
@@ -121,8 +121,8 @@ class MemoryViewModelTest {
         fun `false when below threshold`() = runTest {
             currentMemoryFlow.value = MemoryInfo.empty().copy(heapUsagePercent = 50f)
 
-            viewModel.isHeapWarning.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isHeapWarning shouldBe false
             }
         }
 
@@ -132,8 +132,8 @@ class MemoryViewModelTest {
                 heapUsagePercent = MemoryMonitorEngine.HEAP_WARNING_THRESHOLD,
             )
 
-            viewModel.isHeapWarning.test {
-                awaitItem() shouldBe true
+            viewModel.uiState.test {
+                awaitItem().isHeapWarning shouldBe true
             }
         }
     }
@@ -142,26 +142,26 @@ class MemoryViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `startMonitoring delegates to engine`() {
-            viewModel.startMonitoring()
+        fun `StartMonitoring delegates to engine`() {
+            viewModel.sendEvent(MemoryViewEvent.StartMonitoring)
             verify { engine.start() }
         }
 
         @Test
-        fun `stopMonitoring delegates to engine`() {
-            viewModel.stopMonitoring()
+        fun `StopMonitoring delegates to engine`() {
+            viewModel.sendEvent(MemoryViewEvent.StopMonitoring)
             verify { engine.stop() }
         }
 
         @Test
-        fun `forceGc delegates to engine`() {
-            viewModel.forceGc()
+        fun `ForceGc delegates to engine`() {
+            viewModel.sendEvent(MemoryViewEvent.ForceGc)
             verify { engine.forceGc() }
         }
 
         @Test
-        fun `clearHistory delegates to engine`() {
-            viewModel.clearHistory()
+        fun `ClearHistory delegates to engine`() {
+            viewModel.sendEvent(MemoryViewEvent.ClearHistory)
             verify { engine.clearHistory() }
         }
     }

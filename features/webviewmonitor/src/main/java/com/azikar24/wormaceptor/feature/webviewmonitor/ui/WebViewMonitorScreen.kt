@@ -55,7 +55,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,6 +75,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorExpandableCard
@@ -95,7 +95,9 @@ import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorFeature
-import com.azikar24.wormaceptor.feature.webviewmonitor.WebViewMonitorViewModel
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewEffect
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewEvent
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewModel
 import org.koin.compose.koinInject
 
 /** Main composable for the WebView Monitor feature. */
@@ -125,75 +127,74 @@ fun WebViewMonitor(
     val navController = rememberNavController()
 
     LaunchedEffect(Unit) {
-        if (!viewModel.isEnabled.value) {
-            viewModel.toggleEnabled()
-        }
+        viewModel.sendEvent(WebViewMonitorViewEvent.EnsureEnabled)
     }
 
-    val requests by viewModel.requests.collectAsState()
-    val filteredRequests by viewModel.filteredRequests.collectAsState()
-    val stats by viewModel.stats.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val resourceTypeFilter by viewModel.resourceTypeFilter.collectAsState()
-    val selectedRequest by viewModel.selectedRequest.collectAsState()
-
-    NavHost(
-        navController = navController,
-        startDestination = "list",
-        modifier = modifier,
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
-        },
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
-        },
-        popEnterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
-            ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
-            ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
-        },
-    ) {
-        composable("list") {
-            WebViewMonitorListScreen(
-                requests = filteredRequests,
-                totalCount = requests.size,
-                stats = stats,
-                searchQuery = searchQuery,
-                resourceTypeFilter = resourceTypeFilter,
-                onSearchQueryChanged = viewModel::setSearchQuery,
-                onToggleResourceTypeFilter = viewModel::toggleResourceTypeFilter,
-                onClearFilters = viewModel::clearFilters,
-                onClearRequests = viewModel::clearRequests,
-                onRequestClick = { request ->
-                    viewModel.selectRequest(request)
+    BaseScreen(
+        viewModel = viewModel,
+        onEffect = { effect ->
+            when (effect) {
+                is WebViewMonitorViewEffect.NavigateToDetail -> {
                     navController.navigate("detail")
-                },
-                onNavigateBack = onNavigateBack,
-            )
-        }
-
-        composable("detail") {
-            selectedRequest?.let { request ->
-                WebViewRequestDetailScreen(
-                    request = request,
-                    onNavigateBack = {
-                        viewModel.clearSelection()
-                        navController.popBackStack()
-                    },
+                }
+            }
+        },
+    ) { state, onEvent ->
+        NavHost(
+            navController = navController,
+            startDestination = "list",
+            modifier = modifier,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE),
+                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.PAGE))
+            },
+        ) {
+            composable("list") {
+                WebViewMonitorListScreen(
+                    requests = state.filteredRequests,
+                    totalCount = state.requests.size,
+                    stats = state.stats,
+                    searchQuery = state.searchQuery,
+                    resourceTypeFilter = state.resourceTypeFilter,
+                    onSearchQueryChanged = { onEvent(WebViewMonitorViewEvent.SetSearchQuery(it)) },
+                    onToggleResourceTypeFilter = { onEvent(WebViewMonitorViewEvent.ToggleResourceTypeFilter(it)) },
+                    onClearFilters = { onEvent(WebViewMonitorViewEvent.ClearFilters) },
+                    onClearRequests = { onEvent(WebViewMonitorViewEvent.ClearRequests) },
+                    onRequestClick = { request -> onEvent(WebViewMonitorViewEvent.SelectRequest(request)) },
+                    onNavigateBack = onNavigateBack,
                 )
+            }
+
+            composable("detail") {
+                state.selectedRequest?.let { request ->
+                    WebViewRequestDetailScreen(
+                        request = request,
+                        onNavigateBack = {
+                            onEvent(WebViewMonitorViewEvent.ClearSelection)
+                            navController.popBackStack()
+                        },
+                    )
+                }
             }
         }
     }

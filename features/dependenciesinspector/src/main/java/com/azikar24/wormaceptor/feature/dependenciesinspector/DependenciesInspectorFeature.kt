@@ -1,15 +1,15 @@
 package com.azikar24.wormaceptor.feature.dependenciesinspector
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.DependenciesInspectorScreen
+import com.azikar24.wormaceptor.feature.dependenciesinspector.vm.DependenciesInspectorViewEvent
 import com.azikar24.wormaceptor.feature.dependenciesinspector.vm.DependenciesInspectorViewModel
 import org.koin.compose.koinInject
 
@@ -56,31 +56,24 @@ fun DependenciesInspector(
     val factory = remember { DependenciesInspectorFeature.createViewModelFactory(engine) }
     val viewModel: DependenciesInspectorViewModel = viewModel(factory = factory)
 
-    val dependencies by viewModel.filteredDependencies.collectAsState()
-    val summary by viewModel.summary.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
-    val selectedCategory by viewModel.selectedCategory.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val selectedDependency by viewModel.selectedDependency.collectAsState()
-    val showVersionedOnly by viewModel.showVersionedOnly.collectAsState()
-
-    DependenciesInspectorScreen(
-        dependencies = dependencies,
-        summary = summary,
-        isLoading = isLoading,
-        error = error,
-        selectedCategory = selectedCategory,
-        searchQuery = searchQuery,
-        selectedDependency = selectedDependency,
-        showVersionedOnly = showVersionedOnly,
-        onCategorySelected = viewModel::setSelectedCategory,
-        onSearchQueryChanged = viewModel::setSearchQuery,
-        onDependencySelected = viewModel::selectDependency,
-        onDismissDetail = viewModel::dismissDetail,
-        onShowVersionedOnlyChanged = viewModel::setShowVersionedOnly,
-        onRefresh = viewModel::refresh,
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel = viewModel) { state, onEvent ->
+        DependenciesInspectorScreen(
+            dependencies = state.filteredDependencies,
+            summary = state.summary,
+            isLoading = state.isLoading,
+            error = state.error,
+            selectedCategory = state.selectedCategory,
+            searchQuery = state.searchQuery,
+            selectedDependency = state.selectedDependency,
+            showVersionedOnly = state.showVersionedOnly,
+            onCategorySelected = { onEvent(DependenciesInspectorViewEvent.SetSelectedCategory(it)) },
+            onSearchQueryChanged = { onEvent(DependenciesInspectorViewEvent.SetSearchQuery(it)) },
+            onDependencySelected = { onEvent(DependenciesInspectorViewEvent.SelectDependency(it)) },
+            onDismissDetail = { onEvent(DependenciesInspectorViewEvent.DismissDetail) },
+            onShowVersionedOnlyChanged = { onEvent(DependenciesInspectorViewEvent.SetShowVersionedOnly(it)) },
+            onRefresh = { onEvent(DependenciesInspectorViewEvent.Refresh) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

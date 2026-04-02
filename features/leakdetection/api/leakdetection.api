@@ -101,18 +101,87 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakD
 	public static final fun leakDetectionColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/leakdetection/ui/theme/LeakDetectionColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$ClearLeaks : com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$ClearLeaks;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$DismissDetail : com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$DismissDetail;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectLeak : com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectLeak;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectLeak;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectLeak;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLeak ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectSeverity : com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectSeverity;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$SelectSeverity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSeverity ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$TriggerCheck : com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEvent$TriggerCheck;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LeakDetectionEngine;)V
-	public final fun clearLeaks ()V
-	public final fun dismissDetail ()V
-	public final fun getFilteredLeaks ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedLeak ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedSeverity ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSummary ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isRunning ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun selectLeak (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
-	public final fun setSelectedSeverity (Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;)V
-	public final fun triggerCheck ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
+	public final fun component3 ()Z
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFilteredLeaks ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getSelectedLeak ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public final fun getSelectedSeverity ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
+	public fun hashCode ()I
+	public final fun isRunning ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

@@ -1,8 +1,6 @@
 public final class com/azikar24/wormaceptor/feature/threadviolation/ThreadViolationFeature {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/threadviolation/ThreadViolationFeature;
-	public final fun createEngine (I)Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;
-	public static synthetic fun createEngine$default (Lcom/azikar24/wormaceptor/feature/threadviolation/ThreadViolationFeature;IILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;
 	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;)Lcom/azikar24/wormaceptor/feature/threadviolation/ThreadViolationViewModelFactory;
 }
 
@@ -82,18 +80,87 @@ public final class com/azikar24/wormaceptor/feature/threadviolation/ui/theme/Thr
 	public static final fun threadViolationColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/threadviolation/ui/theme/ThreadViolationColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$ClearViolations : com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$ClearViolations;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$DismissDetail : com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$DismissDetail;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectType : com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectType;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectType;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectType;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectViolation : com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectViolation;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectViolation;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$SelectViolation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getViolation ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$ToggleMonitoring : com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewEvent$ToggleMonitoring;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/ThreadViolationEngine;)V
-	public final fun clearViolations ()V
-	public final fun dismissDetail ()V
-	public final fun getFilteredViolations ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedType ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedViolation ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun selectViolation (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)V
-	public final fun setSelectedType (Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;)V
-	public final fun toggleMonitoring ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;ZLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;ZLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;
+	public final fun component3 ()Z
+	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;ZLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;ZLcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/threadviolation/vm/ThreadViolationViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFilteredViolations ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getSelectedType ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation$ViolationType;
+	public final fun getSelectedViolation ()Lcom/azikar24/wormaceptor/domain/entities/ThreadViolation;
+	public final fun getStats ()Lcom/azikar24/wormaceptor/domain/entities/ViolationStats;
+	public fun hashCode ()I
+	public final fun isMonitoring ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

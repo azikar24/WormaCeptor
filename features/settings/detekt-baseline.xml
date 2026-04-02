@@ -2,9 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:FeatureToggleScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun FeatureToggleScreenContent( config: FeatureConfig, onBack: () -&gt; Unit, onResetDefaults: () -&gt; Unit, onToggleNetworkTab: () -&gt; Unit, onToggleCrashesTab: () -&gt; Unit, onTogglePreferences: () -&gt; Unit, onToggleConsoleLogs: () -&gt; Unit, onToggleDeviceInfo: () -&gt; Unit, onToggleSqliteBrowser: () -&gt; Unit, onToggleFileBrowser: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:FeatureToggleScreen.kt$( config: FeatureConfig, onBack: () -&gt; Unit, onResetDefaults: () -&gt; Unit, onToggleNetworkTab: () -&gt; Unit, onToggleCrashesTab: () -&gt; Unit, onTogglePreferences: () -&gt; Unit, onToggleConsoleLogs: () -&gt; Unit, onToggleDeviceInfo: () -&gt; Unit, onToggleSqliteBrowser: () -&gt; Unit, onToggleFileBrowser: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:SettingsViewModel.kt$SettingsViewModel$5000</ID>
+    <ID>LongMethod:FeatureToggleScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun FeatureToggleScreenContent( config: FeatureConfig, onBack: () -&gt; Unit, onEvent: (SettingsViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>ViewModelForwarding:FeatureToggleScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; FeatureToggleScreenContent( config = state.featureConfig, onBack = onBack, onEvent = onEvent, modifier = modifier, ) }</ID>
     <ID>ViewModelInjection:SettingsFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

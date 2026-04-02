@@ -78,30 +78,30 @@ class ThreadViolationViewModelTest {
 
         @Test
         fun `selectedType is null`() = runTest {
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
         fun `selectedViolation is null`() = runTest {
-            viewModel.selectedViolation.value shouldBe null
+            viewModel.uiState.value.selectedViolation shouldBe null
         }
 
         @Test
         fun `filteredViolations is empty`() = runTest {
-            viewModel.filteredViolations.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredViolations.shouldBeEmpty()
             }
         }
     }
 
     @Nested
-    inner class `toggleMonitoring` {
+    inner class `ToggleMonitoring event` {
 
         @Test
         fun `enables monitoring when currently disabled`() {
             isMonitoringFlow.value = false
 
-            viewModel.toggleMonitoring()
+            viewModel.sendEvent(ThreadViolationViewEvent.ToggleMonitoring)
 
             verify { engine.enable() }
         }
@@ -110,28 +110,28 @@ class ThreadViolationViewModelTest {
         fun `disables monitoring when currently enabled`() {
             isMonitoringFlow.value = true
 
-            viewModel.toggleMonitoring()
+            viewModel.sendEvent(ThreadViolationViewEvent.ToggleMonitoring)
 
             verify { engine.disable() }
         }
     }
 
     @Nested
-    inner class `setSelectedType` {
+    inner class `SelectType event` {
 
         @Test
         fun `updates selected type`() = runTest {
-            viewModel.setSelectedType(ViolationType.NETWORK)
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectType(ViolationType.NETWORK))
 
-            viewModel.selectedType.value shouldBe ViolationType.NETWORK
+            viewModel.uiState.value.selectedType shouldBe ViolationType.NETWORK
         }
 
         @Test
         fun `setting null clears the type filter`() = runTest {
-            viewModel.setSelectedType(ViolationType.DISK_READ)
-            viewModel.setSelectedType(null)
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectType(ViolationType.DISK_READ))
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectType(null))
 
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
@@ -139,14 +139,15 @@ class ThreadViolationViewModelTest {
             val diskRead = makeViolation(id = 1, violationType = ViolationType.DISK_READ)
             val network = makeViolation(id = 2, violationType = ViolationType.NETWORK)
             violationsFlow.value = listOf(diskRead, network)
-            viewModel.setSelectedType(ViolationType.DISK_READ)
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectType(ViolationType.DISK_READ))
 
-            viewModel.filteredViolations.test {
-                val items = awaitUntil {
-                    it.size == 1 && it.first().violationType == ViolationType.DISK_READ
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredViolations.size == 1 &&
+                        it.filteredViolations.first().violationType == ViolationType.DISK_READ
                 }
-                items shouldHaveSize 1
-                items.first().violationType shouldBe ViolationType.DISK_READ
+                state.filteredViolations shouldHaveSize 1
+                state.filteredViolations.first().violationType shouldBe ViolationType.DISK_READ
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -158,41 +159,41 @@ class ThreadViolationViewModelTest {
             val diskWrite = makeViolation(id = 3, violationType = ViolationType.DISK_WRITE)
             violationsFlow.value = listOf(diskRead, network, diskWrite)
 
-            viewModel.filteredViolations.test {
-                val items = awaitUntil { it.size == 3 }
-                items shouldHaveSize 3
+            viewModel.uiState.test {
+                val state = awaitUntil { it.filteredViolations.size == 3 }
+                state.filteredViolations shouldHaveSize 3
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `selectViolation and dismissDetail` {
+    inner class `SelectViolation and DismissDetail events` {
 
         @Test
-        fun `selectViolation sets the selected violation`() = runTest {
+        fun `SelectViolation sets the selected violation`() = runTest {
             val violation = makeViolation()
 
-            viewModel.selectViolation(violation)
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectViolation(violation))
 
-            viewModel.selectedViolation.value shouldBe violation
+            viewModel.uiState.value.selectedViolation shouldBe violation
         }
 
         @Test
-        fun `dismissDetail clears the selected violation`() = runTest {
-            viewModel.selectViolation(makeViolation())
-            viewModel.dismissDetail()
+        fun `DismissDetail clears the selected violation`() = runTest {
+            viewModel.sendEvent(ThreadViolationViewEvent.SelectViolation(makeViolation()))
+            viewModel.sendEvent(ThreadViolationViewEvent.DismissDetail)
 
-            viewModel.selectedViolation.value shouldBe null
+            viewModel.uiState.value.selectedViolation shouldBe null
         }
     }
 
     @Nested
-    inner class `clearViolations` {
+    inner class `ClearViolations event` {
 
         @Test
         fun `delegates to engine`() {
-            viewModel.clearViolations()
+            viewModel.sendEvent(ThreadViolationViewEvent.ClearViolations)
 
             verify { engine.clearViolations() }
         }
@@ -203,10 +204,10 @@ class ThreadViolationViewModelTest {
 
         @Test
         fun `isMonitoring reflects engine state`() = runTest {
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe false
                 isMonitoringFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.isMonitoring }.isMonitoring shouldBe true
             }
         }
 
@@ -221,10 +222,10 @@ class ThreadViolationViewModelTest {
                 customSlowCodeCount = 0,
             )
 
-            viewModel.stats.test {
-                awaitItem() shouldBe ViolationStats.empty()
+            viewModel.uiState.test {
+                awaitItem().stats shouldBe ViolationStats.empty()
                 statsFlow.value = updatedStats
-                awaitItem() shouldBe updatedStats
+                awaitUntil { it.stats == updatedStats }.stats shouldBe updatedStats
             }
         }
     }

@@ -2,10 +2,26 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ClassOrdering:WebViewMonitorFeature.kt$WebViewMonitorViewModel$Companion</ID>
     <ID>LongMethod:WebViewMonitorScreen.kt$@Preview(showBackground = true) @Composable private fun WebViewMonitorListScreenPreview()</ID>
     <ID>LongMethod:WebViewRequestDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebViewRequestDetailScreen( request: WebViewRequest, onNavigateBack: () -&gt; Unit, )</ID>
     <ID>ParameterNaming:WebViewMonitorScreen.kt$onSearchQueryChanged</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEffect.kt$WebViewMonitorViewEffect$NavigateToDetail : WebViewMonitorViewEffect</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ClearFilters : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ClearRequests : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ClearSelection : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$EnsureEnabled : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$SelectRequest : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$SetSearchQuery : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ToggleResourceTypeFilter : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.SelectRequest$val request: WebViewRequest</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.SetSearchQuery$val query: String</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.ToggleResourceTypeFilter$val type: WebViewResourceType</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val filteredRequests: ImmutableList&lt;WebViewRequest&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val requests: ImmutableList&lt;WebViewRequest&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val resourceTypeFilter: ImmutableSet&lt;WebViewResourceType&gt; = persistentSetOf()</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val selectedRequest: WebViewRequest? = null</ID>
+    <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val stats: WebViewRequestStats = WebViewRequestStats.empty()</ID>
     <ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

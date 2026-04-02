@@ -1,15 +1,15 @@
 package com.azikar24.wormaceptor.feature.ratelimit
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.feature.ratelimit.ui.RateLimitScreen
+import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewEvent
 import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewModel
 import org.koin.compose.koinInject
 
@@ -25,26 +25,23 @@ fun RateLimiter(
     val factory = remember(engine) { RateLimitFeature.createViewModelFactory(engine) }
     val viewModel: RateLimitViewModel = viewModel(factory = factory)
 
-    // Collect state
-    val config by viewModel.config.collectAsState()
-    val stats by viewModel.stats.collectAsState()
-    val selectedPreset by viewModel.selectedPreset.collectAsState()
-
-    RateLimitScreen(
-        config = config,
-        stats = stats,
-        selectedPreset = selectedPreset,
-        onEnableToggle = viewModel::toggleEnabled,
-        onPresetSelected = viewModel::selectPreset,
-        onDownloadSpeedChanged = viewModel::setDownloadSpeed,
-        onUploadSpeedChanged = viewModel::setUploadSpeed,
-        onLatencyChanged = viewModel::setLatency,
-        onPacketLossChanged = viewModel::setPacketLoss,
-        onClearStats = viewModel::clearStats,
-        onResetToDefaults = viewModel::resetToDefaults,
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        RateLimitScreen(
+            config = state.config,
+            stats = state.stats,
+            selectedPreset = state.selectedPreset,
+            onEnableToggle = { onEvent(RateLimitViewEvent.ToggleEnabled) },
+            onPresetSelected = { onEvent(RateLimitViewEvent.SelectPreset(it)) },
+            onDownloadSpeedChanged = { onEvent(RateLimitViewEvent.SetDownloadSpeed(it)) },
+            onUploadSpeedChanged = { onEvent(RateLimitViewEvent.SetUploadSpeed(it)) },
+            onLatencyChanged = { onEvent(RateLimitViewEvent.SetLatency(it)) },
+            onPacketLossChanged = { onEvent(RateLimitViewEvent.SetPacketLoss(it)) },
+            onClearStats = { onEvent(RateLimitViewEvent.ClearStats) },
+            onResetToDefaults = { onEvent(RateLimitViewEvent.ResetToDefaults) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }
 
 /**

@@ -77,38 +77,38 @@ class LeakDetectionViewModelTest {
 
         @Test
         fun `selectedSeverity is null`() = runTest {
-            viewModel.selectedSeverity.value shouldBe null
+            viewModel.uiState.value.selectedSeverity shouldBe null
         }
 
         @Test
         fun `selectedLeak is null`() = runTest {
-            viewModel.selectedLeak.value shouldBe null
+            viewModel.uiState.value.selectedLeak shouldBe null
         }
 
         @Test
         fun `filteredLeaks is empty`() = runTest {
-            viewModel.filteredLeaks.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredLeaks.shouldBeEmpty()
             }
         }
     }
 
     @Nested
-    inner class `setSelectedSeverity` {
+    inner class `SelectSeverity event` {
 
         @Test
         fun `updates selected severity`() = runTest {
-            viewModel.setSelectedSeverity(LeakSeverity.CRITICAL)
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectSeverity(LeakSeverity.CRITICAL))
 
-            viewModel.selectedSeverity.value shouldBe LeakSeverity.CRITICAL
+            viewModel.uiState.value.selectedSeverity shouldBe LeakSeverity.CRITICAL
         }
 
         @Test
         fun `setting null clears the severity filter`() = runTest {
-            viewModel.setSelectedSeverity(LeakSeverity.HIGH)
-            viewModel.setSelectedSeverity(null)
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectSeverity(LeakSeverity.HIGH))
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectSeverity(null))
 
-            viewModel.selectedSeverity.value shouldBe null
+            viewModel.uiState.value.selectedSeverity shouldBe null
         }
 
         @Test
@@ -123,14 +123,14 @@ class LeakDetectionViewModelTest {
                 retainedSize = 1024L,
             )
             detectedLeaksFlow.value = listOf(highLeak, lowLeak)
-            viewModel.setSelectedSeverity(LeakSeverity.HIGH)
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectSeverity(LeakSeverity.HIGH))
 
-            viewModel.filteredLeaks.test {
-                val items = awaitUntil {
-                    it.size == 1 && it.first().severity == LeakSeverity.HIGH
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLeaks.size == 1 && it.filteredLeaks.first().severity == LeakSeverity.HIGH
                 }
-                items shouldHaveSize 1
-                items.first().severity shouldBe LeakSeverity.HIGH
+                state.filteredLeaks shouldHaveSize 1
+                state.filteredLeaks.first().severity shouldBe LeakSeverity.HIGH
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -149,32 +149,32 @@ class LeakDetectionViewModelTest {
             )
             detectedLeaksFlow.value = listOf(highLeak, lowLeak, criticalLeak)
 
-            viewModel.filteredLeaks.test {
-                val items = awaitUntil { it.size == 3 }
-                items shouldHaveSize 3
+            viewModel.uiState.test {
+                val state = awaitUntil { it.filteredLeaks.size == 3 }
+                state.filteredLeaks shouldHaveSize 3
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `selectLeak and dismissDetail` {
+    inner class `SelectLeak and DismissDetail events` {
 
         @Test
-        fun `selectLeak sets the selected leak`() = runTest {
+        fun `SelectLeak sets the selected leak`() = runTest {
             val leak = makeLeak()
 
-            viewModel.selectLeak(leak)
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectLeak(leak))
 
-            viewModel.selectedLeak.value shouldBe leak
+            viewModel.uiState.value.selectedLeak shouldBe leak
         }
 
         @Test
-        fun `dismissDetail clears the selected leak`() = runTest {
-            viewModel.selectLeak(makeLeak())
-            viewModel.dismissDetail()
+        fun `DismissDetail clears the selected leak`() = runTest {
+            viewModel.sendEvent(LeakDetectionViewEvent.SelectLeak(makeLeak()))
+            viewModel.sendEvent(LeakDetectionViewEvent.DismissDetail)
 
-            viewModel.selectedLeak.value shouldBe null
+            viewModel.uiState.value.selectedLeak shouldBe null
         }
     }
 
@@ -182,25 +182,25 @@ class LeakDetectionViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `triggerCheck delegates to engine`() {
-            viewModel.triggerCheck()
+        fun `TriggerCheck delegates to engine`() {
+            viewModel.sendEvent(LeakDetectionViewEvent.TriggerCheck)
 
             verify { engine.triggerCheck() }
         }
 
         @Test
-        fun `clearLeaks delegates to engine`() {
-            viewModel.clearLeaks()
+        fun `ClearLeaks delegates to engine`() {
+            viewModel.sendEvent(LeakDetectionViewEvent.ClearLeaks)
 
             verify { engine.clearLeaks() }
         }
 
         @Test
         fun `isRunning reflects engine state`() = runTest {
-            viewModel.isRunning.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isRunning shouldBe false
                 isRunningFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.isRunning }.isRunning shouldBe true
             }
         }
 
@@ -215,10 +215,10 @@ class LeakDetectionViewModelTest {
                 totalRetainedBytes = 5_000_000L,
             )
 
-            viewModel.summary.test {
-                awaitItem() shouldBe LeakSummary.empty()
+            viewModel.uiState.test {
+                awaitItem().summary shouldBe LeakSummary.empty()
                 leakSummaryFlow.value = updatedSummary
-                awaitItem() shouldBe updatedSummary
+                awaitUntil { it.summary == updatedSummary }.summary shouldBe updatedSummary
             }
         }
     }

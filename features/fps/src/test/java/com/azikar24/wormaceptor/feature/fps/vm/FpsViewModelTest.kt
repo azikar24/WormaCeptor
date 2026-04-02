@@ -53,8 +53,8 @@ class FpsViewModelTest {
 
         @Test
         fun `initial value is EMPTY`() = runTest {
-            viewModel.currentFpsInfo.test {
-                awaitItem() shouldBe FpsInfo.EMPTY
+            viewModel.uiState.test {
+                awaitItem().currentFpsInfo shouldBe FpsInfo.EMPTY
             }
         }
 
@@ -62,10 +62,10 @@ class FpsViewModelTest {
         fun `emits updated fps info`() = runTest {
             val updated = FpsInfo.EMPTY.copy(currentFps = 60f, averageFps = 58f)
 
-            viewModel.currentFpsInfo.test {
+            viewModel.uiState.test {
                 awaitItem()
                 currentFpsFlow.value = updated
-                awaitItem() shouldBe updated
+                awaitItem().currentFpsInfo shouldBe updated
             }
         }
     }
@@ -75,8 +75,8 @@ class FpsViewModelTest {
 
         @Test
         fun `initial value is empty list`() = runTest {
-            viewModel.fpsHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().fpsHistory.shouldBeEmpty()
             }
         }
 
@@ -86,10 +86,10 @@ class FpsViewModelTest {
                 FpsInfo.EMPTY.copy(currentFps = 30f),
                 FpsInfo.EMPTY.copy(currentFps = 60f),
             )
-            viewModel.fpsHistory.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().fpsHistory.shouldBeEmpty()
                 fpsHistoryFlow.value = entries
-                awaitItem() shouldHaveSize 2
+                awaitItem().fpsHistory shouldHaveSize 2
             }
         }
     }
@@ -100,28 +100,28 @@ class FpsViewModelTest {
         @Test
         fun `reflects engine state when not running`() = runTest {
             isRunningFlow.value = false
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe false
             }
         }
 
         @Test
         fun `reflects engine state when running`() = runTest {
             isRunningFlow.value = true
-            viewModel.isMonitoring.test {
-                awaitItem() shouldBe true
+            viewModel.uiState.test {
+                awaitItem().isMonitoring shouldBe true
             }
         }
     }
 
     @Nested
-    inner class `toggleMonitoring` {
+    inner class `ToggleMonitoring` {
 
         @Test
         fun `starts monitoring when not running`() {
             isRunningFlow.value = false
 
-            viewModel.toggleMonitoring()
+            viewModel.sendEvent(FpsViewEvent.ToggleMonitoring)
 
             verify { engine.start() }
         }
@@ -130,7 +130,7 @@ class FpsViewModelTest {
         fun `stops monitoring when running`() {
             isRunningFlow.value = true
 
-            viewModel.toggleMonitoring()
+            viewModel.sendEvent(FpsViewEvent.ToggleMonitoring)
 
             verify { engine.stop() }
         }
@@ -140,20 +140,20 @@ class FpsViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `startMonitoring delegates to engine`() {
-            viewModel.startMonitoring()
+        fun `StartMonitoring delegates to engine`() {
+            viewModel.sendEvent(FpsViewEvent.StartMonitoring)
             verify { engine.start() }
         }
 
         @Test
-        fun `stopMonitoring delegates to engine`() {
-            viewModel.stopMonitoring()
+        fun `StopMonitoring delegates to engine`() {
+            viewModel.sendEvent(FpsViewEvent.StopMonitoring)
             verify { engine.stop() }
         }
 
         @Test
-        fun `resetStats delegates to engine`() {
-            viewModel.resetStats()
+        fun `ResetStats delegates to engine`() {
+            viewModel.sendEvent(FpsViewEvent.ResetStats)
             verify { engine.reset() }
         }
     }

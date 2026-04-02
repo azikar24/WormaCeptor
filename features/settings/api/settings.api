@@ -54,17 +54,95 @@ public final class com/azikar24/wormaceptor/feature/settings/ui/FeatureToggleScr
 	public static final fun FeatureToggleScreen (Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewModel;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ResetToDefaults : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ResetToDefaults;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleConsoleLogs : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleConsoleLogs;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleCrashesTab : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleCrashesTab;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleDeviceInfo : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleDeviceInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleFileBrowser : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleFileBrowser;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleNetworkTab : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleNetworkTab;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$TogglePreferences : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$TogglePreferences;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleSqliteBrowser : com/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewEvent$ToggleSqliteBrowser;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfigRepository;)V
-	public final fun getFeatureConfig ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun resetToDefaults ()V
-	public final fun toggleConsoleLogs ()V
-	public final fun toggleCrashesTab ()V
-	public final fun toggleDeviceInfo ()V
-	public final fun toggleFileBrowser ()V
-	public final fun toggleNetworkTab ()V
-	public final fun togglePreferences ()V
-	public final fun toggleSqliteBrowser ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/settings/vm/SettingsViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;)Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewState;Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/settings/vm/SettingsViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeatureConfig ()Lcom/azikar24/wormaceptor/domain/contracts/FeatureConfig;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

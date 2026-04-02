@@ -7,9 +7,21 @@
     <ID>LongMethod:ThreadViolationScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun TypeFilterChips( selectedType: ViolationType?, onTypeSelected: (ViolationType?) -&gt; Unit, colors: ThreadViolationColors, )</ID>
     <ID>LongMethod:ThreadViolationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ThreadViolationScreen( violations: ImmutableList&lt;ThreadViolation&gt;, stats: ViolationStats, isMonitoring: Boolean, selectedType: ViolationType?, selectedViolation: ThreadViolation?, onToggleMonitoring: () -&gt; Unit, onTypeSelected: (ViolationType?) -&gt; Unit, onViolationSelected: (ThreadViolation) -&gt; Unit, onDismissDetail: () -&gt; Unit, onClearViolations: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ThreadViolationScreen.kt$( violations: ImmutableList&lt;ThreadViolation&gt;, stats: ViolationStats, isMonitoring: Boolean, selectedType: ViolationType?, selectedViolation: ThreadViolation?, onToggleMonitoring: () -&gt; Unit, onTypeSelected: (ViolationType?) -&gt; Unit, onViolationSelected: (ThreadViolation) -&gt; Unit, onDismissDetail: () -&gt; Unit, onClearViolations: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:ThreadViolationViewModel.kt$ThreadViolationViewModel$5000</ID>
     <ID>ParameterNaming:ThreadViolationScreen.kt$onTypeSelected</ID>
     <ID>ParameterNaming:ThreadViolationScreen.kt$onViolationSelected</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$ClearViolations : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$DismissDetail : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectType : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectViolation : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$ToggleMonitoring : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewState.kt$ThreadViolationViewState</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewEvent.kt$ThreadViolationViewEvent.SelectType$val type: ViolationType?</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewEvent.kt$ThreadViolationViewEvent.SelectViolation$val violation: ThreadViolation</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val filteredViolations: ImmutableList&lt;ThreadViolation&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val isMonitoring: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedType: ViolationType? = null</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedViolation: ThreadViolation? = null</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val stats: ViolationStats = ViolationStats.empty()</ID>
     <ID>ViewModelInjection:ThreadViolationFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -1,189 +1,182 @@
 package com.azikar24.wormaceptor.feature.logs.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
-import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.onEach
+
+private const val SearchDebounceMs = 100L
 
 /**
- * ViewModel for the Logs screen.
+ * ViewModel for the Logs screen, using MVI via BaseViewModel.
  *
  * Provides filtered and searchable access to captured log entries,
  * along with controls for log level filtering and auto-scroll behavior.
  */
-@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+@OptIn(FlowPreview::class)
 class LogsViewModel(
     private val logCaptureEngine: LogCaptureEngine,
-) : ViewModel() {
+) : BaseViewModel<LogsViewState, LogsViewEffect, LogsViewEvent>(
+    LogsViewState(
+        currentPid = logCaptureEngine.getCurrentPid(),
+        isCapturing = logCaptureEngine.isCapturing.value,
+    ),
+) {
 
+    // Internal flows used for debounced filtering pipelines
     private val _searchQuery = MutableStateFlow("")
+    private val _selectedLevels = MutableStateFlow(LogLevel.entries.toSet())
 
-    /** Current search query used to filter log entries by tag or message. */
-    val searchQuery: StateFlow<String> = _searchQuery
+    // Raw flows from engine
+    private val rawLogs = logCaptureEngine.logs
 
-    private val _minimumLevel = MutableStateFlow(LogLevel.VERBOSE)
-
-    /** Minimum log level threshold; levels below this are hidden. */
-    val minimumLevel: StateFlow<LogLevel> = _minimumLevel
-
-    private val _selectedLevels = MutableStateFlow<Set<LogLevel>>(LogLevel.entries.toSet())
-
-    /** Set of currently selected log levels in multi-select filter mode. */
-    val selectedLevels: StateFlow<Set<LogLevel>> = _selectedLevels
-
-    private val _autoScroll = MutableStateFlow(true)
-
-    /** Whether the log list automatically scrolls to new entries. */
-    val autoScroll: StateFlow<Boolean> = _autoScroll
-
-    /** Whether the log capture engine is actively capturing logs. */
-    val isCapturing: StateFlow<Boolean> = logCaptureEngine.isCapturing
-
-    /** Process ID of the current application. */
-    val currentPid: Int = logCaptureEngine.getCurrentPid()
-
-    // Raw logs from engine
-    private val rawLogs: StateFlow<List<LogEntry>> = logCaptureEngine.logs
-
-    /** Filtered log entries combining search query and selected level filters. */
-    val logs: StateFlow<ImmutableList<LogEntry>> = combine(
-        rawLogs,
-        _searchQuery.debounce(100),
-        _selectedLevels,
-    ) { logs, query, levels ->
-        logs.filter { entry ->
-            // Filter by selected levels
-            val matchesLevel = entry.level in levels
-
-            // Filter by search query
-            val matchesSearch = if (query.isBlank()) {
-                true
-            } else {
-                entry.tag.contains(query, ignoreCase = true) ||
-                    entry.message.contains(query, ignoreCase = true)
-            }
-
-            matchesLevel && matchesSearch
-        }.toImmutableList()
-    }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /** Total number of unfiltered log entries. */
-    val totalCount: StateFlow<Int> = rawLogs
-        .map { it.size }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    /** Number of log entries per log level, used for filter badge counts. */
-    val levelCounts: StateFlow<Map<LogLevel, Int>> = rawLogs
-        .map { logs ->
-            logs.groupingBy { it.level }.eachCount()
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
-
-    /**
-     * Updates the search query.
-     */
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
+    init {
+        observeFilteredLogs()
+        observeTotalCount()
+        observeLevelCounts()
+        observeIsCapturing()
     }
 
-    /**
-     * Sets the minimum log level filter.
-     */
-    fun setMinimumLevel(level: LogLevel) {
-        _minimumLevel.value = level
-        // Update selected levels to include this level and above
-        _selectedLevels.value = LogLevel.entries
+    override fun handleEvent(event: LogsViewEvent) {
+        when (event) {
+            is LogsViewEvent.SearchQueryChanged -> onSearchQueryChanged(event.query)
+            is LogsViewEvent.MinimumLevelSet -> setMinimumLevel(event.level)
+            is LogsViewEvent.LevelToggled -> toggleLevel(event.level)
+            is LogsViewEvent.AllLevelsSelected -> selectAllLevels()
+            is LogsViewEvent.LevelSelectionCleared -> clearLevelSelection()
+            is LogsViewEvent.AutoScrollToggled -> toggleAutoScroll()
+            is LogsViewEvent.AutoScrollSet -> setAutoScroll(event.enabled)
+            is LogsViewEvent.CaptureStarted -> startCapture()
+            is LogsViewEvent.CaptureStopped -> stopCapture()
+            is LogsViewEvent.LogsCleared -> clearLogs()
+            is LogsViewEvent.FiltersCleared -> clearFilters()
+        }
+    }
+
+    private fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+        updateState { copy(searchQuery = query) }
+    }
+
+    private fun setMinimumLevel(level: LogLevel) {
+        val newSelectedLevels = LogLevel.entries
             .filter { it.priority >= level.priority }
             .toSet()
-    }
-
-    /**
-     * Toggles a specific log level in the filter.
-     */
-    fun toggleLevel(level: LogLevel) {
-        _selectedLevels.value = if (level in _selectedLevels.value) {
-            _selectedLevels.value - level
-        } else {
-            _selectedLevels.value + level
+        _selectedLevels.value = newSelectedLevels
+        updateState {
+            copy(
+                minimumLevel = level,
+                selectedLevels = newSelectedLevels,
+            )
         }
     }
 
-    /**
-     * Selects all log levels.
-     */
-    fun selectAllLevels() {
-        _selectedLevels.value = LogLevel.entries.toSet()
+    private fun toggleLevel(level: LogLevel) {
+        val current = _selectedLevels.value
+        val newSelectedLevels = if (level in current) current - level else current + level
+        _selectedLevels.value = newSelectedLevels
+        updateState { copy(selectedLevels = newSelectedLevels) }
     }
 
-    /**
-     * Clears all level selections.
-     */
-    fun clearLevelSelection() {
+    private fun selectAllLevels() {
+        val allLevels = LogLevel.entries.toSet()
+        _selectedLevels.value = allLevels
+        updateState { copy(selectedLevels = allLevels) }
+    }
+
+    private fun clearLevelSelection() {
         _selectedLevels.value = emptySet()
+        updateState { copy(selectedLevels = emptySet()) }
     }
 
-    /**
-     * Toggles auto-scroll behavior.
-     */
-    fun toggleAutoScroll() {
-        _autoScroll.value = !_autoScroll.value
+    private fun toggleAutoScroll() {
+        updateState { copy(autoScroll = !autoScroll) }
     }
 
-    /**
-     * Sets auto-scroll state.
-     */
-    fun setAutoScroll(enabled: Boolean) {
-        _autoScroll.value = enabled
+    private fun setAutoScroll(enabled: Boolean) {
+        updateState { copy(autoScroll = enabled) }
     }
 
-    /**
-     * Starts capturing logs.
-     */
-    fun startCapture() {
+    private fun startCapture() {
         logCaptureEngine.start()
     }
 
-    /**
-     * Stops capturing logs.
-     */
-    fun stopCapture() {
+    private fun stopCapture() {
         logCaptureEngine.stop()
     }
 
-    /**
-     * Clears all captured logs.
-     */
-    fun clearLogs() {
+    private fun clearLogs() {
         logCaptureEngine.clear()
     }
 
-    /**
-     * Clears search and filters.
-     */
-    fun clearFilters() {
+    private fun clearFilters() {
         _searchQuery.value = ""
-        _selectedLevels.value = LogLevel.entries.toSet()
+        val allLevels = LogLevel.entries.toSet()
+        _selectedLevels.value = allLevels
+        updateState {
+            copy(
+                searchQuery = "",
+                selectedLevels = allLevels,
+            )
+        }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        // Don't stop capture when ViewModel is cleared - let the engine continue
-        // The engine lifecycle is managed separately
+    private fun observeFilteredLogs() {
+        combine(
+            rawLogs,
+            _searchQuery.debounce(SearchDebounceMs),
+            _selectedLevels,
+        ) { logs, query, levels ->
+            logs.filter { entry ->
+                val matchesLevel = entry.level in levels
+                val matchesSearch = if (query.isBlank()) {
+                    true
+                } else {
+                    entry.tag.contains(query, ignoreCase = true) ||
+                        entry.message.contains(query, ignoreCase = true)
+                }
+                matchesLevel && matchesSearch
+            }.toImmutableList()
+        }.flowOn(Dispatchers.Default)
+            .onEach { filtered ->
+                updateState { copy(logs = filtered) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeTotalCount() {
+        rawLogs
+            .map { it.size }
+            .onEach { count ->
+                updateState { copy(totalCount = count) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLevelCounts() {
+        rawLogs
+            .map { logs -> logs.groupingBy { it.level }.eachCount() }
+            .onEach { counts ->
+                updateState { copy(levelCounts = counts) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeIsCapturing() {
+        logCaptureEngine.isCapturing
+            .onEach { capturing ->
+                updateState { copy(isCapturing = capturing) }
+            }
+            .launchIn(viewModelScope)
     }
 }

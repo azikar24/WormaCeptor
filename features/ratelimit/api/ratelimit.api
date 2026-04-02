@@ -91,19 +91,119 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimit
 	public static final fun rateLimitColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
 }
 
-public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewModel : androidx/lifecycle/ViewModel {
+public abstract class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEffect {
+	public static final field $stable I
+}
+
+public abstract class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ClearStats : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ClearStats;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ResetToDefaults : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ResetToDefaults;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SelectPreset : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SelectPreset;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SelectPreset;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SelectPreset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPreset ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetDownloadSpeed : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetDownloadSpeed;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetDownloadSpeed;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetDownloadSpeed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSpeedKbps ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetLatency : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetLatency;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetLatency;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetLatency;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLatencyMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetPacketLoss : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public fun <init> (F)V
+	public final fun component1 ()F
+	public final fun copy (F)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetPacketLoss;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetPacketLoss;FILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetPacketLoss;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPercent ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetUploadSpeed : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetUploadSpeed;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetUploadSpeed;JILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$SetUploadSpeed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSpeedKbps ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ToggleEnabled : com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEvent$ToggleEnabled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)V
-	public final fun clearStats ()V
-	public final fun getConfig ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedPreset ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun resetToDefaults ()V
-	public final fun selectPreset (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
-	public final fun setDownloadSpeed (J)V
-	public final fun setLatency (J)V
-	public final fun setPacketLoss (F)V
-	public final fun setUploadSpeed (J)V
-	public final fun toggleEnabled ()V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
+	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfig ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public final fun getSelectedPreset ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
+	public final fun getStats ()Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

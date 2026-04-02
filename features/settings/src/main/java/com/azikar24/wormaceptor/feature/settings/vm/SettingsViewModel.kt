@@ -1,12 +1,9 @@
 package com.azikar24.wormaceptor.feature.settings.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.FeatureConfig
 import com.azikar24.wormaceptor.domain.contracts.FeatureConfigRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -14,62 +11,45 @@ import kotlinx.coroutines.launch
  */
 class SettingsViewModel(
     private val repository: FeatureConfigRepository,
-) : ViewModel() {
+) : BaseViewModel<SettingsViewState, SettingsViewEffect, SettingsViewEvent>(
+    SettingsViewState(),
+) {
 
-    /** Observable stream of the current feature toggle configuration. */
-    val featureConfig: StateFlow<FeatureConfig> = repository.observeConfig()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = FeatureConfig.DEFAULT,
-        )
-
-    /** Toggles visibility of the Network tab in the main screen. */
-    fun toggleNetworkTab() {
-        updateConfig { copy(showNetworkTab = !showNetworkTab) }
+    init {
+        observeConfig()
     }
 
-    /** Toggles visibility of the Crashes tab in the main screen. */
-    fun toggleCrashesTab() {
-        updateConfig { copy(showCrashesTab = !showCrashesTab) }
-    }
-
-    /** Toggles visibility of the Preferences inspector tool. */
-    fun togglePreferences() {
-        updateConfig { copy(showPreferences = !showPreferences) }
-    }
-
-    /** Toggles visibility of the Console Logs tool. */
-    fun toggleConsoleLogs() {
-        updateConfig { copy(showConsoleLogs = !showConsoleLogs) }
-    }
-
-    /** Toggles visibility of the Device Info tool. */
-    fun toggleDeviceInfo() {
-        updateConfig { copy(showDeviceInfo = !showDeviceInfo) }
-    }
-
-    /** Toggles visibility of the SQLite Browser tool. */
-    fun toggleSqliteBrowser() {
-        updateConfig { copy(showSqliteBrowser = !showSqliteBrowser) }
-    }
-
-    /** Toggles visibility of the File Browser tool. */
-    fun toggleFileBrowser() {
-        updateConfig { copy(showFileBrowser = !showFileBrowser) }
-    }
-
-    /** Restores all feature toggles to their default values. */
-    fun resetToDefaults() {
-        viewModelScope.launch {
-            repository.resetToDefaults()
+    override fun handleEvent(event: SettingsViewEvent) {
+        when (event) {
+            is SettingsViewEvent.ToggleNetworkTab -> toggleConfig { copy(showNetworkTab = !showNetworkTab) }
+            is SettingsViewEvent.ToggleCrashesTab -> toggleConfig { copy(showCrashesTab = !showCrashesTab) }
+            is SettingsViewEvent.TogglePreferences -> toggleConfig { copy(showPreferences = !showPreferences) }
+            is SettingsViewEvent.ToggleConsoleLogs -> toggleConfig { copy(showConsoleLogs = !showConsoleLogs) }
+            is SettingsViewEvent.ToggleDeviceInfo -> toggleConfig { copy(showDeviceInfo = !showDeviceInfo) }
+            is SettingsViewEvent.ToggleSqliteBrowser -> toggleConfig { copy(showSqliteBrowser = !showSqliteBrowser) }
+            is SettingsViewEvent.ToggleFileBrowser -> toggleConfig { copy(showFileBrowser = !showFileBrowser) }
+            is SettingsViewEvent.ResetToDefaults -> handleResetToDefaults()
         }
     }
 
-    private fun updateConfig(transform: FeatureConfig.() -> FeatureConfig) {
+    private fun observeConfig() {
         viewModelScope.launch {
-            val newConfig = featureConfig.value.transform()
+            repository.observeConfig().collect { config ->
+                updateState { copy(featureConfig = config) }
+            }
+        }
+    }
+
+    private fun toggleConfig(transform: FeatureConfig.() -> FeatureConfig) {
+        viewModelScope.launch {
+            val newConfig = uiState.value.featureConfig.transform()
             repository.updateConfig(newConfig)
+        }
+    }
+
+    private fun handleResetToDefaults() {
+        viewModelScope.launch {
+            repository.resetToDefaults()
         }
     }
 }

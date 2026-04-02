@@ -12,7 +12,15 @@
     <ID>MagicNumber:MemoryScreen.kt$100f</ID>
     <ID>MagicNumber:MemoryScreen.kt$1_048_576</ID>
     <ID>MagicNumber:MemoryScreen.kt$4</ID>
-    <ID>MagicNumber:MemoryViewModel.kt$MemoryViewModel$5000</ID>
+    <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ClearHistory : MemoryViewEvent</ID>
+    <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ForceGc : MemoryViewEvent</ID>
+    <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StartMonitoring : MemoryViewEvent</ID>
+    <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StopMonitoring : MemoryViewEvent</ID>
+    <ID>UndocumentedPublicClass:MemoryViewState.kt$MemoryViewState</ID>
+    <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val currentMemory: MemoryInfo = MemoryInfo.empty()</ID>
+    <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isHeapWarning: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isMonitoring: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val memoryHistory: ImmutableList&lt;MemoryInfo&gt; = persistentListOf()</ID>
     <ID>ViewModelInjection:MemoryFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

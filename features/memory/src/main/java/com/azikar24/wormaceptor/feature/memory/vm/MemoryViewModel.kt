@@ -1,82 +1,49 @@
 package com.azikar24.wormaceptor.feature.memory.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
-import com.azikar24.wormaceptor.domain.entities.MemoryInfo
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 
 /**
  * ViewModel for the Memory Monitoring screen.
  *
- * Provides access to memory metrics and controls for monitoring behavior.
+ * Consolidates memory metrics from [MemoryMonitorEngine] into a single [MemoryViewState]
+ * and exposes user actions via [MemoryViewEvent].
  * Monitoring state is managed by the engine and persists across navigation.
  * User must explicitly start/stop monitoring.
  */
 class MemoryViewModel(
     private val engine: MemoryMonitorEngine,
-) : ViewModel() {
+) : BaseViewModel<MemoryViewState, MemoryViewEffect, MemoryViewEvent>(
+    initialState = MemoryViewState(),
+) {
 
-    /** Current memory snapshot with heap and native allocation data. */
-    val currentMemory: StateFlow<MemoryInfo> = engine.currentMemory
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            MemoryInfo.empty(),
-        )
-
-    /** Historical memory snapshots used for rendering time-series charts. */
-    val memoryHistory: StateFlow<ImmutableList<MemoryInfo>> = engine.memoryHistory
-        .map { it.toImmutableList() }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            persistentListOf(),
-        )
-
-    /** Whether memory monitoring is currently active. */
-    val isMonitoring: StateFlow<Boolean> = engine.isMonitoring
-
-    /** Whether heap usage exceeds the warning threshold. */
-    val isHeapWarning: StateFlow<Boolean> = engine.currentMemory
-        .map { it.heapUsagePercent >= MemoryMonitorEngine.HEAP_WARNING_THRESHOLD }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            false,
-        )
-
-    /**
-     * Starts memory monitoring.
-     */
-    fun startMonitoring() {
-        engine.start()
+    init {
+        combine(
+            engine.currentMemory,
+            engine.memoryHistory,
+            engine.isMonitoring,
+        ) { currentMemory, history, monitoring ->
+            updateState {
+                copy(
+                    currentMemory = currentMemory,
+                    memoryHistory = history.toImmutableList(),
+                    isMonitoring = monitoring,
+                    isHeapWarning = currentMemory.heapUsagePercent >= MemoryMonitorEngine.HEAP_WARNING_THRESHOLD,
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
-    /**
-     * Stops memory monitoring.
-     */
-    fun stopMonitoring() {
-        engine.stop()
-    }
-
-    /**
-     * Forces a garbage collection run.
-     */
-    fun forceGc() {
-        engine.forceGc()
-    }
-
-    /**
-     * Clears the memory history.
-     */
-    fun clearHistory() {
-        engine.clearHistory()
+    override fun handleEvent(event: MemoryViewEvent) {
+        when (event) {
+            is MemoryViewEvent.StartMonitoring -> engine.start()
+            is MemoryViewEvent.StopMonitoring -> engine.stop()
+            is MemoryViewEvent.ForceGc -> engine.forceGc()
+            is MemoryViewEvent.ClearHistory -> engine.clearHistory()
+        }
     }
 }

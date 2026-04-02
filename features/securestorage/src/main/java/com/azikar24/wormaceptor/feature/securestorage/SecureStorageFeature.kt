@@ -1,15 +1,15 @@
 package com.azikar24.wormaceptor.feature.securestorage
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.feature.securestorage.ui.SecureStorageScreen
+import com.azikar24.wormaceptor.feature.securestorage.vm.SecureStorageViewEvent
 import com.azikar24.wormaceptor.feature.securestorage.vm.SecureStorageViewModel
 import org.koin.compose.koinInject
 
@@ -59,35 +59,25 @@ fun SecureStorageViewer(
     val factory = remember { SecureStorageFeature.createViewModelFactory(engine) }
     val viewModel: SecureStorageViewModel = viewModel(factory = factory)
 
-    // Collect state
-    val entries by viewModel.filteredEntries.collectAsState()
-    val summary by viewModel.summary.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
-    val selectedType by viewModel.selectedType.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val selectedEntry by viewModel.selectedEntry.collectAsState()
-    val keystoreAccessible by viewModel.keystoreAccessible.collectAsState()
-    val encryptedPrefsAccessible by viewModel.encryptedPrefsAccessible.collectAsState()
-    val lastRefreshTime by viewModel.lastRefreshTime.collectAsState()
-
-    SecureStorageScreen(
-        entries = entries,
-        summary = summary,
-        isLoading = isLoading,
-        error = error,
-        selectedType = selectedType,
-        searchQuery = searchQuery,
-        selectedEntry = selectedEntry,
-        keystoreAccessible = keystoreAccessible,
-        encryptedPrefsAccessible = encryptedPrefsAccessible,
-        lastRefreshTime = lastRefreshTime,
-        onTypeSelected = viewModel::setSelectedType,
-        onSearchQueryChanged = viewModel::setSearchQuery,
-        onEntrySelected = viewModel::selectEntry,
-        onDismissDetail = viewModel::dismissDetail,
-        onRefresh = viewModel::refresh,
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        SecureStorageScreen(
+            entries = state.filteredEntries,
+            summary = state.summary,
+            isLoading = state.isLoading,
+            error = state.error,
+            selectedType = state.selectedType,
+            searchQuery = state.searchQuery,
+            selectedEntry = state.selectedEntry,
+            keystoreAccessible = state.keystoreAccessible,
+            encryptedPrefsAccessible = state.encryptedPrefsAccessible,
+            lastRefreshTime = state.lastRefreshTime,
+            onTypeSelected = { onEvent(SecureStorageViewEvent.SelectType(it)) },
+            onSearchQueryChanged = { onEvent(SecureStorageViewEvent.UpdateSearchQuery(it)) },
+            onEntrySelected = { onEvent(SecureStorageViewEvent.SelectEntry(it)) },
+            onDismissDetail = { onEvent(SecureStorageViewEvent.DismissDetail) },
+            onRefresh = { onEvent(SecureStorageViewEvent.Refresh) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

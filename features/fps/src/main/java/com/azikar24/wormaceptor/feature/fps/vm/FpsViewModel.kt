@@ -1,79 +1,53 @@
 package com.azikar24.wormaceptor.feature.fps.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
-import com.azikar24.wormaceptor.domain.entities.FpsInfo
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 
 /**
  * ViewModel for the FPS Monitor screen.
  *
- * Provides access to FPS monitoring data and controls for starting/stopping
- * the monitor and resetting statistics.
+ * Consolidates FPS metrics from [FpsMonitorEngine] into a single [FpsViewState]
+ * and exposes user actions via [FpsViewEvent].
+ * Monitoring state is managed by the engine and persists across navigation.
  */
 class FpsViewModel(
     private val fpsMonitorEngine: FpsMonitorEngine,
-) : ViewModel() {
+) : BaseViewModel<FpsViewState, FpsViewEffect, FpsViewEvent>(
+    initialState = FpsViewState(),
+) {
 
-    /**
-     * Current FPS information including real-time metrics.
-     */
-    val currentFpsInfo: StateFlow<FpsInfo> = fpsMonitorEngine.currentFpsInfo
-
-    /**
-     * Historical FPS data for charting (last 60 samples).
-     */
-    val fpsHistory: StateFlow<ImmutableList<FpsInfo>> = fpsMonitorEngine.fpsHistory
-        .map { it.toImmutableList() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /**
-     * Whether the FPS monitor is currently running.
-     */
-    val isMonitoring: StateFlow<Boolean> = fpsMonitorEngine.isRunning
-
-    /**
-     * Starts FPS monitoring.
-     */
-    fun startMonitoring() {
-        fpsMonitorEngine.start()
+    init {
+        combine(
+            fpsMonitorEngine.currentFpsInfo,
+            fpsMonitorEngine.fpsHistory,
+            fpsMonitorEngine.isRunning,
+        ) { currentFps, history, running ->
+            updateState {
+                copy(
+                    currentFpsInfo = currentFps,
+                    fpsHistory = history.toImmutableList(),
+                    isMonitoring = running,
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
-    /**
-     * Stops FPS monitoring.
-     */
-    fun stopMonitoring() {
-        fpsMonitorEngine.stop()
-    }
-
-    /**
-     * Toggles monitoring state.
-     */
-    fun toggleMonitoring() {
-        if (isMonitoring.value) {
-            stopMonitoring()
-        } else {
-            startMonitoring()
+    override fun handleEvent(event: FpsViewEvent) {
+        when (event) {
+            is FpsViewEvent.StartMonitoring -> fpsMonitorEngine.start()
+            is FpsViewEvent.StopMonitoring -> fpsMonitorEngine.stop()
+            is FpsViewEvent.ToggleMonitoring -> {
+                if (uiState.value.isMonitoring) {
+                    fpsMonitorEngine.stop()
+                } else {
+                    fpsMonitorEngine.start()
+                }
+            }
+            is FpsViewEvent.ResetStats -> fpsMonitorEngine.reset()
         }
-    }
-
-    /**
-     * Resets all FPS statistics and history.
-     */
-    fun resetStats() {
-        fpsMonitorEngine.reset()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Note: We don't stop the engine here - monitoring persists across navigation.
-        // The engine lifecycle is managed by the user via explicit start/stop.
     }
 }

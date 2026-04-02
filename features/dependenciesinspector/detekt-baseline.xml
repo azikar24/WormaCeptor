@@ -53,11 +53,28 @@
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.15f</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$3</ID>
-    <ID>MagicNumber:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel$5000</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onCategorySelected</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onDependencySelected</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:DependenciesInspectorScreen.kt$onShowVersionedOnlyChanged</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$DismissDetail : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$Refresh : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SelectDependency : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SetSearchQuery : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SetSelectedCategory : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SetShowVersionedOnly : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SelectDependency$val dependency: DependencyInfo</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetSearchQuery$val query: String</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetSelectedCategory$val category: DependencyCategory?</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetShowVersionedOnly$val show: Boolean</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val error: String? = null</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val filteredDependencies: ImmutableList&lt;DependencyInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val selectedCategory: DependencyCategory? = null</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val selectedDependency: DependencyInfo? = null</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val showVersionedOnly: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val summary: DependencySummary = DependencySummary.empty()</ID>
     <ID>ViewModelInjection:DependenciesInspectorFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -32,12 +32,28 @@
     <ID>MagicNumber:RateLimitColors.kt$0xFFFFB74D</ID>
     <ID>MagicNumber:RateLimitScreen.kt$1000</ID>
     <ID>MagicNumber:RateLimitScreen.kt$1000.0</ID>
-    <ID>MagicNumber:RateLimitViewModel.kt$RateLimitViewModel$5000</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onDownloadSpeedChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onLatencyChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onPacketLossChanged</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onPresetSelected</ID>
     <ID>ParameterNaming:RateLimitScreen.kt$onUploadSpeedChanged</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ClearStats : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ResetToDefaults : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SelectPreset : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetDownloadSpeed : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetLatency : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetPacketLoss : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetUploadSpeed : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ToggleEnabled : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewState.kt$RateLimitViewState</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SelectPreset$val preset: NetworkPreset?</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetDownloadSpeed$val speedKbps: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetLatency$val latencyMs: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetPacketLoss$val percent: Float</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetUploadSpeed$val speedKbps: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val config: RateLimitConfig = RateLimitConfig.default()</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val selectedPreset: NetworkPreset? = null</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val stats: ThrottleStats = ThrottleStats.empty()</ID>
     <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

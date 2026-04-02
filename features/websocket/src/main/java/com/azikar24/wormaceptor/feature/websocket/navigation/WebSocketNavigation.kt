@@ -1,8 +1,6 @@
 package com.azikar24.wormaceptor.feature.websocket.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -10,11 +8,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.feature.websocket.WebSocketFeature
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
+import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewModel
 import org.koin.compose.koinInject
 
@@ -60,23 +60,21 @@ private fun WebSocketConnectionsDestination(
 ) {
     val viewModel = graphScopedViewModel(backStackEntry, navController)
 
-    val connections by viewModel.connections.collectAsState()
-    val connectionSearchQuery by viewModel.connectionSearchQuery.collectAsState()
-    val totalConnectionCount by viewModel.totalConnectionCount.collectAsState()
-
-    WebSocketListScreen(
-        connections = connections,
-        searchQuery = connectionSearchQuery,
-        totalCount = totalConnectionCount,
-        onSearchQueryChanged = viewModel::onConnectionSearchQueryChanged,
-        onConnectionClick = { connection ->
-            viewModel.selectConnection(connection.id)
-            navController.navigate(WormaCeptorNavKeys.WebSocketMessages.route)
-        },
-        onClearAll = viewModel::clearAll,
-        getMessageCount = viewModel::getMessageCountForConnection,
-        onBack = onNavigateBack,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        WebSocketListScreen(
+            connections = state.connections,
+            searchQuery = state.connectionSearchQuery,
+            totalCount = state.totalConnectionCount,
+            onSearchQueryChanged = { query -> onEvent(WebSocketViewEvent.ConnectionSearchQueryChanged(query)) },
+            onConnectionClick = { connection ->
+                onEvent(WebSocketViewEvent.ConnectionSelected(connection.id))
+                navController.navigate(WormaCeptorNavKeys.WebSocketMessages.route)
+            },
+            onClearAll = { onEvent(WebSocketViewEvent.ClearAll) },
+            getMessageCount = viewModel::getMessageCountForConnection,
+            onBack = onNavigateBack,
+        )
+    }
 }
 
 @Composable
@@ -86,29 +84,23 @@ private fun WebSocketMessagesDestination(
 ) {
     val viewModel = graphScopedViewModel(backStackEntry, navController)
 
-    val selectedConnection by viewModel.selectedConnection.collectAsState()
-    val messages by viewModel.messages.collectAsState()
-    val messageSearchQuery by viewModel.messageSearchQuery.collectAsState()
-    val directionFilter by viewModel.directionFilter.collectAsState()
-    val totalMessageCount by viewModel.totalMessageCount.collectAsState()
-    val directionCounts by viewModel.directionCounts.collectAsState()
-    val expandedMessageId by viewModel.expandedMessageId.collectAsState()
-
-    WebSocketDetailScreen(
-        connection = selectedConnection,
-        messages = messages,
-        searchQuery = messageSearchQuery,
-        directionFilter = directionFilter,
-        totalMessageCount = totalMessageCount,
-        directionCounts = directionCounts,
-        expandedMessageId = expandedMessageId,
-        onSearchQueryChanged = viewModel::onMessageSearchQueryChanged,
-        onDirectionFilterToggle = viewModel::toggleDirectionFilter,
-        onMessageClick = viewModel::toggleMessageExpanded,
-        onClearMessages = viewModel::clearCurrentConnectionMessages,
-        onBack = {
-            viewModel.clearConnectionSelection()
-            navController.popBackStack()
-        },
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        WebSocketDetailScreen(
+            connection = state.selectedConnection,
+            messages = state.messages,
+            searchQuery = state.messageSearchQuery,
+            directionFilter = state.directionFilter,
+            totalMessageCount = state.totalMessageCount,
+            directionCounts = state.directionCounts,
+            expandedMessageId = state.expandedMessageId,
+            onSearchQueryChanged = { query -> onEvent(WebSocketViewEvent.MessageSearchQueryChanged(query)) },
+            onDirectionFilterToggle = { direction -> onEvent(WebSocketViewEvent.DirectionFilterToggled(direction)) },
+            onMessageClick = { messageId -> onEvent(WebSocketViewEvent.MessageExpandToggled(messageId)) },
+            onClearMessages = { onEvent(WebSocketViewEvent.ClearCurrentConnectionMessages) },
+            onBack = {
+                onEvent(WebSocketViewEvent.ConnectionSelectionCleared)
+                navController.popBackStack()
+            },
+        )
+    }
 }

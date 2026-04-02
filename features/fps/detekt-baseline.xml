@@ -11,7 +11,6 @@
     <ID>MagicNumber:FpsScreen.kt$60f</ID>
     <ID>MagicNumber:FpsScreen.kt$65f</ID>
     <ID>MagicNumber:FpsScreen.kt$8f</ID>
-    <ID>MagicNumber:FpsViewModel.kt$FpsViewModel$5000</ID>
     <ID>ViewModelInjection:FpsFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

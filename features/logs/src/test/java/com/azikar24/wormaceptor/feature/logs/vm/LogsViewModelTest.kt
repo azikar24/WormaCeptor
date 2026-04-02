@@ -68,27 +68,27 @@ class LogsViewModelTest {
 
         @Test
         fun `search query is empty`() = runTest {
-            viewModel.searchQuery.value shouldBe ""
+            viewModel.uiState.value.searchQuery shouldBe ""
         }
 
         @Test
         fun `minimum level is VERBOSE`() = runTest {
-            viewModel.minimumLevel.value shouldBe LogLevel.VERBOSE
+            viewModel.uiState.value.minimumLevel shouldBe LogLevel.VERBOSE
         }
 
         @Test
         fun `all levels are selected`() = runTest {
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet()
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet()
         }
 
         @Test
         fun `auto scroll is enabled`() = runTest {
-            viewModel.autoScroll.value shouldBe true
+            viewModel.uiState.value.autoScroll shouldBe true
         }
 
         @Test
         fun `current pid is from engine`() {
-            viewModel.currentPid shouldBe 1234
+            viewModel.uiState.value.currentPid shouldBe 1234
         }
     }
 
@@ -97,24 +97,24 @@ class LogsViewModelTest {
 
         @Test
         fun `updates minimum level`() = runTest {
-            viewModel.setMinimumLevel(LogLevel.WARN)
+            viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.WARN))
 
-            viewModel.minimumLevel.value shouldBe LogLevel.WARN
+            viewModel.uiState.value.minimumLevel shouldBe LogLevel.WARN
         }
 
         @Test
         fun `cascades to selected levels including WARN and above`() = runTest {
-            viewModel.setMinimumLevel(LogLevel.WARN)
+            viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.WARN))
 
-            viewModel.selectedLevels.value shouldBe setOf(LogLevel.WARN, LogLevel.ERROR, LogLevel.ASSERT)
+            viewModel.uiState.value.selectedLevels shouldBe setOf(LogLevel.WARN, LogLevel.ERROR, LogLevel.ASSERT)
         }
 
         @Test
         fun `setting VERBOSE selects all levels`() = runTest {
-            viewModel.setMinimumLevel(LogLevel.ERROR)
-            viewModel.setMinimumLevel(LogLevel.VERBOSE)
+            viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.ERROR))
+            viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.VERBOSE))
 
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet()
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet()
         }
     }
 
@@ -123,17 +123,17 @@ class LogsViewModelTest {
 
         @Test
         fun `removes a selected level`() = runTest {
-            viewModel.toggleLevel(LogLevel.DEBUG)
+            viewModel.sendEvent(LogsViewEvent.LevelToggled(LogLevel.DEBUG))
 
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet() - LogLevel.DEBUG
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet() - LogLevel.DEBUG
         }
 
         @Test
         fun `adds back a deselected level`() = runTest {
-            viewModel.toggleLevel(LogLevel.DEBUG)
-            viewModel.toggleLevel(LogLevel.DEBUG)
+            viewModel.sendEvent(LogsViewEvent.LevelToggled(LogLevel.DEBUG))
+            viewModel.sendEvent(LogsViewEvent.LevelToggled(LogLevel.DEBUG))
 
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet()
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet()
         }
     }
 
@@ -142,12 +142,12 @@ class LogsViewModelTest {
 
         @Test
         fun `restores all levels after partial deselection`() = runTest {
-            viewModel.toggleLevel(LogLevel.DEBUG)
-            viewModel.toggleLevel(LogLevel.INFO)
+            viewModel.sendEvent(LogsViewEvent.LevelToggled(LogLevel.DEBUG))
+            viewModel.sendEvent(LogsViewEvent.LevelToggled(LogLevel.INFO))
 
-            viewModel.selectAllLevels()
+            viewModel.sendEvent(LogsViewEvent.AllLevelsSelected)
 
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet()
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet()
         }
     }
 
@@ -156,9 +156,9 @@ class LogsViewModelTest {
 
         @Test
         fun `removes all selected levels`() = runTest {
-            viewModel.clearLevelSelection()
+            viewModel.sendEvent(LogsViewEvent.LevelSelectionCleared)
 
-            viewModel.selectedLevels.value.shouldBeEmpty()
+            viewModel.uiState.value.selectedLevels.shouldBeEmpty()
         }
     }
 
@@ -167,17 +167,17 @@ class LogsViewModelTest {
 
         @Test
         fun `toggles from true to false`() = runTest {
-            viewModel.toggleAutoScroll()
+            viewModel.sendEvent(LogsViewEvent.AutoScrollToggled)
 
-            viewModel.autoScroll.value shouldBe false
+            viewModel.uiState.value.autoScroll shouldBe false
         }
 
         @Test
         fun `toggles from false to true`() = runTest {
-            viewModel.toggleAutoScroll()
-            viewModel.toggleAutoScroll()
+            viewModel.sendEvent(LogsViewEvent.AutoScrollToggled)
+            viewModel.sendEvent(LogsViewEvent.AutoScrollToggled)
 
-            viewModel.autoScroll.value shouldBe true
+            viewModel.uiState.value.autoScroll shouldBe true
         }
     }
 
@@ -186,11 +186,11 @@ class LogsViewModelTest {
 
         @Test
         fun `sets auto scroll to specified value`() = runTest {
-            viewModel.setAutoScroll(false)
-            viewModel.autoScroll.value shouldBe false
+            viewModel.sendEvent(LogsViewEvent.AutoScrollSet(false))
+            viewModel.uiState.value.autoScroll shouldBe false
 
-            viewModel.setAutoScroll(true)
-            viewModel.autoScroll.value shouldBe true
+            viewModel.sendEvent(LogsViewEvent.AutoScrollSet(true))
+            viewModel.uiState.value.autoScroll shouldBe true
         }
     }
 
@@ -214,15 +214,15 @@ class LogsViewModelTest {
             val debugLog = makeLogEntry(id = 1, level = LogLevel.DEBUG)
             val errorLog = makeLogEntry(id = 2, level = LogLevel.ERROR)
 
-            viewModel.logs.test {
-                skipItems(1) // initial empty
+            viewModel.uiState.test {
+                skipItems(1) // initial state
 
                 logsFlow.value = listOf(debugLog, errorLog)
-                viewModel.setMinimumLevel(LogLevel.ERROR)
+                viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.ERROR))
 
-                val items = awaitUntil { it.size == 1 && it.first().level == LogLevel.ERROR }
-                items shouldHaveSize 1
-                items.first().level shouldBe LogLevel.ERROR
+                val state = awaitUntil { it.logs.size == 1 && it.logs.first().level == LogLevel.ERROR }
+                state.logs shouldHaveSize 1
+                state.logs.first().level shouldBe LogLevel.ERROR
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -232,15 +232,15 @@ class LogsViewModelTest {
             val matchingLog = makeLogEntry(id = 1, tag = "NetworkTag", message = "irrelevant")
             val nonMatchingLog = makeLogEntry(id = 2, tag = "OtherTag", message = "irrelevant")
 
-            viewModel.logs.test {
+            viewModel.uiState.test {
                 skipItems(1)
 
                 logsFlow.value = listOf(matchingLog, nonMatchingLog)
-                viewModel.onSearchQueryChanged("Network")
+                viewModel.sendEvent(LogsViewEvent.SearchQueryChanged("Network"))
 
-                val items = awaitUntil { it.size == 1 && it.first().tag == "NetworkTag" }
-                items shouldHaveSize 1
-                items.first().tag shouldBe "NetworkTag"
+                val state = awaitUntil { it.logs.size == 1 && it.logs.first().tag == "NetworkTag" }
+                state.logs shouldHaveSize 1
+                state.logs.first().tag shouldBe "NetworkTag"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -250,15 +250,15 @@ class LogsViewModelTest {
             val matchingLog = makeLogEntry(id = 1, tag = "Tag", message = "Connection established")
             val nonMatchingLog = makeLogEntry(id = 2, tag = "Tag", message = "Something else")
 
-            viewModel.logs.test {
+            viewModel.uiState.test {
                 skipItems(1)
 
                 logsFlow.value = listOf(matchingLog, nonMatchingLog)
-                viewModel.onSearchQueryChanged("Connection")
+                viewModel.sendEvent(LogsViewEvent.SearchQueryChanged("Connection"))
 
-                val items = awaitUntil { it.size == 1 && it.first().message == "Connection established" }
-                items shouldHaveSize 1
-                items.first().message shouldBe "Connection established"
+                val state = awaitUntil { it.logs.size == 1 && it.logs.first().message == "Connection established" }
+                state.logs shouldHaveSize 1
+                state.logs.first().message shouldBe "Connection established"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -269,16 +269,16 @@ class LogsViewModelTest {
             val errorMatch = makeLogEntry(id = 2, level = LogLevel.ERROR, tag = "NetworkTag")
             val errorNoMatch = makeLogEntry(id = 3, level = LogLevel.ERROR, tag = "OtherTag")
 
-            viewModel.logs.test {
+            viewModel.uiState.test {
                 skipItems(1)
 
                 logsFlow.value = listOf(debugMatch, errorMatch, errorNoMatch)
-                viewModel.setMinimumLevel(LogLevel.ERROR)
-                viewModel.onSearchQueryChanged("Network")
+                viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.ERROR))
+                viewModel.sendEvent(LogsViewEvent.SearchQueryChanged("Network"))
 
-                val items = awaitUntil { it.size == 1 && it.first().id == 2L }
-                items shouldHaveSize 1
-                items.first().id shouldBe 2L
+                val state = awaitUntil { it.logs.size == 1 && it.logs.first().id == 2L }
+                state.logs shouldHaveSize 1
+                state.logs.first().id shouldBe 2L
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -291,8 +291,8 @@ class LogsViewModelTest {
         fun `reflects raw logs size`() = runTest {
             logsFlow.value = listOf(makeLogEntry(id = 1), makeLogEntry(id = 2), makeLogEntry(id = 3))
 
-            viewModel.totalCount.test {
-                awaitItem() shouldBe 3
+            viewModel.uiState.test {
+                awaitUntil { it.totalCount == 3 }.totalCount shouldBe 3
             }
         }
     }
@@ -308,10 +308,10 @@ class LogsViewModelTest {
                 makeLogEntry(id = 3, level = LogLevel.ERROR),
             )
 
-            viewModel.levelCounts.test {
-                val counts = awaitItem()
-                counts[LogLevel.DEBUG] shouldBe 2
-                counts[LogLevel.ERROR] shouldBe 1
+            viewModel.uiState.test {
+                val state = awaitUntil { it.levelCounts.isNotEmpty() }
+                state.levelCounts[LogLevel.DEBUG] shouldBe 2
+                state.levelCounts[LogLevel.ERROR] shouldBe 1
             }
         }
     }
@@ -321,19 +321,19 @@ class LogsViewModelTest {
 
         @Test
         fun `startCapture delegates to engine`() {
-            viewModel.startCapture()
+            viewModel.sendEvent(LogsViewEvent.CaptureStarted)
             verify { engine.start() }
         }
 
         @Test
         fun `stopCapture delegates to engine`() {
-            viewModel.stopCapture()
+            viewModel.sendEvent(LogsViewEvent.CaptureStopped)
             verify { engine.stop() }
         }
 
         @Test
         fun `clearLogs delegates to engine`() {
-            viewModel.clearLogs()
+            viewModel.sendEvent(LogsViewEvent.LogsCleared)
             verify { engine.clear() }
         }
     }
@@ -343,13 +343,13 @@ class LogsViewModelTest {
 
         @Test
         fun `resets search query and level selection`() = runTest {
-            viewModel.onSearchQueryChanged("something")
-            viewModel.setMinimumLevel(LogLevel.ERROR)
+            viewModel.sendEvent(LogsViewEvent.SearchQueryChanged("something"))
+            viewModel.sendEvent(LogsViewEvent.MinimumLevelSet(LogLevel.ERROR))
 
-            viewModel.clearFilters()
+            viewModel.sendEvent(LogsViewEvent.FiltersCleared)
 
-            viewModel.searchQuery.value shouldBe ""
-            viewModel.selectedLevels.value shouldBe LogLevel.entries.toSet()
+            viewModel.uiState.value.searchQuery shouldBe ""
+            viewModel.uiState.value.selectedLevels shouldBe LogLevel.entries.toSet()
         }
     }
 }

@@ -1,56 +1,54 @@
 package com.azikar24.wormaceptor.feature.ratelimit.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
-import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
-import com.azikar24.wormaceptor.domain.entities.ThrottleStats
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 
 /**
  * ViewModel for the Network Rate Limiting screen.
  *
- * Provides access to rate limiting configuration and statistics.
- * Allows users to configure network throttling presets or custom values.
+ * Consolidates rate-limiting configuration and statistics from [RateLimitEngine]
+ * into a single [RateLimitViewState] and exposes user actions via [RateLimitViewEvent].
  */
 class RateLimitViewModel(
     private val engine: RateLimitEngine,
-) : ViewModel() {
+) : BaseViewModel<RateLimitViewState, RateLimitViewEffect, RateLimitViewEvent>(
+    initialState = RateLimitViewState(),
+) {
 
-    /** Current rate limiting configuration including speed, latency, and packet loss settings. */
-    val config: StateFlow<RateLimitConfig> = engine.config
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            RateLimitConfig.default(),
-        )
+    init {
+        combine(
+            engine.config,
+            engine.stats,
+        ) { config, stats ->
+            updateState {
+                copy(
+                    config = config,
+                    stats = stats,
+                    selectedPreset = config.preset,
+                )
+            }
+        }.launchIn(viewModelScope)
+    }
 
-    /** Accumulated throttle statistics such as bytes throttled and requests delayed. */
-    val stats: StateFlow<ThrottleStats> = engine.stats
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            ThrottleStats.empty(),
-        )
+    override fun handleEvent(event: RateLimitViewEvent) {
+        when (event) {
+            is RateLimitViewEvent.ToggleEnabled -> handleToggleEnabled()
+            is RateLimitViewEvent.SelectPreset -> handleSelectPreset(event.preset)
+            is RateLimitViewEvent.SetDownloadSpeed -> handleSetDownloadSpeed(event.speedKbps)
+            is RateLimitViewEvent.SetUploadSpeed -> handleSetUploadSpeed(event.speedKbps)
+            is RateLimitViewEvent.SetLatency -> handleSetLatency(event.latencyMs)
+            is RateLimitViewEvent.SetPacketLoss -> handleSetPacketLoss(event.percent)
+            is RateLimitViewEvent.ClearStats -> engine.clearStats()
+            is RateLimitViewEvent.ResetToDefaults -> handleResetToDefaults()
+        }
+    }
 
-    /** Currently selected preset, derived from engine config to survive navigation. */
-    val selectedPreset: StateFlow<NetworkPreset?> = engine.config
-        .map { it.preset }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            null,
-        )
-
-    /**
-     * Toggles rate limiting on/off.
-     */
-    fun toggleEnabled() {
-        val current = config.value
+    private fun handleToggleEnabled() {
+        val current = uiState.value.config
         if (current.enabled) {
             engine.disable()
         } else {
@@ -58,28 +56,17 @@ class RateLimitViewModel(
         }
     }
 
-    /**
-     * Selects a network preset and applies its configuration.
-     *
-     * @param preset The preset to apply, or null to clear preset
-     */
-    fun selectPreset(preset: NetworkPreset?) {
+    private fun handleSelectPreset(preset: RateLimitConfig.NetworkPreset?) {
         if (preset != null) {
             engine.applyPreset(preset)
         } else {
-            // Clear preset but keep current values
-            val current = config.value
+            val current = uiState.value.config
             engine.setConfig(current.copy(preset = null))
         }
     }
 
-    /**
-     * Sets the download speed limit.
-     *
-     * @param speedKbps Download speed in kilobits per second
-     */
-    fun setDownloadSpeed(speedKbps: Long) {
-        val current = config.value
+    private fun handleSetDownloadSpeed(speedKbps: Long) {
+        val current = uiState.value.config
         engine.setConfig(
             current.copy(
                 downloadSpeedKbps = speedKbps.coerceIn(
@@ -91,13 +78,8 @@ class RateLimitViewModel(
         )
     }
 
-    /**
-     * Sets the upload speed limit.
-     *
-     * @param speedKbps Upload speed in kilobits per second
-     */
-    fun setUploadSpeed(speedKbps: Long) {
-        val current = config.value
+    private fun handleSetUploadSpeed(speedKbps: Long) {
+        val current = uiState.value.config
         engine.setConfig(
             current.copy(
                 uploadSpeedKbps = speedKbps.coerceIn(
@@ -109,13 +91,8 @@ class RateLimitViewModel(
         )
     }
 
-    /**
-     * Sets the latency injection value.
-     *
-     * @param latencyMs Latency in milliseconds
-     */
-    fun setLatency(latencyMs: Long) {
-        val current = config.value
+    private fun handleSetLatency(latencyMs: Long) {
+        val current = uiState.value.config
         engine.setConfig(
             current.copy(
                 latencyMs = latencyMs.coerceIn(
@@ -127,13 +104,8 @@ class RateLimitViewModel(
         )
     }
 
-    /**
-     * Sets the packet loss percentage.
-     *
-     * @param percent Packet loss percentage (0-100)
-     */
-    fun setPacketLoss(percent: Float) {
-        val current = config.value
+    private fun handleSetPacketLoss(percent: Float) {
+        val current = uiState.value.config
         engine.setConfig(
             current.copy(
                 packetLossPercent = percent.coerceIn(
@@ -145,23 +117,12 @@ class RateLimitViewModel(
         )
     }
 
-    /**
-     * Clears throttle statistics.
-     */
-    fun clearStats() {
-        engine.clearStats()
-    }
-
-    /**
-     * Resets configuration to defaults.
-     */
-    fun resetToDefaults() {
+    private fun handleResetToDefaults() {
+        val current = uiState.value.config
         engine.setConfig(
             RateLimitConfig
                 .default()
-                .copy(
-                    enabled = config.value.enabled,
-                ),
+                .copy(enabled = current.enabled),
         )
     }
 }

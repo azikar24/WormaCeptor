@@ -1,30 +1,29 @@
 package com.azikar24.wormaceptor.feature.websocket.vm
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
-import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.onEach
+
+private const val ConnectionSearchDebounceMs = 150L
+private const val MessageSearchDebounceMs = 150L
 
 /**
- * ViewModel for the WebSocket Monitoring feature.
+ * ViewModel for the WebSocket Monitoring feature, using MVI via BaseViewModel.
  *
  * Provides filtered and searchable access to WebSocket connections and messages,
  * along with controls for direction filtering and search.
@@ -32,129 +31,39 @@ import kotlinx.coroutines.flow.stateIn
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class WebSocketViewModel(
     private val engine: WebSocketMonitorEngine,
-) : ViewModel() {
+) : BaseViewModel<WebSocketViewState, WebSocketViewEffect, WebSocketViewEvent>(WebSocketViewState()) {
 
+    // Internal flows used for debounced filtering pipelines
     private val _connectionSearchQuery = MutableStateFlow("")
-
-    /** Current search query for filtering the connection list. */
-    val connectionSearchQuery: StateFlow<String> = _connectionSearchQuery
-
     private val _selectedConnectionId = MutableStateFlow<Long?>(null)
-
     private val _messageSearchQuery = MutableStateFlow("")
-
-    /** Current search query for filtering messages in the detail screen. */
-    val messageSearchQuery: StateFlow<String> = _messageSearchQuery
-
     private val _directionFilter = MutableStateFlow<WebSocketMessageDirection?>(null)
 
-    /** Active message direction filter, or null to show all directions. */
-    val directionFilter: StateFlow<WebSocketMessageDirection?> = _directionFilter
+    // Raw flows from engine
+    private val rawConnections = engine.connections
+    private val rawMessages = engine.messages
 
-    private val _expandedMessageId = MutableStateFlow<Long?>(null)
+    init {
+        observeFilteredConnections()
+        observeTotalConnectionCount()
+        observeSelectedConnection()
+        observeFilteredMessages()
+        observeTotalMessageCount()
+        observeDirectionCounts()
+    }
 
-    /** ID of the message whose payload is currently expanded, or null when collapsed. */
-    val expandedMessageId: StateFlow<Long?> = _expandedMessageId
-
-    // Raw connections from engine
-    private val rawConnections: StateFlow<List<WebSocketConnection>> = engine.connections
-
-    // Raw messages from engine
-    private val rawMessages: StateFlow<List<WebSocketMessage>> = engine.messages
-
-    /**
-     * Filtered connections based on search query.
-     */
-    val connections: StateFlow<ImmutableList<WebSocketConnection>> = combine(
-        rawConnections,
-        _connectionSearchQuery.debounce(150),
-    ) { connections, query ->
-        connections.filter { conn ->
-            query.isBlank() || conn.url.contains(query, ignoreCase = true)
-        }.sortedByDescending { it.openedAt ?: it.id }
-            .toImmutableList()
-    }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /**
-     * Gets the currently selected connection.
-     */
-    val selectedConnection: StateFlow<WebSocketConnection?> = _selectedConnectionId
-        .flatMapLatest { connectionId ->
-            if (connectionId == null) {
-                flowOf(null)
-            } else {
-                rawConnections.map { connections ->
-                    connections.find { it.id == connectionId }
-                }
-            }
+    override fun handleEvent(event: WebSocketViewEvent) {
+        when (event) {
+            is WebSocketViewEvent.ConnectionSearchQueryChanged -> onConnectionSearchQueryChanged(event.query)
+            is WebSocketViewEvent.ConnectionSelected -> selectConnection(event.connectionId)
+            is WebSocketViewEvent.ConnectionSelectionCleared -> clearConnectionSelection()
+            is WebSocketViewEvent.MessageSearchQueryChanged -> onMessageSearchQueryChanged(event.query)
+            is WebSocketViewEvent.DirectionFilterToggled -> toggleDirectionFilter(event.direction)
+            is WebSocketViewEvent.MessageExpandToggled -> toggleMessageExpanded(event.messageId)
+            is WebSocketViewEvent.ClearAll -> clearAll()
+            is WebSocketViewEvent.ClearCurrentConnectionMessages -> clearCurrentConnectionMessages()
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-
-    /**
-     * Filtered messages for the selected connection.
-     */
-    val messages: StateFlow<ImmutableList<WebSocketMessage>> = combine(
-        rawMessages,
-        _selectedConnectionId,
-        _messageSearchQuery.debounce(150),
-        _directionFilter,
-    ) { messages, connectionId, query, direction ->
-        if (connectionId == null) {
-            emptyList()
-        } else {
-            messages.filter { msg ->
-                val matchesConnection = msg.connectionId == connectionId
-
-                val matchesQuery = query.isBlank() ||
-                    msg.payload.contains(query, ignoreCase = true)
-
-                val matchesDirection = direction == null ||
-                    msg.direction == direction
-
-                matchesConnection && matchesQuery && matchesDirection
-            }
-        }
-    }.map { it.toImmutableList() }
-        .flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
-
-    /**
-     * Total message count for the selected connection (unfiltered).
-     */
-    val totalMessageCount: StateFlow<Int> = combine(
-        rawMessages,
-        _selectedConnectionId,
-    ) { messages, connectionId ->
-        if (connectionId == null) {
-            0
-        } else {
-            messages.count { it.connectionId == connectionId }
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    /**
-     * Message counts by direction for the selected connection.
-     */
-    val directionCounts: StateFlow<Map<WebSocketMessageDirection, Int>> = combine(
-        rawMessages,
-        _selectedConnectionId,
-    ) { messages, connectionId ->
-        if (connectionId == null) {
-            emptyMap()
-        } else {
-            messages.filter { it.connectionId == connectionId }
-                .groupingBy { it.direction }
-                .eachCount()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyMap())
-
-    /**
-     * Total connection count.
-     */
-    val totalConnectionCount: StateFlow<Int> = rawConnections
-        .map { it.size }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+    }
 
     /**
      * Message count per connection for list display.
@@ -163,77 +72,170 @@ class WebSocketViewModel(
         return engine.getMessageCountForConnection(connectionId)
     }
 
-    /**
-     * Updates the connection search query.
-     */
-    fun onConnectionSearchQueryChanged(query: String) {
+    private fun onConnectionSearchQueryChanged(query: String) {
         _connectionSearchQuery.value = query
+        updateState { copy(connectionSearchQuery = query) }
     }
 
-    /**
-     * Selects a connection to view its messages.
-     */
-    fun selectConnection(connectionId: Long) {
+    private fun selectConnection(connectionId: Long) {
         _selectedConnectionId.value = connectionId
         _messageSearchQuery.value = ""
         _directionFilter.value = null
-        _expandedMessageId.value = null
+        updateState {
+            copy(
+                messageSearchQuery = "",
+                directionFilter = null,
+                expandedMessageId = null,
+            )
+        }
     }
 
-    /**
-     * Clears the connection selection.
-     */
-    fun clearConnectionSelection() {
+    private fun clearConnectionSelection() {
         _selectedConnectionId.value = null
         _messageSearchQuery.value = ""
         _directionFilter.value = null
-        _expandedMessageId.value = null
+        updateState {
+            copy(
+                selectedConnection = null,
+                messageSearchQuery = "",
+                directionFilter = null,
+                expandedMessageId = null,
+            )
+        }
     }
 
-    /**
-     * Updates the message search query.
-     */
-    fun onMessageSearchQueryChanged(query: String) {
+    private fun onMessageSearchQueryChanged(query: String) {
         _messageSearchQuery.value = query
+        updateState { copy(messageSearchQuery = query) }
     }
 
-    /**
-     * Toggles the direction filter.
-     */
-    fun toggleDirectionFilter(direction: WebSocketMessageDirection) {
-        _directionFilter.value = if (_directionFilter.value == direction) {
-            null
-        } else {
-            direction
+    private fun toggleDirectionFilter(direction: WebSocketMessageDirection) {
+        val newDirection = if (_directionFilter.value == direction) null else direction
+        _directionFilter.value = newDirection
+        updateState { copy(directionFilter = newDirection) }
+    }
+
+    private fun toggleMessageExpanded(messageId: Long) {
+        updateState {
+            copy(
+                expandedMessageId = if (expandedMessageId == messageId) null else messageId,
+            )
         }
     }
 
-    /**
-     * Toggles the expanded state of a message.
-     */
-    fun toggleMessageExpanded(messageId: Long) {
-        _expandedMessageId.value = if (_expandedMessageId.value == messageId) {
-            null
-        } else {
-            messageId
-        }
-    }
-
-    /**
-     * Clears all connections and messages.
-     */
-    fun clearAll() {
+    private fun clearAll() {
         engine.clear()
         _selectedConnectionId.value = null
-        _expandedMessageId.value = null
+        updateState {
+            copy(
+                selectedConnection = null,
+                expandedMessageId = null,
+            )
+        }
     }
 
-    /**
-     * Clears messages for the currently selected connection.
-     */
-    fun clearCurrentConnectionMessages() {
+    private fun clearCurrentConnectionMessages() {
         val connectionId = _selectedConnectionId.value ?: return
         engine.clearMessagesForConnection(connectionId)
-        _expandedMessageId.value = null
+        updateState { copy(expandedMessageId = null) }
+    }
+
+    // --- Reactive observation pipelines ---
+
+    private fun observeFilteredConnections() {
+        combine(
+            rawConnections,
+            _connectionSearchQuery.debounce(ConnectionSearchDebounceMs),
+        ) { connections, query ->
+            connections.filter { conn ->
+                query.isBlank() || conn.url.contains(query, ignoreCase = true)
+            }.sortedByDescending { it.openedAt ?: it.id }
+                .toImmutableList()
+        }.flowOn(Dispatchers.Default)
+            .onEach { filtered ->
+                updateState { copy(connections = filtered) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeTotalConnectionCount() {
+        rawConnections
+            .map { it.size }
+            .onEach { count ->
+                updateState { copy(totalConnectionCount = count) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeSelectedConnection() {
+        _selectedConnectionId
+            .flatMapLatest { connectionId ->
+                if (connectionId == null) {
+                    flowOf<WebSocketConnection?>(null)
+                } else {
+                    rawConnections.map { connections ->
+                        connections.find { it.id == connectionId }
+                    }
+                }
+            }
+            .onEach { connection ->
+                updateState { copy(selectedConnection = connection) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeFilteredMessages() {
+        combine(
+            rawMessages,
+            _selectedConnectionId,
+            _messageSearchQuery.debounce(MessageSearchDebounceMs),
+            _directionFilter,
+        ) { messages, connectionId, query, direction ->
+            if (connectionId == null) {
+                emptyList()
+            } else {
+                messages.filter { msg ->
+                    val matchesConnection = msg.connectionId == connectionId
+                    val matchesQuery = query.isBlank() ||
+                        msg.payload.contains(query, ignoreCase = true)
+                    val matchesDirection = direction == null ||
+                        msg.direction == direction
+                    matchesConnection && matchesQuery && matchesDirection
+                }
+            }
+        }.map { it.toImmutableList() }
+            .flowOn(Dispatchers.Default)
+            .onEach { filtered ->
+                updateState { copy(messages = filtered) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeTotalMessageCount() {
+        combine(
+            rawMessages,
+            _selectedConnectionId,
+        ) { messages, connectionId ->
+            if (connectionId == null) 0 else messages.count { it.connectionId == connectionId }
+        }.onEach { count ->
+            updateState { copy(totalMessageCount = count) }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun observeDirectionCounts() {
+        combine(
+            rawMessages,
+            _selectedConnectionId,
+        ) { messages, connectionId ->
+            if (connectionId == null) {
+                emptyMap()
+            } else {
+                messages.filter { it.connectionId == connectionId }
+                    .groupingBy { it.direction }
+                    .eachCount()
+            }
+        }.onEach { counts ->
+            updateState { copy(directionCounts = counts) }
+        }.launchIn(viewModelScope)
     }
 }

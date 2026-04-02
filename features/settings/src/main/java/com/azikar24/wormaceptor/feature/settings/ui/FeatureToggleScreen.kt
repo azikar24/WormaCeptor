@@ -21,45 +21,37 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.contracts.FeatureConfig
 import com.azikar24.wormaceptor.feature.settings.R
+import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewEvent
 import com.azikar24.wormaceptor.feature.settings.vm.SettingsViewModel
 
 /**
  * Screen for managing feature toggles.
  * Allows users to show/hide tabs and menu items.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeatureToggleScreen(
     viewModel: SettingsViewModel,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val config by viewModel.featureConfig.collectAsState()
-
-    FeatureToggleScreenContent(
-        config = config,
-        onBack = onBack,
-        onResetDefaults = viewModel::resetToDefaults,
-        onToggleNetworkTab = viewModel::toggleNetworkTab,
-        onToggleCrashesTab = viewModel::toggleCrashesTab,
-        onTogglePreferences = viewModel::togglePreferences,
-        onToggleConsoleLogs = viewModel::toggleConsoleLogs,
-        onToggleDeviceInfo = viewModel::toggleDeviceInfo,
-        onToggleSqliteBrowser = viewModel::toggleSqliteBrowser,
-        onToggleFileBrowser = viewModel::toggleFileBrowser,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        FeatureToggleScreenContent(
+            config = state.featureConfig,
+            onBack = onBack,
+            onEvent = onEvent,
+            modifier = modifier,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,14 +59,7 @@ fun FeatureToggleScreen(
 internal fun FeatureToggleScreenContent(
     config: FeatureConfig,
     onBack: () -> Unit,
-    onResetDefaults: () -> Unit,
-    onToggleNetworkTab: () -> Unit,
-    onToggleCrashesTab: () -> Unit,
-    onTogglePreferences: () -> Unit,
-    onToggleConsoleLogs: () -> Unit,
-    onToggleDeviceInfo: () -> Unit,
-    onToggleSqliteBrowser: () -> Unit,
-    onToggleFileBrowser: () -> Unit,
+    onEvent: (SettingsViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -92,7 +77,7 @@ internal fun FeatureToggleScreenContent(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onResetDefaults) {
+                    IconButton(onClick = { onEvent(SettingsViewEvent.ResetToDefaults) }) {
                         Icon(
                             imageVector = Icons.Default.RestartAlt,
                             contentDescription = stringResource(R.string.settings_reset_defaults),
@@ -120,7 +105,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_network_tab),
                     description = stringResource(R.string.settings_network_tab_description),
                     checked = config.showNetworkTab,
-                    onCheckedChange = { onToggleNetworkTab() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleNetworkTab) },
                 )
             }
 
@@ -129,7 +114,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_crashes_tab),
                     description = stringResource(R.string.settings_crashes_tab_description),
                     checked = config.showCrashesTab,
-                    onCheckedChange = { onToggleCrashesTab() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleCrashesTab) },
                 )
             }
 
@@ -147,7 +132,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_preferences_title),
                     description = stringResource(R.string.settings_preferences_description),
                     checked = config.showPreferences,
-                    onCheckedChange = { onTogglePreferences() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.TogglePreferences) },
                 )
             }
 
@@ -156,7 +141,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_console_logs_title),
                     description = stringResource(R.string.settings_console_logs_description),
                     checked = config.showConsoleLogs,
-                    onCheckedChange = { onToggleConsoleLogs() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleConsoleLogs) },
                 )
             }
 
@@ -165,7 +150,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_device_info_title),
                     description = stringResource(R.string.settings_device_info_description),
                     checked = config.showDeviceInfo,
-                    onCheckedChange = { onToggleDeviceInfo() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleDeviceInfo) },
                 )
             }
 
@@ -174,7 +159,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_sqlite_browser_title),
                     description = stringResource(R.string.settings_sqlite_browser_description),
                     checked = config.showSqliteBrowser,
-                    onCheckedChange = { onToggleSqliteBrowser() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleSqliteBrowser) },
                 )
             }
 
@@ -183,7 +168,7 @@ internal fun FeatureToggleScreenContent(
                     title = stringResource(R.string.settings_file_browser_title),
                     description = stringResource(R.string.settings_file_browser_description),
                     checked = config.showFileBrowser,
-                    onCheckedChange = { onToggleFileBrowser() },
+                    onCheckedChange = { onEvent(SettingsViewEvent.ToggleFileBrowser) },
                 )
             }
         }
@@ -253,14 +238,7 @@ private fun FeatureToggleScreenPreview() {
                 showFileBrowser = true,
             ),
             onBack = {},
-            onResetDefaults = {},
-            onToggleNetworkTab = {},
-            onToggleCrashesTab = {},
-            onTogglePreferences = {},
-            onToggleConsoleLogs = {},
-            onToggleDeviceInfo = {},
-            onToggleSqliteBrowser = {},
-            onToggleFileBrowser = {},
+            onEvent = {},
         )
     }
 }

@@ -1,15 +1,15 @@
 package com.azikar24.wormaceptor.feature.threadviolation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.feature.threadviolation.ui.ThreadViolationScreen
+import com.azikar24.wormaceptor.feature.threadviolation.vm.ThreadViolationViewEvent
 import com.azikar24.wormaceptor.feature.threadviolation.vm.ThreadViolationViewModel
 import org.koin.compose.koinInject
 
@@ -17,14 +17,6 @@ import org.koin.compose.koinInject
  * Entry point for the Thread Violation Detection feature.
  */
 object ThreadViolationFeature {
-
-    /**
-     * Creates a ThreadViolationEngine instance.
-     */
-    fun createEngine(historySize: Int = ThreadViolationEngine.DEFAULT_HISTORY_SIZE): ThreadViolationEngine {
-        return ThreadViolationEngine(historySize)
-    }
-
     /**
      * Creates a ThreadViolationViewModel factory.
      */
@@ -60,24 +52,20 @@ fun ThreadViolationMonitor(
     val factory = remember(engine) { ThreadViolationFeature.createViewModelFactory(engine) }
     val viewModel: ThreadViolationViewModel = viewModel(factory = factory)
 
-    val violations by viewModel.filteredViolations.collectAsState()
-    val stats by viewModel.stats.collectAsState()
-    val isMonitoring by viewModel.isMonitoring.collectAsState()
-    val selectedType by viewModel.selectedType.collectAsState()
-    val selectedViolation by viewModel.selectedViolation.collectAsState()
-
-    ThreadViolationScreen(
-        violations = violations,
-        stats = stats,
-        isMonitoring = isMonitoring,
-        selectedType = selectedType,
-        selectedViolation = selectedViolation,
-        onToggleMonitoring = viewModel::toggleMonitoring,
-        onTypeSelected = viewModel::setSelectedType,
-        onViolationSelected = viewModel::selectViolation,
-        onDismissDetail = viewModel::dismissDetail,
-        onClearViolations = viewModel::clearViolations,
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        ThreadViolationScreen(
+            violations = state.filteredViolations,
+            stats = state.stats,
+            isMonitoring = state.isMonitoring,
+            selectedType = state.selectedType,
+            selectedViolation = state.selectedViolation,
+            onToggleMonitoring = { onEvent(ThreadViolationViewEvent.ToggleMonitoring) },
+            onTypeSelected = { onEvent(ThreadViolationViewEvent.SelectType(it)) },
+            onViolationSelected = { onEvent(ThreadViolationViewEvent.SelectViolation(it)) },
+            onDismissDetail = { onEvent(ThreadViolationViewEvent.DismissDetail) },
+            onClearViolations = { onEvent(ThreadViolationViewEvent.ClearViolations) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

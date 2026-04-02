@@ -87,48 +87,48 @@ class DependenciesInspectorViewModelTest {
 
         @Test
         fun `selectedCategory is null`() = runTest {
-            viewModel.selectedCategory.value shouldBe null
+            viewModel.uiState.value.selectedCategory shouldBe null
         }
 
         @Test
         fun `searchQuery is empty`() = runTest {
-            viewModel.searchQuery.value shouldBe ""
+            viewModel.uiState.value.searchQuery shouldBe ""
         }
 
         @Test
         fun `showVersionedOnly is false`() = runTest {
-            viewModel.showVersionedOnly.value shouldBe false
+            viewModel.uiState.value.showVersionedOnly shouldBe false
         }
 
         @Test
         fun `selectedDependency is null`() = runTest {
-            viewModel.selectedDependency.value shouldBe null
+            viewModel.uiState.value.selectedDependency shouldBe null
         }
 
         @Test
         fun `filteredDependencies is empty`() = runTest {
-            viewModel.filteredDependencies.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredDependencies.shouldBeEmpty()
             }
         }
     }
 
     @Nested
-    inner class `setSelectedCategory` {
+    inner class `SetSelectedCategory event` {
 
         @Test
         fun `updates selected category`() = runTest {
-            viewModel.setSelectedCategory(DependencyCategory.NETWORKING)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(DependencyCategory.NETWORKING))
 
-            viewModel.selectedCategory.value shouldBe DependencyCategory.NETWORKING
+            viewModel.uiState.value.selectedCategory shouldBe DependencyCategory.NETWORKING
         }
 
         @Test
         fun `setting null clears the category filter`() = runTest {
-            viewModel.setSelectedCategory(DependencyCategory.NETWORKING)
-            viewModel.setSelectedCategory(null)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(DependencyCategory.NETWORKING))
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(null))
 
-            viewModel.selectedCategory.value shouldBe null
+            viewModel.uiState.value.selectedCategory shouldBe null
         }
 
         @Test
@@ -136,25 +136,27 @@ class DependenciesInspectorViewModelTest {
             val networkDep = makeDependency(name = "OkHttp", category = DependencyCategory.NETWORKING)
             val uiDep = makeDependency(name = "Compose", category = DependencyCategory.UI_FRAMEWORK)
             dependenciesFlow.value = listOf(networkDep, uiDep)
-            viewModel.setSelectedCategory(DependencyCategory.NETWORKING)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(DependencyCategory.NETWORKING))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "OkHttp"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "OkHttp"
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `setSearchQuery` {
+    inner class `SetSearchQuery event` {
 
         @Test
         fun `updates search query`() = runTest {
-            viewModel.setSearchQuery("okhttp")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("okhttp"))
 
-            viewModel.searchQuery.value shouldBe "okhttp"
+            viewModel.uiState.value.searchQuery shouldBe "okhttp"
         }
 
         @Test
@@ -167,12 +169,14 @@ class DependenciesInspectorViewModelTest {
                 packageName = "retrofit2",
             )
             dependenciesFlow.value = listOf(okhttp, retrofit)
-            viewModel.setSearchQuery("okhttp")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("okhttp"))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "OkHttp"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "OkHttp"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -182,12 +186,14 @@ class DependenciesInspectorViewModelTest {
             val okhttp = makeDependency(name = "OkHttp", packageName = "okhttp3")
             val retrofit = makeDependency(name = "Retrofit", packageName = "retrofit2")
             dependenciesFlow.value = listOf(okhttp, retrofit)
-            viewModel.setSearchQuery("retrofit2")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("retrofit2"))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "Retrofit" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "Retrofit"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "Retrofit"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "Retrofit"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -201,12 +207,14 @@ class DependenciesInspectorViewModelTest {
                 packageName = "com.google.gson",
             )
             dependenciesFlow.value = listOf(okhttp, gson)
-            viewModel.setSearchQuery("squareup")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("squareup"))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "OkHttp"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "OkHttp"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -220,12 +228,14 @@ class DependenciesInspectorViewModelTest {
                 packageName = "com.google.gson",
             )
             dependenciesFlow.value = listOf(okhttp, gson)
-            viewModel.setSearchQuery("gson")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("gson"))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "Gson" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "Gson"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "Gson"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "Gson"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -240,28 +250,28 @@ class DependenciesInspectorViewModelTest {
                 packageName = "retrofit2",
             )
             dependenciesFlow.value = listOf(okhttp, retrofit)
-            viewModel.setSearchQuery("okhttp")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("okhttp"))
 
-            viewModel.filteredDependencies.test {
-                val filtered = awaitUntil { it.size == 1 }
-                filtered shouldHaveSize 1
+            viewModel.uiState.test {
+                val filtered = awaitUntil { it.filteredDependencies.size == 1 }
+                filtered.filteredDependencies shouldHaveSize 1
 
-                viewModel.setSearchQuery("")
-                val items = awaitUntil { it.size == 2 }
-                items shouldHaveSize 2
+                viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery(""))
+                val state = awaitUntil { it.filteredDependencies.size == 2 }
+                state.filteredDependencies shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `setShowVersionedOnly` {
+    inner class `SetShowVersionedOnly event` {
 
         @Test
         fun `updates showVersionedOnly flag`() = runTest {
-            viewModel.setShowVersionedOnly(true)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetShowVersionedOnly(true))
 
-            viewModel.showVersionedOnly.value shouldBe true
+            viewModel.uiState.value.showVersionedOnly shouldBe true
         }
 
         @Test
@@ -269,35 +279,37 @@ class DependenciesInspectorViewModelTest {
             val withVersion = makeDependency(name = "OkHttp", version = "4.12.0")
             val withoutVersion = makeDependency(name = "Timber", version = null, packageName = "timber.log")
             dependenciesFlow.value = listOf(withVersion, withoutVersion)
-            viewModel.setShowVersionedOnly(true)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetShowVersionedOnly(true))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().version shouldBe "4.12.0"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().version shouldBe "4.12.0"
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `selectDependency and dismissDetail` {
+    inner class `SelectDependency and DismissDetail events` {
 
         @Test
-        fun `selectDependency sets the selected dependency`() = runTest {
+        fun `SelectDependency sets the selected dependency`() = runTest {
             val dep = makeDependency(name = "OkHttp")
 
-            viewModel.selectDependency(dep)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SelectDependency(dep))
 
-            viewModel.selectedDependency.value shouldBe dep
+            viewModel.uiState.value.selectedDependency shouldBe dep
         }
 
         @Test
-        fun `dismissDetail clears the selected dependency`() = runTest {
-            viewModel.selectDependency(makeDependency(name = "OkHttp"))
-            viewModel.dismissDetail()
+        fun `DismissDetail clears the selected dependency`() = runTest {
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SelectDependency(makeDependency(name = "OkHttp")))
+            viewModel.sendEvent(DependenciesInspectorViewEvent.DismissDetail)
 
-            viewModel.selectedDependency.value shouldBe null
+            viewModel.uiState.value.selectedDependency shouldBe null
         }
     }
 
@@ -305,8 +317,8 @@ class DependenciesInspectorViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `refresh delegates to engine`() {
-            viewModel.refresh()
+        fun `Refresh event delegates to engine`() {
+            viewModel.sendEvent(DependenciesInspectorViewEvent.Refresh)
 
             verify { engine.refresh() }
         }
@@ -323,19 +335,19 @@ class DependenciesInspectorViewModelTest {
 
         @Test
         fun `isLoading reflects engine state`() = runTest {
-            viewModel.isLoading.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isLoading shouldBe false
                 isLoadingFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.isLoading }.isLoading shouldBe true
             }
         }
 
         @Test
         fun `error reflects engine state`() = runTest {
-            viewModel.error.test {
-                awaitItem() shouldBe null
+            viewModel.uiState.test {
+                awaitItem().error shouldBe null
                 errorFlow.value = "Scan failed"
-                awaitItem() shouldBe "Scan failed"
+                awaitUntil { it.error == "Scan failed" }.error shouldBe "Scan failed"
             }
         }
     }
@@ -365,13 +377,15 @@ class DependenciesInspectorViewModelTest {
                 packageName = "okcompose",
             )
             dependenciesFlow.value = listOf(networkOk, networkRetro, uiOk)
-            viewModel.setSelectedCategory(DependencyCategory.NETWORKING)
-            viewModel.setSearchQuery("ok")
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(DependencyCategory.NETWORKING))
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("ok"))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "OkHttp"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "OkHttp"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -396,13 +410,15 @@ class DependenciesInspectorViewModelTest {
                 packageName = "compose",
             )
             dependenciesFlow.value = listOf(networkWithVer, networkNoVer, uiWithVer)
-            viewModel.setSelectedCategory(DependencyCategory.NETWORKING)
-            viewModel.setShowVersionedOnly(true)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSelectedCategory(DependencyCategory.NETWORKING))
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetShowVersionedOnly(true))
 
-            viewModel.filteredDependencies.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "OkHttp" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "OkHttp"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredDependencies.size == 1 && it.filteredDependencies.first().name == "OkHttp"
+                }
+                state.filteredDependencies shouldHaveSize 1
+                state.filteredDependencies.first().name shouldBe "OkHttp"
                 cancelAndIgnoreRemainingEvents()
             }
         }

@@ -7,9 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.fps.ui.FpsScreen
+import com.azikar24.wormaceptor.feature.fps.vm.FpsViewEvent
 import com.azikar24.wormaceptor.feature.fps.vm.FpsViewModel
 import org.koin.compose.koinInject
 
@@ -58,9 +60,16 @@ fun FpsMonitor(
     val factory = remember { FpsFeature.createViewModelFactory(engine) }
     val viewModel: FpsViewModel = viewModel(factory = factory)
 
-    FpsScreen(
-        viewModel = viewModel,
-        onBack = { onNavigateBack?.invoke() },
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        FpsScreen(
+            currentFps = state.currentFpsInfo,
+            fpsHistory = state.fpsHistory,
+            isMonitoring = state.isMonitoring,
+            onStartMonitoring = { onEvent(FpsViewEvent.StartMonitoring) },
+            onToggleMonitoring = { onEvent(FpsViewEvent.ToggleMonitoring) },
+            onResetStats = { onEvent(FpsViewEvent.ResetStats) },
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

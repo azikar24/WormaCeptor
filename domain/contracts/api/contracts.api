@@ -160,6 +160,15 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Locati
 	public abstract fun setMockLocation (Lcom/azikar24/wormaceptor/domain/entities/MockLocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public abstract interface class com/azikar24/wormaceptor/domain/contracts/MockRuleRepository {
+	public abstract fun delete (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAll ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insert (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun update (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/MultipartParser {
 	public abstract fun parse (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 }

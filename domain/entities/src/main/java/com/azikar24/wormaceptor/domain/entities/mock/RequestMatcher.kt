@@ -13,4 +13,9 @@ data class RequestMatcher(
     val matchType: UrlMatchType = UrlMatchType.PREFIX,
     val method: String? = null,
     val headers: Map<String, String> = emptyMap(),
-)
+) {
+    companion object {
+        /** Common HTTP methods for UI selection. A null method means "match any". */
+        val COMMON_METHODS: List<String> = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS")
+    }
+}

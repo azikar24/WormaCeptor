@@ -1,5 +1,18 @@
 package com.azikar24.wormaceptor.domain.entities
 
+import com.azikar24.wormaceptor.domain.entities.har.HarContent
+import com.azikar24.wormaceptor.domain.entities.har.HarCookie
+import com.azikar24.wormaceptor.domain.entities.har.HarCreator
+import com.azikar24.wormaceptor.domain.entities.har.HarEntry
+import com.azikar24.wormaceptor.domain.entities.har.HarHeader
+import com.azikar24.wormaceptor.domain.entities.har.HarLog
+import com.azikar24.wormaceptor.domain.entities.har.HarPostData
+import com.azikar24.wormaceptor.domain.entities.har.HarPostParam
+import com.azikar24.wormaceptor.domain.entities.har.HarQueryParam
+import com.azikar24.wormaceptor.domain.entities.har.HarRequest
+import com.azikar24.wormaceptor.domain.entities.har.HarResponse
+import com.azikar24.wormaceptor.domain.entities.har.HarTimings
+import com.azikar24.wormaceptor.domain.entities.har.HarWebSocketFrame
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Nested

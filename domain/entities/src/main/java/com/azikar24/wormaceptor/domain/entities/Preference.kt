@@ -12,7 +12,6 @@ sealed class PreferenceValue {
 
     /** Wraps a [String] SharedPreferences value. */
     data class StringValue(
-        /** The stored string. */
         val value: String,
     ) : PreferenceValue() {
         override val displayValue: String = value
@@ -21,7 +20,6 @@ sealed class PreferenceValue {
 
     /** Wraps an [Int] SharedPreferences value. */
     data class IntValue(
-        /** The stored integer. */
         val value: Int,
     ) : PreferenceValue() {
         override val displayValue: String = value.toString()
@@ -30,7 +28,6 @@ sealed class PreferenceValue {
 
     /** Wraps a [Long] SharedPreferences value. */
     data class LongValue(
-        /** The stored long integer. */
         val value: Long,
     ) : PreferenceValue() {
         override val displayValue: String = value.toString()
@@ -39,7 +36,6 @@ sealed class PreferenceValue {
 
     /** Wraps a [Float] SharedPreferences value. */
     data class FloatValue(
-        /** The stored float. */
         val value: Float,
     ) : PreferenceValue() {
         override val displayValue: String = value.toString()
@@ -48,7 +44,6 @@ sealed class PreferenceValue {
 
     /** Wraps a [Boolean] SharedPreferences value. */
     data class BooleanValue(
-        /** The stored boolean. */
         val value: Boolean,
     ) : PreferenceValue() {
         override val displayValue: String = value.toString()
@@ -57,7 +52,6 @@ sealed class PreferenceValue {
 
     /** Wraps a [Set] of [String] SharedPreferences value. */
     data class StringSetValue(
-        /** The stored set of strings. */
         val value: Set<String>,
     ) : PreferenceValue() {
         override val displayValue: String = value.joinToString(", ")

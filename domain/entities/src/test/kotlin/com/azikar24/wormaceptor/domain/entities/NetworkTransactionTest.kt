@@ -222,8 +222,10 @@ class NetworkTransactionTest {
         @Test
         fun `different status makes instances unequal`() {
             val request = minimalRequest()
-            val tx1 = NetworkTransaction(id = testId, timestamp = 1L, request = request, status = TransactionStatus.ACTIVE)
-            val tx2 = NetworkTransaction(id = testId, timestamp = 1L, request = request, status = TransactionStatus.COMPLETED)
+            val tx1 =
+                NetworkTransaction(id = testId, timestamp = 1L, request = request, status = TransactionStatus.ACTIVE)
+            val tx2 =
+                NetworkTransaction(id = testId, timestamp = 1L, request = request, status = TransactionStatus.COMPLETED)
 
             tx1 shouldNotBe tx2
         }

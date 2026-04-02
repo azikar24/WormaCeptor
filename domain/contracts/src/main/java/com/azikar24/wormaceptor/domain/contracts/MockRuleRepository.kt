@@ -1,6 +1,6 @@
 package com.azikar24.wormaceptor.domain.contracts
 
-import com.azikar24.wormaceptor.domain.entities.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import kotlinx.coroutines.flow.Flow
 
 /** Repository contract for CRUD operations on mock rules. */

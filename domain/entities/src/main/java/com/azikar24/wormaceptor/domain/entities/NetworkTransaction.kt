@@ -24,6 +24,7 @@ enum class TransactionStatus {
  * @property request The outgoing HTTP request.
  * @property response The received HTTP response, or null if not yet available.
  * @property extensions Arbitrary key-value metadata attached by interceptors.
+ * @property isMocked Whether this transaction was served from a mock rule.
  */
 data class NetworkTransaction(
     val id: UUID = UUID.randomUUID(),
@@ -33,4 +34,5 @@ data class NetworkTransaction(
     val request: Request,
     val response: Response? = null,
     val extensions: Map<String, String> = emptyMap(),
+    val isMocked: Boolean = false,
 )

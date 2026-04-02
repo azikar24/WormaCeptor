@@ -184,7 +184,7 @@ class PreferenceValueTest {
 
         @Test
         fun `exhaustive when covers all subtypes`() {
-            val values = listOf<PreferenceValue>(
+            val values = listOf(
                 PreferenceValue.StringValue("s"),
                 PreferenceValue.IntValue(1),
                 PreferenceValue.LongValue(1L),

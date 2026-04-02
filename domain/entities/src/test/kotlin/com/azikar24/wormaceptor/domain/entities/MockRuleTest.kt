@@ -1,5 +1,11 @@
 package com.azikar24.wormaceptor.domain.entities
 
+import com.azikar24.wormaceptor.domain.entities.mock.MockBehavior
+import com.azikar24.wormaceptor.domain.entities.mock.MockDelay
+import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
+import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

@@ -3,12 +3,18 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:PreferencesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferencesListScreen( files: ImmutableList&lt;PreferenceFile&gt;, searchQuery: String, onSearchQueryChanged: (String) -&gt; Unit, onFileClick: (PreferenceFile) -&gt; Unit, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF00BCD4</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF2196F3</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF3F51B5</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF4CAF50</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFF9C27B0</ID>
-    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem.TypeColors$0xFFFF9800</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF00BCD4</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF2196F3</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF3F51B5</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF4CAF50</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF4DD0E1</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF64B5F6</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF7986CB</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF81C784</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFF9C27B0</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFFBA68C8</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFFFF9800</ID>
+    <ID>MagicNumber:PreferencesDesignSystem.kt$PreferencesDesignSystem$0xFFFFB74D</ID>
     <ID>ParameterNaming:PreferenceDetailScreen.kt$onSearchQueryChanged</ID>
     <ID>ParameterNaming:PreferenceDetailScreen.kt$onTypeFilterChanged</ID>
     <ID>ParameterNaming:PreferenceEditSheet.kt$onTypeSelected</ID>

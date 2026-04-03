@@ -2,7 +2,14 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>ClassOrdering:FeatureColors.kt$Colors.FileBrowser$@Composable fun syntaxScheme(darkTheme: Boolean = isSystemInDarkTheme()): SyntaxScheme</ID>
+    <ID>CyclomaticComplexMethod:WormaCeptorButton.kt$@Composable fun WormaCeptorButton( text: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, variant: ButtonVariant = ButtonVariant.Primary, enabled: Boolean = true, loading: Boolean = false, containerColor: Color? = null, contentColor: Color? = null, leadingIcon: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>Filename:BaseColors.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.BaseColors.kt</ID>
+    <ID>Filename:FeatureColors.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.FeatureColors.kt</ID>
+    <ID>Filename:Typography.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.Typography.kt</ID>
     <ID>FunctionOnlyReturningConstant:WormaCeptorNavKeys.kt$WormaCeptorNavKeys.MockRuleEditor$fun createNewRoute()</ID>
+    <ID>LongMethod:WormaCeptorButton.kt$@Composable fun WormaCeptorButton( text: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, variant: ButtonVariant = ButtonVariant.Primary, enabled: Boolean = true, loading: Boolean = false, containerColor: Color? = null, contentColor: Color? = null, leadingIcon: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>LongParameterList:WormaCeptorAlertDialog.kt$( title: String, message: String, confirmLabel: String, onConfirm: () -&gt; Unit, dismissLabel: String, onDismiss: () -&gt; Unit, modifier: Modifier = Modifier, icon: ImageVector? = null, destructive: Boolean = false, )</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
@@ -126,7 +133,31 @@
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
     <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
+    <ID>MatchingDeclarationName:BaseColors.kt$Palette</ID>
+    <ID>MatchingDeclarationName:FeatureColors.kt$Colors</ID>
+    <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
+    <ID>MatchingDeclarationName:Typography.kt$TokenTypography</ID>
+    <ID>MatchingDeclarationName:WormaCeptorButton.kt$ButtonVariant</ID>
+    <ID>MatchingDeclarationName:WormaCeptorCard.kt$CardStyle</ID>
+    <ID>ModifierComposed:ClickableExtensions.kt$clickableWithoutRipple</ID>
     <ID>ModifierComposed:TrackRecompositionModifier.kt$trackRecomposition</ID>
+    <ID>MultipleEmitters:WormaCeptorButton.kt$ButtonContent</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
+    <ID>UndocumentedPublicFunction:FeatureColors.kt$Colors.FileBrowser$@Composable fun fileTypeScheme(darkTheme: Boolean = isSystemInDarkTheme()): FileTypeScheme</ID>
+    <ID>UndocumentedPublicFunction:FeatureColors.kt$Colors.FileBrowser$@Composable fun syntaxScheme(darkTheme: Boolean = isSystemInDarkTheme()): SyntaxScheme</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accent: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSubtle: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val background: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val error: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val errorDark: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val success: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val surface: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val surfaceVariant: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textPrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textTertiary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val warning: Color</ID>
+    <ID>UseIfInsteadOfWhen:WormaCeptorCard.kt$when (style) { CardStyle.Elevated -&gt; CardDefaults.cardElevation( defaultElevation = WormaCeptorDesignSystem.Elevation.md, ) else -&gt; CardDefaults.cardElevation( defaultElevation = WormaCeptorDesignSystem.Elevation.xs, ) }</ID>
+    <ID>UseIfInsteadOfWhen:WormaCeptorCard.kt$when (style) { CardStyle.Outlined -&gt; BorderStroke( width = WormaCeptorDesignSystem.BorderWidth.thin, color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy( alpha = WormaCeptorDesignSystem.Alpha.MEDIUM, ), ) else -&gt; null }</ID>
   </CurrentIssues>
 </SmellBaseline>

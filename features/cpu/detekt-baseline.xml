@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:CpuChartSection.kt$@Composable internal fun CpuChartCard( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuChartSection.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, formattedUptime: String, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CpuSystemInfo.kt$@Composable internal fun SystemInfoCard( currentCpu: CpuInfo, formattedUptime: String, colors: CpuColors, modifier: Modifier = Modifier, )</ID>

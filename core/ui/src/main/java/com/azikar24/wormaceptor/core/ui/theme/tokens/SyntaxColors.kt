@@ -1,7 +1,5 @@
 package com.azikar24.wormaceptor.core.ui.theme.tokens
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -85,7 +83,7 @@ data class ComposeSyntaxColors(
 }
 
 /** Light theme Compose syntax colors. */
-val LightComposeSyntaxColors = ComposeSyntaxColors(
+internal val LightComposeSyntaxColors = ComposeSyntaxColors(
     keyword = Palette.SyntaxLightKeyword, // 0xFF0033B3
     string = Palette.SyntaxLightString, // 0xFF067D17
     number = Palette.SyntaxLightNumber, // 0xFF1750EB
@@ -106,7 +104,7 @@ val LightComposeSyntaxColors = ComposeSyntaxColors(
 )
 
 /** Dark theme Compose syntax colors. */
-val DarkComposeSyntaxColors = ComposeSyntaxColors(
+internal val DarkComposeSyntaxColors = ComposeSyntaxColors(
     keyword = Palette.SyntaxDarkKeyword, // 0xFFCC7832
     string = Palette.SyntaxDarkString, // 0xFF6A8759
     number = Palette.SyntaxDarkNumber, // 0xFF6897BB
@@ -125,9 +123,3 @@ val DarkComposeSyntaxColors = ComposeSyntaxColors(
     searchHighlightCurrent = Palette.BlueDarkSearch, // 0xFF264F78
     searchHighlightText = Palette.Gray50, // 0xFFFAFAFA (DarkTextPrimary)
 )
-
-/** Returns the appropriate [ComposeSyntaxColors] based on the current theme. */
-@Composable
-fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): ComposeSyntaxColors {
-    return if (darkTheme) DarkComposeSyntaxColors else LightComposeSyntaxColors
-}

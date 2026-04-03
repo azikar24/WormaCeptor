@@ -50,8 +50,8 @@ internal val DarkSemanticColors = SemanticColors(
     textTertiary = Palette.Gray800, // 0xFF525252
     accent = Palette.TealBright, // 0xFF2DD4BF
     accentSubtle = Palette.AccentSubtleDark, // 0x152DD4BF
-    error = Palette.Red600, // 0xFFDC2626
-    errorDark = Palette.Red800, // 0xFFF87171
+    error = Palette.Red800, // 0xFFF87171
+    errorDark = Palette.Red600, // 0xFFDC2626
     success = Palette.Green700, // 0xFF16A34A
     warning = Palette.Amber700, // 0xFFD97706
 )

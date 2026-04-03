@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
  * Spacing scale -- 4px baseline grid for consistent spacing.
  * Relocated from [WormaCeptorDesignSystem.Spacing].
  */
-object Spacing {
+object TokenSpacing {
     /** Extra-extra-small spacing (2dp). */
     val xxs = 2.dp
 
@@ -69,7 +69,7 @@ object TokenRadius {
  * Elevation tokens -- minimal, subtle elevation with layered depth.
  * Relocated from [WormaCeptorDesignSystem.Elevation].
  */
-object Elevation {
+object TokenElevation {
     /** Extra-small elevation (1dp). */
     val xs = 1.dp
 
@@ -93,7 +93,7 @@ object Elevation {
  * Border width tokens -- consistent border styling.
  * Relocated from [WormaCeptorDesignSystem.BorderWidth].
  */
-object BorderWidth {
+object TokenBorderWidth {
     /** Thin hairline border (0.5dp). */
     val thin = 0.5.dp
 
@@ -111,7 +111,7 @@ object BorderWidth {
  * Opacity level constants -- for subtle backgrounds and overlays.
  * Relocated from [WormaCeptorDesignSystem.Alpha].
  */
-object Alpha {
+object TokenAlpha {
     /** Near-invisible overlay (4%). */
     const val HINT = 0.04f
 
@@ -195,7 +195,7 @@ object TokenAnimations {
  * Icon size tokens -- consistent icon sizing.
  * Relocated from [WormaCeptorDesignSystem.IconSize].
  */
-object IconSize {
+object TokenIconSize {
     /** Extra-extra-small icon (12dp). */
     val xxs = 12.dp
 
@@ -225,7 +225,7 @@ object IconSize {
  * Touch target tokens -- minimum touch target sizes for accessibility.
  * Relocated from [WormaCeptorDesignSystem.TouchTarget].
  */
-object TouchTarget {
+object TokenTouchTarget {
     /** Minimum accessible touch target (44dp). */
     val minimum = 44.dp
 
@@ -240,7 +240,7 @@ object TouchTarget {
  * Common shape tokens.
  * Relocated from [WormaCeptorDesignSystem.Shapes].
  */
-object Shapes {
+object TokenShapes {
     /** Standard card shape with medium corner radius. */
     val card = RoundedCornerShape(TokenRadius.md)
 

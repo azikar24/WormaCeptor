@@ -2,6 +2,8 @@ package com.azikar24.wormaceptor.core.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -14,11 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Visual style for [WormaCeptorCard].
@@ -40,103 +45,51 @@ enum class CardStyle {
  * Provides consistent shape, colors, and border across all feature modules.
  * Replaces raw [Card] calls with standardized styling.
  *
- * @param modifier Modifier for the card
- * @param style Visual style variant
- * @param shape Card shape (defaults to [WormaCeptorDesignSystem.Shapes.card])
- * @param backgroundColor Optional override for background color (e.g., feature-specific cardBackground)
- * @param borderColor Optional override for border color (Outlined style only)
- * @param content Card body content
- */
-@Composable
-fun WormaCeptorCard(
-    modifier: Modifier = Modifier,
-    style: CardStyle = CardStyle.Filled,
-    shape: Shape = WormaCeptorDesignSystem.Shapes.card,
-    backgroundColor: Color? = null,
-    borderColor: Color? = null,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    val containerColor = backgroundColor ?: when (style) {
-        CardStyle.Filled -> MaterialTheme.colorScheme.surfaceColorAtElevation(
-            WormaCeptorDesignSystem.Elevation.sm,
-        )
-        CardStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
-        )
-        CardStyle.Elevated -> MaterialTheme.colorScheme.surfaceColorAtElevation(
-            WormaCeptorDesignSystem.Elevation.md,
-        )
-    }
-
-    val border = when (style) {
-        CardStyle.Outlined -> BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.thin,
-            color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
-            ),
-        )
-        else -> null
-    }
-
-    val elevation = when (style) {
-        CardStyle.Elevated -> CardDefaults.cardElevation(
-            defaultElevation = WormaCeptorDesignSystem.Elevation.md,
-        )
-        else -> CardDefaults.cardElevation(
-            defaultElevation = WormaCeptorDesignSystem.Elevation.xs,
-        )
-    }
-
-    Card(
-        modifier = modifier,
-        shape = shape,
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        elevation = elevation,
-        border = border,
-        content = content,
-    )
-}
-
-/**
- * Clickable variant of [WormaCeptorCard].
+ * When [onClick] is provided, the card becomes interactive with optional long-press support.
+ * Haptic feedback is provided automatically on long press.
  *
- * @param onClick Callback when card is tapped
  * @param modifier Modifier for the card
+ * @param onClick Optional tap callback (card is static when null)
+ * @param onLongClick Optional long-press callback
  * @param style Visual style variant
- * @param shape Card shape
+ * @param shape Card shape (defaults to [WormaCeptorTokens.Shapes.card])
  * @param backgroundColor Optional override for background color
- * @param borderColor Optional override for border color
- * @param enabled Whether the card responds to clicks
+ * @param borderColor Optional override for border color (Outlined style only)
+ * @param enabled Whether the card responds to interactions
  * @param content Card body content
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WormaCeptorCard(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
     style: CardStyle = CardStyle.Filled,
-    shape: Shape = WormaCeptorDesignSystem.Shapes.card,
+    shape: Shape = WormaCeptorTokens.Shapes.card,
     backgroundColor: Color? = null,
     borderColor: Color? = null,
     enabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     val containerColor = backgroundColor ?: when (style) {
         CardStyle.Filled -> MaterialTheme.colorScheme.surfaceColorAtElevation(
-            WormaCeptorDesignSystem.Elevation.sm,
+            WormaCeptorTokens.Elevation.sm,
         )
         CardStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
+            alpha = WormaCeptorTokens.Alpha.SUBTLE,
         )
         CardStyle.Elevated -> MaterialTheme.colorScheme.surfaceColorAtElevation(
-            WormaCeptorDesignSystem.Elevation.md,
+            WormaCeptorTokens.Elevation.md,
         )
     }
 
     val border = when (style) {
         CardStyle.Outlined -> BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.thin,
+            width = WormaCeptorTokens.BorderWidth.thin,
             color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
+                alpha = WormaCeptorTokens.Alpha.MEDIUM,
             ),
         )
         else -> null
@@ -144,17 +97,33 @@ fun WormaCeptorCard(
 
     val elevation = when (style) {
         CardStyle.Elevated -> CardDefaults.cardElevation(
-            defaultElevation = WormaCeptorDesignSystem.Elevation.md,
+            defaultElevation = WormaCeptorTokens.Elevation.md,
         )
-        else -> CardDefaults.cardElevation(
-            defaultElevation = WormaCeptorDesignSystem.Elevation.xs,
+        CardStyle.Outlined -> CardDefaults.cardElevation()
+        CardStyle.Filled -> CardDefaults.cardElevation(
+            defaultElevation = WormaCeptorTokens.Elevation.xs,
         )
     }
 
+    val clickModifier = if (onClick != null) {
+        Modifier
+            .clip(shape)
+            .combinedClickable(
+                enabled = enabled,
+                onClick = onClick,
+                onLongClick = onLongClick?.let {
+                    {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        it()
+                    }
+                },
+            )
+    } else {
+        Modifier
+    }
+
     Card(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
+        modifier = modifier.then(clickModifier),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = containerColor),
         elevation = elevation,
@@ -169,17 +138,17 @@ private fun WormaCeptorCardPreview() {
     WormaCeptorTheme {
         Surface {
             Column(
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 WormaCeptorCard {
-                    Text("Filled card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Filled card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
                 WormaCeptorCard(style = CardStyle.Outlined) {
-                    Text("Outlined card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Outlined card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
                 WormaCeptorCard(style = CardStyle.Elevated) {
-                    Text("Elevated card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Elevated card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
             }
         }
@@ -192,17 +161,17 @@ private fun WormaCeptorCardDarkPreview() {
     WormaCeptorTheme(darkTheme = true) {
         Surface {
             Column(
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 WormaCeptorCard {
-                    Text("Filled card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Filled card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
                 WormaCeptorCard(style = CardStyle.Outlined) {
-                    Text("Outlined card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Outlined card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
                 WormaCeptorCard(style = CardStyle.Elevated) {
-                    Text("Elevated card", modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg))
+                    Text("Elevated card", modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg))
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,14 +17,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.R
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /** Reusable search bar with clear button and configurable keyboard action. */
 @Composable
@@ -57,7 +61,7 @@ fun WormaCeptorSearchBar(
     val placeholderContent: @Composable () -> Unit = {
         Text(
             text = placeholder,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
         )
     }
 
@@ -70,12 +74,12 @@ fun WormaCeptorSearchBar(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         singleLine = true,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+        shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.BOLD,
+                alpha = WormaCeptorTokens.Alpha.BOLD,
             ),
             focusedBorderColor = MaterialTheme.colorScheme.primary,
         ),
@@ -106,3 +110,59 @@ private fun ClearButton(
         }
     }
 }
+
+// region Previews
+
+@Preview(name = "SearchBar Empty - Light")
+@Composable
+private fun SearchBarEmptyLightPreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorSearchBar(
+                query = "",
+                onQueryChange = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "SearchBar Empty - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SearchBarEmptyDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorSearchBar(
+                query = "",
+                onQueryChange = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "SearchBar With Query - Light")
+@Composable
+private fun SearchBarWithQueryLightPreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorSearchBar(
+                query = "api/v2/users",
+                onQueryChange = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "SearchBar With Query - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SearchBarWithQueryDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorSearchBar(
+                query = "api/v2/users",
+                onQueryChange = {},
+            )
+        }
+    }
+}
+
+// endregion

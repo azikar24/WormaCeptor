@@ -165,16 +165,6 @@ object ToolColors {
         val warn = Palette.Amber500
         val error = Palette.Red500
         val assert = Palette.PinkRose
-
-        /** Returns the foreground color for the given [LogLevel]. */
-        fun forLevel(level: com.azikar24.wormaceptor.domain.entities.LogLevel): Color = when (level) {
-            com.azikar24.wormaceptor.domain.entities.LogLevel.VERBOSE -> verbose
-            com.azikar24.wormaceptor.domain.entities.LogLevel.DEBUG -> debug
-            com.azikar24.wormaceptor.domain.entities.LogLevel.INFO -> info
-            com.azikar24.wormaceptor.domain.entities.LogLevel.WARN -> warn
-            com.azikar24.wormaceptor.domain.entities.LogLevel.ERROR -> error
-            com.azikar24.wormaceptor.domain.entities.LogLevel.ASSERT -> assert
-        }
     }
 
     // ================================================================
@@ -298,7 +288,7 @@ object ToolColors {
                 "Float" -> float
                 "Boolean" -> boolean
                 "StringSet" -> stringSet
-                else -> Colors.Status.grey
+                else -> Palette.Gray625
             }
         }
 
@@ -612,6 +602,16 @@ object ToolColors {
     }
 
     // ================================================================
+    // CRYPTO
+    // ================================================================
+
+    /** Cryptography tool feature colors. */
+    object Crypto {
+        val encrypt = Palette.DeepPurpleA200
+        val decrypt = Palette.Teal700
+    }
+
+    // ================================================================
     // PUSH SIMULATOR
     // ================================================================
 
@@ -639,5 +639,35 @@ object ToolColors {
             val user = Palette.Blue300
             val action = Palette.Purple300
         }
+    }
+
+    // ================================================================
+    // PERFORMANCE OVERLAY — fixed iOS Dynamic Island style (not theme-aware)
+    // ================================================================
+
+    object Overlay {
+        val background = Palette.OverlayBackground
+        val good = Palette.OverlayGreen
+        val warning = Palette.OverlayAmber
+        val critical = Palette.OverlayRed
+        val inactive = Palette.OverlayGray
+        val textSecondary = Palette.OverlayGray
+    }
+
+    // ================================================================
+    // DISMISS ZONE
+    // ================================================================
+
+    object DismissZone {
+        val error = Palette.Red600
+        val surface = Palette.Gray925
+    }
+
+    // ================================================================
+    // VIEWER — accent colors for body viewers
+    // ================================================================
+
+    object Viewer {
+        val protobufAccent = Palette.Purple600
     }
 }

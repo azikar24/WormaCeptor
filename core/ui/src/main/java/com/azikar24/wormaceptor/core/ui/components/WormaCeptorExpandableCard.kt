@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -19,10 +20,14 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 private const val ExpandAnimationDurationMs = 200
 
@@ -51,13 +56,13 @@ fun WormaCeptorExpandableCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = onToggle)
-                .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+                .padding(vertical = WormaCeptorTokens.Spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                 contentDescription = if (isExpanded) "Collapse" else "Expand",
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                 tint = MaterialTheme.colorScheme.primary,
             )
             header()
@@ -79,9 +84,105 @@ fun WormaCeptorExpandableCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = WormaCeptorDesignSystem.Spacing.sm),
+                    .padding(top = WormaCeptorTokens.Spacing.sm),
                 content = content,
             )
         }
     }
 }
+
+// region Previews
+
+@Preview(name = "ExpandableCard Collapsed - Light")
+@Composable
+private fun ExpandableCardCollapsedLightPreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorExpandableCard(
+                isExpanded = false,
+                onToggle = {},
+                header = {
+                    Text(
+                        text = "Response Headers",
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
+                    )
+                },
+            ) {
+                Text("Content-Type: application/json")
+            }
+        }
+    }
+}
+
+@Preview(name = "ExpandableCard Collapsed - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ExpandableCardCollapsedDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorExpandableCard(
+                isExpanded = false,
+                onToggle = {},
+                header = {
+                    Text(
+                        text = "Response Headers",
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
+                    )
+                },
+            ) {
+                Text("Content-Type: application/json")
+            }
+        }
+    }
+}
+
+@Preview(name = "ExpandableCard Expanded - Light")
+@Composable
+private fun ExpandableCardExpandedLightPreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorExpandableCard(
+                isExpanded = true,
+                onToggle = {},
+                header = {
+                    Text(
+                        text = "Response Headers",
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
+                    )
+                },
+            ) {
+                Text("Content-Type: application/json")
+                Text("Cache-Control: no-cache")
+                Text("X-Request-Id: abc-123-def")
+            }
+        }
+    }
+}
+
+@Preview(name = "ExpandableCard Expanded - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ExpandableCardExpandedDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorExpandableCard(
+                isExpanded = true,
+                onToggle = {},
+                header = {
+                    Text(
+                        text = "Response Headers",
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
+                    )
+                },
+            ) {
+                Text("Content-Type: application/json")
+                Text("Cache-Control: no-cache")
+                Text("X-Request-Id: abc-123-def")
+            }
+        }
+    }
+}
+
+// endregion

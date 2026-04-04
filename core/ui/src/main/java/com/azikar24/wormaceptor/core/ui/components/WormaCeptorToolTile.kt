@@ -1,9 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,29 +11,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /** Unified tile for tool items in the tools grid and favorites strip. */
-@OptIn(ExperimentalFoundationApi::class)
-@Suppress("LongParameterList", "LongMethod")
+@Suppress("LongParameterList")
 @Composable
 fun WormaCeptorToolTile(
     label: String,
@@ -47,30 +37,14 @@ fun WormaCeptorToolTile(
     onLongClick: (() -> Unit)? = null,
     isFavorite: Boolean = false,
 ) {
-    val haptic = LocalHapticFeedback.current
-
-    Card(
-        modifier = modifier
-            .height(116.dp)
-            .clip(WormaCeptorDesignSystem.Shapes.cardLarge)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick?.let {
-                    {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        it()
-                    }
-                },
-            ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.STRONG,
-            ),
-        ),
-        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-        border = BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+    WormaCeptorCard(
+        onClick = onClick,
+        onLongClick = onLongClick,
+        modifier = modifier.height(WormaCeptorTokens.ComponentSize.toolTileHeight),
+        style = CardStyle.Outlined,
+        shape = WormaCeptorTokens.Shapes.cardLarge,
+        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+            alpha = WormaCeptorTokens.Alpha.STRONG,
         ),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -82,9 +56,9 @@ fun WormaCeptorToolTile(
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(WormaCeptorDesignSystem.Spacing.sm)
-                        .size(WormaCeptorDesignSystem.IconSize.xxs),
-                    tint = WormaCeptorColors.Category.Favorites,
+                        .padding(WormaCeptorTokens.Spacing.sm)
+                        .size(WormaCeptorTokens.IconSize.xxs),
+                    tint = WormaCeptorTokens.Colors.Category.favorites,
                 )
             }
         }
@@ -100,28 +74,28 @@ private fun TileContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(WormaCeptorDesignSystem.Spacing.md),
+            .padding(WormaCeptorTokens.Spacing.md),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .size(WormaCeptorTokens.IconSize.xxl)
                 .background(
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-                    shape = WormaCeptorDesignSystem.Shapes.card,
+                    color = accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                    shape = WormaCeptorTokens.Shapes.card,
                 ),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                modifier = Modifier.size(22.dp),
-                tint = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                tint = accentColor.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
             )
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
         Text(
             text = label,
@@ -130,7 +104,33 @@ private fun TileContent(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurface,
-            lineHeight = 14.sp,
+        )
+    }
+}
+
+@Preview(name = "ToolTile")
+@Composable
+private fun ToolTilePreview() {
+    WormaCeptorTheme {
+        WormaCeptorToolTile(
+            label = "Network",
+            icon = Icons.Default.Star,
+            accentColor = WormaCeptorTokens.Colors.Status.blue,
+            onClick = {},
+        )
+    }
+}
+
+@Preview(name = "ToolTile - Favorite")
+@Composable
+private fun ToolTileFavoritePreview() {
+    WormaCeptorTheme {
+        WormaCeptorToolTile(
+            label = "Favorites Tool",
+            icon = Icons.Default.Star,
+            accentColor = WormaCeptorTokens.Colors.Status.amber,
+            onClick = {},
+            isFavorite = true,
         )
     }
 }

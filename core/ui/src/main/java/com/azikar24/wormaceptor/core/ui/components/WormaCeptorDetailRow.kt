@@ -1,6 +1,8 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,12 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 private const val MonospaceLengthThreshold = 20
 
@@ -46,7 +51,7 @@ fun WormaCeptorDetailRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+            .padding(vertical = WormaCeptorTokens.Spacing.xs),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
@@ -55,7 +60,7 @@ fun WormaCeptorDetailRow(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(labelWeight),
         )
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
         val valueModifier = Modifier.weight(1f - labelWeight)
         if (selectable) {
             SelectionContainer {
@@ -77,6 +82,40 @@ fun WormaCeptorDetailRow(
                 modifier = valueModifier,
                 fontFamily = fontFamily,
             )
+        }
+    }
+}
+
+@Preview(name = "DetailRow - Light")
+@Composable
+private fun WormaCeptorDetailRowPreview() {
+    WormaCeptorTheme {
+        Surface {
+            Column(modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg)) {
+                WormaCeptorDetailRow(label = "Status", value = "200 OK")
+                WormaCeptorDetailRow(label = "Method", value = "GET")
+                WormaCeptorDetailRow(
+                    label = "URL",
+                    value = "https://api.example.com/v1/transactions",
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "DetailRow - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WormaCeptorDetailRowDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            Column(modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg)) {
+                WormaCeptorDetailRow(label = "Status", value = "200 OK")
+                WormaCeptorDetailRow(label = "Method", value = "GET")
+                WormaCeptorDetailRow(
+                    label = "URL",
+                    value = "https://api.example.com/v1/transactions",
+                )
+            }
         }
     }
 }

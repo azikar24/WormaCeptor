@@ -17,11 +17,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Animated pulsing warning icon badge for TopAppBar titles.
- * Fades between full opacity and [WormaCeptorDesignSystem.Alpha.BOLD].
+ * Fades between full opacity and [WormaCeptorTokens.Alpha.BOLD].
  *
  * @param contentDescription Accessibility description for the warning icon
  * @param modifier Modifier for the root composable
@@ -34,9 +36,9 @@ fun WormaCeptorWarningBadge(
     val infiniteTransition = rememberInfiniteTransition(label = "warning")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = WormaCeptorDesignSystem.Alpha.BOLD,
+        targetValue = WormaCeptorTokens.Alpha.BOLD,
         animationSpec = infiniteRepeatable(
-            animation = tween(WormaCeptorDesignSystem.AnimationDuration.VERY_SLOW, easing = LinearEasing),
+            animation = tween(WormaCeptorTokens.Animation.VERY_SLOW, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "warning_alpha",
@@ -52,8 +54,24 @@ fun WormaCeptorWarningBadge(
             contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.onError,
             modifier = Modifier
-                .padding(WormaCeptorDesignSystem.Spacing.xs)
-                .size(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.xs)
+                .size(WormaCeptorTokens.Spacing.lg),
         )
+    }
+}
+
+@Preview(name = "WarningBadge - Light")
+@Composable
+private fun WarningBadgeLightPreview() {
+    WormaCeptorTheme {
+        WormaCeptorWarningBadge(contentDescription = "Warning")
+    }
+}
+
+@Preview(name = "WarningBadge - Dark", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WarningBadgeDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        WormaCeptorWarningBadge(contentDescription = "Warning")
     }
 }

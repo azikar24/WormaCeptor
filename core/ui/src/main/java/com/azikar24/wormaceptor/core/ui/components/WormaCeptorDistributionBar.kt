@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import kotlin.math.roundToInt
 
 private const val BarAnimationDurationMs = 600
@@ -56,7 +60,7 @@ fun WormaCeptorDistributionBar(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -91,18 +95,54 @@ fun WormaCeptorDistributionBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
+                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs))
                 .background(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
                 ),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(animatedPercentage / PercentMultiplier)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
+                    .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs))
                     .background(color),
             )
         }
     }
 }
+
+// region Previews
+
+@Preview(name = "DistributionBar - Light")
+@Composable
+private fun DistributionBarLightPreview() {
+    WormaCeptorTheme {
+        Surface {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                WormaCeptorDistributionBar(
+                    label = "2xx Success",
+                    count = 842,
+                    total = 1000,
+                    color = WormaCeptorTokens.Colors.Chart.success2xx,
+                )
+                WormaCeptorDistributionBar(
+                    label = "4xx Client Error",
+                    count = 120,
+                    total = 1000,
+                    color = WormaCeptorTokens.Colors.Chart.clientError4xx,
+                )
+                WormaCeptorDistributionBar(
+                    label = "5xx Server Error",
+                    count = 38,
+                    total = 1000,
+                    color = WormaCeptorTokens.Colors.Chart.serverError5xx,
+                )
+            }
+        }
+    }
+}
+
+// endregion

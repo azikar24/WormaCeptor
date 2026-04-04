@@ -213,6 +213,15 @@ internal object Palette {
     val SqlOperatorLight = Color(0xFFD4D4D4) // Light grey SQL operator
 
     // ============================================================
+    // OVERLAY (fixed, not theme-aware)
+    // ============================================================
+    val OverlayBackground = Color(0xFF1C1C1E)
+    val OverlayGreen = Color(0xFF32D74B)
+    val OverlayAmber = Color(0xFFFF9F0A)
+    val OverlayRed = Color(0xFFFF453A)
+    val OverlayGray = Color(0xFF8E8E93)
+
+    // ============================================================
     // ACCENT TINTS (with alpha encoded in ARGB)
     // ============================================================
     val AccentSubtleLight = Color(0x120D9488)

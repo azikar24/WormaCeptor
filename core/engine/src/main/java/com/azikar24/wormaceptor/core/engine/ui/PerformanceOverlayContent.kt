@@ -10,33 +10,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.engine.MetricStatus
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayState
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-
-// Colors
-private val PillBackground = Color(0xFF1C1C1E)
-private val GoodColor = Color(0xFF32D74B)
-private val WarningColor = Color(0xFFFF9F0A)
-private val CriticalColor = Color(0xFFFF453A)
-private val InactiveColor = Color(0xFF8E8E93)
-private val TextSecondary = Color(0xFF8E8E93)
+import com.azikar24.wormaceptor.core.engine.R
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
- * iOS Dynamic Island-style performance overlay.
- *
  * Displays a compact floating pill showing performance metrics.
  * Drag to reposition the pill anywhere on screen.
  */
@@ -48,8 +36,8 @@ fun PerformanceOverlayContent(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(24.dp))
-            .background(PillBackground)
+            .clip(RoundedCornerShape(WormaCeptorTokens.Spacing.xl))
+            .background(WormaCeptorTokens.Colors.Overlay.background)
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragStart = { callbacks.onDragStart() },
@@ -61,13 +49,13 @@ fun PerformanceOverlayContent(
                     },
                 )
             }
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = WormaCeptorTokens.Spacing.md, vertical = WormaCeptorTokens.Spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
     ) {
         if (state.cpuEnabled) {
             MetricDisplay(
-                label = "CPU",
+                label = stringResource(R.string.overlay_metric_cpu),
                 value = state.cpuPercent,
                 suffix = "%",
                 status = MetricStatus.fromCpuPercent(state.cpuPercent, state.cpuMonitorRunning),
@@ -76,7 +64,7 @@ fun PerformanceOverlayContent(
 
         if (state.memoryEnabled) {
             MetricDisplay(
-                label = "MEM",
+                label = stringResource(R.string.overlay_metric_mem),
                 value = state.memoryPercent,
                 suffix = "%",
                 status = MetricStatus.fromMemoryPercent(state.memoryPercent, state.memoryMonitorRunning),
@@ -85,7 +73,7 @@ fun PerformanceOverlayContent(
 
         if (state.fpsEnabled) {
             MetricDisplay(
-                label = "FPS",
+                label = stringResource(R.string.overlay_metric_fps),
                 value = state.fpsValue,
                 suffix = "",
                 status = MetricStatus.fromFps(state.fpsValue, state.fpsMonitorRunning),
@@ -112,7 +100,7 @@ private fun MetricDisplay(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
         // Status indicator dot
         Canvas(modifier = Modifier.size(6.dp)) {
@@ -121,25 +109,21 @@ private fun MetricDisplay(
 
         Text(
             text = label,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Medium,
-            color = TextSecondary,
-            letterSpacing = 0.5.sp,
+            style = WormaCeptorTokens.Typography.overlayLabel,
+            color = WormaCeptorTokens.Colors.Overlay.textSecondary,
         )
 
         Text(
             text = formattedValue,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontFamily = FontFamily.Monospace,
-            color = WormaCeptorDesignSystem.ThemeColors.LightBackground,
+            style = WormaCeptorTokens.Typography.overlayValue,
+            color = Color.White,
         )
     }
 }
 
 private fun MetricStatus.toColor(): Color = when (this) {
-    MetricStatus.GOOD -> GoodColor
-    MetricStatus.WARNING -> WarningColor
-    MetricStatus.CRITICAL -> CriticalColor
-    MetricStatus.INACTIVE -> InactiveColor
+    MetricStatus.GOOD -> WormaCeptorTokens.Colors.Overlay.good
+    MetricStatus.WARNING -> WormaCeptorTokens.Colors.Overlay.warning
+    MetricStatus.CRITICAL -> WormaCeptorTokens.Colors.Overlay.critical
+    MetricStatus.INACTIVE -> WormaCeptorTokens.Colors.Overlay.inactive
 }

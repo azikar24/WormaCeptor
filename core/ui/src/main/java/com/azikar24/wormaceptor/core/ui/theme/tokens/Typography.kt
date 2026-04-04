@@ -52,11 +52,48 @@ object TokenTypography {
         fontWeight = FontWeight.Normal,
     )
 
+    /** Section header - titled sections within containers. */
+    val sectionHeader = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = 0.5.sp,
+    )
+
     /** Overline - Category labels. */
     val overline = TextStyle(
         fontSize = 10.sp,
         lineHeight = 16.sp,
         fontWeight = FontWeight.Bold,
         letterSpacing = 1.5.sp,
+    )
+
+    /** Display number - Large monospace hero values (FPS counter, gauges). */
+    val displayNumber = TextStyle(
+        fontSize = 72.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.Monospace,
+    )
+
+    /** Overline wide - Section label with wide letter spacing. */
+    val overlineWide = TextStyle(
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 1.sp,
+    )
+
+    /** Overlay label - Small text for performance overlay pill. */
+    val overlayLabel = TextStyle(
+        fontSize = 10.sp,
+        fontWeight = FontWeight.Medium,
+        letterSpacing = 0.5.sp,
+    )
+
+    /** Overlay value - Metric value for performance overlay pill. */
+    val overlayValue = TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.Monospace,
     )
 }

@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 
 /**
  * Unified alert dialog for WormaCeptor.
@@ -91,4 +95,36 @@ fun WormaCeptorAlertDialog(
             }
         },
     )
+}
+
+@Preview(name = "AlertDialog - Light")
+@Composable
+private fun WormaCeptorAlertDialogPreview() {
+    WormaCeptorTheme {
+        WormaCeptorAlertDialog(
+            title = "Clear transactions",
+            message = "Are you sure you want to clear all recorded transactions?",
+            confirmLabel = "Clear",
+            onConfirm = {},
+            dismissLabel = "Cancel",
+            onDismiss = {},
+        )
+    }
+}
+
+@Preview(name = "AlertDialog Destructive - Light")
+@Composable
+private fun WormaCeptorAlertDialogDestructivePreview() {
+    WormaCeptorTheme {
+        WormaCeptorAlertDialog(
+            title = "Delete all data",
+            message = "This action cannot be undone. All saved data will be permanently removed.",
+            confirmLabel = "Delete",
+            onConfirm = {},
+            dismissLabel = "Cancel",
+            onDismiss = {},
+            icon = Icons.Default.Delete,
+            destructive = true,
+        )
+    }
 }

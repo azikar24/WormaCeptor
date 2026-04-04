@@ -29,20 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayState
 import com.azikar24.wormaceptor.core.engine.R
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-
-private val DismissCircleSize = WormaCeptorDesignSystem.TouchTarget.comfortable
-private val DismissCircleActiveSize = WormaCeptorDesignSystem.TouchTarget.large
-private val DismissIconSize = 22.dp
-private val DismissCircleElevation = WormaCeptorDesignSystem.Elevation.xl
-
-private const val EnterDurationMs = 200
-private const val ExitDurationMs = 150
-private const val ColorTransitionMs = 150
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /** Fraction of screen height used for the dismiss zone (bottom portion). */
 private const val DismissZoneFraction = 1f - PerformanceOverlayState.DISMISS_ZONE_THRESHOLD
@@ -70,13 +61,13 @@ fun DismissZoneContent(
     ) {
         AnimatedVisibility(
             visible = isDragging,
-            enter = fadeIn(tween(EnterDurationMs)) + slideInVertically(
+            enter = fadeIn(tween(WormaCeptorTokens.Animation.MEDIUM)) + slideInVertically(
                 initialOffsetY = { it },
-                animationSpec = tween(EnterDurationMs),
+                animationSpec = tween(WormaCeptorTokens.Animation.MEDIUM),
             ),
-            exit = fadeOut(tween(ExitDurationMs)) + slideOutVertically(
+            exit = fadeOut(tween(WormaCeptorTokens.Animation.FAST)) + slideOutVertically(
                 targetOffsetY = { it },
-                animationSpec = tween(ExitDurationMs),
+                animationSpec = tween(WormaCeptorTokens.Animation.FAST),
             ),
         ) {
             // Container fills the dismiss zone area (bottom 15% of screen)
@@ -94,7 +85,7 @@ fun DismissZoneContent(
 @Composable
 private fun DismissCircle(isActive: Boolean) {
     val circleSize by animateDpAsState(
-        targetValue = if (isActive) DismissCircleActiveSize else DismissCircleSize,
+        targetValue = if (isActive) WormaCeptorTokens.TouchTarget.large else WormaCeptorTokens.TouchTarget.comfortable,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessMedium,
@@ -104,23 +95,23 @@ private fun DismissCircle(isActive: Boolean) {
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isActive) {
-            WormaCeptorDesignSystem.ThemeColors.Error
+            WormaCeptorTokens.Colors.DismissZone.error
         } else {
-            WormaCeptorDesignSystem.ThemeColors.DarkSurfaceVariant
+            WormaCeptorTokens.Colors.DismissZone.surface
         },
-        animationSpec = tween(ColorTransitionMs),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "dismissCircleColor",
     )
 
     val iconAlpha by animateFloatAsState(
-        targetValue = if (isActive) WormaCeptorDesignSystem.Alpha.OPAQUE else WormaCeptorDesignSystem.Alpha.BOLD,
-        animationSpec = tween(ColorTransitionMs),
+        targetValue = if (isActive) WormaCeptorTokens.Alpha.OPAQUE else WormaCeptorTokens.Alpha.BOLD,
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "dismissIconAlpha",
     )
 
     Box(
         modifier = Modifier
-            .shadow(elevation = DismissCircleElevation, shape = CircleShape)
+            .shadow(elevation = WormaCeptorTokens.Elevation.xl, shape = CircleShape)
             .size(circleSize)
             .background(backgroundColor, CircleShape),
         contentAlignment = Alignment.Center,
@@ -128,9 +119,9 @@ private fun DismissCircle(isActive: Boolean) {
         Icon(
             imageVector = Icons.Default.Close,
             contentDescription = stringResource(R.string.overlay_dismiss_remove),
-            tint = WormaCeptorDesignSystem.ThemeColors.LightBackground,
+            tint = Color.White,
             modifier = Modifier
-                .size(DismissIconSize)
+                .size(WormaCeptorTokens.IconSize.md)
                 .alpha(iconAlpha),
         )
     }

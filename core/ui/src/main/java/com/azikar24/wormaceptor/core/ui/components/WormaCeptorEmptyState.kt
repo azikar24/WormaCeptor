@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -15,10 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Generic empty state component for WormaCeptor.
@@ -41,7 +47,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
  * @param actionLabel Optional action button label
  * @param onAction Optional action button callback
  */
-@Suppress("LongMethod", "MagicNumber") // Composable UI - acceptable length, animation values are self-documenting
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 fun WormaCeptorEmptyState(
     title: String,
@@ -64,7 +70,7 @@ fun WormaCeptorEmptyState(
 
     Column(
         modifier = modifier
-            .padding(WormaCeptorDesignSystem.Spacing.xxl),
+            .padding(WormaCeptorTokens.Spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -97,7 +103,7 @@ fun WormaCeptorEmptyState(
                 }
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxl))
         }
 
         Text(
@@ -109,34 +115,66 @@ fun WormaCeptorEmptyState(
         )
 
         if (subtitle != null) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                 textAlign = TextAlign.Center,
             )
         }
 
         if (actionLabel != null && onAction != null) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
             OutlinedButton(
                 onClick = onAction,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
+                    width = WormaCeptorTokens.BorderWidth.regular,
                 ),
             ) {
                 Text(
                     text = actionLabel,
                     modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        horizontal = WormaCeptorTokens.Spacing.sm,
+                        vertical = WormaCeptorTokens.Spacing.xxs,
                     ),
                 )
             }
+        }
+    }
+}
+
+@Preview(name = "EmptyState - Light")
+@Composable
+private fun WormaCeptorEmptyStatePreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorEmptyState(
+                title = "No transactions yet",
+                subtitle = "Network requests will appear here once intercepted.",
+                icon = Icons.Default.Inbox,
+                actionLabel = "Refresh",
+                onAction = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "EmptyState - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WormaCeptorEmptyStateDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorEmptyState(
+                title = "No transactions yet",
+                subtitle = "Network requests will appear here once intercepted.",
+                icon = Icons.Default.Inbox,
+                actionLabel = "Refresh",
+                onAction = {},
+            )
         }
     }
 }

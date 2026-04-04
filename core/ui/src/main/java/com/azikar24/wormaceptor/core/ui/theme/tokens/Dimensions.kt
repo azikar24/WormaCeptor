@@ -160,6 +160,9 @@ object TokenAnimation {
     /** Fast animation duration (150ms). */
     const val FAST = 150
 
+    /** Medium animation duration (200ms). */
+    const val MEDIUM = 200
+
     /** Normal/default animation duration (250ms). */
     const val NORMAL = 250
 
@@ -179,16 +182,14 @@ object TokenAnimation {
  */
 object TokenAnimations {
     /** Standard enter transition: expand vertically + fade in. */
-    val expandFadeIn: EnterTransition
-        get() = expandVertically(
-            animationSpec = tween(TokenAnimation.NORMAL),
-        ) + fadeIn(animationSpec = tween(TokenAnimation.FAST))
+    val expandFadeIn: EnterTransition = expandVertically(
+        animationSpec = tween(TokenAnimation.NORMAL),
+    ) + fadeIn(animationSpec = tween(TokenAnimation.FAST))
 
     /** Standard exit transition: shrink vertically + fade out. */
-    val shrinkFadeOut: ExitTransition
-        get() = shrinkVertically(
-            animationSpec = tween(TokenAnimation.FAST),
-        ) + fadeOut(animationSpec = tween(TokenAnimation.FAST))
+    val shrinkFadeOut: ExitTransition = shrinkVertically(
+        animationSpec = tween(TokenAnimation.FAST),
+    ) + fadeOut(animationSpec = tween(TokenAnimation.FAST))
 }
 
 /**
@@ -234,6 +235,20 @@ object TokenTouchTarget {
 
     /** Large touch target (56dp). */
     val large = 56.dp
+}
+
+/**
+ * Component size tokens -- standard sizes for common UI components.
+ */
+object TokenComponentSize {
+    /** Height for multi-line text input areas (120dp). */
+    val textAreaHeight = 120.dp
+
+    /** Height for linear progress bar indicators (6dp). */
+    val progressBarHeight = 6.dp
+
+    /** Height for linear progress bar indicators (6dp). */
+    val toolTileHeight = 116.dp
 }
 
 /**

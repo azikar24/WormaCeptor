@@ -1,11 +1,11 @@
 package com.azikar24.wormaceptor.platform.android
 
 import androidx.compose.ui.graphics.Color
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Constants for the floating button service UI and behavior.
- * Uses WormaCeptorDesignSystem tokens where applicable.
+ * Uses WormaCeptorTokens where applicable.
  */
 internal object FloatingButtonConstants {
 
@@ -14,13 +14,13 @@ internal object FloatingButtonConstants {
      */
     object Dimensions {
         /** Size of the floating button (matches comfortable touch target). */
-        val BUTTON_SIZE = WormaCeptorDesignSystem.TouchTarget.large
+        val BUTTON_SIZE = WormaCeptorTokens.TouchTarget.large
 
         /** Size of the icon inside the button. */
-        val ICON_SIZE = WormaCeptorDesignSystem.IconSize.lg
+        val ICON_SIZE = WormaCeptorTokens.IconSize.lg
 
         /** Shadow elevation for the button. */
-        val SHADOW_ELEVATION = WormaCeptorDesignSystem.Elevation.xl
+        val SHADOW_ELEVATION = WormaCeptorTokens.Elevation.xl
     }
 
     /**
@@ -28,24 +28,24 @@ internal object FloatingButtonConstants {
      */
     object Animation {
         /** Duration for snap-to-edge animation. */
-        val SNAP_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.NORMAL.toLong()
+        val SNAP_DURATION_MS = WormaCeptorTokens.Animation.NORMAL.toLong()
 
         /** Duration for press scale animation. */
-        val SCALE_DURATION_MS = WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST
+        val SCALE_DURATION_MS = WormaCeptorTokens.Animation.ULTRA_FAST
     }
 
     /**
      * Visual effect constants.
      */
     object Visual {
-        /** Primary button background color (uses design system accent). */
-        val BUTTON_COLOR: Color = WormaCeptorDesignSystem.ThemeColors.AccentLight
+        /** Primary button background color (teal accent). */
+        val BUTTON_COLOR: Color = Color(0xFF0D9488)
 
         /** Icon tint color. */
-        val ICON_TINT: Color = WormaCeptorDesignSystem.ThemeColors.LightBackground
+        val ICON_TINT: Color = Color(0xFFFFFFFF)
 
         /** Icon alpha/opacity. */
-        val ICON_ALPHA = WormaCeptorDesignSystem.Alpha.PROMINENT
+        val ICON_ALPHA = WormaCeptorTokens.Alpha.PROMINENT
 
         /** Scale factor when button is pressed. */
         const val PRESSED_SCALE = 0.9f

@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Generic error state component for WormaCeptor.
@@ -66,7 +70,7 @@ fun WormaCeptorErrorState(
 
     Column(
         modifier = modifier
-            .padding(WormaCeptorDesignSystem.Spacing.xxl),
+            .padding(WormaCeptorTokens.Spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -97,7 +101,7 @@ fun WormaCeptorErrorState(
             }
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxl))
 
         Text(
             text = title,
@@ -108,25 +112,68 @@ fun WormaCeptorErrorState(
         )
 
         if (message != null) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                    alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
                 textAlign = TextAlign.Center,
             )
         }
 
         if (retryLabel != null && onRetry != null) {
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
             WormaCeptorButton(
                 text = retryLabel,
                 onClick = onRetry,
                 variant = ButtonVariant.Outlined,
+            )
+        }
+    }
+}
+
+@Preview(name = "ErrorState - Light")
+@Composable
+private fun WormaCeptorErrorStatePreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorErrorState(
+                title = "Something went wrong",
+                message = "Failed to load network transactions. Please try again.",
+                retryLabel = "Retry",
+                onRetry = {},
+            )
+        }
+    }
+}
+
+@Preview(name = "ErrorState No Retry - Light")
+@Composable
+private fun WormaCeptorErrorStateNoRetryPreview() {
+    WormaCeptorTheme {
+        Surface {
+            WormaCeptorErrorState(
+                title = "Connection lost",
+                message = "Check your internet connection.",
+            )
+        }
+    }
+}
+
+@Preview(name = "ErrorState - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WormaCeptorErrorStateDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            WormaCeptorErrorState(
+                title = "Something went wrong",
+                message = "Failed to load network transactions. Please try again.",
+                retryLabel = "Retry",
+                onRetry = {},
             )
         }
     }

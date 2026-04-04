@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
  * Complete Material 3 typography scale for WormaCeptor.
  *
  * Designed for a developer-tool context: compact, high-density, professional.
- * Body/label styles are aligned with [WormaCeptorDesignSystem.Typography] tokens.
+ * Body/label styles are aligned with [WormaCeptorTokens.Typography] tokens.
  */
 val WormaCeptorTypography = Typography(
     displayLarge = TextStyle(

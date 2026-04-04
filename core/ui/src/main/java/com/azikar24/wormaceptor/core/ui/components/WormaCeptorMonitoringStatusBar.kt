@@ -1,15 +1,22 @@
 package com.azikar24.wormaceptor.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.R
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Status bar with monitoring indicator, label, and sample count.
@@ -27,9 +34,9 @@ fun WormaCeptorMonitoringStatusBar(
     isMonitoring: Boolean,
     sampleCount: Int,
     modifier: Modifier = Modifier,
-    activeLabel: String = "Monitoring",
-    pausedLabel: String = "Paused",
-    countSuffix: String = "samples",
+    activeLabel: String = stringResource(R.string.monitoring_status_active),
+    pausedLabel: String = stringResource(R.string.monitoring_status_paused),
+    countSuffix: String = stringResource(R.string.monitoring_status_samples_suffix),
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -38,7 +45,7 @@ fun WormaCeptorMonitoringStatusBar(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
         ) {
             WormaCeptorMonitoringIndicator(isActive = isMonitoring)
 
@@ -55,5 +62,33 @@ fun WormaCeptorMonitoringStatusBar(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontFamily = FontFamily.Monospace,
         )
+    }
+}
+
+@Preview(name = "MonitoringStatusBar")
+@Composable
+private fun MonitoringStatusBarPreview() {
+    WormaCeptorTheme {
+        Surface {
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+            ) {
+                WormaCeptorMonitoringStatusBar(
+                    isMonitoring = true,
+                    sampleCount = 42,
+                    activeLabel = "Monitoring",
+                    pausedLabel = "Paused",
+                    countSuffix = "samples",
+                )
+                WormaCeptorMonitoringStatusBar(
+                    isMonitoring = false,
+                    sampleCount = 0,
+                    activeLabel = "Monitoring",
+                    pausedLabel = "Paused",
+                    countSuffix = "samples",
+                )
+            }
+        }
     }
 }

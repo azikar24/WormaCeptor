@@ -1,8 +1,12 @@
 package com.azikar24.wormaceptor.core.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -10,12 +14,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Visual variant for [WormaCeptorButton].
@@ -73,7 +80,7 @@ fun WormaCeptorButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = isEnabled,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor ?: MaterialTheme.colorScheme.primary,
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onPrimary,
@@ -88,7 +95,7 @@ fun WormaCeptorButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = isEnabled,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor
                         ?: MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -104,7 +111,7 @@ fun WormaCeptorButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = isEnabled,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor ?: MaterialTheme.colorScheme.error,
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onError,
@@ -119,14 +126,14 @@ fun WormaCeptorButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = isEnabled,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 border = BorderStroke(
-                    width = WormaCeptorDesignSystem.BorderWidth.regular,
+                    width = WormaCeptorTokens.BorderWidth.regular,
                     color = if (isEnabled) {
                         containerColor ?: MaterialTheme.colorScheme.outline
                     } else {
                         MaterialTheme.colorScheme.outline.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                            alpha = WormaCeptorTokens.Alpha.MODERATE,
                         )
                     },
                 ),
@@ -143,13 +150,13 @@ fun WormaCeptorButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = isEnabled,
-                shape = WormaCeptorDesignSystem.Shapes.button,
+                shape = WormaCeptorTokens.Shapes.button,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = contentColor ?: MaterialTheme.colorScheme.primary,
                 ),
                 contentPadding = PaddingValues(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    horizontal = WormaCeptorTokens.Spacing.md,
+                    vertical = WormaCeptorTokens.Spacing.sm,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)
@@ -166,13 +173,53 @@ private fun ButtonContent(
 ) {
     if (loading) {
         CircularProgressIndicator(
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-            strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+            strokeWidth = WormaCeptorTokens.BorderWidth.thick,
         )
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
     } else if (leadingIcon != null) {
         leadingIcon()
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
     }
     Text(text = text)
+}
+
+@Preview(name = "Buttons - Light")
+@Composable
+private fun WormaCeptorButtonPreview() {
+    WormaCeptorTheme {
+        Surface {
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                WormaCeptorButton(text = "Primary", onClick = {})
+                WormaCeptorButton(text = "Secondary", onClick = {}, variant = ButtonVariant.Secondary)
+                WormaCeptorButton(text = "Destructive", onClick = {}, variant = ButtonVariant.Destructive)
+                WormaCeptorButton(text = "Outlined", onClick = {}, variant = ButtonVariant.Outlined)
+                WormaCeptorButton(text = "Text", onClick = {}, variant = ButtonVariant.Text)
+                WormaCeptorButton(text = "Loading", onClick = {}, loading = true)
+                WormaCeptorButton(text = "Disabled", onClick = {}, enabled = false)
+            }
+        }
+    }
+}
+
+@Preview(name = "Buttons - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WormaCeptorButtonDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                WormaCeptorButton(text = "Primary", onClick = {})
+                WormaCeptorButton(text = "Secondary", onClick = {}, variant = ButtonVariant.Secondary)
+                WormaCeptorButton(text = "Destructive", onClick = {}, variant = ButtonVariant.Destructive)
+                WormaCeptorButton(text = "Outlined", onClick = {}, variant = ButtonVariant.Outlined)
+                WormaCeptorButton(text = "Text", onClick = {}, variant = ButtonVariant.Text)
+            }
+        }
+    }
 }

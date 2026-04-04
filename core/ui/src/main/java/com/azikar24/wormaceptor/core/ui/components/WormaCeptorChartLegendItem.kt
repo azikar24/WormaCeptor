@@ -3,17 +3,22 @@ package com.azikar24.wormaceptor.core.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Colored dot + label for chart legends.
@@ -31,11 +36,11 @@ fun WormaCeptorChartLegendItem(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
         Box(
             modifier = Modifier
-                .size(WormaCeptorDesignSystem.Spacing.md)
+                .size(WormaCeptorTokens.Spacing.md)
                 .clip(CircleShape)
                 .background(color),
         )
@@ -44,5 +49,22 @@ fun WormaCeptorChartLegendItem(
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+@Preview(name = "ChartLegendItem - Light")
+@Composable
+private fun WormaCeptorChartLegendItemPreview() {
+    WormaCeptorTheme {
+        Surface {
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                WormaCeptorChartLegendItem(label = "Success", color = Color(0xFF4CAF50))
+                WormaCeptorChartLegendItem(label = "Error", color = Color(0xFFF44336))
+                WormaCeptorChartLegendItem(label = "Pending", color = Color(0xFFFFC107))
+            }
+        }
     }
 }

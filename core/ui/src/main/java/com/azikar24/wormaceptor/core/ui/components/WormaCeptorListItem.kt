@@ -5,11 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Folder
@@ -24,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Standardized list item for WormaCeptor.
@@ -56,10 +54,10 @@ fun WormaCeptorListItem(
                 if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier,
             )
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.md,
+                horizontal = WormaCeptorTokens.Spacing.lg,
+                vertical = WormaCeptorTokens.Spacing.md,
             ),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (leadingContent != null) {
@@ -68,7 +66,7 @@ fun WormaCeptorListItem(
 
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xxs),
         ) {
             Text(
                 text = headline,
@@ -109,7 +107,7 @@ private fun WormaCeptorListItemPreview() {
                         Icon(
                             Icons.Default.Folder,
                             null,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     },
@@ -129,7 +127,7 @@ private fun WormaCeptorListItemPreview() {
                         Icon(
                             Icons.Default.Storage,
                             null,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
                             tint = MaterialTheme.colorScheme.tertiary,
                         )
                     },
@@ -156,7 +154,7 @@ private fun WormaCeptorListItemDarkPreview() {
                         Icon(
                             Icons.Default.Folder,
                             null,
-                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     },

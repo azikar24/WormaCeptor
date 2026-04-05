@@ -36,15 +36,18 @@ fun NavGraphBuilder.deviceInfoRoute(
     }
 }
 
+@Suppress("ViewModelForwarding")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DeviceInfoDestination(
     context: Context,
     onNavigateBack: () -> Unit,
+    viewModel: DeviceInfoViewModel = viewModel(
+        factory = DeviceInfoFeature.createViewModelFactory(
+            context.applicationContext as Application,
+        ),
+    ),
 ) {
-    val application = remember { context.applicationContext as Application }
-    val factory = remember { DeviceInfoFeature.createViewModelFactory(application) }
-    val viewModel: DeviceInfoViewModel = viewModel(factory = factory)
     val snackBarHostState = remember { SnackbarHostState() }
     val pullToRefreshState = rememberPullToRefreshState()
     val scope = rememberCoroutineScope()

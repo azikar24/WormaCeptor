@@ -21,8 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-private const val REFRESH_DEBOUNCE_MS = 200L
-
+/** ViewModel that collects and formats device information for the UI. */
+@Suppress("TooManyFunctions")
 class DeviceInfoViewModel(
     private val application: Application,
 ) : BaseViewModel<DeviceInfoViewState, DeviceInfoViewEffect, DeviceInfoViewEvent>(
@@ -45,22 +45,40 @@ class DeviceInfoViewModel(
 
     private fun loadDeviceInfo() {
         viewModelScope.launch {
-            updateState { copy(isInitialLoading = true) }
-            val info = withContext(Dispatchers.IO) {
-                GetDeviceInfoUseCase(application).execute()
+            updateState { copy(isInitialLoading = true, error = null) }
+            try {
+                val info = withContext(Dispatchers.IO) {
+                    GetDeviceInfoUseCase(application).execute()
+                }
+                updateState { copy(deviceInfo = info, isInitialLoading = false) }
+            } catch (_: Exception) {
+                updateState {
+                    copy(
+                        isInitialLoading = false,
+                        error = str(R.string.deviceinfo_error_loading),
+                    )
+                }
             }
-            updateState { copy(deviceInfo = info, isInitialLoading = false) }
         }
     }
 
     private fun refresh() {
         viewModelScope.launch {
-            updateState { copy(isRefreshing = true) }
-            delay(REFRESH_DEBOUNCE_MS)
-            val info = withContext(Dispatchers.IO) {
-                GetDeviceInfoUseCase(application).execute()
+            updateState { copy(isRefreshing = true, error = null) }
+            try {
+                delay(RefreshDebounceMs)
+                val info = withContext(Dispatchers.IO) {
+                    GetDeviceInfoUseCase(application).execute()
+                }
+                updateState { copy(deviceInfo = info, isRefreshing = false) }
+            } catch (_: Exception) {
+                updateState {
+                    copy(
+                        isRefreshing = false,
+                        error = str(R.string.deviceinfo_error_loading),
+                    )
+                }
             }
-            updateState { copy(deviceInfo = info, isRefreshing = false) }
         }
     }
 
@@ -330,5 +348,9 @@ class DeviceInfoViewModel(
         )
         appendLine(labelValue(R.string.deviceinfo_network_metered, yesNo(network.isMetered)))
         network.cellularNetworkType?.let { appendLine(labelValue(R.string.deviceinfo_network_cellular_type, it)) }
+    }
+
+    private companion object {
+        const val RefreshDebounceMs = 200L
     }
 }

@@ -100,11 +100,8 @@ class GetDeviceInfoUseCase(private val context: Context) {
             windowManager.defaultDisplay.getMetrics(displayMetrics)
         }
 
-        val refreshRate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display.refreshRate
-        } else {
-            windowManager.defaultDisplay.refreshRate
-        }
+        @Suppress("DEPRECATION")
+        val refreshRate = windowManager.defaultDisplay.refreshRate
 
         val configuration = context.resources.configuration
         val sizeCategory = when (configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) {

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,6 +60,7 @@ import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoSection
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewEvent
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewState
 
+/** Screen content that displays all device information sections. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreenContent(
@@ -74,37 +76,13 @@ fun DeviceInfoScreenContent(
         modifier = modifier,
         snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.deviceinfo_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.deviceinfo_back),
-                        )
-                    }
-                },
-                actions = {
-                    state.deviceInfo?.let {
-                        IconButton(onClick = { onEvent(DeviceInfoViewEvent.CopyAll) }) {
-                            Icon(
-                                imageVector = Icons.Default.ContentCopy,
-                                contentDescription = stringResource(R.string.deviceinfo_copy_all),
-                            )
-                        }
-                        IconButton(onClick = { onEvent(DeviceInfoViewEvent.ShareReport) }) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = stringResource(R.string.deviceinfo_share),
-                            )
-                        }
-                    }
-                },
+            DeviceInfoTopBar(
+                hasDeviceInfo = state.deviceInfo != null,
+                onBack = onBack,
+                onEvent = onEvent,
             )
         },
     ) { padding ->
-        val scrollState = rememberScrollState()
-
         if (state.isInitialLoading && state.deviceInfo == null) {
             Box(
                 modifier = Modifier
@@ -114,86 +92,173 @@ fun DeviceInfoScreenContent(
             ) {
                 CircularProgressIndicator()
             }
-        } else {
-            PullToRefreshBox(
-                isRefreshing = state.isRefreshing,
-                onRefresh = { onEvent(DeviceInfoViewEvent.Refresh) },
-                state = pullToRefreshState,
+        } else if (state.deviceInfo == null && state.error != null) {
+            DeviceInfoErrorContent(
+                error = state.error,
+                onRetry = { onEvent(DeviceInfoViewEvent.LoadDeviceInfo) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = state.isRefreshing,
-                        state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        color = MaterialTheme.colorScheme.primary,
+            )
+        } else {
+            DeviceInfoPullToRefresh(
+                state = state,
+                pullToRefreshState = pullToRefreshState,
+                onEvent = onEvent,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DeviceInfoTopBar(
+    hasDeviceInfo: Boolean,
+    onBack: () -> Unit,
+    onEvent: (DeviceInfoViewEvent) -> Unit,
+) {
+    TopAppBar(
+        title = { Text(stringResource(R.string.deviceinfo_title)) },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.deviceinfo_back),
+                )
+            }
+        },
+        actions = {
+            if (hasDeviceInfo) {
+                IconButton(onClick = { onEvent(DeviceInfoViewEvent.CopyAll) }) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = stringResource(R.string.deviceinfo_copy_all),
                     )
-                },
-            ) {
-                state.deviceInfo?.let { info ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(scrollState)
-                            .padding(
-                                start = WormaCeptorTokens.Spacing.lg,
-                                top = WormaCeptorTokens.Spacing.lg,
-                                end = WormaCeptorTokens.Spacing.lg,
-                                bottom = WormaCeptorTokens.Spacing.lg +
-                                    WindowInsets.navigationBars.asPaddingValues()
-                                        .calculateBottomPadding(),
-                            ),
-                        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
-                    ) {
-                        DeviceSection(
-                            device = info.device,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.DEVICE)) },
-                        )
-
-                        OsSection(
-                            os = info.os,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.OS)) },
-                        )
-
-                        ScreenSection(
-                            screen = info.screen,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.DISPLAY)) },
-                        )
-
-                        MemorySection(
-                            memory = info.memory,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.MEMORY)) },
-                        )
-
-                        StorageSection(
-                            storage = info.storage,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.STORAGE)) },
-                        )
-
-                        AppSection(
-                            app = info.app,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.APPLICATION)) },
-                        )
-
-                        NetworkSection(
-                            network = info.network,
-                            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.NETWORK)) },
-                        )
-
-                        Text(
-                            text = stringResource(R.string.deviceinfo_collected, formatDateFull(info.timestamp)),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(
-                                top = WormaCeptorTokens.Spacing.sm,
-                            ).align(Alignment.CenterHorizontally),
-                        )
-
-                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
-                    }
                 }
+                IconButton(onClick = { onEvent(DeviceInfoViewEvent.ShareReport) }) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = stringResource(R.string.deviceinfo_share),
+                    )
+                }
+            }
+        },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DeviceInfoPullToRefresh(
+    state: DeviceInfoViewState,
+    pullToRefreshState: PullToRefreshState,
+    onEvent: (DeviceInfoViewEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    PullToRefreshBox(
+        isRefreshing = state.isRefreshing,
+        onRefresh = { onEvent(DeviceInfoViewEvent.Refresh) },
+        state = pullToRefreshState,
+        modifier = modifier,
+        indicator = {
+            Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshing = state.isRefreshing,
+                state = pullToRefreshState,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        },
+    ) {
+        state.deviceInfo?.let { info ->
+            DeviceInfoSectionList(info = info, onEvent = onEvent)
+        }
+    }
+}
+
+@Composable
+private fun DeviceInfoSectionList(
+    info: DeviceInfo,
+    onEvent: (DeviceInfoViewEvent) -> Unit,
+) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(
+                start = WormaCeptorTokens.Spacing.lg,
+                top = WormaCeptorTokens.Spacing.lg,
+                end = WormaCeptorTokens.Spacing.lg,
+                bottom = WormaCeptorTokens.Spacing.lg +
+                    WindowInsets.navigationBars.asPaddingValues()
+                        .calculateBottomPadding(),
+            ),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
+    ) {
+        DeviceSection(
+            device = info.device,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.DEVICE)) },
+        )
+        OsSection(
+            os = info.os,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.OS)) },
+        )
+        ScreenSection(
+            screen = info.screen,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.DISPLAY)) },
+        )
+        MemorySection(
+            memory = info.memory,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.MEMORY)) },
+        )
+        StorageSection(
+            storage = info.storage,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.STORAGE)) },
+        )
+        AppSection(
+            app = info.app,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.APPLICATION)) },
+        )
+        NetworkSection(
+            network = info.network,
+            onCopy = { onEvent(DeviceInfoViewEvent.CopySection(DeviceInfoSection.NETWORK)) },
+        )
+
+        Text(
+            text = stringResource(R.string.deviceinfo_collected, formatDateFull(info.timestamp)),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(
+                top = WormaCeptorTokens.Spacing.sm,
+            ).align(Alignment.CenterHorizontally),
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
+    }
+}
+
+@Composable
+private fun DeviceInfoErrorContent(
+    error: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = error,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
+            Button(onClick = onRetry) {
+                Text(text = stringResource(R.string.deviceinfo_retry))
             }
         }
     }

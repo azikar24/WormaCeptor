@@ -91,6 +91,34 @@
     <string name="deviceinfo_connected">Connected</string>
     <string name="deviceinfo_not_connected">Not Connected</string>
 
+    <!-- Error -->
+    <string name="deviceinfo_error_loading">Failed to collect device information</string>
+    <string name="deviceinfo_retry">Retry</string>
+
     <!-- Timestamp -->
     <string name="deviceinfo_collected">Collected: %1$s</string>
+
+    <!-- Share/Copy labels -->
+    <string name="deviceinfo_share_subject">Device Information Report</string>
+    <string name="deviceinfo_share_chooser">Share Device Info</string>
+    <string name="deviceinfo_copy_all_label">Device Information</string>
+
+    <!-- Report format strings -->
+    <string name="deviceinfo_format_label_value">%1$s: %2$s</string>
+    <string name="deviceinfo_format_indented_label_value">\u0020\u0020%1$s: %2$s</string>
+    <string name="deviceinfo_report_title">=== WormaCeptor Device Information Report ===</string>
+    <string name="deviceinfo_report_section_header">--- %1$s ---</string>
+    <string name="deviceinfo_format_resolution_value">%1$d x %2$d</string>
+    <string name="deviceinfo_format_hz_value">%1$d Hz</string>
+
+    <!-- Compact report format strings -->
+    <string name="deviceinfo_format_android_compact">Android: %1$s (SDK %2$d)</string>
+    <string name="deviceinfo_format_screen_compact">Screen: %1$dx%2$d @ %3$ddpi</string>
+    <string name="deviceinfo_format_refresh_rate_compact">Refresh Rate: %1$dHz</string>
+    <string name="deviceinfo_format_ram_compact">RAM: %1$s/%2$s (%3$s used)</string>
+    <string name="deviceinfo_format_storage_compact">Storage: %1$s/%2$s</string>
+    <string name="deviceinfo_format_package_compact">Package: %1$s</string>
+    <string name="deviceinfo_format_version_compact">Version: %1$s (%2$d)</string>
+    <string name="deviceinfo_format_sdk_compact">Target SDK: %1$d, Min SDK: %2$d</string>
+    <string name="deviceinfo_format_network_compact">Network: %1$s (%2$s)</string>
 </resources>

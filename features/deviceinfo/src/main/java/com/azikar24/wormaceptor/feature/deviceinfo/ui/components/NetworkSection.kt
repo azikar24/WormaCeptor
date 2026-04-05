@@ -20,7 +20,11 @@ internal fun NetworkSection(
     WormaCeptorInfoCard(
         title = stringResource(R.string.deviceinfo_section_network),
         icon = Icons.Default.NetworkCheck,
-        iconTint = if (network.isConnected) WormaCeptorTokens.Colors.Status.green else WormaCeptorTokens.Colors.Status.red,
+        iconTint = if (network.isConnected) {
+            WormaCeptorTokens.Colors.Status.green
+        } else {
+            WormaCeptorTokens.Colors.Status.red
+        },
         onAction = onCopy,
         actionContentDescription = stringResource(
             R.string.deviceinfo_copy_section,

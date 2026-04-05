@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":common:presentation"))
     implementation(project(":core:ui"))
     implementation(project(":domain:entities"))
 }

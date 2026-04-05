@@ -40,6 +40,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
  * @param minLines Minimum visible lines for multi-line fields
  * @param maxLines Maximum visible lines for multi-line fields
  * @param monospace When true, uses monospace font family for structured data
+ * @param visualTransformation Visual transformation applied to the input text
  * @param keyboardOptions Keyboard configuration (type, IME action, etc.)
  * @param keyboardActions Keyboard action callbacks
  */

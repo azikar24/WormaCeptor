@@ -40,36 +40,126 @@ object WormaCeptorTokens {
     /** Unified color access. Use WormaCeptorTokens.Colors.Status.green, .Memory.heapUsed, etc. */
     object Colors {
         // Domain-agnostic groups (delegated from FeatureColors.kt)
+
+        /** HTTP status code colors (success, redirect, error). */
         val Status = FeatureColors.Status
+
+        /** Chart line and area fill colors. */
         val Chart = FeatureColors.Chart
+
+        /** Request category badge colors. */
         val Category = FeatureColors.Category
+
+        /** MIME content-type indicator colors. */
         val ContentType = FeatureColors.ContentType
+
+        /** HTTP method label colors (GET, POST, etc.). */
         val HttpMethod = FeatureColors.HttpMethod
+
+        /** General accent and highlight colors. */
         val Accent = FeatureColors.Accent
 
         // Tool-specific groups (delegated from ToolColors.kt)
+
+        /** Memory profiler palette (heap, native, etc.). */
         val Memory = ToolColors.Memory
+
+        /** CPU monitor chart colors. */
         val Cpu = ToolColors.Cpu
+
+        /** Database inspector colors. */
         val Database = ToolColors.Database
+
+        /** WebSocket connection state colors. */
         val WebSocket = ToolColors.WebSocket
+
+        /** Location tracking indicator colors. */
         val Location = ToolColors.Location
+
+        /** Leak detection severity colors. */
         val LeakDetection = ToolColors.LeakDetection
+
+        /** StrictMode thread-violation colors. */
         val ThreadViolation = ToolColors.ThreadViolation
+
+        /** Secure storage entry colors. */
         val SecureStorage = ToolColors.SecureStorage
+
+        /** Log-level severity colors (debug, info, warn, error). */
         val LogLevel = ToolColors.LogLevel
+
+        /** FPS monitor chart colors. */
         val Fps = ToolColors.Fps
+
+        /** Rate-limit indicator colors. */
         val RateLimit = ToolColors.RateLimit
+
+        /** SharedPreferences viewer colors. */
         val Preferences = ToolColors.Preferences
+
+        /** Dependency inspector palette. */
         val DependenciesInspector = ToolColors.DependenciesInspector
+
+        /** Loaded-libraries list colors. */
         val LoadedLibraries = ToolColors.LoadedLibraries
+
+        /** Compose recomposition tracker colors. */
         val Recomposition = ToolColors.Recomposition
+
+        /** Crypto operations indicator colors. */
         val Crypto = ToolColors.Crypto
+
+        /** File browser item-type colors. */
         val FileBrowser = ToolColors.FileBrowser
+
+        /** Push notification simulator colors. */
         val PushSimulator = ToolColors.PushSimulator
+
+        /** Floating overlay colors. */
         val Overlay = ToolColors.Overlay
+
+        /** Dismiss-zone indicator colors. */
         val DismissZone = ToolColors.DismissZone
+
+        /** Content viewer colors. */
         val Viewer = ToolColors.Viewer
     }
+
+    /** Spacing scale tokens (xs through xxxl). */
+    val Spacing = TokenSpacing
+
+    /** Corner radius tokens. */
+    val Radius = TokenRadius
+
+    /** Elevation / shadow tokens. */
+    val Elevation = TokenElevation
+
+    /** Border width tokens. */
+    val BorderWidth = TokenBorderWidth
+
+    /** Opacity alpha constants. */
+    val Alpha = TokenAlpha
+
+    /** Single animation-spec tokens (duration, easing). */
+    val Animation = TokenAnimation
+
+    /** Pre-built animation specs for common transitions. */
+    val Animations = TokenAnimations
+
+    /** Standard icon size tokens. */
+    val IconSize = TokenIconSize
+
+    /** Minimum touch-target size tokens. */
+    val TouchTarget = TokenTouchTarget
+
+    /** Shared shape tokens (card, chip, textField, etc.). */
+    val Shapes = TokenShapes
+
+    /** Typography style tokens. */
+    val Typography = TokenTypography
+
+    /** Component dimension tokens (heights, widths). */
+    val ComponentSize = TokenComponentSize
 
     /** Returns theme-aware semantic colors (background, surface, accent, error, etc.). */
     @Composable
@@ -80,17 +170,4 @@ object WormaCeptorTokens {
     @Composable
     fun syntax(darkTheme: Boolean = isSystemInDarkTheme()): ComposeSyntaxColors =
         if (darkTheme) DarkComposeSyntaxColors else LightComposeSyntaxColors
-
-    val Spacing = TokenSpacing
-    val Radius = TokenRadius
-    val Elevation = TokenElevation
-    val BorderWidth = TokenBorderWidth
-    val Alpha = TokenAlpha
-    val Animation = TokenAnimation
-    val Animations = TokenAnimations
-    val IconSize = TokenIconSize
-    val TouchTarget = TokenTouchTarget
-    val Shapes = TokenShapes
-    val Typography = TokenTypography
-    val ComponentSize = TokenComponentSize
 }

@@ -77,28 +77,28 @@ fun WormaCeptorCard(
         CardStyle.Filled -> MaterialTheme.colorScheme.surfaceColorAtElevation(
             WormaCeptorTokens.Elevation.sm,
         )
+
         CardStyle.Outlined -> MaterialTheme.colorScheme.surfaceVariant.copy(
             alpha = WormaCeptorTokens.Alpha.SUBTLE,
         )
+
         CardStyle.Elevated -> MaterialTheme.colorScheme.surfaceColorAtElevation(
             WormaCeptorTokens.Elevation.md,
         )
     }
 
-    val border = when (style) {
-        CardStyle.Outlined -> BorderStroke(
-            width = WormaCeptorTokens.BorderWidth.thin,
-            color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorTokens.Alpha.MEDIUM,
-            ),
-        )
-        else -> null
-    }
+    val border = BorderStroke(
+        width = WormaCeptorTokens.BorderWidth.thin,
+        color = borderColor ?: MaterialTheme.colorScheme.outlineVariant.copy(
+            alpha = WormaCeptorTokens.Alpha.MEDIUM,
+        ),
+    ).takeIf { style == CardStyle.Outlined }
 
     val elevation = when (style) {
         CardStyle.Elevated -> CardDefaults.cardElevation(
             defaultElevation = WormaCeptorTokens.Elevation.md,
         )
+
         CardStyle.Outlined -> CardDefaults.cardElevation()
         CardStyle.Filled -> CardDefaults.cardElevation(
             defaultElevation = WormaCeptorTokens.Elevation.xs,

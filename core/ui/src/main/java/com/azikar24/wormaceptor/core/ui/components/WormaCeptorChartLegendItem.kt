@@ -52,6 +52,10 @@ fun WormaCeptorChartLegendItem(
     }
 }
 
+private const val PreviewColorSuccess = 0xFF4CAF50
+private const val PreviewColorError = 0xFFF44336
+private const val PreviewColorPending = 0xFFFFC107
+
 @Preview(name = "ChartLegendItem - Light")
 @Composable
 private fun WormaCeptorChartLegendItemPreview() {
@@ -61,9 +65,18 @@ private fun WormaCeptorChartLegendItemPreview() {
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
-                WormaCeptorChartLegendItem(label = "Success", color = Color(0xFF4CAF50))
-                WormaCeptorChartLegendItem(label = "Error", color = Color(0xFFF44336))
-                WormaCeptorChartLegendItem(label = "Pending", color = Color(0xFFFFC107))
+                WormaCeptorChartLegendItem(
+                    label = "Success",
+                    color = WormaCeptorTokens.Colors.Status.green,
+                )
+                WormaCeptorChartLegendItem(
+                    label = "Error",
+                    color = WormaCeptorTokens.Colors.Status.red,
+                )
+                WormaCeptorChartLegendItem(
+                    label = "Pending",
+                    color = WormaCeptorTokens.Colors.Status.orange,
+                )
             }
         }
     }

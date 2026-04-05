@@ -11,7 +11,6 @@ dependencies {
     api(project(":features:preferences"))
     api(project(":features:logs"))
     api(project(":features:deviceinfo"))
-    api(project(":features:settings"))
     api(project(":features:database"))
     api(project(":features:filebrowser"))
     api(project(":features:memory"))

@@ -20,12 +20,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.ComposeSyntaxColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
 import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
 import org.koin.java.KoinJavaComponent.get
 import java.util.Locale
+
+private val attrRegex = Regex("""(\s*)(\w+(?::\w+)?)\s*=\s*("[^"]*"|'[^']*')""")
 
 /**
  * A formatted view for XML content with proper indentation and syntax highlighting.
@@ -35,8 +36,8 @@ import java.util.Locale
 fun XmlTreeView(
     xmlString: String,
     modifier: Modifier = Modifier,
-    colors: ComposeSyntaxColors = syntaxColors(),
 ) {
+    val colors = WormaCeptorTokens.syntax()
     val formattedLines = remember(xmlString) {
         try {
             val formatter: XmlFormatter = get(XmlFormatter::class.java)
@@ -49,8 +50,8 @@ fun XmlTreeView(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip)
-            .padding(WormaCeptorDesignSystem.Spacing.sm),
+            .background(colors.codeBackground, WormaCeptorTokens.Shapes.chip)
+            .padding(WormaCeptorTokens.Spacing.sm),
     ) {
         SelectionContainer {
             Column(
@@ -86,11 +87,12 @@ private fun XmlLineView(
                 fontFamily = FontFamily.Monospace,
             ),
             color = colors.lineNumberText,
-            modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.sm),
+            modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.sm),
         )
 
+        val highlighted = remember(line) { highlightXmlLine(line, colors) }
         Text(
-            text = highlightXmlLine(line, colors),
+            text = highlighted,
             style = MaterialTheme.typography.bodySmall.copy(
                 fontFamily = FontFamily.Monospace,
             ),
@@ -101,7 +103,6 @@ private fun XmlLineView(
 /**
  * Applies syntax highlighting to an XML line.
  */
-@Composable
 private fun highlightXmlLine(
     line: String,
     colors: ComposeSyntaxColors,
@@ -183,7 +184,6 @@ private fun highlightXmlLine(
 /**
  * Highlights a single XML tag with attributes.
  */
-@Composable
 private fun highlightXmlTag(
     tag: String,
     colors: ComposeSyntaxColors,
@@ -207,7 +207,7 @@ private fun highlightXmlTag(
 
     if (parts.size > 1) {
         val attributes = parts[1]
-        highlightAttributes(attributes, colors).forEach { append(it) }
+        append(highlightAttributes(attributes, colors))
     }
 
     withStyle(SpanStyle(color = colors.punctuation)) {
@@ -219,54 +219,36 @@ private fun highlightXmlTag(
 /**
  * Parses and highlights XML attributes.
  */
-@Composable
 private fun highlightAttributes(
     attributes: String,
     colors: ComposeSyntaxColors,
-): List<CharSequence> {
-    val result = mutableListOf<CharSequence>()
-    val attrRegex = Regex("""(\s*)(\w+(?::\w+)?)\s*=\s*("[^"]*"|'[^']*')""")
-
+) = buildAnnotatedString {
     var lastEnd = 0
     attrRegex.findAll(attributes).forEach { match ->
         if (match.range.first > lastEnd) {
-            result.add(
-                buildAnnotatedString {
-                    withStyle(SpanStyle(color = colors.default)) {
-                        append(attributes.substring(lastEnd, match.range.first))
-                    }
-                },
-            )
+            withStyle(SpanStyle(color = colors.default)) {
+                append(attributes.substring(lastEnd, match.range.first))
+            }
         }
 
         val (whitespace, name, value) = match.destructured
-        result.add(
-            buildAnnotatedString {
-                append(whitespace)
-                withStyle(SpanStyle(color = colors.property)) {
-                    append(name)
-                }
-                withStyle(SpanStyle(color = colors.punctuation)) {
-                    append("=")
-                }
-                withStyle(SpanStyle(color = colors.string)) {
-                    append(value)
-                }
-            },
-        )
+        append(whitespace)
+        withStyle(SpanStyle(color = colors.property)) {
+            append(name)
+        }
+        withStyle(SpanStyle(color = colors.punctuation)) {
+            append("=")
+        }
+        withStyle(SpanStyle(color = colors.string)) {
+            append(value)
+        }
 
         lastEnd = match.range.last + 1
     }
 
     if (lastEnd < attributes.length) {
-        result.add(
-            buildAnnotatedString {
-                withStyle(SpanStyle(color = colors.default)) {
-                    append(attributes.substring(lastEnd))
-                }
-            },
-        )
+        withStyle(SpanStyle(color = colors.default)) {
+            append(attributes.substring(lastEnd))
+        }
     }
-
-    return result
 }

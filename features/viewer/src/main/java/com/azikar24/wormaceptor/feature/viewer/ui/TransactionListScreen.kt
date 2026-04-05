@@ -24,8 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -42,18 +42,13 @@ import java.util.UUID
  *
  * @param transactions List of transactions to display
  * @param onItemClick Callback when a transaction is clicked
+ * @param selectionState Grouped multi-select state and callbacks
+ * @param itemActions Grouped per-item context-menu action callbacks
+ * @param isInitialLoading Whether the initial data load is still in progress
  * @param hasActiveFilters Whether filters are currently active
  * @param onClearFilters Callback to clear filters
  * @param isRefreshing Whether the list is currently refreshing
  * @param onRefresh Callback triggered on pull-to-refresh
- * @param selectedIds Set of currently selected transaction IDs
- * @param isSelectionMode Whether multi-select mode is active
- * @param onSelectionToggle Callback when a selection is toggled
- * @param onLongClick Callback when an item is long-clicked (enters selection mode)
- * @param onCopyUrl Callback to copy transaction URL
- * @param onShare Callback to share transaction
- * @param onDelete Callback to delete transaction
- * @param onCopyAsCurl Callback to copy transaction as cURL
  * @param modifier Modifier for the screen
  * @param header Optional header composable
  */
@@ -63,20 +58,13 @@ fun SelectableTransactionListScreen(
     transactions: ImmutableList<TransactionSummary>,
     onItemClick: (TransactionSummary) -> Unit,
     modifier: Modifier = Modifier,
+    selectionState: TransactionSelectionState = TransactionSelectionState(),
+    itemActions: TransactionItemActions = TransactionItemActions(),
     isInitialLoading: Boolean = false,
     hasActiveFilters: Boolean = false,
     onClearFilters: () -> Unit = {},
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
-    selectedIds: Set<UUID> = emptySet(),
-    isSelectionMode: Boolean = false,
-    onSelectionToggle: (UUID) -> Unit = {},
-    onLongClick: (UUID) -> Unit = {},
-    onCopyUrl: (TransactionSummary) -> Unit = {},
-    onShare: (TransactionSummary) -> Unit = {},
-    onShareAsHar: (TransactionSummary) -> Unit = {},
-    onDelete: (TransactionSummary) -> Unit = {},
-    onCopyAsCurl: (TransactionSummary) -> Unit = {},
     header: (@Composable () -> Unit)? = null,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
@@ -103,8 +91,8 @@ fun SelectableTransactionListScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                top = WormaCeptorDesignSystem.Spacing.xs,
-                bottom = WormaCeptorDesignSystem.Spacing.xs + navigationBarPadding,
+                top = WormaCeptorTokens.Spacing.xs,
+                bottom = WormaCeptorTokens.Spacing.xs + navigationBarPadding,
             ),
         ) {
             // Optional header (e.g., MetricsCard)
@@ -118,23 +106,23 @@ fun SelectableTransactionListScreen(
             items(transactions, key = { it.id }) { transaction ->
                 SelectableTransactionItem(
                     transaction = transaction,
-                    isSelected = transaction.id in selectedIds,
-                    isSelectionMode = isSelectionMode,
+                    isSelected = transaction.id in selectionState.selectedIds,
+                    isSelectionMode = selectionState.isSelectionMode,
                     onClick = {
-                        if (isSelectionMode) {
-                            onSelectionToggle(transaction.id)
+                        if (selectionState.isSelectionMode) {
+                            selectionState.onSelectionToggle(transaction.id)
                         } else {
                             onItemClick(transaction)
                         }
                     },
                     onLongClick = {
-                        onLongClick(transaction.id)
+                        selectionState.onLongClick(transaction.id)
                     },
-                    onCopyUrl = { onCopyUrl(transaction) },
-                    onShare = { onShare(transaction) },
-                    onShareAsHar = { onShareAsHar(transaction) },
-                    onDelete = { onDelete(transaction) },
-                    onCopyAsCurl = { onCopyAsCurl(transaction) },
+                    onCopyUrl = { itemActions.onCopyUrl(transaction) },
+                    onShare = { itemActions.onShare(transaction) },
+                    onShareAsHar = { itemActions.onShareAsHar(transaction) },
+                    onDelete = { itemActions.onDelete(transaction) },
+                    onCopyAsCurl = { itemActions.onCopyAsCurl(transaction) },
                     modifier = Modifier.animateItem(),
                 )
             }

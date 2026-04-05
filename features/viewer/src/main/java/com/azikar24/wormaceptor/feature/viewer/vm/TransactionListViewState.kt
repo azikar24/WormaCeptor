@@ -23,4 +23,9 @@ data class TransactionListViewState(
     val draftFilterStatusRanges: Set<IntRange> = emptySet(),
     val showClearTransactionsDialog: Boolean = false,
     val showDeleteSelectedDialog: Boolean = false,
-)
+) {
+    val hasActiveFilters: Boolean
+        get() = filterMethods.isNotEmpty() ||
+            filterStatusRanges.isNotEmpty() ||
+            searchQuery.isNotBlank()
+}

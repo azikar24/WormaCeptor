@@ -30,9 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
 @Composable
@@ -53,18 +52,18 @@ internal fun CollapsibleSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = onToggle)
-                .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+                .padding(vertical = WormaCeptorTokens.Spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
@@ -77,7 +76,7 @@ internal fun CollapsibleSection(
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 trailingContent?.invoke()
@@ -89,15 +88,15 @@ internal fun CollapsibleSection(
                     ) {
                         if (isCopyLoading) {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(16.dp),
-                                strokeWidth = 2.dp,
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                strokeWidth = WormaCeptorTokens.BorderWidth.thick,
                                 color = MaterialTheme.colorScheme.primary,
                             )
                         } else {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.viewer_body_copy),
-                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -109,18 +108,18 @@ internal fun CollapsibleSection(
         AnimatedVisibility(
             visible = isExpanded,
             enter = expandVertically(
-                animationSpec = tween(durationMillis = 200),
+                animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.MEDIUM),
             ) + fadeIn(),
             exit = shrinkVertically(
-                animationSpec = tween(durationMillis = 200),
+                animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.MEDIUM),
             ) + fadeOut(),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        top = WormaCeptorDesignSystem.Spacing.sm,
-                        bottom = WormaCeptorDesignSystem.Spacing.md,
+                        top = WormaCeptorTokens.Spacing.sm,
+                        bottom = WormaCeptorTokens.Spacing.md,
                     ),
             ) {
                 content()
@@ -143,7 +142,7 @@ internal fun DetailRow(
     label: String,
     value: String,
 ) {
-    Row(modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs)) {
+    Row(modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xs)) {
         Text(
             text = "$label: ",
             style = MaterialTheme.typography.bodyMedium,

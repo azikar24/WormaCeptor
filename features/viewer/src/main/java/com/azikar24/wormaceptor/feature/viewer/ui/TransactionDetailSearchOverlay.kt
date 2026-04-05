@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
 
@@ -41,22 +41,22 @@ internal fun TransactionDetailSearchOverlay(
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
-        ) + scaleIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            animationSpec = tween(WormaCeptorTokens.Animation.FAST),
+        ) + scaleIn(animationSpec = tween(WormaCeptorTokens.Animation.FAST)),
         exit = fadeOut(
-            animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST),
-        ) + scaleOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.ULTRA_FAST)),
+            animationSpec = tween(WormaCeptorTokens.Animation.ULTRA_FAST),
+        ) + scaleOut(animationSpec = tween(WormaCeptorTokens.Animation.ULTRA_FAST)),
         modifier = modifier,
     ) {
         Surface(
-            shape = WormaCeptorDesignSystem.Shapes.pill,
+            shape = WormaCeptorTokens.Shapes.pill,
             color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-            shadowElevation = WormaCeptorDesignSystem.Elevation.lg,
+            shadowElevation = WormaCeptorTokens.Elevation.lg,
         ) {
             Row(
                 modifier = Modifier.padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    horizontal = WormaCeptorTokens.Spacing.md,
+                    vertical = WormaCeptorTokens.Spacing.sm,
                 ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -64,7 +64,7 @@ internal fun TransactionDetailSearchOverlay(
                     Text(
                         text = "${currentMatchIndex + 1}/$matchCount",
                         style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(end = WormaCeptorDesignSystem.Spacing.xs),
+                        modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.xs),
                     )
                     IconButton(
                         onClick = { onEvent(TransactionDetailViewEvent.Search.NavigateToPrevious) },

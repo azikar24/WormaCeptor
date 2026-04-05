@@ -38,9 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.buildHighlightedString
-import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -89,7 +87,7 @@ internal fun ResponseTab(
     val showPdfViewer = responseState.showPdfViewer
 
     // Syntax highlighting colors
-    val colors = syntaxColors()
+    val colors = WormaCeptorTokens.syntax()
 
     // Extract content type from headers
     val contentType = remember(transaction.response?.headers) {
@@ -136,10 +134,10 @@ internal fun ResponseTab(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 ),
         ) {
@@ -159,7 +157,7 @@ internal fun ResponseTab(
                     }
 
                     if (hasBody) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
                     }
                 }
 
@@ -168,9 +166,9 @@ internal fun ResponseTab(
                     if (isLoading) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                         ) {
-                            CircularProgressIndicator(modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg))
+                            CircularProgressIndicator(modifier = Modifier.size(WormaCeptorTokens.IconSize.lg))
                             Text(
                                 stringResource(R.string.viewer_body_processing),
                                 style = MaterialTheme.typography.bodySmall,
@@ -284,7 +282,6 @@ internal fun ResponseTab(
                                     ContentType.XML, ContentType.HTML -> {
                                         XmlTreeView(
                                             xmlString = displayBody,
-                                            colors = colors,
                                         )
                                     }
 
@@ -370,7 +367,7 @@ internal fun ResponseTab(
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
         ) {
             WormaCeptorFAB(
                 onClick = { onEvent(TransactionDetailViewEvent.Response.CopyAllContent) },

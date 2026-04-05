@@ -17,6 +17,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.generateTextSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.isProtobufContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.parseBodyViaRegistry
 import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatHeaders
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -461,7 +462,7 @@ internal class TransactionDetailViewModel(
         } else {
             transaction.response?.headers ?: return
         }
-        val formatted = ViewerViewModel.formatHeaders(headers)
+        val formatted = formatHeaders(headers)
         val labelResId = if (isRequest) {
             R.string.viewer_clipboard_request_headers
         } else {
@@ -478,7 +479,7 @@ internal class TransactionDetailViewModel(
         val content = buildString {
             if (isRequest) {
                 appendLine("=== REQUEST HEADERS ===")
-                appendLine(ViewerViewModel.formatHeaders(transaction.request.headers))
+                appendLine(formatHeaders(transaction.request.headers))
                 val section = state.requestState
                 val body = if (section.isPrettyMode) {
                     section.parsedBody ?: section.rawBody
@@ -492,7 +493,7 @@ internal class TransactionDetailViewModel(
             } else {
                 transaction.response?.headers?.let { headers ->
                     appendLine("=== RESPONSE HEADERS ===")
-                    appendLine(ViewerViewModel.formatHeaders(headers))
+                    appendLine(formatHeaders(headers))
                 }
                 val section = state.responseState
                 val body = if (section.isPrettyMode) {

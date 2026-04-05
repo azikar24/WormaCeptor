@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -48,19 +47,22 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEvent
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewState
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -71,26 +73,23 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
-    transactions: ImmutableList<TransactionSummary>,
-    allTransactions: ImmutableList<TransactionSummary>,
-    crashes: ImmutableList<Crash>,
-    isSelectionMode: Boolean,
-    state: ViewerViewState,
-    onEvent: (ViewerViewEvent) -> Unit,
-    onTransactionClick: (TransactionSummary) -> Unit,
-    onCrashClick: (Crash) -> Unit,
-    onToolNavigate: (String) -> Unit,
+    homeState: HomeViewState,
+    transactionState: TransactionListViewState,
+    crashState: CrashListViewState,
+    onHomeEvent: (HomeViewEvent) -> Unit,
+    onTransactionEvent: (TransactionListViewEvent) -> Unit,
+    onCrashEvent: (CrashListViewEvent) -> Unit,
     snackBarMessage: Flow<String>? = null,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val isSelectionMode = transactionState.selectedIds.isNotEmpty()
 
     // Hardware/System Back Button behavior
     BackHandler {
         if (isSelectionMode) {
-            onEvent(ViewerViewEvent.SelectionCleared)
+            onTransactionEvent(TransactionListViewEvent.SelectionCleared)
         } else {
-            (context as? Activity)?.finish()
+            onHomeEvent(HomeViewEvent.BackPressed)
         }
     }
 
@@ -113,16 +112,17 @@ fun HomeScreen(
 
     // Pager state for swipe between tabs
     val pagerState = rememberPagerState(
-        initialPage = state.selectedTabIndex,
+        initialPage = homeState.selectedTabIndex,
         pageCount = { titles.size },
     )
 
     // Side-effects: pager sync + snackbar observer
     HomeScreenEffects(
         pagerState = pagerState,
-        state = state,
-        isSelectionMode = isSelectionMode,
-        onEvent = onEvent,
+        homeState = homeState,
+        transactionState = transactionState,
+        onHomeEvent = onHomeEvent,
+        onTransactionEvent = onTransactionEvent,
         snackBarMessage = snackBarMessage,
         snackBarHostState = snackBarHostState,
     )
@@ -131,12 +131,9 @@ fun HomeScreen(
         contentWindowInsets = WindowInsets(0),
         snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
-            val isFiltering = state.filterMethods.isNotEmpty() ||
-                state.filterStatusRanges.isNotEmpty() ||
-                state.searchQuery.isNotBlank()
-            val filterCount = state.filterMethods.size +
-                state.filterStatusRanges.size +
-                if (state.searchQuery.isNotBlank()) 1 else 0
+            val filterCount = transactionState.filterMethods.size +
+                transactionState.filterStatusRanges.size +
+                if (transactionState.searchQuery.isNotBlank()) 1 else 0
 
             AnimatedVisibility(
                 visible = pagerState.currentPage == 0 && !isSelectionMode,
@@ -145,7 +142,7 @@ fun HomeScreen(
             ) {
                 BadgedBox(
                     badge = {
-                        if (isFiltering) {
+                        if (transactionState.hasActiveFilters) {
                             Badge(
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -161,7 +158,7 @@ fun HomeScreen(
                 ) {
                     WormaCeptorFAB(
                         onClick = {
-                            onEvent(ViewerViewEvent.FilterSheetVisibilityChanged(true))
+                            onTransactionEvent(TransactionListViewEvent.Filter.SheetOpened)
                         },
                         icon = Icons.Default.FilterList,
                         contentDescription = stringResource(R.string.viewer_home_filter),
@@ -171,10 +168,11 @@ fun HomeScreen(
         },
         topBar = {
             HomeTopBar(
-                state = state,
-                isSelectionMode = isSelectionMode,
-                transactionCount = transactions.size,
-                onEvent = onEvent,
+                homeState = homeState,
+                transactionState = transactionState,
+                onHomeEvent = onHomeEvent,
+                onTransactionEvent = onTransactionEvent,
+                onCrashEvent = onCrashEvent,
                 pagerState = pagerState,
                 titles = titles,
             )
@@ -183,10 +181,9 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
             ActiveFiltersBanner(
-                state = state,
-                isSelectionMode = isSelectionMode,
+                transactionState = transactionState,
                 currentPage = pagerState.currentPage,
-                onEvent = onEvent,
+                onTransactionEvent = onTransactionEvent,
             )
 
             // HorizontalPager for swipe between Transactions and Crashes
@@ -199,74 +196,88 @@ fun HomeScreen(
             ) { page ->
                 when (page) {
                     0 -> SelectableTransactionListScreen(
-                        transactions = transactions,
-                        onItemClick = onTransactionClick,
-                        isInitialLoading = state.isInitialLoading,
-                        hasActiveFilters = state.filterMethods.isNotEmpty() ||
-                            state.filterStatusRanges.isNotEmpty() ||
-                            state.searchQuery.isNotBlank(),
-                        onClearFilters = {
-                            onEvent(ViewerViewEvent.ClearFilters)
-                            onEvent(ViewerViewEvent.SearchQueryChanged(""))
-                        },
-                        isRefreshing = state.isRefreshingTransactions,
-                        onRefresh = { onEvent(ViewerViewEvent.RefreshTransactions) },
-                        selectedIds = state.selectedIds,
-                        isSelectionMode = isSelectionMode,
-                        onSelectionToggle = { onEvent(ViewerViewEvent.SelectionToggled(it)) },
-                        onLongClick = { id ->
-                            if (!isSelectionMode) {
-                                onEvent(ViewerViewEvent.SelectionToggled(id))
-                            }
-                        },
-                        onCopyUrl = { onEvent(ViewerViewEvent.CopyTransactionUrl(it)) },
-                        onShare = { onEvent(ViewerViewEvent.ShareTransaction(it)) },
-                        onShareAsHar = {
-                            onEvent(ViewerViewEvent.ShareTransactionAsHar(it.id))
-                        },
-                        onDelete = { onEvent(ViewerViewEvent.DeleteTransaction(it.id)) },
-                        onCopyAsCurl = {
-                            onEvent(ViewerViewEvent.CopyTransactionAsCurl(it.id))
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                        header = { MetricsCard(transactions = transactions) },
-                    )
-                    1 -> CrashListScreen(
-                        crashes = crashes,
-                        onCrashClick = onCrashClick,
-                        isRefreshing = state.isRefreshingCrashes,
-                        onRefresh = { onEvent(ViewerViewEvent.RefreshCrashes) },
-                    )
-                    2 -> if (showToolsTab) {
-                        ToolsTab(
-                            onNavigate = onToolNavigate,
-                            onShowMessage = { message ->
-                                scope.launch {
-                                    snackBarHostState.showSnackbar(message)
+                        transactions = transactionState.transactions,
+                        onItemClick = { onHomeEvent(HomeViewEvent.TransactionClicked(it)) },
+                        selectionState = TransactionSelectionState(
+                            selectedIds = transactionState.selectedIds,
+                            isSelectionMode = isSelectionMode,
+                            onSelectionToggle = {
+                                onTransactionEvent(TransactionListViewEvent.SelectionToggled(it))
+                            },
+                            onLongClick = { id ->
+                                if (!isSelectionMode) {
+                                    onTransactionEvent(
+                                        TransactionListViewEvent.SelectionToggled(id),
+                                    )
                                 }
                             },
-                            searchActive = state.toolsSearchActive,
-                            searchQuery = state.toolsSearchQuery,
-                            onSearchQueryChanged = {
-                                onEvent(ViewerViewEvent.ToolsSearchQueryChanged(it))
+                        ),
+                        itemActions = TransactionItemActions(
+                            onCopyUrl = {
+                                onTransactionEvent(TransactionListViewEvent.CopyTransactionUrl(it))
                             },
-                            collapsedCategories = state.collapsedToolCategories,
-                            onToggleCollapse = {
-                                onEvent(ViewerViewEvent.ToolCategoryCollapseToggled(it))
+                            onShare = {
+                                onTransactionEvent(TransactionListViewEvent.ShareTransaction(it))
                             },
-                            modifier = Modifier.fillMaxSize(),
-                        )
-                    }
+                            onShareAsHar = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.ShareTransactionAsHar(it.id),
+                                )
+                            },
+                            onDelete = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.DeleteTransaction(it.id),
+                                )
+                            },
+                            onCopyAsCurl = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.CopyTransactionAsCurl(it.id),
+                                )
+                            },
+                        ),
+                        isInitialLoading = transactionState.isInitialLoading,
+                        hasActiveFilters = transactionState.hasActiveFilters,
+                        onClearFilters = {
+                            onTransactionEvent(TransactionListViewEvent.ClearFilters)
+                        },
+                        isRefreshing = transactionState.isRefreshingTransactions,
+                        onRefresh = {
+                            onTransactionEvent(TransactionListViewEvent.RefreshTransactions)
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                        header = {
+                            MetricsCard(transactions = transactionState.transactions)
+                        },
+                    )
+
+                    1 -> CrashListScreen(
+                        crashes = crashState.crashes,
+                        onCrashClick = { onHomeEvent(HomeViewEvent.CrashClicked(it)) },
+                        isRefreshing = crashState.isRefreshingCrashes,
+                        onRefresh = { onCrashEvent(CrashListViewEvent.RefreshCrashes) },
+                    )
+
+                    2 -> ToolsTab(
+                        state = homeState,
+                        onEvent = onHomeEvent,
+                        onNavigate = { onHomeEvent(HomeViewEvent.ToolNavigated(it)) },
+                        onShowMessage = { message ->
+                            scope.launch {
+                                snackBarHostState.showSnackbar(message)
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                    )
                 }
             }
         }
 
         // Dialogs and bottom sheets
         HomeDialogs(
-            state = state,
-            onEvent = onEvent,
-            transactions = transactions,
-            allTransactions = allTransactions,
+            transactionState = transactionState,
+            crashState = crashState,
+            onTransactionEvent = onTransactionEvent,
+            onCrashEvent = onCrashEvent,
         )
     }
 }
@@ -278,54 +289,71 @@ fun HomeScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActiveFiltersBanner(
-    state: ViewerViewState,
-    isSelectionMode: Boolean,
+    transactionState: TransactionListViewState,
     currentPage: Int,
-    onEvent: (ViewerViewEvent) -> Unit,
+    onTransactionEvent: (TransactionListViewEvent) -> Unit,
 ) {
     val context = LocalContext.current
 
-    if (currentPage != 0 || isSelectionMode) return
-
-    val hasActiveFilters = state.filterMethods.isNotEmpty() ||
-        state.filterStatusRanges.isNotEmpty() ||
-        state.searchQuery.isNotBlank()
+    if (currentPage != 0 || transactionState.selectedIds.isNotEmpty()) return
 
     AnimatedVisibility(
-        visible = hasActiveFilters,
+        visible = transactionState.hasActiveFilters,
         enter = expandVertically() + fadeIn(),
         exit = shrinkVertically() + fadeOut(),
     ) {
         Surface(modifier = Modifier.fillMaxWidth()) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
+                        horizontal = WormaCeptorTokens.Spacing.lg,
+                        vertical = WormaCeptorTokens.Spacing.xs,
                     ),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
+                horizontalAlignment = Alignment.Start,
             ) {
-                Text(
-                    text = stringResource(R.string.viewer_home_active_filters),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Medium,
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = stringResource(R.string.viewer_home_active_filters),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    IconButton(
+                        onClick = {
+                            onTransactionEvent(TransactionListViewEvent.ClearFilters)
+                        },
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(
+                                R.string.viewer_home_clear_all_filters,
+                            ),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                        )
+                    }
+                }
 
                 WormaCeptorFlowRow(
-                    modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(
-                        WormaCeptorDesignSystem.Spacing.xs,
+                        WormaCeptorTokens.Spacing.xs,
                     ),
                 ) {
-                    if (state.searchQuery.isNotBlank()) {
+                    if (transactionState.searchQuery.isNotBlank()) {
                         AssistChip(
-                            onClick = { onEvent(ViewerViewEvent.SearchQueryChanged("")) },
+                            onClick = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.SearchQueryChanged(""),
+                                )
+                            },
                             label = {
                                 Text(
-                                    text = "\"${state.searchQuery}\"",
+                                    text = "\"${transactionState.searchQuery}\"",
                                     style = MaterialTheme.typography.labelSmall,
                                 )
                             },
@@ -333,34 +361,34 @@ private fun ActiveFiltersBanner(
                                 Icon(
                                     imageVector = Icons.Default.Search,
                                     contentDescription = null,
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 )
                             },
                             trailingIcon = {
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = null,
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 )
                             },
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
+                            shape = WormaCeptorTokens.Shapes.chip,
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
                                 contentDescription = context.getString(
                                     R.string.viewer_home_search_filter_description,
-                                    state.searchQuery,
+                                    transactionState.searchQuery,
                                 )
                             },
                         )
                     }
 
-                    state.filterMethods.forEach { method ->
+                    transactionState.filterMethods.forEach { method ->
                         AssistChip(
                             onClick = {
-                                onEvent(
-                                    ViewerViewEvent.MethodFiltersChanged(
-                                        state.filterMethods - method,
+                                onTransactionEvent(
+                                    TransactionListViewEvent.MethodFiltersChanged(
+                                        transactionState.filterMethods - method,
                                     ),
                                 )
                             },
@@ -374,10 +402,10 @@ private fun ActiveFiltersBanner(
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = null,
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 )
                             },
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
+                            shape = WormaCeptorTokens.Shapes.chip,
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
@@ -389,7 +417,7 @@ private fun ActiveFiltersBanner(
                         )
                     }
 
-                    state.filterStatusRanges.forEach { range ->
+                    transactionState.filterStatusRanges.forEach { range ->
                         val statusLabel = when (range) {
                             200..299 -> "2xx"
                             300..399 -> "3xx"
@@ -399,9 +427,9 @@ private fun ActiveFiltersBanner(
                         }
                         AssistChip(
                             onClick = {
-                                onEvent(
-                                    ViewerViewEvent.StatusFiltersChanged(
-                                        state.filterStatusRanges.filter { it != range }.toSet(),
+                                onTransactionEvent(
+                                    TransactionListViewEvent.StatusFiltersChanged(
+                                        transactionState.filterStatusRanges.minusElement(range),
                                     ),
                                 )
                             },
@@ -415,10 +443,10 @@ private fun ActiveFiltersBanner(
                                 Icon(
                                     imageVector = Icons.Default.Close,
                                     contentDescription = null,
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 )
                             },
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
+                            shape = WormaCeptorTokens.Shapes.chip,
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
@@ -430,22 +458,6 @@ private fun ActiveFiltersBanner(
                         )
                     }
                 }
-
-                IconButton(
-                    onClick = {
-                        onEvent(ViewerViewEvent.ClearFilters)
-                        onEvent(ViewerViewEvent.SearchQueryChanged(""))
-                    },
-                    modifier = Modifier.size(48.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(
-                            R.string.viewer_home_clear_all_filters,
-                        ),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                    )
-                }
             }
         }
     }
@@ -456,48 +468,49 @@ private fun ActiveFiltersBanner(
 private fun HomeScreenPreview() {
     WormaCeptorTheme {
         HomeScreen(
-            transactions = kotlinx.collections.immutable.persistentListOf(
-                TransactionSummary(
-                    id = UUID.randomUUID(),
-                    method = "GET",
-                    host = "api.example.com",
-                    path = "/users",
-                    code = 200,
-                    tookMs = 120L,
-                    hasRequestBody = false,
-                    hasResponseBody = true,
-                    status = TransactionStatus.COMPLETED,
-                    timestamp = System.currentTimeMillis(),
-                ),
-                TransactionSummary(
-                    id = UUID.randomUUID(),
-                    method = "POST",
-                    host = "api.example.com",
-                    path = "/auth/login",
-                    code = 401,
-                    tookMs = 250L,
-                    hasRequestBody = true,
-                    hasResponseBody = true,
-                    status = TransactionStatus.COMPLETED,
-                    timestamp = System.currentTimeMillis() - 30_000,
-                ),
-            ),
-            allTransactions = kotlinx.collections.immutable.persistentListOf(),
-            crashes = kotlinx.collections.immutable.persistentListOf(
-                Crash(
-                    id = 1L,
-                    timestamp = System.currentTimeMillis() - 60_000,
-                    exceptionType = "NullPointerException",
-                    message = "Attempt to invoke on null",
-                    stackTrace = "java.lang.NullPointerException\n\tat com.example.App.run(App.kt:10)",
+            homeState = HomeViewState(),
+            transactionState = TransactionListViewState(
+                transactions = persistentListOf(
+                    TransactionSummary(
+                        id = UUID.randomUUID(),
+                        method = "GET",
+                        host = "api.example.com",
+                        path = "/users",
+                        code = 200,
+                        tookMs = 120L,
+                        hasRequestBody = false,
+                        hasResponseBody = true,
+                        status = TransactionStatus.COMPLETED,
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                    TransactionSummary(
+                        id = UUID.randomUUID(),
+                        method = "POST",
+                        host = "api.example.com",
+                        path = "/auth/login",
+                        code = 401,
+                        tookMs = 250L,
+                        hasRequestBody = true,
+                        hasResponseBody = true,
+                        status = TransactionStatus.COMPLETED,
+                        timestamp = System.currentTimeMillis() - 30_000,
+                    ),
                 ),
             ),
-            isSelectionMode = false,
-            state = ViewerViewState(),
-            onEvent = {},
-            onTransactionClick = {},
-            onCrashClick = {},
-            onToolNavigate = {},
+            crashState = CrashListViewState(
+                crashes = persistentListOf(
+                    Crash(
+                        id = 1L,
+                        timestamp = System.currentTimeMillis() - 60_000,
+                        exceptionType = "NullPointerException",
+                        message = "Attempt to invoke on null",
+                        stackTrace = "java.lang.NullPointerException\n\tat com.example.App.run(App.kt:10)",
+                    ),
+                ),
+            ),
+            onHomeEvent = {},
+            onTransactionEvent = {},
+            onCrashEvent = {},
         )
     }
 }

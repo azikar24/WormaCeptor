@@ -262,6 +262,7 @@
     <string name="viewer_pdf_version">PDF %1$s</string>
     <string name="viewer_pdf_no_pages">PDF has no pages</string>
     <string name="viewer_pdf_share_chooser">Share PDF</string>
+    <string name="viewer_pdf_share_failed">Failed to share PDF: %1$s</string>
     <plurals name="viewer_pdf_page_count_label">
         <item quantity="one">%1$d page</item>
         <item quantity="other">%1$d pages</item>
@@ -284,6 +285,11 @@
     <string name="viewer_image_color">Color</string>
     <string name="viewer_image_save">Save</string>
     <string name="viewer_image_expand">Expand</string>
+    <string name="viewer_image_saved_to_gallery">Image saved to gallery</string>
+    <string name="viewer_image_save_failed">Failed to save image</string>
+    <string name="viewer_image_share_failed">Failed to share image</string>
+    <string name="viewer_image_share_title">Share Image</string>
+    <string name="viewer_image_toggle_controls">Toggle controls</string>
 
     <!-- Gesture Navigation -->
     <string name="viewer_gesture_previous">Previous transaction</string>

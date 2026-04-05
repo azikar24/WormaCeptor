@@ -48,6 +48,11 @@ class HomeViewModel(
             is HomeViewEvent.ToolCategoryCollapseToggled -> handleToolCategoryCollapseToggle(event.category)
 
             is HomeViewEvent.ShowMessage -> emitEffect(HomeViewEffect.ShowSnackBar(event.message))
+
+            is HomeViewEvent.TransactionClicked -> emitEffect(HomeViewEffect.NavigateToTransaction(event.summary))
+            is HomeViewEvent.CrashClicked -> emitEffect(HomeViewEffect.NavigateToCrash(event.crash))
+            is HomeViewEvent.ToolNavigated -> emitEffect(HomeViewEffect.NavigateToTool(event.route))
+            is HomeViewEvent.BackPressed -> emitEffect(HomeViewEffect.NavigateBack)
         }
     }
 

@@ -31,9 +31,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
@@ -55,19 +54,23 @@ internal fun PrettyRawToggle(
     onToggle: () -> Unit,
 ) {
     val activeColor = MaterialTheme.colorScheme.primary
-    val radius = WormaCeptorDesignSystem.CornerRadius.xs
-    val shape = RoundedCornerShape(radius)
 
     val borderColor by animateColorAsState(
-        targetValue = activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        targetValue = activeColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "segment_border",
     )
 
     Row(
         modifier = Modifier
-            .clip(shape)
-            .border(WormaCeptorDesignSystem.BorderWidth.thin, borderColor, shape),
+            .clip(
+                RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+            )
+            .border(
+                width = WormaCeptorTokens.BorderWidth.thin,
+                color = borderColor,
+                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+            ),
     ) {
         SegmentOption(
             text = stringResource(R.string.viewer_body_pretty),
@@ -93,16 +96,16 @@ private fun SegmentOption(
 ) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
-            activeColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
+            activeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
         } else {
             Color.Transparent
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "segment_bg",
     )
     val textColor by animateColorAsState(
         targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "segment_text",
     )
 
@@ -116,8 +119,8 @@ private fun SegmentOption(
             .background(backgroundColor)
             .clickable(onClick = onClick)
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xs,
             ),
     )
 }
@@ -140,7 +143,7 @@ internal fun BodyControlsRow(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Content type chip - informational, can wrap first
@@ -189,7 +192,7 @@ internal fun buildBaseHighlightedText(
     return buildAnnotatedString {
         append(base)
         val defaultStyle = SpanStyle(
-            background = WormaCeptorColors.Accent.Highlight.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
+            background = WormaCeptorTokens.Colors.Accent.highlight.copy(alpha = WormaCeptorTokens.Alpha.STRONG),
         )
         matchRanges.forEach { range ->
             addStyle(defaultStyle, range.first, range.last + 1)
@@ -244,7 +247,7 @@ internal fun HighlightedBodyText(
         }
     }
 
-    val highlightColor = WormaCeptorColors.StatusBlue.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY)
+    val highlightColor = WormaCeptorTokens.Colors.Status.blue.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
 
     Box(modifier = modifier) {
         // Current match overlay using Canvas to draw the actual path shape

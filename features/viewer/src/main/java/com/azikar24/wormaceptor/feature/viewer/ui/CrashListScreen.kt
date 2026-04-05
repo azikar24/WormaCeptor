@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -47,16 +48,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatRelativeTime
+import com.azikar24.wormaceptor.feature.viewer.ui.util.isSevereException
 import kotlinx.collections.immutable.ImmutableList
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 /**
  * CrashListScreen with pull-to-refresh support.
@@ -150,10 +148,10 @@ fun CrashListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        start = WormaCeptorDesignSystem.Spacing.md,
-                        top = WormaCeptorDesignSystem.Spacing.md,
-                        end = WormaCeptorDesignSystem.Spacing.md,
-                        bottom = WormaCeptorDesignSystem.Spacing.md + navigationBarPadding,
+                        start = WormaCeptorTokens.Spacing.md,
+                        top = WormaCeptorTokens.Spacing.md,
+                        end = WormaCeptorTokens.Spacing.md,
+                        bottom = WormaCeptorTokens.Spacing.md + navigationBarPadding,
                     ),
                 ) {
                     items(crashes, key = { it.id }) { crash ->
@@ -161,7 +159,7 @@ fun CrashListScreen(
                             crash = crash,
                             onClick = { onCrashClick(crash) },
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
                 }
             }
@@ -169,10 +167,10 @@ fun CrashListScreen(
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = WormaCeptorDesignSystem.Spacing.md,
-                    top = WormaCeptorDesignSystem.Spacing.md,
-                    end = WormaCeptorDesignSystem.Spacing.md,
-                    bottom = WormaCeptorDesignSystem.Spacing.md + navigationBarPadding,
+                    start = WormaCeptorTokens.Spacing.md,
+                    top = WormaCeptorTokens.Spacing.md,
+                    end = WormaCeptorTokens.Spacing.md,
+                    bottom = WormaCeptorTokens.Spacing.md + navigationBarPadding,
                 ),
             ) {
                 items(crashes, key = { it.id }) { crash ->
@@ -180,7 +178,7 @@ fun CrashListScreen(
                         crash = crash,
                         onClick = { onCrashClick(crash) },
                     )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                 }
             }
         }
@@ -193,8 +191,9 @@ fun CrashItem(
     crash: Crash,
     onClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val location = remember(crash.stackTrace) { CrashUtils.extractCrashLocation(crash.stackTrace) }
-    val relativeTime = remember(crash.timestamp) { formatRelativeTime(crash.timestamp) }
+    val relativeTime = remember(crash.timestamp) { formatRelativeTime(context, crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -207,25 +206,25 @@ fun CrashItem(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(WormaCeptorDesignSystem.Shapes.card)
+            .clip(WormaCeptorTokens.Shapes.card)
             .clickable(onClick = onClick)
             .alpha(alpha),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
-        tonalElevation = WormaCeptorDesignSystem.Elevation.xs,
+        shape = WormaCeptorTokens.Shapes.card,
+        color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+        tonalElevation = WormaCeptorTokens.Elevation.xs,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.Top,
         ) {
             // Icon badge
             Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = WormaCeptorColors.StatusRed.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-                contentColor = WormaCeptorColors.StatusRed,
-                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxl),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                contentColor = WormaCeptorTokens.Colors.Status.red,
+                modifier = Modifier.size(WormaCeptorTokens.Spacing.xxl),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -240,12 +239,12 @@ fun CrashItem(
                         } else {
                             stringResource(R.string.viewer_crash_list_warning)
                         },
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
                 // Exception type - prominent
@@ -259,99 +258,62 @@ fun CrashItem(
                     letterSpacing = (-0.2).sp,
                 )
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
                 // Error message
                 val message = crash.message
                 if (message != null && message.isNotBlank()) {
                     Text(
                         text = message,
-                        style = WormaCeptorDesignSystem.Typography.bodyMedium,
+                        style = WormaCeptorTokens.Typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
+                            alpha = WormaCeptorTokens.Alpha.PROMINENT,
                         ),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                 }
 
                 // Stack trace location in monospace
                 if (location != null) {
                     Surface(
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(
-                            WormaCeptorDesignSystem.CornerRadius.xs,
+                            WormaCeptorTokens.Radius.xs,
                         ),
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.STRONG,
+                            alpha = WormaCeptorTokens.Alpha.STRONG,
                         ),
                     ) {
                         Text(
                             text = location,
-                            style = WormaCeptorDesignSystem.Typography.labelSmall,
+                            style = WormaCeptorTokens.Typography.labelSmall,
                             fontFamily = FontFamily.Monospace,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
                             ),
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
                 }
 
                 // Relative timestamp with better typography
                 Text(
                     text = relativeTime,
-                    style = WormaCeptorDesignSystem.Typography.labelMedium,
+                    style = WormaCeptorTokens.Typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
             }
         }
     }
-}
-
-// Helper functions
-private fun formatRelativeTime(timestamp: Long): String {
-    val now = System.currentTimeMillis()
-    val diff = now - timestamp
-
-    return when {
-        diff < TimeUnit.MINUTES.toMillis(1) -> "Just now"
-        diff < TimeUnit.HOURS.toMillis(1) -> {
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
-            "$minutes min ago"
-        }
-        diff < TimeUnit.DAYS.toMillis(1) -> {
-            val hours = TimeUnit.MILLISECONDS.toHours(diff)
-            "$hours hr ago"
-        }
-        diff < TimeUnit.DAYS.toMillis(7) -> {
-            val days = TimeUnit.MILLISECONDS.toDays(diff)
-            "$days day${if (days > 1) "s" else ""} ago"
-        }
-        else -> {
-            SimpleDateFormat("MMM d, HH:mm", Locale.getDefault()).format(Date(timestamp))
-        }
-    }
-}
-
-private fun isSevereException(exceptionType: String): Boolean {
-    val severeTypes = listOf(
-        "NullPointerException",
-        "OutOfMemoryError",
-        "StackOverflowError",
-        "SecurityException",
-        "IllegalStateException",
-        "AssertionError",
-    )
-    return severeTypes.any { exceptionType.contains(it, ignoreCase = true) }
 }
 
 @Preview(showBackground = true)

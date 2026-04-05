@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
@@ -187,8 +187,8 @@ private fun TransactionDetailScaffold(
                         modifier = Modifier
                             .focusRequester(focusRequester)
                             .padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                                horizontal = WormaCeptorTokens.Spacing.lg,
+                                vertical = WormaCeptorTokens.Spacing.sm,
                             ),
                     )
                 }
@@ -232,8 +232,8 @@ private fun TransactionDetailScaffold(
                     .align(Alignment.BottomEnd)
                     .imePadding()
                     .padding(
-                        bottom = WormaCeptorDesignSystem.Spacing.xxl,
-                        end = WormaCeptorDesignSystem.Spacing.lg,
+                        bottom = WormaCeptorTokens.Spacing.xxl,
+                        end = WormaCeptorTokens.Spacing.lg,
                     ),
             )
         }

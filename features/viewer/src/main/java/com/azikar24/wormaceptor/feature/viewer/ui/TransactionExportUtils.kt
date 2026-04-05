@@ -2,7 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.content.Context
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewModel
+import com.azikar24.wormaceptor.feature.viewer.ui.util.formatHeaders
 
 /**
  * Saves PDF data to the device's Downloads directory.
@@ -77,7 +77,7 @@ internal fun generateTextSummary(
     appendLine("Duration: ${com.azikar24.wormaceptor.core.ui.util.formatDuration(transaction.durationMs)}")
 
     appendLine("\n[Request Headers]")
-    appendLine(ViewerViewModel.formatHeaders(transaction.request.headers))
+    appendLine(formatHeaders(transaction.request.headers))
 
     if (!requestBody.isNullOrBlank()) {
         appendLine("\n[Request Body]")
@@ -86,7 +86,7 @@ internal fun generateTextSummary(
 
     transaction.response?.let { res ->
         appendLine("\n[Response Headers]")
-        appendLine(ViewerViewModel.formatHeaders(res.headers))
+        appendLine(formatHeaders(res.headers))
 
         if (!responseBody.isNullOrBlank()) {
             appendLine("\n[Response Body]")

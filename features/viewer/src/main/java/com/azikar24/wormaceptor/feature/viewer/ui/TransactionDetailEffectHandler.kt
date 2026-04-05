@@ -5,9 +5,10 @@ import androidx.compose.material3.SnackbarHostState
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
-import com.azikar24.wormaceptor.feature.viewer.ui.components.saveImageToGallery
-import com.azikar24.wormaceptor.feature.viewer.ui.components.shareImage
+import com.azikar24.wormaceptor.feature.viewer.ui.util.ImageOperationResult
+import com.azikar24.wormaceptor.feature.viewer.ui.util.saveImageToGallery
 import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareImage
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -36,9 +37,9 @@ internal fun handleTransactionDetailEffect(
         }
 
         is TransactionDetailViewEffect.Share.Image -> {
-            val message = shareImage(context, effect.payload.bytes, effect.payload.format)
-            if (message != null) {
-                scope.launch { snackBarHostState.showSnackbar(message) }
+            val result = shareImage(context, effect.payload.bytes, effect.payload.format)
+            if (result is ImageOperationResult.Failure) {
+                scope.launch { snackBarHostState.showSnackbar(result.message) }
             }
         }
 
@@ -51,8 +52,8 @@ internal fun handleTransactionDetailEffect(
         }
 
         is TransactionDetailViewEffect.Save.ImageToGallery -> {
-            val message = saveImageToGallery(context, effect.payload.bytes, effect.payload.format)
-            scope.launch { snackBarHostState.showSnackbar(message) }
+            val result = saveImageToGallery(context, effect.payload.bytes, effect.payload.format)
+            scope.launch { snackBarHostState.showSnackbar(result.message) }
         }
 
         is TransactionDetailViewEffect.Save.PdfToDownloads -> {

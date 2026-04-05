@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,13 +22,10 @@ import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.TextFields
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,16 +34,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.contracts.MultipartParser
 import com.azikar24.wormaceptor.domain.entities.MultipartPart
@@ -77,7 +74,7 @@ fun MultipartView(
         Box(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             contentAlignment = Alignment.Center,
         ) {
             Text(
@@ -91,12 +88,12 @@ fun MultipartView(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
+                .padding(bottom = WormaCeptorTokens.Spacing.xs),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -116,7 +113,7 @@ fun MultipartView(
                     text = stringResource(R.string.viewer_multipart_boundary, truncated),
                     style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
             }
@@ -141,7 +138,7 @@ private fun MultipartPartCard(
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "chevron_rotation",
     )
 
@@ -153,34 +150,26 @@ private fun MultipartPartCard(
     }
 
     val accentColor = when {
-        part.contentType?.startsWith("image/") == true -> Color(0xFF14B8A6)
-        isFile -> Color(0xFF6366F1)
-        else -> Color(0xFF3B82F6)
+        part.contentType?.startsWith("image/") == true -> WormaCeptorTokens.Colors.ContentType.image
+        isFile -> WormaCeptorTokens.Colors.ContentType.multipart
+        else -> WormaCeptorTokens.Colors.ContentType.formData
     }
 
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                WormaCeptorDesignSystem.Elevation.sm,
-            ),
-        ),
-        border = BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.thin,
-            color = if (expanded) {
-                accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
-            } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
-            },
-        ),
-        shape = WormaCeptorDesignSystem.Shapes.card,
+        style = CardStyle.Outlined,
+        borderColor = if (expanded) {
+            accentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        } else {
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+        },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expanded = !expanded }
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
+                    .padding(WormaCeptorTokens.Spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -191,28 +180,28 @@ private fun MultipartPartCard(
                         stringResource(R.string.viewer_body_expand)
                     },
                     modifier = Modifier
-                        .size(18.dp)
+                        .size(WormaCeptorTokens.IconSize.md)
                         .rotate(rotation),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                 Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+                    shape = WormaCeptorTokens.Shapes.chip,
+                    color = accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
                 ) {
                     Icon(
                         imageVector = partIcon,
                         contentDescription = stringResource(R.string.viewer_multipart_content_type),
                         modifier = Modifier
-                            .padding(WormaCeptorDesignSystem.Spacing.xs)
-                            .size(16.dp),
+                            .padding(WormaCeptorTokens.Spacing.xs)
+                            .size(WormaCeptorTokens.IconSize.sm),
                         tint = accentColor,
                     )
                 }
 
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -243,7 +232,7 @@ private fun MultipartPartCard(
                 }
 
                 Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.chip,
+                    shape = WormaCeptorTokens.Shapes.chip,
                     color = MaterialTheme.colorScheme.surfaceVariant,
                 ) {
                     Text(
@@ -251,8 +240,8 @@ private fun MultipartPartCard(
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            horizontal = WormaCeptorTokens.Spacing.sm,
+                            vertical = WormaCeptorTokens.Spacing.xxs,
                         ),
                     )
                 }
@@ -261,10 +250,10 @@ private fun MultipartPartCard(
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
                 ),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
                 ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -276,10 +265,10 @@ private fun MultipartPartCard(
                                 .fillMaxWidth()
                                 .background(
                                     MaterialTheme.colorScheme.surfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                                        alpha = WormaCeptorTokens.Alpha.MODERATE,
                                     ),
                                 )
-                                .padding(WormaCeptorDesignSystem.Spacing.md),
+                                .padding(WormaCeptorTokens.Spacing.md),
                         ) {
                             Text(
                                 text = stringResource(R.string.viewer_multipart_headers),
@@ -287,7 +276,7 @@ private fun MultipartPartCard(
                                     fontWeight = FontWeight.SemiBold,
                                 ),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
+                                modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
                             )
 
                             part.headers.forEach { (key, value) ->
@@ -299,7 +288,6 @@ private fun MultipartPartCard(
                                             text = "$key: ",
                                             style = MaterialTheme.typography.labelSmall.copy(
                                                 fontFamily = FontFamily.Monospace,
-                                                fontWeight = FontWeight.Medium,
                                             ),
                                             color = MaterialTheme.colorScheme.primary,
                                         )
@@ -323,7 +311,7 @@ private fun MultipartPartCard(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(WormaCeptorDesignSystem.Spacing.md),
+                            .padding(WormaCeptorTokens.Spacing.md),
                     ) {
                         if (part.body.length > 1000) {
                             Column {
@@ -340,7 +328,7 @@ private fun MultipartPartCard(
                                     text = "... (${part.body.length - 1000} more characters)",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xs),
+                                    modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xs),
                                 )
                             }
                         } else {

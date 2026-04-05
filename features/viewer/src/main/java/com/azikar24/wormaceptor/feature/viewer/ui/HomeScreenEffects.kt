@@ -4,11 +4,15 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewEvent
-import com.azikar24.wormaceptor.feature.viewer.vm.ViewerViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -20,9 +24,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun HomeScreenEffects(
     pagerState: PagerState,
-    state: ViewerViewState,
-    isSelectionMode: Boolean,
-    onEvent: (ViewerViewEvent) -> Unit,
+    homeState: HomeViewState,
+    transactionState: TransactionListViewState,
+    onHomeEvent: (HomeViewEvent) -> Unit,
+    onTransactionEvent: (TransactionListViewEvent) -> Unit,
     snackBarMessage: Flow<String>?,
     snackBarHostState: SnackbarHostState,
 ) {
@@ -34,22 +39,29 @@ fun HomeScreenEffects(
     }
 
     // Sync pagerState with selectedTabIndex when tab is clicked
-    LaunchedEffect(state.selectedTabIndex) {
-        if (pagerState.currentPage != state.selectedTabIndex) {
-            pagerState.animateScrollToPage(state.selectedTabIndex)
+    LaunchedEffect(homeState.selectedTabIndex) {
+        if (pagerState.currentPage != homeState.selectedTabIndex) {
+            pagerState.animateScrollToPage(homeState.selectedTabIndex)
         }
     }
 
     // Sync selectedTabIndex with pagerState when user swipes
     val haptic = LocalHapticFeedback.current
+    val currentSelectedTabIndex by rememberUpdatedState(homeState.selectedTabIndex)
+    val currentSelectedIds by rememberUpdatedState(transactionState.selectedIds)
+    val currentOnHomeEvent by rememberUpdatedState(onHomeEvent)
+    val currentOnTransactionEvent by rememberUpdatedState(onTransactionEvent)
+
     LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }
+        snapshotFlow { pagerState.currentPage to pagerState.isScrollInProgress }
             .distinctUntilChanged()
-            .collect { page ->
-                if (page != state.selectedTabIndex) {
+            .collect { (page, scrolling) ->
+                if (!scrolling && page != currentSelectedTabIndex) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    if (isSelectionMode) onEvent(ViewerViewEvent.SelectionCleared)
-                    onEvent(ViewerViewEvent.TabSelected(page))
+                    if (currentSelectedIds.isNotEmpty()) {
+                        currentOnTransactionEvent(TransactionListViewEvent.SelectionCleared)
+                    }
+                    currentOnHomeEvent(HomeViewEvent.TabSelected(page))
                 }
             }
     }

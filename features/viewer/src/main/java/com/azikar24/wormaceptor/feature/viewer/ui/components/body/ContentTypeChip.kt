@@ -29,9 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 
 /**
@@ -47,14 +45,14 @@ fun ContentTypeChip(
     val chipInfo = getContentTypeChipInfo(contentType)
 
     val backgroundColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+        animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "chip_bg_color",
     )
 
     val borderColor by animateColorAsState(
-        targetValue = chipInfo.color.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+        targetValue = chipInfo.color.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+        animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "chip_border_color",
     )
 
@@ -62,25 +60,25 @@ fun ContentTypeChip(
         onClick = onClick ?: {},
         enabled = onClick != null,
         modifier = modifier,
-        shape = WormaCeptorDesignSystem.Shapes.chip,
+        shape = WormaCeptorTokens.Shapes.chip,
         color = backgroundColor,
         border = BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.thin,
+            width = WormaCeptorTokens.BorderWidth.thin,
             color = borderColor,
         ),
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xs,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
             Icon(
                 imageVector = chipInfo.icon,
                 contentDescription = chipInfo.displayName,
-                modifier = Modifier.size(14.dp),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
                 tint = chipInfo.color,
             )
             Text(
@@ -117,47 +115,47 @@ fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo {
         ContentType.JSON -> ContentTypeChipInfo(
             displayName = "JSON",
             icon = Icons.Default.DataObject,
-            color = WormaCeptorColors.ContentType.Json,
+            color = WormaCeptorTokens.Colors.ContentType.json,
         )
         ContentType.XML -> ContentTypeChipInfo(
             displayName = "XML",
             icon = Icons.Default.Code,
-            color = WormaCeptorColors.ContentType.Xml,
+            color = WormaCeptorTokens.Colors.ContentType.xml,
         )
         ContentType.HTML -> ContentTypeChipInfo(
             displayName = "HTML",
             icon = Icons.Default.Web,
-            color = WormaCeptorColors.ContentType.Html,
+            color = WormaCeptorTokens.Colors.ContentType.html,
         )
         ContentType.PROTOBUF -> ContentTypeChipInfo(
             displayName = "Protobuf",
             icon = Icons.Default.DataArray,
-            color = WormaCeptorColors.ContentType.Protobuf,
+            color = WormaCeptorTokens.Colors.ContentType.protobuf,
         )
         ContentType.FORM_DATA -> ContentTypeChipInfo(
             displayName = "Form Data",
             icon = Icons.AutoMirrored.Filled.ViewList,
-            color = WormaCeptorColors.ContentType.FormData,
+            color = WormaCeptorTokens.Colors.ContentType.formData,
         )
         ContentType.MULTIPART -> ContentTypeChipInfo(
             displayName = "Multipart",
             icon = Icons.Default.Description,
-            color = WormaCeptorColors.ContentType.Multipart,
+            color = WormaCeptorTokens.Colors.ContentType.multipart,
         )
         ContentType.PLAIN_TEXT -> ContentTypeChipInfo(
             displayName = "Plain Text",
             icon = Icons.Default.TextFields,
-            color = WormaCeptorColors.ContentType.PlainText,
+            color = WormaCeptorTokens.Colors.ContentType.plainText,
         )
         ContentType.BINARY -> ContentTypeChipInfo(
             displayName = "Binary",
             icon = Icons.Default.DataArray,
-            color = WormaCeptorColors.ContentType.Binary,
+            color = WormaCeptorTokens.Colors.ContentType.binary,
         )
         ContentType.PDF -> ContentTypeChipInfo(
             displayName = "PDF",
             icon = Icons.Default.PictureAsPdf,
-            color = WormaCeptorColors.ContentType.Pdf,
+            color = WormaCeptorTokens.Colors.ContentType.pdf,
         )
         ContentType.IMAGE_PNG,
         ContentType.IMAGE_JPEG,
@@ -170,12 +168,12 @@ fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo {
         -> ContentTypeChipInfo(
             displayName = "Image",
             icon = Icons.Default.Image,
-            color = WormaCeptorColors.ContentType.Image,
+            color = WormaCeptorTokens.Colors.ContentType.image,
         )
         ContentType.UNKNOWN -> ContentTypeChipInfo(
             displayName = "Unknown",
             icon = Icons.Default.QuestionMark,
-            color = WormaCeptorColors.ContentType.Unknown,
+            color = WormaCeptorTokens.Colors.ContentType.unknown,
         )
     }
 }

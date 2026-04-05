@@ -29,14 +29,11 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.AspectRatio
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,10 +56,12 @@ import coil.compose.AsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.azikar24.wormaceptor.core.ui.components.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.entities.ImageMetadata
@@ -151,18 +150,10 @@ fun ImagePreviewCard(
         isLoadingMetadata = false
     }
 
-    val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
-
-    Card(
+    WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = surfaceColor,
-        ),
-        border = BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
-        ),
-        shape = WormaCeptorDesignSystem.Shapes.card,
+        style = CardStyle.Outlined,
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Box(
             modifier = Modifier
@@ -171,19 +162,19 @@ fun ImagePreviewCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                    .padding(WormaCeptorTokens.Spacing.lg),
             ) {
                 // Header with icon
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                    modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.md),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
                         contentDescription = stringResource(R.string.viewer_image),
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                     )
                     Text(
                         text = stringResource(R.string.viewer_image_response),
@@ -197,20 +188,18 @@ fun ImagePreviewCard(
                     // Format badge
                     metadata?.let { meta ->
                         Surface(
-                            shape = WormaCeptorDesignSystem.Shapes.chip,
+                            shape = WormaCeptorTokens.Shapes.chip,
                             color = MaterialTheme.colorScheme.primaryContainer.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
+                                alpha = WormaCeptorTokens.Alpha.INTENSE,
                             ),
                         ) {
                             Text(
                                 text = meta.format,
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Medium,
-                                ),
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.padding(
-                                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                                    horizontal = WormaCeptorTokens.Spacing.sm,
+                                    vertical = WormaCeptorTokens.Spacing.xs,
                                 ),
                             )
                         }
@@ -224,10 +213,10 @@ fun ImagePreviewCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                                alpha = WormaCeptorTokens.Alpha.MODERATE,
                             ),
                         )
                         .clickable(onClick = onFullscreen)
@@ -240,7 +229,7 @@ fun ImagePreviewCard(
                             .fillMaxSize()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
+                                    alpha = WormaCeptorTokens.Alpha.MEDIUM,
                                 ),
                             ),
                     )
@@ -270,13 +259,13 @@ fun ImagePreviewCard(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
+                                    MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(32.dp),
-                                strokeWidth = 3.dp,
+                                strokeWidth = WormaCeptorTokens.BorderWidth.bold,
                             )
                         }
                     }
@@ -292,14 +281,14 @@ fun ImagePreviewCard(
                                 .fillMaxSize()
                                 .background(
                                     MaterialTheme.colorScheme.errorContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                                        alpha = WormaCeptorTokens.Alpha.MODERATE,
                                     ),
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.BrokenImage,
@@ -320,12 +309,12 @@ fun ImagePreviewCard(
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .padding(WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(WormaCeptorTokens.Spacing.sm),
                     ) {
                         Surface(
                             shape = CircleShape,
                             color = MaterialTheme.colorScheme.surface.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.PROMINENT,
+                                alpha = WormaCeptorTokens.Alpha.PROMINENT,
                             ),
                             shadowElevation = 2.dp,
                         ) {
@@ -334,20 +323,20 @@ fun ImagePreviewCard(
                                 contentDescription = stringResource(R.string.viewer_image_fullscreen),
                                 tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
-                                    .padding(WormaCeptorDesignSystem.Spacing.sm)
-                                    .size(18.dp),
+                                    .padding(WormaCeptorTokens.Spacing.sm)
+                                    .size(WormaCeptorTokens.IconSize.md),
                             )
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
                 // Metadata Section
                 if (!isLoadingMetadata && metadata != null) {
                     WormaCeptorDivider(style = DividerStyle.Subtle)
 
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
                     // Metadata grid
                     Row(
@@ -376,13 +365,13 @@ fun ImagePreviewCard(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
                 }
 
                 // Action buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
                     ActionButton(
                         icon = Icons.Default.Download,
@@ -420,13 +409,13 @@ private fun MetadataItem(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
             tint = tint,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
         )
         Text(
             text = value,
@@ -454,26 +443,26 @@ private fun ActionButton(
     Surface(
         onClick = onClick,
         modifier = modifier,
-        shape = WormaCeptorDesignSystem.Shapes.button,
+        shape = WormaCeptorTokens.Shapes.button,
         color = if (isPrimary) {
-            MaterialTheme.colorScheme.primary.asSubtleBackground()
+            MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
         },
         border = BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.thin,
+            WormaCeptorTokens.BorderWidth.thin,
             if (isPrimary) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
             },
         ),
     ) {
         Row(
             modifier = Modifier
                 .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.Spacing.sm,
+                    horizontal = WormaCeptorTokens.Spacing.md,
+                    vertical = WormaCeptorTokens.Spacing.sm,
                 ),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -481,14 +470,14 @@ private fun ActionButton(
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                 tint = if (isPrimary) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium.copy(

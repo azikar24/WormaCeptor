@@ -119,7 +119,11 @@ class TransactionListViewModel(
             is TransactionListViewEvent.MethodFiltersChanged -> updateState { copy(filterMethods = event.methods) }
             is TransactionListViewEvent.StatusFiltersChanged -> updateState { copy(filterStatusRanges = event.ranges) }
             is TransactionListViewEvent.ClearFilters -> updateState {
-                copy(filterMethods = emptySet(), filterStatusRanges = emptySet())
+                copy(
+                    searchQuery = "",
+                    filterMethods = emptySet(),
+                    filterStatusRanges = emptySet(),
+                )
             }
 
             is TransactionListViewEvent.QuickFilterToggled -> handleQuickFilterToggle(event.filter)

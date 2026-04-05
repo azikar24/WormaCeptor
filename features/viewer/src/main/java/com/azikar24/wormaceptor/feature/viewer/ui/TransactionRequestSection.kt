@@ -38,9 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.buildHighlightedString
-import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -110,10 +108,10 @@ internal fun RequestTab(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 ),
         ) {
@@ -128,7 +126,7 @@ internal fun RequestTab(
                     HeadersView(transaction.request.headers)
                 }
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
             }
 
             // Only show Body section if body exists
@@ -136,9 +134,9 @@ internal fun RequestTab(
                 if (isLoading) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                     ) {
-                        CircularProgressIndicator(modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg))
+                        CircularProgressIndicator(modifier = Modifier.size(WormaCeptorTokens.IconSize.lg))
                         Text(
                             stringResource(R.string.viewer_body_processing),
                             style = MaterialTheme.typography.bodySmall,
@@ -155,8 +153,7 @@ internal fun RequestTab(
                         ProtobufView(data = protobufBytes)
                     }
                 } else if (requestBody != null || rawBody != null) {
-                    val detectedContentType = parsedContentType
-                    val colors = syntaxColors()
+                    val colors = WormaCeptorTokens.syntax()
 
                     CollapsibleSection(
                         title = stringResource(R.string.viewer_body_body),
@@ -165,7 +162,7 @@ internal fun RequestTab(
                         onCopy = { onEvent(TransactionDetailViewEvent.Request.CopyBody) },
                         trailingContent = {
                             BodyControlsRow(
-                                contentType = detectedContentType,
+                                contentType = parsedContentType,
                                 isPrettyMode = isPrettyMode,
                                 onPrettyModeToggle = { onEvent(TransactionDetailViewEvent.Request.TogglePrettyMode) },
                             )
@@ -183,10 +180,10 @@ internal fun RequestTab(
                         var syntaxHighlighted by remember {
                             mutableStateOf<androidx.compose.ui.text.AnnotatedString?>(null)
                         }
-                        LaunchedEffect(displayBody, detectedContentType) {
+                        LaunchedEffect(displayBody, parsedContentType) {
                             syntaxHighlighted = null
                             if (displayBody.length > MAX_SYNTAX_HIGHLIGHT_SIZE) return@LaunchedEffect
-                            val language = when (detectedContentType) {
+                            val language = when (parsedContentType) {
                                 ContentType.JSON -> "json"
                                 ContentType.XML, ContentType.HTML -> "xml"
                                 else -> return@LaunchedEffect
@@ -206,7 +203,7 @@ internal fun RequestTab(
 
                         // Format-specific rendering in pretty mode (use flat text when searching)
                         if (isPrettyMode && !hasActiveSearch) {
-                            when (detectedContentType) {
+                            when (parsedContentType) {
                                 ContentType.JSON -> {
                                     JsonTreeView(
                                         jsonString = displayBody,
@@ -218,7 +215,6 @@ internal fun RequestTab(
                                 ContentType.XML, ContentType.HTML -> {
                                     XmlTreeView(
                                         xmlString = displayBody,
-                                        colors = colors,
                                     )
                                 }
 
@@ -292,7 +288,7 @@ internal fun RequestTab(
             exit = fadeOut() + scaleOut(),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
         ) {
             WormaCeptorFAB(
                 onClick = { onEvent(TransactionDetailViewEvent.Request.CopyAllContent) },

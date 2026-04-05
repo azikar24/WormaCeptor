@@ -34,8 +34,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -64,6 +63,7 @@ fun SwipeBackContainer(
     thresholdFraction: Float = 0.35f,
     content: @Composable BoxScope.() -> Unit,
 ) {
+    val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
@@ -165,7 +165,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(ThemeColors.DarkBackground.copy(alpha = 0.3f * (1f - progress))),
+                    .background(darkColors.background.copy(alpha = 0.3f * (1f - progress))),
             )
         }
 
@@ -178,7 +178,7 @@ fun SwipeBackContainer(
                     .offset { IntOffset(0, 0) }
                     .background(
                         MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = progress * WormaCeptorDesignSystem.Alpha.STRONG,
+                            alpha = progress * WormaCeptorTokens.Alpha.STRONG,
                         ),
                     ),
                 contentAlignment = Alignment.CenterStart,
@@ -203,8 +203,8 @@ fun SwipeBackContainer(
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
                     elevation = 16.dp * progress,
-                    ambientColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
-                    spotColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                    ambientColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                    spotColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )
                 .background(MaterialTheme.colorScheme.surface),
             content = content,

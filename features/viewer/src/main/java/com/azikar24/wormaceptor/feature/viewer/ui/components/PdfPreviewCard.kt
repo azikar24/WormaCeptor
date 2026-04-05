@@ -1,47 +1,9 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -49,89 +11,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.core.graphics.createBitmap
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.components.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.domain.entities.PdfMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
-/**
- * PDF metadata extracted from the document.
- *
- * @property pageCount Total number of pages in the PDF.
- * @property title Document title from PDF metadata, or null if absent.
- * @property author Document author from PDF metadata, or null if absent.
- * @property creator Application that created the PDF, or null if absent.
- * @property creationDate Creation date string from PDF metadata, or null if absent.
- * @property fileSize Size of the PDF data in bytes.
- * @property version PDF specification version (e.g. "1.7"), or null if undetected.
- * @property isPasswordProtected Whether the PDF requires a password to open.
- */
-data class PdfMetadata(
-    val pageCount: Int,
-    val title: String?,
-    val author: String?,
-    val creator: String?,
-    val creationDate: String?,
-    val fileSize: Long,
-    val version: String?,
-    val isPasswordProtected: Boolean = false,
-)
-
-/**
- * State representing the PDF loading status.
- */
-sealed class PdfLoadState {
-    /** The PDF is currently being loaded and rendered. */
-    data object Loading : PdfLoadState()
-
-    /**
-     * The PDF was loaded successfully with a rendered thumbnail.
-     *
-     * @property thumbnail Bitmap of the rendered first page.
-     * @property metadata Parsed PDF metadata.
-     */
-    data class Success(val thumbnail: Bitmap, val metadata: PdfMetadata) : PdfLoadState()
-
-    /**
-     * The PDF failed to load.
-     *
-     * @property message Human-readable error description.
-     */
-    data class Error(val message: String) : PdfLoadState()
-
-    /**
-     * The PDF requires a password to open.
-     *
-     * @property metadata Partial PDF metadata available without decryption.
-     */
-    data class PasswordProtected(val metadata: PdfMetadata) : PdfLoadState()
-}
-
-/**
- * Preview card for PDF documents in the response body section.
- * Shows a thumbnail of the first page along with metadata and action buttons.
- *
- * Design: Modern document card with subtle depth, clean typography,
- * and a refined action bar. Inspired by document viewers in Notion and Figma.
- */
 @Composable
 fun PdfPreviewCard(
     pdfData: ByteArray,
@@ -148,67 +41,60 @@ fun PdfPreviewCard(
     val pdfNoPagesMessage = stringResource(R.string.viewer_pdf_no_pages)
     val pdfLoadFailedMessage = stringResource(R.string.viewer_pdf_load_failed)
 
-    // Load PDF on mount
     LaunchedEffect(pdfData) {
         loadState = PdfLoadState.Loading
         withContext(Dispatchers.IO) {
             try {
-                // Write to temp file
                 val file = File(context.cacheDir, "preview_${System.currentTimeMillis()}.pdf")
                 FileOutputStream(file).use { it.write(pdfData) }
                 tempFile = file
 
-                // Open PDF renderer
                 val fd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-                val renderer = PdfRenderer(fd)
+                try {
+                    val renderer = PdfRenderer(fd)
+                    try {
+                        val pageCount = renderer.pageCount
+                        if (pageCount == 0) {
+                            loadState = PdfLoadState.Error(pdfNoPagesMessage)
+                            return@withContext
+                        }
 
-                val pageCount = renderer.pageCount
-                if (pageCount == 0) {
-                    loadState = PdfLoadState.Error(pdfNoPagesMessage)
-                    renderer.close()
+                        val page = renderer.openPage(0)
+                        val scale = PdfPreviewDefaults.ThumbnailRenderScale
+                        val bitmap = createBitmap(
+                            (page.width * scale).toInt(),
+                            (page.height * scale).toInt(),
+                        )
+                        bitmap.eraseColor(android.graphics.Color.WHITE)
+                        page.render(
+                            bitmap,
+                            null,
+                            null,
+                            PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY,
+                        )
+                        page.close()
+
+                        val metadata = PdfMetadata(
+                            pageCount = pageCount,
+                            title = extractPdfTitle(pdfData),
+                            fileSize = pdfData.size.toLong(),
+                            version = extractPdfVersion(pdfData).orEmpty(),
+                        )
+
+                        loadState = PdfLoadState.Success(bitmap, metadata)
+                    } finally {
+                        renderer.close()
+                    }
+                } finally {
                     fd.close()
-                    return@withContext
                 }
-
-                // Render first page as thumbnail
-                val page = renderer.openPage(0)
-                val scale = 2f // Higher resolution thumbnail
-                val bitmap = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
-                bitmap.eraseColor(android.graphics.Color.WHITE)
-                page.render(
-                    bitmap,
-                    null,
-                    null,
-                    PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY,
-                )
-                page.close()
-
-                val metadata = PdfMetadata(
-                    pageCount = pageCount,
-                    title = extractPdfTitle(pdfData),
-                    author = null,
-                    creator = null,
-                    creationDate = null,
-                    fileSize = pdfData.size.toLong(),
-                    version = extractPdfVersion(pdfData),
-                )
-
-                renderer.close()
-                fd.close()
-
-                loadState = PdfLoadState.Success(bitmap, metadata)
             } catch (e: SecurityException) {
-                // Password protected PDF
                 loadState = PdfLoadState.PasswordProtected(
                     PdfMetadata(
                         pageCount = 0,
-                        title = null,
-                        author = null,
-                        creator = null,
-                        creationDate = null,
                         fileSize = pdfData.size.toLong(),
-                        version = extractPdfVersion(pdfData),
-                        isPasswordProtected = true,
+                        version = extractPdfVersion(pdfData).orEmpty(),
+                        isEncrypted = true,
                     ),
                 )
             } catch (e: Exception) {
@@ -217,30 +103,22 @@ fun PdfPreviewCard(
         }
     }
 
-    // Cleanup temp file on dispose
     DisposableEffect(Unit) {
         onDispose {
             tempFile?.delete()
         }
     }
 
-    // Card with overlay effect
-    val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorDesignSystem.Elevation.sm)
-
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(enabled = loadState is PdfLoadState.Success) { onFullscreen() },
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        colors = CardDefaults.cardColors(containerColor = surfaceColor),
-        border = androidx.compose.foundation.BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-        ),
+    WormaCeptorCard(
+        onClick = onFullscreen,
+        modifier = modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+        enabled = loadState is PdfLoadState.Success,
     ) {
         when (val state = loadState) {
-            is PdfLoadState.Loading -> LoadingContent()
-            is PdfLoadState.Success -> SuccessContent(
+            is PdfLoadState.Loading -> PdfPreviewLoadingContent()
+            is PdfLoadState.Success -> PdfPreviewSuccessContent(
                 thumbnail = state.thumbnail,
                 metadata = state.metadata,
                 pdfData = pdfData,
@@ -250,8 +128,8 @@ fun PdfPreviewCard(
                 onShowMessage = onShowMessage,
             )
 
-            is PdfLoadState.Error -> ErrorContent(message = state.message)
-            is PdfLoadState.PasswordProtected -> PasswordProtectedContent(
+            is PdfLoadState.Error -> PdfPreviewErrorContent(message = state.message)
+            is PdfLoadState.PasswordProtected -> PdfPreviewPasswordContent(
                 metadata = state.metadata,
                 pdfData = pdfData,
                 tempFile = tempFile,
@@ -260,471 +138,4 @@ fun PdfPreviewCard(
             )
         }
     }
-}
-
-@Composable
-private fun LoadingContent() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(280.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(40.dp),
-                strokeWidth = 3.dp,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                text = stringResource(R.string.viewer_pdf_rendering),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
-private fun SuccessContent(
-    thumbnail: Bitmap,
-    metadata: PdfMetadata,
-    pdfData: ByteArray,
-    tempFile: File?,
-    onFullscreen: () -> Unit,
-    onDownload: () -> Unit,
-    onShowMessage: (String) -> Unit,
-) {
-    val context = LocalContext.current
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // Thumbnail Section with elegant overlay
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.75f) // Slightly portrait for PDF pages
-                .clip(
-                    RoundedCornerShape(
-                        topStart = WormaCeptorDesignSystem.CornerRadius.md,
-                        topEnd = WormaCeptorDesignSystem.CornerRadius.md,
-                    ),
-                ),
-        ) {
-            // PDF page thumbnail
-            Image(
-                bitmap = thumbnail.asImageBitmap(),
-                contentDescription = stringResource(R.string.viewer_pdf_preview),
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
-
-            // Subtle scrim overlay at bottom for better text readability
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .align(Alignment.BottomCenter)
-                    .background(
-                        WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
-                        ),
-                    ),
-            )
-
-            // Page count badge - top right
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
-                shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorDesignSystem.Alpha.OPAQUE),
-                shadowElevation = WormaCeptorDesignSystem.Elevation.sm,
-            ) {
-                Row(
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Description,
-                        contentDescription = stringResource(R.string.viewer_pdf_page_count),
-                        modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                    Text(
-                        text = pluralStringResource(
-                            R.plurals.viewer_pdf_page_count_label,
-                            metadata.pageCount,
-                            metadata.pageCount,
-                        ),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
-
-            // Fullscreen hint overlay - center
-            Surface(
-                modifier = Modifier.align(Alignment.Center),
-                shape = CircleShape,
-                color = WormaCeptorDesignSystem.ThemeColors.DarkBackground.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Fullscreen,
-                    contentDescription = stringResource(R.string.viewer_pdf_open_fullscreen),
-                    modifier = Modifier
-                        .padding(WormaCeptorDesignSystem.Spacing.md)
-                        .size(28.dp),
-                    tint = WormaCeptorDesignSystem.ThemeColors.LightBackground,
-                )
-            }
-        }
-
-        // Metadata Section
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            // Title or filename
-            Text(
-                text = metadata.title ?: stringResource(R.string.viewer_pdf_document),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-
-            // Metadata row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-            ) {
-                MetadataChip(
-                    icon = Icons.Default.Description,
-                    text = formatBytes(metadata.fileSize),
-                    tint = MaterialTheme.colorScheme.tertiary,
-                )
-                metadata.version?.let { version ->
-                    MetadataChip(
-                        icon = null,
-                        text = stringResource(R.string.viewer_pdf_version, version),
-                        tint = MaterialTheme.colorScheme.secondary,
-                    )
-                }
-                metadata.author?.let { author ->
-                    MetadataChip(
-                        icon = Icons.Default.Person,
-                        text = author,
-                        tint = MaterialTheme.colorScheme.secondary,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-            // Action buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            ) {
-                // Open button - primary action
-                Button(
-                    onClick = onFullscreen,
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    contentPadding = PaddingValues(
-                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.md,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Fullscreen,
-                        contentDescription = stringResource(R.string.viewer_pdf_open_fullscreen),
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                    Text(stringResource(R.string.viewer_pdf_open), fontWeight = FontWeight.SemiBold)
-                }
-
-                // Download button
-                OutlinedButton(
-                    onClick = onDownload,
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    border = androidx.compose.foundation.BorderStroke(
-                        WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-                    ),
-                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Download,
-                        contentDescription = stringResource(R.string.viewer_pdf_download),
-                        modifier = Modifier.size(18.dp),
-                    )
-                }
-
-                // Share button
-                OutlinedButton(
-                    onClick = { sharePdf(context, pdfData, tempFile)?.let { onShowMessage(it) } },
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    border = androidx.compose.foundation.BorderStroke(
-                        WormaCeptorDesignSystem.BorderWidth.regular,
-                        MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-                    ),
-                    contentPadding = PaddingValues(WormaCeptorDesignSystem.Spacing.md),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = stringResource(R.string.viewer_pdf_share),
-                        modifier = Modifier.size(18.dp),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MetadataChip(
-    icon: ImageVector?,
-    text: String,
-    tint: Color,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-    ) {
-        icon?.let {
-            Icon(
-                imageVector = it,
-                contentDescription = text,
-                modifier = Modifier.size(14.dp),
-                tint = tint.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
-            )
-        }
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Medium,
-        )
-    }
-}
-
-@Composable
-private fun ErrorContent(message: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Error,
-                contentDescription = stringResource(R.string.viewer_pdf_error_loading),
-                modifier = Modifier.size(40.dp),
-                tint = MaterialTheme.colorScheme.error,
-            )
-            Text(
-                text = stringResource(R.string.viewer_pdf_load_failed),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.error,
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
-        }
-    }
-}
-
-@Composable
-private fun PasswordProtectedContent(
-    metadata: PdfMetadata,
-    pdfData: ByteArray,
-    tempFile: File?,
-    onDownload: () -> Unit,
-    onShowMessage: (String) -> Unit,
-) {
-    val context = LocalContext.current
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(WormaCeptorDesignSystem.Spacing.xl),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-    ) {
-        // Lock icon with subtle background
-        Surface(
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
-            modifier = Modifier.size(72.dp),
-        ) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = stringResource(R.string.viewer_pdf_password_protected),
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.secondary,
-                )
-            }
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-        ) {
-            Text(
-                text = stringResource(R.string.viewer_pdf_password_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = stringResource(R.string.viewer_pdf_password_message),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        // File size info
-        MetadataChip(
-            icon = Icons.Default.Description,
-            text = formatBytes(metadata.fileSize),
-            tint = MaterialTheme.colorScheme.tertiary,
-        )
-
-        // Action buttons
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            OutlinedButton(
-                onClick = onDownload,
-                shape = WormaCeptorDesignSystem.Shapes.button,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Download,
-                    contentDescription = stringResource(R.string.viewer_pdf_download),
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text(stringResource(R.string.viewer_pdf_download))
-            }
-
-            OutlinedButton(
-                onClick = { sharePdf(context, pdfData, tempFile)?.let { onShowMessage(it) } },
-                shape = WormaCeptorDesignSystem.Shapes.button,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = stringResource(R.string.viewer_pdf_share),
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Text(stringResource(R.string.viewer_pdf_share))
-            }
-        }
-    }
-}
-
-private fun extractPdfTitle(data: ByteArray): String? {
-    return try {
-        val text = data.decodeToString(throwOnInvalidSequence = false)
-        val titleRegex = """/Title\s*\(([^)]+)\)""".toRegex()
-        titleRegex.find(text)?.groupValues?.getOrNull(1)
-    } catch (e: Exception) {
-        null
-    }
-}
-
-private fun extractPdfVersion(data: ByteArray): String? {
-    return try {
-        val header = data.take(20).toByteArray().decodeToString()
-        if (header.startsWith("%PDF-")) {
-            header.substring(5).takeWhile { it.isDigit() || it == '.' }
-        } else {
-            null
-        }
-    } catch (e: Exception) {
-        null
-    }
-}
-
-private fun sharePdf(
-    context: Context,
-    pdfData: ByteArray,
-    existingFile: File?,
-): String? {
-    return try {
-        // Use existing file or create new one
-        val file = existingFile ?: run {
-            val newFile = File(context.cacheDir, "WormaCeptor_${System.currentTimeMillis()}.pdf")
-            newFile.outputStream().use { it.write(pdfData) }
-            newFile
-        }
-
-        // Get URI via FileProvider
-        val uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.wormaceptor.fileprovider",
-            file,
-        )
-
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/pdf"
-            putExtra(Intent.EXTRA_STREAM, uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-
-        context.startActivity(
-            Intent.createChooser(intent, context.getString(R.string.viewer_pdf_share_chooser)),
-        )
-        null // Success - share sheet handles it
-    } catch (e: Exception) {
-        "Failed to share PDF: ${e.message}"
-    }
-}
-
-/**
- * Checks if the response body appears to be a PDF document.
- */
-fun isPdfContent(
-    contentType: String?,
-    bodyBytes: ByteArray?,
-): Boolean {
-    // Check content type
-    if (contentType?.contains("pdf", ignoreCase = true) == true) {
-        return true
-    }
-
-    // Check magic bytes
-    if (bodyBytes != null && bodyBytes.size >= 5) {
-        val header = bodyBytes.take(5).toByteArray().decodeToString()
-        return header == "%PDF-"
-    }
-
-    return false
 }

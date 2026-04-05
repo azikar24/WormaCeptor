@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>LongMethod:FeatureToggleScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun FeatureToggleScreenContent( config: FeatureConfig, onBack: () -&gt; Unit, onEvent: (SettingsViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>ViewModelForwarding:FeatureToggleScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; FeatureToggleScreenContent( config = state.featureConfig, onBack = onBack, onEvent = onEvent, modifier = modifier, ) }</ID>
-    <ID>ViewModelInjection:SettingsFeature.kt$viewModel</ID>
-  </CurrentIssues>
-</SmellBaseline>

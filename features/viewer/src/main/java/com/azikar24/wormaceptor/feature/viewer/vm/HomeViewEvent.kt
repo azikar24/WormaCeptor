@@ -1,5 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.vm
 
+import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+
 /** All user-initiated actions dispatched from the home screen UI. */
 sealed class HomeViewEvent {
     /**
@@ -43,4 +46,18 @@ sealed class HomeViewEvent {
      * @property message The text to show in the snackbar.
      */
     data class ShowMessage(val message: String) : HomeViewEvent()
+
+    // ── Navigation events ──────────────────────────────────────────────
+
+    /** User clicked a transaction to view its details. */
+    data class TransactionClicked(val summary: TransactionSummary) : HomeViewEvent()
+
+    /** User clicked a crash to view its details. */
+    data class CrashClicked(val crash: Crash) : HomeViewEvent()
+
+    /** User navigated to a tool screen. */
+    data class ToolNavigated(val route: String) : HomeViewEvent()
+
+    /** User pressed the back button while not in selection mode. */
+    data object BackPressed : HomeViewEvent()
 }

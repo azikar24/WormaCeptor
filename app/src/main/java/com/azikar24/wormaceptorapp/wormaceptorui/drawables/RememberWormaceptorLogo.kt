@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables
+package com.azikar24.wormaceptorapp.wormaceptorui.drawables
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable

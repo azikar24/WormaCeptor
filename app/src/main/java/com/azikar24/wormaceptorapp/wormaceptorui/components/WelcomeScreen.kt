@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptorapp.wormaceptorui.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -29,11 +30,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Wifi
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,11 +50,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptorapp.BuildConfig
 import com.azikar24.wormaceptorapp.R
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.IcGithubBuilder
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.drawables.rememberWormaceptorLogo
+import com.azikar24.wormaceptorapp.wormaceptorui.drawables.IcGithubBuilder
+import com.azikar24.wormaceptorapp.wormaceptorui.drawables.rememberWormaceptorLogo
 
 /**
  * Welcome screen for the WormaCeptor demo app.
@@ -81,47 +82,42 @@ fun WelcomeScreen(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = WormaCeptorDesignSystem.Spacing.xl),
+            .padding(horizontal = WormaCeptorTokens.Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(56.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.TouchTarget.large))
 
-        // Hero Section with Logo and Branding
         HeroSection()
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxxl))
 
-        // Feature Cards Grid
         FeatureCardsGrid(onFeatureClick = onFeatureClick)
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxxl))
 
-        // Action Buttons
         ActionButtonsSection(
             onLaunchClick = onLaunchClick,
             onTestToolsClick = onTestToolsClick,
         )
 
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxl))
 
-        // Footer
         Footer(onGitHubClick = onGitHubClick)
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg + navigationBarPadding))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg + navigationBarPadding))
     }
 }
 
 @Composable
 private fun HeroSection() {
     Column(
-        modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xl),
+        modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             imageVector = rememberWormaceptorLogo(),
             contentDescription = stringResource(id = R.string.app_name),
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier.size(WormaCeptorTokens.TouchTarget.large),
         )
 
         Text(
@@ -133,12 +129,12 @@ private fun HeroSection() {
             color = MaterialTheme.colorScheme.onBackground,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
         Text(
             text = stringResource(id = R.string.app_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
             textAlign = TextAlign.Center,
         )
     }
@@ -154,7 +150,7 @@ private fun FeatureCardsGrid(onFeatureClick: ((WelcomeFeature) -> Unit)?) {
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
     ) {
         features.forEach { feature ->
             FeatureCard(
@@ -174,7 +170,7 @@ private fun FeatureCard(
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.FAST),
         label = "feature_card_scale",
     )
 
@@ -193,16 +189,16 @@ private fun FeatureCard(
                     Modifier
                 },
             ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+        shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
         tonalElevation = 0.dp,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
         ) {
             FeatureIcon(feature = feature)
             FeatureTextContent(feature = feature, modifier = Modifier.weight(1f))
@@ -214,15 +210,15 @@ private fun FeatureCard(
 private fun FeatureIcon(feature: WelcomeFeature) {
     Box(
         modifier = Modifier
-            .size(44.dp)
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
-            .background(feature.accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
+            .size(WormaCeptorTokens.TouchTarget.minimum)
+            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .background(feature.accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = feature.icon,
             contentDescription = null,
-            modifier = Modifier.size(22.dp),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
             tint = feature.accentColor,
         )
     }
@@ -235,19 +231,19 @@ private fun FeatureTextContent(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xxs),
     ) {
         Text(
-            text = feature.title,
+            text = stringResource(feature.titleRes),
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
             ),
             color = MaterialTheme.colorScheme.onBackground,
         )
         Text(
-            text = feature.description,
+            text = stringResource(feature.descriptionRes),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
         )
     }
 }
@@ -260,89 +256,19 @@ private fun ActionButtonsSection(
     Column(
         modifier = Modifier.width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
     ) {
-        PrimaryActionButton(
+        WormaCeptorButton(
             text = stringResource(id = R.string.action_launch_title),
             onClick = onLaunchClick,
             modifier = Modifier.fillMaxWidth(),
         )
 
-        SecondaryActionButton(
-            modifier = Modifier.fillMaxWidth(),
+        WormaCeptorButton(
+            text = stringResource(R.string.action_test_tools),
             onClick = onTestToolsClick,
-        )
-    }
-}
-
-@Composable
-private fun PrimaryActionButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.96f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
-        label = "primary_button_scale",
-    )
-
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .height(52.dp)
-            .scale(scale),
-        interactionSource = interactionSource,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
-        elevation = ButtonDefaults.buttonElevation(
-            defaultElevation = 0.dp,
-            pressedElevation = 0.dp,
-        ),
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.SemiBold,
-            ),
-        )
-    }
-}
-
-@Composable
-private fun SecondaryActionButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.96f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
-        label = "secondary_button_scale",
-    )
-
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(52.dp)
-            .scale(scale),
-        interactionSource = interactionSource,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
-        ),
-    ) {
-        Text(
-            text = "Test Tools",
-            style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Medium,
-            ),
+            variant = ButtonVariant.Outlined,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -352,60 +278,58 @@ private fun Footer(onGitHubClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val alpha by animateFloatAsState(
-        targetValue = if (isPressed) 0.6f else 1f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.FAST),
+        targetValue = if (isPressed) WormaCeptorTokens.Alpha.INTENSE else WormaCeptorTokens.Alpha.OPAQUE,
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.FAST),
         label = "footer_alpha",
     )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         // Version badge
         Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
+            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.STRONG),
         ) {
             Text(
-                text = stringResource(id = R.string.app_version),
+                text = "v${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 modifier = Modifier.padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    horizontal = WormaCeptorTokens.Spacing.sm,
+                    vertical = WormaCeptorTokens.Spacing.xs,
                 ),
             )
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
         // GitHub link
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
+                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,
                     onClick = onGitHubClick,
                 )
                 .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    horizontal = WormaCeptorTokens.Spacing.sm,
+                    vertical = WormaCeptorTokens.Spacing.xs,
                 )
                 .alpha(alpha),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
             Icon(
                 imageVector = IcGithubBuilder.build(),
                 contentDescription = null,
-                modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             )
             Text(
                 text = stringResource(id = R.string.view_on_github),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             )
         }
     }
@@ -417,34 +341,34 @@ private fun Footer(onGitHubClick: () -> Unit) {
  */
 enum class WelcomeFeature(
     val icon: ImageVector,
-    val title: String,
-    val description: String,
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int,
     val accentColor: Color,
 ) {
     Network(
         icon = Icons.Outlined.Wifi,
-        title = "Network Inspector",
-        description = "Monitor HTTP requests, responses, and headers in real-time",
-        accentColor = Color(0xFF3B82F6), // Blue
+        titleRes = R.string.feature_network_title,
+        descriptionRes = R.string.feature_network_description,
+        accentColor = WormaCeptorTokens.Colors.Status.blue,
     ),
     Crashes(
         icon = Icons.Outlined.BugReport,
-        title = "Crash Reporter",
-        description = "Capture and analyze crashes with detailed stack traces",
-        accentColor = Color(0xFFEF4444), // Red
+        titleRes = R.string.feature_crashes_title,
+        descriptionRes = R.string.feature_crashes_description,
+        accentColor = WormaCeptorTokens.Colors.Status.red,
     ),
     Tools(
         icon = Icons.Outlined.Build,
-        title = "Developer Tools",
-        description = "Access shared preferences, databases, and more",
-        accentColor = Color(0xFF8B5CF6), // Purple
+        titleRes = R.string.feature_tools_title,
+        descriptionRes = R.string.feature_tools_description,
+        accentColor = WormaCeptorTokens.Colors.Category.simulation,
     ),
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun WelcomeScreenPreview() {
-    WormaCeptorMainTheme {
+    WormaCeptorTheme {
         WelcomeScreen(
             onLaunchClick = {},
             onTestToolsClick = {},

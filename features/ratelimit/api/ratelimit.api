@@ -36,59 +36,7 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingl
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/ui/RateLimitScreenKt {
-	public static final fun RateLimitScreen (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
-}
-
-public final class com/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component18-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-58FyvDQ (JJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
-	public static synthetic fun copy-58FyvDQ$default (Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;JJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCardBackground-0d7_KjU ()J
-	public final fun getDisabled-0d7_KjU ()J
-	public final fun getDownload-0d7_KjU ()J
-	public final fun getEnabled-0d7_KjU ()J
-	public final fun getLabelPrimary-0d7_KjU ()J
-	public final fun getLabelSecondary-0d7_KjU ()J
-	public final fun getLatency-0d7_KjU ()J
-	public final fun getPacketLoss-0d7_KjU ()J
-	public final fun getPreset2G-0d7_KjU ()J
-	public final fun getPreset3G-0d7_KjU ()J
-	public final fun getPresetEdge-0d7_KjU ()J
-	public final fun getPresetOffline-0d7_KjU ()J
-	public final fun getPresetWifi-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
-	public final fun getSliderThumb-0d7_KjU ()J
-	public final fun getSliderTrack-0d7_KjU ()J
-	public final fun getUpload-0d7_KjU ()J
-	public final fun getValuePrimary-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColorsKt {
-	public static final fun getDarkRateLimitColors ()Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
-	public static final fun getLightRateLimitColors ()Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
-	public static final fun rateLimitColors (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/feature/ratelimit/ui/theme/RateLimitColors;
+	public static final fun RateLimitScreen (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewEffect {

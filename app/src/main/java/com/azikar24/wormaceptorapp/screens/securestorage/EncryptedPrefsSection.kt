@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
@@ -31,8 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 @Composable
@@ -92,15 +92,21 @@ private fun EncryptedPrefItem(
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = getTypeColor(entry.type).copy(alpha = 0.15f),
+                        shape = WormaCeptorTokens.Shapes.chip,
+                        color = WormaCeptorTokens.Colors.Preferences
+                            .typeScheme()
+                            .forTypeName(entry.type)
+                            .copy(alpha = WormaCeptorTokens.Alpha.SOFT),
                     ) {
                         Text(
                             text = entry.type,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
+                            ),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
-                            color = getTypeColor(entry.type),
+                            color = WormaCeptorTokens.Colors.Preferences.typeScheme().forTypeName(entry.type),
                         )
                     }
                 }
@@ -123,5 +129,43 @@ private fun EncryptedPrefItem(
                 )
             }
         }
+    }
+}
+
+private const val MaskThreshold = 8
+private const val MaskVisibleLength = 4
+private const val MaskMaxStars = 8
+
+private fun maskValue(value: String): String {
+    return if (value.length <= MaskThreshold) {
+        "*".repeat(value.length)
+    } else {
+        value.take(MaskVisibleLength) +
+            "*".repeat(minOf(MaskMaxStars, value.length - MaskThreshold)) +
+            value.takeLast(MaskVisibleLength)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EncryptedPrefsSectionEmptyPreview() {
+    WormaCeptorTheme {
+        EncryptedPrefsSection(entries = emptyList())
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EncryptedPrefsSectionPreview() {
+    WormaCeptorTheme {
+        EncryptedPrefsSection(
+            entries = listOf(
+                EncryptedPrefEntry(key = "auth_token", value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9", type = "String"),
+                EncryptedPrefEntry(key = "login_count", value = "42", type = "Int"),
+                EncryptedPrefEntry(key = "session_expiry", value = "1717200000000", type = "Long"),
+                EncryptedPrefEntry(key = "dark_mode", value = "true", type = "Boolean"),
+                EncryptedPrefEntry(key = "cache_ratio", value = "0.85", type = "Float"),
+            ),
+        )
     }
 }

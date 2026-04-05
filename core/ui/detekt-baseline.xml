@@ -37,5 +37,8 @@
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textSecondary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textTertiary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val warning: Color</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorError = 0xFFF44336</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorPending = 0xFFFFC107</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorSuccess = 0xFF4CAF50</ID>
   </CurrentIssues>
 </SmellBaseline>

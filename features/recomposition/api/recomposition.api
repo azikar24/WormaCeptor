@@ -34,30 +34,6 @@ public final class com/azikar24/wormaceptor/feature/recomposition/ui/Recompositi
 	public static final fun RecompositionSummaryScreen (Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun colorForRate-vNxB06k (F)J
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun copy-jRlVdoo (JJJJ)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
-	public static synthetic fun copy-jRlVdoo$default (Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;JJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCritical-0d7_KjU ()J
-	public final fun getElevated-0d7_KjU ()J
-	public final fun getExcessive-0d7_KjU ()J
-	public final fun getNormal-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColorsKt {
-	public static final fun recompositionColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/recomposition/ui/theme/RecompositionColors;
-	public static final fun statusLabelForRate (FLandroidx/compose/runtime/Composer;I)Ljava/lang/String;
-}
-
 public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect {
 	public static final field $stable I
 }

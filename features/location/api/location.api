@@ -23,34 +23,30 @@ public final class com/azikar24/wormaceptor/feature/location/LocationViewModelFa
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationInputSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationInputSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function3;
-	public static field lambda-11 Lkotlin/jvm/functions/Function3;
+	public static field lambda-10 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function2;
 	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-13 Lkotlin/jvm/functions/Function2;
-	public static field lambda-14 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function3;
-	public static field lambda-8 Lkotlin/jvm/functions/Function3;
-	public static field lambda-9 Lkotlin/jvm/functions/Function3;
+	public static field lambda-7 Lkotlin/jvm/functions/Function2;
+	public static field lambda-8 Lkotlin/jvm/functions/Function2;
+	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$location_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-11$location_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-10$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-12$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-13$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-14$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$location_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-6$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$location_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-8$location_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-9$location_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-7$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-8$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-9$location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationPresetsSectionKt {
@@ -79,13 +75,13 @@ public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingle
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationStatusSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationStatusSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/LocationScreenKt {
-	public static final fun LocationScreen (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZZZLjava/lang/String;Ljava/lang/String;Lorg/osmdroid/util/GeoPoint;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/runtime/Composer;IIII)V
+	public static final fun LocationScreen (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/components/LocationMapCardKt {
@@ -96,18 +92,6 @@ public final class com/azikar24/wormaceptor/feature/location/ui/components/Locat
 	public static final fun LocationMapView (Lorg/osmdroid/util/GeoPoint;Lorg/osmdroid/util/GeoPoint;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun calculateDistance (Lorg/osmdroid/util/GeoPoint;Lorg/osmdroid/util/GeoPoint;)D
 	public static final fun formatDistance (D)Ljava/lang/String;
-}
-
-public final class com/azikar24/wormaceptor/feature/location/ui/theme/LocationColors {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/theme/LocationColors;
-	public final fun getBuiltIn-0d7_KjU ()J
-	public final fun getCoordinate-0d7_KjU ()J
-	public final fun getDisabled-0d7_KjU ()J
-	public final fun getEnabled-0d7_KjU ()J
-	public final fun getError-0d7_KjU ()J
-	public final fun getUserPreset-0d7_KjU ()J
-	public final fun getWarning-0d7_KjU ()J
 }
 
 public abstract class com/azikar24/wormaceptor/feature/location/vm/LocationViewEffect {
@@ -319,23 +303,33 @@ public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewMode
 public final class com/azikar24/wormaceptor/feature/location/vm/LocationViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZ)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZLorg/osmdroid/util/GeoPoint;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZLorg/osmdroid/util/GeoPoint;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Z
+	public final fun component11 ()Lorg/osmdroid/util/GeoPoint;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Z
 	public final fun component5 ()Z
 	public final fun component6 ()Z
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZ)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
+	public final fun component7 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
+	public final fun component9 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZLorg/osmdroid/util/GeoPoint;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/MockLocation;ZZLorg/osmdroid/util/GeoPoint;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/location/vm/LocationViewState;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrentMockLocation ()Lcom/azikar24/wormaceptor/domain/entities/MockLocation;
 	public final fun getLatitudeInput ()Ljava/lang/String;
 	public final fun getLongitudeInput ()Ljava/lang/String;
+	public final fun getPresets ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getRealDeviceLocation ()Lorg/osmdroid/util/GeoPoint;
 	public final fun getSearchQuery ()Ljava/lang/String;
 	public fun hashCode ()I
+	public final fun isInputValid ()Z
 	public final fun isLoading ()Z
 	public final fun isMapExpanded ()Z
+	public final fun isMockEnabled ()Z
 	public final fun isMockLocationAvailable ()Z
 	public fun toString ()Ljava/lang/String;
 }

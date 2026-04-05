@@ -43,24 +43,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptorapp.wormaceptorui.theme.WormaCeptorMainTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
-/**
- * Test Tools tab content for the demo app.
- * Displays grouped lists of testing features for developers.
- *
- * Sections:
- * - NETWORK: API and WebSocket testing
- * - DEBUG TRIGGERS: Crash, leak, and violation triggers (destructive)
- * - FEATURE TESTS: Navigation to feature test screens
- */
 @Composable
-fun TestToolsTab(
+fun TestToolsSheetContent(
     onRunApiTests: () -> Unit,
     onWebSocketTest: () -> Unit,
     onTriggerCrash: () -> Unit,
@@ -80,9 +68,8 @@ fun TestToolsTab(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
-        // NETWORK Section
         SectionHeader(title = "NETWORK")
 
         ToolListItem(
@@ -99,9 +86,8 @@ fun TestToolsTab(
             status = webSocketStatus,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
-        // DEBUG TRIGGERS Section
         SectionHeader(title = "DEBUG TRIGGERS")
 
         ToolListItem(
@@ -128,9 +114,8 @@ fun TestToolsTab(
             status = threadViolationStatus,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
-        // FEATURE TESTS Section
         SectionHeader(title = "FEATURE TESTS")
 
         ToolListItem(
@@ -154,13 +139,10 @@ fun TestToolsTab(
             showChevron = true,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
     }
 }
 
-/**
- * Section header with uppercase styling.
- */
 @Composable
 private fun SectionHeader(
     title: String,
@@ -168,22 +150,17 @@ private fun SectionHeader(
 ) {
     Text(
         text = title,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Medium,
+        style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        letterSpacing = 0.5.sp,
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.xl,
-                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                horizontal = WormaCeptorTokens.Spacing.xl,
+                vertical = WormaCeptorTokens.Spacing.sm,
             ),
     )
 }
 
-/**
- * Tool list item with icon, label, and optional chevron.
- */
 @Composable
 private fun ToolListItem(
     icon: ImageVector,
@@ -202,7 +179,7 @@ private fun ToolListItem(
     }
 
     val iconTint = if (isDestructive) {
-        MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+        MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -212,24 +189,30 @@ private fun ToolListItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = if (showDescription) 56.dp else 48.dp)
+            .heightIn(
+                min = if (showDescription) {
+                    WormaCeptorTokens.TouchTarget.large
+                } else {
+                    WormaCeptorTokens.TouchTarget.comfortable
+                },
+            )
             .clickable(
                 onClick = onClick,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(),
             )
-            .padding(horizontal = WormaCeptorDesignSystem.Spacing.xl),
+            .padding(horizontal = WormaCeptorTokens.Spacing.xl),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             tint = iconTint,
         )
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
         ToolListItemLabel(label, description, textColor, showDescription, Modifier.weight(1f))
         ToolListItemTrailing(status, showChevron)
     }
@@ -246,16 +229,16 @@ private fun ToolListItemLabel(
     Column(modifier = modifier) {
         Text(
             text = label,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Normal,
+            style = MaterialTheme.typography.bodyLarge,
             color = textColor,
         )
         if (showDescription && description != null) {
             Text(
                 text = description,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    alpha = WormaCeptorTokens.Alpha.HEAVY,
+                ),
             )
         }
     }
@@ -269,31 +252,32 @@ private fun ToolListItemTrailing(
     AnimatedContent(
         targetState = status,
         transitionSpec = {
-            fadeIn(animationSpec = tween(150)) togetherWith fadeOut(animationSpec = tween(150))
+            fadeIn(animationSpec = tween(WormaCeptorTokens.Animation.FAST)) togetherWith
+                fadeOut(animationSpec = tween(WormaCeptorTokens.Animation.FAST))
         },
         label = "status",
     ) { currentStatus ->
         when (currentStatus) {
             ToolStatus.Running -> CircularProgressIndicator(
-                modifier = Modifier.size(16.dp),
-                strokeWidth = 2.dp,
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                strokeWidth = WormaCeptorTokens.BorderWidth.thick,
                 color = MaterialTheme.colorScheme.primary,
             )
             ToolStatus.Done -> Icon(
                 imageVector = Icons.Outlined.Check,
                 contentDescription = "Done",
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 tint = MaterialTheme.colorScheme.primary,
             )
             else -> if (showChevron) {
                 Icon(
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )
             } else {
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.size(WormaCeptorTokens.IconSize.md))
             }
         }
     }
@@ -301,9 +285,9 @@ private fun ToolListItemTrailing(
 
 @Preview(showBackground = true)
 @Composable
-private fun TestToolsTabPreview() {
-    WormaCeptorMainTheme {
-        TestToolsTab(
+private fun TestToolsSheetContentPreview() {
+    WormaCeptorTheme {
+        TestToolsSheetContent(
             onRunApiTests = {},
             onWebSocketTest = {},
             onTriggerCrash = {},

@@ -1,6 +1,6 @@
 package com.azikar24.wormaceptorapp.screens.securestorage
 
-internal data class EncryptedPrefEntry(
+data class EncryptedPrefEntry(
     val key: String,
     val value: String,
     val type: String,

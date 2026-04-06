@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.azikar24.wormaceptor.core.ui.navigation.FeatureNavigationContributor
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.google.auto.service.AutoService
 
-/** Registers Mock Rules navigation routes with the main NavHost. */
 @AutoService(FeatureNavigationContributor::class)
 class MockRulesNavigationContributor : FeatureNavigationContributor {
     override fun contribute(
@@ -17,25 +17,25 @@ class MockRulesNavigationContributor : FeatureNavigationContributor {
         context: Context,
         onBack: () -> Unit,
     ) {
-        builder.composable(WormaCeptorNavKeys.MockRules.route) {
-            MockRulesList(
-                onNavigateBack = onBack,
-                onNavigateToEditor = { ruleId ->
-                    if (ruleId != null) {
-                        navController.navigate(WormaCeptorNavKeys.MockRuleEditor.createRoute(ruleId))
-                    } else {
-                        navController.navigate(WormaCeptorNavKeys.MockRuleEditor.createNewRoute())
-                    }
-                },
-            )
-        }
-
-        builder.composable(WormaCeptorNavKeys.MockRuleEditor.route) { backStackEntry ->
-            val ruleId = backStackEntry.arguments?.getString("ruleId")
-            MockRuleEditor(
-                ruleId = ruleId,
-                onNavigateBack = { navController.popBackStack() },
-            )
+        builder.navigation(
+            startDestination = WormaCeptorNavKeys.MockRules.route,
+            route = "mockrules_graph",
+        ) {
+            composable(WormaCeptorNavKeys.MockRules.route) { backStackEntry ->
+                MockRulesListDestination(
+                    backStackEntry = backStackEntry,
+                    navController = navController,
+                    onBack = onBack,
+                )
+            }
+            composable(WormaCeptorNavKeys.MockRuleEditor.route) { backStackEntry ->
+                val ruleId = backStackEntry.arguments?.getString("ruleId")
+                MockRuleEditorDestination(
+                    ruleId = ruleId,
+                    backStackEntry = backStackEntry,
+                    navController = navController,
+                )
+            }
         }
     }
 }

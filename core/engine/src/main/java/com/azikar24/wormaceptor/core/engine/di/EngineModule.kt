@@ -7,7 +7,6 @@ import com.azikar24.wormaceptor.core.engine.DefaultParserRegistry
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
-import com.azikar24.wormaceptor.core.engine.InMemoryMockRuleRepository
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
@@ -59,7 +58,7 @@ val engineModule = module {
     // Network engines
     single { RateLimitEngine() }
     single { MockEngine() }
-    single<com.azikar24.wormaceptor.domain.contracts.MockRuleRepository> { InMemoryMockRuleRepository() }
+
     single { WebViewMonitorEngine() }
 
     // Tool engines (previously created by Feature objects)

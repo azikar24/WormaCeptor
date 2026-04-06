@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Reply
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,8 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.mockrules.R
 
 @Composable
@@ -31,7 +31,7 @@ internal fun ResponseSection(
     onResponseBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md)) {
         WormaCeptorSectionHeader(
             title = stringResource(R.string.mock_editor_section_response),
             icon = Icons.AutoMirrored.Outlined.Reply,
@@ -39,9 +39,9 @@ internal fun ResponseSection(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
         ) {
-            OutlinedTextField(
+            WormaCeptorTextField(
                 value = statusCode.toString(),
                 onValueChange = onStatusCodeChange,
                 label = { Text(stringResource(R.string.mock_editor_status_code)) },
@@ -50,7 +50,7 @@ internal fun ResponseSection(
                 modifier = Modifier.weight(1f),
             )
 
-            OutlinedTextField(
+            WormaCeptorTextField(
                 value = statusMessage,
                 onValueChange = onStatusMessageChange,
                 label = { Text(stringResource(R.string.mock_editor_status_message)) },
@@ -59,7 +59,7 @@ internal fun ResponseSection(
             )
         }
 
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = contentType,
             onValueChange = onContentTypeChange,
             label = { Text(stringResource(R.string.mock_editor_content_type)) },
@@ -67,7 +67,7 @@ internal fun ResponseSection(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = responseBody,
             onValueChange = onResponseBodyChange,
             label = { Text(stringResource(R.string.mock_editor_response_body)) },

@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.infra.persistence.sqlite.KeystoreKeyManager
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomCrashRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLeakRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomLocationSimulatorRepository
+import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomMockRuleRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomPushSimulatorRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomTransactionRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomWebViewMonitorRepository
@@ -46,6 +47,7 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
             ),
             pushSimulatorRepository = RoomPushSimulatorRepository(database.pushTemplateDao()),
             webViewMonitorRepository = RoomWebViewMonitorRepository(database.webViewRequestDao()),
+            mockRuleRepository = RoomMockRuleRepository(database.mockRuleDao()),
         )
     }
 

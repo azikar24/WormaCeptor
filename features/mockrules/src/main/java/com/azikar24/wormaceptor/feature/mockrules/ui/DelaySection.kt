@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -19,8 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.mockrules.R
 import com.azikar24.wormaceptor.feature.mockrules.vm.DelayType
 
@@ -36,7 +36,10 @@ internal fun DelaySection(
     onDelayMaxMsChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+    ) {
         WormaCeptorSectionHeader(
             title = stringResource(R.string.mock_editor_section_delay),
             icon = Icons.Outlined.Timer,
@@ -60,9 +63,12 @@ internal fun DelaySection(
         }
 
         when (delayType) {
-            DelayType.NONE -> { /* No delay fields */ }
+            DelayType.NONE -> {
+                /* No delay fields */
+            }
+
             DelayType.FIXED -> {
-                OutlinedTextField(
+                WormaCeptorTextField(
                     value = delayMs,
                     onValueChange = onDelayMsChange,
                     label = { Text(stringResource(R.string.mock_editor_delay_ms)) },
@@ -71,12 +77,13 @@ internal fun DelaySection(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
+
             DelayType.RANGE -> {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
-                    OutlinedTextField(
+                    WormaCeptorTextField(
                         value = delayMinMs,
                         onValueChange = onDelayMinMsChange,
                         label = { Text(stringResource(R.string.mock_editor_delay_min_ms)) },
@@ -84,7 +91,7 @@ internal fun DelaySection(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.weight(1f),
                     )
-                    OutlinedTextField(
+                    WormaCeptorTextField(
                         value = delayMaxMs,
                         onValueChange = onDelayMaxMsChange,
                         label = { Text(stringResource(R.string.mock_editor_delay_max_ms)) },

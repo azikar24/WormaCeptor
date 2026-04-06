@@ -23,6 +23,7 @@ import com.azikar24.wormaceptor.domain.contracts.FormDataParser
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
+import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.domain.contracts.MultipartParser
 import com.azikar24.wormaceptor.domain.contracts.ProtobufDecoder
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
@@ -72,6 +73,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         val locationSimulatorRepository: LocationSimulatorRepository,
         val pushSimulatorRepository: PushSimulatorRepository,
         val webViewMonitorRepository: WebViewMonitorRepository,
+        val mockRuleRepository: MockRuleRepository,
     )
 
     protected abstract fun createDependencies(context: Context): StorageDependencies
@@ -115,6 +117,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
                 module {
                     single<LocationSimulatorRepository> { deps.locationSimulatorRepository }
                     single<PushSimulatorRepository> { deps.pushSimulatorRepository }
+                    single<MockRuleRepository> { deps.mockRuleRepository }
                 },
             ),
         )

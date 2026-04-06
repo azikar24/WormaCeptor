@@ -2,6 +2,8 @@ package com.azikar24.wormaceptor.feature.mockrules.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,7 +25,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Science
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +34,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,133 +42,179 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.mockrules.R
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEvent
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewState
 
-/**
- * Screen displaying the list of all mock rules with a master toggle and per-rule controls.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MockRulesScreen(
-    rules: ImmutableList<MockRule>,
-    mockingEnabled: Boolean,
-    onToggleMocking: () -> Unit,
-    onToggleRule: (String) -> Unit,
-    onDeleteRule: (String) -> Unit,
-    onDeleteAll: () -> Unit,
-    onAddRule: () -> Unit,
-    onEditRule: (String) -> Unit,
+    state: MockRulesViewState,
+    onEvent: (MockRulesEvent) -> Unit,
+    onNavigateToEditor: (String?) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     var showDeleteAllDialog by remember { mutableStateOf(false) }
+    var ruleToDelete by remember { mutableStateOf<MockRule?>(null) }
 
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text("Mock Rules") },
-                navigationIcon = {
-                    if (onBack != null) {
-                        IconButton(onClick = onBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    if (rules.isNotEmpty()) {
-                        IconButton(onClick = { showDeleteAllDialog = true }) {
-                            Icon(
-                                imageVector = Icons.Default.DeleteSweep,
-                                contentDescription = "Delete all rules",
-                            )
-                        }
-                    }
-                },
+            MockRulesTopBar(
+                hasRules = state.rules.isNotEmpty(),
+                onDeleteAll = { showDeleteAllDialog = true },
+                onBack = onBack,
             )
         },
         floatingActionButton = {
             WormaCeptorFAB(
-                onClick = onAddRule,
+                onClick = { onNavigateToEditor(null) },
                 icon = Icons.Default.Add,
-                contentDescription = "Add mock rule",
+                contentDescription = stringResource(R.string.mock_rules_add_rule),
             )
         },
     ) { padding ->
-        LazyColumn(
+        MockRulesContent(
+            state = state,
+            onEvent = onEvent,
+            onNavigateToEditor = onNavigateToEditor,
+            onDeleteRule = { rule -> ruleToDelete = rule },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentPadding = PaddingValues(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.sm,
-            ),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-        ) {
-            // Master toggle
-            item(key = "master_toggle") {
-                MasterToggleCard(
-                    enabled = mockingEnabled,
-                    ruleCount = rules.size,
-                    onToggle = onToggleMocking,
-                )
-            }
-
-            if (rules.isEmpty()) {
-                item(key = "empty_state") {
-                    EmptyRulesState(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = WormaCeptorDesignSystem.Spacing.xxl),
-                    )
-                }
-            }
-
-            // Rule items
-            items(
-                items = rules,
-                key = { it.id },
-            ) { rule ->
-                MockRuleItem(
-                    rule = rule,
-                    onToggle = { onToggleRule(rule.id) },
-                    onDelete = { onDeleteRule(rule.id) },
-                    onClick = { onEditRule(rule.id) },
-                )
-            }
-        }
+        )
     }
 
     if (showDeleteAllDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteAllDialog = false },
-            title = { Text("Delete All Rules") },
-            text = { Text("This will permanently remove all ${rules.size} mock rules. This cannot be undone.") },
-            confirmButton = {
-                TextButton(onClick = {
-                    onDeleteAll()
-                    showDeleteAllDialog = false
-                }) {
-                    Text("Delete All", color = MaterialTheme.colorScheme.error)
-                }
+        WormaCeptorAlertDialog(
+            title = stringResource(R.string.mock_rules_dialog_delete_all_title),
+            message = stringResource(R.string.mock_rules_dialog_delete_all_message, state.rules.size),
+            confirmLabel = stringResource(R.string.mock_rules_dialog_delete_all_confirm),
+            onConfirm = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                onEvent(MockRulesEvent.List.DeleteAllRules)
+                showDeleteAllDialog = false
             },
-            dismissButton = {
-                TextButton(onClick = { showDeleteAllDialog = false }) {
-                    Text("Cancel")
-                }
-            },
+            dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
+            onDismiss = { showDeleteAllDialog = false },
+            destructive = true,
         )
+    }
+
+    ruleToDelete?.let { rule ->
+        WormaCeptorAlertDialog(
+            title = stringResource(R.string.mock_rules_dialog_delete_title),
+            message = stringResource(R.string.mock_rules_dialog_delete_message, rule.name),
+            confirmLabel = stringResource(R.string.mock_rules_dialog_delete_confirm),
+            onConfirm = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                onEvent(MockRulesEvent.List.DeleteRule(rule.id))
+                ruleToDelete = null
+            },
+            dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
+            onDismiss = { ruleToDelete = null },
+            destructive = true,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MockRulesTopBar(
+    hasRules: Boolean,
+    onDeleteAll: () -> Unit,
+    onBack: (() -> Unit)?,
+) {
+    TopAppBar(
+        title = { Text(stringResource(R.string.mock_rules_title)) },
+        navigationIcon = {
+            if (onBack != null) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.mock_rules_back),
+                    )
+                }
+            }
+        },
+        actions = {
+            if (hasRules) {
+                IconButton(onClick = onDeleteAll) {
+                    Icon(
+                        imageVector = Icons.Default.DeleteSweep,
+                        contentDescription = stringResource(R.string.mock_rules_delete_all),
+                    )
+                }
+            }
+        },
+    )
+}
+
+@Composable
+private fun MockRulesContent(
+    state: MockRulesViewState,
+    onEvent: (MockRulesEvent) -> Unit,
+    onNavigateToEditor: (String?) -> Unit,
+    onDeleteRule: (MockRule) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            horizontal = WormaCeptorTokens.Spacing.lg,
+            vertical = WormaCeptorTokens.Spacing.sm,
+        ),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        item(key = "master_toggle") {
+            MasterToggleCard(
+                enabled = state.mockingEnabled,
+                ruleCount = state.rules.size,
+                onToggle = { onEvent(MockRulesEvent.List.ToggleMocking) },
+            )
+        }
+
+        if (state.rules.isEmpty()) {
+            item(key = "empty_state") {
+                EmptyRulesState(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = WormaCeptorTokens.Spacing.xxl),
+                )
+            }
+        }
+
+        items(
+            items = state.rules,
+            key = { it.id },
+        ) { rule ->
+            MockRuleItem(
+                rule = rule,
+                onToggle = { onEvent(MockRulesEvent.List.ToggleRule(rule.id)) },
+                onDelete = { onDeleteRule(rule) },
+                onClick = { onNavigateToEditor(rule.id) },
+            )
+        }
     }
 }
 
@@ -179,25 +225,26 @@ private fun MasterToggleCard(
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     val backgroundColor by animateColorAsState(
         targetValue = if (enabled) {
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD)
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
         },
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "master_toggle_bg",
     )
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
+        shape = WormaCeptorTokens.Shapes.cardLarge,
         color = backgroundColor,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -208,19 +255,29 @@ private fun MasterToggleCard(
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
             )
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
+                val mockingStatusRes = if (enabled) {
+                    R.string.mock_rules_mocking_enabled
+                } else {
+                    R.string.mock_rules_mocking_disabled
+                }
                 Text(
-                    text = "Mocking ${if (enabled) "Enabled" else "Disabled"}",
+                    text = stringResource(mockingStatusRes),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
+                val pluralSuffix = if (ruleCount != 1) {
+                    stringResource(R.string.mock_rules_count_plural)
+                } else {
+                    stringResource(R.string.mock_rules_count_singular)
+                }
                 Text(
-                    text = "$ruleCount rule${if (ruleCount != 1) "s" else ""} configured",
+                    text = stringResource(R.string.mock_rules_count, ruleCount, pluralSuffix),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -228,7 +285,10 @@ private fun MasterToggleCard(
 
             Switch(
                 checked = enabled,
-                onCheckedChange = { onToggle() },
+                onCheckedChange = {
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onToggle()
+                },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -246,133 +306,127 @@ private fun MockRuleItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        onClick = onClick,
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        color = MaterialTheme.colorScheme.surface,
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = if (rule.enabled) {
-                MaterialTheme.colorScheme.outlineVariant
-            } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT)
-            },
-        ),
+    val haptic = LocalHapticFeedback.current
+    val ruleStatusColor = statusColor(rule.response.statusCode)
+    val contentAlpha = if (rule.enabled) 1f else WormaCeptorTokens.Alpha.MODERATE
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(WormaCeptorTokens.Shapes.card)
+            .background(
+                color = if (rule.enabled) {
+                    ruleStatusColor.copy(alpha = TokenAlpha.SUBTLE)
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT)
+                },
+                shape = WormaCeptorTokens.Shapes.card,
+            )
+            .clickable(onClick = onClick)
+            .padding(WormaCeptorTokens.Spacing.md),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
+        // Left content
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md),
-            verticalAlignment = Alignment.CenterVertically,
+                .weight(1f)
+                .alpha(contentAlpha),
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            // Top row: method badge + rule name
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                val ruleMethod = rule.matcher.method
+                if (ruleMethod != null) {
+                    WormaCeptorMethodBadge(ruleMethod)
+                }
                 Text(
                     text = rule.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = if (rule.enabled) {
-                        MaterialTheme.colorScheme.onSurface
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    },
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f, fill = false),
                 )
+            }
 
-                Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    // Method badge
-                    val ruleMethod = rule.matcher.method
-                    if (ruleMethod != null) {
-                        MethodChip(method = ruleMethod)
-                    }
-
-                    // Status code badge
-                    StatusChip(code = rule.response.statusCode)
-
-                    // Match type indicator
-                    MatchTypeChip(matchType = rule.matcher.matchType)
-                }
-
-                Spacer(modifier = Modifier.height(2.dp))
-
+            // URL pattern + match type chip row
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+            ) {
+                MatchTypeChip(matchType = rule.matcher.matchType)
                 Text(
                     text = rule.matcher.urlPattern,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
+        }
 
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete rule",
-                    tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+
+        // Right side: status code + switch + delete
+        Column(horizontalAlignment = Alignment.End) {
+            // Status code chip
+            Surface(
+                color = ruleStatusColor.copy(alpha = TokenAlpha.SUBTLE),
+                contentColor = ruleStatusColor,
+                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+            ) {
+                Text(
+                    text = rule.response.statusCode.toString(),
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(
+                        horizontal = WormaCeptorTokens.Spacing.sm,
+                        vertical = WormaCeptorTokens.Spacing.xxs,
+                    ),
                 )
             }
 
-            Switch(
-                checked = rule.enabled,
-                onCheckedChange = { onToggle() },
-            )
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
+
+            // Switch + delete
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onDelete()
+                    },
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.mock_rules_delete_rule),
+                        tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                    )
+                }
+                Switch(
+                    checked = rule.enabled,
+                    onCheckedChange = {
+                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        onToggle()
+                    },
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun MethodChip(
-    method: String,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
-        color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
-    ) {
-        Text(
-            text = method,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-        )
-    }
-}
-
-@Composable
-private fun StatusChip(
-    code: Int,
-    modifier: Modifier = Modifier,
-) {
-    val color = when (code) {
-        in 200..299 -> MaterialTheme.colorScheme.primary
-        in 300..399 -> MaterialTheme.colorScheme.secondary
-        in 400..499 -> MaterialTheme.colorScheme.error
-        in 500..599 -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.onSurfaceVariant
-    }
-
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-    ) {
-        Text(
-            text = code.toString(),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = color,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-        )
-    }
+private fun statusColor(code: Int): Color = when (code) {
+    in 200..299 -> MaterialTheme.colorScheme.primary
+    in 300..399 -> MaterialTheme.colorScheme.secondary
+    in 400..499 -> MaterialTheme.colorScheme.error
+    in 500..599 -> MaterialTheme.colorScheme.error
+    else -> MaterialTheme.colorScheme.onSurfaceVariant
 }
 
 @Composable
@@ -380,22 +434,24 @@ private fun MatchTypeChip(
     matchType: UrlMatchType,
     modifier: Modifier = Modifier,
 ) {
-    val label = when (matchType) {
-        UrlMatchType.EXACT -> "Exact"
-        UrlMatchType.PREFIX -> "Prefix"
-        UrlMatchType.REGEX -> "Regex"
-    }
+    val label = stringResource(
+        when (matchType) {
+            UrlMatchType.EXACT -> R.string.mock_rules_match_exact
+            UrlMatchType.PREFIX -> R.string.mock_rules_match_prefix
+            UrlMatchType.REGEX -> R.string.mock_rules_match_regex
+        },
+    )
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(4.dp),
+        shape = WormaCeptorTokens.Shapes.chip,
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = WormaCeptorTokens.Spacing.xxs),
         )
     }
 }
@@ -409,25 +465,26 @@ private fun EmptyRulesState(modifier: Modifier = Modifier) {
         Icon(
             imageVector = Icons.Default.Science,
             contentDescription = null,
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xxxl),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
         Text(
-            text = "No Mock Rules",
+            text = stringResource(R.string.mock_rules_empty_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
         Text(
-            text = "Tap + to add a rule that intercepts and mocks HTTP responses",
+            text = stringResource(R.string.mock_rules_empty_description),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+            textAlign = TextAlign.Center,
         )
     }
 }

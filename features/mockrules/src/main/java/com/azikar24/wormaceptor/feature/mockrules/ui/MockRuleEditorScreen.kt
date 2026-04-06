@@ -20,47 +20,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import com.azikar24.wormaceptor.feature.mockrules.R
 import com.azikar24.wormaceptor.feature.mockrules.vm.DelayType
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRuleEditorEvent
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRuleEditorState
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRuleEditorViewModel
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun MockRuleEditorScreen(
-    viewModel: MockRuleEditorViewModel,
-    onSave: () -> Unit,
-    onBack: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val editorState by viewModel.uiState.collectAsState()
-
-    MockRuleEditorContent(
-        state = editorState,
-        onEvent = viewModel::sendEvent,
-        onSave = onSave,
-        onBack = onBack,
-        modifier = modifier,
-    )
-}
+import com.azikar24.wormaceptor.feature.mockrules.vm.EditorState
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MockRuleEditorContent(
-    state: MockRuleEditorState,
-    onEvent: (MockRuleEditorEvent) -> Unit,
-    onSave: () -> Unit,
+    state: EditorState,
+    onEvent: (MockRulesEvent) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -93,62 +70,75 @@ internal fun MockRuleEditorContent(
         floatingActionButton = {
             if (state.isValid) {
                 WormaCeptorFAB(
-                    onClick = onSave,
+                    onClick = { onEvent(MockRulesEvent.Editor.SaveRule) },
                     icon = Icons.Default.Check,
                     contentDescription = stringResource(R.string.mock_editor_save),
                 )
             }
         },
     ) { padding ->
-        Column(
+        EditorFormBody(
+            state = state,
+            onEvent = onEvent,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .imePadding()
-                .verticalScroll(rememberScrollState())
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-        ) {
-            BasicInfoSection(
-                name = state.name,
-                onNameChange = { onEvent(MockRuleEditorEvent.NameChanged(it)) },
-            )
+                .padding(padding),
+        )
+    }
+}
 
-            RequestMatchingSection(
-                urlPattern = state.urlPattern,
-                matchType = state.matchType,
-                method = state.method,
-                methodDropdownExpanded = state.methodDropdownExpanded,
-                onUrlPatternChange = { onEvent(MockRuleEditorEvent.UrlPatternChanged(it)) },
-                onMatchTypeChange = { onEvent(MockRuleEditorEvent.MatchTypeChanged(it)) },
-                onMethodChange = { onEvent(MockRuleEditorEvent.MethodChanged(it)) },
-                onMethodDropdownExpandedChange = { onEvent(MockRuleEditorEvent.MethodDropdownExpandedChanged(it)) },
-            )
+@Composable
+private fun EditorFormBody(
+    state: EditorState,
+    onEvent: (MockRulesEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .imePadding()
+            .verticalScroll(rememberScrollState())
+            .padding(WormaCeptorTokens.Spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+    ) {
+        BasicInfoSection(
+            name = state.name,
+            onNameChange = { onEvent(MockRulesEvent.Editor.NameChanged(it)) },
+        )
 
-            ResponseSection(
-                statusCode = state.statusCode,
-                statusMessage = state.statusMessage,
-                contentType = state.contentType,
-                responseBody = state.responseBody,
-                onStatusCodeChange = { onEvent(MockRuleEditorEvent.StatusCodeChanged(it)) },
-                onStatusMessageChange = { onEvent(MockRuleEditorEvent.StatusMessageChanged(it)) },
-                onContentTypeChange = { onEvent(MockRuleEditorEvent.ContentTypeChanged(it)) },
-                onResponseBodyChange = { onEvent(MockRuleEditorEvent.ResponseBodyChanged(it)) },
-            )
+        RequestMatchingSection(
+            urlPattern = state.urlPattern,
+            matchType = state.matchType,
+            method = state.method,
+            methodDropdownExpanded = state.methodDropdownExpanded,
+            onUrlPatternChange = { onEvent(MockRulesEvent.Editor.UrlPatternChanged(it)) },
+            onMatchTypeChange = { onEvent(MockRulesEvent.Editor.MatchTypeChanged(it)) },
+            onMethodChange = { onEvent(MockRulesEvent.Editor.MethodChanged(it)) },
+            onMethodDropdownExpandedChange = { onEvent(MockRulesEvent.Editor.MethodDropdownExpandedChanged(it)) },
+        )
 
-            DelaySection(
-                delayType = state.delayType,
-                delayMs = state.delayMs,
-                delayMinMs = state.delayMinMs,
-                delayMaxMs = state.delayMaxMs,
-                onDelayTypeChange = { onEvent(MockRuleEditorEvent.DelayTypeChanged(it)) },
-                onDelayMsChange = { onEvent(MockRuleEditorEvent.DelayMsChanged(it)) },
-                onDelayMinMsChange = { onEvent(MockRuleEditorEvent.DelayMinMsChanged(it)) },
-                onDelayMaxMsChange = { onEvent(MockRuleEditorEvent.DelayMaxMsChanged(it)) },
-            )
+        ResponseSection(
+            statusCode = state.statusCode,
+            statusMessage = state.statusMessage,
+            contentType = state.contentType,
+            responseBody = state.responseBody,
+            onStatusCodeChange = { onEvent(MockRulesEvent.Editor.StatusCodeChanged(it)) },
+            onStatusMessageChange = { onEvent(MockRulesEvent.Editor.StatusMessageChanged(it)) },
+            onContentTypeChange = { onEvent(MockRulesEvent.Editor.ContentTypeChanged(it)) },
+            onResponseBodyChange = { onEvent(MockRulesEvent.Editor.ResponseBodyChanged(it)) },
+        )
 
-            Spacer(modifier = Modifier.height(80.dp))
-        }
+        DelaySection(
+            delayType = state.delayType,
+            delayMs = state.delayMs,
+            delayMinMs = state.delayMinMs,
+            delayMaxMs = state.delayMaxMs,
+            onDelayTypeChange = { onEvent(MockRulesEvent.Editor.DelayTypeChanged(it)) },
+            onDelayMsChange = { onEvent(MockRulesEvent.Editor.DelayMsChanged(it)) },
+            onDelayMinMsChange = { onEvent(MockRulesEvent.Editor.DelayMinMsChanged(it)) },
+            onDelayMaxMsChange = { onEvent(MockRulesEvent.Editor.DelayMaxMsChanged(it)) },
+        )
+
+        Spacer(modifier = Modifier.height(80.dp))
     }
 }
 
@@ -157,9 +147,8 @@ internal fun MockRuleEditorContent(
 private fun MockRuleEditorScreenPreview() {
     WormaCeptorTheme {
         MockRuleEditorContent(
-            state = MockRuleEditorState(),
+            state = EditorState(),
             onEvent = {},
-            onSave = {},
             onBack = {},
         )
     }
@@ -170,7 +159,7 @@ private fun MockRuleEditorScreenPreview() {
 private fun MockRuleEditorEditPreview() {
     WormaCeptorTheme {
         MockRuleEditorContent(
-            state = MockRuleEditorState(
+            state = EditorState(
                 name = "Login Error Mock",
                 urlPattern = "https://api.example.com/login",
                 matchType = UrlMatchType.PREFIX,
@@ -181,9 +170,9 @@ private fun MockRuleEditorEditPreview() {
                 delayType = DelayType.FIXED,
                 delayMs = "2000",
                 isEditing = true,
+                isLoaded = true,
             ),
             onEvent = {},
-            onSave = {},
             onBack = {},
         )
     }

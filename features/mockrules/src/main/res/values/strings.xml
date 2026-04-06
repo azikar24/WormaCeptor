@@ -34,4 +34,30 @@
     <string name="mock_editor_delay_ms">Delay (ms)</string>
     <string name="mock_editor_delay_min_ms">Min (ms)</string>
     <string name="mock_editor_delay_max_ms">Max (ms)</string>
+
+    <!-- MockRulesScreen -->
+    <string name="mock_rules_title">Mock Rules</string>
+    <string name="mock_rules_back">Back</string>
+    <string name="mock_rules_delete_all">Delete all rules</string>
+    <string name="mock_rules_add_rule">Add mock rule</string>
+    <string name="mock_rules_delete_rule">Delete rule</string>
+    <string name="mock_rules_mocking_enabled">Mocking Enabled</string>
+    <string name="mock_rules_mocking_disabled">Mocking Disabled</string>
+    <string name="mock_rules_count">%1$d rule%2$s configured</string>
+    <string name="mock_rules_count_plural">s</string>
+    <string name="mock_rules_count_singular"></string>
+    <string name="mock_rules_empty_title">No Mock Rules</string>
+    <string name="mock_rules_empty_description">Tap + to add a rule that intercepts and mocks HTTP responses</string>
+    <string name="mock_rules_match_exact">Exact</string>
+    <string name="mock_rules_match_prefix">Prefix</string>
+    <string name="mock_rules_match_regex">Regex</string>
+
+    <!-- MockRulesScreen dialogs -->
+    <string name="mock_rules_dialog_delete_all_title">Delete All Rules</string>
+    <string name="mock_rules_dialog_delete_all_message">This will permanently remove all %1$d mock rules. This cannot be undone.</string>
+    <string name="mock_rules_dialog_delete_all_confirm">Delete All</string>
+    <string name="mock_rules_dialog_delete_all_cancel">Cancel</string>
+    <string name="mock_rules_dialog_delete_title">Delete Rule</string>
+    <string name="mock_rules_dialog_delete_message">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="mock_rules_dialog_delete_confirm">Delete</string>
 </resources>

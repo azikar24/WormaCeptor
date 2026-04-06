@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.api.internal
 
 import android.content.Context
+import com.azikar24.wormaceptor.core.engine.InMemoryMockRuleRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryBlobStorage
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryCrashRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.InMemoryLeakRepository
@@ -19,6 +20,7 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
         locationSimulatorRepository = InMemoryLocationSimulatorRepository(),
         pushSimulatorRepository = InMemoryPushSimulatorRepository(),
         webViewMonitorRepository = InMemoryWebViewMonitorRepository(),
+        mockRuleRepository = InMemoryMockRuleRepository(),
     )
 
     override fun getNotificationTitle() = "WormaCeptor (IMDB): Recording..."

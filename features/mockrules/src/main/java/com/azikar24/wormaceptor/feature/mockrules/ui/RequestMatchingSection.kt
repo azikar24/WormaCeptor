@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -16,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import com.azikar24.wormaceptor.feature.mockrules.R
 
@@ -33,13 +33,13 @@ internal fun RequestMatchingSection(
     onMethodDropdownExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md)) {
         WormaCeptorSectionHeader(
             title = stringResource(R.string.mock_editor_section_request_matching),
             icon = Icons.Outlined.Link,
         )
 
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = urlPattern,
             onValueChange = onUrlPatternChange,
             label = { Text(stringResource(R.string.mock_editor_url_pattern)) },

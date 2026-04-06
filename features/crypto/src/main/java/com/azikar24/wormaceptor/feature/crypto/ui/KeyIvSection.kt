@@ -38,6 +38,8 @@ import com.azikar24.wormaceptor.domain.entities.KeyFormat
 import com.azikar24.wormaceptor.feature.crypto.R
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 
+private const val BitsPerByte = 8
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun KeyIvSection(
@@ -105,7 +107,7 @@ private fun KeyInput(
     WormaCeptorTextField(
         value = config.key,
         onValueChange = { onEvent(CryptoViewEvent.Config.SetKey(it)) },
-        label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / 8)) },
+        label = { Text(stringResource(R.string.crypto_key_label, config.algorithm.keyLengthBits / BitsPerByte)) },
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = if (showPassword) {
             VisualTransformation.None

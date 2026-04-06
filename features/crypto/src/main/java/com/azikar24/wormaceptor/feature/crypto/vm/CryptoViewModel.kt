@@ -47,9 +47,25 @@ class CryptoViewModel(
                 is CryptoViewEvent.Result.UseAsInput -> handleUseAsInput(event.text)
             }
             is CryptoViewEvent.History -> when (event) {
-                is CryptoViewEvent.History.ClearAll -> engine.clearHistory()
+                is CryptoViewEvent.History.RequestClearAll ->
+                    updateState { copy(showClearHistoryConfirmation = true) }
+                is CryptoViewEvent.History.ConfirmClearAll -> {
+                    engine.clearHistory()
+                    updateState { copy(showClearHistoryConfirmation = false) }
+                }
+                is CryptoViewEvent.History.DismissClearConfirmation ->
+                    updateState { copy(showClearHistoryConfirmation = false) }
                 is CryptoViewEvent.History.Remove -> engine.removeFromHistory(event.id)
-                is CryptoViewEvent.History.Load -> updateState { copy(inputText = event.result.input) }
+                is CryptoViewEvent.History.Load -> {
+                    updateState { copy(inputText = event.result.input, showHistory = false) }
+                    emitEffect(CryptoViewEffect.HistoryLoaded)
+                }
+            }
+            is CryptoViewEvent.Navigation -> when (event) {
+                is CryptoViewEvent.Navigation.ShowHistory ->
+                    updateState { copy(showHistory = true) }
+                is CryptoViewEvent.Navigation.HideHistory ->
+                    updateState { copy(showHistory = false) }
             }
         }
     }

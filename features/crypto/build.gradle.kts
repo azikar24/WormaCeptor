@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(project(":core:engine"))
     implementation(project(":core:ui"))
+    implementation(project(":common:presentation"))
     implementation(project(":domain:entities"))
 }

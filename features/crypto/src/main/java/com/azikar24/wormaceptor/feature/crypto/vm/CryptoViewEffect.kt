@@ -20,4 +20,7 @@ sealed class CryptoViewEffect {
 
     /** The previous output was loaded back as input text. */
     data object OutputLoadedAsInput : CryptoViewEffect()
+
+    /** A history entry was loaded into the tool. */
+    data object HistoryLoaded : CryptoViewEffect()
 }

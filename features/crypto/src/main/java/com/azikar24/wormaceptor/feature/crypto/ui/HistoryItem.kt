@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -34,20 +36,20 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+private const val InputPreviewLength = 50
+
 @Composable
 internal fun HistoryItem(
     result: CryptoResult,
     onLoad: () -> Unit,
     onRemove: () -> Unit,
 ) {
-    val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
+    val haptic = LocalHapticFeedback.current
     val accentColor = when {
         !result.success -> WormaCeptorTokens.semantic().error
         result.operation == CryptoOperation.ENCRYPT -> WormaCeptorTokens.Colors.Crypto.encrypt
         else -> WormaCeptorTokens.Colors.Crypto.decrypt
     }
-    val successText = stringResource(R.string.crypto_success)
-    val failedText = stringResource(R.string.crypto_failed)
 
     Row(
         modifier = Modifier
@@ -57,46 +59,79 @@ internal fun HistoryItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                Icon(
-                    imageVector = if (result.operation == CryptoOperation.ENCRYPT) Icons.Default.Lock else Icons.Default.LockOpen,
-                    contentDescription = null,
-                    tint = accentColor,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                )
-                Text(
-                    text = "${result.operation.displayName} - ${result.algorithm.displayName}/${result.mode.displayName}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-            Text(
-                text = result.input.take(50) + if (result.input.length > 50) "..." else "",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = FontFamily.Monospace,
-            )
-            Text(
-                "${
-                    dateFormat.format(
-                        Date(result.timestamp),
-                    )
-                } | ${if (result.success) successText else failedText} | ${result.durationMs}ms",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
-            )
-        }
-        IconButton(onClick = onRemove) {
+        HistoryItemDetails(result = result, accentColor = accentColor, modifier = Modifier.weight(1f))
+        IconButton(
+            onClick = {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                onRemove()
+            },
+        ) {
             Icon(
                 Icons.Default.Delete,
                 stringResource(R.string.crypto_remove),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+@Composable
+private fun HistoryItemDetails(
+    result: CryptoResult,
+    accentColor: androidx.compose.ui.graphics.Color,
+    modifier: Modifier = Modifier,
+) {
+    val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
+    val successText = stringResource(R.string.crypto_success)
+    val failedText = stringResource(R.string.crypto_failed)
+
+    Column(modifier = modifier) {
+        HistoryItemHeader(result = result, accentColor = accentColor)
+
+        val inputPreview = result.input.take(InputPreviewLength) +
+            if (result.input.length > InputPreviewLength) "..." else ""
+        Text(
+            text = inputPreview,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontFamily = FontFamily.Monospace,
+        )
+        Text(
+            "${dateFormat.format(Date(result.timestamp))} | " +
+                "${if (result.success) successText else failedText} | ${result.durationMs}ms",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+        )
+    }
+}
+
+@Composable
+private fun HistoryItemHeader(
+    result: CryptoResult,
+    accentColor: androidx.compose.ui.graphics.Color,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        val icon = if (result.operation == CryptoOperation.ENCRYPT) {
+            Icons.Default.Lock
+        } else {
+            Icons.Default.LockOpen
+        }
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = accentColor,
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+        )
+        val label = "${result.operation.displayName} - " +
+            "${result.algorithm.displayName}/${result.mode.displayName}"
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+        )
     }
 }
 

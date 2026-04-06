@@ -16,10 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.crypto.R
 
 @Composable
@@ -27,21 +26,20 @@ internal fun ErrorCard(
     message: String,
     onDismiss: () -> Unit,
 ) {
-    val errorColor = WormaCeptorDesignSystem.ThemeColors.Error
+    val errorColor = WormaCeptorTokens.semantic().error
     WormaCeptorContainer(
-        style = ContainerStyle.Outlined,
-        backgroundColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-        borderColor = errorColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        backgroundColor = errorColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+        borderColor = errorColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                 modifier = Modifier.weight(1f),
             ) {
                 Icon(Icons.Default.Error, null, tint = errorColor)

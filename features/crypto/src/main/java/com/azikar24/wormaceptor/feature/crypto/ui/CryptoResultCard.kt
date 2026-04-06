@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -20,22 +18,22 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
+import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
 import com.azikar24.wormaceptor.domain.entities.CryptoOperation
@@ -49,25 +47,25 @@ internal fun ResultCard(
     onClear: () -> Unit,
     onUseAsInput: (String) -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
     val isSuccess = result.success
     val accentColor = when {
-        !isSuccess -> WormaCeptorDesignSystem.ThemeColors.Error
-        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorColors.SecureStorage.EncryptedPrefs
-        else -> WormaCeptorColors.SecureStorage.Datastore
+        !isSuccess -> WormaCeptorTokens.semantic().error
+        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorTokens.Colors.Crypto.encrypt
+        else -> WormaCeptorTokens.Colors.Crypto.decrypt
     }
     val successText = stringResource(R.string.crypto_success)
     val failedText = stringResource(R.string.crypto_failed)
     val unknownErrorText = stringResource(R.string.crypto_unknown_error)
 
     WormaCeptorContainer(
-        style = ContainerStyle.Outlined,
-        backgroundColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-        borderColor = accentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        backgroundColor = accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+        borderColor = accentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -76,7 +74,7 @@ internal fun ResultCard(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
                     Icon(
                         if (isSuccess) Icons.Default.Check else Icons.Default.Error,
@@ -89,7 +87,12 @@ internal fun ResultCard(
                         color = accentColor,
                     )
                 }
-                IconButton(onClick = onClear) {
+                IconButton(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onClear()
+                    },
+                ) {
                     Icon(
                         Icons.Default.Delete,
                         stringResource(R.string.crypto_clear_result),
@@ -108,9 +111,9 @@ internal fun ResultCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm))
+                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(WormaCeptorDesignSystem.Spacing.md),
+                        .padding(WormaCeptorTokens.Spacing.md),
                 ) {
                     Text(
                         outputText,
@@ -122,24 +125,34 @@ internal fun ResultCard(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
-                    OutlinedButton(
+                    WormaCeptorButton(
+                        text = stringResource(R.string.crypto_copy),
                         onClick = { onCopy(outputText) },
+                        variant = ButtonVariant.Outlined,
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.ContentCopy,
+                                null,
+                                Modifier.size(WormaCeptorTokens.IconSize.md),
+                            )
+                        },
                         modifier = Modifier.weight(1f),
-                    ) {
-                        Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text(stringResource(R.string.crypto_copy))
-                    }
-                    OutlinedButton(
+                    )
+                    WormaCeptorButton(
+                        text = stringResource(R.string.crypto_use_as_input),
                         onClick = { onUseAsInput(outputText) },
+                        variant = ButtonVariant.Outlined,
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Refresh,
+                                null,
+                                Modifier.size(WormaCeptorTokens.IconSize.md),
+                            )
+                        },
                         modifier = Modifier.weight(1f),
-                    ) {
-                        Icon(Icons.Default.Refresh, null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text(stringResource(R.string.crypto_use_as_input))
-                    }
+                    )
                 }
             } else if (!isSuccess) {
                 Text(
@@ -152,7 +165,7 @@ internal fun ResultCard(
             Text(
                 "${result.algorithm.displayName}/${result.mode.displayName} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
             )
         }
     }

@@ -121,35 +121,18 @@ fun LocationSimulator(
             GeoPoint(it.latitude, it.longitude)
         }
 
-        LocationScreen(
-            latitudeInput = state.latitudeInput,
-            longitudeInput = state.longitudeInput,
-            searchQuery = state.searchQuery,
+        // Merge engine-driven flows into the unified state
+        val mergedState = state.copy(
             presets = presets,
             currentMockLocation = currentMockLocation,
             isMockEnabled = isMockEnabled,
-            isMockLocationAvailable = state.isMockLocationAvailable,
             isInputValid = isInputValid,
-            isLoading = state.isLoading,
-            errorMessage = null,
-            successMessage = null,
             realDeviceLocation = realGeoPoint,
-            onLatitudeChanged = { onEvent(LocationViewEvent.LatitudeChanged(it)) },
-            onLongitudeChanged = { onEvent(LocationViewEvent.LongitudeChanged(it)) },
-            onSearchQueryChanged = { onEvent(LocationViewEvent.SearchQueryChanged(it)) },
-            onSetMockLocation = { onEvent(LocationViewEvent.SetMockLocationFromInput) },
-            onClearMockLocation = { onEvent(LocationViewEvent.ClearMockLocation) },
-            onSetToCurrentLocation = { onEvent(LocationViewEvent.SetToCurrentRealLocation) },
-            onPresetClick = { onEvent(LocationViewEvent.SetMockLocationFromPreset(it)) },
-            onDeletePreset = { onEvent(LocationViewEvent.DeletePreset(it)) },
-            onSavePreset = { onEvent(LocationViewEvent.SaveCurrentAsPreset(it)) },
-            onClearError = {},
-            onClearSuccessMessage = {},
-            onMapTap = { geoPoint ->
-                onEvent(LocationViewEvent.MapTapped(geoPoint.latitude, geoPoint.longitude))
-            },
-            isMapExpanded = state.isMapExpanded,
-            onToggleMapExpanded = { onEvent(LocationViewEvent.ToggleMapExpanded) },
+        )
+
+        LocationScreen(
+            state = mergedState,
+            onEvent = onEvent,
             onBack = onNavigateBack,
             modifier = modifier,
             snackBarHostState = snackBarState,

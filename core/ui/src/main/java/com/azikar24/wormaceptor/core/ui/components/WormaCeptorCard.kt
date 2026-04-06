@@ -94,15 +94,12 @@ fun WormaCeptorCard(
         ),
     ).takeIf { style == CardStyle.Outlined }
 
-    val elevation = when (style) {
-        CardStyle.Elevated -> CardDefaults.cardElevation(
+    val elevation = if (style == CardStyle.Elevated) {
+        CardDefaults.cardElevation(
             defaultElevation = WormaCeptorTokens.Elevation.md,
         )
-
-        CardStyle.Outlined -> CardDefaults.cardElevation()
-        CardStyle.Filled -> CardDefaults.cardElevation(
-            defaultElevation = WormaCeptorTokens.Elevation.xs,
-        )
+    } else {
+        CardDefaults.cardElevation()
     }
 
     val clickModifier = if (onClick != null) {

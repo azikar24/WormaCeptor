@@ -8,7 +8,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,8 +32,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,17 +44,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.feature.location.R
 import com.azikar24.wormaceptor.feature.location.ui.components.LocationMapCard
-import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import org.osmdroid.util.GeoPoint
 
 @Composable
@@ -68,6 +68,7 @@ internal fun PresetItem(
     onDelete: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -83,45 +84,45 @@ internal fun PresetItem(
         modifier = modifier
             .fillMaxWidth()
             .scale(scale)
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md))
+            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
             .border(
                 width = if (isSelected) {
-                    WormaCeptorDesignSystem.BorderWidth.thick
+                    WormaCeptorTokens.BorderWidth.thick
                 } else {
-                    WormaCeptorDesignSystem.BorderWidth.regular
+                    WormaCeptorTokens.BorderWidth.regular
                 },
                 color = if (isSelected) {
-                    LocationColors.enabled
+                    WormaCeptorTokens.Colors.Location.enabled
                 } else {
-                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
                 },
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
             )
             .background(
                 color = if (isSelected) {
-                    LocationColors.enabled.asSubtleBackground()
+                    WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
                 } else {
                     MaterialTheme.colorScheme.surface
                 },
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.md),
+                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
             )
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = onClick,
             )
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
+            .padding(WormaCeptorTokens.Spacing.lg),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Location icon
         Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
             color = if (preset.isBuiltIn) {
-                LocationColors.builtIn.asSubtleBackground()
+                WormaCeptorTokens.Colors.Location.builtInPreset.copy(alpha = TokenAlpha.SUBTLE)
             } else {
-                LocationColors.userPreset.asSubtleBackground()
+                WormaCeptorTokens.Colors.Location.userPreset.copy(alpha = TokenAlpha.SUBTLE)
             },
-            modifier = Modifier.size(WormaCeptorDesignSystem.TouchTarget.minimum),
+            modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -130,17 +131,17 @@ internal fun PresetItem(
                 Icon(
                     imageVector = Icons.Default.Place,
                     contentDescription = preset.name,
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                     tint = if (preset.isBuiltIn) {
-                        LocationColors.builtIn
+                        WormaCeptorTokens.Colors.Location.builtInPreset
                     } else {
-                        LocationColors.userPreset
+                        WormaCeptorTokens.Colors.Location.userPreset
                     },
                 )
             }
         }
 
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
         Column(modifier = Modifier.weight(1f)) {
             Row(
@@ -156,32 +157,35 @@ internal fun PresetItem(
                     modifier = Modifier.weight(1f, fill = false),
                 )
                 if (isSelected) {
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = stringResource(R.string.location_selected),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                        tint = LocationColors.enabled,
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                        tint = WormaCeptorTokens.Colors.Location.enabled,
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
             Text(
                 text = preset.location.formatCoordinates(),
                 style = MaterialTheme.typography.bodySmall,
-                color = LocationColors.coordinate,
+                color = WormaCeptorTokens.Colors.Location.coordinate,
             )
         }
 
         // Delete button for user presets
         if (onDelete != null) {
             IconButton(
-                onClick = onDelete,
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onDelete()
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.location_delete_preset),
-                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     tint = MaterialTheme.colorScheme.error,
                 )
             }
@@ -199,16 +203,12 @@ internal fun CollapsibleMapSection(
     onMapTap: (GeoPoint) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(
+    WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
-        border = BorderStroke(
-            WormaCeptorDesignSystem.BorderWidth.regular,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-        ),
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        shape = WormaCeptorTokens.Shapes.cardLarge,
+        style = CardStyle.Outlined,
+        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             // Toggle header
@@ -216,19 +216,19 @@ internal fun CollapsibleMapSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable(onClick = onToggle)
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                    .padding(WormaCeptorTokens.Spacing.lg),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Map,
                         contentDescription = stringResource(R.string.location_map_preview),
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                     )
                     Text(
                         text = stringResource(R.string.location_map_preview),
@@ -238,18 +238,20 @@ internal fun CollapsibleMapSection(
                     )
                     if (isMockActive) {
                         Surface(
-                            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                            color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
+                            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                            color = WormaCeptorTokens.Colors.Location.enabled.copy(
+                                alpha = WormaCeptorTokens.Alpha.SOFT,
+                            ),
                         ) {
                             Text(
                                 text = stringResource(R.string.location_map_live),
                                 modifier = Modifier.padding(
                                     horizontal = 6.dp,
-                                    vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                    vertical = WormaCeptorTokens.Spacing.xxs,
                                 ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = LocationColors.enabled,
+                                color = WormaCeptorTokens.Colors.Location.enabled,
                             )
                         }
                     }
@@ -274,9 +276,9 @@ internal fun CollapsibleMapSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = WormaCeptorDesignSystem.Spacing.lg,
-                            end = WormaCeptorDesignSystem.Spacing.lg,
-                            bottom = WormaCeptorDesignSystem.Spacing.lg,
+                            start = WormaCeptorTokens.Spacing.lg,
+                            end = WormaCeptorTokens.Spacing.lg,
+                            bottom = WormaCeptorTokens.Spacing.lg,
                         ),
                 ) {
                     LocationMapCard(
@@ -297,7 +299,7 @@ internal fun EmptyPresetsState(hasSearchQuery: Boolean) {
         title = stringResource(if (hasSearchQuery) R.string.location_no_matches else R.string.location_no_presets),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.xxl),
+            .padding(vertical = WormaCeptorTokens.Spacing.xxl),
         subtitle = stringResource(
             if (hasSearchQuery) {
                 R.string.location_try_different_search

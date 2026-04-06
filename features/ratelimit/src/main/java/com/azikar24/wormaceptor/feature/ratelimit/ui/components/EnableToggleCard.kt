@@ -32,6 +32,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
+@Suppress("LongMethod")
 @Composable
 internal fun EnableToggleCard(
     enabled: Boolean,

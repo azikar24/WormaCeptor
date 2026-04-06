@@ -33,14 +33,15 @@ import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.util.formatSpeed
 
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 internal fun ConfigurationCard(
     config: RateLimitConfig,
     enabled: Boolean,
-    onDownloadSpeedChanged: (Long) -> Unit,
-    onUploadSpeedChanged: (Long) -> Unit,
-    onLatencyChanged: (Long) -> Unit,
-    onPacketLossChanged: (Float) -> Unit,
+    onChangeDownloadSpeed: (Long) -> Unit,
+    onChangeUploadSpeed: (Long) -> Unit,
+    onChangeLatency: (Long) -> Unit,
+    onChangePacketLoss: (Float) -> Unit,
     colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
@@ -70,7 +71,7 @@ internal fun ConfigurationCard(
                 maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.download,
-                onValueChange = { onDownloadSpeedChanged(it.toLong()) },
+                onValueChange = { onChangeDownloadSpeed(it.toLong()) },
                 colors = colors,
             )
 
@@ -84,7 +85,7 @@ internal fun ConfigurationCard(
                 maxValue = 100_000f,
                 enabled = enabled,
                 color = colors.upload,
-                onValueChange = { onUploadSpeedChanged(it.toLong()) },
+                onValueChange = { onChangeUploadSpeed(it.toLong()) },
                 colors = colors,
             )
 
@@ -98,7 +99,7 @@ internal fun ConfigurationCard(
                 maxValue = 5000f,
                 enabled = enabled,
                 color = colors.latency,
-                onValueChange = { onLatencyChanged(it.toLong()) },
+                onValueChange = { onChangeLatency(it.toLong()) },
                 colors = colors,
             )
 
@@ -112,13 +113,14 @@ internal fun ConfigurationCard(
                 maxValue = 100f,
                 enabled = enabled,
                 color = colors.packetLoss,
-                onValueChange = { onPacketLossChanged(it) },
+                onValueChange = { onChangePacketLoss(it) },
                 colors = colors,
             )
         }
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun ConfigSlider(
     icon: ImageVector,

@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.feature.ratelimit.ui.RateLimitScreen
-import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewEvent
 import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewModel
 import org.koin.compose.koinInject
 
@@ -27,17 +26,8 @@ fun RateLimiter(
 
     BaseScreen(viewModel) { state, onEvent ->
         RateLimitScreen(
-            config = state.config,
-            stats = state.stats,
-            selectedPreset = state.selectedPreset,
-            onEnableToggle = { onEvent(RateLimitViewEvent.ToggleEnabled) },
-            onPresetSelected = { onEvent(RateLimitViewEvent.SelectPreset(it)) },
-            onDownloadSpeedChanged = { onEvent(RateLimitViewEvent.SetDownloadSpeed(it)) },
-            onUploadSpeedChanged = { onEvent(RateLimitViewEvent.SetUploadSpeed(it)) },
-            onLatencyChanged = { onEvent(RateLimitViewEvent.SetLatency(it)) },
-            onPacketLossChanged = { onEvent(RateLimitViewEvent.SetPacketLoss(it)) },
-            onClearStats = { onEvent(RateLimitViewEvent.ClearStats) },
-            onResetToDefaults = { onEvent(RateLimitViewEvent.ResetToDefaults) },
+            state = state,
+            onEvent = onEvent,
             onBack = onNavigateBack,
             modifier = modifier,
         )

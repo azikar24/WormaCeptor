@@ -28,6 +28,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
+@Suppress("LongMethod")
 @Composable
 internal fun StatisticsCard(
     stats: ThrottleStats,

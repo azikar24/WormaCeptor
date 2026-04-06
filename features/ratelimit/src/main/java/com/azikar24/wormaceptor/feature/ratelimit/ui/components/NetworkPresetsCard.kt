@@ -41,12 +41,13 @@ import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.util.formatSpeed
 
+@Suppress("LongMethod")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun NetworkPresetsCard(
     selectedPreset: RateLimitConfig.NetworkPreset?,
     enabled: Boolean,
-    onPresetSelected: (RateLimitConfig.NetworkPreset?) -> Unit,
+    onSelectPreset: (RateLimitConfig.NetworkPreset?) -> Unit,
     colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
@@ -75,7 +76,7 @@ internal fun NetworkPresetsCard(
                         preset = preset,
                         selected = selectedPreset == preset,
                         enabled = enabled,
-                        onClick = { onPresetSelected(if (selectedPreset == preset) null else preset) },
+                        onClick = { onSelectPreset(if (selectedPreset == preset) null else preset) },
                         colors = colors,
                     )
                 }

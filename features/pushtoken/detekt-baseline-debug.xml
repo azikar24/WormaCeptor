@@ -2,8 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:PushTokenFeature.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenManager( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>MagicNumber:PushTokenFeature.kt$20</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val currentToken: PushTokenInfo? = null</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val isLoading: Boolean = false</ID>

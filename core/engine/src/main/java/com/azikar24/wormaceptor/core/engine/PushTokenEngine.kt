@@ -81,11 +81,14 @@ class PushTokenEngine(
             try {
                 val tokenInfo = fetchTokenInternal()
                 if (tokenInfo != null) {
+                    val previousToken = _currentToken.value?.token
                     _currentToken.value = tokenInfo
                     persistToken(tokenInfo)
 
-                    // Add to history if this is a new token
-                    if (_tokenHistory.value.none { it.token == tokenInfo.token && it.event == TokenEvent.CREATED }) {
+                    // Add to history only for genuinely new tokens
+                    if (previousToken != tokenInfo.token &&
+                        _tokenHistory.value.none { it.token == tokenInfo.token && it.event == TokenEvent.CREATED }
+                    ) {
                         addHistoryEntry(tokenInfo.token, TokenEvent.CREATED)
                     }
                 } else {

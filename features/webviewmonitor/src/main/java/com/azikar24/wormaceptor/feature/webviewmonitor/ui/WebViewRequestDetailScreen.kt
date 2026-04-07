@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -39,27 +37,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
+import com.azikar24.wormaceptor.feature.webviewmonitor.vm.WebViewMonitorViewState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WebViewRequestDetailScreen(
-    request: WebViewRequest,
-    onNavigateBack: () -> Unit,
+    state: WebViewMonitorViewState,
+    onBack: () -> Unit,
 ) {
+    val request = state.selectedRequest ?: return
     val statusColor = getStatusColor(request)
 
     Scaffold(
@@ -69,7 +67,7 @@ internal fun WebViewRequestDetailScreen(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                     ) {
                         WormaCeptorMethodBadge(request.method)
                         Column(modifier = Modifier.weight(1f)) {
@@ -92,7 +90,7 @@ internal fun WebViewRequestDetailScreen(
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.webviewmonitor_action_back),
@@ -108,14 +106,14 @@ internal fun WebViewRequestDetailScreen(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding(),
                 ),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
         ) {
             StatusCard(request)
             UrlCard(request)
@@ -125,10 +123,12 @@ internal fun WebViewRequestDetailScreen(
                     title = stringResource(R.string.webviewmonitor_detail_request_headers, request.headers.size),
                     headers = request.headers,
                     icon = Icons.Default.Code,
-                    iconTint = WormaCeptorColors.StatusBlue,
+                    iconTint = WormaCeptorTokens.Colors.Status.blue,
                 )
             }
-            ResponseInfoCard(request)
+            if (request.statusCode != null || request.mimeType != null || request.contentLength != null) {
+                ResponseInfoCard(request)
+            }
             if (request.responseHeaders.isNotEmpty()) {
                 HeadersCard(
                     title = stringResource(
@@ -137,7 +137,7 @@ internal fun WebViewRequestDetailScreen(
                     ),
                     headers = request.responseHeaders,
                     icon = Icons.Default.Code,
-                    iconTint = WormaCeptorColors.StatusGreen,
+                    iconTint = WormaCeptorTokens.Colors.Status.green,
                 )
             }
             request.errorMessage?.let { ErrorCard(it) }
@@ -158,17 +158,17 @@ private fun DetailStatusBadge(
     }
     Text(
         text = statusText,
+        style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 14.sp,
         color = statusColor,
         modifier = Modifier
             .background(
-                statusColor.asSubtleBackground(),
-                RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
+                statusColor.copy(alpha = TokenAlpha.SUBTLE),
+                RoundedCornerShape(WormaCeptorTokens.Radius.xs),
             )
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xxs,
             ),
     )
 }
@@ -219,7 +219,7 @@ private fun UrlCard(request: WebViewRequest) {
         SelectionContainer {
             Text(
                 text = request.url,
-                style = WormaCeptorDesignSystem.Typography.codeMedium,
+                style = WormaCeptorTokens.Typography.codeMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -234,7 +234,7 @@ private fun RequestInfoCard(request: WebViewRequest) {
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_request_info),
         icon = Icons.Default.Description,
-        iconTint = WormaCeptorColors.StatusBlue,
+        iconTint = WormaCeptorTokens.Colors.Status.blue,
     ) {
         WormaCeptorDetailRow(
             label = stringResource(R.string.webviewmonitor_label_method),
@@ -279,22 +279,20 @@ private fun HeadersCard(
         icon = icon,
         iconTint = iconTint,
     ) {
-        headers.entries.forEachIndexed { index, (key, value) ->
-            if (index > 0) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-            }
-            Column {
+        headers.entries.forEach { (key, value) ->
+            Column(
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+            ) {
                 Text(
                     text = key,
-                    style = WormaCeptorDesignSystem.Typography.codeSmall,
+                    style = WormaCeptorTokens.Typography.codeSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = iconTint,
                 )
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
                 SelectionContainer {
                     Text(
                         text = value,
-                        style = WormaCeptorDesignSystem.Typography.codeSmall,
+                        style = WormaCeptorTokens.Typography.codeSmall,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
@@ -305,12 +303,10 @@ private fun HeadersCard(
 
 @Composable
 private fun ResponseInfoCard(request: WebViewRequest) {
-    if (request.statusCode == null && request.mimeType == null && request.contentLength == null) return
-
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_response_info),
         icon = Icons.Default.CheckCircle,
-        iconTint = WormaCeptorColors.StatusGreen,
+        iconTint = WormaCeptorTokens.Colors.Status.green,
     ) {
         request.statusCode?.let {
             WormaCeptorDetailRow(
@@ -350,44 +346,49 @@ private fun ErrorCard(errorMessage: String) {
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_error),
         icon = Icons.Default.Error,
-        iconTint = WormaCeptorColors.StatusRed,
+        iconTint = WormaCeptorTokens.Colors.Status.red,
     ) {
         Text(
             text = errorMessage,
-            style = WormaCeptorDesignSystem.Typography.codeMedium,
-            color = WormaCeptorColors.StatusRed,
+            style = WormaCeptorTokens.Typography.codeMedium,
+            color = WormaCeptorTokens.Colors.Status.red,
         )
     }
 }
 
+@Suppress("MagicNumber")
 @Preview(showBackground = true)
 @Composable
 private fun WebViewRequestDetailScreenPreview() {
+    val fixedTimestamp = 1_700_000_000_000L
+
     WormaCeptorTheme {
         WebViewRequestDetailScreen(
-            request = WebViewRequest(
-                id = "req-1",
-                url = "https://api.example.com/v2/users/profile",
-                method = "GET",
-                headers = mapOf(
-                    "Authorization" to "Bearer eyJhbGci...",
-                    "Accept" to "application/json",
-                ),
-                timestamp = System.currentTimeMillis() - 5_000L,
-                webViewId = "main_webview",
-                resourceType = WebViewResourceType.XHR,
-                isForMainFrame = false,
-                statusCode = 200,
-                mimeType = "application/json",
-                encoding = "UTF-8",
-                contentLength = 2_048L,
-                duration = 234L,
-                responseHeaders = mapOf(
-                    "Content-Type" to "application/json; charset=utf-8",
-                    "Cache-Control" to "no-cache",
+            state = WebViewMonitorViewState(
+                selectedRequest = WebViewRequest(
+                    id = "req-1",
+                    url = "https://api.example.com/v2/users/profile",
+                    method = "GET",
+                    headers = mapOf(
+                        "Authorization" to "Bearer eyJhbGci...",
+                        "Accept" to "application/json",
+                    ),
+                    timestamp = fixedTimestamp - 5_000L,
+                    webViewId = "main_webview",
+                    resourceType = WebViewResourceType.XHR,
+                    isForMainFrame = false,
+                    statusCode = 200,
+                    mimeType = "application/json",
+                    encoding = "UTF-8",
+                    contentLength = 2_048L,
+                    duration = 234L,
+                    responseHeaders = mapOf(
+                        "Content-Type" to "application/json; charset=utf-8",
+                        "Cache-Control" to "no-cache",
+                    ),
                 ),
             ),
-            onNavigateBack = {},
+            onBack = {},
         )
     }
 }

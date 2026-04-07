@@ -3,127 +3,49 @@ package com.azikar24.wormaceptor.feature.pushtoken
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Autorenew
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.NotificationsOff
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.util.formatDateShort
-import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
-import com.azikar24.wormaceptor.domain.entities.TokenHistory
-import kotlinx.coroutines.flow.StateFlow
+import com.azikar24.wormaceptor.feature.pushtoken.ui.PushTokenScreen
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenEffect
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenEvent
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewModel
+import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
 /** Entry point for the Push Token management feature. */
 object PushTokenFeature {
-    /** Creates a ViewModelProvider.Factory for [PushTokenViewModel]. */
-    fun createViewModelFactory(engine: PushTokenEngine) = PushTokenViewModelFactory(engine)
-}
-
-/** ViewModel exposing push token state and operations. */
-class PushTokenViewModel(private val engine: PushTokenEngine) : ViewModel() {
-    /** Current push token information, or null if not yet fetched. */
-    val currentToken: StateFlow<PushTokenInfo?> = engine.currentToken
-
-    /** Chronological list of token lifecycle events. */
-    val tokenHistory: StateFlow<List<TokenHistory>> = engine.tokenHistory
-
-    /** Whether a token fetch or refresh operation is in progress. */
-    val isLoading: StateFlow<Boolean> = engine.isLoading
-
-    /** Current error message, or null if no error. */
-    val error: StateFlow<String?> = engine.error
-
-    /** Fetches the current push token from the messaging provider. */
-    fun fetchToken() = engine.fetchCurrentToken()
-
-    /** Requests a new push token, invalidating the current one. */
-    fun refreshToken() = engine.requestNewToken()
-
-    /** Deletes the current push token from the provider. */
-    fun deleteToken() = engine.deleteToken()
-
-    /** Clears all entries from the token history. */
-    fun clearHistory() = engine.clearHistory()
-
-    /** Dismisses the current error message. */
-    fun clearError() = engine.clearError()
-}
-
-/** Factory for creating [PushTokenViewModel] instances with the required engine. */
-class PushTokenViewModelFactory(private val engine: PushTokenEngine) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PushTokenViewModel(engine) as T
+    /** Creates a [PushTokenViewModelFactory] for use with viewModel(). */
+    fun createViewModelFactory(engine: PushTokenEngine): PushTokenViewModelFactory {
+        return PushTokenViewModelFactory(engine)
     }
 }
 
-/** Displays the push token management screen with token info, copy, and history. */
-@OptIn(ExperimentalMaterial3Api::class)
+/** Factory for creating [PushTokenViewModel] instances with the required engine. */
+class PushTokenViewModelFactory(
+    private val engine: PushTokenEngine,
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(PushTokenViewModel::class.java)) {
+            return PushTokenViewModel(engine) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+    }
+}
+
+/** Composable entry point that wires the ViewModel to the Push Token screen. */
 @Composable
 fun PushTokenManager(
     modifier: Modifier = Modifier,
@@ -133,302 +55,41 @@ fun PushTokenManager(
     val factory = remember { PushTokenFeature.createViewModelFactory(engine) }
     val viewModel: PushTokenViewModel = viewModel(factory = factory)
 
-    val currentToken by viewModel.currentToken.collectAsState()
-    val tokenHistory by viewModel.tokenHistory.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
-
-    val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val context = LocalContext.current
+    val clipboardManager = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
+    val clipboardLabel = stringResource(R.string.pushtoken_clipboard_label)
     var showCopiedSnackbar by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) { viewModel.fetchToken() }
+    LaunchedEffect(Unit) { viewModel.sendEvent(PushTokenEvent.FetchToken) }
 
-    Scaffold(
-        contentWindowInsets = WindowInsets(0),
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(stringResource(R.string.pushtoken_title), fontWeight = FontWeight.SemiBold)
-                },
-                navigationIcon = {
-                    onNavigateBack?.let {
-                        IconButton(
-                            onClick = it,
-                        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.pushtoken_back)) }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.fetchToken() }, enabled = !isLoading) {
-                        if (isLoading) {
-                            CircularProgressIndicator(
-                                Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
-                                strokeWidth = WormaCeptorDesignSystem.BorderWidth.thick,
-                            )
-                        } else {
-                            Icon(Icons.Default.Refresh, stringResource(R.string.pushtoken_fetch_token))
-                        }
-                    }
-                },
-            )
-        },
-        snackbarHost = {
-            AnimatedVisibility(showCopiedSnackbar, enter = fadeIn(), exit = fadeOut()) {
-                Snackbar { Text(stringResource(R.string.pushtoken_token_copied)) }
-            }
-        },
-    ) { padding ->
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .padding(padding),
-            contentPadding = PaddingValues(
-                start = WormaCeptorDesignSystem.Spacing.lg,
-                top = WormaCeptorDesignSystem.Spacing.lg,
-                end = WormaCeptorDesignSystem.Spacing.lg,
-                bottom = WormaCeptorDesignSystem.Spacing.lg +
-                    WindowInsets.navigationBars.asPaddingValues()
-                        .calculateBottomPadding(),
-            ),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Error
-            error?.let {
-                item {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        ),
-                        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-                    ) {
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(WormaCeptorDesignSystem.Spacing.md),
-                            Arrangement.SpaceBetween,
-                            Alignment.CenterVertically,
-                        ) {
-                            Text(it, color = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.weight(1f))
-                            IconButton(onClick = {
-                                viewModel.clearError()
-                            }) { Icon(Icons.Default.Close, stringResource(R.string.pushtoken_dismiss)) }
-                        }
-                    }
-                }
-            }
-
-            // Current token
-            item {
-                Card(
-                    shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                ) {
-                    Column(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(WormaCeptorDesignSystem.Spacing.lg),
-                        Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                    ) {
-                        Text(
-                            stringResource(R.string.pushtoken_current_token),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        val token = currentToken
-                        if (token != null) {
-                            Surface(
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = WormaCeptorDesignSystem.Shapes.card,
-                                color = MaterialTheme.colorScheme.surfaceContainerLow,
-                            ) {
-                                Text(
-                                    token.token,
-                                    Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
-                                    fontFamily = FontFamily.Monospace,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    maxLines = 3,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            }
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                            ) {
-                                Surface(
-                                    shape = WormaCeptorDesignSystem.Shapes.chip,
-                                    color = WormaCeptorColors.StatusGreen.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.LIGHT,
-                                    ),
-                                ) {
-                                    Text(
-                                        token.provider.name,
-                                        Modifier.padding(
-                                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                            vertical = WormaCeptorDesignSystem.Spacing.xs,
-                                        ),
-                                        color = WormaCeptorColors.StatusGreen,
-                                        fontWeight = FontWeight.SemiBold,
-                                        style = MaterialTheme.typography.labelSmall,
-                                    )
-                                }
-                                Text(
-                                    stringResource(R.string.pushtoken_refreshed, formatDateShort(token.lastRefreshed)),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                            ) {
-                                val clipboardLabel = stringResource(R.string.pushtoken_clipboard_label)
-                                Button(onClick = {
-                                    clipboardManager.setPrimaryClip(
-                                        ClipData.newPlainText(clipboardLabel, token.token),
-                                    )
-                                    showCopiedSnackbar = true
-                                }, Modifier.weight(1f)) {
-                                    Icon(
-                                        Icons.Default.ContentCopy,
-                                        null,
-                                        Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                    )
-                                    Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                                    Text(stringResource(R.string.pushtoken_copy))
-                                }
-                                OutlinedButton(
-                                    onClick = {
-                                        viewModel.deleteToken()
-                                    },
-                                    enabled = !isLoading,
-                                    colors = ButtonDefaults.outlinedButtonColors(
-                                        contentColor = WormaCeptorColors.StatusRed,
-                                    ),
-                                ) {
-                                    Icon(Icons.Default.Delete, null, Modifier.size(WormaCeptorDesignSystem.IconSize.sm))
-                                }
-                            }
-                        } else {
-                            Box(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(80.dp),
-                                Alignment.Center,
-                            ) {
-                                if (isLoading) {
-                                    CircularProgressIndicator()
-                                } else {
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Icon(
-                                            Icons.Default.NotificationsOff,
-                                            null,
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xl),
-                                        )
-                                        Text(
-                                            stringResource(R.string.pushtoken_no_token),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // History
-            item {
-                Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-                    Text(
-                        stringResource(R.string.pushtoken_token_history),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    if (tokenHistory.isNotEmpty()) {
-                        TextButton(onClick = {
-                            viewModel.clearHistory()
-                        }) { Text(stringResource(R.string.pushtoken_clear)) }
-                    }
-                }
-            }
-
-            if (tokenHistory.isEmpty()) {
-                item {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(96.dp),
-                        Alignment.Center,
-                    ) {
-                        Text(
-                            stringResource(R.string.pushtoken_no_history),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                            ),
-                        )
-                    }
-                }
-            } else {
-                items(tokenHistory.take(20), key = { "${it.timestamp}_${it.event}" }) { entry ->
-                    Card(
-                        shape = WormaCeptorDesignSystem.Shapes.card,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                    ) {
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(WormaCeptorDesignSystem.Spacing.md),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            val (icon, color) = when (entry.event) {
-                                TokenHistory.TokenEvent.CREATED ->
-                                    Icons.Default.Add to WormaCeptorColors.StatusGreen
-                                TokenHistory.TokenEvent.REFRESHED ->
-                                    Icons.Default.Autorenew to WormaCeptorColors.StatusBlue
-                                TokenHistory.TokenEvent.INVALIDATED ->
-                                    Icons.Default.Warning to WormaCeptorColors.StatusAmber
-                                TokenHistory.TokenEvent.DELETED ->
-                                    Icons.Default.Delete to WormaCeptorColors.StatusRed
-                            }
-                            Box(
-                                Modifier
-                                    .size(WormaCeptorDesignSystem.IconSize.xl)
-                                    .clip(WormaCeptorDesignSystem.Shapes.card)
-                                    .background(color.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)),
-                                Alignment.Center,
-                            ) {
-                                Icon(
-                                    icon,
-                                    null,
-                                    tint = color,
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                )
-                            }
-                            Spacer(Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-                            Column(Modifier.weight(1f)) {
-                                Text(
-                                    entry.event.name.lowercase().replaceFirstChar { it.uppercase() },
-                                    fontWeight = FontWeight.Medium,
-                                )
-                                Text(
-                                    entry.token.take(20) + "...",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontFamily = FontFamily.Monospace,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                            Text(
-                                formatDateShort(entry.timestamp),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                                ),
-                            )
-                        }
-                    }
-                }
-            }
+    LaunchedEffect(showCopiedSnackbar) {
+        if (showCopiedSnackbar) {
+            delay(SnackbarDurationMs)
+            showCopiedSnackbar = false
         }
     }
+
+    BaseScreen(
+        viewModel = viewModel,
+        onEffect = { effect ->
+            when (effect) {
+                is PushTokenEffect.CopyToClipboard -> {
+                    clipboardManager.setPrimaryClip(
+                        ClipData.newPlainText(clipboardLabel, effect.token),
+                    )
+                    showCopiedSnackbar = true
+                }
+            }
+        },
+    ) { state, onEvent ->
+        PushTokenScreen(
+            state = state,
+            onEvent = onEvent,
+            onBack = onNavigateBack,
+            modifier = modifier,
+            showCopiedSnackbar = showCopiedSnackbar,
+        )
+    }
 }
+
+private const val SnackbarDurationMs = 2_000L

@@ -8,29 +8,19 @@ import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val SearchDebounceMs = 300L
-private const val FlowTimeoutMs = 5000L
-private const val QueryHistoryLimit = 20
-private const val DefaultPageSize = 100
-
-/**
- * ViewModel for the Database Browser feature, using MVI via BaseViewModel.
- */
 class DatabaseViewModel(
     private val repository: DatabaseRepository,
     private val application: Application,
@@ -39,73 +29,108 @@ class DatabaseViewModel(
     private val _allDatabases = MutableStateFlow<List<DatabaseInfo>>(emptyList())
     private val _allTables = MutableStateFlow<List<TableInfo>>(emptyList())
 
-    /** Filtered database list, derived from the raw list and the search query. */
-    @OptIn(FlowPreview::class)
-    val databases: StateFlow<ImmutableList<DatabaseInfo>> = combine(
-        _allDatabases,
-        uiState.map { it.databaseSearchQuery }.debounce(SearchDebounceMs),
-    ) { databases, query ->
-        if (query.isBlank()) {
-            databases.toImmutableList()
-        } else {
-            databases.filter {
-                it.name.contains(query, ignoreCase = true) ||
-                    it.path.contains(query, ignoreCase = true)
-            }.toImmutableList()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(FlowTimeoutMs), persistentListOf())
-
-    /** Filtered table list, derived from the raw list and the search query. */
-    @OptIn(FlowPreview::class)
-    val tables: StateFlow<ImmutableList<TableInfo>> = combine(
-        _allTables,
-        uiState.map { it.tableSearchQuery }.debounce(SearchDebounceMs),
-    ) { tables, query ->
-        if (query.isBlank()) {
-            tables.toImmutableList()
-        } else {
-            tables.filter {
-                it.name.contains(query, ignoreCase = true)
-            }.toImmutableList()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(FlowTimeoutMs), persistentListOf())
-
     init {
+        observeFilteredLists()
         loadDatabases()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeFilteredLists() {
+        combine(
+            _allDatabases,
+            uiState.map { it.databaseSearchQuery }.debounce(SEARCH_DEBOUNCE_MS),
+        ) { databases, query ->
+            if (query.isBlank()) {
+                databases.toImmutableList()
+            } else {
+                databases.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                        it.path.contains(query, ignoreCase = true)
+                }.toImmutableList()
+            }
+        }.onEach { filtered ->
+            updateState { copy(databases = filtered) }
+        }.launchIn(viewModelScope)
+
+        combine(
+            _allTables,
+            uiState.map { it.tableSearchQuery }.debounce(SEARCH_DEBOUNCE_MS),
+        ) { tables, query ->
+            if (query.isBlank()) {
+                tables.toImmutableList()
+            } else {
+                tables.filter {
+                    it.name.contains(query, ignoreCase = true)
+                }.toImmutableList()
+            }
+        }.onEach { filtered ->
+            updateState { copy(tables = filtered) }
+        }.launchIn(viewModelScope)
     }
 
     override fun handleEvent(event: DatabaseViewEvent) {
         when (event) {
-            DatabaseViewEvent.LoadDatabases -> loadDatabases()
-            is DatabaseViewEvent.DatabaseSearchQueryChanged -> {
+            is DatabaseViewEvent.List -> handleListEvent(event)
+            is DatabaseViewEvent.Tables -> handleTablesEvent(event)
+            is DatabaseViewEvent.Data -> handleDataEvent(event)
+            is DatabaseViewEvent.Query -> handleQueryEvent(event)
+        }
+    }
+
+    private fun handleListEvent(event: DatabaseViewEvent.List) {
+        when (event) {
+            DatabaseViewEvent.List.Load -> loadDatabases()
+            is DatabaseViewEvent.List.SearchQueryChanged -> {
                 updateState { copy(databaseSearchQuery = event.query) }
             }
-            is DatabaseViewEvent.DatabaseSelected -> selectDatabase(event.name)
-            DatabaseViewEvent.DatabaseSelectionCleared -> clearDatabaseSelection()
+            DatabaseViewEvent.List.ToggleSearch -> {
+                val wasActive = uiState.value.isDatabaseSearchActive
+                updateState {
+                    copy(
+                        isDatabaseSearchActive = !wasActive,
+                        databaseSearchQuery = if (wasActive) "" else databaseSearchQuery,
+                    )
+                }
+            }
+            is DatabaseViewEvent.List.Selected -> selectDatabase(event.name)
+            DatabaseViewEvent.List.SelectionCleared -> clearDatabaseSelection()
+        }
+    }
 
-            is DatabaseViewEvent.TableSearchQueryChanged -> {
+    private fun handleTablesEvent(event: DatabaseViewEvent.Tables) {
+        when (event) {
+            is DatabaseViewEvent.Tables.SearchQueryChanged -> {
                 updateState { copy(tableSearchQuery = event.query) }
             }
-            is DatabaseViewEvent.TableSelected -> selectTable(event.name)
-            DatabaseViewEvent.TableSelectionCleared -> clearTableSelection()
+            DatabaseViewEvent.Tables.ToggleSearch -> {
+                val wasActive = uiState.value.isTableSearchActive
+                updateState {
+                    copy(
+                        isTableSearchActive = !wasActive,
+                        tableSearchQuery = if (wasActive) "" else tableSearchQuery,
+                    )
+                }
+            }
+            is DatabaseViewEvent.Tables.Selected -> selectTable(event.name)
+            DatabaseViewEvent.Tables.SelectionCleared -> clearTableSelection()
+        }
+    }
 
-            DatabaseViewEvent.ToggleSchema -> {
-                updateState { copy(showSchema = !showSchema) }
-            }
-            DatabaseViewEvent.NextPage -> nextPage()
-            DatabaseViewEvent.PreviousPage -> previousPage()
+    private fun handleDataEvent(event: DatabaseViewEvent.Data) {
+        when (event) {
+            DatabaseViewEvent.Data.ToggleSchema -> updateState { copy(showSchema = !showSchema) }
+            DatabaseViewEvent.Data.NextPage -> nextPage()
+            DatabaseViewEvent.Data.PreviousPage -> previousPage()
+        }
+    }
 
-            is DatabaseViewEvent.SqlQueryChanged -> {
-                updateState { copy(sqlQuery = event.query) }
-            }
-            DatabaseViewEvent.ExecuteQuery -> executeQuery()
-            DatabaseViewEvent.ClearQuery -> {
-                updateState { copy(sqlQuery = "", queryExecutionResult = null) }
-            }
-            is DatabaseViewEvent.QuerySelectedFromHistory -> {
-                updateState { copy(sqlQuery = event.query) }
-            }
-            is DatabaseViewEvent.PrefilledQueryRequested -> setPrefilledQuery(event.tableName, event.queryType)
+    private fun handleQueryEvent(event: DatabaseViewEvent.Query) {
+        when (event) {
+            is DatabaseViewEvent.Query.SqlChanged -> updateState { copy(sqlQuery = event.query) }
+            DatabaseViewEvent.Query.Execute -> executeQuery()
+            DatabaseViewEvent.Query.Clear -> updateState { copy(sqlQuery = "", queryExecutionResult = null) }
+            is DatabaseViewEvent.Query.HistorySelected -> updateState { copy(sqlQuery = event.query) }
+            is DatabaseViewEvent.Query.PrefilledRequested -> setPrefilledQuery(event.tableName, event.queryType)
         }
     }
 
@@ -206,9 +231,9 @@ class DatabaseViewModel(
             updateState { copy(isDataLoading = true) }
 
             try {
-                val offset = state.currentPage * DefaultPageSize
+                val offset = state.currentPage * DEFAULT_PAGE_SIZE
                 val result = withContext(Dispatchers.IO) {
-                    repository.queryTable(dbName, tableName, DefaultPageSize, offset)
+                    repository.queryTable(dbName, tableName, DEFAULT_PAGE_SIZE, offset)
                 }
                 updateState { copy(queryResult = result) }
             } catch (e: IllegalStateException) {
@@ -230,7 +255,7 @@ class DatabaseViewModel(
 
     private fun nextPage() {
         val result = uiState.value.queryResult ?: return
-        if (result.rowCount == DefaultPageSize) {
+        if (result.rowCount == DEFAULT_PAGE_SIZE) {
             updateState { copy(currentPage = currentPage + 1) }
             loadTableData()
         }
@@ -271,7 +296,7 @@ class DatabaseViewModel(
                 }
                 updateState {
                     val updatedHistory = if (result.isSuccess && !queryHistory.contains(query)) {
-                        (queryHistory + query).takeLast(QueryHistoryLimit).toImmutableList()
+                        (queryHistory + query).takeLast(QUERY_HISTORY_LIMIT).toImmutableList()
                     } else {
                         queryHistory
                     }
@@ -305,5 +330,11 @@ class DatabaseViewModel(
             else -> ""
         }
         updateState { copy(sqlQuery = query) }
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_MS = 300L
+        private const val QUERY_HISTORY_LIMIT = 20
+        private const val DEFAULT_PAGE_SIZE = 100
     }
 }

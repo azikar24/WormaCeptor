@@ -40,14 +40,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+
+private const val PageSize = 100
 
 /**
  * Screen displaying table data with pagination.
@@ -55,110 +58,137 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TableDataScreen(
-    tableName: String,
-    queryResult: QueryResult?,
-    schema: ImmutableList<ColumnInfo>,
-    showSchema: Boolean,
-    currentPage: Int,
-    isLoading: Boolean,
-    onToggleSchema: () -> Unit,
-    onPreviousPage: () -> Unit,
-    onNextPage: () -> Unit,
+    state: DatabaseViewState,
+    onEvent: (DatabaseViewEvent) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(tableName)
-                        Text(
-                            text = stringResource(R.string.database_table_data_page, currentPage + 1),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.database_table_data_back),
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onToggleSchema) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = stringResource(R.string.database_table_data_schema),
-                            tint = if (showSchema) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurface
-                            },
-                        )
-                    }
-                    IconButton(
-                        onClick = onPreviousPage,
-                        enabled = currentPage > 0,
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.NavigateBefore,
-                            contentDescription = stringResource(R.string.database_table_data_previous),
-                        )
-                    }
-                    IconButton(
-                        onClick = onNextPage,
-                        enabled = queryResult?.rowCount == 100,
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.NavigateNext,
-                            contentDescription = stringResource(R.string.database_table_data_next),
-                        )
-                    }
-                },
+            TableDataTopBar(
+                tableName = state.selectedTableName ?: "",
+                currentPage = state.currentPage,
+                showSchema = state.showSchema,
+                hasNextPage = state.queryResult?.rowCount == PageSize,
+                onToggleSchema = { onEvent(DatabaseViewEvent.Data.ToggleSchema) },
+                onPrevious = { onEvent(DatabaseViewEvent.Data.PreviousPage) },
+                onNext = { onEvent(DatabaseViewEvent.Data.NextPage) },
+                onBack = onBack,
             )
         },
         modifier = modifier,
     ) { padding ->
-        Box(
+        TableDataBody(
+            state = state,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .navigationBarsPadding(),
-        ) {
-            when {
-                isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
+        )
+    }
+}
 
-                queryResult?.error != null -> {
-                    Text(
-                        text = queryResult.error ?: "",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
+@Suppress("LongParameterList")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TableDataTopBar(
+    tableName: String,
+    currentPage: Int,
+    showSchema: Boolean,
+    hasNextPage: Boolean,
+    onToggleSchema: () -> Unit,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    onBack: () -> Unit,
+) {
+    TopAppBar(
+        title = {
+            Column {
+                Text(tableName)
+                Text(
+                    text = stringResource(R.string.database_table_data_page, currentPage + 1),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.database_table_data_back),
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = onToggleSchema) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = stringResource(R.string.database_table_data_schema),
+                    tint = if (showSchema) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
+                )
+            }
+            IconButton(
+                onClick = onPrevious,
+                enabled = currentPage > 0,
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.NavigateBefore,
+                    contentDescription = stringResource(R.string.database_table_data_previous),
+                )
+            }
+            IconButton(
+                onClick = onNext,
+                enabled = hasNextPage,
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.NavigateNext,
+                    contentDescription = stringResource(R.string.database_table_data_next),
+                )
+            }
+        },
+    )
+}
 
-                showSchema -> {
-                    SchemaView(
-                        schema = schema,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
+@Composable
+private fun TableDataBody(
+    state: DatabaseViewState,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        when {
+            state.isDataLoading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
 
-                queryResult != null -> {
-                    DataTable(
-                        result = queryResult,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
+            state.queryResult?.error != null -> {
+                Text(
+                    text = state.queryResult.error ?: "",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+
+            state.showSchema -> {
+                SchemaView(
+                    schema = state.tableSchema,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+
+            state.queryResult != null -> {
+                DataTable(
+                    result = state.queryResult,
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
     }
@@ -181,15 +211,15 @@ private fun SchemaView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                        vertical = WormaCeptorDesignSystem.Spacing.md,
+                        horizontal = WormaCeptorTokens.Spacing.lg,
+                        vertical = WormaCeptorTokens.Spacing.md,
                     ),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
@@ -201,18 +231,18 @@ private fun SchemaView(
                             Text(
                                 text = stringResource(R.string.database_table_data_pk),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = WormaCeptorColors.Database.PrimaryKey,
+                                color = WormaCeptorTokens.Colors.Database.primaryKey,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
                     }
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(
                             text = column.type,
                             style = MaterialTheme.typography.bodySmall,
-                            color = WormaCeptorColors.Database.forDataType(column.type),
+                            color = WormaCeptorTokens.Colors.Database.forDataType(column.type),
                         )
                         if (column.isNullable) {
                             Text(
@@ -244,13 +274,13 @@ private fun DataTable(
             Row(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                    .padding(vertical = WormaCeptorTokens.Spacing.xs),
             ) {
                 result.columns.forEach { column ->
                     Box(
                         modifier = Modifier
                             .widthIn(min = 100.dp, max = 200.dp)
-                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(
                             text = column,
@@ -271,21 +301,21 @@ private fun DataTable(
             key = { index, _ -> "row_$index" },
         ) { _, row ->
             Row(
-                modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xs),
             ) {
                 val nullValue = stringResource(R.string.database_table_data_null_value)
                 row.forEach { cell ->
                     Box(
                         modifier = Modifier
                             .widthIn(min = 100.dp, max = 200.dp)
-                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
+                            .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(
                             text = cell?.toString() ?: nullValue,
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
                             color = if (cell == null) {
-                                WormaCeptorColors.Database.NullValue
+                                WormaCeptorTokens.Colors.Database.nullValue
                             } else {
                                 MaterialTheme.colorScheme.onSurface
                             },
@@ -304,7 +334,7 @@ private fun DataTable(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(WormaCeptorDesignSystem.Spacing.xl),
+                        .padding(WormaCeptorTokens.Spacing.xl),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -323,26 +353,23 @@ private fun DataTable(
 private fun TableDataScreenPreview() {
     WormaCeptorTheme {
         TableDataScreen(
-            tableName = "users",
-            queryResult = QueryResult(
-                columns = listOf("id", "name", "email"),
-                rows = listOf(
-                    listOf(1, "Alice", "alice@example.com"),
-                    listOf(2, "Bob", "bob@example.com"),
+            state = DatabaseViewState(
+                selectedTableName = "users",
+                queryResult = QueryResult(
+                    columns = listOf("id", "name", "email"),
+                    rows = listOf(
+                        listOf(1, "Alice", "alice@example.com"),
+                        listOf(2, "Bob", "bob@example.com"),
+                    ),
+                    rowCount = 2,
                 ),
-                rowCount = 2,
+                tableSchema = persistentListOf(
+                    ColumnInfo(name = "id", type = "INTEGER", isPrimaryKey = true, isNullable = false),
+                    ColumnInfo(name = "name", type = "TEXT", isPrimaryKey = false, isNullable = false),
+                    ColumnInfo(name = "email", type = "TEXT", isPrimaryKey = false, isNullable = true),
+                ),
             ),
-            schema = persistentListOf(
-                ColumnInfo(name = "id", type = "INTEGER", isPrimaryKey = true, isNullable = false),
-                ColumnInfo(name = "name", type = "TEXT", isPrimaryKey = false, isNullable = false),
-                ColumnInfo(name = "email", type = "TEXT", isPrimaryKey = false, isNullable = true),
-            ),
-            showSchema = false,
-            currentPage = 0,
-            isLoading = false,
-            onToggleSchema = {},
-            onPreviousPage = {},
-            onNextPage = {},
+            onEvent = {},
             onBack = {},
         )
     }

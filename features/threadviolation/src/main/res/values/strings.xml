@@ -3,6 +3,7 @@
     <string name="threadviolation_back">Back</string>
     <string name="threadviolation_clear">Clear</string>
     <string name="threadviolation_copy_stack">Copy stack trace</string>
+    <string name="threadviolation_stack_copied">Stack trace copied</string>
     <string name="threadviolation_filter_all">All</string>
     <string name="threadviolation_title">Thread Violations</string>
     <string name="threadviolation_action_stop">Stop</string>

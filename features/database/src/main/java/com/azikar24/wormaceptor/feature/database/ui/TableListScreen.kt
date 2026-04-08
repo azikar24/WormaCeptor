@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,10 +33,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,165 +40,212 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Screen displaying list of tables in a database.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TableListScreen(
-    databaseName: String,
-    tables: ImmutableList<TableInfo>,
-    searchQuery: String,
-    isLoading: Boolean,
-    error: String?,
-    onSearchQueryChanged: (String) -> Unit,
+    state: DatabaseViewState,
+    onEvent: (DatabaseViewEvent) -> Unit,
     onTableClick: (TableInfo) -> Unit,
     onQueryClick: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var searchActive by remember { mutableStateOf(false) }
-
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            Column {
-                TopAppBar(
-                    title = {
-                        Column {
-                            Text(databaseName)
-                            Text(
-                                text = stringResource(R.string.database_table_list_tables_count, tables.size),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.database_table_list_back),
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { searchActive = !searchActive }) {
-                            Icon(
-                                imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                                contentDescription = stringResource(R.string.database_table_list_search),
-                            )
-                        }
-                        IconButton(onClick = onQueryClick) {
-                            Icon(
-                                imageVector = Icons.Default.Terminal,
-                                contentDescription = stringResource(R.string.database_table_list_sql_query),
-                            )
-                        }
-                    },
-                )
-
-                if (searchActive) {
-                    WormaCeptorSearchBar(
-                        query = searchQuery,
-                        onQueryChange = onSearchQueryChanged,
-                        placeholder = stringResource(R.string.database_table_list_search_placeholder),
-                        onSearch = { searchActive = false },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
-                    )
-                }
-            }
+            TableListTopBar(
+                state = state,
+                onEvent = onEvent,
+                onQueryClick = onQueryClick,
+                onBack = onBack,
+            )
         },
         modifier = modifier,
     ) { padding ->
-        Box(modifier = Modifier.imePadding()) {
-            when {
-                isLoading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
+        TableListBody(
+            isLoading = state.isTablesLoading,
+            error = state.tablesError,
+            tables = state.tables,
+            onTableClick = onTableClick,
+            modifier = Modifier.padding(padding),
+        )
+    }
+}
 
-                error != null -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = error,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TableListTopBar(
+    state: DatabaseViewState,
+    onEvent: (DatabaseViewEvent) -> Unit,
+    onQueryClick: () -> Unit,
+    onBack: () -> Unit,
+) {
+    Column {
+        TopAppBar(
+            title = {
+                Column {
+                    Text(state.selectedDatabaseName ?: "")
+                    Text(
+                        text = stringResource(R.string.database_table_list_tables_count, state.tables.size),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
+            },
+            navigationIcon = {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.database_table_list_back),
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = { onEvent(DatabaseViewEvent.Tables.ToggleSearch) }) {
+                    Icon(
+                        imageVector = if (state.isTableSearchActive) Icons.Default.Close else Icons.Default.Search,
+                        contentDescription = stringResource(R.string.database_table_list_search),
+                    )
+                }
+                IconButton(onClick = onQueryClick) {
+                    Icon(
+                        imageVector = Icons.Default.Terminal,
+                        contentDescription = stringResource(R.string.database_table_list_sql_query),
+                    )
+                }
+            },
+        )
 
-                tables.isEmpty() -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.TableChart,
-                                contentDescription = stringResource(R.string.database_table_list_empty),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
-                            )
-                            Text(
-                                text = stringResource(R.string.database_table_list_empty),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
+        if (state.isTableSearchActive) {
+            WormaCeptorSearchBar(
+                query = state.tableSearchQuery,
+                onQueryChange = { onEvent(DatabaseViewEvent.Tables.SearchQueryChanged(it)) },
+                placeholder = stringResource(R.string.database_table_list_search_placeholder),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = WormaCeptorTokens.Spacing.lg)
+                    .padding(vertical = WormaCeptorTokens.Spacing.sm),
+            )
+        }
+    }
+}
 
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                        contentPadding = PaddingValues(
-                            bottom = WormaCeptorDesignSystem.Spacing.lg +
-                                WindowInsets.navigationBars.asPaddingValues()
-                                    .calculateBottomPadding(),
-                        ),
-                    ) {
-                        items(
-                            items = tables,
-                            key = { it.name },
-                        ) { table ->
-                            TableListItem(
-                                table = table,
-                                onClick = { onTableClick(table) },
-                            )
-                            WormaCeptorDivider()
-                        }
-                    }
-                }
+@Composable
+private fun TableListBody(
+    isLoading: Boolean,
+    error: String?,
+    tables: ImmutableList<TableInfo>,
+    onTableClick: (TableInfo) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier.fillMaxSize().imePadding()) {
+        when {
+            isLoading -> {
+                TableLoadingState()
             }
+
+            error != null -> {
+                TableErrorState(error = error)
+            }
+
+            tables.isEmpty() -> {
+                TableEmptyState()
+            }
+
+            else -> {
+                TableLoadedList(
+                    tables = tables,
+                    onTableClick = onTableClick,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TableLoadingState(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize().navigationBarsPadding(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun TableErrorState(
+    error: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxSize().navigationBarsPadding(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = error,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.error,
+        )
+    }
+}
+
+@Composable
+private fun TableEmptyState(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize().navigationBarsPadding(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+        ) {
+            Icon(
+                imageVector = Icons.Default.TableChart,
+                contentDescription = stringResource(R.string.database_table_list_empty),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
+            )
+            Text(
+                text = stringResource(R.string.database_table_list_empty),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun TableLoadedList(
+    tables: ImmutableList<TableInfo>,
+    onTableClick: (TableInfo) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            bottom = WormaCeptorTokens.Spacing.lg +
+                WindowInsets.navigationBars.asPaddingValues()
+                    .calculateBottomPadding(),
+        ),
+    ) {
+        items(
+            items = tables,
+            key = { it.name },
+        ) { table ->
+            TableListItem(
+                table = table,
+                onClick = { onTableClick(table) },
+            )
+            WormaCeptorDivider()
         }
     }
 }
@@ -223,7 +267,7 @@ private fun TableListItem(
         },
         supportingContent = {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
             ) {
                 Text(
                     text = stringResource(R.string.database_table_list_rows_count, table.rowCount),
@@ -247,21 +291,91 @@ private fun TableListItem(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Loaded")
 @Composable
 private fun TableListScreenPreview() {
     WormaCeptorTheme {
         TableListScreen(
-            databaseName = "app_database.db",
-            tables = persistentListOf(
-                TableInfo(name = "users", rowCount = 150L, columnCount = 6),
-                TableInfo(name = "transactions", rowCount = 1024L, columnCount = 12),
-                TableInfo(name = "settings", rowCount = 8L, columnCount = 3),
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+                tables = persistentListOf(
+                    TableInfo(name = "users", rowCount = 150L, columnCount = 6),
+                    TableInfo(name = "transactions", rowCount = 1024L, columnCount = 12),
+                    TableInfo(name = "settings", rowCount = 8L, columnCount = 3),
+                ),
             ),
-            searchQuery = "",
-            isLoading = false,
-            error = null,
-            onSearchQueryChanged = {},
+            onEvent = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Loading")
+@Composable
+private fun TableListScreenLoadingPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+                isTablesLoading = true,
+            ),
+            onEvent = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Error")
+@Composable
+private fun TableListScreenErrorPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+                tablesError = "Failed to load tables",
+            ),
+            onEvent = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Empty")
+@Composable
+private fun TableListScreenEmptyPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+            ),
+            onEvent = {},
+            onTableClick = {},
+            onQueryClick = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Search Active")
+@Composable
+private fun TableListScreenSearchPreview() {
+    WormaCeptorTheme {
+        TableListScreen(
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+                isTableSearchActive = true,
+                tableSearchQuery = "user",
+                tables = persistentListOf(
+                    TableInfo(name = "users", rowCount = 150L, columnCount = 6),
+                ),
+            ),
+            onEvent = {},
             onTableClick = {},
             onQueryClick = {},
             onBack = {},

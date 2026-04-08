@@ -4,12 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cloud
-import androidx.compose.material.icons.filled.SaveAlt
-import androidx.compose.material.icons.filled.SlowMotionVideo
-import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -42,32 +36,12 @@ internal fun TypeFilterChips(
             modifier = Modifier.semantics { selected = selectedType == null },
         )
         ViolationType.entries.forEach { type ->
-            val (icon, labelRes, color) = when (type) {
-                ViolationType.DISK_READ -> Triple(
-                    Icons.Default.SaveAlt,
-                    R.string.threadviolation_filter_read,
-                    WormaCeptorTokens.Colors.ThreadViolation.diskRead,
-                )
-                ViolationType.DISK_WRITE -> Triple(
-                    Icons.Default.Storage,
-                    R.string.threadviolation_filter_write,
-                    WormaCeptorTokens.Colors.ThreadViolation.diskWrite,
-                )
-                ViolationType.NETWORK -> Triple(
-                    Icons.Default.Cloud,
-                    R.string.threadviolation_filter_network,
-                    WormaCeptorTokens.Colors.ThreadViolation.network,
-                )
-                ViolationType.SLOW_CALL -> Triple(
-                    Icons.Default.SlowMotionVideo,
-                    R.string.threadviolation_filter_slow,
-                    WormaCeptorTokens.Colors.ThreadViolation.slowCall,
-                )
-                ViolationType.CUSTOM_SLOW_CODE -> Triple(
-                    Icons.Default.Speed,
-                    R.string.threadviolation_filter_custom,
-                    WormaCeptorTokens.Colors.ThreadViolation.customSlowCode,
-                )
+            val labelRes = when (type) {
+                ViolationType.DISK_READ -> R.string.threadviolation_filter_read
+                ViolationType.DISK_WRITE -> R.string.threadviolation_filter_write
+                ViolationType.NETWORK -> R.string.threadviolation_filter_network
+                ViolationType.SLOW_CALL -> R.string.threadviolation_filter_slow
+                ViolationType.CUSTOM_SLOW_CODE -> R.string.threadviolation_filter_custom
             }
             val isSelected = selectedType == type
             FilterChip(
@@ -76,16 +50,16 @@ internal fun TypeFilterChips(
                 label = { Text(stringResource(labelRes)) },
                 leadingIcon = {
                     Icon(
-                        icon,
+                        type.icon,
                         contentDescription = null,
                         Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
                 },
                 modifier = Modifier.semantics { selected = isSelected },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-                    selectedLabelColor = color,
-                    selectedLeadingIconColor = color,
+                    selectedContainerColor = type.color.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
+                    selectedLabelColor = type.color,
+                    selectedLeadingIconColor = type.color,
                 ),
             )
         }

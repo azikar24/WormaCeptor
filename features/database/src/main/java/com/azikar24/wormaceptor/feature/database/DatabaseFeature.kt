@@ -9,26 +9,13 @@ import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
 import com.azikar24.wormaceptor.feature.database.data.DatabaseRepositoryImpl
 import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewModel
 
-/**
- * Entry point for the SQLite Database Browser feature.
- * Provides factory methods for creating repositories and ViewModel factories.
- *
- * Navigation is handled by [com.azikar24.wormaceptor.feature.database.navigation.databaseGraph].
- */
 object DatabaseFeature {
 
-    /**
-     * Creates a DatabaseRepository instance for the given context.
-     * Use this in your dependency injection setup.
-     */
     fun createRepository(context: Context): DatabaseRepository {
         val dataSource = DatabaseDataSource(context.applicationContext)
         return DatabaseRepositoryImpl(dataSource)
     }
 
-    /**
-     * Creates a DatabaseViewModel factory for use with viewModel().
-     */
     fun createViewModelFactory(
         repository: DatabaseRepository,
         application: Application,
@@ -37,9 +24,6 @@ object DatabaseFeature {
     }
 }
 
-/**
- * Factory for creating DatabaseViewModel instances.
- */
 class DatabaseViewModelFactory(
     private val repository: DatabaseRepository,
     private val application: Application,

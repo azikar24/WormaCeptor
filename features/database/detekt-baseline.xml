@@ -2,25 +2,79 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:DatabaseListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DatabaseListScreen( databases: ImmutableList&lt;DatabaseInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:QueryScreen.kt$@Composable private fun QueryResultView( result: QueryResult, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:QueryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun QueryScreen( databaseName: String, sqlQuery: String, queryResult: QueryResult?, queryHistory: ImmutableList&lt;String&gt;, isExecuting: Boolean, onQueryChanged: (String) -&gt; Unit, onExecuteQuery: () -&gt; Unit, onClearQuery: () -&gt; Unit, onSelectFromHistory: (String) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TableDataScreen.kt$@Composable private fun DataTable( result: QueryResult, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:TableDataScreen.kt$@Composable private fun SchemaView( schema: ImmutableList&lt;ColumnInfo&gt;, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TableDataScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableDataScreen( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TableListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableListScreen( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:DatabaseListScreen.kt$( databases: ImmutableList&lt;DatabaseInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:QueryScreen.kt$( databaseName: String, sqlQuery: String, queryResult: QueryResult?, queryHistory: ImmutableList&lt;String&gt;, isExecuting: Boolean, onQueryChanged: (String) -&gt; Unit, onExecuteQuery: () -&gt; Unit, onClearQuery: () -&gt; Unit, onSelectFromHistory: (String) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:TableDataScreen.kt$( tableName: String, queryResult: QueryResult?, schema: ImmutableList&lt;ColumnInfo&gt;, showSchema: Boolean, currentPage: Int, isLoading: Boolean, onToggleSchema: () -&gt; Unit, onPreviousPage: () -&gt; Unit, onNextPage: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:TableListScreen.kt$( databaseName: String, tables: ImmutableList&lt;TableInfo&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:DatabaseListScreen.kt$( searchActive: Boolean, searchQuery: String, onToggleSearch: () -&gt; Unit, onSearchQueryChange: (String) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>MagicNumber:DatabaseDataSource.kt$DatabaseDataSource$1000</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTableSchema( databasePath: String, tableName: String, ): List&lt;ColumnInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$fun getTables(databasePath: String): List&lt;TableInfo&gt;</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun countTables(databasePath: String): Int</ID>
     <ID>NestedBlockDepth:DatabaseDataSource.kt$DatabaseDataSource$private fun executeRawQuery( db: SQLiteDatabase, query: String, ): QueryResult</ID>
-    <ID>ParameterNaming:DatabaseListScreen.kt$onSearchQueryChanged</ID>
-    <ID>ParameterNaming:QueryScreen.kt$onQueryChanged</ID>
-    <ID>ParameterNaming:TableListScreen.kt$onSearchQueryChanged</ID>
     <ID>TooGenericExceptionCaught:DatabaseDataSource.kt$DatabaseDataSource$e: Exception</ID>
+    <ID>UndocumentedPublicClass:DatabaseFeature.kt$DatabaseFeature</ID>
+    <ID>UndocumentedPublicClass:DatabaseFeature.kt$DatabaseViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEffect.kt$DatabaseViewEffect</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEffect.kt$DatabaseViewEffect$ShowError : DatabaseViewEffect</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent$Data : DatabaseViewEvent</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent$List : DatabaseViewEvent</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent$Query : DatabaseViewEvent</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent$Tables : DatabaseViewEvent</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Data$NextPage : Data</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Data$PreviousPage : Data</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Data$ToggleSchema : Data</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.List$Load : List</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.List$SearchQueryChanged : List</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.List$Selected : List</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.List$SelectionCleared : List</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.List$ToggleSearch : List</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Query$Clear : Query</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Query$Execute : Query</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Query$HistorySelected : Query</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Query$PrefilledRequested : Query</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Query$SqlChanged : Query</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Tables$SearchQueryChanged : Tables</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Tables$Selected : Tables</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Tables$SelectionCleared : Tables</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewEvent.kt$DatabaseViewEvent.Tables$ToggleSearch : Tables</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewModel.kt$DatabaseViewModel : BaseViewModel</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewModel.kt$DatabaseViewModel$Companion</ID>
+    <ID>UndocumentedPublicClass:DatabaseViewState.kt$DatabaseViewState</ID>
+    <ID>UndocumentedPublicFunction:DatabaseFeature.kt$DatabaseFeature$fun createRepository(context: Context): DatabaseRepository</ID>
+    <ID>UndocumentedPublicFunction:DatabaseFeature.kt$DatabaseFeature$fun createViewModelFactory( repository: DatabaseRepository, application: Application, ): DatabaseViewModelFactory</ID>
+    <ID>UndocumentedPublicFunction:DatabaseListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DatabaseListScreen( state: DatabaseViewState, onEvent: (DatabaseViewEvent) -&gt; Unit, onDatabaseClick: (DatabaseInfo) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:DatabaseNavigation.kt$fun NavGraphBuilder.databaseGraph( navController: NavHostController, context: Context, onNavigateBack: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:TableListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableListScreen( state: DatabaseViewState, onEvent: (DatabaseViewEvent) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEffect.kt$DatabaseViewEffect.ShowError$val message: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.List.SearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.List.Selected$val name: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Query.HistorySelected$val query: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Query.PrefilledRequested$val queryType: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Query.PrefilledRequested$val tableName: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Query.SqlChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Tables.SearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.Tables.Selected$val name: String</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val currentPage: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val databaseSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val databases: ImmutableList&lt;DatabaseInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val databasesError: String? = null</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDataLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDatabaseSearchActive: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDatabasesLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isQueryExecuting: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isTableSearchActive: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isTablesLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val queryExecutionResult: QueryResult? = null</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val queryHistory: ImmutableList&lt;String&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val queryResult: QueryResult? = null</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val selectedDatabaseName: String? = null</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val selectedTableName: String? = null</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val showSchema: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val sqlQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val tableSchema: ImmutableList&lt;ColumnInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val tableSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val tables: ImmutableList&lt;TableInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val tablesError: String? = null</ID>
   </CurrentIssues>
 </SmellBaseline>

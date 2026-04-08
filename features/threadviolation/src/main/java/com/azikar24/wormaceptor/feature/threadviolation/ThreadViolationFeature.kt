@@ -9,25 +9,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.feature.threadviolation.ui.ThreadViolationScreen
-import com.azikar24.wormaceptor.feature.threadviolation.vm.ThreadViolationViewEvent
 import com.azikar24.wormaceptor.feature.threadviolation.vm.ThreadViolationViewModel
 import org.koin.compose.koinInject
 
-/**
- * Entry point for the Thread Violation Detection feature.
- */
 object ThreadViolationFeature {
-    /**
-     * Creates a ThreadViolationViewModel factory.
-     */
     fun createViewModelFactory(engine: ThreadViolationEngine): ThreadViolationViewModelFactory {
         return ThreadViolationViewModelFactory(engine)
     }
 }
 
-/**
- * Factory for creating ThreadViolationViewModel instances.
- */
 class ThreadViolationViewModelFactory(
     private val engine: ThreadViolationEngine,
 ) : ViewModelProvider.Factory {
@@ -40,9 +30,6 @@ class ThreadViolationViewModelFactory(
     }
 }
 
-/**
- * Main composable for the Thread Violation Detection feature.
- */
 @Composable
 fun ThreadViolationMonitor(
     modifier: Modifier = Modifier,
@@ -54,16 +41,8 @@ fun ThreadViolationMonitor(
 
     BaseScreen(viewModel) { state, onEvent ->
         ThreadViolationScreen(
-            violations = state.filteredViolations,
-            stats = state.stats,
-            isMonitoring = state.isMonitoring,
-            selectedType = state.selectedType,
-            selectedViolation = state.selectedViolation,
-            onToggleMonitoring = { onEvent(ThreadViolationViewEvent.ToggleMonitoring) },
-            onTypeSelected = { onEvent(ThreadViolationViewEvent.SelectType(it)) },
-            onViolationSelected = { onEvent(ThreadViolationViewEvent.SelectViolation(it)) },
-            onDismissDetail = { onEvent(ThreadViolationViewEvent.DismissDetail) },
-            onClearViolations = { onEvent(ThreadViolationViewEvent.ClearViolations) },
+            state = state,
+            onEvent = onEvent,
             onBack = onNavigateBack,
             modifier = modifier,
         )

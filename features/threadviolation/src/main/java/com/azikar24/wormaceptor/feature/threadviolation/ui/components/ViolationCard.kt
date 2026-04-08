@@ -11,12 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cloud
-import androidx.compose.material.icons.filled.SaveAlt
-import androidx.compose.material.icons.filled.SlowMotionVideo
-import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,7 +26,6 @@ import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
-import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
 
 @Composable
 internal fun ViolationCard(
@@ -40,20 +33,8 @@ internal fun ViolationCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val typeColor = when (violation.violationType) {
-        ViolationType.DISK_READ -> WormaCeptorTokens.Colors.ThreadViolation.diskRead
-        ViolationType.DISK_WRITE -> WormaCeptorTokens.Colors.ThreadViolation.diskWrite
-        ViolationType.NETWORK -> WormaCeptorTokens.Colors.ThreadViolation.network
-        ViolationType.SLOW_CALL -> WormaCeptorTokens.Colors.ThreadViolation.slowCall
-        ViolationType.CUSTOM_SLOW_CODE -> WormaCeptorTokens.Colors.ThreadViolation.customSlowCode
-    }
-    val icon = when (violation.violationType) {
-        ViolationType.DISK_READ -> Icons.Default.SaveAlt
-        ViolationType.DISK_WRITE -> Icons.Default.Storage
-        ViolationType.NETWORK -> Icons.Default.Cloud
-        ViolationType.SLOW_CALL -> Icons.Default.SlowMotionVideo
-        ViolationType.CUSTOM_SLOW_CODE -> Icons.Default.Speed
-    }
+    val typeColor = violation.violationType.color
+    val icon = violation.violationType.icon
 
     WormaCeptorCard(
         onClick = onClick,
@@ -109,7 +90,7 @@ internal fun ViolationCard(
                 color = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
             ) {
                 Text(
-                    text = violation.violationType.name.take(1),
+                    text = violation.violationType.abbreviation,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorTokens.Spacing.sm,
                         vertical = WormaCeptorTokens.Spacing.xs,

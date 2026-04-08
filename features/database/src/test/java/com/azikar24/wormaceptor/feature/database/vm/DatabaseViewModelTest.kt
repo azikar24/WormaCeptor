@@ -17,6 +17,7 @@ import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -95,7 +96,7 @@ class DatabaseViewModelTest {
 
         @Test
         fun `loads databases on init`() = runTest {
-            viewModel.databases.test {
+            viewModel.uiState.map { it.databases }.test {
                 awaitUntil { it.size == 3 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -120,17 +121,17 @@ class DatabaseViewModelTest {
 
         @Test
         fun `updates database search query in state`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged("app"))
+            viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged("app"))
 
             viewModel.uiState.value.databaseSearchQuery shouldBe "app"
         }
 
         @Test
         fun `filters databases by name`() = runTest {
-            viewModel.databases.test {
+            viewModel.uiState.map { it.databases }.test {
                 awaitUntil { it.size == 3 }
 
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged("app"))
+                viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged("app"))
 
                 val dbs = awaitUntil { it.size == 1 }
                 dbs.first().name shouldBe "app.db"
@@ -140,10 +141,10 @@ class DatabaseViewModelTest {
 
         @Test
         fun `filters databases by path`() = runTest {
-            viewModel.databases.test {
+            viewModel.uiState.map { it.databases }.test {
                 awaitUntil { it.size == 3 }
 
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged("analytics"))
+                viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged("analytics"))
 
                 val dbs = awaitUntil { it.size == 1 }
                 dbs.first().name shouldBe "analytics.db"
@@ -153,13 +154,13 @@ class DatabaseViewModelTest {
 
         @Test
         fun `blank query shows all databases`() = runTest {
-            viewModel.databases.test {
+            viewModel.uiState.map { it.databases }.test {
                 awaitUntil { it.size == 3 }
 
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged("app"))
+                viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged("app"))
                 awaitUntil { it.size == 1 }
 
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged(""))
+                viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged(""))
                 awaitUntil { it.size == 3 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -171,24 +172,24 @@ class DatabaseViewModelTest {
 
         @Test
         fun `sets selected database name`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.value.selectedDatabaseName shouldBe "app.db"
         }
 
         @Test
         fun `clears table search query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSearchQueryChanged("users"))
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("cache.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.SearchQueryChanged("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("cache.db"))
 
             viewModel.uiState.value.tableSearchQuery shouldBe ""
         }
 
         @Test
         fun `loads tables for selected database`() = runTest {
-            viewModel.tables.test {
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.uiState.map { it.tables }.test {
+                viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
                 awaitUntil { it.size == 3 }
                 cancelAndIgnoreRemainingEvents()
@@ -201,19 +202,19 @@ class DatabaseViewModelTest {
 
         @Test
         fun `clears database selection`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelectionCleared)
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.SelectionCleared)
 
             viewModel.uiState.value.selectedDatabaseName shouldBe null
         }
 
         @Test
         fun `clears tables`() = runTest {
-            viewModel.tables.test {
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.uiState.map { it.tables }.test {
+                viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
                 awaitUntil { it.size == 3 }
 
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSelectionCleared)
+                viewModel.sendEvent(DatabaseViewEvent.List.SelectionCleared)
                 awaitUntil { it.isEmpty() }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -225,18 +226,18 @@ class DatabaseViewModelTest {
 
         @Test
         fun `updates table search query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.TableSearchQueryChanged("users"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.SearchQueryChanged("users"))
 
             viewModel.uiState.value.tableSearchQuery shouldBe "users"
         }
 
         @Test
         fun `filters tables by name`() = runTest {
-            viewModel.tables.test {
-                viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.uiState.map { it.tables }.test {
+                viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
                 awaitUntil { it.size == 3 }
 
-                viewModel.sendEvent(DatabaseViewEvent.TableSearchQueryChanged("user"))
+                viewModel.sendEvent(DatabaseViewEvent.Tables.SearchQueryChanged("user"))
                 val tables = awaitUntil { it.size == 1 }
                 tables.first().name shouldBe "users"
                 cancelAndIgnoreRemainingEvents()
@@ -249,8 +250,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `sets selected table name`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.selectedTableName == "users" }
@@ -260,8 +261,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `resets pagination to page 0`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.currentPage == 0 && it.selectedTableName == "users" }
@@ -271,9 +272,9 @@ class DatabaseViewModelTest {
 
         @Test
         fun `hides schema view`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.ToggleSchema)
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Data.ToggleSchema)
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.selectedTableName == "users" && !it.showSchema }
@@ -283,8 +284,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `loads table schema`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.tableSchema.size == 2 }
@@ -294,8 +295,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `loads table data`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 val state = awaitUntil { it.queryResult != null }
@@ -310,13 +311,13 @@ class DatabaseViewModelTest {
 
         @Test
         fun `clears table selection and schema`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.queryResult != null }
 
-                viewModel.sendEvent(DatabaseViewEvent.TableSelectionCleared)
+                viewModel.sendEvent(DatabaseViewEvent.Tables.SelectionCleared)
 
                 val state = awaitUntil { it.selectedTableName == null }
                 state.tableSchema shouldBe persistentListOf<ColumnInfo>()
@@ -334,11 +335,55 @@ class DatabaseViewModelTest {
         fun `toggles schema visibility`() = runTest {
             viewModel.uiState.value.showSchema shouldBe false
 
-            viewModel.sendEvent(DatabaseViewEvent.ToggleSchema)
+            viewModel.sendEvent(DatabaseViewEvent.Data.ToggleSchema)
             viewModel.uiState.value.showSchema shouldBe true
 
-            viewModel.sendEvent(DatabaseViewEvent.ToggleSchema)
+            viewModel.sendEvent(DatabaseViewEvent.Data.ToggleSchema)
             viewModel.uiState.value.showSchema shouldBe false
+        }
+    }
+
+    @Nested
+    inner class `ToggleSearch event` {
+
+        @Test
+        fun `toggles database search active state`() = runTest {
+            viewModel.uiState.value.isDatabaseSearchActive shouldBe false
+
+            viewModel.sendEvent(DatabaseViewEvent.List.ToggleSearch)
+            viewModel.uiState.value.isDatabaseSearchActive shouldBe true
+
+            viewModel.sendEvent(DatabaseViewEvent.List.ToggleSearch)
+            viewModel.uiState.value.isDatabaseSearchActive shouldBe false
+        }
+
+        @Test
+        fun `clears database search query when toggling off`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.List.ToggleSearch)
+            viewModel.sendEvent(DatabaseViewEvent.List.SearchQueryChanged("app"))
+            viewModel.sendEvent(DatabaseViewEvent.List.ToggleSearch)
+
+            viewModel.uiState.value.databaseSearchQuery shouldBe ""
+        }
+
+        @Test
+        fun `toggles table search active state`() = runTest {
+            viewModel.uiState.value.isTableSearchActive shouldBe false
+
+            viewModel.sendEvent(DatabaseViewEvent.Tables.ToggleSearch)
+            viewModel.uiState.value.isTableSearchActive shouldBe true
+
+            viewModel.sendEvent(DatabaseViewEvent.Tables.ToggleSearch)
+            viewModel.uiState.value.isTableSearchActive shouldBe false
+        }
+
+        @Test
+        fun `clears table search query when toggling off`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.Tables.ToggleSearch)
+            viewModel.sendEvent(DatabaseViewEvent.Tables.SearchQueryChanged("users"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.ToggleSearch)
+
+            viewModel.uiState.value.tableSearchQuery shouldBe ""
         }
     }
 
@@ -350,13 +395,13 @@ class DatabaseViewModelTest {
             val fullPage = sampleQueryResult.copy(rowCount = 100)
             every { repository.queryTable(any(), any(), any(), any()) } returns fullPage
 
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.NextPage)
+                viewModel.sendEvent(DatabaseViewEvent.Data.NextPage)
                 awaitUntil { it.currentPage == 1 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -364,8 +409,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `NextPage does not increment when result is partial page`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             // Wait for table data to load
             viewModel.uiState.test {
@@ -374,7 +419,7 @@ class DatabaseViewModelTest {
             }
 
             // NextPage is a no-op when rowCount (2) < DefaultPageSize (100)
-            viewModel.sendEvent(DatabaseViewEvent.NextPage)
+            viewModel.sendEvent(DatabaseViewEvent.Data.NextPage)
             viewModel.uiState.value.currentPage shouldBe 0
         }
 
@@ -383,16 +428,16 @@ class DatabaseViewModelTest {
             val fullPage = sampleQueryResult.copy(rowCount = 100)
             every { repository.queryTable(any(), any(), any(), any()) } returns fullPage
 
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.NextPage)
+                viewModel.sendEvent(DatabaseViewEvent.Data.NextPage)
                 awaitUntil { it.currentPage == 1 && !it.isDataLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.PreviousPage)
+                viewModel.sendEvent(DatabaseViewEvent.Data.PreviousPage)
                 awaitUntil { it.currentPage == 0 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -400,8 +445,8 @@ class DatabaseViewModelTest {
 
         @Test
         fun `PreviousPage does nothing at page 0`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             // Wait for table data to load
             viewModel.uiState.test {
@@ -410,7 +455,7 @@ class DatabaseViewModelTest {
             }
 
             // PreviousPage is a no-op at page 0
-            viewModel.sendEvent(DatabaseViewEvent.PreviousPage)
+            viewModel.sendEvent(DatabaseViewEvent.Data.PreviousPage)
             viewModel.uiState.value.currentPage shouldBe 0
         }
     }
@@ -420,7 +465,7 @@ class DatabaseViewModelTest {
 
         @Test
         fun `updates sql query in state`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT * FROM users"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
 
             viewModel.uiState.value.sqlQuery shouldBe "SELECT * FROM users"
         }
@@ -431,13 +476,13 @@ class DatabaseViewModelTest {
 
         @Test
         fun `executes query via repository`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT * FROM users"))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
                 val state = awaitUntil { it.queryExecutionResult != null && !it.isQueryExecuting }
                 state.queryExecutionResult shouldBe sampleQueryResult
@@ -449,13 +494,13 @@ class DatabaseViewModelTest {
 
         @Test
         fun `sets error for empty query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged(""))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged(""))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
                 val state = awaitUntil { it.queryExecutionResult != null }
                 state.queryExecutionResult?.isSuccess shouldBe false
@@ -465,13 +510,13 @@ class DatabaseViewModelTest {
 
         @Test
         fun `sets error for whitespace-only query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("   "))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("   "))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
                 val state = awaitUntil { it.queryExecutionResult != null }
                 state.queryExecutionResult?.isSuccess shouldBe false
@@ -481,21 +526,21 @@ class DatabaseViewModelTest {
 
         @Test
         fun `does nothing when no database selected`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT 1"))
-            viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+            viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT 1"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
             verify(exactly = 0) { repository.executeQuery(any(), any()) }
         }
 
         @Test
         fun `adds successful query to history`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT * FROM users"))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
                 val state = awaitUntil { it.queryHistory.isNotEmpty() }
                 state.queryHistory shouldHaveSize 1
@@ -506,7 +551,7 @@ class DatabaseViewModelTest {
 
         @Test
         fun `does not add duplicate query to history`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             // Wait for init
             viewModel.uiState.test {
@@ -515,15 +560,15 @@ class DatabaseViewModelTest {
             }
 
             // First query
-            viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT * FROM users"))
-            viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+            viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
             viewModel.uiState.test {
                 awaitUntil { it.queryHistory.isNotEmpty() && !it.isQueryExecuting }
                 cancelAndIgnoreRemainingEvents()
             }
 
             // Second duplicate query
-            viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+            viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
             viewModel.uiState.test {
                 awaitUntil { !it.isQueryExecuting }
                 cancelAndIgnoreRemainingEvents()
@@ -536,13 +581,13 @@ class DatabaseViewModelTest {
         fun `handles query execution error`() = runTest {
             every { repository.executeQuery(any(), any()) } throws IllegalStateException("DB error")
 
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("BAD QUERY"))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("BAD QUERY"))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
 
                 val state = awaitUntil { it.queryExecutionResult != null && !it.isQueryExecuting }
                 state.queryExecutionResult?.isSuccess shouldBe false
@@ -557,16 +602,16 @@ class DatabaseViewModelTest {
 
         @Test
         fun `clears sql query and execution result`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }
 
-                viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged("SELECT 1"))
-                viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT 1"))
+                viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
                 awaitUntil { it.queryExecutionResult != null && !it.isQueryExecuting }
 
-                viewModel.sendEvent(DatabaseViewEvent.ClearQuery)
+                viewModel.sendEvent(DatabaseViewEvent.Query.Clear)
 
                 val state = awaitUntil { it.sqlQuery.isEmpty() && it.queryExecutionResult == null }
                 state.sqlQuery shouldBe ""
@@ -581,7 +626,7 @@ class DatabaseViewModelTest {
 
         @Test
         fun `populates sql query from history`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.QuerySelectedFromHistory("SELECT * FROM users"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.HistorySelected("SELECT * FROM users"))
 
             viewModel.uiState.value.sqlQuery shouldBe "SELECT * FROM users"
         }
@@ -592,28 +637,28 @@ class DatabaseViewModelTest {
 
         @Test
         fun `generates select query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.PrefilledQueryRequested("users", "select"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.PrefilledRequested("users", "select"))
 
             viewModel.uiState.value.sqlQuery shouldContain "SELECT * FROM `users` LIMIT 10"
         }
 
         @Test
         fun `generates count query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.PrefilledQueryRequested("users", "count"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.PrefilledRequested("users", "count"))
 
             viewModel.uiState.value.sqlQuery shouldContain "SELECT COUNT(*) FROM `users`"
         }
 
         @Test
         fun `generates schema query`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.PrefilledQueryRequested("users", "schema"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.PrefilledRequested("users", "schema"))
 
             viewModel.uiState.value.sqlQuery shouldContain "PRAGMA table_info('users')"
         }
 
         @Test
         fun `generates empty string for unknown query type`() = runTest {
-            viewModel.sendEvent(DatabaseViewEvent.PrefilledQueryRequested("users", "unknown"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.PrefilledRequested("users", "unknown"))
 
             viewModel.uiState.value.sqlQuery shouldBe ""
         }
@@ -640,7 +685,7 @@ class DatabaseViewModelTest {
         fun `handles table loading error`() = runTest {
             every { repository.getTables(any()) } throws IllegalStateException("Table error")
 
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             viewModel.uiState.test {
                 val state = awaitUntil { it.tablesError != null }
@@ -654,8 +699,8 @@ class DatabaseViewModelTest {
         fun `handles table data loading error`() = runTest {
             every { repository.queryTable(any(), any(), any(), any()) } throws IllegalStateException("Data error")
 
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected("app.db"))
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             viewModel.uiState.test {
                 val state = awaitUntil { it.queryResult != null && !it.isDataLoading }
@@ -676,7 +721,7 @@ class DatabaseViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
 
-            viewModel.sendEvent(DatabaseViewEvent.LoadDatabases)
+            viewModel.sendEvent(DatabaseViewEvent.List.Load)
 
             viewModel.uiState.test {
                 awaitUntil { !it.isDatabasesLoading }

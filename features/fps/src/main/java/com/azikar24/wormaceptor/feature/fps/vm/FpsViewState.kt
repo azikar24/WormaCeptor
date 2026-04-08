@@ -8,4 +8,6 @@ data class FpsViewState(
     val currentFpsInfo: FpsInfo = FpsInfo.EMPTY,
     val fpsHistory: ImmutableList<FpsInfo> = persistentListOf(),
     val isMonitoring: Boolean = false,
+    /** Whether the current FPS level is in the warning range. */
+    val isFpsWarning: Boolean = false,
 )

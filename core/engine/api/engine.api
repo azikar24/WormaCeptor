@@ -131,6 +131,7 @@ public final class com/azikar24/wormaceptor/core/engine/FpsMonitorEngine {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/FpsMonitorEngine$Companion;
 	public static final field DEFAULT_HISTORY_SIZE I
+	public static final field FPS_WARNING_THRESHOLD F
 	public fun <init> ()V
 	public fun <init> (I)V
 	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V

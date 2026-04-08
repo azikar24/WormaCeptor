@@ -11,7 +11,6 @@ import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.fps.ui.FpsScreen
-import com.azikar24.wormaceptor.feature.fps.vm.FpsViewEvent
 import com.azikar24.wormaceptor.feature.fps.vm.FpsViewModel
 import org.koin.compose.koinInject
 
@@ -62,12 +61,8 @@ fun FpsMonitor(
 
     BaseScreen(viewModel) { state, onEvent ->
         FpsScreen(
-            currentFps = state.currentFpsInfo,
-            fpsHistory = state.fpsHistory,
-            isMonitoring = state.isMonitoring,
-            onStartMonitoring = { onEvent(FpsViewEvent.StartMonitoring) },
-            onToggleMonitoring = { onEvent(FpsViewEvent.ToggleMonitoring) },
-            onResetStats = { onEvent(FpsViewEvent.ResetStats) },
+            state = state,
+            onEvent = onEvent,
             onBack = onNavigateBack,
             modifier = modifier,
         )

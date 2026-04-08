@@ -16,12 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.FpsInfo
 import com.azikar24.wormaceptor.feature.fps.R
+import com.azikar24.wormaceptor.feature.fps.ui.util.FpsStatus
+import com.azikar24.wormaceptor.feature.fps.ui.util.classifyFps
+import com.azikar24.wormaceptor.feature.fps.ui.util.fpsBackgroundColor
+import com.azikar24.wormaceptor.feature.fps.ui.util.fpsStatusColor
 import kotlin.math.roundToInt
 
 @Composable
@@ -30,34 +35,16 @@ internal fun CurrentFpsCard(
     isMonitoring: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val status = classifyFps(fpsInfo.currentFps)
+
     val fpsColor by animateColorAsState(
-        targetValue = if (fpsInfo.currentFps > 0) {
-            when {
-                fpsInfo.currentFps >= 55f -> WormaCeptorTokens.Colors.Status.green
-                fpsInfo.currentFps >= 30f -> WormaCeptorTokens.Colors.Status.amber
-                else -> WormaCeptorTokens.Colors.Status.red
-            }
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
+        targetValue = fpsStatusColor(status),
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "fps_color",
     )
 
     val backgroundColor by animateColorAsState(
-        targetValue = if (fpsInfo.currentFps > 0) {
-            when {
-                fpsInfo.currentFps >= 55f -> WormaCeptorTokens.Colors.Status.green.copy(
-                    alpha = WormaCeptorTokens.Alpha.LIGHT,
-                )
-                fpsInfo.currentFps >= 30f -> WormaCeptorTokens.Colors.Status.amber.copy(
-                    alpha = WormaCeptorTokens.Alpha.LIGHT,
-                )
-                else -> WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
-            }
-        } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
-        },
+        targetValue = fpsBackgroundColor(status),
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "fps_background",
     )
@@ -67,45 +54,58 @@ internal fun CurrentFpsCard(
         shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
         color = backgroundColor,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorTokens.Spacing.xl),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = stringResource(R.string.fps_current),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        FpsCardContent(
+            fpsInfo = fpsInfo,
+            status = status,
+            isMonitoring = isMonitoring,
+            fpsColor = fpsColor,
+        )
+    }
+}
 
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
+@Composable
+private fun FpsCardContent(
+    fpsInfo: FpsInfo,
+    status: FpsStatus,
+    isMonitoring: Boolean,
+    fpsColor: Color,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(WormaCeptorTokens.Spacing.xl),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = stringResource(R.string.fps_current),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
 
-            Text(
-                text = if (fpsInfo.currentFps > 0 || isMonitoring) {
-                    fpsInfo.currentFps.roundToInt().toString()
-                } else {
-                    "--"
-                },
-                style = WormaCeptorTokens.Typography.displayNumber,
-                color = fpsColor,
-            )
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
+        Text(
+            text = if (status != FpsStatus.Idle || isMonitoring) {
+                fpsInfo.currentFps.roundToInt().toString()
+            } else {
+                "--"
+            },
+            style = WormaCeptorTokens.Typography.displayNumber,
+            color = fpsColor,
+        )
 
-            Text(
-                text = when {
-                    fpsInfo.currentFps >= 55f -> stringResource(R.string.fps_status_excellent)
-                    fpsInfo.currentFps >= 30f -> stringResource(
-                        R.string.fps_status_moderate,
-                    )
-                    fpsInfo.currentFps > 0 -> stringResource(R.string.fps_status_poor)
-                    else -> stringResource(R.string.fps_status_not_monitoring)
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (fpsInfo.currentFps > 0) fpsColor else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
+
+        Text(
+            text = when (status) {
+                FpsStatus.Excellent -> stringResource(R.string.fps_status_excellent)
+                FpsStatus.Moderate -> stringResource(R.string.fps_status_moderate)
+                FpsStatus.Poor -> stringResource(R.string.fps_status_poor)
+                FpsStatus.Idle -> stringResource(R.string.fps_status_not_monitoring)
+            },
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (status != FpsStatus.Idle) fpsColor else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -143,6 +143,25 @@ private fun CurrentFpsCardDarkPreview() {
                 timestamp = System.currentTimeMillis(),
             ),
             isMonitoring = true,
+        )
+    }
+}
+
+@Preview(name = "CurrentFpsCard - Idle")
+@Composable
+private fun CurrentFpsCardIdlePreview() {
+    WormaCeptorTheme {
+        CurrentFpsCard(
+            fpsInfo = FpsInfo(
+                currentFps = 0f,
+                averageFps = 0f,
+                minFps = 0f,
+                maxFps = 0f,
+                droppedFrames = 0,
+                jankFrames = 0,
+                timestamp = System.currentTimeMillis(),
+            ),
+            isMonitoring = false,
         )
     }
 }

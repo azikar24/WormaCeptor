@@ -31,6 +31,8 @@ class FpsViewModel(
                     currentFpsInfo = currentFps,
                     fpsHistory = history.toImmutableList(),
                     isMonitoring = running,
+                    isFpsWarning = currentFps.currentFps > 0 &&
+                        currentFps.currentFps < FpsMonitorEngine.FPS_WARNING_THRESHOLD,
                 )
             }
         }.launchIn(viewModelScope)

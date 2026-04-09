@@ -16,4 +16,5 @@ data class DependenciesInspectorViewState(
     val searchQuery: String = "",
     val showVersionedOnly: Boolean = false,
     val selectedDependency: DependencyInfo? = null,
+    val isSearchActive: Boolean = false,
 )

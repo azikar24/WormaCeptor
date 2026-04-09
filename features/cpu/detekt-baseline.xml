@@ -2,14 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:CpuChartSection.kt$@Composable private fun CpuLineChart( history: ImmutableList&lt;CpuInfo&gt;, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, formattedUptime: String, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuSystemInfo.kt$@Composable internal fun SystemInfoCard( currentCpu: CpuInfo, formattedUptime: String, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:CpuUsageGauge.kt$@Composable internal fun CpuUsageGaugeCard( currentCpu: CpuInfo, isWarning: Boolean, colors: CpuColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:CpuScreen.kt$( currentCpu: CpuInfo, cpuHistory: ImmutableList&lt;CpuInfo&gt;, isMonitoring: Boolean, isCpuWarning: Boolean, formattedUptime: String, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:CpuChartSection.kt$0.2f</ID>
-    <ID>MagicNumber:CpuChartSection.kt$0.5f</ID>
-    <ID>MagicNumber:CpuChartSection.kt$100f</ID>
     <ID>MagicNumber:CpuChartSection.kt$15f</ID>
     <ID>MagicNumber:CpuChartSection.kt$18f</ID>
     <ID>MagicNumber:CpuChartSection.kt$22f</ID>
@@ -17,7 +9,6 @@
     <ID>MagicNumber:CpuChartSection.kt$28f</ID>
     <ID>MagicNumber:CpuChartSection.kt$30f</ID>
     <ID>MagicNumber:CpuChartSection.kt$38f</ID>
-    <ID>MagicNumber:CpuChartSection.kt$4</ID>
     <ID>MagicNumber:CpuChartSection.kt$40f</ID>
     <ID>MagicNumber:CpuChartSection.kt$42f</ID>
     <ID>MagicNumber:CpuChartSection.kt$48f</ID>
@@ -29,8 +20,6 @@
     <ID>MagicNumber:CpuChartSection.kt$68f</ID>
     <ID>MagicNumber:CpuChartSection.kt$77f</ID>
     <ID>MagicNumber:CpuChartSection.kt$78f</ID>
-    <ID>MagicNumber:CpuColors.kt$CpuColors$50f</ID>
-    <ID>MagicNumber:CpuColors.kt$CpuColors$80f</ID>
     <ID>MagicNumber:CpuPerCoreSection.kt$14f</ID>
     <ID>MagicNumber:CpuPerCoreSection.kt$25f</ID>
     <ID>MagicNumber:CpuPerCoreSection.kt$33f</ID>
@@ -47,7 +36,6 @@
     <ID>MagicNumber:CpuSystemInfo.kt$85f</ID>
     <ID>MagicNumber:CpuSystemInfo.kt$90f</ID>
     <ID>MagicNumber:CpuSystemInfo.kt$95f</ID>
-    <ID>MagicNumber:CpuUsageGauge.kt$100</ID>
     <ID>MagicNumber:CpuUsageGauge.kt$20f</ID>
     <ID>MagicNumber:CpuUsageGauge.kt$22f</ID>
     <ID>MagicNumber:CpuUsageGauge.kt$28f</ID>

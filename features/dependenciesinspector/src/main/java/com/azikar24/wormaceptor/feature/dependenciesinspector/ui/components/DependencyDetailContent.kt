@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -34,9 +35,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
-import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
+import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.categoryColor
 
 @Composable
 internal fun DependencyDetailContent(
@@ -44,149 +45,167 @@ internal fun DependencyDetailContent(
     colors: ToolColors.DependenciesInspector.Scheme,
     modifier: Modifier = Modifier,
 ) {
-    val categoryColor = when (dependency.category) {
-        DependencyCategory.NETWORKING -> colors.networking
-        DependencyCategory.DEPENDENCY_INJECTION -> colors.dependencyInjection
-        DependencyCategory.UI_FRAMEWORK -> colors.uiFramework
-        DependencyCategory.IMAGE_LOADING -> colors.imageLoading
-        DependencyCategory.SERIALIZATION -> colors.serialization
-        DependencyCategory.DATABASE -> colors.database
-        DependencyCategory.REACTIVE -> colors.reactive
-        DependencyCategory.LOGGING -> colors.logging
-        DependencyCategory.ANALYTICS -> colors.analytics
-        DependencyCategory.TESTING -> colors.testing
-        DependencyCategory.SECURITY -> colors.security
-        DependencyCategory.UTILITY -> colors.utility
-        DependencyCategory.ANDROIDX -> colors.androidx
-        DependencyCategory.KOTLIN -> colors.kotlin
-        DependencyCategory.OTHER -> colors.other
-    }
+    val depCategoryColor = dependency.category.categoryColor(colors)
     val uriHandler = LocalUriHandler.current
 
     Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg)) {
-        // Header
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-        ) {
-            Box(
-                Modifier.size(
-                    WormaCeptorTokens.IconSize.xxxl,
-                ).clip(
-                    RoundedCornerShape(WormaCeptorTokens.Radius.lg),
-                ).background(categoryColor.copy(0.15f)),
-                Alignment.Center,
-            ) {
-                Icon(
-                    Icons.Default.Code,
-                    null,
-                    tint = categoryColor,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
-                )
-            }
-            Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        dependency.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.labelPrimary,
-                    )
-                    if (dependency.version != null) {
-                        Spacer(Modifier.width(WormaCeptorTokens.Spacing.sm))
-                        Surface(
-                            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-                            color = colors.versionDetected.copy(0.2f),
-                        ) {
-                            Text(
-                                "v${dependency.version}",
-                                Modifier.padding(
-                                    horizontal = WormaCeptorTokens.Spacing.sm,
-                                    vertical = WormaCeptorTokens.Spacing.xxs,
-                                ),
-                                style = MaterialTheme.typography.labelMedium,
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = FontFamily.Monospace,
-                                color = colors.versionText,
-                            )
-                        }
-                    }
-                }
-                Text(
-                    dependency.category.displayName(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = categoryColor,
-                )
-            }
-        }
+        DetailHeader(dependency, depCategoryColor, colors)
+        DetailDescription(dependency, colors)
+        DetailDetailsSection(dependency, colors)
+        DetailDetectionSection(dependency, colors)
 
-        // Description
-        Text(
-            dependency.description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = colors.labelSecondary,
-        )
-
-        // Details section
-        val packageLabel = stringResource(R.string.dependenciesinspector_detail_label_package)
-        val groupIdLabel = stringResource(R.string.dependenciesinspector_detail_label_group_id)
-        val artifactIdLabel = stringResource(R.string.dependenciesinspector_detail_label_artifact_id)
-        val mavenLabel = stringResource(R.string.dependenciesinspector_detail_label_maven)
-        DetailSection(
-            stringResource(R.string.dependenciesinspector_detail_section_details),
-            listOfNotNull(
-                packageLabel to dependency.packageName,
-                dependency.groupId?.let { groupIdLabel to it },
-                dependency.artifactId?.let { artifactIdLabel to it },
-                dependency.mavenCoordinate?.let { mavenLabel to it },
-            ),
-            colors,
-        )
-
-        // Detection info
-        val methodLabel = stringResource(R.string.dependenciesinspector_detail_label_method)
-        val confidenceLabel = stringResource(R.string.dependenciesinspector_detail_label_confidence)
-        val versionStatusLabel = stringResource(R.string.dependenciesinspector_detail_label_version_status)
-        val versionDetected = stringResource(R.string.dependenciesinspector_summary_detected)
-        val versionUnknown = stringResource(R.string.dependenciesinspector_summary_unknown)
-        DetailSection(
-            stringResource(R.string.dependenciesinspector_detail_section_detection),
-            listOf(
-                methodLabel to dependency.detectionMethod.displayName(),
-                confidenceLabel to dependency.detectionMethod.confidence(),
-                versionStatusLabel to if (dependency.version != null) versionDetected else versionUnknown,
-            ),
-            colors,
-        )
-
-        // Website link
         dependency.website?.let { url ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { uriHandler.openUri(url) }
-                    .padding(vertical = WormaCeptorTokens.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                Icon(
-                    Icons.Default.Language,
-                    stringResource(R.string.dependenciesinspector_detail_section_details),
-                    tint = colors.link,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                )
-                Text(
-                    url,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = colors.link,
-                    textDecoration = TextDecoration.Underline,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            WebsiteLink(url, colors) { uriHandler.openUri(url) }
         }
 
         Spacer(Modifier.height(WormaCeptorTokens.Spacing.lg))
+    }
+}
+
+@Composable
+private fun DetailHeader(
+    dependency: DependencyInfo,
+    depCategoryColor: Color,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+    ) {
+        Box(
+            Modifier
+                .size(WormaCeptorTokens.IconSize.xxxl)
+                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+                .background(depCategoryColor.copy(WormaCeptorTokens.Alpha.SOFT)),
+            Alignment.Center,
+        ) {
+            Icon(
+                Icons.Default.Code,
+                stringResource(R.string.dependenciesinspector_detail_dependency_icon),
+                tint = depCategoryColor,
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
+            )
+        }
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    dependency.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.labelPrimary,
+                )
+                val version = dependency.version
+                if (version != null) {
+                    Spacer(Modifier.width(WormaCeptorTokens.Spacing.sm))
+                    Surface(
+                        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                        color = colors.versionDetected.copy(WormaCeptorTokens.Alpha.MEDIUM),
+                    ) {
+                        Text(
+                            stringResource(R.string.dependenciesinspector_detail_version_format, version),
+                            Modifier.padding(
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
+                            ),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Monospace,
+                            color = colors.versionText,
+                        )
+                    }
+                }
+            }
+            Text(
+                dependency.category.displayName(),
+                style = MaterialTheme.typography.bodySmall,
+                color = depCategoryColor,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DetailDescription(
+    dependency: DependencyInfo,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    Text(
+        dependency.description,
+        style = MaterialTheme.typography.bodyMedium,
+        color = colors.labelSecondary,
+    )
+}
+
+@Composable
+private fun DetailDetailsSection(
+    dependency: DependencyInfo,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    val packageLabel = stringResource(R.string.dependenciesinspector_detail_label_package)
+    val groupIdLabel = stringResource(R.string.dependenciesinspector_detail_label_group_id)
+    val artifactIdLabel = stringResource(R.string.dependenciesinspector_detail_label_artifact_id)
+    val mavenLabel = stringResource(R.string.dependenciesinspector_detail_label_maven)
+    DetailSection(
+        stringResource(R.string.dependenciesinspector_detail_section_details),
+        listOfNotNull(
+            packageLabel to dependency.packageName,
+            dependency.groupId?.let { groupIdLabel to it },
+            dependency.artifactId?.let { artifactIdLabel to it },
+            dependency.mavenCoordinate?.let { mavenLabel to it },
+        ),
+        colors,
+    )
+}
+
+@Composable
+private fun DetailDetectionSection(
+    dependency: DependencyInfo,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    val methodLabel = stringResource(R.string.dependenciesinspector_detail_label_method)
+    val confidenceLabel = stringResource(R.string.dependenciesinspector_detail_label_confidence)
+    val versionStatusLabel = stringResource(R.string.dependenciesinspector_detail_label_version_status)
+    val versionDetected = stringResource(R.string.dependenciesinspector_summary_detected)
+    val versionUnknown = stringResource(R.string.dependenciesinspector_summary_unknown)
+    DetailSection(
+        stringResource(R.string.dependenciesinspector_detail_section_detection),
+        listOf(
+            methodLabel to dependency.detectionMethod.displayName(),
+            confidenceLabel to dependency.detectionMethod.confidence(),
+            versionStatusLabel to if (dependency.version != null) versionDetected else versionUnknown,
+        ),
+        colors,
+    )
+}
+
+@Composable
+private fun WebsiteLink(
+    url: String,
+    colors: ToolColors.DependenciesInspector.Scheme,
+    onOpenUrl: () -> Unit,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable { onOpenUrl() }
+            .padding(vertical = WormaCeptorTokens.Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        Icon(
+            Icons.Default.Language,
+            stringResource(R.string.dependenciesinspector_detail_section_details),
+            tint = colors.link,
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+        )
+        Text(
+            url,
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.link,
+            textDecoration = TextDecoration.Underline,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

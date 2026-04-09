@@ -2,53 +2,26 @@ package com.azikar24.wormaceptor.feature.cpu
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
 import com.azikar24.wormaceptor.feature.cpu.ui.CpuScreen
-import com.azikar24.wormaceptor.feature.cpu.vm.CpuEvent
 import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewModel
 import org.koin.compose.koinInject
 
-/**
- * Entry point for the CPU Monitoring feature.
- * Provides factory methods and composable entry point.
- */
+/** Entry point for the CPU monitoring feature. */
 object CpuFeature {
 
-    /**
-     * Creates a CpuViewModel factory for use with viewModel().
-     */
+    /** Creates a [CpuViewModelFactory] bound to the given [engine]. */
     fun createViewModelFactory(engine: CpuMonitorEngine): CpuViewModelFactory {
         return CpuViewModelFactory(engine)
     }
 }
 
-/**
- * Factory for creating CpuViewModel instances.
- */
-class CpuViewModelFactory(
-    private val engine: CpuMonitorEngine,
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CpuViewModel::class.java)) {
-            return CpuViewModel(engine) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-    }
-}
-
-/**
- * Main composable for the CPU Monitoring feature.
- * Displays real-time CPU usage with charts and controls.
- */
+/** Main composable for the CPU monitoring feature. */
 @Composable
 fun CpuMonitor(
     modifier: Modifier = Modifier,
@@ -62,18 +35,12 @@ fun CpuMonitor(
     val factory = remember { CpuFeature.createViewModelFactory(engine) }
     val viewModel: CpuViewModel = viewModel(factory = factory)
 
-    val state by viewModel.uiState.collectAsState()
-
-    CpuScreen(
-        currentCpu = state.currentCpu,
-        cpuHistory = state.cpuHistory,
-        isMonitoring = state.isMonitoring,
-        isCpuWarning = state.isCpuWarning,
-        formattedUptime = state.formattedUptime,
-        onStartMonitoring = { viewModel.sendEvent(CpuEvent.StartMonitoring) },
-        onStopMonitoring = { viewModel.sendEvent(CpuEvent.StopMonitoring) },
-        onClearHistory = { viewModel.sendEvent(CpuEvent.ClearHistory) },
-        onBack = onNavigateBack,
-        modifier = modifier,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        CpuScreen(
+            state = state,
+            onEvent = onEvent,
+            onBack = onNavigateBack,
+            modifier = modifier,
+        )
+    }
 }

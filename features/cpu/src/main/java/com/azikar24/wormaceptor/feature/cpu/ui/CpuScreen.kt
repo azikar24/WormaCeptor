@@ -3,8 +3,10 @@ package com.azikar24.wormaceptor.feature.cpu.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -27,19 +29,126 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.R
-import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.cpu.vm.CpuEvent
+import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewState
 import kotlinx.collections.immutable.persistentListOf
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CpuTopAppBar(
+    state: CpuViewState,
+    onEvent: (CpuEvent) -> Unit,
+    onBack: (() -> Unit)?,
+    onClearHistory: () -> Unit,
+) {
+    TopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                Text(
+                    text = stringResource(R.string.cpu_title),
+                    fontWeight = FontWeight.SemiBold,
+                )
+                AnimatedVisibility(
+                    visible = state.isCpuWarning,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    WormaCeptorWarningBadge(
+                        contentDescription = stringResource(R.string.cpu_warning),
+                    )
+                }
+            }
+        },
+        navigationIcon = {
+            onBack?.let { back ->
+                IconButton(onClick = back) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.cpu_back),
+                    )
+                }
+            }
+        },
+        actions = {
+            WormaCeptorPlayPauseButton(
+                isActive = state.isMonitoring,
+                onToggle = {
+                    if (state.isMonitoring) {
+                        onEvent(CpuEvent.StopMonitoring)
+                    } else {
+                        onEvent(CpuEvent.StartMonitoring)
+                    }
+                },
+            )
+            IconButton(onClick = onClearHistory) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.cpu_clear_history),
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    )
+}
+
+@Composable
+private fun CpuScreenContent(
+    state: CpuViewState,
+    paddingValues: PaddingValues,
+    scrollState: ScrollState,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .verticalScroll(scrollState)
+            .padding(
+                start = WormaCeptorTokens.Spacing.lg,
+                top = WormaCeptorTokens.Spacing.lg,
+                end = WormaCeptorTokens.Spacing.lg,
+                bottom = WormaCeptorTokens.Spacing.lg +
+                    WindowInsets.navigationBars.asPaddingValues()
+                        .calculateBottomPadding(),
+            ),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
+    ) {
+        WormaCeptorMonitoringStatusBar(
+            isMonitoring = state.isMonitoring,
+            sampleCount = state.cpuHistory.size,
+        )
+        CpuUsageGaugeCard(
+            currentCpu = state.currentCpu,
+            isWarning = state.isCpuWarning,
+        )
+        PerCoreUsageCard(
+            currentCpu = state.currentCpu,
+        )
+        CpuChartCard(
+            history = state.cpuHistory,
+        )
+        SystemInfoCard(
+            currentCpu = state.currentCpu,
+            formattedUptime = state.formattedUptime,
+        )
+    }
+}
 
 /**
  * Main screen for CPU Monitoring.
@@ -55,123 +164,34 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CpuScreen(
-    currentCpu: CpuInfo,
-    cpuHistory: ImmutableList<CpuInfo>,
-    isMonitoring: Boolean,
-    isCpuWarning: Boolean,
-    formattedUptime: String,
-    onStartMonitoring: () -> Unit,
-    onStopMonitoring: () -> Unit,
-    onClearHistory: () -> Unit,
+    state: CpuViewState,
+    onEvent: (CpuEvent) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val colors = cpuColors()
+    val haptic = LocalHapticFeedback.current
     val scrollState = rememberScrollState()
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.cpu_title),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        // Warning badge
-                        AnimatedVisibility(
-                            visible = isCpuWarning,
-                            enter = fadeIn(),
-                            exit = fadeOut(),
-                        ) {
-                            WormaCeptorWarningBadge(
-                                contentDescription = stringResource(R.string.cpu_warning),
-                            )
-                        }
-                    }
+            CpuTopAppBar(
+                state = state,
+                onEvent = onEvent,
+                onBack = onBack,
+                onClearHistory = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onEvent(CpuEvent.ClearHistory)
                 },
-                navigationIcon = {
-                    onBack?.let { back ->
-                        IconButton(onClick = back) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.cpu_back),
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    WormaCeptorPlayPauseButton(
-                        isActive = isMonitoring,
-                        onToggle = { if (isMonitoring) onStopMonitoring() else onStartMonitoring() },
-                    )
-
-                    // Clear history
-                    IconButton(onClick = onClearHistory) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.cpu_clear_history),
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
             )
         },
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(scrollState)
-                .padding(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
-                        WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding(),
-                ),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Status bar
-            WormaCeptorMonitoringStatusBar(
-                isMonitoring = isMonitoring,
-                sampleCount = cpuHistory.size,
-            )
-
-            // CPU usage gauge card
-            CpuUsageGaugeCard(
-                currentCpu = currentCpu,
-                isWarning = isCpuWarning,
-                colors = colors,
-            )
-
-            // Per-core usage card
-            PerCoreUsageCard(
-                currentCpu = currentCpu,
-                colors = colors,
-            )
-
-            // CPU usage over time chart
-            CpuChartCard(
-                history = cpuHistory,
-                colors = colors,
-            )
-
-            // System info card (frequency, temperature)
-            SystemInfoCard(
-                currentCpu = currentCpu,
-                formattedUptime = formattedUptime,
-                colors = colors,
-            )
-        }
+        CpuScreenContent(
+            state = state,
+            paddingValues = paddingValues,
+            scrollState = scrollState,
+        )
     }
 }
 
@@ -181,39 +201,39 @@ fun CpuScreen(
 private fun CpuScreenPreview() {
     WormaCeptorTheme {
         CpuScreen(
-            currentCpu = CpuInfo(
-                timestamp = System.currentTimeMillis(),
-                overallUsagePercent = 15.2f,
-                perCoreUsage = listOf(32.5f, 67.8f, 12.3f, 55.0f),
-                coreCount = 8,
-                cpuFrequencyMHz = 2400L,
-                cpuTemperature = 42.5f,
-                uptime = 3_600_000L,
-            ),
-            cpuHistory = persistentListOf(
-                CpuInfo(
-                    timestamp = 1L,
-                    overallUsagePercent = 30f,
-                    perCoreUsage = listOf(25f, 35f, 20f, 40f),
-                    coreCount = 4,
-                    cpuFrequencyMHz = 2400L,
-                    cpuTemperature = 40f,
-                ),
-                CpuInfo(
-                    timestamp = 2L,
-                    overallUsagePercent = 45.2f,
+            state = CpuViewState(
+                currentCpu = CpuInfo(
+                    timestamp = System.currentTimeMillis(),
+                    overallUsagePercent = 15.2f,
                     perCoreUsage = listOf(32.5f, 67.8f, 12.3f, 55.0f),
-                    coreCount = 4,
+                    coreCount = 8,
                     cpuFrequencyMHz = 2400L,
                     cpuTemperature = 42.5f,
+                    uptime = 3_600_000L,
                 ),
+                cpuHistory = persistentListOf(
+                    CpuInfo(
+                        timestamp = 1L,
+                        overallUsagePercent = 30f,
+                        perCoreUsage = listOf(25f, 35f, 20f, 40f),
+                        coreCount = 4,
+                        cpuFrequencyMHz = 2400L,
+                        cpuTemperature = 40f,
+                    ),
+                    CpuInfo(
+                        timestamp = 2L,
+                        overallUsagePercent = 45.2f,
+                        perCoreUsage = listOf(32.5f, 67.8f, 12.3f, 55.0f),
+                        coreCount = 4,
+                        cpuFrequencyMHz = 2400L,
+                        cpuTemperature = 42.5f,
+                    ),
+                ),
+                isMonitoring = true,
+                isCpuWarning = false,
+                formattedUptime = "1h 0m 0s",
             ),
-            isMonitoring = true,
-            isCpuWarning = false,
-            formattedUptime = "1h 0m 0s",
-            onStartMonitoring = {},
-            onStopMonitoring = {},
-            onClearHistory = {},
+            onEvent = {},
             onBack = {},
         )
     }

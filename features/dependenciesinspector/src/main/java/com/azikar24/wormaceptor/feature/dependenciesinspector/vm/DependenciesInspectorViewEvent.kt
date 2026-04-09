@@ -10,5 +10,6 @@ sealed class DependenciesInspectorViewEvent {
     data class SetShowVersionedOnly(val show: Boolean) : DependenciesInspectorViewEvent()
     data class SelectDependency(val dependency: DependencyInfo) : DependenciesInspectorViewEvent()
     data object DismissDetail : DependenciesInspectorViewEvent()
+    data object ToggleSearch : DependenciesInspectorViewEvent()
     data object Refresh : DependenciesInspectorViewEvent()
 }

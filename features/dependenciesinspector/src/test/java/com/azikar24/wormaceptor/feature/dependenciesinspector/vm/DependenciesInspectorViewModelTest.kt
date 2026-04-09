@@ -101,6 +101,11 @@ class DependenciesInspectorViewModelTest {
         }
 
         @Test
+        fun `isSearchActive is false`() = runTest {
+            viewModel.uiState.value.isSearchActive shouldBe false
+        }
+
+        @Test
         fun `selectedDependency is null`() = runTest {
             viewModel.uiState.value.selectedDependency shouldBe null
         }
@@ -287,6 +292,52 @@ class DependenciesInspectorViewModelTest {
                 }
                 state.filteredDependencies shouldHaveSize 1
                 state.filteredDependencies.first().version shouldBe "4.12.0"
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Nested
+    inner class `ToggleSearch event` {
+
+        @Test
+        fun `activates search`() = runTest {
+            viewModel.sendEvent(DependenciesInspectorViewEvent.ToggleSearch)
+
+            viewModel.uiState.value.isSearchActive shouldBe true
+        }
+
+        @Test
+        fun `deactivates search and clears query`() = runTest {
+            viewModel.sendEvent(DependenciesInspectorViewEvent.ToggleSearch)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("okhttp"))
+            viewModel.sendEvent(DependenciesInspectorViewEvent.ToggleSearch)
+
+            viewModel.uiState.value.isSearchActive shouldBe false
+            viewModel.uiState.value.searchQuery shouldBe ""
+        }
+
+        @Test
+        fun `deactivating search refilters dependencies`() = runTest {
+            val okhttp = makeDependency(name = "OkHttp")
+            val retrofit = makeDependency(
+                name = "Retrofit",
+                groupId = "com.squareup.retrofit2",
+                artifactId = "retrofit",
+                packageName = "retrofit2",
+            )
+            dependenciesFlow.value = listOf(okhttp, retrofit)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.ToggleSearch)
+            viewModel.sendEvent(DependenciesInspectorViewEvent.SetSearchQuery("okhttp"))
+
+            viewModel.uiState.test {
+                awaitUntil { it.filteredDependencies.size == 1 }
+
+                viewModel.sendEvent(DependenciesInspectorViewEvent.ToggleSearch)
+                val state = awaitUntil { it.filteredDependencies.size == 2 }
+                state.filteredDependencies shouldHaveSize 2
+                state.isSearchActive shouldBe false
+                state.searchQuery shouldBe ""
                 cancelAndIgnoreRemainingEvents()
             }
         }

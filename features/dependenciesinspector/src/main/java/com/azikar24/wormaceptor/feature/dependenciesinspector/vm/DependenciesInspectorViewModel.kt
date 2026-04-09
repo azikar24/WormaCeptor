@@ -45,6 +45,14 @@ class DependenciesInspectorViewModel(
             is DependenciesInspectorViewEvent.DismissDetail -> {
                 updateState { copy(selectedDependency = null) }
             }
+            is DependenciesInspectorViewEvent.ToggleSearch -> {
+                val wasActive = uiState.value.isSearchActive
+                updateState { copy(isSearchActive = !wasActive) }
+                if (wasActive) {
+                    updateState { copy(searchQuery = "") }
+                    refilter()
+                }
+            }
             is DependenciesInspectorViewEvent.Refresh -> {
                 engine.refresh()
             }

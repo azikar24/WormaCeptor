@@ -2,61 +2,10 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyCard( dependency: DependencyInfo, onClick: () -&gt; Unit, colors: DependenciesInspectorColors, )</ID>
-    <ID>LongMethod:DependenciesInspectorScreen.kt$@Composable private fun DependencyDetailContent( dependency: DependencyInfo, colors: DependenciesInspectorColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DependenciesInspectorScreen( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:DependenciesInspectorScreen.kt$( dependencies: ImmutableList&lt;DependencyInfo&gt;, summary: DependencySummary, isLoading: Boolean, error: String?, selectedCategory: DependencyCategory?, searchQuery: String, selectedDependency: DependencyInfo?, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onDependencySelected: (DependencyInfo) -&gt; Unit, onDismissDetail: () -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:DependenciesInspectorScreen.kt$( selectedCategory: DependencyCategory?, summary: DependencySummary, showVersionedOnly: Boolean, onCategorySelected: (DependencyCategory?) -&gt; Unit, onShowVersionedOnlyChanged: (Boolean) -&gt; Unit, colors: DependenciesInspectorColors, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF009688</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF00BCD4</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF03A9F4</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1976D2</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1B5E20</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF1E1E1E</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF212121</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF2D2D2D</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF3F51B5</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF424242</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4DB6AC</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4DD0E1</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF4FC3F7</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF607D8B</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF6200EE</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF64B5F6</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF757575</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF795548</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF7986CB</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF7C4DFF</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF81C784</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF90A4AE</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFF9E9E9E</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFA1887F</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFA5D6A7</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFB388FF</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBA68C8</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBB86FC</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFBDBDBD</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE0E0E0</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE57373</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFE91E63</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF06292</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF44336</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFF5F5F5</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFAFAFA</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFB74D</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFC107</ID>
-    <ID>MagicNumber:DependenciesInspectorColors.kt$0xFFFFD54F</ID>
-    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.15f</ID>
-    <ID>MagicNumber:DependenciesInspectorScreen.kt$0.2f</ID>
+    <ID>LongMethod:DependenciesInspectorScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun DependenciesTopBar( isSearchActive: Boolean, searchQuery: String, isLoading: Boolean, onBack: (() -&gt; Unit)?, onEvent: (DependenciesInspectorViewEvent) -&gt; Unit, )</ID>
     <ID>MagicNumber:DependenciesInspectorScreen.kt$3</ID>
-    <ID>ParameterNaming:DependenciesInspectorScreen.kt$onCategorySelected</ID>
-    <ID>ParameterNaming:DependenciesInspectorScreen.kt$onDependencySelected</ID>
-    <ID>ParameterNaming:DependenciesInspectorScreen.kt$onSearchQueryChanged</ID>
-    <ID>ParameterNaming:DependenciesInspectorScreen.kt$onShowVersionedOnlyChanged</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$ToggleSearch : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val isSearchActive: Boolean = false</ID>
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$DismissDetail : DependenciesInspectorViewEvent</ID>
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$Refresh : DependenciesInspectorViewEvent</ID>
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SelectDependency : DependenciesInspectorViewEvent</ID>

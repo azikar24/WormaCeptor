@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util
 
+import androidx.compose.ui.graphics.Color
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 
 internal fun DependencyCategory.shortLabel(): String = when (this) {
@@ -18,4 +20,22 @@ internal fun DependencyCategory.shortLabel(): String = when (this) {
     DependencyCategory.ANDROIDX -> "AX"
     DependencyCategory.KOTLIN -> "KT"
     DependencyCategory.OTHER -> "Other"
+}
+
+internal fun DependencyCategory.categoryColor(colors: ToolColors.DependenciesInspector.Scheme): Color = when (this) {
+    DependencyCategory.NETWORKING -> colors.networking
+    DependencyCategory.DEPENDENCY_INJECTION -> colors.dependencyInjection
+    DependencyCategory.UI_FRAMEWORK -> colors.uiFramework
+    DependencyCategory.IMAGE_LOADING -> colors.imageLoading
+    DependencyCategory.SERIALIZATION -> colors.serialization
+    DependencyCategory.DATABASE -> colors.database
+    DependencyCategory.REACTIVE -> colors.reactive
+    DependencyCategory.LOGGING -> colors.logging
+    DependencyCategory.ANALYTICS -> colors.analytics
+    DependencyCategory.TESTING -> colors.testing
+    DependencyCategory.SECURITY -> colors.security
+    DependencyCategory.UTILITY -> colors.utility
+    DependencyCategory.ANDROIDX -> colors.androidx
+    DependencyCategory.KOTLIN -> colors.kotlin
+    DependencyCategory.OTHER -> colors.other
 }

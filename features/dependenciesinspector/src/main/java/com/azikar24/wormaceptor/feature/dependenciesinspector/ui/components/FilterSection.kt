@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.dependenciesinspector.ui.components
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -13,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -23,61 +23,62 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
+import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.categoryColor
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.shortLabel
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
+@Suppress("LongParameterList")
 internal fun FilterSection(
     selectedCategory: DependencyCategory?,
     summary: DependencySummary,
     showVersionedOnly: Boolean,
-    onCategorySelected: (DependencyCategory?) -> Unit,
-    onShowVersionedOnlyChanged: (Boolean) -> Unit,
+    onSelectCategory: (DependencyCategory?) -> Unit,
+    onToggleVersionedOnly: (Boolean) -> Unit,
     colors: ToolColors.DependenciesInspector.Scheme,
     modifier: Modifier = Modifier,
 ) {
-    val haptic = LocalHapticFeedback.current
-
     Column(modifier, Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        // Category filter chips - scrollable horizontally
-        Row(
-            Modifier.horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-        ) {
-            FilterChip(
-                selected = selectedCategory == null,
-                onClick = { onCategorySelected(null) },
-                label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = colors.primary.copy(WormaCeptorTokens.Alpha.MEDIUM),
-                ),
-            )
+        CategoryChipRow(selectedCategory, summary, onSelectCategory, colors)
+        VersionedOnlyToggle(showVersionedOnly, onToggleVersionedOnly, colors)
+    }
+}
 
-            // Show categories that have detected dependencies, sorted by count
-            summary.byCategory.entries
-                .sortedByDescending { it.value }
-                .forEach { (category, count) ->
-                    val color = when (category) {
-                        DependencyCategory.NETWORKING -> colors.networking
-                        DependencyCategory.DEPENDENCY_INJECTION -> colors.dependencyInjection
-                        DependencyCategory.UI_FRAMEWORK -> colors.uiFramework
-                        DependencyCategory.IMAGE_LOADING -> colors.imageLoading
-                        DependencyCategory.SERIALIZATION -> colors.serialization
-                        DependencyCategory.DATABASE -> colors.database
-                        DependencyCategory.REACTIVE -> colors.reactive
-                        DependencyCategory.LOGGING -> colors.logging
-                        DependencyCategory.ANALYTICS -> colors.analytics
-                        DependencyCategory.TESTING -> colors.testing
-                        DependencyCategory.SECURITY -> colors.security
-                        DependencyCategory.UTILITY -> colors.utility
-                        DependencyCategory.ANDROIDX -> colors.androidx
-                        DependencyCategory.KOTLIN -> colors.kotlin
-                        DependencyCategory.OTHER -> colors.other
-                    }
+@Composable
+private fun CategoryChipRow(
+    selectedCategory: DependencyCategory?,
+    summary: DependencySummary,
+    onSelectCategory: (DependencyCategory?) -> Unit,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    val haptic = LocalHapticFeedback.current
+    Row(
+        Modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        FilterChip(
+            selected = selectedCategory == null,
+            onClick = {
+                if (selectedCategory != null) {
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onSelectCategory(null)
+                }
+            },
+            label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = colors.primary.copy(WormaCeptorTokens.Alpha.MEDIUM),
+            ),
+        )
+
+        summary.byCategory.entries
+            .sortedByDescending { it.value }
+            .forEach { (category, count) ->
+                key(category) {
+                    val color = category.categoryColor(colors)
                     FilterChip(
                         selected = selectedCategory == category,
                         onClick = {
-                            onCategorySelected(if (selectedCategory == category) null else category)
+                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            onSelectCategory(if (selectedCategory == category) null else category)
                         },
                         label = { Text("${category.shortLabel()} ($count)") },
                         colors = FilterChipDefaults.filterChipColors(
@@ -86,22 +87,29 @@ internal fun FilterSection(
                         ),
                     )
                 }
-        }
+            }
+    }
+}
 
-        // Version filter toggle
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
-            Text(
-                stringResource(R.string.dependenciesinspector_filter_versioned_only),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.labelPrimary,
-            )
-            Switch(
-                checked = showVersionedOnly,
-                onCheckedChange = { newValue ->
-                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    onShowVersionedOnlyChanged(newValue)
-                },
-            )
-        }
+@Composable
+private fun VersionedOnlyToggle(
+    showVersionedOnly: Boolean,
+    onToggleVersionedOnly: (Boolean) -> Unit,
+    colors: ToolColors.DependenciesInspector.Scheme,
+) {
+    val haptic = LocalHapticFeedback.current
+    Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
+        Text(
+            stringResource(R.string.dependenciesinspector_filter_versioned_only),
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.labelPrimary,
+        )
+        Switch(
+            checked = showVersionedOnly,
+            onCheckedChange = { newValue ->
+                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                onToggleVersionedOnly(newValue)
+            },
+        )
     }
 }

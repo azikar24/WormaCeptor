@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,36 +24,38 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
-import com.azikar24.wormaceptor.feature.cpu.ui.theme.CpuColors
-import com.azikar24.wormaceptor.feature.cpu.ui.theme.cpuColors
+
+private const val CpuCriticalThreshold = 80f
+private const val CpuWarningThreshold = 50f
+private const val CpuPercentDivisor = 100f
+private val CoreLabelWidth = 56.dp
+private val PercentageLabelWidth = 36.dp
 
 @Composable
 internal fun PerCoreUsageCard(
     currentCpu: CpuInfo,
-    colors: CpuColors,
     modifier: Modifier = Modifier,
 ) {
-    Card(
+    WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
-        colors = CardDefaults.cardColors(
-            containerColor = colors.cardBackground,
-        ),
+        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
         ) {
             Text(
                 text = stringResource(R.string.cpu_per_core_usage),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = colors.labelPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             if (currentCpu.perCoreUsage.isEmpty()) {
@@ -66,15 +66,14 @@ internal fun PerCoreUsageCard(
                         stringResource(R.string.cpu_no_core_data)
                     },
                     style = MaterialTheme.typography.bodyMedium,
-                    color = colors.labelSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
                 currentCpu.perCoreUsage.forEachIndexed { index, usage ->
                     CoreUsageBar(
                         coreIndex = index,
                         usage = usage,
-                        color = colors.colorForCore(index),
-                        colors = colors,
+                        color = WormaCeptorTokens.Colors.Cpu.forCore(index),
                     )
                 }
             }
@@ -87,46 +86,46 @@ private fun CoreUsageBar(
     coreIndex: Int,
     usage: Float,
     color: Color,
-    colors: CpuColors,
     modifier: Modifier = Modifier,
 ) {
     val animatedProgress by animateFloatAsState(
-        targetValue = usage / 100f,
-        animationSpec = tween(durationMillis = WormaCeptorDesignSystem.AnimationDuration.PAGE),
+        targetValue = usage / CpuPercentDivisor,
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.PAGE),
         label = "core_progress_$coreIndex",
     )
 
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
-        // Core label
         Text(
             text = stringResource(R.string.cpu_core_label, coreIndex),
             style = MaterialTheme.typography.labelMedium,
-            color = colors.labelSecondary,
-            modifier = Modifier.width(56.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.width(CoreLabelWidth),
         )
 
-        // Progress bar
         LinearProgressIndicator(
             progress = { animatedProgress.coerceIn(0f, 1f) },
             modifier = Modifier
                 .weight(1f)
-                .height(WormaCeptorDesignSystem.Spacing.sm)
-                .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs)),
+                .height(WormaCeptorTokens.Spacing.sm)
+                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs)),
             color = color,
-            trackColor = colors.chartBackground,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
 
-        // Percentage
         Text(
             text = "${usage.toInt()}%",
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = colors.statusColorForUsage(usage),
-            modifier = Modifier.width(36.dp),
+            color = when {
+                usage >= CpuCriticalThreshold -> WormaCeptorTokens.Colors.Status.red
+                usage >= CpuWarningThreshold -> WormaCeptorTokens.Colors.Status.amber
+                else -> WormaCeptorTokens.Colors.Status.green
+            },
+            modifier = Modifier.width(PercentageLabelWidth),
         )
     }
 }
@@ -144,7 +143,6 @@ private fun PerCoreUsageCardPreview() {
                 cpuFrequencyMHz = 2400L,
                 cpuTemperature = 44f,
             ),
-            colors = cpuColors(),
         )
     }
 }
@@ -155,7 +153,6 @@ private fun PerCoreUsageCardEmptyPreview() {
     WormaCeptorTheme {
         PerCoreUsageCard(
             currentCpu = CpuInfo.empty(),
-            colors = cpuColors(),
         )
     }
 }
@@ -174,7 +171,6 @@ private fun PerCoreUsageCardProcessSourcePreview() {
                 cpuTemperature = null,
                 measurementSource = CpuMeasurementSource.PROCESS,
             ),
-            colors = cpuColors(),
         )
     }
 }

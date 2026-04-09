@@ -38,6 +38,11 @@ class LoadedLibrariesViewModel(
                 updateState { copy(searchQuery = event.query) }
                 refilter()
             }
+            is LoadedLibrariesViewEvent.ToggleSearch -> {
+                val nowActive = !uiState.value.searchActive
+                updateState { copy(searchActive = nowActive) }
+                if (!nowActive) handleEvent(LoadedLibrariesViewEvent.SetSearchQuery(""))
+            }
             is LoadedLibrariesViewEvent.SelectLibrary -> {
                 updateState { copy(selectedLibrary = event.library) }
             }

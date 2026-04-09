@@ -2,56 +2,15 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ClassOrdering:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$@Composable fun syntaxColors(darkTheme: Boolean = isSystemInDarkTheme()): SyntaxColors</ID>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; json.length &amp;&amp; ( json[i].isDigit() || json[i] == '.' || json[i] == 'e' || json[i] == 'E' || json[i] == '+' || json[i] == '-' )</ID>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '=' &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/'</ID>
-    <ID>ComplexCondition:FileViewerScreen.kt$i &lt; xml.length &amp;&amp; !xml[i].isWhitespace() &amp;&amp; xml[i] != '&gt;' &amp;&amp; xml[i] != '/'</ID>
-    <ID>CyclomaticComplexMethod:FileViewerScreen.kt$@Composable private fun highlightJson(json: String): AnnotatedString</ID>
-    <ID>CyclomaticComplexMethod:FileViewerScreen.kt$@Composable private fun highlightXml(xml: String): AnnotatedString</ID>
-    <ID>LambdaParameterInRestartableEffect:FileBrowserScreen.kt$onClearError</ID>
-    <ID>LongMethod:FileBrowserFeature.kt$@Composable fun FileBrowser( context: Context, modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>LongMethod:FileBrowserScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileBrowserScreen( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
-    <ID>LongMethod:FileInfoSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileInfoSheet( fileInfo: FileInfo, onDismiss: () -&gt; Unit, onDelete: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:FileListItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun FileListItem( file: FileEntry, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightJson(json: String): AnnotatedString</ID>
-    <ID>LongMethod:FileViewerScreen.kt$@Composable private fun highlightXml(xml: String): AnnotatedString</ID>
-    <ID>LongParameterList:FileBrowserScreen.kt$( currentPath: String?, navigationStack: ImmutableList&lt;String&gt;, filteredFiles: ImmutableList&lt;FileEntry&gt;, searchQuery: String, isLoading: Boolean, error: String?, onSearchQueryChanged: (String) -&gt; Unit, onNavigateToBreadcrumb: (Int) -&gt; Unit, onFileClick: (FileEntry) -&gt; Unit, onFileLongClick: (FileEntry) -&gt; Unit, onSortModeChanged: (SortMode) -&gt; Unit, onNavigateBack: () -&gt; Boolean, onExitBrowser: () -&gt; Unit, onClearError: () -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF1565C0</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF212121</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF2E7D32</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF42A5F5</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF616161</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF64B5F6</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF66BB6A</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF757575</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF78909C</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF81C784</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF90CAF9</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF9C27B0</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFF9E9E9E</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFA5D6A7</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFB0BEC5</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFBDBDBD</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFCE93D8</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFE0E0E0</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFE64A19</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFFF8A65</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFFFA726</ID>
-    <ID>MagicNumber:FileBrowserDesignSystem.kt$FileBrowserDesignSystem$0xFFFFCC80</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$0xFF</ID>
     <ID>MagicNumber:FileViewerScreen.kt$10f</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$126</ID>
     <ID>MagicNumber:FileViewerScreen.kt$14f</ID>
     <ID>MagicNumber:FileViewerScreen.kt$28</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$32</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$4</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$5</ID>
-    <ID>MagicNumber:FileViewerScreen.kt$8</ID>
-    <ID>ParameterNaming:FileBrowserScreen.kt$onSearchQueryChanged</ID>
-    <ID>ParameterNaming:FileBrowserScreen.kt$onSortModeChanged</ID>
     <ID>TooGenericExceptionCaught:FileSystemDataSource.kt$FileSystemDataSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:FileViewerScreen.kt$e: Exception</ID>
-    <ID>TopLevelPropertyNaming:FileViewerScreen.kt$private const val BYTES_PER_LINE = 16</ID>
+    <ID>UndocumentedPublicFunction:BreadcrumbBar.kt$@Composable fun BreadcrumbBar( isAtRoot: Boolean, navigationStack: ImmutableList&lt;String&gt;, onRootClick: () -&gt; Unit, onBreadcrumbClick: (index: Int) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:FileBrowserScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileBrowserScreen( state: FileBrowserViewState, onEvent: (FileBrowserViewEvent) -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
+    <ID>UndocumentedPublicFunction:FileInfoSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileInfoSheet( fileInfo: FileInfo, onEvent: (FileBrowserViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:FileListItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun FileListItem( file: FileEntry, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>ViewModelInjection:FileBrowserFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -2,51 +2,17 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:LoadedLibrariesScreen.kt$@Composable private fun LibraryCard( library: LoadedLibrary, onClick: () -&gt; Unit, colors: LoadedLibrariesColors, )</ID>
-    <ID>LongMethod:LoadedLibrariesScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun FilterSection( selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, colors: LoadedLibrariesColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:LoadedLibrariesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LoadedLibrariesScreen( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:LoadedLibrariesScreen.kt$( libraries: ImmutableList&lt;LoadedLibrary&gt;, summary: LibrarySummary, isLoading: Boolean, error: String?, selectedType: LoadedLibrary.LibraryType?, showSystemLibs: Boolean, searchQuery: String, selectedLibrary: LoadedLibrary?, onTypeSelected: (LoadedLibrary.LibraryType?) -&gt; Unit, onShowSystemLibsChanged: (Boolean) -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onLibrarySelected: (LoadedLibrary) -&gt; Unit, onDismissDetail: () -&gt; Unit, onRefresh: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF00BCD4</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF1565C0</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF1976D2</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF1E1E1E</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF212121</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF2D2D2D</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF424242</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF455A64</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF4DD0E1</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF607D8B</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF64B5F6</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF757575</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF78909C</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF7C4DFF</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF81C784</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF90A4AE</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFF9E9E9E</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFB388FF</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFBA68C8</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFBDBDBD</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFE0E0E0</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFF5F5F5</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFAFAFA</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFDD835</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFFB74D</ID>
-    <ID>MagicNumber:LoadedLibrariesColors.kt$0xFFFFEB3B</ID>
-    <ID>MagicNumber:LoadedLibrariesScreen.kt$3</ID>
-    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onLibrarySelected</ID>
-    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onSearchQueryChanged</ID>
-    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onShowSystemLibsChanged</ID>
-    <ID>ParameterNaming:LoadedLibrariesScreen.kt$onTypeSelected</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesFeature.kt$LoadedLibrariesFeature</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$DismissDetail : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$Refresh : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SelectLibrary : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetSearchQuery : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetSelectedType : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetShowSystemLibs : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$ToggleSearch : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewModelFactory.kt$LoadedLibrariesViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicFunction:LoadedLibrariesFeature.kt$@Composable fun LoadedLibrariesInspector( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
+    <ID>UndocumentedPublicFunction:LoadedLibrariesFeature.kt$LoadedLibrariesFeature$fun createViewModelFactory(engine: LoadedLibrariesEngine): LoadedLibrariesViewModelFactory</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SelectLibrary$val library: LoadedLibrary</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSelectedType$val type: LoadedLibrary.LibraryType?</ID>
@@ -54,6 +20,7 @@
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val filteredLibraries: ImmutableList&lt;LoadedLibrary&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val searchActive: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val searchQuery: String = ""</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val selectedLibrary: LoadedLibrary? = null</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val selectedType: LoadedLibrary.LibraryType? = null</ID>

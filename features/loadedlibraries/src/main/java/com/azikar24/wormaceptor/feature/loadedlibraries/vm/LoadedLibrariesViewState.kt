@@ -14,5 +14,6 @@ data class LoadedLibrariesViewState(
     val selectedType: LoadedLibrary.LibraryType? = null,
     val showSystemLibs: Boolean = true,
     val searchQuery: String = "",
+    val searchActive: Boolean = false,
     val selectedLibrary: LoadedLibrary? = null,
 )

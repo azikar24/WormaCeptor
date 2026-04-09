@@ -7,4 +7,7 @@ sealed class FileBrowserViewEffect {
 
     /** The user attempted to navigate back but is already at the root. */
     data object AtRoot : FileBrowserViewEffect()
+
+    /** Show a transient snackbar with the given [message]. */
+    data class ShowSnackBar(val message: String) : FileBrowserViewEffect()
 }

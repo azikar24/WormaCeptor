@@ -18,7 +18,7 @@ class FileBrowserNavigationContributor : FeatureNavigationContributor {
         onBack: () -> Unit,
     ) {
         builder.composable(WormaCeptorNavKeys.FileBrowser.route) {
-            FileBrowser(context = context, onNavigateBack = onBack)
+            FileBrowser(onNavigateBack = onBack)
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,7 +19,6 @@ import com.azikar24.wormaceptor.feature.filebrowser.ui.FileBrowserScreen
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileInfoSheet
 import com.azikar24.wormaceptor.feature.filebrowser.ui.FileViewerScreen
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEffect
-import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewModel
 import kotlinx.coroutines.launch
 
@@ -70,13 +70,15 @@ class FileBrowserViewModelFactory(
  */
 @Composable
 fun FileBrowser(
-    context: Context,
     modifier: Modifier = Modifier,
     onNavigateBack: (() -> Unit)? = null,
 ) {
+    val context = LocalContext.current
+    val application = context.applicationContext as? Application
+        ?: error("LocalContext is not an Application context")
     val repository = remember { FileBrowserFeature.createRepository(context) }
     val factory = remember {
-        FileBrowserFeature.createViewModelFactory(repository, context.applicationContext as Application)
+        FileBrowserFeature.createViewModelFactory(repository, application)
     }
     val viewModel: FileBrowserViewModel = viewModel(factory = factory)
     val scope = rememberCoroutineScope()
@@ -88,38 +90,23 @@ fun FileBrowser(
             when (effect) {
                 FileBrowserViewEffect.AtRoot -> onNavigateBack?.invoke()
                 FileBrowserViewEffect.NavigatedBack -> { /* Navigation handled via state */ }
+                is FileBrowserViewEffect.ShowSnackBar -> {
+                    scope.launch { snackBarHostState.showSnackbar(effect.message) }
+                }
             }
         },
     ) { state, onEvent ->
         // Main browser screen or file viewer
-        val selectedFile = state.selectedFile
-        val fileContent = state.fileContent
-        if (selectedFile != null && fileContent != null) {
+        if (state.selectedFile != null && state.fileContent != null) {
             FileViewerScreen(
-                filePath = selectedFile,
-                content = fileContent,
-                onBack = { onEvent(FileBrowserViewEvent.CloseFileViewer) },
+                state = state,
+                onEvent = onEvent,
                 modifier = modifier,
             )
         } else {
             FileBrowserScreen(
-                currentPath = state.currentPath,
-                navigationStack = state.navigationStack,
-                filteredFiles = state.filteredFiles,
-                searchQuery = state.searchQuery,
-                isLoading = state.isLoading,
-                error = state.error,
-                onSearchQueryChanged = { onEvent(FileBrowserViewEvent.SearchQueryChanged(it)) },
-                onNavigateToBreadcrumb = { onEvent(FileBrowserViewEvent.NavigateToBreadcrumb(it)) },
-                onFileClick = { file -> onEvent(FileBrowserViewEvent.FileClicked(file)) },
-                onFileLongClick = { file -> onEvent(FileBrowserViewEvent.FileLongClicked(file)) },
-                onSortModeChanged = { onEvent(FileBrowserViewEvent.SetSortMode(it)) },
-                onNavigateBack = {
-                    onEvent(FileBrowserViewEvent.NavigateBack)
-                    true
-                },
-                onExitBrowser = { },
-                onClearError = { onEvent(FileBrowserViewEvent.ClearError) },
+                state = state,
+                onEvent = onEvent,
                 modifier = modifier,
                 snackBarHostState = snackBarHostState,
             )
@@ -129,11 +116,7 @@ fun FileBrowser(
         state.fileInfo?.let { info ->
             FileInfoSheet(
                 fileInfo = info,
-                onDismiss = { onEvent(FileBrowserViewEvent.HideFileInfo) },
-                onDelete = { onEvent(FileBrowserViewEvent.DeleteFile(it)) },
-                onShowMessage = { message ->
-                    scope.launch { snackBarHostState.showSnackbar(message) }
-                },
+                onEvent = onEvent,
             )
         }
     }

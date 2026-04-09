@@ -97,7 +97,7 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/ui/FileViewerScr
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/BreadcrumbBarKt {
-	public static final fun BreadcrumbBar (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun BreadcrumbBar (ZLkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/FileListItemKt {

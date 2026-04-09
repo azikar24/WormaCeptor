@@ -7,9 +7,20 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import java.util.Locale
 
-internal const val BYTES_PER_LINE = 16
+internal const val BytesPerLine = 16
+
+private const val TrueLiteralLength = 4
+private const val FalseLiteralLength = 5
+private const val NullLiteralLength = 4
+private const val HexFirstGroupSize = 8
+private const val HexByteMask = 0xFF
+private const val AsciiPrintableMin = 32
+private const val AsciiPrintableMax = 126
+
+// ----- JSON highlighting -----
 
 @Composable
 internal fun highlightJson(json: String): AnnotatedString {
@@ -17,79 +28,93 @@ internal fun highlightJson(json: String): AnnotatedString {
     return buildAnnotatedString {
         var i = 0
         while (i < json.length) {
-            when {
-                // String (key or value)
-                json[i] == '"' -> {
-                    val start = i
-                    i++
-                    while (i < json.length && json[i] != '"') {
-                        if (json[i] == '\\' && i + 1 < json.length) i++
-                        i++
-                    }
-                    i++ // Include closing quote
-                    val str = json.substring(start, minOf(i, json.length))
-
-                    // Check if this is a key (followed by colon)
-                    var j = i
-                    while (j < json.length && json[j].isWhitespace()) j++
-                    val isKey = j < json.length && json[j] == ':'
-
-                    withStyle(SpanStyle(color = if (isKey) colors.jsonKey else colors.jsonString)) {
-                        append(str)
-                    }
+            i = when {
+                json[i] == '"' -> appendJsonString(json, i, colors)
+                isJsonNumberStart(json, i) -> appendJsonNumber(json, i, colors)
+                json.startsWith("true", i) -> {
+                    appendJsonKeyword("true", colors)
+                    i + TrueLiteralLength
                 }
-                // Number
-                json[i].isDigit() || json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit() -> {
-                    val start = i
-                    if (json[i] == '-') i++
-                    while (
-                        i < json.length &&
-                        (
-                            json[i].isDigit() || json[i] == '.' ||
-                                json[i] == 'e' || json[i] == 'E' ||
-                                json[i] == '+' || json[i] == '-'
-                            )
-                    ) {
-                        i++
-                    }
-                    withStyle(SpanStyle(color = colors.jsonNumber)) {
-                        append(json.substring(start, i))
-                    }
+                json.startsWith("false", i) -> {
+                    appendJsonKeyword("false", colors)
+                    i + FalseLiteralLength
                 }
-                // Boolean or null
-                json.substring(i).startsWith("true") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("true")
-                    }
-                    i += 4
+                json.startsWith("null", i) -> {
+                    appendJsonKeyword("null", colors)
+                    i + NullLiteralLength
                 }
-                json.substring(i).startsWith("false") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("false")
-                    }
-                    i += 5
-                }
-                json.substring(i).startsWith("null") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("null")
-                    }
-                    i += 4
-                }
-                // Brackets and braces
                 json[i] in "{}[]" -> {
                     withStyle(SpanStyle(color = colors.jsonBracket, fontWeight = FontWeight.Bold)) {
                         append(json[i])
                     }
-                    i++
+                    i + 1
                 }
                 else -> {
                     append(json[i])
-                    i++
+                    i + 1
                 }
             }
         }
     }
 }
+
+private fun isJsonNumberStart(
+    json: String,
+    i: Int,
+): Boolean = json[i].isDigit() || (json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit())
+
+private fun AnnotatedString.Builder.appendJsonString(
+    json: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex + 1
+    while (i < json.length && json[i] != '"') {
+        if (json[i] == '\\' && i + 1 < json.length) i++
+        i++
+    }
+    if (i < json.length) i++ // Include closing quote
+    val str = json.substring(startIndex, i)
+
+    var j = i
+    while (j < json.length && json[j].isWhitespace()) j++
+    val isKey = j < json.length && json[j] == ':'
+
+    withStyle(SpanStyle(color = if (isKey) colors.jsonKey else colors.jsonString)) {
+        append(str)
+    }
+    return i
+}
+
+private fun isJsonNumericChar(c: Char): Boolean =
+    c.isDigit() || c == '.' || c == 'e' || c == 'E' || c == '+' || c == '-'
+
+private fun AnnotatedString.Builder.appendJsonNumber(
+    json: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex
+    if (json[i] == '-') i++
+    while (i < json.length && isJsonNumericChar(json[i])) {
+        i++
+    }
+    withStyle(SpanStyle(color = colors.jsonNumber)) {
+        append(json.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendJsonKeyword(
+    keyword: String,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+) {
+    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
+        append(keyword)
+    }
+}
+
+// ----- XML highlighting -----
 
 @Composable
 internal fun highlightXml(xml: String): AnnotatedString {
@@ -97,112 +122,169 @@ internal fun highlightXml(xml: String): AnnotatedString {
     return buildAnnotatedString {
         var i = 0
         while (i < xml.length) {
-            if (xml[i] == '<') {
-                val start = i
-                i++
-
-                // Check for comment, CDATA, or processing instruction
-                if (i < xml.length && xml[i] == '!') {
-                    // Comment or CDATA
-                    while (i < xml.length && xml[i] != '>') i++
-                    i++
-                    withStyle(SpanStyle(color = colors.xmlComment)) {
-                        append(xml.substring(start, minOf(i, xml.length)))
-                    }
-                } else if (i < xml.length && xml[i] == '?') {
-                    // Processing instruction
-                    while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
-                    i++
-                    withStyle(SpanStyle(color = colors.xmlComment)) {
-                        append(xml.substring(start, minOf(i, xml.length)))
-                    }
-                } else {
-                    // Regular tag
-                    withStyle(SpanStyle(color = colors.xmlTag)) {
-                        append("<")
-                    }
-
-                    // Closing tag slash
-                    if (i < xml.length && xml[i] == '/') {
-                        withStyle(SpanStyle(color = colors.xmlTag)) {
-                            append("/")
-                        }
-                        i++
-                    }
-
-                    // Tag name
-                    val nameStart = i
-                    while (
-                        i < xml.length &&
-                        !xml[i].isWhitespace() &&
-                        xml[i] != '>' &&
-                        xml[i] != '/'
-                        ) i++
-                    withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
-                        append(xml.substring(nameStart, i))
-                    }
-
-                    // Attributes
-                    while (i < xml.length && xml[i] != '>') {
-                        if (xml[i].isWhitespace()) {
-                            append(xml[i])
-                            i++
-                        } else if (xml[i] == '/') {
-                            withStyle(SpanStyle(color = colors.xmlTag)) {
-                                append("/")
-                            }
-                            i++
-                        } else if (xml[i] == '=') {
-                            append("=")
-                            i++
-                        } else if (xml[i] == '"' || xml[i] == '\'') {
-                            val quote = xml[i]
-                            val attrStart = i
-                            i++
-                            while (i < xml.length && xml[i] != quote) i++
-                            i++
-                            withStyle(SpanStyle(color = colors.xmlAttrValue)) {
-                                append(xml.substring(attrStart, minOf(i, xml.length)))
-                            }
-                        } else {
-                            // Attribute name
-                            val attrNameStart = i
-                            while (
-                                i < xml.length &&
-                                !xml[i].isWhitespace() &&
-                                xml[i] != '=' &&
-                                xml[i] != '>' &&
-                                xml[i] != '/'
-                                ) i++
-                            withStyle(SpanStyle(color = colors.xmlAttrName)) {
-                                append(xml.substring(attrNameStart, i))
-                            }
-                        }
-                    }
-
-                    if (i < xml.length && xml[i] == '>') {
-                        withStyle(SpanStyle(color = colors.xmlTag)) {
-                            append(">")
-                        }
-                        i++
-                    }
-                }
+            i = if (xml[i] == '<') {
+                appendXmlTag(xml, i, colors)
             } else {
-                // Text content
-                val contentStart = i
-                while (i < xml.length && xml[i] != '<') i++
-                val content = xml.substring(contentStart, i)
-                if (content.isNotBlank()) {
-                    withStyle(SpanStyle(color = colors.xmlContent)) {
-                        append(content)
-                    }
-                } else {
-                    append(content)
-                }
+                appendXmlTextContent(xml, i, colors)
             }
         }
     }
 }
+
+private fun AnnotatedString.Builder.appendXmlTag(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex + 1
+
+    if (i < xml.length && xml[i] == '!') {
+        return appendXmlSpecialTag(xml, startIndex, colors)
+    }
+    if (i < xml.length && xml[i] == '?') {
+        return appendXmlProcessingInstruction(xml, startIndex, colors)
+    }
+
+    withStyle(SpanStyle(color = colors.xmlTag)) { append("<") }
+
+    if (i < xml.length && xml[i] == '/') {
+        withStyle(SpanStyle(color = colors.xmlTag)) { append("/") }
+        i++
+    }
+
+    i = appendXmlTagName(xml, i, colors)
+    i = appendXmlAttributes(xml, i, colors)
+
+    if (i < xml.length && xml[i] == '>') {
+        withStyle(SpanStyle(color = colors.xmlTag)) { append(">") }
+        i++
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendXmlSpecialTag(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex + 1
+    while (i < xml.length && xml[i] != '>') i++
+    if (i < xml.length) i++
+    withStyle(SpanStyle(color = colors.xmlComment)) {
+        append(xml.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendXmlProcessingInstruction(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex + 1
+    while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
+    if (i < xml.length) i++
+    withStyle(SpanStyle(color = colors.xmlComment)) {
+        append(xml.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun isXmlTagNameTerminator(c: Char): Boolean = c.isWhitespace() || c == '>' || c == '/'
+
+private fun AnnotatedString.Builder.appendXmlTagName(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex
+    while (i < xml.length && !isXmlTagNameTerminator(xml[i])) i++
+    withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
+        append(xml.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun isXmlAttrNameTerminator(c: Char): Boolean = c.isWhitespace() || c == '=' || c == '>' || c == '/'
+
+private fun AnnotatedString.Builder.appendXmlAttributes(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex
+    while (i < xml.length && xml[i] != '>') {
+        when {
+            xml[i].isWhitespace() -> {
+                append(xml[i])
+                i++
+            }
+            xml[i] == '/' -> {
+                withStyle(SpanStyle(color = colors.xmlTag)) { append("/") }
+                i++
+            }
+            xml[i] == '=' -> {
+                append("=")
+                i++
+            }
+            xml[i] == '"' || xml[i] == '\'' -> {
+                i = appendXmlAttrValue(xml, i, colors)
+            }
+            else -> {
+                i = appendXmlAttrName(xml, i, colors)
+            }
+        }
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendXmlAttrValue(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    val quote = xml[startIndex]
+    var i = startIndex + 1
+    while (i < xml.length && xml[i] != quote) i++
+    if (i < xml.length) i++
+    withStyle(SpanStyle(color = colors.xmlAttrValue)) {
+        append(xml.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendXmlAttrName(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex
+    while (i < xml.length && !isXmlAttrNameTerminator(xml[i])) i++
+    withStyle(SpanStyle(color = colors.xmlAttrName)) {
+        append(xml.substring(startIndex, i))
+    }
+    return i
+}
+
+private fun AnnotatedString.Builder.appendXmlTextContent(
+    xml: String,
+    startIndex: Int,
+    colors: ToolColors.FileBrowser.SyntaxScheme,
+): Int {
+    var i = startIndex
+    while (i < xml.length && xml[i] != '<') i++
+    val content = xml.substring(startIndex, i)
+    if (content.isNotBlank()) {
+        withStyle(SpanStyle(color = colors.xmlContent)) {
+            append(content)
+        }
+    } else {
+        append(content)
+    }
+    return i
+}
+
+// ----- Hex viewer -----
 
 internal fun buildHexLine(
     bytes: ByteArray,
@@ -210,14 +292,12 @@ internal fun buildHexLine(
 ): String {
     val builder = StringBuilder()
 
-    // Address column
     builder.append(String.format(Locale.US, "%08X  ", lineStart))
 
-    // Hex bytes - first 8 bytes
-    for (i in 0 until 8) {
+    for (i in 0 until HexFirstGroupSize) {
         val index = lineStart + i
         if (index < bytes.size) {
-            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
+            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and HexByteMask))
         } else {
             builder.append("   ")
         }
@@ -225,11 +305,10 @@ internal fun buildHexLine(
 
     builder.append(" ")
 
-    // Hex bytes - second 8 bytes
-    for (i in 8 until BYTES_PER_LINE) {
+    for (i in HexFirstGroupSize until BytesPerLine) {
         val index = lineStart + i
         if (index < bytes.size) {
-            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
+            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and HexByteMask))
         } else {
             builder.append("   ")
         }
@@ -237,12 +316,11 @@ internal fun buildHexLine(
 
     builder.append(" ")
 
-    // ASCII representation
-    for (i in 0 until BYTES_PER_LINE) {
+    for (i in 0 until BytesPerLine) {
         val index = lineStart + i
         if (index < bytes.size) {
-            val byte = bytes[index].toInt() and 0xFF
-            builder.append(if (byte in 32..126) byte.toChar() else '.')
+            val byte = bytes[index].toInt() and HexByteMask
+            builder.append(if (byte in AsciiPrintableMin..AsciiPrintableMax) byte.toChar() else '.')
         }
     }
 

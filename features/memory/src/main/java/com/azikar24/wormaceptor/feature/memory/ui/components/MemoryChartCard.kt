@@ -16,10 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -41,7 +37,6 @@ internal fun MemoryChartCard(
     history: ImmutableList<MemoryInfo>,
     modifier: Modifier = Modifier,
 ) {
-    val mem = WormaCeptorTokens.Colors.Memory
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
         shape = WormaCeptorTokens.Shapes.cardLarge,
@@ -59,52 +54,67 @@ internal fun MemoryChartCard(
                 modifier = Modifier.semantics { heading() },
             )
 
-            // Chart
-            if (history.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = stringResource(R.string.memory_no_data),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            } else {
-                val latestUsed = history.lastOrNull()?.usedMemory ?: 0L
-                val totalMem = history.lastOrNull()?.totalMemory ?: 1L
-                MemoryLineChart(
-                    history = history,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .semantics {
-                            contentDescription =
-                                "Memory usage chart: ${latestUsed / 1_048_576}MB of ${totalMem / 1_048_576}MB"
-                        },
-                )
-            }
+            MemoryChartContent(history = history)
 
-            // Legend
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
-            ) {
-                WormaCeptorChartLegendItem(
-                    label = stringResource(R.string.memory_heap_used),
-                    color = mem.heapUsed,
-                )
-                WormaCeptorChartLegendItem(
-                    label = stringResource(R.string.memory_native),
-                    color = mem.nativeHeap,
-                )
-            }
+            MemoryChartLegend()
         }
+    }
+}
+
+@Composable
+private fun MemoryChartContent(history: ImmutableList<MemoryInfo>) {
+    if (history.isEmpty()) {
+        MemoryChartEmptyState()
+    } else {
+        val latest = history.last()
+        val chartDescription = stringResource(
+            R.string.memory_chart_description,
+            latest.usedMemory / ChartDimensions.BytesPerMb,
+            latest.totalMemory / ChartDimensions.BytesPerMb,
+        )
+        MemoryLineChart(
+            history = history,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .semantics { contentDescription = chartDescription },
+        )
+    }
+}
+
+@Composable
+private fun MemoryChartEmptyState() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.memory_no_data),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun MemoryChartLegend() {
+    val mem = WormaCeptorTokens.Colors.Memory
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
+    ) {
+        WormaCeptorChartLegendItem(
+            label = stringResource(R.string.memory_heap_used),
+            color = mem.heapUsed,
+        )
+        WormaCeptorChartLegendItem(
+            label = stringResource(R.string.memory_native),
+            color = mem.nativeHeap,
+        )
     }
 }
 
@@ -113,103 +123,36 @@ private fun MemoryLineChart(
     history: ImmutableList<MemoryInfo>,
     modifier: Modifier = Modifier,
 ) {
-    val mem = WormaCeptorTokens.Colors.Memory
     if (history.isEmpty()) return
 
-    // Calculate max value for scaling
-    val maxMemory = history.maxOfOrNull {
-        maxOf(it.usedMemory, it.nativeHeapAllocated)
-    } ?: 1L
+    val mem = WormaCeptorTokens.Colors.Memory
+    val maxMemory = history.maxOf { maxOf(it.usedMemory, it.nativeHeapAllocated) }
+        .coerceAtLeast(1L)
 
-    val gridColor = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+    val gridColor = MaterialTheme.colorScheme.outline.copy(
+        alpha = WormaCeptorTokens.Alpha.MODERATE,
+    )
 
     Canvas(
         modifier = modifier
             .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
             .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
-        val width = size.width
-        val height = size.height
         val padding = WormaCeptorTokens.Spacing.lg.toPx()
-        val chartWidth = width - padding * 2
-        val chartHeight = height - padding * 2
+        val dimensions = ChartDimensions(
+            padding = padding,
+            chartWidth = size.width - padding * 2,
+            chartHeight = size.height - padding * 2,
+            pointCount = history.size,
+        )
 
-        // Draw grid lines
-        val gridLineCount = 4
-        for (i in 0..gridLineCount) {
-            val y = padding + chartHeight / gridLineCount * i
-            drawLine(
-                color = gridColor,
-                start = Offset(padding, y),
-                end = Offset(width - padding, y),
-                strokeWidth = 1.dp.toPx(),
-            )
-        }
+        drawMemoryGridLines(gridColor, dimensions)
 
         if (history.size < 2) return@Canvas
 
-        // Draw heap usage line
-        val heapPath = Path()
-        history.forEachIndexed { index, info ->
-            val x = padding + chartWidth / (history.size - 1) * index
-            val y = padding + chartHeight - info.usedMemory.toFloat() / maxMemory * chartHeight
-
-            if (index == 0) {
-                heapPath.moveTo(x, y)
-            } else {
-                heapPath.lineTo(x, y)
-            }
-        }
-        drawPath(
-            path = heapPath,
-            color = mem.heapUsed,
-            style = Stroke(
-                width = 2.dp.toPx(),
-                cap = StrokeCap.Round,
-            ),
-        )
-
-        // Draw native heap line
-        val nativePath = Path()
-        history.forEachIndexed { index, info ->
-            val x = padding + chartWidth / (history.size - 1) * index
-            val y = padding + chartHeight - info.nativeHeapAllocated.toFloat() / maxMemory * chartHeight
-
-            if (index == 0) {
-                nativePath.moveTo(x, y)
-            } else {
-                nativePath.lineTo(x, y)
-            }
-        }
-        drawPath(
-            path = nativePath,
-            color = mem.nativeHeap,
-            style = Stroke(
-                width = 2.dp.toPx(),
-                cap = StrokeCap.Round,
-            ),
-        )
-
-        // Draw area fill for heap usage
-        val areaPath = Path()
-        history.forEachIndexed { index, info ->
-            val x = padding + chartWidth / (history.size - 1) * index
-            val y = padding + chartHeight - info.usedMemory.toFloat() / maxMemory * chartHeight
-
-            if (index == 0) {
-                areaPath.moveTo(x, padding + chartHeight)
-                areaPath.lineTo(x, y)
-            } else {
-                areaPath.lineTo(x, y)
-            }
-        }
-        areaPath.lineTo(padding + chartWidth, padding + chartHeight)
-        areaPath.close()
-
-        drawPath(
-            path = areaPath,
-            color = mem.heapUsed.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-        )
+        drawLinePath(history, maxMemory, mem.heapUsed, dimensions) { it.usedMemory }
+        drawLinePath(history, maxMemory, mem.nativeHeap, dimensions) { it.nativeHeapAllocated }
+        drawAreaFill(history, maxMemory, mem.heapUsed, dimensions) { it.usedMemory }
     }
 }
 

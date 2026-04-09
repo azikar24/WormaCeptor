@@ -24,6 +24,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import com.azikar24.wormaceptor.feature.memory.R
+import kotlin.math.roundToInt
 
 @Composable
 internal fun NativeHeapCard(
@@ -31,8 +32,8 @@ internal fun NativeHeapCard(
     modifier: Modifier = Modifier,
 ) {
     val mem = WormaCeptorTokens.Colors.Memory
-    val usagePercent = if (currentMemory.nativeHeapSize > 0) {
-        currentMemory.nativeHeapAllocated.toFloat() / currentMemory.nativeHeapSize.toFloat() * 100f
+    val usageRatio = if (currentMemory.nativeHeapSize > 0) {
+        currentMemory.nativeHeapAllocated.toFloat() / currentMemory.nativeHeapSize.toFloat()
     } else {
         0f
     }
@@ -67,7 +68,7 @@ internal fun NativeHeapCard(
                     color = mem.nativeHeap,
                 )
                 Text(
-                    text = "${usagePercent.toInt()}%",
+                    text = "${(usageRatio * 100).roundToInt()}%",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = mem.nativeHeap,
@@ -75,7 +76,7 @@ internal fun NativeHeapCard(
             }
 
             LinearProgressIndicator(
-                progress = { (usagePercent / 100f).coerceIn(0f, 1f) },
+                progress = { usageRatio.coerceIn(0f, 1f) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(WormaCeptorTokens.Elevation.lg)

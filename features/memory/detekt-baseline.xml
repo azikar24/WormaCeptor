@@ -2,21 +2,16 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:MemoryScreen.kt$@Composable private fun HeapUsageCard( currentMemory: MemoryInfo, isWarning: Boolean, colors: MemoryColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MemoryScreen.kt$@Composable private fun MemoryChartCard( history: ImmutableList&lt;MemoryInfo&gt;, colors: MemoryColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MemoryScreen.kt$@Composable private fun MemoryLineChart( history: ImmutableList&lt;MemoryInfo&gt;, colors: MemoryColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MemoryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MemoryScreen( currentMemory: MemoryInfo, memoryHistory: ImmutableList&lt;MemoryInfo&gt;, isMonitoring: Boolean, isHeapWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onForceGc: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:MemoryScreen.kt$( currentMemory: MemoryInfo, memoryHistory: ImmutableList&lt;MemoryInfo&gt;, isMonitoring: Boolean, isHeapWarning: Boolean, onStartMonitoring: () -&gt; Unit, onStopMonitoring: () -&gt; Unit, onForceGc: () -&gt; Unit, onClearHistory: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:MemoryColors.kt$MemoryColors$60f</ID>
-    <ID>MagicNumber:MemoryColors.kt$MemoryColors$80f</ID>
-    <ID>MagicNumber:MemoryScreen.kt$100f</ID>
-    <ID>MagicNumber:MemoryScreen.kt$1_048_576</ID>
-    <ID>MagicNumber:MemoryScreen.kt$4</ID>
+    <ID>UndocumentedPublicClass:MemoryFeature.kt$MemoryFeature</ID>
+    <ID>UndocumentedPublicClass:MemoryFeature.kt$MemoryViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ClearHistory : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ForceGc : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StartMonitoring : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StopMonitoring : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewState.kt$MemoryViewState</ID>
+    <ID>UndocumentedPublicFunction:MemoryFeature.kt$@Composable fun MemoryMonitor( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
+    <ID>UndocumentedPublicFunction:MemoryFeature.kt$MemoryFeature$fun createViewModelFactory(engine: MemoryMonitorEngine): MemoryViewModelFactory</ID>
+    <ID>UndocumentedPublicFunction:MemoryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MemoryScreen( state: MemoryViewState, onEvent: (MemoryViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val currentMemory: MemoryInfo = MemoryInfo.empty()</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isHeapWarning: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isMonitoring: Boolean = false</ID>

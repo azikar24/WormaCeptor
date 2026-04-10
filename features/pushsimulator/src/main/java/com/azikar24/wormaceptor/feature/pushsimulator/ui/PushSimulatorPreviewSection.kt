@@ -34,16 +34,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
-import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -54,14 +55,13 @@ internal fun NotificationPreview(
     channelName: String?,
     actions: List<NotificationAction>,
 ) {
-    val priorityColor = PushSimulatorDesignSystem.PriorityColors.forPriority(priority.name)
+    val priorityColor = ToolColors.PushSimulator.Priority.forPriority(priority.name)
     val isHighPriority = priority == NotificationPriority.HIGH || priority == NotificationPriority.MAX
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
-        // Preview Label with Priority Badge
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -69,7 +69,7 @@ internal fun NotificationPreview(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 Text(
                     text = stringResource(R.string.pushsimulator_preview),
@@ -78,16 +78,16 @@ internal fun NotificationPreview(
                 )
                 channelName?.let { name ->
                     Surface(
-                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = MaterialTheme.colorScheme.primary.asSubtleBackground(),
+                        shape = WormaCeptorTokens.Shapes.chip,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE),
                     ) {
                         Text(
                             text = name,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
                             ),
                         )
                     }
@@ -96,33 +96,31 @@ internal fun NotificationPreview(
             PriorityIndicator(priority = priority, color = priorityColor)
         }
 
-        // Notification Card Preview
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = WormaCeptorDesignSystem.Shapes.card,
+            shape = WormaCeptorTokens.Shapes.card,
             color = MaterialTheme.colorScheme.surfaceVariant
-                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
             border = BorderStroke(
-                width = WormaCeptorDesignSystem.BorderWidth.regular,
+                width = WormaCeptorTokens.BorderWidth.regular,
                 color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
             ),
         ) {
             Column(
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
                 ) {
-                    // App Icon with Priority Indicator
                     Box {
                         Box(
                             modifier = Modifier
-                                .size(44.dp)
+                                .size(WormaCeptorTokens.TouchTarget.minimum)
                                 .background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                                    shape = WormaCeptorDesignSystem.Shapes.card,
+                                    shape = WormaCeptorTokens.Shapes.card,
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
@@ -134,26 +132,24 @@ internal fun NotificationPreview(
                                 },
                                 contentDescription = stringResource(R.string.pushsimulator_preview),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.lg),
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
                             )
                         }
-                        // Priority dot indicator
                         Box(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .size(WormaCeptorDesignSystem.Spacing.md)
+                                .size(WormaCeptorTokens.Spacing.md)
                                 .background(
                                     color = priorityColor,
                                     shape = CircleShape,
                                 )
-                                .padding(1.dp),
+                                .padding(WormaCeptorTokens.ComponentSize.dotInset),
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+                    Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
                     Column(modifier = Modifier.weight(1f)) {
-                        // Title with time
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -174,7 +170,7 @@ internal fun NotificationPreview(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
 
                         Text(
                             text = body,
@@ -186,37 +182,36 @@ internal fun NotificationPreview(
                     }
                 }
 
-                // Action Buttons Preview
                 AnimatedVisibility(
                     visible = actions.isNotEmpty(),
                     enter = fadeIn() + scaleIn(initialScale = 0.95f),
                     exit = fadeOut() + scaleOut(targetScale = 0.95f),
                 ) {
                     Column {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
                         WormaCeptorDivider(style = DividerStyle.Section)
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                         WormaCeptorFlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                         ) {
                             actions.forEach { action ->
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(
-                                        WormaCeptorDesignSystem.Spacing.xs,
+                                        WormaCeptorTokens.Spacing.xs,
                                     ),
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.TouchApp,
                                         contentDescription = null,
-                                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.xs),
-                                        tint = PushSimulatorDesignSystem.TemplateColors.action,
+                                        modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
+                                        tint = ToolColors.PushSimulator.Template.action,
                                     )
                                     Text(
                                         text = action.title.uppercase(),
                                         style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Medium,
-                                        color = PushSimulatorDesignSystem.TemplateColors.action,
+                                        color = ToolColors.PushSimulator.Template.action,
                                     )
                                 }
                             }
@@ -229,25 +224,25 @@ internal fun NotificationPreview(
 }
 
 @Composable
-internal fun PriorityIndicator(
+private fun PriorityIndicator(
     priority: NotificationPriority,
     color: Color,
 ) {
     Surface(
-        shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+        shape = WormaCeptorTokens.Shapes.chip,
+        color = color.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xxs,
             ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
             Box(
                 modifier = Modifier
-                    .size(6.dp)
+                    .size(WormaCeptorTokens.ComponentSize.dot)
                     .background(color = color, shape = CircleShape),
             )
             Text(
@@ -255,6 +250,43 @@ internal fun PriorityIndicator(
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 color = color,
+            )
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun NotificationPreviewDefaultPreview() {
+    WormaCeptorTheme {
+        Surface {
+            NotificationPreview(
+                title = "New Message",
+                body = "You have a new notification from the system",
+                priority = NotificationPriority.DEFAULT,
+                channelName = "General",
+                actions = listOf(
+                    NotificationAction(title = "Reply", actionId = "reply"),
+                    NotificationAction(title = "Dismiss", actionId = "dismiss"),
+                ),
+            )
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun NotificationPreviewHighPriorityPreview() {
+    WormaCeptorTheme {
+        Surface {
+            NotificationPreview(
+                title = "Urgent Alert",
+                body = "Critical system alert requires your attention",
+                priority = NotificationPriority.HIGH,
+                channelName = "Alerts",
+                actions = emptyList(),
             )
         }
     }

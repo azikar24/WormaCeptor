@@ -60,8 +60,12 @@ class WebSocketViewModel(
             is WebSocketViewEvent.MessageSearchQueryChanged -> onMessageSearchQueryChanged(event.query)
             is WebSocketViewEvent.DirectionFilterToggled -> toggleDirectionFilter(event.direction)
             is WebSocketViewEvent.MessageExpandToggled -> toggleMessageExpanded(event.messageId)
-            is WebSocketViewEvent.ClearAll -> clearAll()
-            is WebSocketViewEvent.ClearCurrentConnectionMessages -> clearCurrentConnectionMessages()
+            is WebSocketViewEvent.ClearAllRequested -> updateState { copy(showClearAllConfirmation = true) }
+            is WebSocketViewEvent.ClearAllConfirmed -> confirmClearAll()
+            is WebSocketViewEvent.ClearAllDismissed -> updateState { copy(showClearAllConfirmation = false) }
+            is WebSocketViewEvent.ClearMessagesRequested -> updateState { copy(showClearMessagesConfirmation = true) }
+            is WebSocketViewEvent.ClearMessagesConfirmed -> confirmClearMessages()
+            is WebSocketViewEvent.ClearMessagesDismissed -> updateState { copy(showClearMessagesConfirmation = false) }
         }
     }
 
@@ -123,21 +127,27 @@ class WebSocketViewModel(
         }
     }
 
-    private fun clearAll() {
+    private fun confirmClearAll() {
         engine.clear()
         _selectedConnectionId.value = null
         updateState {
             copy(
                 selectedConnection = null,
                 expandedMessageId = null,
+                showClearAllConfirmation = false,
             )
         }
     }
 
-    private fun clearCurrentConnectionMessages() {
+    private fun confirmClearMessages() {
         val connectionId = _selectedConnectionId.value ?: return
         engine.clearMessagesForConnection(connectionId)
-        updateState { copy(expandedMessageId = null) }
+        updateState {
+            copy(
+                expandedMessageId = null,
+                showClearMessagesConfirmation = false,
+            )
+        }
     }
 
     // --- Reactive observation pipelines ---

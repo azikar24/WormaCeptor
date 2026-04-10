@@ -12,10 +12,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
@@ -40,6 +45,7 @@ internal fun LevelFilterChips(
                 level = level,
                 isSelected = level in selectedLevels,
                 count = levelCounts[level] ?: 0,
+                levelColor = logLevelColor(level),
                 onToggle = { onLevelToggle(level) },
             )
         }
@@ -51,18 +57,9 @@ private fun LevelFilterChip(
     level: LogLevel,
     isSelected: Boolean,
     count: Int,
+    levelColor: Color,
     onToggle: () -> Unit,
 ) {
-    val logColors = WormaCeptorTokens.Colors.LogLevel
-    val levelColor = when (level) {
-        LogLevel.VERBOSE -> logColors.verbose
-        LogLevel.DEBUG -> logColors.debug
-        LogLevel.INFO -> logColors.info
-        LogLevel.WARN -> logColors.warn
-        LogLevel.ERROR -> logColors.error
-        LogLevel.ASSERT -> logColors.assert
-    }
-
     FilterChip(
         selected = isSelected,
         onClick = onToggle,
@@ -125,3 +122,46 @@ private fun LevelChipLabel(
 }
 
 private const val CountOverflowThreshold = 999
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun LevelFilterChipsPreview(
+    @PreviewParameter(LevelFilterChipsPreviewProvider::class) params: LevelFilterChipsPreviewData,
+) {
+    WormaCeptorTheme {
+        LevelFilterChips(
+            selectedLevels = params.selectedLevels,
+            levelCounts = params.levelCounts,
+            onLevelToggle = {},
+        )
+    }
+}
+
+private data class LevelFilterChipsPreviewData(
+    val selectedLevels: Set<LogLevel>,
+    val levelCounts: Map<LogLevel, Int>,
+)
+
+@Suppress("MagicNumber")
+private class LevelFilterChipsPreviewProvider : PreviewParameterProvider<LevelFilterChipsPreviewData> {
+    private val sampleCounts = mapOf(
+        LogLevel.VERBOSE to 5,
+        LogLevel.DEBUG to 12,
+        LogLevel.INFO to 8,
+        LogLevel.WARN to 3,
+        LogLevel.ERROR to 1,
+        LogLevel.ASSERT to 0,
+    )
+
+    override val values: Sequence<LevelFilterChipsPreviewData> = sequenceOf(
+        LevelFilterChipsPreviewData(
+            selectedLevels = LogLevel.entries.toSet(),
+            levelCounts = sampleCounts,
+        ),
+        LevelFilterChipsPreviewData(
+            selectedLevels = setOf(LogLevel.ERROR, LogLevel.WARN),
+            levelCounts = sampleCounts,
+        ),
+    )
+}

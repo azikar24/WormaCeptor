@@ -89,4 +89,13 @@ sealed class PushSimulatorViewEvent {
 
     /** Resets all form fields to their default empty values. */
     data object ClearForm : PushSimulatorViewEvent()
+
+    /** Shows the save template dialog. */
+    data object ShowSaveDialog : PushSimulatorViewEvent()
+
+    /** Dismisses the save template dialog. */
+    data object DismissSaveDialog : PushSimulatorViewEvent()
+
+    /** Dismisses the permission dialog. */
+    data object DismissPermissionDialog : PushSimulatorViewEvent()
 }

@@ -20,9 +20,6 @@ sealed class PushSimulatorViewEffect {
      */
     data class TemplateLoaded(val name: String) : PushSimulatorViewEffect()
 
-    /** The notification permission must be granted before sending. */
-    data object PermissionRequired : PushSimulatorViewEffect()
-
     /**
      * An operation failed with the given message.
      *

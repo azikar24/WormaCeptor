@@ -6,34 +6,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSummaryCard
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
 
 @Composable
 internal fun SummaryRow(
-    sessionDurationMs: Long,
-    totalRecompositions: Long,
+    formattedDuration: String,
+    formattedTotalRecompositions: String,
     modifier: Modifier = Modifier,
 ) {
-    val totalSeconds = sessionDurationMs / 1000
-    val minutes = totalSeconds / 60
-    val seconds = totalSeconds % 60
-    val durationText = stringResource(R.string.recomposition_duration_format, minutes, seconds)
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
     ) {
         WormaCeptorSummaryCard(
-            count = durationText,
+            count = formattedDuration,
             label = stringResource(R.string.recomposition_session_duration),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.weight(1f),
         )
 
         WormaCeptorSummaryCard(
-            count = formatCount(totalRecompositions),
+            count = formattedTotalRecompositions,
             label = stringResource(R.string.recomposition_total_recompositions),
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.weight(1f),
@@ -41,8 +38,13 @@ internal fun SummaryRow(
     }
 }
 
-internal fun formatCount(count: Long): String = when {
-    count >= 1_000_000 -> String.format("%.1fM", count / 1_000_000.0)
-    count >= 1_000 -> String.format("%.1fK", count / 1_000.0)
-    else -> count.toString()
+@Preview(name = "SummaryRow", showBackground = true)
+@Composable
+private fun SummaryRowPreview() {
+    WormaCeptorTheme {
+        SummaryRow(
+            formattedDuration = "02:15",
+            formattedTotalRecompositions = "1.2K",
+        )
+    }
 }

@@ -27,10 +27,14 @@ public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingl
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketListScreenKt {
@@ -39,11 +43,40 @@ public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingl
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$websocket_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$websocket_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$DirectionFilterChipsKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$DirectionFilterChipsKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$MessageListKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$MessageListKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$WebSocketStatsBarKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$WebSocketStatsBarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEffect {
@@ -54,17 +87,49 @@ public abstract class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketVie
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAll : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllConfirmed : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAll;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllConfirmed;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearCurrentConnectionMessages : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllDismissed : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearCurrentConnectionMessages;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllDismissed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllRequested : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearAllRequested;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesConfirmed : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesConfirmed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesDismissed : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesDismissed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesRequested : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ClearMessagesRequested;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -148,10 +213,12 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewMo
 public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;)V
-	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component10 ()Ljava/util/Map;
+	public final fun component11 ()Z
+	public final fun component12 ()Z
 	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component3 ()I
 	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
@@ -160,8 +227,8 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewSt
 	public final fun component7 ()Ljava/lang/Long;
 	public final fun component8 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component9 ()I
-	public final fun copy (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
+	public final fun copy (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ZZ)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getConnectionSearchQuery ()Ljava/lang/String;
 	public final fun getConnections ()Lkotlinx/collections/immutable/ImmutableList;
@@ -171,6 +238,8 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewSt
 	public final fun getMessageSearchQuery ()Ljava/lang/String;
 	public final fun getMessages ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getSelectedConnection ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
+	public final fun getShowClearAllConfirmation ()Z
+	public final fun getShowClearMessagesConfirmation ()Z
 	public final fun getTotalConnectionCount ()I
 	public final fun getTotalMessageCount ()I
 	public fun hashCode ()I

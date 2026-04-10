@@ -249,6 +249,12 @@ object TokenComponentSize {
 
     /** Height for linear progress bar indicators (6dp). */
     val toolTileHeight = 116.dp
+
+    /** Small status dot (6dp). Used for priority indicators and status badges. */
+    val dot = 6.dp
+
+    /** Inset padding for overlay indicators (1dp). */
+    val dotInset = 1.dp
 }
 
 /**

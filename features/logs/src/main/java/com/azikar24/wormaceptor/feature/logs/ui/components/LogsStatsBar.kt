@@ -9,7 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.logs.R
 
@@ -75,4 +79,34 @@ internal fun StatsBar(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun StatsBarPreview(@PreviewParameter(StatsBarPreviewProvider::class) params: StatsBarPreviewData) {
+    WormaCeptorTheme {
+        StatsBar(
+            totalCount = params.totalCount,
+            filteredCount = params.filteredCount,
+            isCapturing = params.isCapturing,
+            pid = params.pid,
+        )
+    }
+}
+
+private data class StatsBarPreviewData(
+    val totalCount: Int,
+    val filteredCount: Int,
+    val isCapturing: Boolean,
+    val pid: Int,
+)
+
+@Suppress("MagicNumber")
+private class StatsBarPreviewProvider : PreviewParameterProvider<StatsBarPreviewData> {
+    override val values: Sequence<StatsBarPreviewData> = sequenceOf(
+        StatsBarPreviewData(totalCount = 42, filteredCount = 42, isCapturing = true, pid = 12_345),
+        StatsBarPreviewData(totalCount = 42, filteredCount = 15, isCapturing = true, pid = 12_345),
+        StatsBarPreviewData(totalCount = 10, filteredCount = 10, isCapturing = false, pid = 12_345),
+    )
 }

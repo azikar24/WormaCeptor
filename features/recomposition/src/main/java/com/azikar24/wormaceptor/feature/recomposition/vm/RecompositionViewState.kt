@@ -7,5 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class RecompositionViewState(
     val sessionDurationMs: Long = 0L,
     val totalRecompositions: Long = 0L,
+    val formattedDuration: String = "",
+    val formattedTotalRecompositions: String = "",
     val topRecomposers: ImmutableList<RecompositionItem> = persistentListOf(),
 )

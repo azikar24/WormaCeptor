@@ -30,17 +30,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
@@ -56,32 +56,23 @@ import com.azikar24.wormaceptor.feature.logs.ui.components.StatsBar
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewEvent
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewState
+import kotlinx.collections.immutable.ImmutableList
 
-/**
- * Main screen for viewing console logs.
- *
- * Features:
- * - Search bar for filtering by tag or message
- * - Log level filter chips
- * - Auto-scroll toggle
- * - Play/pause capture controls
- * - Clear logs button
- */
+/** Main screen for viewing console logs with filtering, search, and auto-scroll. */
 @Composable
 fun LogsScreen(
     viewModel: LogsViewModel,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
 ) {
-    val state by viewModel.uiState.collectAsState()
-    val onEvent: (LogsViewEvent) -> Unit = { viewModel.sendEvent(it) }
-
-    LogsScreenContent(
-        state = state,
-        onEvent = onEvent,
-        modifier = modifier,
-        onBack = onBack,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        LogsScreenContent(
+            state = state,
+            onEvent = onEvent,
+            modifier = modifier,
+            onBack = onBack,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,127 +110,124 @@ internal fun LogsScreenContent(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            LogsTopBar(
-                state = state,
-                onEvent = onEvent,
-                onBack = onBack,
-            )
-        },
-        floatingActionButton = {
-            LogsScrollFab(
-                isAtBottom = isAtBottom,
-                hasLogs = state.logs.isNotEmpty(),
-                onEvent = onEvent,
-            )
-        },
-    ) { paddingValues ->
-        LogsBody(
-            state = state,
-            onEvent = onEvent,
-            listState = listState,
-            paddingValues = paddingValues,
-        )
-    }
-}
-
-@Suppress("LongMethod")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun LogsTopBar(
-    state: LogsViewState,
-    onEvent: (LogsViewEvent) -> Unit,
-    onBack: (() -> Unit)?,
-) {
-    val haptic = LocalHapticFeedback.current
-
-    Column {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.logs_console_title),
-                    fontWeight = FontWeight.SemiBold,
-                )
-            },
-            navigationIcon = {
-                onBack?.let { back ->
-                    IconButton(onClick = back) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.logs_back),
-                        )
-                    }
-                }
-            },
-            actions = {
-                WormaCeptorPlayPauseButton(
-                    isActive = state.isCapturing,
-                    onToggle = {
+            Column {
+                LogsAppBar(
+                    isCapturing = state.isCapturing,
+                    onToggleCapture = {
                         if (state.isCapturing) {
                             onEvent(LogsViewEvent.CaptureStopped)
                         } else {
                             onEvent(LogsViewEvent.CaptureStarted)
                         }
                     },
-                    activeContentDescription = stringResource(R.string.logs_pause_capture),
-                    inactiveContentDescription = stringResource(R.string.logs_start_capture),
+                    onClearLogs = { onEvent(LogsViewEvent.LogsCleared) },
+                    onBack = onBack,
                 )
 
-                IconButton(onClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onEvent(LogsViewEvent.LogsCleared)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.logs_clear),
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-        )
+                WormaCeptorSearchBar(
+                    query = state.searchQuery,
+                    onQueryChange = { onEvent(LogsViewEvent.SearchQueryChanged(it)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = WormaCeptorTokens.Spacing.lg,
+                            vertical = WormaCeptorTokens.Spacing.sm,
+                        ),
+                    placeholder = stringResource(R.string.logs_search_placeholder),
+                )
 
-        WormaCeptorSearchBar(
-            query = state.searchQuery,
-            onQueryChange = { onEvent(LogsViewEvent.SearchQueryChanged(it)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorTokens.Spacing.lg,
-                    vertical = WormaCeptorTokens.Spacing.sm,
-                ),
-            placeholder = stringResource(R.string.logs_search_placeholder),
-        )
+                LevelFilterChips(
+                    selectedLevels = state.selectedLevels,
+                    levelCounts = state.levelCounts,
+                    onLevelToggle = { onEvent(LogsViewEvent.LevelToggled(it)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = WormaCeptorTokens.Spacing.sm),
+                )
 
-        LevelFilterChips(
-            selectedLevels = state.selectedLevels,
-            levelCounts = state.levelCounts,
-            onLevelToggle = { onEvent(LogsViewEvent.LevelToggled(it)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = WormaCeptorTokens.Spacing.sm),
-        )
-
-        StatsBar(
-            totalCount = state.totalCount,
-            filteredCount = state.logs.size,
+                StatsBar(
+                    totalCount = state.totalCount,
+                    filteredCount = state.logs.size,
+                    isCapturing = state.isCapturing,
+                    pid = state.currentPid,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = WormaCeptorTokens.Spacing.lg,
+                            vertical = WormaCeptorTokens.Spacing.xs,
+                        ),
+                )
+            }
+        },
+        floatingActionButton = {
+            ScrollToBottomFab(
+                isAtBottom = isAtBottom,
+                hasLogs = state.logs.isNotEmpty(),
+                onClick = { onEvent(LogsViewEvent.AutoScrollSet(true)) },
+            )
+        },
+    ) { paddingValues ->
+        LogsBody(
+            logs = state.logs,
             isCapturing = state.isCapturing,
-            pid = state.currentPid,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorTokens.Spacing.lg,
-                    vertical = WormaCeptorTokens.Spacing.xs,
-                ),
+            onStartCapture = { onEvent(LogsViewEvent.CaptureStarted) },
+            listState = listState,
+            paddingValues = paddingValues,
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LogsScrollFab(
+private fun LogsAppBar(
+    isCapturing: Boolean,
+    onToggleCapture: () -> Unit,
+    onClearLogs: () -> Unit,
+    onBack: (() -> Unit)?,
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.logs_console_title),
+                fontWeight = FontWeight.SemiBold,
+            )
+        },
+        navigationIcon = {
+            onBack?.let { back ->
+                IconButton(onClick = back) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.logs_back),
+                    )
+                }
+            }
+        },
+        actions = {
+            WormaCeptorPlayPauseButton(
+                isActive = isCapturing,
+                onToggle = onToggleCapture,
+                activeContentDescription = stringResource(R.string.logs_pause_capture),
+                inactiveContentDescription = stringResource(R.string.logs_start_capture),
+            )
+
+            IconButton(onClick = onClearLogs) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.logs_clear),
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    )
+}
+
+@Composable
+private fun ScrollToBottomFab(
     isAtBottom: Boolean,
     hasLogs: Boolean,
-    onEvent: (LogsViewEvent) -> Unit,
+    onClick: () -> Unit,
 ) {
     AnimatedVisibility(
         visible = !isAtBottom && hasLogs,
@@ -247,7 +235,7 @@ private fun LogsScrollFab(
         exit = fadeOut() + slideOutVertically { it },
     ) {
         WormaCeptorFAB(
-            onClick = { onEvent(LogsViewEvent.AutoScrollSet(true)) },
+            onClick = onClick,
             icon = Icons.Default.KeyboardArrowDown,
             contentDescription = stringResource(R.string.logs_scroll_to_bottom),
         )
@@ -256,21 +244,22 @@ private fun LogsScrollFab(
 
 @Composable
 private fun LogsBody(
-    state: LogsViewState,
-    onEvent: (LogsViewEvent) -> Unit,
+    logs: ImmutableList<LogEntry>,
+    isCapturing: Boolean,
+    onStartCapture: () -> Unit,
     listState: LazyListState,
     paddingValues: PaddingValues,
 ) {
     Box(modifier = Modifier.imePadding()) {
-        if (state.logs.isEmpty()) {
+        if (logs.isEmpty()) {
             LogsEmptyState(
-                isCapturing = state.isCapturing,
-                onEvent = onEvent,
+                isCapturing = isCapturing,
+                onStartCapture = onStartCapture,
                 paddingValues = paddingValues,
             )
         } else {
             LogList(
-                logs = state.logs,
+                logs = logs,
                 listState = listState,
                 modifier = Modifier
                     .fillMaxSize()
@@ -283,7 +272,7 @@ private fun LogsBody(
 @Composable
 private fun LogsEmptyState(
     isCapturing: Boolean,
-    onEvent: (LogsViewEvent) -> Unit,
+    onStartCapture: () -> Unit,
     paddingValues: PaddingValues,
 ) {
     WormaCeptorEmptyState(
@@ -302,61 +291,66 @@ private fun LogsEmptyState(
         },
         icon = Icons.Default.VerticalAlignBottom,
         actionLabel = if (!isCapturing) stringResource(R.string.logs_start_capture_action) else null,
-        onAction = if (!isCapturing) {
-            { onEvent(LogsViewEvent.CaptureStarted) }
-        } else {
-            null
-        },
+        onAction = if (!isCapturing) onStartCapture else null,
     )
 }
 
-@Suppress("HardcodedString")
+@Suppress("UnusedPrivateMember")
 @Preview(showBackground = true)
 @Composable
-private fun LogsScreenContentPreview() {
+private fun LogsScreenContentPreview(@PreviewParameter(LogsStatePreviewProvider::class) state: LogsViewState) {
     WormaCeptorTheme {
         LogsScreenContent(
-            state = LogsViewState(
-                logs = kotlinx.collections.immutable.persistentListOf(
-                    LogEntry(
-                        id = 1L,
-                        timestamp = System.currentTimeMillis() - 5_000,
-                        level = LogLevel.DEBUG,
-                        tag = "OkHttp",
-                        pid = 12_345,
-                        message = "Sending request https://api.example.com/users",
-                    ),
-                    LogEntry(
-                        id = 2L,
-                        timestamp = System.currentTimeMillis() - 3_000,
-                        level = LogLevel.INFO,
-                        tag = "MainActivity",
-                        pid = 12_345,
-                        message = "User authenticated successfully",
-                    ),
-                    LogEntry(
-                        id = 3L,
-                        timestamp = System.currentTimeMillis() - 1_000,
-                        level = LogLevel.ERROR,
-                        tag = "CrashReporter",
-                        pid = 12_345,
-                        message = "Failed to upload crash report: timeout",
-                    ),
-                ),
-                searchQuery = "",
-                selectedLevels = LogLevel.entries.toSet(),
-                autoScroll = true,
-                isCapturing = true,
-                totalCount = 3,
-                levelCounts = mapOf(
-                    LogLevel.DEBUG to 1,
-                    LogLevel.INFO to 1,
-                    LogLevel.ERROR to 1,
-                ),
-                currentPid = 12_345,
-            ),
+            state = state,
             onEvent = {},
             onBack = {},
         )
     }
+}
+
+@Suppress("MagicNumber")
+private class LogsStatePreviewProvider : PreviewParameterProvider<LogsViewState> {
+    override val values: Sequence<LogsViewState> = sequenceOf(
+        LogsViewState(
+            logs = kotlinx.collections.immutable.persistentListOf(
+                LogEntry(
+                    id = 1L,
+                    timestamp = System.currentTimeMillis() - 5_000,
+                    level = LogLevel.DEBUG,
+                    tag = "OkHttp",
+                    pid = 12_345,
+                    message = "Sending request https://api.example.com/users",
+                ),
+                LogEntry(
+                    id = 2L,
+                    timestamp = System.currentTimeMillis() - 3_000,
+                    level = LogLevel.INFO,
+                    tag = "MainActivity",
+                    pid = 12_345,
+                    message = "User authenticated successfully",
+                ),
+                LogEntry(
+                    id = 3L,
+                    timestamp = System.currentTimeMillis() - 1_000,
+                    level = LogLevel.ERROR,
+                    tag = "CrashReporter",
+                    pid = 12_345,
+                    message = "Failed to upload crash report: timeout",
+                ),
+            ),
+            searchQuery = "",
+            selectedLevels = LogLevel.entries.toSet(),
+            autoScroll = true,
+            isCapturing = true,
+            totalCount = 3,
+            levelCounts = mapOf(
+                LogLevel.DEBUG to 1,
+                LogLevel.INFO to 1,
+                LogLevel.ERROR to 1,
+            ),
+            currentPid = 12_345,
+        ),
+        LogsViewState(isCapturing = true, currentPid = 12_345),
+        LogsViewState(isCapturing = false, currentPid = 12_345),
+    )
 }

@@ -46,6 +46,9 @@ class PushSimulatorViewModel(
             is PushSimulatorViewEvent.DeleteTemplate -> handleDeleteTemplate(event.templateId)
             is PushSimulatorViewEvent.SendFromTemplate -> handleSendFromTemplate(event.template)
             is PushSimulatorViewEvent.ClearForm -> handleClearForm()
+            is PushSimulatorViewEvent.ShowSaveDialog -> updateState { copy(showSaveDialog = true) }
+            is PushSimulatorViewEvent.DismissSaveDialog -> updateState { copy(showSaveDialog = false) }
+            is PushSimulatorViewEvent.DismissPermissionDialog -> updateState { copy(showPermissionDialog = false) }
         }
     }
 
@@ -92,7 +95,7 @@ class PushSimulatorViewModel(
                 engine.sendNotification(notification)
                 emitEffect(PushSimulatorViewEffect.NotificationSent)
             } catch (e: NotificationPermissionException) {
-                emitEffect(PushSimulatorViewEffect.PermissionRequired)
+                updateState { copy(showPermissionDialog = true) }
             } catch (e: Exception) {
                 emitEffect(PushSimulatorViewEffect.Error("Failed to send: ${e.message}"))
             }
@@ -127,6 +130,7 @@ class PushSimulatorViewModel(
 
         viewModelScope.launch {
             repository.saveTemplate(template)
+            updateState { copy(showSaveDialog = false) }
             emitEffect(PushSimulatorViewEffect.TemplateSaved)
         }
     }
@@ -161,7 +165,7 @@ class PushSimulatorViewModel(
                 engine.sendNotification(notification)
                 emitEffect(PushSimulatorViewEffect.NotificationSent)
             } catch (e: NotificationPermissionException) {
-                emitEffect(PushSimulatorViewEffect.PermissionRequired)
+                updateState { copy(showPermissionDialog = true) }
             } catch (e: Exception) {
                 emitEffect(PushSimulatorViewEffect.Error("Failed to send: ${e.message}"))
             }

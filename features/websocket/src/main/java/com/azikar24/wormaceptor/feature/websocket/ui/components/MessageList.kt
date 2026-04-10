@@ -34,6 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
@@ -41,6 +43,7 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
 import com.azikar24.wormaceptor.feature.websocket.R
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -76,7 +79,7 @@ internal fun MessageList(
 }
 
 @Composable
-internal fun MessageItem(
+private fun MessageItem(
     message: WebSocketMessage,
     isExpanded: Boolean,
     onClick: () -> Unit,
@@ -208,5 +211,45 @@ internal fun MessageItem(
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MessageListPreview() {
+    WormaCeptorTheme {
+        MessageList(
+            messages = persistentListOf(
+                WebSocketMessage(
+                    id = 1L,
+                    connectionId = 1L,
+                    type = WebSocketMessageType.TEXT,
+                    direction = WebSocketMessageDirection.SENT,
+                    payload = "{\"type\":\"ping\",\"timestamp\":1234567890}",
+                    timestamp = System.currentTimeMillis() - 5_000L,
+                    size = 42L,
+                ),
+                WebSocketMessage(
+                    id = 2L,
+                    connectionId = 1L,
+                    type = WebSocketMessageType.TEXT,
+                    direction = WebSocketMessageDirection.RECEIVED,
+                    payload = "{\"type\":\"pong\",\"timestamp\":1234567891}",
+                    timestamp = System.currentTimeMillis() - 4_000L,
+                    size = 43L,
+                ),
+                WebSocketMessage(
+                    id = 3L,
+                    connectionId = 1L,
+                    type = WebSocketMessageType.BINARY,
+                    direction = WebSocketMessageDirection.SENT,
+                    payload = "0x48656C6C6F20576F726C64",
+                    timestamp = System.currentTimeMillis() - 3_000L,
+                    size = 11L,
+                ),
+            ),
+            expandedMessageId = 2L,
+            onMessageClick = {},
+        )
     }
 }

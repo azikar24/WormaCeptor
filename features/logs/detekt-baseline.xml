@@ -2,6 +2,8 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>LongMethod:LogsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun LogsScreenContent( state: LogsViewState, onEvent: (LogsViewEvent) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
+    <ID>ViewModelForwarding:LogsScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; LogsScreenContent( state = state, onEvent = onEvent, modifier = modifier, onBack = onBack, ) }</ID>
     <ID>ViewModelInjection:LogsFeature.kt$logsViewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

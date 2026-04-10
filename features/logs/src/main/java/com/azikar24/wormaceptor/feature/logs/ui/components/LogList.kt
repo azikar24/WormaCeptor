@@ -23,9 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
@@ -101,32 +106,9 @@ internal fun LogEntryItem(
 }
 
 @Composable
-private fun logLevelColor(level: LogLevel): androidx.compose.ui.graphics.Color {
-    val logColors = WormaCeptorTokens.Colors.LogLevel
-    return when (level) {
-        LogLevel.VERBOSE -> logColors.verbose
-        LogLevel.DEBUG -> logColors.debug
-        LogLevel.INFO -> logColors.info
-        LogLevel.WARN -> logColors.warn
-        LogLevel.ERROR -> logColors.error
-        LogLevel.ASSERT -> logColors.assert
-    }
-}
-
-@Composable
-private fun logLevelBackground(
-    level: LogLevel,
-    levelColor: androidx.compose.ui.graphics.Color,
-): androidx.compose.ui.graphics.Color = if (level == LogLevel.VERBOSE) {
-    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
-} else {
-    levelColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
-}
-
-@Composable
 private fun LogLevelBadge(
     tag: String,
-    levelColor: androidx.compose.ui.graphics.Color,
+    levelColor: Color,
 ) {
     Surface(
         shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
@@ -191,4 +173,67 @@ private fun LogEntryBody(
             lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
         )
     }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun LogEntryItemPreview(@PreviewParameter(LogEntryPreviewProvider::class) entry: LogEntry) {
+    WormaCeptorTheme {
+        LogEntryItem(entry = entry)
+    }
+}
+
+@Suppress("MagicNumber")
+private class LogEntryPreviewProvider : PreviewParameterProvider<LogEntry> {
+    override val values: Sequence<LogEntry> = sequenceOf(
+        LogEntry(
+            id = 1L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.VERBOSE,
+            tag = "System",
+            pid = 12_345,
+            message = "GC freed 2048 objects",
+        ),
+        LogEntry(
+            id = 2L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.DEBUG,
+            tag = "OkHttp",
+            pid = 12_345,
+            message = "Sending request https://api.example.com/users",
+        ),
+        LogEntry(
+            id = 3L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.INFO,
+            tag = "MainActivity",
+            pid = 12_345,
+            message = "User authenticated successfully",
+        ),
+        LogEntry(
+            id = 4L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.WARN,
+            tag = "NetworkManager",
+            pid = 12_345,
+            message = "Retrying request after timeout (attempt 2/3)",
+        ),
+        LogEntry(
+            id = 5L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.ERROR,
+            tag = "CrashReporter",
+            pid = 12_345,
+            message = "Failed to upload crash report: timeout",
+        ),
+        LogEntry(
+            id = 6L,
+            timestamp = System.currentTimeMillis(),
+            level = LogLevel.ASSERT,
+            tag = "StrictMode",
+            pid = 12_345,
+            message = "Assertion failed: unexpected null context",
+        ),
+    )
 }

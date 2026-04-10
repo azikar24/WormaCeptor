@@ -6,24 +6,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,14 +31,20 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
+import com.azikar24.wormaceptor.domain.entities.NotificationAction
+import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
+import com.azikar24.wormaceptor.domain.entities.SimulatedNotification
 import com.azikar24.wormaceptor.feature.pushsimulator.R
-import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 
 @Composable
 internal fun SectionHeader(
@@ -52,14 +54,14 @@ internal fun SectionHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+            .padding(vertical = WormaCeptorTokens.Spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         Icon(
             imageVector = Icons.Default.Save,
             contentDescription = null,
-            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             tint = MaterialTheme.colorScheme.primary,
         )
         Text(
@@ -72,8 +74,8 @@ internal fun SectionHeader(
         )
         if (count > 0) {
             Surface(
-                shape = WormaCeptorDesignSystem.Shapes.chip,
-                color = MaterialTheme.colorScheme.primary.asSubtleBackground(),
+                shape = WormaCeptorTokens.Shapes.chip,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE),
             ) {
                 Text(
                     text = count.toString(),
@@ -81,8 +83,8 @@ internal fun SectionHeader(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                        horizontal = WormaCeptorTokens.Spacing.sm,
+                        vertical = WormaCeptorTokens.Spacing.xxs,
                     ),
                 )
             }
@@ -108,53 +110,51 @@ internal fun TemplateCard(
     onDelete: () -> Unit,
 ) {
     val isPreset = template.id.startsWith("preset_")
-    val priorityColor = PushSimulatorDesignSystem.PriorityColors
+    val priorityColor = ToolColors.PushSimulator.Priority
         .forPriority(template.notification.priority.name)
     val actionCount = template.notification.actions.size
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.card,
+        shape = WormaCeptorTokens.Shapes.card,
         border = BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.regular,
+            width = WormaCeptorTokens.BorderWidth.regular,
             color = if (isPreset) {
-                PushSimulatorDesignSystem.TemplateColors.preset
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
+                ToolColors.PushSimulator.Template.preset
+                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
             } else {
                 MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
+                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
             },
         ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                .padding(WormaCeptorTokens.Spacing.md),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
-            // Badges row
             WormaCeptorFlowRow(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
             ) {
-                // Priority badge
                 Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = priorityColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                    shape = WormaCeptorTokens.Shapes.chip,
+                    color = priorityColor.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
                 ) {
                     Row(
                         modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                            horizontal = WormaCeptorTokens.Spacing.sm,
+                            vertical = WormaCeptorTokens.Spacing.xxs,
                         ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(
-                            WormaCeptorDesignSystem.Spacing.xxs,
+                            WormaCeptorTokens.Spacing.xxs,
                         ),
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(6.dp)
+                                .size(WormaCeptorTokens.ComponentSize.dot)
                                 .background(color = priorityColor, shape = CircleShape),
                         )
                         Text(
@@ -165,66 +165,62 @@ internal fun TemplateCard(
                     }
                 }
 
-                // Action count badge
                 if (actionCount > 0) {
                     Surface(
-                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = PushSimulatorDesignSystem.TemplateColors.action
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                        shape = WormaCeptorTokens.Shapes.chip,
+                        color = ToolColors.PushSimulator.Template.action
+                            .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
                     ) {
                         Row(
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
                             ),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(
-                                WormaCeptorDesignSystem.Spacing.xxs,
+                                WormaCeptorTokens.Spacing.xxs,
                             ),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.TouchApp,
                                 contentDescription = null,
-                                modifier = Modifier.size(10.dp),
-                                tint = PushSimulatorDesignSystem.TemplateColors.action,
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.xxs),
+                                tint = ToolColors.PushSimulator.Template.action,
                             )
                             Text(
                                 text = actionCount.toString(),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = PushSimulatorDesignSystem.TemplateColors.action,
+                                color = ToolColors.PushSimulator.Template.action,
                             )
                         }
                     }
                 }
 
-                // Preset badge
                 if (isPreset) {
                     Surface(
-                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                        color = PushSimulatorDesignSystem.TemplateColors.preset
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
+                        shape = WormaCeptorTokens.Shapes.chip,
+                        color = ToolColors.PushSimulator.Template.preset
+                            .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
                     ) {
                         Text(
                             text = stringResource(R.string.pushsimulator_template_preset),
                             style = MaterialTheme.typography.labelSmall,
-                            color = PushSimulatorDesignSystem.TemplateColors.preset,
+                            color = ToolColors.PushSimulator.Template.preset,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
                             ),
                         )
                     }
                 }
             }
 
-            // Template name
             Text(
                 text = template.name,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
             )
 
-            // Notification title — subtitle
             Text(
                 text = template.notification.title,
                 style = MaterialTheme.typography.bodySmall,
@@ -234,7 +230,6 @@ internal fun TemplateCard(
                 overflow = TextOverflow.Ellipsis,
             )
 
-            // Body preview — lighter to distinguish from title
             if (template.notification.body.isNotBlank()) {
                 Text(
                     text = template.notification.body,
@@ -245,11 +240,10 @@ internal fun TemplateCard(
                 )
             }
 
-            // Actions row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(
-                    WormaCeptorDesignSystem.Spacing.sm,
+                    WormaCeptorTokens.Spacing.sm,
                     Alignment.End,
                 ),
                 verticalAlignment = Alignment.CenterVertically,
@@ -257,7 +251,7 @@ internal fun TemplateCard(
                 if (!isPreset) {
                     IconButton(
                         onClick = onDelete,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.TouchTarget.minimum),
+                        modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -265,40 +259,105 @@ internal fun TemplateCard(
                                 R.string.pushsimulator_template_delete,
                                 template.name,
                             ),
-                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
-                            modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                OutlinedButton(
-                    onClick = onLoad,
-                    contentPadding = PaddingValues(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                ) {
-                    Text(stringResource(R.string.pushsimulator_template_load))
-                }
+                val loadLabel = stringResource(R.string.pushsimulator_template_load)
+                val sendLabel = stringResource(R.string.pushsimulator_send)
 
-                Button(
+                WormaCeptorButton(
+                    text = loadLabel,
+                    onClick = onLoad,
+                    variant = ButtonVariant.Outlined,
+                )
+
+                WormaCeptorButton(
+                    text = sendLabel,
                     onClick = onSend,
-                    contentPadding = PaddingValues(
-                        horizontal = WormaCeptorDesignSystem.Spacing.md,
-                        vertical = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Send,
-                        contentDescription = null,
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                    Text(stringResource(R.string.pushsimulator_send))
-                }
+                    variant = ButtonVariant.Primary,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Send,
+                            contentDescription = null,
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                        )
+                    },
+                )
             }
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun SectionHeaderPreview() {
+    WormaCeptorTheme {
+        SectionHeader(text = "Saved Templates", count = 3)
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun TemplateCardPreview() {
+    WormaCeptorTheme {
+        TemplateCard(
+            template = NotificationTemplate(
+                id = "user_1",
+                name = "Welcome Message",
+                notification = SimulatedNotification(
+                    id = "1",
+                    title = "Welcome",
+                    body = "Thanks for installing the app!",
+                    channelId = "general",
+                    priority = NotificationPriority.DEFAULT,
+                    actions = listOf(
+                        NotificationAction(title = "Open", actionId = "open"),
+                    ),
+                ),
+            ),
+            onLoad = {},
+            onSend = {},
+            onDelete = {},
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun TemplateCardPresetPreview() {
+    WormaCeptorTheme {
+        TemplateCard(
+            template = NotificationTemplate(
+                id = "preset_1",
+                name = "High Priority Alert",
+                notification = SimulatedNotification(
+                    id = "2",
+                    title = "Alert",
+                    body = "System alert with high priority",
+                    channelId = "alerts",
+                    priority = NotificationPriority.HIGH,
+                ),
+            ),
+            onLoad = {},
+            onSend = {},
+            onDelete = {},
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun EmptyTemplatesCardPreview() {
+    WormaCeptorTheme {
+        EmptyTemplatesCard()
     }
 }

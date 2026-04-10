@@ -17,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 
@@ -102,5 +104,35 @@ internal fun DirectionFilterChips(
                 ),
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DirectionFilterChipsNoneSelectedPreview() {
+    WormaCeptorTheme {
+        DirectionFilterChips(
+            selectedDirection = null,
+            directionCounts = mapOf(
+                WebSocketMessageDirection.SENT to 12,
+                WebSocketMessageDirection.RECEIVED to 8,
+            ),
+            onDirectionToggle = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DirectionFilterChipsSentSelectedPreview() {
+    WormaCeptorTheme {
+        DirectionFilterChips(
+            selectedDirection = WebSocketMessageDirection.SENT,
+            directionCounts = mapOf(
+                WebSocketMessageDirection.SENT to 12,
+                WebSocketMessageDirection.RECEIVED to 8,
+            ),
+            onDirectionToggle = {},
+        )
     }
 }

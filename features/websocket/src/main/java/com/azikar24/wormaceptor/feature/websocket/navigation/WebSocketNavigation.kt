@@ -18,10 +18,6 @@ import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewModel
 import org.koin.compose.koinInject
 
-/**
- * Adds the WebSocket Monitor navigation graph to the [NavGraphBuilder].
- * Scopes the [WebSocketViewModel] to the graph so it is shared across screens.
- */
 fun NavGraphBuilder.webSocketGraph(
     navController: NavHostController,
     onNavigateBack: () -> Unit,
@@ -62,16 +58,13 @@ private fun WebSocketConnectionsDestination(
 
     BaseScreen(viewModel) { state, onEvent ->
         WebSocketListScreen(
-            connections = state.connections,
-            searchQuery = state.connectionSearchQuery,
-            totalCount = state.totalConnectionCount,
-            onSearchQueryChanged = { query -> onEvent(WebSocketViewEvent.ConnectionSearchQueryChanged(query)) },
+            state = state,
+            onEvent = onEvent,
+            getMessageCount = viewModel::getMessageCountForConnection,
             onConnectionClick = { connection ->
                 onEvent(WebSocketViewEvent.ConnectionSelected(connection.id))
                 navController.navigate(WormaCeptorNavKeys.WebSocketMessages.route)
             },
-            onClearAll = { onEvent(WebSocketViewEvent.ClearAll) },
-            getMessageCount = viewModel::getMessageCountForConnection,
             onBack = onNavigateBack,
         )
     }
@@ -86,17 +79,8 @@ private fun WebSocketMessagesDestination(
 
     BaseScreen(viewModel) { state, onEvent ->
         WebSocketDetailScreen(
-            connection = state.selectedConnection,
-            messages = state.messages,
-            searchQuery = state.messageSearchQuery,
-            directionFilter = state.directionFilter,
-            totalMessageCount = state.totalMessageCount,
-            directionCounts = state.directionCounts,
-            expandedMessageId = state.expandedMessageId,
-            onSearchQueryChanged = { query -> onEvent(WebSocketViewEvent.MessageSearchQueryChanged(query)) },
-            onDirectionFilterToggle = { direction -> onEvent(WebSocketViewEvent.DirectionFilterToggled(direction)) },
-            onMessageClick = { messageId -> onEvent(WebSocketViewEvent.MessageExpandToggled(messageId)) },
-            onClearMessages = { onEvent(WebSocketViewEvent.ClearCurrentConnectionMessages) },
+            state = state,
+            onEvent = onEvent,
             onBack = {
                 onEvent(WebSocketViewEvent.ConnectionSelectionCleared)
                 navController.popBackStack()

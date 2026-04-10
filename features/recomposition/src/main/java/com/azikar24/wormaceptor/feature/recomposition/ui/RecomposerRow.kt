@@ -21,11 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
-import com.azikar24.wormaceptor.feature.recomposition.ui.theme.recompositionColors
-import com.azikar24.wormaceptor.feature.recomposition.ui.theme.statusLabelForRate
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionItem
 
 @Composable
@@ -34,21 +33,20 @@ internal fun RecomposerRow(
     item: RecompositionItem,
     modifier: Modifier = Modifier,
 ) {
-    val colors = recompositionColors()
-    val rateColor = colors.colorForRate(item.ratePerSecond)
-    val statusText = statusLabelForRate(item.ratePerSecond)
+    val color = rateColor(item.ratePerSecond)
+    val statusText = rateLabel(item.ratePerSecond)
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+        shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.BOLD,
+            alpha = WormaCeptorTokens.Alpha.BOLD,
         ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md),
+                .padding(WormaCeptorTokens.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -56,17 +54,17 @@ internal fun RecomposerRow(
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.width(32.dp),
+                modifier = Modifier.width(WormaCeptorTokens.IconSize.xl),
             )
 
             Box(
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(WormaCeptorTokens.IconSize.xxs)
                     .clip(CircleShape)
-                    .background(rateColor),
+                    .background(color),
             )
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -89,14 +87,40 @@ internal fun RecomposerRow(
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Bold,
                     ),
-                    color = rateColor,
+                    color = color,
                 )
                 Text(
                     text = statusText,
                     style = MaterialTheme.typography.labelSmall,
-                    color = rateColor,
+                    color = color,
                 )
             }
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(name = "RecomposerRow - Normal", showBackground = true)
+@Composable
+private fun RecomposerRowNormalPreview() {
+    WormaCeptorTheme {
+        RecomposerRow(
+            index = 1,
+            item = RecompositionItem("ProductCard", 12L, 0.4f),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Suppress("MagicNumber")
+@Preview(name = "RecomposerRow - Critical", showBackground = true)
+@Composable
+private fun RecomposerRowCriticalPreview() {
+    WormaCeptorTheme {
+        RecomposerRow(
+            index = 2,
+            item = RecompositionItem("SearchBar", 342L, 11.4f),
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

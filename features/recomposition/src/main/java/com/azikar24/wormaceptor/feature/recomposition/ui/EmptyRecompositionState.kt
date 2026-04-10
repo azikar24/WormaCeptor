@@ -19,7 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
 
 @Composable
@@ -30,12 +32,12 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xl),
+            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
             color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                alpha = WormaCeptorTokens.Alpha.MODERATE,
             ),
             modifier = Modifier.size(
-                WormaCeptorDesignSystem.IconSize.xxxl + WormaCeptorDesignSystem.Spacing.lg,
+                WormaCeptorTokens.IconSize.xxxl + WormaCeptorTokens.Spacing.lg,
             ),
         ) {
             Box(
@@ -49,13 +51,13 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
                         fontFamily = FontFamily.Monospace,
                     ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.INTENSE,
+                        alpha = WormaCeptorTokens.Alpha.INTENSE,
                     ),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
         Text(
             text = stringResource(R.string.recomposition_empty_title),
@@ -64,16 +66,26 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
             color = MaterialTheme.colorScheme.onSurface,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
         Text(
             text = stringResource(R.string.recomposition_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.xxl),
+            modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.xxl),
+        )
+    }
+}
+
+@Preview(name = "EmptyRecompositionState", showBackground = true)
+@Composable
+private fun EmptyRecompositionStatePreview() {
+    WormaCeptorTheme {
+        EmptyRecompositionState(
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

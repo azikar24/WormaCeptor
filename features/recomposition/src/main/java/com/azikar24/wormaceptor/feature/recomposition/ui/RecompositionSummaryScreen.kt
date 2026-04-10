@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionEvent
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionItem
@@ -48,7 +48,7 @@ fun RecompositionSummaryScreen(
     BaseScreen(viewModel) { state, onEvent ->
         RecompositionSummaryContent(
             state = state,
-            onReset = { onEvent(RecompositionEvent.Reset) },
+            onEvent = onEvent,
             onBack = onBack,
             modifier = modifier,
         )
@@ -59,7 +59,7 @@ fun RecompositionSummaryScreen(
 @Composable
 internal fun RecompositionSummaryContent(
     state: RecompositionViewState,
-    onReset: () -> Unit,
+    onEvent: (RecompositionEvent) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -85,7 +85,7 @@ internal fun RecompositionSummaryContent(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onReset) {
+                    IconButton(onClick = { onEvent(RecompositionEvent.Reset) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(R.string.recomposition_reset),
@@ -111,18 +111,18 @@ internal fun RecompositionSummaryContent(
                     .fillMaxSize()
                     .padding(paddingValues),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 ),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
             ) {
                 item(key = "summary") {
                     SummaryRow(
-                        sessionDurationMs = state.sessionDurationMs,
-                        totalRecompositions = state.totalRecompositions,
+                        formattedDuration = state.formattedDuration,
+                        formattedTotalRecompositions = state.formattedTotalRecompositions,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -160,6 +160,8 @@ private fun RecompositionSummaryContentPreview() {
             state = RecompositionViewState(
                 sessionDurationMs = 135_000L,
                 totalRecompositions = 1247L,
+                formattedDuration = "02:15",
+                formattedTotalRecompositions = "1.2K",
                 topRecomposers = persistentListOf(
                     RecompositionItem("ProductCard", 342L, 11.4f),
                     RecompositionItem("SearchBar", 89L, 3.0f),
@@ -167,7 +169,7 @@ private fun RecompositionSummaryContentPreview() {
                     RecompositionItem("BottomNav", 6L, 0.2f),
                 ),
             ),
-            onReset = {},
+            onEvent = {},
             onBack = {},
         )
     }
